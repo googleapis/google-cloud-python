@@ -672,16 +672,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.set_automated_ga4_configuration_opt_out: gapic_v1.method.wrap_method(
-                self.set_automated_ga4_configuration_opt_out,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.fetch_automated_ga4_configuration_opt_out: gapic_v1.method.wrap_method(
-                self.fetch_automated_ga4_configuration_opt_out,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.create_big_query_link: gapic_v1.method.wrap_method(
                 self.create_big_query_link,
                 default_timeout=None,
@@ -715,26 +705,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             self.update_enhanced_measurement_settings: gapic_v1.method.wrap_method(
                 self.update_enhanced_measurement_settings,
                 default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.create_connected_site_tag: gapic_v1.method.wrap_method(
-                self.create_connected_site_tag,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_connected_site_tag: gapic_v1.method.wrap_method(
-                self.delete_connected_site_tag,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_connected_site_tags: gapic_v1.method.wrap_method(
-                self.list_connected_site_tags,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.fetch_connected_ga4_property: gapic_v1.method.wrap_method(
-                self.fetch_connected_ga4_property,
-                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_ad_sense_link: gapic_v1.method.wrap_method(
@@ -944,6 +914,11 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.get_subproperty_sync_config: gapic_v1.method.wrap_method(
                 self.get_subproperty_sync_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_reporting_identity_settings: gapic_v1.method.wrap_method(
+                self.get_reporting_identity_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -2037,30 +2012,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def set_automated_ga4_configuration_opt_out(
-        self,
-    ) -> Callable[
-        [analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest],
-        Union[
-            analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse,
-            Awaitable[analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def fetch_automated_ga4_configuration_opt_out(
-        self,
-    ) -> Callable[
-        [analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest],
-        Union[
-            analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse,
-            Awaitable[analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def create_big_query_link(
         self,
     ) -> Callable[
@@ -2128,51 +2079,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             resources.EnhancedMeasurementSettings,
             Awaitable[resources.EnhancedMeasurementSettings],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_connected_site_tag(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateConnectedSiteTagRequest],
-        Union[
-            analytics_admin.CreateConnectedSiteTagResponse,
-            Awaitable[analytics_admin.CreateConnectedSiteTagResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_connected_site_tag(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteConnectedSiteTagRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_connected_site_tags(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListConnectedSiteTagsRequest],
-        Union[
-            analytics_admin.ListConnectedSiteTagsResponse,
-            Awaitable[analytics_admin.ListConnectedSiteTagsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def fetch_connected_ga4_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.FetchConnectedGa4PropertyRequest],
-        Union[
-            analytics_admin.FetchConnectedGa4PropertyResponse,
-            Awaitable[analytics_admin.FetchConnectedGa4PropertyResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -2634,6 +2540,18 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         [analytics_admin.GetSubpropertySyncConfigRequest],
         Union[
             resources.SubpropertySyncConfig, Awaitable[resources.SubpropertySyncConfig]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_reporting_identity_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetReportingIdentitySettingsRequest],
+        Union[
+            resources.ReportingIdentitySettings,
+            Awaitable[resources.ReportingIdentitySettings],
         ],
     ]:
         raise NotImplementedError()
