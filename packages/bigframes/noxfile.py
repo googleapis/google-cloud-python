@@ -838,11 +838,10 @@ def notebook(session: nox.Session):
             ]
         )
 
-    # Convert each Path notebook object to a string using a list comprehension.
+    # Convert each Path notebook object to a string using a list comprehension,
+    # and remove tests that we choose not to test.
     notebooks = [str(nb) for nb in notebooks_list]
-
-    # Remove tests that we choose not to test.
-    notebooks = list(filter(lambda nb: nb not in denylist, notebooks))
+    notebooks = [nb for nb in notebooks if nb not in denylist and "/kaggle/" not in nb]
 
     # Regionalized notebooks
     notebooks_reg = {
