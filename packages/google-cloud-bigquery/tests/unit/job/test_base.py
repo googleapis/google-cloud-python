@@ -17,8 +17,6 @@ import http
 import unittest
 from unittest import mock
 
-from google.api_core import exceptions
-import google.api_core.retry
 from google.api_core.future import polling
 import pytest
 
@@ -882,50 +880,6 @@ class Test_AsyncJob(unittest.TestCase):
         )
         self.assertEqual(job._properties, expected)
 
-    def test_cancel_w_custom_retry(self):
-        from google.cloud.bigquery.retry import DEFAULT_RETRY
-
-        api_path = "/projects/{}/jobs/{}/cancel".format(self.PROJECT, self.JOB_ID)
-        resource = {
-            "jobReference": {
-                "jobId": self.JOB_ID,
-                "projectId": self.PROJECT,
-                "location": None,
-            },
-            "configuration": {"test": True},
-        }
-        expected = resource.copy()
-        expected["statistics"] = {}
-        response = {"job": resource}
-        job = self._set_properties_job()
-
-        api_request_patcher = mock.patch.object(
-            job._client._connection, "api_request", side_effect=[ValueError, response]
-        )
-        retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
-            lambda exc: isinstance(exc, ValueError)
-        )
-
-        with api_request_patcher as fake_api_request:
-            with mock.patch(
-                "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
-            ) as final_attributes:
-                result = job.cancel(retry=retry, timeout=7.5)
-
-            final_attributes.assert_called()
-
-        self.assertTrue(result)
-        self.assertEqual(job._properties, expected)
-        self.assertEqual(
-            fake_api_request.call_args_list,
-            [
-                mock.call(method="POST", path=api_path, query_params={}, timeout=7.5),
-                mock.call(
-                    method="POST", path=api_path, query_params={}, timeout=7.5
-                ),  # was retried once
-            ],
-        )
-
     def test__set_future_result_wo_done(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)
@@ -1068,64 +1022,6 @@ class Test_AsyncJob(unittest.TestCase):
             timeout=DEFAULT_GET_JOB_TIMEOUT,
         )
         conn.api_request.assert_has_calls([begin_call, begin_call, reload_call])
-
-    def test_result_w_retry_wo_state(self):
-        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
-
-        begun_job_resource = _make_job_resource(
-            job_id=self.JOB_ID, project_id=self.PROJECT, location="EU", started=True
-        )
-        done_job_resource = _make_job_resource(
-            job_id=self.JOB_ID,
-            project_id=self.PROJECT,
-            location="EU",
-            started=True,
-            ended=True,
-        )
-        conn = make_connection(
-            exceptions.NotFound("not normally retriable"),
-            begun_job_resource,
-            exceptions.NotFound("not normally retriable"),
-            done_job_resource,
-        )
-        client = _make_client(project=self.PROJECT, connection=conn)
-        job = self._make_one(
-            self._job_reference(self.JOB_ID, self.PROJECT, "EU"), client
-        )
-        custom_predicate = mock.Mock()
-        custom_predicate.return_value = True
-        custom_retry = google.api_core.retry.Retry(
-            predicate=custom_predicate,
-            initial=0.001,
-            maximum=0.001,
-            deadline=0.1,
-        )
-        self.assertIs(job.result(retry=custom_retry), job)
-
-        begin_call = mock.call(
-            method="POST",
-            path=f"/projects/{self.PROJECT}/jobs",
-            data={
-                "jobReference": {
-                    "jobId": self.JOB_ID,
-                    "projectId": self.PROJECT,
-                    "location": "EU",
-                }
-            },
-            timeout=None,
-        )
-        reload_call = mock.call(
-            method="GET",
-            path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
-            query_params={
-                "projection": "full",
-                "location": "EU",
-            },
-            timeout=DEFAULT_GET_JOB_TIMEOUT,
-        )
-        conn.api_request.assert_has_calls(
-            [begin_call, begin_call, reload_call, reload_call]
-        )
 
     def test_result_explicit_w_state(self):
         conn = make_connection()

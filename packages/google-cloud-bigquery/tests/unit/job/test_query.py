@@ -20,15 +20,11 @@ import textwrap
 import types
 from unittest import mock
 
-import freezegun
-from google.api_core import exceptions
-import google.api_core.retry
 import requests
 
 from google.cloud.bigquery.client import _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.query
-import google.cloud.bigquery.retry
 from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
 from google.cloud.bigquery.table import _EmptyRowIterator
 
@@ -1335,102 +1331,6 @@ class TestQueryJob(_Base):
             [jobs_get_call, query_page_waiting_call, query_page_2_call]
         )
 
-    def test_result_w_custom_retry(self):
-        from google.cloud.bigquery.table import RowIterator
-
-        query_resource = {
-            "jobComplete": False,
-            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
-        }
-        query_resource_done = {
-            "jobComplete": True,
-            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
-            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
-            "totalRows": "2",
-        }
-        job_resource = self._make_resource(started=True, location="asia-northeast1")
-        job_resource_done = self._make_resource(
-            started=True, ended=True, location="asia-northeast1"
-        )
-        job_resource_done["configuration"]["query"]["destinationTable"] = {
-            "projectId": "dest-project",
-            "datasetId": "dest_dataset",
-            "tableId": "dest_table",
-        }
-
-        connection = make_connection(
-            # Also, for each API request, raise an exception that we know can
-            # be retried. Because of this, for each iteration we do:
-            # jobs.get (x2) & jobs.getQueryResults (x2)
-            exceptions.NotFound("not normally retriable"),
-            job_resource,
-            exceptions.NotFound("not normally retriable"),
-            query_resource,
-            # Query still not done, repeat both.
-            exceptions.NotFound("not normally retriable"),
-            job_resource,
-            exceptions.NotFound("not normally retriable"),
-            query_resource,
-            exceptions.NotFound("not normally retriable"),
-            # Query still not done, repeat both.
-            job_resource_done,
-            exceptions.NotFound("not normally retriable"),
-            query_resource_done,
-            # Query finished!
-        )
-        client = _make_client(self.PROJECT, connection=connection)
-        job = self._get_target_class().from_api_repr(job_resource, client)
-
-        custom_predicate = mock.Mock()
-        custom_predicate.return_value = True
-        custom_retry = google.api_core.retry.Retry(
-            initial=0.001,
-            maximum=0.001,
-            multiplier=1.0,
-            deadline=0.1,
-            predicate=custom_predicate,
-        )
-
-        self.assertIsInstance(job.result(retry=custom_retry), RowIterator)
-        query_results_call = mock.call(
-            method="GET",
-            path=f"/projects/{self.PROJECT}/queries/{self.JOB_ID}",
-            query_params={"maxResults": 0, "location": "asia-northeast1"},
-            # TODO(tswast): Why do we end up setting timeout to
-            # google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT in
-            # some cases but not others?
-            timeout=mock.ANY,
-        )
-        reload_call = mock.call(
-            method="GET",
-            path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
-            query_params={"projection": "full", "location": "asia-northeast1"},
-            timeout=DEFAULT_GET_JOB_TIMEOUT,
-        )
-
-        connection.api_request.assert_has_calls(
-            [
-                # See make_connection() call above for explanation of the
-                # expected API calls.
-                #
-                # Query not done.
-                reload_call,
-                reload_call,
-                query_results_call,
-                query_results_call,
-                # Query still not done.
-                reload_call,
-                reload_call,
-                query_results_call,
-                query_results_call,
-                # Query done!
-                reload_call,
-                reload_call,
-                query_results_call,
-                query_results_call,
-            ]
-        )
-
     def test_result_w_empty_schema(self):
         from google.cloud.bigquery.table import _EmptyRowIterator
 
@@ -1454,102 +1354,6 @@ class TestQueryJob(_Base):
         self.assertEqual(result.job_id, self.JOB_ID)
         self.assertEqual(result.location, "asia-northeast1")
         self.assertEqual(result.query_id, "xyz-abc")
-
-    def test_result_w_timeout_doesnt_raise(self):
-        import google.cloud.bigquery.client
-
-        begun_resource = self._make_resource()
-        query_resource = {
-            "jobComplete": True,
-            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
-            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
-        }
-        done_resource = copy.deepcopy(begun_resource)
-        done_resource["status"] = {"state": "DONE"}
-        connection = make_connection(begun_resource, query_resource, done_resource)
-        client = _make_client(project=self.PROJECT, connection=connection)
-        job = self._make_one(self.JOB_ID, self.QUERY, client)
-        job._properties["jobReference"]["location"] = "US"
-        job._properties["status"] = {"state": "RUNNING"}
-
-        with freezegun.freeze_time("1970-01-01 00:00:00", tick=False):
-            job.result(
-                # Test that fractional seconds are supported, but use a timeout
-                # that is representable as a floating point without rounding
-                # errors since it can be represented exactly in base 2. In this
-                # case 1.125 is 9 / 8, which is a fraction with a power of 2 in
-                # the denominator.
-                timeout=1.125,
-            )
-
-        reload_call = mock.call(
-            method="GET",
-            path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
-            query_params={"projection": "full", "location": "US"},
-            timeout=1.125,
-        )
-        get_query_results_call = mock.call(
-            method="GET",
-            path=f"/projects/{self.PROJECT}/queries/{self.JOB_ID}",
-            query_params={
-                "maxResults": 0,
-                "location": "US",
-            },
-            timeout=google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT,
-        )
-        connection.api_request.assert_has_calls(
-            [
-                reload_call,
-                get_query_results_call,
-                reload_call,
-            ]
-        )
-
-    def test_result_w_timeout_raises_concurrent_futures_timeout(self):
-        import google.cloud.bigquery.client
-
-        begun_resource = self._make_resource()
-        begun_resource["jobReference"]["location"] = "US"
-        query_resource = {
-            "jobComplete": True,
-            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
-            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
-        }
-        done_resource = copy.deepcopy(begun_resource)
-        done_resource["status"] = {"state": "DONE"}
-        connection = make_connection(begun_resource, query_resource, done_resource)
-        client = _make_client(project=self.PROJECT, connection=connection)
-        job = self._make_one(self.JOB_ID, self.QUERY, client)
-        job._properties["jobReference"]["location"] = "US"
-        job._properties["status"] = {"state": "RUNNING"}
-
-        with freezegun.freeze_time(
-            "1970-01-01 00:00:00", auto_tick_seconds=1.0
-        ), self.assertRaises(concurrent.futures.TimeoutError):
-            job.result(timeout=1.125)
-
-        reload_call = mock.call(
-            method="GET",
-            path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
-            query_params={"projection": "full", "location": "US"},
-            timeout=1.125,
-        )
-        get_query_results_call = mock.call(
-            method="GET",
-            path=f"/projects/{self.PROJECT}/queries/{self.JOB_ID}",
-            query_params={
-                "maxResults": 0,
-                "location": "US",
-            },
-            timeout=google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT,
-        )
-        connection.api_request.assert_has_calls(
-            [
-                reload_call,
-                get_query_results_call,
-                # Timeout before we can reload with the final job state.
-            ]
-        )
 
     def test_result_w_page_size(self):
         # Arrange

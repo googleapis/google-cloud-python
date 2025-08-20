@@ -80,7 +80,7 @@ _RETRY_BAD_REQUEST = {
         ),
     ],
 )
-def test_retry_failed_jobs(sleep, reason, job_retry, result_retry):
+def test_retry_failed_jobs(sleep, reason, job_retry, result_retry, global_time_lock):
     client = make_client()
     err = dict(reason=reason)
     conn = client._connection = make_connection(
@@ -138,7 +138,7 @@ def test_retry_failed_jobs(sleep, reason, job_retry, result_retry):
 
 
 def test_retry_connection_error_with_default_retries_and_successful_first_job(
-    monkeypatch, client
+    monkeypatch, client, global_time_lock
 ):
     """
     Make sure ConnectionError can be retried at `is_job_done` level, even if
@@ -254,7 +254,7 @@ def test_retry_connection_error_with_default_retries_and_successful_first_job(
 
 
 def test_query_retry_with_default_retry_and_ambiguous_errors_only_retries_with_failed_job(
-    client, monkeypatch
+    client, monkeypatch, global_time_lock
 ):
     """
     Some errors like 'rateLimitExceeded' can be ambiguous. Make sure we only
@@ -419,7 +419,7 @@ def test_query_retry_with_default_retry_and_ambiguous_errors_only_retries_with_f
 # - Pass None retry to `result`.
 @pytest.mark.parametrize("job_retry_on_query", ["Query", "Result"])
 @mock.patch("time.sleep")
-def test_disable_retry_failed_jobs(sleep, client, job_retry_on_query):
+def test_disable_retry_failed_jobs(sleep, client, job_retry_on_query, global_time_lock):
     """
     Test retry of job failures, as opposed to API-invocation failures.
     """
@@ -450,7 +450,7 @@ def test_disable_retry_failed_jobs(sleep, client, job_retry_on_query):
 
 
 @mock.patch("time.sleep")
-def test_retry_failed_jobs_after_retry_failed(sleep, client):
+def test_retry_failed_jobs_after_retry_failed(sleep, client, global_time_lock):
     """
     If at first you don't succeed, maybe you will later. :)
     """
@@ -508,7 +508,7 @@ def test_retry_failed_jobs_after_retry_failed(sleep, client):
         assert job.job_id != orig_job_id
 
 
-def test_raises_on_job_retry_on_query_with_non_retryable_jobs(client):
+def test_raises_on_job_retry_on_query_with_non_retryable_jobs(client, global_time_lock):
     with pytest.raises(
         TypeError,
         match=(
@@ -520,7 +520,9 @@ def test_raises_on_job_retry_on_query_with_non_retryable_jobs(client):
         client.query("select 42", job_id=42, job_retry=google.api_core.retry.Retry())
 
 
-def test_raises_on_job_retry_on_result_with_non_retryable_jobs(client):
+def test_raises_on_job_retry_on_result_with_non_retryable_jobs(
+    client, global_time_lock
+):
     client._connection = make_connection({})
 
     with pytest.warns(
@@ -542,7 +544,7 @@ def test_raises_on_job_retry_on_result_with_non_retryable_jobs(client):
         job.result(job_retry=google.api_core.retry.Retry())
 
 
-def test_query_and_wait_retries_job_for_DDL_queries():
+def test_query_and_wait_retries_job_for_DDL_queries(global_time_lock):
     """
     Specific test for retrying DDL queries with "jobRateLimitExceeded" error:
     https://github.com/googleapis/python-bigquery/issues/1790

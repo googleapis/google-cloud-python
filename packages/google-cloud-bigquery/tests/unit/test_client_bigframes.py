@@ -338,7 +338,7 @@ def test_query_and_wait_bigframes_with_jobs_insert_dry_run_no_callback(client):
     assert result.schema == [bigquery.SchemaField("_f0", "INTEGER")]
 
 
-def test_query_and_wait_bigframes_with_query_retry_callbacks(client):
+def test_query_and_wait_bigframes_with_query_retry_callbacks(client, global_time_lock):
     created = datetime.datetime(
         2025, 8, 18, 10, 11, 12, 345000, tzinfo=datetime.timezone.utc
     )

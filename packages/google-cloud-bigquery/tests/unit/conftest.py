@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from unittest import mock
+import threading
 
 import pytest
 
@@ -22,6 +23,18 @@ from .helpers import make_client
 @pytest.fixture
 def client():
     yield make_client()
+
+
+time_lock = threading.Lock()
+
+
+@pytest.fixture
+def global_time_lock():
+    """Fixture to run tests serially that depend on the global time state,
+    such as tests of retry behavior.
+    """
+    with time_lock:
+        yield
 
 
 @pytest.fixture
