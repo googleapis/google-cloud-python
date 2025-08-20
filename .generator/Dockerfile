@@ -138,20 +138,6 @@ RUN apt-get update && \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Create the group and user, but only if they don't already exist.
-# NOTE: A user needs to be configured by passing down the UID/GID with the 
-# docker build command to allow the user running the librarian CLI to have
-# the permissions within the /app and /bazel_cache directories in the following way:
-# DOCKER_BUILDKIT=1 docker build -f .generator/Dockerfile  --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t python-librarian-generator:latest .
-ARG UID=1000
-ARG GID=1000
-
-RUN if ! getent group $GID > /dev/null; then \
-        groupadd -g $GID myuser; \
-    fi && \
-    if ! getent passwd $UID > /dev/null; then \
-        useradd -u $UID -g $GID -ms /bin/bash myuser; \
-    fi
 
 # 2025/08/05 08:27:44 could not create directory /.cache/bazelisk: mkdir /.cache: permission denied
 # Traceback (most recent call last):
@@ -165,10 +151,7 @@ ENV BAZELISK_HOME="/bazel_cache/bazelisk"
 ENV BAZEL_HOME="/bazel_cache/bazel"
 RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
              ${BAZEL_HOME}/_bazel_ubuntu/output_base \
-             ${BAZELISK_HOME} && \
-    chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
-
-USER $UID
+             ${BAZELISK_HOME}
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
@@ -190,7 +173,7 @@ COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
 
 # Copy bazel cache from the builder.
-COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
+COPY --from=builder /bazel_cache /bazel_cache
 
 # Set the working directory in the container.
 WORKDIR /app
@@ -207,7 +190,7 @@ bazel_env/bin/python3.9 -m pip install /tmp/synthtool nox && \
 rm -rf /tmp/synthtool
 
 # Copy the CLI script into the container.
-COPY --chown=$UID:$GID .generator/cli.py .
+COPY .generator/cli.py .
 RUN chmod a+rx ./cli.py
 
 ENTRYPOINT ["python3.9", "./cli.py"]
