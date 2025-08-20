@@ -175,6 +175,7 @@ COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
 
 # Copy bazel cache from the builder.
 COPY --from=builder /bazel_cache /bazel_cache
+RUN chmod -R 777 /bazel_cache
 
 # Set the working directory in the container.
 WORKDIR /app
