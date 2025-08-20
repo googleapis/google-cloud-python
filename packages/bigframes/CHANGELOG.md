@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.16.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.15.0...v2.16.0) (2025-08-20)
+
+
+### Features
+
+* Add `bigframes.pandas.options.display.precision` option ([#1979](https://github.com/googleapis/python-bigquery-dataframes/issues/1979)) ([15e6175](https://github.com/googleapis/python-bigquery-dataframes/commit/15e6175ec0aeb1b7b02d0bba9e8e1e018bd11c31))
+* Add level, inplace params to reset_index ([#1988](https://github.com/googleapis/python-bigquery-dataframes/issues/1988)) ([3446950](https://github.com/googleapis/python-bigquery-dataframes/commit/34469504b79a082d3380f9f25c597483aef2068a))
+* Add ML code samples from dbt blog post ([#1978](https://github.com/googleapis/python-bigquery-dataframes/issues/1978)) ([ebaa244](https://github.com/googleapis/python-bigquery-dataframes/commit/ebaa244a9eb7b87f7f9fd9c3bebe5c7db24cd013))
+* Add where, coalesce, fillna, casewhen, invert local impl ([#1976](https://github.com/googleapis/python-bigquery-dataframes/issues/1976)) ([f7f686c](https://github.com/googleapis/python-bigquery-dataframes/commit/f7f686cf85ab7e265d9c07ebc7f0cd59babc5357))
+* Adjust anywidget CSS to prevent overflow ([#1981](https://github.com/googleapis/python-bigquery-dataframes/issues/1981)) ([204f083](https://github.com/googleapis/python-bigquery-dataframes/commit/204f083a2f00fcc9fd1500dcd7a738eda3904d2f))
+* Format page number in table widget ([#1992](https://github.com/googleapis/python-bigquery-dataframes/issues/1992)) ([e83836e](https://github.com/googleapis/python-bigquery-dataframes/commit/e83836e8e1357f009f3f95666f1661bdbe0d3751))
+* Or, And, Xor can execute locally ([#1994](https://github.com/googleapis/python-bigquery-dataframes/issues/1994)) ([59c52a5](https://github.com/googleapis/python-bigquery-dataframes/commit/59c52a55ebea697855eb4c70529e226cc077141f))
+* Support callable bigframes function for dataframe where ([#1990](https://github.com/googleapis/python-bigquery-dataframes/issues/1990)) ([44c1ec4](https://github.com/googleapis/python-bigquery-dataframes/commit/44c1ec48cc4db1c4c9c15ec1fab43d4ef0758e56))
+* Support callable for series where method ([#2005](https://github.com/googleapis/python-bigquery-dataframes/issues/2005)) ([768b82a](https://github.com/googleapis/python-bigquery-dataframes/commit/768b82af96a5dd0c434edcb171036eb42cfb9b41))
+* When using `repr_mode = "anywidget"`, numeric values align right ([15e6175](https://github.com/googleapis/python-bigquery-dataframes/commit/15e6175ec0aeb1b7b02d0bba9e8e1e018bd11c31))
+
+
+### Bug Fixes
+
+* Address the packages issue for bigframes function ([#1991](https://github.com/googleapis/python-bigquery-dataframes/issues/1991)) ([68f1d22](https://github.com/googleapis/python-bigquery-dataframes/commit/68f1d22d5ed8457a5cabc7751ed1d178063dd63e))
+* Correct pypdf dependency specifier for remote PDF functions ([#1980](https://github.com/googleapis/python-bigquery-dataframes/issues/1980)) ([0bd5e1b](https://github.com/googleapis/python-bigquery-dataframes/commit/0bd5e1b3c004124d2100c3fbec2fbe1e965d1e96))
+* Enable default retries in calls to BQ Storage Read API ([#1985](https://github.com/googleapis/python-bigquery-dataframes/issues/1985)) ([f25d7bd](https://github.com/googleapis/python-bigquery-dataframes/commit/f25d7bd30800dffa65b6c31b0b7ac711a13d790f))
+* Fix the copyright year in dbt sample files ([#1996](https://github.com/googleapis/python-bigquery-dataframes/issues/1996)) ([fad5722](https://github.com/googleapis/python-bigquery-dataframes/commit/fad57223d129f0c95d0c6a066179bb66880edd06))
+
+
+### Performance Improvements
+
+* Faster session startup by defering anon dataset fetch ([#1982](https://github.com/googleapis/python-bigquery-dataframes/issues/1982)) ([2720c4c](https://github.com/googleapis/python-bigquery-dataframes/commit/2720c4cf070bf57a0930d7623bfc41d89cc053ee))
+
+
+### Documentation
+
+* Add examples of running bigframes in kaggle ([#2002](https://github.com/googleapis/python-bigquery-dataframes/issues/2002)) ([7d89d76](https://github.com/googleapis/python-bigquery-dataframes/commit/7d89d76976595b75cb0105fbe7b4f7ca2fdf49f2))
+* Remove preview warning from partial ordering mode sample notebook ([#1986](https://github.com/googleapis/python-bigquery-dataframes/issues/1986)) ([132e0ed](https://github.com/googleapis/python-bigquery-dataframes/commit/132e0edfe9f96c15753649d77fcb6edd0b0708a3))
+
 ## [2.15.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.14.0...v2.15.0) (2025-08-11)
 
 
