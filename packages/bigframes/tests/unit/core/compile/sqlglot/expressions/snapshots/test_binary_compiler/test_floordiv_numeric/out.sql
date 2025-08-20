@@ -12,7 +12,11 @@ WITH `bfcte_0` AS (
     `bfcol_1` AS `bfcol_9`,
     `bfcol_0` AS `bfcol_10`,
     `bfcol_2` AS `bfcol_11`,
-    IEEE_DIVIDE(`bfcol_1`, `bfcol_1`) AS `bfcol_12`
+    CASE
+      WHEN `bfcol_1` = CAST(0 AS INT64)
+      THEN CAST(0 AS INT64) * `bfcol_1`
+      ELSE CAST(FLOOR(IEEE_DIVIDE(`bfcol_1`, `bfcol_1`)) AS INT64)
+    END AS `bfcol_12`
   FROM `bfcte_0`
 ), `bfcte_2` AS (
   SELECT
@@ -22,7 +26,11 @@ WITH `bfcte_0` AS (
     `bfcol_10` AS `bfcol_20`,
     `bfcol_11` AS `bfcol_21`,
     `bfcol_12` AS `bfcol_22`,
-    IEEE_DIVIDE(`bfcol_9`, 1) AS `bfcol_23`
+    CASE
+      WHEN 1 = CAST(0 AS INT64)
+      THEN CAST(0 AS INT64) * `bfcol_9`
+      ELSE CAST(FLOOR(IEEE_DIVIDE(`bfcol_9`, 1)) AS INT64)
+    END AS `bfcol_23`
   FROM `bfcte_1`
 ), `bfcte_3` AS (
   SELECT
@@ -33,7 +41,11 @@ WITH `bfcte_0` AS (
     `bfcol_21` AS `bfcol_33`,
     `bfcol_22` AS `bfcol_34`,
     `bfcol_23` AS `bfcol_35`,
-    IEEE_DIVIDE(`bfcol_19`, 0.0) AS `bfcol_36`
+    CASE
+      WHEN 0.0 = CAST(0 AS INT64)
+      THEN CAST('Infinity' AS FLOAT64) * `bfcol_19`
+      ELSE CAST(FLOOR(IEEE_DIVIDE(`bfcol_19`, 0.0)) AS INT64)
+    END AS `bfcol_36`
   FROM `bfcte_2`
 ), `bfcte_4` AS (
   SELECT
@@ -45,7 +57,11 @@ WITH `bfcte_0` AS (
     `bfcol_34` AS `bfcol_48`,
     `bfcol_35` AS `bfcol_49`,
     `bfcol_36` AS `bfcol_50`,
-    IEEE_DIVIDE(`bfcol_31`, `bfcol_33`) AS `bfcol_51`
+    CASE
+      WHEN `bfcol_33` = CAST(0 AS INT64)
+      THEN CAST('Infinity' AS FLOAT64) * `bfcol_31`
+      ELSE CAST(FLOOR(IEEE_DIVIDE(`bfcol_31`, `bfcol_33`)) AS INT64)
+    END AS `bfcol_51`
   FROM `bfcte_3`
 ), `bfcte_5` AS (
   SELECT
@@ -58,7 +74,11 @@ WITH `bfcte_0` AS (
     `bfcol_49` AS `bfcol_65`,
     `bfcol_50` AS `bfcol_66`,
     `bfcol_51` AS `bfcol_67`,
-    IEEE_DIVIDE(`bfcol_47`, `bfcol_45`) AS `bfcol_68`
+    CASE
+      WHEN `bfcol_45` = CAST(0 AS INT64)
+      THEN CAST('Infinity' AS FLOAT64) * `bfcol_47`
+      ELSE CAST(FLOOR(IEEE_DIVIDE(`bfcol_47`, `bfcol_45`)) AS INT64)
+    END AS `bfcol_68`
   FROM `bfcte_4`
 ), `bfcte_6` AS (
   SELECT
@@ -72,7 +92,11 @@ WITH `bfcte_0` AS (
     `bfcol_66` AS `bfcol_84`,
     `bfcol_67` AS `bfcol_85`,
     `bfcol_68` AS `bfcol_86`,
-    IEEE_DIVIDE(`bfcol_63`, 0.0) AS `bfcol_87`
+    CASE
+      WHEN 0.0 = CAST(0 AS INT64)
+      THEN CAST('Infinity' AS FLOAT64) * `bfcol_63`
+      ELSE CAST(FLOOR(IEEE_DIVIDE(`bfcol_63`, 0.0)) AS INT64)
+    END AS `bfcol_87`
   FROM `bfcte_5`
 ), `bfcte_7` AS (
   SELECT
@@ -87,7 +111,11 @@ WITH `bfcte_0` AS (
     `bfcol_85` AS `bfcol_105`,
     `bfcol_86` AS `bfcol_106`,
     `bfcol_87` AS `bfcol_107`,
-    IEEE_DIVIDE(`bfcol_79`, CAST(`bfcol_80` AS INT64)) AS `bfcol_108`
+    CASE
+      WHEN CAST(`bfcol_80` AS INT64) = CAST(0 AS INT64)
+      THEN CAST(0 AS INT64) * `bfcol_79`
+      ELSE CAST(FLOOR(IEEE_DIVIDE(`bfcol_79`, CAST(`bfcol_80` AS INT64))) AS INT64)
+    END AS `bfcol_108`
   FROM `bfcte_6`
 ), `bfcte_8` AS (
   SELECT
@@ -103,7 +131,11 @@ WITH `bfcte_0` AS (
     `bfcol_106` AS `bfcol_128`,
     `bfcol_107` AS `bfcol_129`,
     `bfcol_108` AS `bfcol_130`,
-    IEEE_DIVIDE(CAST(`bfcol_100` AS INT64), `bfcol_99`) AS `bfcol_131`
+    CASE
+      WHEN `bfcol_99` = CAST(0 AS INT64)
+      THEN CAST(0 AS INT64) * CAST(`bfcol_100` AS INT64)
+      ELSE CAST(FLOOR(IEEE_DIVIDE(CAST(`bfcol_100` AS INT64), `bfcol_99`)) AS INT64)
+    END AS `bfcol_131`
   FROM `bfcte_7`
 )
 SELECT

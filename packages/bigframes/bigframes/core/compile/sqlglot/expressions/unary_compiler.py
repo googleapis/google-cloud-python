@@ -23,16 +23,9 @@ import sqlglot.expressions as sge
 
 from bigframes import operations as ops
 from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
+import bigframes.core.compile.sqlglot.expressions.constants as constants
 from bigframes.core.compile.sqlglot.expressions.op_registration import OpRegistration
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
-
-_NAN = sge.Cast(this=sge.convert("NaN"), to="FLOAT64")
-_INF = sge.Cast(this=sge.convert("Infinity"), to="FLOAT64")
-
-# Approx Highest number you can pass in to EXP function and get a valid FLOAT64 result
-# FLOAT64 has 11 exponent bits, so max values is about 2**(2**10)
-# ln(2**(2**10)) == (2**10)*ln(2) ~= 709.78, so EXP(x) for x>709.78 will overflow.
-_FLOAT64_EXP_BOUND = sge.convert(709.78)
 
 UNARY_OP_REGISTRATION = OpRegistration()
 
@@ -52,7 +45,7 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ifs=[
             sge.If(
                 this=expr.expr < sge.convert(1),
-                true=_NAN,
+                true=constants._NAN,
             )
         ],
         default=sge.func("ACOSH", expr.expr),
@@ -65,7 +58,7 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ifs=[
             sge.If(
                 this=sge.func("ABS", expr.expr) > sge.convert(1),
-                true=_NAN,
+                true=constants._NAN,
             )
         ],
         default=sge.func("ACOS", expr.expr),
@@ -78,7 +71,7 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ifs=[
             sge.If(
                 this=sge.func("ABS", expr.expr) > sge.convert(1),
-                true=_NAN,
+                true=constants._NAN,
             )
         ],
         default=sge.func("ASIN", expr.expr),
@@ -101,7 +94,7 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ifs=[
             sge.If(
                 this=sge.func("ABS", expr.expr) > sge.convert(1),
-                true=_NAN,
+                true=constants._NAN,
             )
         ],
         default=sge.func("ATANH", expr.expr),
@@ -177,7 +170,7 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ifs=[
             sge.If(
                 this=sge.func("ABS", expr.expr) > sge.convert(709.78),
-                true=_INF,
+                true=constants._INF,
             )
         ],
         default=sge.func("COSH", expr.expr),
@@ -222,8 +215,8 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Case(
         ifs=[
             sge.If(
-                this=expr.expr > _FLOAT64_EXP_BOUND,
-                true=_INF,
+                this=expr.expr > constants._FLOAT64_EXP_BOUND,
+                true=constants._INF,
             )
         ],
         default=sge.func("EXP", expr.expr),
@@ -235,8 +228,8 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Case(
         ifs=[
             sge.If(
-                this=expr.expr > _FLOAT64_EXP_BOUND,
-                true=_INF,
+                this=expr.expr > constants._FLOAT64_EXP_BOUND,
+                true=constants._INF,
             )
         ],
         default=sge.func("EXP", expr.expr),
@@ -403,7 +396,7 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ifs=[
             sge.If(
                 this=expr.expr < sge.convert(0),
-                true=_NAN,
+                true=constants._NAN,
             )
         ],
         default=sge.Ln(this=expr.expr),
@@ -416,7 +409,7 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ifs=[
             sge.If(
                 this=expr.expr < sge.convert(0),
-                true=_NAN,
+                true=constants._NAN,
             )
         ],
         default=sge.Log(this=expr.expr, expression=sge.convert(10)),
@@ -429,7 +422,7 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ifs=[
             sge.If(
                 this=expr.expr < sge.convert(-1),
-                true=_NAN,
+                true=constants._NAN,
             )
         ],
         default=sge.Ln(this=sge.convert(1) + expr.expr),
@@ -512,7 +505,7 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ifs=[
             sge.If(
                 this=expr.expr < sge.convert(0),
-                true=_NAN,
+                true=constants._NAN,
             )
         ],
         default=sge.Sqrt(this=expr.expr),
@@ -534,8 +527,8 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Case(
         ifs=[
             sge.If(
-                this=sge.func("ABS", expr.expr) > _FLOAT64_EXP_BOUND,
-                true=sge.func("SIGN", expr.expr) * _INF,
+                this=sge.func("ABS", expr.expr) > constants._FLOAT64_EXP_BOUND,
+                true=sge.func("SIGN", expr.expr) * constants._INF,
             )
         ],
         default=sge.func("SINH", expr.expr),
