@@ -29,6 +29,9 @@ steps:
       - '--cache=true'
       # (Optional but recommended) Sets a time-to-live for cache layers
       - '--cache-ttl=24h'
+      # Use a consistent, non-root UID/GID for automated builds.
+      - '--build-arg=UID=1000'
+      - '--build-arg=GID=1000'
 
 # The 'images' section is no longer needed because Kaniko pushes the image itself.
 
