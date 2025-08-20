@@ -138,22 +138,6 @@ RUN apt-get update && \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-
-# 2025/08/05 08:27:44 could not create directory /.cache/bazelisk: mkdir /.cache: permission denied
-# Traceback (most recent call last):
-#   File "/app/./cli.py", line 147, in _build_bazel_target
-#     subprocess.run(
-#   File "/usr/local/lib/python3.9/subprocess.py", line 528, in run
-#     raise CalledProcessError(retcode, process.args,
-# subprocess.CalledProcessError: Command '['bazelisk', '--output_base=/bazel_cache/_bazel_ubuntu/output_base', 'build', '--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos', '--incompatible_strict_action_env', '//google/cloud/language/v1beta2:language-v1beta2-py']' returned non-zero exit status 1
-# We'll point both to the /bazel_cache directory which will be mounted as a volume.
-# ENV BAZELISK_HOME="/bazel_cache/bazelisk"
-# ENV BAZEL_HOME="/bazel_cache/bazel"
-# RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
-#              ${BAZEL_HOME}/_bazel_ubuntu/output_base \
-#              ${BAZELISK_HOME} && \
-    # chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
-
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.9 /usr/local/lib/python3.9
