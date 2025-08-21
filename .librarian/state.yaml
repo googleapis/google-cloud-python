@@ -17,6 +17,7 @@ libraries:
   - samples/README.txt
   - tar.gz
   - gapic_version.py
+  - .repo-metadata.json
   - samples/generated_samples/snippet_metadata_
   - scripts/client-post-processing
   remove_regex:
