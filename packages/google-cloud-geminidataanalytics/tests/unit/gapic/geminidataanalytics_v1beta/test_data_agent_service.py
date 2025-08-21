@@ -7063,6 +7063,36 @@ def test_create_data_agent_rest_call_success(request_type):
                                 "project_id": "project_id_value",
                                 "dataset_id": "dataset_id_value",
                                 "table_id": "table_id_value",
+                                "schema": {
+                                    "fields": [
+                                        {
+                                            "name": "name_value",
+                                            "type_": "type__value",
+                                            "description": "description_value",
+                                            "mode": "mode_value",
+                                            "synonyms": [
+                                                "synonyms_value1",
+                                                "synonyms_value2",
+                                            ],
+                                            "tags": ["tags_value1", "tags_value2"],
+                                            "display_name": "display_name_value",
+                                            "subfields": {},
+                                            "category": "category_value",
+                                            "value_format": "value_format_value",
+                                        }
+                                    ],
+                                    "description": "description_value",
+                                    "synonyms": ["synonyms_value1", "synonyms_value2"],
+                                    "tags": ["tags_value1", "tags_value2"],
+                                    "display_name": "display_name_value",
+                                    "filters": [
+                                        {
+                                            "field": "field_value",
+                                            "value": "value_value",
+                                            "type_": 1,
+                                        }
+                                    ],
+                                },
                             }
                         ]
                     },
@@ -7079,20 +7109,7 @@ def test_create_data_agent_rest_call_success(request_type):
                                 },
                                 "lookml_model": "lookml_model_value",
                                 "explore": "explore_value",
-                                "schema": {
-                                    "fields": [
-                                        {
-                                            "name": "name_value",
-                                            "type_": "type__value",
-                                            "description": "description_value",
-                                            "mode": "mode_value",
-                                            "display_name": "display_name_value",
-                                            "subfields": {},
-                                            "category": "category_value",
-                                        }
-                                    ],
-                                    "display_name": "display_name_value",
-                                },
+                                "schema": {},
                             }
                         ],
                         "credentials": {
@@ -7110,6 +7127,12 @@ def test_create_data_agent_rest_call_success(request_type):
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
                 },
+                "example_queries": [
+                    {
+                        "sql_query": "sql_query_value",
+                        "natural_language_question": "natural_language_question_value",
+                    }
+                ],
             },
             "published_context": {},
             "last_published_context": {},
@@ -7329,6 +7352,36 @@ def test_update_data_agent_rest_call_success(request_type):
                                 "project_id": "project_id_value",
                                 "dataset_id": "dataset_id_value",
                                 "table_id": "table_id_value",
+                                "schema": {
+                                    "fields": [
+                                        {
+                                            "name": "name_value",
+                                            "type_": "type__value",
+                                            "description": "description_value",
+                                            "mode": "mode_value",
+                                            "synonyms": [
+                                                "synonyms_value1",
+                                                "synonyms_value2",
+                                            ],
+                                            "tags": ["tags_value1", "tags_value2"],
+                                            "display_name": "display_name_value",
+                                            "subfields": {},
+                                            "category": "category_value",
+                                            "value_format": "value_format_value",
+                                        }
+                                    ],
+                                    "description": "description_value",
+                                    "synonyms": ["synonyms_value1", "synonyms_value2"],
+                                    "tags": ["tags_value1", "tags_value2"],
+                                    "display_name": "display_name_value",
+                                    "filters": [
+                                        {
+                                            "field": "field_value",
+                                            "value": "value_value",
+                                            "type_": 1,
+                                        }
+                                    ],
+                                },
                             }
                         ]
                     },
@@ -7345,20 +7398,7 @@ def test_update_data_agent_rest_call_success(request_type):
                                 },
                                 "lookml_model": "lookml_model_value",
                                 "explore": "explore_value",
-                                "schema": {
-                                    "fields": [
-                                        {
-                                            "name": "name_value",
-                                            "type_": "type__value",
-                                            "description": "description_value",
-                                            "mode": "mode_value",
-                                            "display_name": "display_name_value",
-                                            "subfields": {},
-                                            "category": "category_value",
-                                        }
-                                    ],
-                                    "display_name": "display_name_value",
-                                },
+                                "schema": {},
                             }
                         ],
                         "credentials": {
@@ -7376,6 +7416,12 @@ def test_update_data_agent_rest_call_success(request_type):
                     "chart": {"image": {"no_image": {}, "svg": {}}},
                     "analysis": {"python": {"enabled": True}},
                 },
+                "example_queries": [
+                    {
+                        "sql_query": "sql_query_value",
+                        "natural_language_question": "natural_language_question_value",
+                    }
+                ],
             },
             "published_context": {},
             "last_published_context": {},
