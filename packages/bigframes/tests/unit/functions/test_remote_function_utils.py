@@ -21,6 +21,25 @@ import pytest
 from bigframes.functions import _utils, function_typing
 
 
+@pytest.mark.parametrize(
+    ("input_location", "expected_bq_location", "expected_cf_region"),
+    [
+        (None, "us", "us-central1"),
+        ("us", "us", "us-central1"),
+        ("eu", "eu", "europe-west1"),
+        ("US-east4", "us-east4", "us-east4"),
+    ],
+)
+def test_get_remote_function_locations(
+    input_location, expected_bq_location, expected_cf_region
+):
+    """Tests getting remote function locations for various locations."""
+    bq_location, cf_region = _utils.get_remote_function_locations(input_location)
+
+    assert bq_location == expected_bq_location
+    assert cf_region == expected_cf_region
+
+
 def test_get_updated_package_requirements_no_extra_package():
     """Tests with no extra package."""
     result = _utils.get_updated_package_requirements(capture_references=False)
