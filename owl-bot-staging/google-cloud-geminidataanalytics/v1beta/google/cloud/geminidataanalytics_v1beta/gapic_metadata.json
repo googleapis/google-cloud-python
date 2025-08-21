@@ -1,0 +1,242 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.geminidataanalytics_v1beta",
+  "protoPackage": "google.cloud.geminidataanalytics.v1beta",
+  "schema": "1.0",
+  "services": {
+    "DataAgentService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataAgentServiceClient",
+          "rpcs": {
+            "CreateDataAgent": {
+              "methods": [
+                "create_data_agent"
+              ]
+            },
+            "DeleteDataAgent": {
+              "methods": [
+                "delete_data_agent"
+              ]
+            },
+            "GetDataAgent": {
+              "methods": [
+                "get_data_agent"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "ListAccessibleDataAgents": {
+              "methods": [
+                "list_accessible_data_agents"
+              ]
+            },
+            "ListDataAgents": {
+              "methods": [
+                "list_data_agents"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "UpdateDataAgent": {
+              "methods": [
+                "update_data_agent"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DataAgentServiceAsyncClient",
+          "rpcs": {
+            "CreateDataAgent": {
+              "methods": [
+                "create_data_agent"
+              ]
+            },
+            "DeleteDataAgent": {
+              "methods": [
+                "delete_data_agent"
+              ]
+            },
+            "GetDataAgent": {
+              "methods": [
+                "get_data_agent"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "ListAccessibleDataAgents": {
+              "methods": [
+                "list_accessible_data_agents"
+              ]
+            },
+            "ListDataAgents": {
+              "methods": [
+                "list_data_agents"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "UpdateDataAgent": {
+              "methods": [
+                "update_data_agent"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DataAgentServiceClient",
+          "rpcs": {
+            "CreateDataAgent": {
+              "methods": [
+                "create_data_agent"
+              ]
+            },
+            "DeleteDataAgent": {
+              "methods": [
+                "delete_data_agent"
+              ]
+            },
+            "GetDataAgent": {
+              "methods": [
+                "get_data_agent"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "ListAccessibleDataAgents": {
+              "methods": [
+                "list_accessible_data_agents"
+              ]
+            },
+            "ListDataAgents": {
+              "methods": [
+                "list_data_agents"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "UpdateDataAgent": {
+              "methods": [
+                "update_data_agent"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DataChatService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataChatServiceClient",
+          "rpcs": {
+            "Chat": {
+              "methods": [
+                "chat"
+              ]
+            },
+            "CreateConversation": {
+              "methods": [
+                "create_conversation"
+              ]
+            },
+            "GetConversation": {
+              "methods": [
+                "get_conversation"
+              ]
+            },
+            "ListConversations": {
+              "methods": [
+                "list_conversations"
+              ]
+            },
+            "ListMessages": {
+              "methods": [
+                "list_messages"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DataChatServiceAsyncClient",
+          "rpcs": {
+            "Chat": {
+              "methods": [
+                "chat"
+              ]
+            },
+            "CreateConversation": {
+              "methods": [
+                "create_conversation"
+              ]
+            },
+            "GetConversation": {
+              "methods": [
+                "get_conversation"
+              ]
+            },
+            "ListConversations": {
+              "methods": [
+                "list_conversations"
+              ]
+            },
+            "ListMessages": {
+              "methods": [
+                "list_messages"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DataChatServiceClient",
+          "rpcs": {
+            "Chat": {
+              "methods": [
+                "chat"
+              ]
+            },
+            "CreateConversation": {
+              "methods": [
+                "create_conversation"
+              ]
+            },
+            "GetConversation": {
+              "methods": [
+                "get_conversation"
+              ]
+            },
+            "ListConversations": {
+              "methods": [
+                "list_conversations"
+              ]
+            },
+            "ListMessages": {
+              "methods": [
+                "list_messages"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
