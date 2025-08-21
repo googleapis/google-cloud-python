@@ -263,11 +263,9 @@ if polars_installed:
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             # TODO: Filter out types that can't be coerced to right type
             assert isinstance(op, gen_ops.IsInOp)
-            if op.match_nulls or not any(map(pd.isna, op.values)):
-                # newer polars version have nulls_equal arg
-                return input.is_in(op.values)
-            else:
-                return input.is_in(op.values) or input.is_null()
+            assert not op.match_nulls  # should be stripped by a lowering step rn
+            values = pl.Series(op.values, strict=False)
+            return input.is_in(values)
 
         @compile_op.register(gen_ops.FillNaOp)
         @compile_op.register(gen_ops.CoalesceOp)

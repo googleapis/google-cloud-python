@@ -13,8 +13,10 @@
 # limitations under the License.
 
 import dataclasses
+from typing import cast
 
 import numpy as np
+import pandas as pd
 
 from bigframes import dtypes
 from bigframes.core import bigframe_node, expression
@@ -316,6 +318,35 @@ class LowerInvertOp(op_lowering.OpLoweringRule):
         return expr
 
 
+class LowerIsinOp(op_lowering.OpLoweringRule):
+    @property
+    def op(self) -> type[ops.ScalarOp]:
+        return generic_ops.IsInOp
+
+    def lower(self, expr: expression.OpExpression) -> expression.Expression:
+        assert isinstance(expr.op, generic_ops.IsInOp)
+        arg = expr.children[0]
+        new_values = []
+        match_nulls = False
+        for val in expr.op.values:
+            # coercible, non-coercible
+            # float NaN/inf should be treated as distinct from 'true' null values
+            if cast(bool, pd.isna(val)) and not isinstance(val, float):
+                if expr.op.match_nulls:
+                    match_nulls = True
+            elif dtypes.is_compatible(val, arg.output_type):
+                new_values.append(val)
+            else:
+                pass
+
+        new_isin = ops.IsInOp(tuple(new_values), match_nulls=False).as_expr(arg)
+        if match_nulls:
+            return ops.coalesce_op.as_expr(new_isin, expression.const(True))
+        else:
+            # polars propagates nulls, so need to coalesce to false
+            return ops.coalesce_op.as_expr(new_isin, expression.const(False))
+
+
 def _coerce_comparables(
     expr1: expression.Expression,
     expr2: expression.Expression,
@@ -414,6 +445,7 @@ POLARS_LOWERING_RULES = (
     LowerModRule(),
     LowerAsTypeRule(),
     LowerInvertOp(),
+    LowerIsinOp(),
 )
 
 

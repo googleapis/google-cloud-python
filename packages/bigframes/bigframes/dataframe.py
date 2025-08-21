@@ -2755,11 +2755,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                         False, label=label, dtype=pandas.BooleanDtype()
                     )
                     result_ids.append(result_id)
-            return DataFrame(block.select_columns(result_ids)).fillna(value=False)
+            return DataFrame(block.select_columns(result_ids))
         elif utils.is_list_like(values):
             return self._apply_unary_op(
                 ops.IsInOp(values=tuple(values), match_nulls=True)
-            ).fillna(value=False)
+            )
         else:
             raise TypeError(
                 "only list-like objects are allowed to be passed to "

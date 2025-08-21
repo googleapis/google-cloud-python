@@ -66,6 +66,7 @@ _COMPATIBLE_SCALAR_OPS = (
     generic_ops.FillNaOp,
     generic_ops.CaseWhenOp,
     generic_ops.InvertOp,
+    generic_ops.IsInOp,
     generic_ops.IsNullOp,
     generic_ops.NotNullOp,
 )

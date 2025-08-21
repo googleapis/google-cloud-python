@@ -390,3 +390,36 @@ def test_engines_invert_op(scalars_array_value: array_value.ArrayValue, engine):
     )
 
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+def test_engines_isin_op(scalars_array_value: array_value.ArrayValue, engine):
+    arr, col_ids = scalars_array_value.compute_values(
+        [
+            ops.IsInOp((1, 2, 3)).as_expr(expression.deref("int64_col")),
+            ops.IsInOp((None, 123456)).as_expr(expression.deref("int64_col")),
+            ops.IsInOp((None, 123456), match_nulls=False).as_expr(
+                expression.deref("int64_col")
+            ),
+            ops.IsInOp((1.0, 2.0, 3.0)).as_expr(expression.deref("int64_col")),
+            ops.IsInOp(("1.0", "2.0")).as_expr(expression.deref("int64_col")),
+            ops.IsInOp(("1.0", 2.5, 3)).as_expr(expression.deref("int64_col")),
+            ops.IsInOp(()).as_expr(expression.deref("int64_col")),
+            ops.IsInOp((1, 2, 3, None)).as_expr(expression.deref("float64_col")),
+        ]
+    )
+    new_names = (
+        "int in ints",
+        "int in ints w null",
+        "int in ints w null wo match nulls",
+        "int in floats",
+        "int in strings",
+        "int in mixed",
+        "int in empty",
+        "float in ints",
+    )
+    arr = arr.rename_columns(
+        {old_name: new_names[i] for i, old_name in enumerate(col_ids)}
+    )
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
