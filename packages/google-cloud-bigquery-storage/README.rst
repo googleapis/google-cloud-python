@@ -1,9 +1,9 @@
-Python Client for Google BigQuery Storage API
-=============================================
+Python Client for Google BigQuery Storage
+=========================================
 
 |stable| |pypi| |versions|
 
-`Google BigQuery Storage API`_: 
+`Google BigQuery Storage`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Google BigQuery Storage API
    :target: https://pypi.org/project/google-cloud-bigquery-storage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-storage.svg
    :target: https://pypi.org/project/google-cloud-bigquery-storage/
-.. _Google BigQuery Storage API: https://cloud.google.com/bigquery/docs/reference/storage/
+.. _Google BigQuery Storage: https://cloud.google.com/bigquery/docs/reference/storage/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerystorage/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/storage/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google BigQuery Storage API.`_
+3. `Enable the Google BigQuery Storage.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google BigQuery Storage API.:  https://cloud.google.com/bigquery/docs/reference/storage/
+.. _Enable the Google BigQuery Storage.:  https://cloud.google.com/bigquery/docs/reference/storage/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-bigquery-storage/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-storage/samples
 
 
 Supported Python Versions
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google BigQuery Storage API
+-  Read the `Client Library Documentation`_ for Google BigQuery Storage
    to see other available methods on the client.
--  Read the `Google BigQuery Storage API Product documentation`_ to learn
+-  Read the `Google BigQuery Storage Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google BigQuery Storage API Product documentation:  https://cloud.google.com/bigquery/docs/reference/storage/
+.. _Google BigQuery Storage Product documentation:  https://cloud.google.com/bigquery/docs/reference/storage/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

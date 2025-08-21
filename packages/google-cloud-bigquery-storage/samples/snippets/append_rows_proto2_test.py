@@ -17,9 +17,8 @@ import decimal
 import pathlib
 import random
 
-import pytest
-
 from google.cloud import bigquery
+import pytest
 
 from . import append_rows_proto2
 
