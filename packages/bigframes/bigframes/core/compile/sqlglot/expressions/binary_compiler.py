@@ -140,12 +140,35 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @BINARY_OP_REGISTRATION.register(ops.ge_op)
 def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    return sge.GTE(this=left.expr, expression=right.expr)
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+    return sge.GTE(this=left_expr, expression=right_expr)
+
+
+@BINARY_OP_REGISTRATION.register(ops.gt_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+    return sge.GT(this=left_expr, expression=right_expr)
 
 
 @BINARY_OP_REGISTRATION.register(ops.JSONSet)
 def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.func("JSON_SET", left.expr, sge.convert(op.json_path), right.expr)
+
+
+@BINARY_OP_REGISTRATION.register(ops.lt_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+    return sge.LT(this=left_expr, expression=right_expr)
+
+
+@BINARY_OP_REGISTRATION.register(ops.le_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+    return sge.LTE(this=left_expr, expression=right_expr)
 
 
 @BINARY_OP_REGISTRATION.register(ops.mul_op)
@@ -168,6 +191,11 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.NEQ(this=left_expr, expression=right_expr)
+
+
+@BINARY_OP_REGISTRATION.register(ops.obj_make_ref_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.func("OBJ.MAKE_REF", left.expr, right.expr)
 
 
 @BINARY_OP_REGISTRATION.register(ops.sub_op)
@@ -200,11 +228,6 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     raise TypeError(
         f"Cannot subtract type {left.dtype} and {right.dtype}. {bf_constants.FEEDBACK_LINK}"
     )
-
-
-@BINARY_OP_REGISTRATION.register(ops.obj_make_ref_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    return sge.func("OBJ.MAKE_REF", left.expr, right.expr)
 
 
 def _coerce_bool_to_int(typed_expr: TypedExpr) -> sge.Expression:
