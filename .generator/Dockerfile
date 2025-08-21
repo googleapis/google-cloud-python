@@ -179,4 +179,7 @@ rm -rf /tmp/synthtool
 COPY .generator/cli.py .
 RUN chmod a+rx ./cli.py
 
+RUN mkdir -p /.cache/bazelisk
+RUN chmod -R 777 /.cache
+
 ENTRYPOINT ["python3.9", "./cli.py"]
