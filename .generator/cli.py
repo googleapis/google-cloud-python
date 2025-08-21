@@ -294,6 +294,8 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     os.remove(f"{output}/{path_to_library}/CHANGELOG.md")
     os.remove(f"{output}/{path_to_library}/docs/CHANGELOG.md")
     os.remove(f"{output}/{path_to_library}/docs/README.rst")
+    # remove  `.repo-metadata.json` file to avoid ownership issues between
+    # the container and librarian. Instead, preserve this file in the destination.
     os.remove(f"{output}/{path_to_library}/.repo-metadata.json")
     for post_processing_file in glob.glob(
         f"{output}/{path_to_library}/scripts/client-post-processing/*.yaml"
