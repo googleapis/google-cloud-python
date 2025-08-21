@@ -18,9 +18,12 @@ from google.cloud.bigquery_storage import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery_storage_v1 import BigQueryReadClient
-from google.cloud.bigquery_storage_v1 import gapic_types as types
-from google.cloud.bigquery_storage_v1.reader import ReadRowsStream
+from google.cloud.bigquery_storage_v1.services.big_query_read.async_client import (
+    BigQueryReadAsyncClient,
+)
+from google.cloud.bigquery_storage_v1.services.big_query_read.client import (
+    BigQueryReadClient,
+)
 from google.cloud.bigquery_storage_v1.services.big_query_write.async_client import (
     BigQueryWriteAsyncClient,
 )
@@ -67,14 +70,12 @@ from google.cloud.bigquery_storage_v1.types.stream import (
     WriteStreamView,
 )
 from google.cloud.bigquery_storage_v1.types.table import TableFieldSchema, TableSchema
-from google.cloud.bigquery_storage_v1.writer import AppendRowsStream
 
 __all__ = (
     "BigQueryReadClient",
+    "BigQueryReadAsyncClient",
     "BigQueryWriteClient",
     "BigQueryWriteAsyncClient",
-    "__version__",
-    "types",
     "ArrowRecordBatch",
     "ArrowSchema",
     "ArrowSerializationOptions",
@@ -102,8 +103,6 @@ __all__ = (
     "StorageError",
     "StreamStats",
     "ThrottleState",
-    "AppendRowsStream",
-    "ReadRowsStream",
     "ReadSession",
     "ReadStream",
     "WriteStream",

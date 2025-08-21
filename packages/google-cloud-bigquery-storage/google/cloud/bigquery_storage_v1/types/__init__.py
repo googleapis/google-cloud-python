@@ -68,7 +68,6 @@ __all__ = (
     "StorageError",
     "StreamStats",
     "ThrottleState",
-    "DataFormat",
     "ReadSession",
     "ReadStream",
     "WriteStream",
