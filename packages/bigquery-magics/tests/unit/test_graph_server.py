@@ -27,7 +27,7 @@ import bigquery_magics.graph_server as graph_server
 
 alex_properties = {
     "birthday": "1991-12-21T08:00:00Z",
-    "id": 1,
+    "id": 7167971231403805684,
     "city": "Adelaide",
     "country": "Australia",
     "name": "Alex",
@@ -66,6 +66,44 @@ row_alex_owns_account = [
         "kind": "node",
         "labels": ["Account"],
         "properties": alex_account_properties,
+    },
+]
+
+row_alex_owns_account_converted = [
+    {
+        "identifier": "mUZpbkdyYXBoLlBlcnNvbgB4kQI=",
+        "kind": "node",
+        "labels": ["Person"],
+        "properties": {
+            "birthday": "1991-12-21T08:00:00Z",
+            "id": "7167971231403805684",
+            "city": "Adelaide",
+            "country": "Australia",
+            "name": "Alex",
+        },
+    },
+    {
+        "destination_node_identifier": "mUZpbkdyYXBoLkFjY291bnQAeJEO",
+        "identifier": "mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJECkQ6ZRmluR3JhcGguUGVyc29uAHiRAplGaW5HcmFwaC5BY2NvdW50AHiRDg==",
+        "kind": "edge",
+        "labels": ["Owns"],
+        "properties": {
+            "account_id": "7",
+            "create_time": "2020-01-10T14:22:20.222Z",
+            "id": "1",
+        },
+        "source_node_identifier": "mUZpbkdyYXBoLlBlcnNvbgB4kQI=",
+    },
+    {
+        "identifier": "mUZpbkdyYXBoLkFjY291bnQAeJEO",
+        "kind": "node",
+        "labels": ["Account"],
+        "properties": {
+            "create_time": "2020-01-10T14:22:20.222Z",
+            "id": "7",
+            "is_blocked": "False",
+            "nick_name": "Vacation Fund",
+        },
     },
 ]
 
@@ -113,6 +151,44 @@ row_lee_owns_account = [
     },
 ]
 
+row_lee_owns_account_converted = [
+    {
+        "identifier": "mUZpbkdyYXBoLlBlcnNvbgB4kQY=",
+        "kind": "node",
+        "labels": ["Person"],
+        "properties": {
+            "birthday": "1986-12-07T08:00:00Z",
+            "city": "Kollam",
+            "country": "India",
+            "id": "3",
+            "name": "Lee",
+        },
+    },
+    {
+        "destination_node_identifier": "mUZpbkdyYXBoLkFjY291bnQAeJEg",
+        "identifier": "mUZpbkdyYXBoLlBlcnNvbk93bkFjY291bnQAeJEGkSCZRmluR3JhcGguUGVyc29uAHiRBplGaW5HcmFwaC5BY2NvdW50AHiRIA==",
+        "kind": "edge",
+        "labels": ["Owns"],
+        "properties": {
+            "account_id": "16",
+            "create_time": "2020-02-18T13:44:20.655Z",
+            "id": "3",
+        },
+        "source_node_identifier": "mUZpbkdyYXBoLlBlcnNvbgB4kQY=",
+    },
+    {
+        "identifier": "mUZpbkdyYXBoLkFjY291bnQAeJEg",
+        "kind": "node",
+        "labels": ["Account"],
+        "properties": {
+            "create_time": "2020-01-28T01:55:09.206Z",
+            "id": "16",
+            "is_blocked": "True",
+            "nick_name": "Vacation Fund",
+        },
+    },
+]
+
 
 def _validate_nodes_and_edges(result):
     for edge in result["response"]["edges"]:
@@ -147,7 +223,7 @@ def test_convert_one_column_no_rows():
 @pytest.mark.skipif(
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
-def test_convert_one_column_one_row_one_column():
+def test_convert_one_column_one_row():
     result = graph_server.convert_graph_data(
         {
             "result": {
@@ -161,18 +237,20 @@ def test_convert_one_column_one_row_one_column():
 
     _validate_nodes_and_edges(result)
 
-    assert result["response"]["query_result"] == {"result": [row_alex_owns_account]}
+    assert result["response"]["query_result"] == {
+        "result": [row_alex_owns_account_converted]
+    }
     assert result["response"]["schema"] is None
 
 
 @pytest.mark.skipif(
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
-def test_convert_one_column_two_rows_one_column_null_json():
+def test_convert_one_column_two_rows_null_json():
     result = graph_server.convert_graph_data(
         {
             "result": {
-                "0": json.dumps(None),
+                "0": None,
                 "1": json.dumps(row_alex_owns_account),
             }
         }
@@ -185,7 +263,7 @@ def test_convert_one_column_two_rows_one_column_null_json():
     _validate_nodes_and_edges(result)
 
     assert result["response"]["query_result"] == {
-        "result": [None, row_alex_owns_account]
+        "result": ["NULL", row_alex_owns_account_converted]
     }
     assert result["response"]["schema"] is None
 
@@ -199,8 +277,8 @@ def test_convert_one_column_two_rows():
     result = graph_server.convert_graph_data(
         {
             "result": {
-                "0": json.dumps(row_alex_owns_account),
-                "1": json.dumps(row_lee_owns_account),
+                "0": json.dumps(row_alex_owns_account_converted),
+                "1": json.dumps(row_lee_owns_account_converted),
             }
         }
     )
@@ -211,7 +289,7 @@ def test_convert_one_column_two_rows():
     _validate_nodes_and_edges(result)
 
     assert result["response"]["query_result"] == {
-        "result": [row_alex_owns_account, row_lee_owns_account]
+        "result": [row_alex_owns_account_converted, row_lee_owns_account_converted]
     }
     assert result["response"]["schema"] is None
 
@@ -223,10 +301,10 @@ def test_convert_one_row_two_columns():
     result = graph_server.convert_graph_data(
         {
             "col1": {
-                "0": json.dumps(row_alex_owns_account),
+                "0": json.dumps(row_alex_owns_account_converted),
             },
             "col2": {
-                "0": json.dumps(row_lee_owns_account),
+                "0": json.dumps(row_lee_owns_account_converted),
             },
         }
     )
@@ -237,8 +315,8 @@ def test_convert_one_row_two_columns():
     _validate_nodes_and_edges(result)
 
     assert result["response"]["query_result"] == {
-        "col1": [row_alex_owns_account],
-        "col2": [row_lee_owns_account],
+        "col1": [row_alex_owns_account_converted],
+        "col2": [row_lee_owns_account_converted],
     }
     assert result["response"]["schema"] is None
 
@@ -260,7 +338,7 @@ def test_convert_nongraph_json():
     assert len(result["response"]["nodes"]) == 0
     assert len(result["response"]["edges"]) == 0
 
-    assert result["response"]["query_result"] == {"result": [{"foo": 1, "bar": 2}]}
+    assert result["response"]["query_result"] == {"result": [{"foo": "1", "bar": "2"}]}
     assert result["response"]["schema"] is None
 
 
@@ -308,7 +386,7 @@ def test_convert_inner_value_not_string():
     _validate_nodes_and_edges(result)
 
     assert result["response"]["query_result"] == {
-        "col1": [row_alex_owns_account],
+        "col1": [row_alex_owns_account_converted],
         "col2": ["12345"],
     }
     assert result["response"]["schema"] is None
@@ -412,7 +490,7 @@ class TestGraphServer(unittest.TestCase):
         _validate_nodes_and_edges(response.json())
 
         self.assertEqual(
-            response_data["query_result"], {"result": [row_alex_owns_account]}
+            response_data["query_result"], {"result": [row_alex_owns_account_converted]}
         )
         self.assertIsNone(response_data["schema"])
 

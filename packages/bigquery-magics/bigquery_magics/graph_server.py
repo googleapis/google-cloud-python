@@ -17,11 +17,41 @@ import http.server
 import json
 import socketserver
 import threading
-from typing import Dict, List
+from typing import Any, Dict, List
 
 
 def execute_node_expansion(params, request):
     return {"error": "Node expansion not yet implemented"}
+
+
+def _stringify_value(value: Any):
+    if value is None:
+        return "NULL"
+    return str(value)
+
+
+def _stringify_properties(d: Any) -> Any:
+    """
+    Recursively traverses a dictionary, converting all numeric values (int and float) to strings.
+
+    Args:
+        d: The dictionary to be traversed.
+
+    Returns:
+        A new dictionary with numeric values converted to strings.
+    """
+    if isinstance(d, dict):
+        new_dict = {}
+        for key, value in d.items():
+            new_dict[key] = _stringify_properties(value)
+        return new_dict
+    elif isinstance(d, list):
+        new_list = []
+        for item in d:
+            new_list.append(_stringify_properties(item))
+        return new_list
+    else:
+        return _stringify_value(d)
 
 
 def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
@@ -74,13 +104,16 @@ def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
             tabular_data[column_name] = []
             for value_key, value_value in column_value.items():
                 try:
-                    row_json = json.loads(value_value)
-                    data[column_name].append(row_json)
-                    tabular_data[column_name].append(row_json)
+                    raw_row_json = json.loads(value_value)
                 except (ValueError, TypeError):
                     # Non-JSON columns cannot be visualized, but we still want them
                     # in the tabular view.
-                    tabular_data[column_name].append(str(value_value))
+                    tabular_data[column_name].append(_stringify_value(value_value))
+                    continue
+                row_json = _stringify_properties(raw_row_json)
+
+                data[column_name].append(row_json)
+                tabular_data[column_name].append(row_json)
 
         nodes, edges = get_nodes_edges(data, fields, schema_json=None)
 
