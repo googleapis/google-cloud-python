@@ -32,9 +32,8 @@ steps:
       # Use a consistent, non-root UID/GID for automated builds.
       - '--build-arg=UID=1000'
       - '--build-arg=GID=1000'
-
-# The 'images' section is no longer needed because Kaniko pushes the image itself.
-
+images:
+  - 'us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-dev/python-librarian-generator'
 options:
   logging: CLOUD_LOGGING_ONLY
   machineType: E2_HIGHCPU_32
