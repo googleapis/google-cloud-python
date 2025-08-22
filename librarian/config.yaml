@@ -7,7 +7,7 @@ global_files_allowlist:
   # Allow the container to read and write all `snippet_metdata_*.json`
   # files during the `release` step to update the client library
   # version.
-  - path: "snippet_metadata_*.json"
+  - path: "google-cloud-language.snippet_metadata_google.language.v1.json"
     permissions: "read-write"
   # Allow the container to read and write all `CHANGELOG.md`
   # files during the `release` step to add new release notes.
