@@ -21,3 +21,4 @@ libraries:
   - scripts/client-post-processing
   remove_regex:
   - ^packages/google-cloud-language
+  tag_format: "{id}-v{version}"
