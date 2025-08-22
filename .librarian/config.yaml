@@ -2,12 +2,12 @@ global_files_allowlist:
   # Allow the container to read and write all `gapic_version.py`
   # files during the `release` step to update the client library
   # version.
-  - path: "gapic_verssion.py"
+  - path: "packages/google-cloud-language/google/cloud/language_v1/gapic_version.py"
     permissions: "read-write"
   # Allow the container to read and write all `snippet_metdata_*.json`
   # files during the `release` step to update the client library
   # version.
-  - path: "google-cloud-language.snippet_metadata_google.language.v1.json"
+  - path: "packages/google-cloud-language/samples/generated_samples/snippet_metadata_google.cloud.language.v1.json"
     permissions: "read-write"
   # Allow the container to read and write all `CHANGELOG.md`
   # files during the `release` step to add new release notes.
