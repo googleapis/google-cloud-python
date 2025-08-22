@@ -22,6 +22,7 @@ import pytest
 
 from cli import (
     GENERATE_REQUEST_FILE,
+    BUILD_REQUEST_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
     _build_bazel_target,
@@ -45,6 +46,26 @@ def mock_generate_request_file(tmp_path, monkeypatch):
     """Creates the mock request file at the correct path inside a temp dir."""
     # Create the path as expected by the script: .librarian/generate-request.json
     request_path = f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir()
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_content = {
+        "id": "google-cloud-language",
+        "apis": [{"path": "google/cloud/language/v1"}],
+    }
+    request_file.write_text(json.dumps(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
+
+
+@pytest.fixture
+def mock_build_request_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/build-request.json
+    request_path = f"{LIBRARIAN_DIR}/{BUILD_REQUEST_FILE}"
     request_dir = tmp_path / os.path.dirname(request_path)
     request_dir.mkdir()
     request_file = request_dir / os.path.basename(request_path)
@@ -298,14 +319,15 @@ def test_run_individual_session_success(mocker, caplog):
 
     test_session = "unit-3.9"
     test_library_id = "test-library"
-    _run_individual_session(test_session, test_library_id)
+    repo = "repo"
+    _run_individual_session(test_session, test_library_id, repo)
 
     expected_command = [
         "nox",
         "-s",
         test_session,
         "-f",
-        f"{REPO_DIR}/packages/{test_library_id}",
+        f"{REPO_DIR}/packages/{test_library_id}/noxfile.py",
     ]
     mock_subprocess_run.assert_called_once_with(expected_command, text=True, check=True)
 
@@ -320,23 +342,25 @@ def test_run_individual_session_failure(mocker):
     )
 
     with pytest.raises(subprocess.CalledProcessError):
-        _run_individual_session("lint", "another-library")
+        _run_individual_session("lint", "another-library", "repo")
 
 
-def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
+def test_run_nox_sessions_success(
+    mocker, mock_generate_request_data_for_nox, mock_build_request_file
+):
     """Tests that _run_nox_sessions successfully runs all specified sessions."""
     mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
     mocker.patch("cli._get_library_id", return_value="mock-library")
     mock_run_individual_session = mocker.patch("cli._run_individual_session")
 
     sessions_to_run = ["unit-3.9", "lint"]
-    _run_nox_sessions(sessions_to_run, "librarian")
+    _run_nox_sessions(sessions_to_run, "librarian", "repo")
 
     assert mock_run_individual_session.call_count == len(sessions_to_run)
     mock_run_individual_session.assert_has_calls(
         [
-            mocker.call("unit-3.9", "mock-library"),
-            mocker.call("lint", "mock-library"),
+            mocker.call("unit-3.9", "mock-library", "repo"),
+            mocker.call("lint", "mock-library", "repo"),
         ]
     )
 
@@ -346,7 +370,7 @@ def test_run_nox_sessions_read_file_failure(mocker):
     mocker.patch("cli._read_json_file", side_effect=FileNotFoundError("file not found"))
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"], "librarian")
+        _run_nox_sessions(["unit-3.9"], "librarian", "repo")
 
 
 def test_run_nox_sessions_get_library_id_failure(mocker):
@@ -358,7 +382,7 @@ def test_run_nox_sessions_get_library_id_failure(mocker):
     )
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"], "librarian")
+        _run_nox_sessions(["unit-3.9"], "librarian", "repo")
 
 
 def test_run_nox_sessions_individual_session_failure(
@@ -374,7 +398,7 @@ def test_run_nox_sessions_individual_session_failure(
 
     sessions_to_run = ["unit-3.9", "lint"]
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(sessions_to_run, "librarian")
+        _run_nox_sessions(sessions_to_run, "librarian", "repo")
 
     # Check that _run_individual_session was called at least once
     assert mock_run_individual_session.call_count > 0
@@ -416,11 +440,12 @@ def test_invalid_json(mocker):
     with pytest.raises(json.JSONDecodeError):
         _read_json_file("fake/path.json")
 
+
 def test_copy_files_needed_for_post_processing_success(mocker):
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
-    _copy_files_needed_for_post_processing('output', 'input', 'library_id')
-    
+    _copy_files_needed_for_post_processing("output", "input", "library_id")
+
     mock_makedirs.assert_called()
     mock_shutil_copy.assert_called_once()
 
@@ -428,4 +453,4 @@ def test_copy_files_needed_for_post_processing_success(mocker):
 def test_clean_up_files_after_post_processing_success(mocker):
     mock_shutil_rmtree = mocker.patch("shutil.rmtree")
     mock_os_remove = mocker.patch("os.remove")
-    _clean_up_files_after_post_processing('output', 'library_id')
+    _clean_up_files_after_post_processing("output", "library_id")
