@@ -2933,7 +2933,7 @@ def test_remote_function_df_where_series(session, dataset_id, scalars_dfs):
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_remote_function_series_where(session, dataset_id, scalars_dfs):
+def test_remote_function_series_where_mask(session, dataset_id, scalars_dfs):
     try:
 
         def _ten_times(x):
@@ -2954,14 +2954,24 @@ def test_remote_function_series_where(session, dataset_id, scalars_dfs):
         pd_int64 = scalars_pandas["float64_col"]
         pd_int64_filtered = pd_int64.dropna()
 
-        # The cond is not a callable and the other is a callable (remote
-        # function) in series.where method.
+        # Test series.where method: the cond is not a callable and the other is
+        # a callable (remote function).
         bf_result = bf_int64_filtered.where(
             cond=bf_int64_filtered < 0, other=ten_times_mf
         ).to_pandas()
         pd_result = pd_int64_filtered.where(
             cond=pd_int64_filtered < 0, other=_ten_times
         )
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+        # Test series.mask method: the cond is not a callable and the other is
+        # a callable (remote function).
+        bf_result = bf_int64_filtered.mask(
+            cond=bf_int64_filtered < 0, other=ten_times_mf
+        ).to_pandas()
+        pd_result = pd_int64_filtered.mask(cond=pd_int64_filtered < 0, other=_ten_times)
 
         # Ignore any dtype difference.
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)

@@ -2113,13 +2113,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
 
     def mask(self, cond, other=None) -> Series:
-        if callable(cond):
-            if hasattr(cond, "bigframes_bigquery_function"):
-                cond = self.apply(cond)
-            else:
-                # For non-BigQuery function assume that it is applicable on Series
-                cond = self.apply(cond, by_row=False)
-
+        cond = self._apply_callable(cond)
+        other = self._apply_callable(other)
         if not isinstance(cond, Series):
             raise TypeError(
                 f"Only bigframes series condition is supported, received {type(cond).__name__}. "

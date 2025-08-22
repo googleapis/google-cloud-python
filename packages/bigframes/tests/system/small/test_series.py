@@ -3603,6 +3603,26 @@ def test_mask_custom_value(scalars_dfs):
     assert_pandas_df_equal(bf_result, pd_result)
 
 
+def test_mask_with_callable(scalars_df_index, scalars_pandas_df_index):
+    def _ten_times(x):
+        return x * 10
+
+    # Both cond and other are callable.
+    bf_result = (
+        scalars_df_index["int64_col"]
+        .mask(cond=lambda x: x > 0, other=_ten_times)
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_index["int64_col"].mask(
+        cond=lambda x: x > 0, other=_ten_times
+    )
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
 @pytest.mark.parametrize(
     ("lambda_",),
     [
