@@ -117,6 +117,8 @@ class DocumentSchema(proto.Message):
                     Occurrence type limits the number of
                     instances an entity type appears in the
                     document.
+                method (google.cloud.documentai_v1.types.DocumentSchema.EntityType.Property.Method):
+                    Specifies how the entity's value is obtained.
             """
 
             class OccurrenceType(proto.Enum):
@@ -154,6 +156,25 @@ class DocumentSchema(proto.Message):
                 REQUIRED_ONCE = 3
                 REQUIRED_MULTIPLE = 4
 
+            class Method(proto.Enum):
+                r"""Specifies how the entity's value is obtained from the
+                document.
+
+                Values:
+                    METHOD_UNSPECIFIED (0):
+                        Unspecified method. It defaults to ``EXTRACT``.
+                    EXTRACT (1):
+                        The entity's value is directly extracted
+                        as-is from the document text.
+                    DERIVE (2):
+                        The entity's value is derived through
+                        inference and is not necessarily an exact text
+                        extraction from the document.
+                """
+                METHOD_UNSPECIFIED = 0
+                EXTRACT = 1
+                DERIVE = 2
+
             name: str = proto.Field(
                 proto.STRING,
                 number=1,
@@ -172,6 +193,11 @@ class DocumentSchema(proto.Message):
                     number=3,
                     enum="DocumentSchema.EntityType.Property.OccurrenceType",
                 )
+            )
+            method: "DocumentSchema.EntityType.Property.Method" = proto.Field(
+                proto.ENUM,
+                number=8,
+                enum="DocumentSchema.EntityType.Property.Method",
             )
 
         enum_values: "DocumentSchema.EntityType.EnumValues" = proto.Field(

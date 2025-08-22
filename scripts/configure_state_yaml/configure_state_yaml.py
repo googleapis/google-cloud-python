@@ -44,7 +44,7 @@ def configure_state_yaml() -> None:
     with open(PACKAGES_TO_ONBOARD_YAML, "r") as packages_to_onboard_yaml_file:
         packages_to_onboard = yaml.safe_load(packages_to_onboard_yaml_file)
 
-    state_dict["image"] = "python-librarian-generator:latest"
+    state_dict["image"] = "us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-dev/python-librarian-generator:latest"
     state_dict["libraries"] = []
     for package_name in packages_to_onboard["packages_to_onboard"]:
         package_path = Path(PACKAGES_DIR / package_name).resolve()

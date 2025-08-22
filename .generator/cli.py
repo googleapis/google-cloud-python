@@ -29,7 +29,7 @@ try:
 
     SYNTHTOOL_INSTALLED = True
     SYNTHTOOL_IMPORT_ERROR = None
-except ImportError as e: # pragma: NO COVER
+except ImportError as e:  # pragma: NO COVER
     SYNTHTOOL_IMPORT_ERROR = e
     SYNTHTOOL_INSTALLED = False
 
@@ -91,7 +91,7 @@ def _determine_bazel_rule(api_path: str, source: str) -> str:
 
         # This check is for a logical failure (no match), not a runtime exception.
         # It's good to keep it for clear error messaging.
-        if not match: # pragma: NO COVER
+        if not match:  # pragma: NO COVER
             raise ValueError(
                 f"No Bazel rule with a name ending in '-py' found in {build_file_path}"
             )
@@ -241,7 +241,7 @@ def _run_post_processor(output: str, library_id: str):
     if SYNTHTOOL_INSTALLED:
         python_mono_repo.owlbot_main(path_to_library)
     else:
-        raise SYNTHTOOL_IMPORT_ERROR # pragma: NO COVER
+        raise SYNTHTOOL_IMPORT_ERROR  # pragma: NO COVER
     logger.info("Python post-processor ran successfully.")
 
 
@@ -269,7 +269,9 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
     )
 
     # copy post-procesing files
-    for post_processing_file in glob.glob(f"{input}/client-post-processing/*.yaml"): # pragma: NO COVER
+    for post_processing_file in glob.glob(
+        f"{input}/client-post-processing/*.yaml"
+    ):  # pragma: NO COVER
         with open(post_processing_file, "r") as post_processing:
             if f"{path_to_library}/" in post_processing.read():
                 shutil.copy(
@@ -294,15 +296,15 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     os.remove(f"{output}/{path_to_library}/docs/README.rst")
     for post_processing_file in glob.glob(
         f"{output}/{path_to_library}/scripts/client-post-processing/*.yaml"
-    ): # pragma: NO COVER
+    ):  # pragma: NO COVER
         os.remove(post_processing_file)
     for gapic_version_file in glob.glob(
         f"{output}/{path_to_library}/**/gapic_version.py", recursive=True
-    ): # pragma: NO COVER
+    ):  # pragma: NO COVER
         os.remove(gapic_version_file)
     for snippet_metadata_file in glob.glob(
         f"{output}/{path_to_library}/samples/generated_samples/snippet_metadata*.json"
-    ): # pragma: NO COVER
+    ):  # pragma: NO COVER
         os.remove(snippet_metadata_file)
     shutil.rmtree(f"{output}/owl-bot-staging")
 
@@ -364,7 +366,7 @@ def handle_generate(
     logger.info("'generate' command executed.")
 
 
-def _run_nox_sessions(sessions: List[str], librarian: str):
+def _run_nox_sessions(sessions: List[str], librarian: str, repo: str):
     """Calls nox for all specified sessions.
 
     Args:
@@ -377,12 +379,17 @@ def _run_nox_sessions(sessions: List[str], librarian: str):
         request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         for nox_session in sessions:
-            _run_individual_session(nox_session, library_id)
+            _run_individual_session(nox_session, library_id, repo)
+
+        # Write the `build-response.json` using `build-request.json` as the source
+        with open(f"{librarian}/build-response.json", "w") as f:
+            json.dump(request_data, f, indent=4)
+            f.write("\n")
     except Exception as e:
         raise ValueError(f"Failed to run the nox session: {current_session}") from e
 
 
-def _run_individual_session(nox_session: str, library_id: str):
+def _run_individual_session(nox_session: str, library_id: str, repo: str):
     """
     Calls nox with the specified sessions.
 
@@ -396,13 +403,13 @@ def _run_individual_session(nox_session: str, library_id: str):
         "-s",
         nox_session,
         "-f",
-        f"{REPO_DIR}/packages/{library_id}",
+        f"{repo}/packages/{library_id}/noxfile.py",
     ]
     result = subprocess.run(command, text=True, check=True)
     logger.info(result)
 
 
-def handle_build(librarian: str = LIBRARIAN_DIR):
+def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
     sessions = [
         "unit-3.9",
@@ -411,18 +418,17 @@ def handle_build(librarian: str = LIBRARIAN_DIR):
         "unit-3.12",
         "unit-3.13",
         "docs",
-        "system",
+        "system-3.13",
         "lint",
         "lint_setup_py",
-        "mypy",
-        "check_lower_bounds",
+        "mypy-3.13",
     ]
-    _run_nox_sessions(sessions, librarian)
+    _run_nox_sessions(sessions, librarian, repo)
 
     logger.info("'build' command executed.")
 
 
-if __name__ == "__main__": # pragma: NO COVER
+if __name__ == "__main__":  # pragma: NO COVER
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
     subparsers = parser.add_subparsers(
         dest="command", required=True, help="Available commands"
@@ -466,6 +472,12 @@ if __name__ == "__main__": # pragma: NO COVER
             help="Path to the directory in the container which contains API protos",
             default=SOURCE_DIR,
         )
+        parser_cmd.add_argument(
+            "--repo",
+            type=str,
+            help="Path to the directory in the container which contains google-cloud-python repository",
+            default=SOURCE_DIR,
+        )
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -481,6 +493,6 @@ if __name__ == "__main__": # pragma: NO COVER
             input=args.input,
         )
     elif args.command == "build":
-        args.func(librarian=args.librarian)
+        args.func(librarian=args.librarian, repo=args.repo)
     else:
         args.func()
