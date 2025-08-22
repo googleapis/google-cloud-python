@@ -35,13 +35,15 @@ except ImportError as e:  # pragma: NO COVER
 
 logger = logging.getLogger()
 
-LIBRARIAN_DIR = "librarian"
-GENERATE_REQUEST_FILE = "generate-request.json"
-INPUT_DIR = "input"
 BUILD_REQUEST_FILE = "build-request.json"
-SOURCE_DIR = "source"
+GENERATE_REQUEST_FILE = "generate-request.json"
+RELEASE_INIT_REQUEST_FILE = "release-init-request.json"
+
+INPUT_DIR = "input"
+LIBRARIAN_DIR = "librarian"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
+SOURCE_DIR = "source"
 
 
 def _read_json_file(path: str) -> Dict:
@@ -428,26 +430,56 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     logger.info("'build' command executed.")
 
 
+def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
+    """ Note the request data may have multiple libraries in it. Locate all 
+    libraries which should be prepared for release. This can be done by
+    checking whether the `release_triggered` field is `true`.
+
+    Args:
+        library_entries(Dict): Dictionary containing all of the libraries
+        present in the repository.
+    
+    Returns:
+        List[dict]: List of all libraries which should be prepared for release,
+        along with the corresponding information for the release.
+    """
+    return [library for library in library_entries["libraries"] if library.get("release_triggered")]
 
 def handle_release_init(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR):
     """The main coordinator for the release process.
 
-    This function prepares for the release of a client library by reading a
-    `librarian/release-request.json` file, determining the necessary Bazel rule for each API, and
-    (in future steps) executing the build.
+    This function prepares for the release of client libraries by reading a
+    `librarian/release-init-request.json` file. The primary responsibility is
+    to update all required files with the new version and commit information
+    for libraries that have the `release_triggered` field set to `true`.
 
     See https://github.com/googleapis/librarian/blob/main/doc/container-contract.md#generate-container-command
 
     Args:
         librarian(str): Path to the directory in the container which contains
-            the librarian configuration.
-        source(str): Path to the directory in the container which contains
-            API protos.
-        output(str): Path to the directory in the container where code
-            should be generated.
-        input(str): The path to the directory in the container
-            which contains additional generator input.
+            the `release-init-request.json` file
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+        output(str): Path to the directory in the container where modified
+            code should be placed.
     """
+
+    try:
+        # Read a release-init-request.json file
+        request_data = _read_json_file(f"{librarian}/{RELEASE_INIT_REQUEST_FILE}")
+        libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(request_data)
+        for library_release_data in libraries_to_prep_for_release:
+            print(library_release_data)
+            break
+
+        # Replace gapic_version.py
+        # Replace the version in snippet metadata
+        
+
+
+    except Exception as e:
+        raise ValueError("Release init failed.") from e
     pass
 
 if __name__ == "__main__":  # pragma: NO COVER
