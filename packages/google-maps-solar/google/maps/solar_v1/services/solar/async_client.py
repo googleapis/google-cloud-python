@@ -289,9 +289,9 @@ class SolarAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> solar_service.BuildingInsights:
-        r"""Locates the closest building to a query point. Returns an error
-        with code ``NOT_FOUND`` if there are no buildings within
-        approximately 50m of the query point.
+        r"""Locates the building whose centroid is closest to a query point.
+        Returns an error with code ``NOT_FOUND`` if there are no
+        buildings within approximately 50m of the query point.
 
         .. code-block:: python
 

@@ -39,8 +39,8 @@ def partition(
 class solarCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'find_closest_building_insights': ('location', 'required_quality', 'exact_quality_required', ),
-        'get_data_layers': ('location', 'radius_meters', 'view', 'required_quality', 'pixel_size_meters', 'exact_quality_required', ),
+        'find_closest_building_insights': ('location', 'required_quality', 'exact_quality_required', 'experiments', ),
+        'get_data_layers': ('location', 'radius_meters', 'view', 'required_quality', 'pixel_size_meters', 'exact_quality_required', 'experiments', ),
         'get_geo_tiff': ('id', ),
     }
 
