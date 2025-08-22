@@ -2762,12 +2762,21 @@ class Test_Blob(unittest.TestCase):
         metadata=None,
         mtls=False,
         retry=None,
+        crc32c_checksum=None,
     ):
         from google.cloud.storage._media.requests import ResumableUpload
         from google.cloud.storage.blob import _DEFAULT_CHUNKSIZE
 
         bucket = _Bucket(name="whammy", user_project=user_project)
-        blob = self._make_one("blob-name", bucket=bucket, kms_key_name=kms_key_name)
+        if crc32c_checksum is None:
+            blob = self._make_one("blob-name", bucket=bucket, kms_key_name=kms_key_name)
+        else:
+            blob = self._make_one(
+                "blob-name",
+                bucket=bucket,
+                kms_key_name=kms_key_name,
+                crc32c_checksum=crc32c_checksum,
+            )
         if metadata:
             self.assertIsNone(blob.metadata)
             blob._properties["metadata"] = metadata
@@ -2919,6 +2928,10 @@ class Test_Blob(unittest.TestCase):
         else:
             # Check the mocks.
             blob._get_writable_metadata.assert_called_once_with()
+
+        if "crc32c" in blob._properties:
+            object_metadata["crc32c"] = blob._properties["crc32c"]
+
         payload = json.dumps(object_metadata).encode("utf-8")
 
         with patch.object(
@@ -2944,6 +2957,17 @@ class Test_Blob(unittest.TestCase):
 
     def test__initiate_resumable_upload_with_metadata(self):
         self._initiate_resumable_helper(metadata={"test": "test"})
+
+    def test__initiate_resumable_upload_with_user_provided_checksum(self):
+        self._initiate_resumable_helper(
+            crc32c_checksum="this-is-a-fake-checksum-for-unit-tests",
+        )
+
+    def test__initiate_resumable_upload_w_metadata_and_user_provided_checksum(self):
+        self._initiate_resumable_helper(
+            crc32c_checksum="test-checksum",
+            metadata={"my-fav-key": "my-fav-value"},
+        )
 
     def test__initiate_resumable_upload_with_custom_timeout(self):
         self._initiate_resumable_helper(timeout=9.58)

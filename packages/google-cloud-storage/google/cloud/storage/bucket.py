@@ -386,7 +386,10 @@ class LifecycleRuleSetStorageClass(dict):
     def __init__(self, storage_class, **kw):
         conditions = LifecycleRuleConditions(**kw)
         rule = {
-            "action": {"type": "SetStorageClass", "storageClass": storage_class},
+            "action": {
+                "type": "SetStorageClass",
+                "storageClass": storage_class,
+            },
             "condition": dict(conditions),
         }
         super().__init__(rule)
@@ -846,6 +849,7 @@ class Bucket(_PropertyMixin):
         encryption_key=None,
         kms_key_name=None,
         generation=None,
+        crc32c_checksum=None,
     ):
         """Factory constructor for blob object.
 
@@ -873,6 +877,14 @@ class Bucket(_PropertyMixin):
         :param generation: (Optional) If present, selects a specific revision of
                            this object.
 
+        :type crc32c_checksum: str
+        :param crc32c_checksum:
+            (Optional) If set, the CRC32C checksum of the blob's content.
+            CRC32c checksum, as described in RFC 4960, Appendix B; encoded using
+            base64 in big-endian byte order. See
+            Apenndix B: https://datatracker.ietf.org/doc/html/rfc4960#appendix-B
+            base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
@@ -883,6 +895,7 @@ class Bucket(_PropertyMixin):
             encryption_key=encryption_key,
             kms_key_name=kms_key_name,
             generation=generation,
+            crc32c_checksum=crc32c_checksum,
         )
 
     def notification(
@@ -3253,7 +3266,10 @@ class Bucket(_PropertyMixin):
         :type not_found_page: str
         :param not_found_page: The file to use when a page isn't found.
         """
-        data = {"mainPageSuffix": main_page_suffix, "notFoundPage": not_found_page}
+        data = {
+            "mainPageSuffix": main_page_suffix,
+            "notFoundPage": not_found_page,
+        }
         self._patch_property("website", data)
 
     def disable_website(self):
@@ -3385,7 +3401,11 @@ class Bucket(_PropertyMixin):
             return Policy.from_api_repr(info)
 
     def test_iam_permissions(
-        self, permissions, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY
+        self,
+        permissions,
+        client=None,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY,
     ):
         """API call:  test permissions
 

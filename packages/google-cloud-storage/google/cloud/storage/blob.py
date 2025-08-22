@@ -14,8 +14,7 @@
 
 # pylint: disable=too-many-lines
 
-"""Create / interact with Google Cloud Storage blobs.
-"""
+"""Create / interact with Google Cloud Storage blobs."""
 
 import base64
 import copy
@@ -142,8 +141,8 @@ _GS_URL_REGEX_PATTERN = re.compile(
     r"(?P<scheme>gs)://(?P<bucket_name>[a-z0-9_.-]+)/(?P<object_name>.+)"
 )
 
-_DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
-_MAX_MULTIPART_SIZE = 8388608  # 8 MB
+_DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MiB
+_MAX_MULTIPART_SIZE = 8388608  # 8 MiB
 
 _logger = logging.getLogger(__name__)
 
@@ -181,6 +180,14 @@ class Blob(_PropertyMixin):
     :type generation: long
     :param generation:
         (Optional) If present, selects a specific revision of this object.
+
+    :type crc32c_checksum: str
+    :param crc32c_checksum:
+            (Optional) If set, the CRC32C checksum of the blob's content.
+            CRC32c checksum, as described in RFC 4960, Appendix B; encoded using
+            base64 in big-endian byte order. See
+            Apenndix B: https://datatracker.ietf.org/doc/html/rfc4960#appendix-B
+            base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -214,6 +221,7 @@ class Blob(_PropertyMixin):
         encryption_key=None,
         kms_key_name=None,
         generation=None,
+        crc32c_checksum=None,
     ):
         """
         property :attr:`name`
@@ -236,6 +244,9 @@ class Blob(_PropertyMixin):
 
         if generation is not None:
             self._properties["generation"] = generation
+
+        if crc32c_checksum is not None:
+            self._properties["crc32c"] = crc32c_checksum
 
     @property
     def bucket(self):
@@ -1643,7 +1654,9 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         warnings.warn(
-            _DOWNLOAD_AS_STRING_DEPRECATED, PendingDeprecationWarning, stacklevel=2
+            _DOWNLOAD_AS_STRING_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
         )
         with create_trace_span(name="Storage.Blob.downloadAsString"):
             return self.download_as_bytes(
@@ -1999,12 +2012,18 @@ class Blob(_PropertyMixin):
         transport = self._get_transport(client)
         if "metadata" in self._properties and "metadata" not in self._changes:
             self._changes.add("metadata")
+
         info = self._get_upload_arguments(client, content_type, command=command)
         headers, object_metadata, content_type = info
 
+        if "crc32c" in self._properties:
+            object_metadata["crc32c"] = self._properties["crc32c"]
+
         hostname = _get_host_name(client._connection)
         base_url = _MULTIPART_URL_TEMPLATE.format(
-            hostname=hostname, bucket_path=self.bucket.path, api_version=_API_VERSION
+            hostname=hostname,
+            bucket_path=self.bucket.path,
+            api_version=_API_VERSION,
         )
         name_value_pairs = []
 
@@ -2195,9 +2214,14 @@ class Blob(_PropertyMixin):
         if extra_headers is not None:
             headers.update(extra_headers)
 
+        if "crc32c" in self._properties:
+            object_metadata["crc32c"] = self._properties["crc32c"]
+
         hostname = _get_host_name(client._connection)
         base_url = _RESUMABLE_URL_TEMPLATE.format(
-            hostname=hostname, bucket_path=self.bucket.path, api_version=_API_VERSION
+            hostname=hostname,
+            bucket_path=self.bucket.path,
+            api_version=_API_VERSION,
         )
         name_value_pairs = []
 
@@ -2234,7 +2258,11 @@ class Blob(_PropertyMixin):
 
         upload_url = _add_query_parameters(base_url, name_value_pairs)
         upload = ResumableUpload(
-            upload_url, chunk_size, headers=headers, checksum=checksum, retry=retry
+            upload_url,
+            chunk_size,
+            headers=headers,
+            checksum=checksum,
+            retry=retry,
         )
 
         upload.initiate(
@@ -3426,7 +3454,11 @@ class Blob(_PropertyMixin):
             return Policy.from_api_repr(info)
 
     def test_iam_permissions(
-        self, permissions, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY
+        self,
+        permissions,
+        client=None,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY,
     ):
         """API call:  test permissions
 
@@ -3693,7 +3725,10 @@ class Blob(_PropertyMixin):
 
             source_objects = []
             for source, source_generation in zip(sources, if_source_generation_match):
-                source_object = {"name": source.name, "generation": source.generation}
+                source_object = {
+                    "name": source.name,
+                    "generation": source.generation,
+                }
 
                 preconditions = {}
                 if source_generation is not None:
@@ -4154,7 +4189,10 @@ class Blob(_PropertyMixin):
                         "encoding, errors and newline arguments are for text mode only"
                     )
                 return BlobWriter(
-                    self, chunk_size=chunk_size, ignore_flush=ignore_flush, **kwargs
+                    self,
+                    chunk_size=chunk_size,
+                    ignore_flush=ignore_flush,
+                    **kwargs,
                 )
             elif mode in ("r", "rt"):
                 if ignore_flush:

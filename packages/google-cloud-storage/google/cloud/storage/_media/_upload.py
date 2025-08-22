@@ -411,7 +411,12 @@ class ResumableUpload(UploadBase):
     """
 
     def __init__(
-        self, upload_url, chunk_size, checksum="auto", headers=None, retry=DEFAULT_RETRY
+        self,
+        upload_url,
+        chunk_size,
+        checksum="auto",
+        headers=None,
+        retry=DEFAULT_RETRY,
     ):
         super(ResumableUpload, self).__init__(upload_url, headers=headers, retry=retry)
         if chunk_size % UPLOAD_CHUNK_SIZE != 0:
@@ -472,7 +477,12 @@ class ResumableUpload(UploadBase):
         return self._total_bytes
 
     def _prepare_initiate_request(
-        self, stream, metadata, content_type, total_bytes=None, stream_final=True
+        self,
+        stream,
+        metadata,
+        content_type,
+        total_bytes=None,
+        stream_final=True,
     ):
         """Prepare the contents of HTTP request to initiate upload.
 
@@ -955,7 +965,12 @@ class XMLMPUContainer(UploadBase):
     """
 
     def __init__(
-        self, upload_url, filename, headers=None, upload_id=None, retry=DEFAULT_RETRY
+        self,
+        upload_url,
+        filename,
+        headers=None,
+        upload_id=None,
+        retry=DEFAULT_RETRY,
     ):
         super().__init__(upload_url, headers=headers, retry=retry)
         self._filename = filename

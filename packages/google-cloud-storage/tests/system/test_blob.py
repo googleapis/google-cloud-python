@@ -39,6 +39,40 @@ def _check_blob_hash(blob, info):
     assert md5_hash == info["hash"]
 
 
+def test_large_file_write_from_stream_w_user_provided_checksum(
+    shared_bucket,
+    blobs_to_delete,
+    file_data,
+    service_account,
+):
+    blob = shared_bucket.blob(
+        f"LargeFile{uuid.uuid4().hex}", crc32c_checksum="20tD7w=="
+    )
+
+    info = file_data["big_9MiB"]
+    with open(info["path"], "rb") as file_obj:
+        blob.upload_from_file(file_obj)
+        blobs_to_delete.append(blob)
+
+
+def test_large_file_write_from_stream_w_user_provided_wrong_checksum(
+    shared_bucket,
+    blobs_to_delete,
+    file_data,
+    service_account,
+):
+    blob = shared_bucket.blob(
+        f"LargeFile{uuid.uuid4().hex}", crc32c_checksum="A0tD7w=="
+    )
+
+    info = file_data["big_9MiB"]
+    with pytest.raises(exceptions.BadRequest) as excep_info:
+        with open(info["path"], "rb") as file_obj:
+            blob.upload_from_file(file_obj)
+            blobs_to_delete.append(blob)
+    assert excep_info.value.code == 400
+
+
 def test_large_file_write_from_stream(
     shared_bucket,
     blobs_to_delete,

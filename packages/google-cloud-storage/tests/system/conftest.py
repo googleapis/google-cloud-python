@@ -30,6 +30,7 @@ _filenames = [
     ("logo", "CloudPlatform_128px_Retina.png"),
     ("big", "five-point-one-mb-file.zip"),
     ("simple", "simple.txt"),
+    ("big_9MiB", "random_9_MiB_file"),
 ]
 _file_data = {
     key: {"path": os.path.join(data_dirname, file_name)}
