@@ -1,0 +1,70 @@
+{
+  "libraries": [
+    {
+      "id": "google-cloud-secretmanager-v1",
+      "version": "1.3.0",
+      "changes": [
+        {
+          "type": "feat",
+          "subject": "add new UpdateRepository API",
+          "body": "This adds the ability to update a repository's properties.",
+          "piper_cl_number": "786353207",
+          "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661"
+        },
+        {
+          "type": "docs",
+          "subject": "fix typo in BranchRule comment",
+          "body": "",
+          "piper_cl_number": "786353207",
+          "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661"
+        }
+      ],
+      "apis": [
+        {
+          "path": "google/cloud/secretmanager/v1"
+        },
+        {
+          "path": "google/cloud/secretmanager/v1beta"
+        }
+      ],
+      "source_roots": [
+        "secretmanager",
+        "other/location/secretmanager"
+      ],
+      "release_triggered": true
+    },
+    {
+      "id": "google-cloud-language-v1",
+      "version": "1.3.0",
+      "changes": [
+        {
+          "type": "feat",
+          "subject": "add new UpdateRepository API",
+          "body": "This adds the ability to update a repository's properties.",
+          "piper_cl_number": "786353207",
+          "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661"
+        },
+        {
+          "type": "docs",
+          "subject": "fix typo in BranchRule comment",
+          "body": "",
+          "piper_cl_number": "786353207",
+          "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661"
+        }
+      ],
+      "apis": [
+        {
+          "path": "google/cloud/secretmanager/v1"
+        },
+        {
+          "path": "google/cloud/secretmanager/v1beta"
+        }
+      ],
+      "source_roots": [
+        "secretmanager",
+        "other/location/secretmanager"
+      ],
+      "release_triggered": true
+    }
+  ]
+}
