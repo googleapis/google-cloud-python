@@ -1,4 +1,4 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-dev/python-librarian-generator:latest
+image: python-librarian-generator:latest
 libraries:
 - id: google-cloud-language
   version: 2.17.2
@@ -21,3 +21,22 @@ libraries:
   - scripts/client-post-processing
   remove_regex:
   - ^packages/google-cloud-language
+- id: google-ads-marketingplatform-admin
+  version: 0.1.6
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/marketingplatform/admin/v1alpha
+  source_roots:
+  - ^packages/google-ads-marketingplatform-admin
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-ads-marketingplatform-admin
