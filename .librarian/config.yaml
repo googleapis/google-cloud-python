@@ -11,5 +11,5 @@ global_files_allowlist:
     permissions: "read-write"
   # Allow the container to read and write all `CHANGELOG.md`
   # files during the `release` step to add new release notes.
-  - path: "google-cloud-language/CHANGELOG.md"
+  - path: "packages/google-cloud-language/CHANGELOG.md"
     permissions: "read-write"
