@@ -2321,6 +2321,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         level: blocks.LevelsType = ...,
         drop: bool = ...,
         inplace: Literal[False] = ...,
+        col_level: Union[int, str] = ...,
+        col_fill: Hashable = ...,
+        allow_duplicates: Optional[bool] = ...,
+        names: Union[None, Hashable, Sequence[Hashable]] = ...,
     ) -> DataFrame:
         ...
 
@@ -2330,19 +2334,56 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         level: blocks.LevelsType = ...,
         drop: bool = ...,
         inplace: Literal[True] = ...,
+        col_level: Union[int, str] = ...,
+        col_fill: Hashable = ...,
+        allow_duplicates: Optional[bool] = ...,
+        names: Union[None, Hashable, Sequence[Hashable]] = ...,
     ) -> None:
         ...
 
     @overload
     def reset_index(
-        self, level: blocks.LevelsType = None, drop: bool = False, inplace: bool = ...
+        self,
+        level: blocks.LevelsType = None,
+        drop: bool = False,
+        inplace: bool = ...,
+        col_level: Union[int, str] = ...,
+        col_fill: Hashable = ...,
+        allow_duplicates: Optional[bool] = ...,
+        names: Union[None, Hashable, Sequence[Hashable]] = ...,
     ) -> Optional[DataFrame]:
         ...
 
     def reset_index(
-        self, level: blocks.LevelsType = None, drop: bool = False, inplace: bool = False
+        self,
+        level: blocks.LevelsType = None,
+        drop: bool = False,
+        inplace: bool = False,
+        col_level: Union[int, str] = 0,
+        col_fill: Hashable = "",
+        allow_duplicates: Optional[bool] = None,
+        names: Union[None, Hashable, Sequence[Hashable]] = None,
     ) -> Optional[DataFrame]:
-        block = self._block.reset_index(level, drop)
+        block = self._block
+        if names:
+            if isinstance(names, blocks.Label) and not isinstance(names, tuple):
+                names = [names]
+            else:
+                names = list(names)
+
+            if len(names) != self.index.nlevels:
+                raise ValueError("'names' must be same length as levels")
+
+            block = block.with_index_labels(names)
+        if allow_duplicates is None:
+            allow_duplicates = False
+        block = block.reset_index(
+            level,
+            drop,
+            col_level=col_level,
+            col_fill=col_fill,
+            allow_duplicates=allow_duplicates,
+        )
         if inplace:
             self._set_block(block)
             return None

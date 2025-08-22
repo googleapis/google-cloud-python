@@ -1605,6 +1605,10 @@ class DataFrame(generic.NDFrame):
         *,
         drop: bool = False,
         inplace: bool = False,
+        col_level: Hashable = 0,
+        col_fill: Hashable = "",
+        allow_duplicates: Optional[bool] = None,
+        names: Hashable | Sequence[Hashable] | None = None,
     ) -> DataFrame | None:
         """Reset the index.
 
@@ -1706,6 +1710,19 @@ class DataFrame(generic.NDFrame):
                 the index to the default integer index.
             inplace (bool, default False):
                 Whether to modify the DataFrame rather than creating a new one.
+            col_level (int or str, default 0):
+                If the columns have multiple levels, determines which level the
+                labels are inserted into. By default it is inserted into the first
+                level.
+            col_fill (object, default ''):
+                If the columns have multiple levels, determines how the other
+                levels are named. If None then the index name is repeated.
+            allow_duplicates (bool, optional, default None):
+                Allow duplicate column labels to be created.
+            names (str or 1-dimensional list, default None):
+                Using the given string, rename the DataFrame column which contains the
+                index data. If the DataFrame has a MultiIndex, this has to be a list or
+                tuple with length equal to the number of levels
 
         Returns:
             bigframes.pandas.DataFrame: DataFrame with the new index.

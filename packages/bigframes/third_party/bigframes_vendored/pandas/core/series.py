@@ -326,6 +326,7 @@ class Series(NDFrame):  # type: ignore[misc]
         drop: bool = False,
         name=pd_ext.no_default,
         inplace: bool = False,
+        allow_duplicates: Optional[bool] = None,
     ) -> DataFrame | Series | None:
         """
         Generate a new DataFrame or Series with the index reset.
@@ -413,6 +414,8 @@ class Series(NDFrame):  # type: ignore[misc]
                 when `drop` is True.
             inplace (bool, default False):
                 Modify the Series in place (do not create a new object).
+            allow_duplicates (bool, optional, default None):
+                Allow duplicate column labels to be created.
 
         Returns:
             bigframes.pandas.Series or bigframes.pandas.DataFrame or None:

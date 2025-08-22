@@ -387,12 +387,21 @@ class Block:
             index_labels=self.index.names,
         )
 
-    def reset_index(self, level: LevelsType = None, drop: bool = True) -> Block:
+    def reset_index(
+        self,
+        level: LevelsType = None,
+        drop: bool = True,
+        *,
+        col_level: Union[str, int] = 0,
+        col_fill: typing.Hashable = "",
+        allow_duplicates: bool = False,
+    ) -> Block:
         """Reset the index of the block, promoting the old index to a value column.
 
         Arguments:
             level: the label or index level of the index levels to remove.
             name: this is the column id for the new value id derived from the old index
+            allow_duplicates:
 
         Returns:
             A new Block because dropping index columns can break references
@@ -438,6 +447,11 @@ class Block:
             )
         else:
             # Add index names to column index
+            col_level_n = (
+                col_level
+                if isinstance(col_level, int)
+                else self.column_labels.names.index(col_level)
+            )
             column_labels_modified = self.column_labels
             for position, level_id in enumerate(level_ids):
                 label = self.col_id_to_index_name[level_id]
@@ -447,11 +461,15 @@ class Block:
                     else:
                         label = f"level_{self.index_columns.index(level_id)}"
 
-                if label in self.column_labels:
+                if (not allow_duplicates) and (label in self.column_labels):
                     raise ValueError(f"cannot insert {label}, already exists")
+
                 if isinstance(self.column_labels, pd.MultiIndex):
                     nlevels = self.column_labels.nlevels
-                    label = tuple(label if i == 0 else "" for i in range(nlevels))
+                    label = tuple(
+                        label if i == col_level_n else col_fill for i in range(nlevels)
+                    )
+
                 # Create index copy with label inserted
                 # See: https://pandas.pydata.org/docs/reference/api/pandas.Index.insert.html
                 column_labels_modified = column_labels_modified.insert(position, label)

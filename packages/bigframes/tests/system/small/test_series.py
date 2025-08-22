@@ -1339,6 +1339,32 @@ def test_reset_index_drop(scalars_df_index, scalars_pandas_df_index):
     pd.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
 
 
+def test_series_reset_index_allow_duplicates(scalars_df_index, scalars_pandas_df_index):
+    bf_series = scalars_df_index["int64_col"].copy()
+    bf_series.index.name = "int64_col"
+    df = bf_series.reset_index(allow_duplicates=True, drop=False)
+    assert df.index.name is None
+
+    bf_result = df.to_pandas()
+
+    pd_series = scalars_pandas_df_index["int64_col"].copy()
+    pd_series.index.name = "int64_col"
+    pd_result = pd_series.reset_index(allow_duplicates=True, drop=False)
+
+    # Pandas uses int64 instead of Int64 (nullable) dtype.
+    pd_result.index = pd_result.index.astype(pd.Int64Dtype())
+
+    # reset_index should maintain the original ordering.
+    pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_series_reset_index_duplicates_error(scalars_df_index):
+    scalars_df_index = scalars_df_index["int64_col"].copy()
+    scalars_df_index.index.name = "int64_col"
+    with pytest.raises(ValueError):
+        scalars_df_index.reset_index(allow_duplicates=False, drop=False)
+
+
 def test_series_reset_index_inplace(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index.sort_index(ascending=False)["float64_col"]
     bf_result.reset_index(drop=True, inplace=True)

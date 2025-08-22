@@ -929,16 +929,30 @@ def test_column_multi_index_rename(scalars_df_index, scalars_pandas_df_index):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
-def test_column_multi_index_reset_index(scalars_df_index, scalars_pandas_df_index):
+@pytest.mark.parametrize(
+    ("names", "col_fill", "col_level"),
+    [
+        (None, "", "l2"),
+        (("new_name"), "fill", 1),
+        ("new_name", "fill", 0),
+    ],
+)
+def test_column_multi_index_reset_index(
+    scalars_df_index, scalars_pandas_df_index, names, col_fill, col_level
+):
     columns = ["int64_too", "int64_col", "float64_col"]
-    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], ["a", "b", "b"]))
+    multi_columns = pandas.MultiIndex.from_tuples(
+        zip(["a", "b", "a"], ["a", "b", "b"]), names=["l1", "l2"]
+    )
     bf_df = scalars_df_index[columns].copy()
     bf_df.columns = multi_columns
     pd_df = scalars_pandas_df_index[columns].copy()
     pd_df.columns = multi_columns
 
-    bf_result = bf_df.reset_index().to_pandas()
-    pd_result = pd_df.reset_index()
+    bf_result = bf_df.reset_index(
+        names=names, col_fill=col_fill, col_level=col_level
+    ).to_pandas()
+    pd_result = pd_df.reset_index(names=names, col_fill=col_fill, col_level=col_level)
 
     # Pandas uses int64 instead of Int64 (nullable) dtype.
     pd_result.index = pd_result.index.astype(pandas.Int64Dtype())
