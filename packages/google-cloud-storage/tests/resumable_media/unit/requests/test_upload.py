@@ -42,6 +42,11 @@ EXAMPLE_XML_MPU_INITIATE_TEXT_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"
 UPLOAD_ID = "VXBsb2FkIElEIGZvciBlbHZpbmcncyBteS1tb3ZpZS5tMnRzIHVwbG9hZA"
 PARTS = {1: "39a59594290b0f9a30662a56d695b71d", 2: "00000000290b0f9a30662a56d695b71d"}
 FILE_DATA = b"testdata" * 128
+_HASH_HEADER = "x-goog-hash"
+CRC32C_HASH_OF_FIRST_PART = "8hVqVQ=="
+MD5_HASH_OF_FIRST_PART = "gfVZ4+0LdooJwGAkxLrCcg=="
+DEFAULT_CONNECT_TIMEOUT = 61
+DEFAULT_READ_TIMEOUT = 60
 
 
 @pytest.fixture(scope="session")
@@ -397,6 +402,66 @@ def test_mpu_part(filename):
     transport.request.return_value = _make_response(headers={"etag": PARTS[1]})
 
     part.upload(transport)
+
+    assert part.finished
+    assert part.etag == PARTS[1]
+
+
+def test_mpu_part_with_md5_enabled(filename):
+    part = upload_mod.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL,
+        UPLOAD_ID,
+        filename,
+        start=0,
+        end=128,
+        part_number=1,
+        checksum="md5",
+    )
+
+    transport = mock.Mock(spec=["request"])
+    transport.request.return_value = _make_response(
+        headers={"etag": PARTS[1], _HASH_HEADER: f"md5={MD5_HASH_OF_FIRST_PART}"}
+    )
+
+    part.upload(transport)
+
+    transport.request.assert_called_once_with(
+        "PUT",
+        f"{part.upload_url}?partNumber={part.part_number}&uploadId={UPLOAD_ID}",
+        data=FILE_DATA[part.start : part.end],
+        headers={"X-Goog-Hash": f"md5={MD5_HASH_OF_FIRST_PART}"},
+        timeout=(DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT),
+    )
+
+    assert part.finished
+    assert part.etag == PARTS[1]
+
+
+def test_mpu_part_with_crc32c_enabled(filename):
+    part = upload_mod.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL,
+        UPLOAD_ID,
+        filename,
+        start=0,
+        end=128,
+        part_number=1,
+        checksum="crc32c",
+    )
+
+    transport = mock.Mock(spec=["request"])
+    transport.request.return_value = _make_response(
+        headers={"etag": PARTS[1], _HASH_HEADER: f"crc32c={CRC32C_HASH_OF_FIRST_PART}"}
+    )
+
+    part.upload(transport)
+
+    transport.request.assert_called_once_with(
+        "PUT",
+        f"{part.upload_url}?partNumber={part.part_number}&uploadId={UPLOAD_ID}",
+        data=FILE_DATA[part.start : part.end],
+        headers={"X-Goog-Hash": f"crc32c={CRC32C_HASH_OF_FIRST_PART}"},
+        timeout=(DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT),
+    )
 
     assert part.finished
     assert part.etag == PARTS[1]

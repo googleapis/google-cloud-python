@@ -1387,6 +1387,29 @@ class XMLMPUPart(UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
+        # Data corruption errors shouldn't be considered as invalid responses,
+        # So we handle them earlier than call to `_helpers.require_status_code`.
+        # If the response is 400, we check for data corruption errors.
+        if response.status_code == 400:
+            root = ElementTree.fromstring(response.text)
+            error_code = root.find("Code").text
+            error_message = root.find("Message").text
+            error_details = root.find("Details").text
+            if error_code in ["InvalidDigest", "BadDigest", "CrcMismatch"]:
+                raise DataCorruption(
+                    response,
+                    (
+                        "Checksum mismatch: checksum calculated by client and"
+                        " server did not match. Error code: {error_code},"
+                        " Error message: {error_message},"
+                        " Error details: {error_details}"
+                    ).format(
+                        error_code=error_code,
+                        error_message=error_message,
+                        error_details=error_details,
+                    ),
+                )
+
         _helpers.require_status_code(
             response,
             (http.client.OK,),

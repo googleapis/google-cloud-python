@@ -47,6 +47,21 @@ EXAMPLE_XML_MPU_INITIATE_TEXT_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"
 UPLOAD_ID = "VXBsb2FkIElEIGZvciBlbHZpbmcncyBteS1tb3ZpZS5tMnRzIHVwbG9hZA"
 PARTS = {1: "39a59594290b0f9a30662a56d695b71d", 2: "00000000290b0f9a30662a56d695b71d"}
 FILE_DATA = b"testdata" * 128
+CHECKSUM_MISMATCH_ERROR_MSG_XML_TEMPLATE = """<?xml version='1.0' encoding='UTF-8'?>
+<Error>
+    <Code>{ERROR_CODE}</Code>
+    <Message>The MD5 you specified in Content-MD5 or x-goog-hash was invalid.</Message>
+    <Details>Invalid MD5 value: dfdfdfd==</Details>
+</Error>"""
+INVALID_MD5_XML_RESPONSE = CHECKSUM_MISMATCH_ERROR_MSG_XML_TEMPLATE.format(
+    ERROR_CODE="InvalidDigest"
+)
+INVALID_CRC32C_XML_RESPONSE = CHECKSUM_MISMATCH_ERROR_MSG_XML_TEMPLATE.format(
+    ERROR_CODE="BadDigest"
+)
+INCORRECT_LENGTH_CRC32C_XML_RESPONSE = CHECKSUM_MISMATCH_ERROR_MSG_XML_TEMPLATE.format(
+    ERROR_CODE="CrcMismatch"
+)
 
 
 @pytest.fixture(scope="session")
@@ -1471,7 +1486,15 @@ def test_xml_mpu_part_invalid_response(filename):
         part._process_upload_response(response)
 
 
-def test_xml_mpu_part_checksum_failure(filename):
+@pytest.mark.parametrize(
+    "error_scenarios",
+    [
+        INVALID_MD5_XML_RESPONSE,
+        INVALID_CRC32C_XML_RESPONSE,
+        INCORRECT_LENGTH_CRC32C_XML_RESPONSE,
+    ],
+)
+def test_xml_mpu_part_checksum_failure(filename, error_scenarios):
     PART_NUMBER = 1
     START = 0
     END = 256
@@ -1490,7 +1513,9 @@ def test_xml_mpu_part_checksum_failure(filename):
     _fix_up_virtual(part)
     part._prepare_upload_request()
     response = _make_xml_response(
-        headers={"etag": ETAG, "x-goog-hash": "md5=Ojk9c3dhfxgoKVVHYwFbHQ=="}
+        status_code=http.client.BAD_REQUEST,
+        headers={"etag": ETAG, "x-goog-hash": "md5=Ojk9c3dhfxgoKVVHYwFbHQ=="},
+        text=error_scenarios,
     )  # Example md5 checksum but not the correct one
     with pytest.raises(DataCorruption):
         part._process_upload_response(response)
@@ -1555,7 +1580,7 @@ def _make_xml_response(status_code=http.client.OK, headers=None, text=None):
         headers=headers,
         status_code=status_code,
         text=text,
-        spec=["headers", "status_code"],
+        spec=["headers", "status_code", "text"],
     )
 
 

@@ -21,6 +21,7 @@ uploads that contain both metadata and a small file as payload.
 
 from google.cloud.storage._media import _upload
 from google.cloud.storage._media.requests import _request_helpers
+from google.cloud.storage._media import _helpers
 
 
 class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
@@ -757,6 +758,14 @@ class XMLMPUPart(_request_helpers.RequestsMixin, _upload.XMLMPUPart):
             ~requests.Response: The HTTP response returned by ``transport``.
         """
         method, url, payload, headers = self._prepare_upload_request()
+        if self._checksum_object is not None:
+            checksum_digest_in_base64 = _helpers.prepare_checksum_digest(
+                self._checksum_object.digest()
+            )
+            if self._checksum_type == "crc32c":
+                headers["X-Goog-Hash"] = f"crc32c={checksum_digest_in_base64}"
+            elif self._checksum_type == "md5":
+                headers["X-Goog-Hash"] = f"md5={checksum_digest_in_base64}"
 
         # Wrap the request business logic in a function to be retried.
         def retriable_request():
