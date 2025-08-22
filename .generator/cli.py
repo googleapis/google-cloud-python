@@ -470,9 +470,11 @@ def handle_release_init(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, ou
         request_data = _read_json_file(f"{librarian}/{RELEASE_INIT_REQUEST_FILE}")
         libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(request_data)
         for library_release_data in libraries_to_prep_for_release:
-            print(library_release_data)
+            
+            #library_release_data
             break
 
+        
         # Replace gapic_version.py
         # Replace the version in snippet metadata
         
@@ -481,6 +483,40 @@ def handle_release_init(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, ou
     except Exception as e:
         raise ValueError("Release init failed.") from e
     pass
+
+# def _update_version_for_library(repo: str):
+#     try:
+#         # Read the original file content
+#         with open(file_path, 'r') as f:
+#             content = f.read()
+
+#         # This regex finds the line with `__version__`.
+#         # - `(__version__\s*=\s*["'])`: Captures the part before the version number (e.g., `__version__ = "`).
+#         # - `[^"']+`: Matches the current version string itself (any character that is not a quote).
+#         # - `(["'].*)`: Captures the closing quote and the rest of the line (e.g., `"  # {x-release-please-version}`).
+#         pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+        
+#         # The replacement string uses f-string formatting with backreferences to the captured groups.
+#         # `\\g<1>` is the first captured group (e.g., `__version__ = "`).
+#         # `\\g<3>` is the third captured group (e.g., `"  # ...`).
+#         replacement_string = f"\\g<1>{new_version}\\g<3>"
+
+#         # Use re.sub() to perform the replacement
+#         new_content, num_replacements = re.subn(pattern, replacement_string, content)
+
+#         # Check if the version string was found and replaced
+#         if num_replacements > 0:
+#             # Write the updated content back to the file
+#             with open(file_path, 'w') as f:
+#                 f.write(new_content)
+#             print(f"✅ Successfully updated version in '{file_path}' to '{new_version}'.")
+#         else:
+#             print(f"⚠️ Could not find the version string in '{file_path}'. File was not modified.")
+
+#     finally:
+#         # --- Cleanup the dummy file ---
+#         if os.path.exists(file_path):
+#             os.remove(file_path)
 
 if __name__ == "__main__":  # pragma: NO COVER
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
