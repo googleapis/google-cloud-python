@@ -5,13 +5,13 @@
     "product_documentation": "https://developers.google.com/merchant/api",
     "client_documentation": "https://googleapis.dev/python/google-shopping-merchant-notifications/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-shopping-merchant-notifications",
     "api_id": "merchantapi.googleapis.com",
-    "default_version": "v1beta",
+    "default_version": "v1",
     "codeowner_team": "",
     "api_shortname": "notifications"
 }

@@ -18,23 +18,21 @@ from google.shopping.merchant_notifications import gapic_version as package_vers
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_notifications_v1beta.services.notifications_api_service.async_client import (
+from google.shopping.merchant_notifications_v1.services.notifications_api_service.async_client import (
     NotificationsApiServiceAsyncClient,
 )
-from google.shopping.merchant_notifications_v1beta.services.notifications_api_service.client import (
+from google.shopping.merchant_notifications_v1.services.notifications_api_service.client import (
     NotificationsApiServiceClient,
 )
-from google.shopping.merchant_notifications_v1beta.types.notificationsapi import (
-    Attribute,
+from google.shopping.merchant_notifications_v1.types.notificationsapi import (
     CreateNotificationSubscriptionRequest,
     DeleteNotificationSubscriptionRequest,
+    GetNotificationSubscriptionHealthMetricsRequest,
     GetNotificationSubscriptionRequest,
     ListNotificationSubscriptionsRequest,
     ListNotificationSubscriptionsResponse,
     NotificationSubscription,
-    ProductChange,
-    ProductStatusChangeMessage,
-    Resource,
+    NotificationSubscriptionHealthMetrics,
     UpdateNotificationSubscriptionRequest,
 )
 
@@ -43,13 +41,11 @@ __all__ = (
     "NotificationsApiServiceAsyncClient",
     "CreateNotificationSubscriptionRequest",
     "DeleteNotificationSubscriptionRequest",
+    "GetNotificationSubscriptionHealthMetricsRequest",
     "GetNotificationSubscriptionRequest",
     "ListNotificationSubscriptionsRequest",
     "ListNotificationSubscriptionsResponse",
     "NotificationSubscription",
-    "ProductChange",
-    "ProductStatusChangeMessage",
+    "NotificationSubscriptionHealthMetrics",
     "UpdateNotificationSubscriptionRequest",
-    "Attribute",
-    "Resource",
 )
