@@ -31,6 +31,7 @@ from google.cloud.video.transcoder_v1.types.resources import (
     ElementaryStream,
     Encryption,
     Input,
+    InputAttributes,
     Job,
     JobConfig,
     JobTemplate,
@@ -43,6 +44,7 @@ from google.cloud.video.transcoder_v1.types.resources import (
     SegmentSettings,
     SpriteSheet,
     TextStream,
+    TrackDefinition,
     VideoStream,
 )
 from google.cloud.video.transcoder_v1.types.services import (
@@ -67,6 +69,7 @@ __all__ = (
     "ElementaryStream",
     "Encryption",
     "Input",
+    "InputAttributes",
     "Job",
     "JobConfig",
     "JobTemplate",
@@ -79,6 +82,7 @@ __all__ = (
     "SegmentSettings",
     "SpriteSheet",
     "TextStream",
+    "TrackDefinition",
     "VideoStream",
     "CreateJobRequest",
     "CreateJobTemplateRequest",

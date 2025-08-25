@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "SpriteSheet",
         "Overlay",
         "PreprocessingConfig",
+        "TrackDefinition",
+        "InputAttributes",
         "VideoStream",
         "AudioStream",
         "TextStream",
@@ -408,6 +410,8 @@ class Input(proto.Message):
             formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__.
         preprocessing_config (google.cloud.video.transcoder_v1.types.PreprocessingConfig):
             Preprocessing configurations.
+        attributes (google.cloud.video.transcoder_v1.types.InputAttributes):
+            Optional. Input Attributes.
     """
 
     key: str = proto.Field(
@@ -422,6 +426,11 @@ class Input(proto.Message):
         proto.MESSAGE,
         number=3,
         message="PreprocessingConfig",
+    )
+    attributes: "InputAttributes" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="InputAttributes",
     )
 
 
@@ -1530,6 +1539,72 @@ class PreprocessingConfig(proto.Message):
         proto.MESSAGE,
         number=7,
         message=Deinterlace,
+    )
+
+
+class TrackDefinition(proto.Message):
+    r"""Track definition for the input asset.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        input_track (int):
+            The input track.
+
+            This field is a member of `oneof`_ ``_input_track``.
+        languages (MutableSequence[str]):
+            Optional. A list of languages spoken in the input asset,
+            represented by a BCP 47 language code, such as "en-US" or
+            "sr-Latn". For more information, see
+            https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+        detect_languages (bool):
+            Optional. Whether to automatically detect the
+            languages present in the track. If true, the
+            system will attempt to identify all the
+            languages present in the track and populate the
+            languages field.
+        detected_languages (MutableSequence[str]):
+            Output only. A list of languages detected in the input
+            asset, represented by a BCP 47 language code, such as
+            "en-US" or "sr-Latn". For more information, see
+            https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+            This field is only populated if the detect_languages field
+            is set to true.
+    """
+
+    input_track: int = proto.Field(
+        proto.INT32,
+        number=1,
+        optional=True,
+    )
+    languages: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    detect_languages: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    detected_languages: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
+class InputAttributes(proto.Message):
+    r"""Input attributes that provide additional information about
+    the input asset.
+
+    Attributes:
+        track_definitions (MutableSequence[google.cloud.video.transcoder_v1.types.TrackDefinition]):
+            Optional. A list of track definitions for the
+            input asset.
+    """
+
+    track_definitions: MutableSequence["TrackDefinition"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TrackDefinition",
     )
 
 
