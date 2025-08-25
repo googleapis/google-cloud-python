@@ -90,11 +90,6 @@
                 "create_channel_group"
               ]
             },
-            "CreateConnectedSiteTag": {
-              "methods": [
-                "create_connected_site_tag"
-              ]
-            },
             "CreateConversionEvent": {
               "methods": [
                 "create_conversion_event"
@@ -225,11 +220,6 @@
                 "delete_channel_group"
               ]
             },
-            "DeleteConnectedSiteTag": {
-              "methods": [
-                "delete_connected_site_tag"
-              ]
-            },
             "DeleteConversionEvent": {
               "methods": [
                 "delete_conversion_event"
@@ -313,16 +303,6 @@
             "DeleteSubpropertyEventFilter": {
               "methods": [
                 "delete_subproperty_event_filter"
-              ]
-            },
-            "FetchAutomatedGa4ConfigurationOptOut": {
-              "methods": [
-                "fetch_automated_ga4_configuration_opt_out"
-              ]
-            },
-            "FetchConnectedGa4Property": {
-              "methods": [
-                "fetch_connected_ga4_property"
               ]
             },
             "GetAccessBinding": {
@@ -460,6 +440,11 @@
                 "get_reporting_data_annotation"
               ]
             },
+            "GetReportingIdentitySettings": {
+              "methods": [
+                "get_reporting_identity_settings"
+              ]
+            },
             "GetRollupPropertySourceLink": {
               "methods": [
                 "get_rollup_property_source_link"
@@ -523,11 +508,6 @@
             "ListChannelGroups": {
               "methods": [
                 "list_channel_groups"
-              ]
-            },
-            "ListConnectedSiteTags": {
-              "methods": [
-                "list_connected_site_tags"
               ]
             },
             "ListConversionEvents": {
@@ -653,11 +633,6 @@
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
-              ]
-            },
-            "SetAutomatedGa4ConfigurationOptOut": {
-              "methods": [
-                "set_automated_ga4_configuration_opt_out"
               ]
             },
             "SubmitUserDeletion": {
@@ -890,11 +865,6 @@
                 "create_channel_group"
               ]
             },
-            "CreateConnectedSiteTag": {
-              "methods": [
-                "create_connected_site_tag"
-              ]
-            },
             "CreateConversionEvent": {
               "methods": [
                 "create_conversion_event"
@@ -1025,11 +995,6 @@
                 "delete_channel_group"
               ]
             },
-            "DeleteConnectedSiteTag": {
-              "methods": [
-                "delete_connected_site_tag"
-              ]
-            },
             "DeleteConversionEvent": {
               "methods": [
                 "delete_conversion_event"
@@ -1113,16 +1078,6 @@
             "DeleteSubpropertyEventFilter": {
               "methods": [
                 "delete_subproperty_event_filter"
-              ]
-            },
-            "FetchAutomatedGa4ConfigurationOptOut": {
-              "methods": [
-                "fetch_automated_ga4_configuration_opt_out"
-              ]
-            },
-            "FetchConnectedGa4Property": {
-              "methods": [
-                "fetch_connected_ga4_property"
               ]
             },
             "GetAccessBinding": {
@@ -1260,6 +1215,11 @@
                 "get_reporting_data_annotation"
               ]
             },
+            "GetReportingIdentitySettings": {
+              "methods": [
+                "get_reporting_identity_settings"
+              ]
+            },
             "GetRollupPropertySourceLink": {
               "methods": [
                 "get_rollup_property_source_link"
@@ -1323,11 +1283,6 @@
             "ListChannelGroups": {
               "methods": [
                 "list_channel_groups"
-              ]
-            },
-            "ListConnectedSiteTags": {
-              "methods": [
-                "list_connected_site_tags"
               ]
             },
             "ListConversionEvents": {
@@ -1453,11 +1408,6 @@
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
-              ]
-            },
-            "SetAutomatedGa4ConfigurationOptOut": {
-              "methods": [
-                "set_automated_ga4_configuration_opt_out"
               ]
             },
             "SubmitUserDeletion": {
@@ -1690,11 +1640,6 @@
                 "create_channel_group"
               ]
             },
-            "CreateConnectedSiteTag": {
-              "methods": [
-                "create_connected_site_tag"
-              ]
-            },
             "CreateConversionEvent": {
               "methods": [
                 "create_conversion_event"
@@ -1825,11 +1770,6 @@
                 "delete_channel_group"
               ]
             },
-            "DeleteConnectedSiteTag": {
-              "methods": [
-                "delete_connected_site_tag"
-              ]
-            },
             "DeleteConversionEvent": {
               "methods": [
                 "delete_conversion_event"
@@ -1913,16 +1853,6 @@
             "DeleteSubpropertyEventFilter": {
               "methods": [
                 "delete_subproperty_event_filter"
-              ]
-            },
-            "FetchAutomatedGa4ConfigurationOptOut": {
-              "methods": [
-                "fetch_automated_ga4_configuration_opt_out"
-              ]
-            },
-            "FetchConnectedGa4Property": {
-              "methods": [
-                "fetch_connected_ga4_property"
               ]
             },
             "GetAccessBinding": {
@@ -2060,6 +1990,11 @@
                 "get_reporting_data_annotation"
               ]
             },
+            "GetReportingIdentitySettings": {
+              "methods": [
+                "get_reporting_identity_settings"
+              ]
+            },
             "GetRollupPropertySourceLink": {
               "methods": [
                 "get_rollup_property_source_link"
@@ -2123,11 +2058,6 @@
             "ListChannelGroups": {
               "methods": [
                 "list_channel_groups"
-              ]
-            },
-            "ListConnectedSiteTags": {
-              "methods": [
-                "list_connected_site_tags"
               ]
             },
             "ListConversionEvents": {
@@ -2253,11 +2183,6 @@
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
-              ]
-            },
-            "SetAutomatedGa4ConfigurationOptOut": {
-              "methods": [
-                "set_automated_ga4_configuration_opt_out"
               ]
             },
             "SubmitUserDeletion": {
