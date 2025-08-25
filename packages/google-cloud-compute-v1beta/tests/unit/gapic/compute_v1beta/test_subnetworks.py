@@ -2130,6 +2130,8 @@ def test_get_rest_required_fields(request_type=compute.GetSubnetworkRequest):
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("views",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2189,7 +2191,7 @@ def test_get_rest_unset_required_fields():
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("views",))
         & set(
             (
                 "project",
@@ -2952,6 +2954,7 @@ def test_list_rest_required_fields(request_type=compute.ListSubnetworksRequest):
             "order_by",
             "page_token",
             "return_partial_success",
+            "views",
         )
     )
     jsonified_request.update(unset_fields)
@@ -3018,6 +3021,7 @@ def test_list_rest_unset_required_fields():
                 "orderBy",
                 "pageToken",
                 "returnPartialSuccess",
+                "views",
             )
         )
         & set(
@@ -5441,6 +5445,7 @@ def test_get_rest_call_success(request_type):
             purpose="purpose_value",
             region="region_value",
             reserved_internal_range="reserved_internal_range_value",
+            resolve_subnet_mask="resolve_subnet_mask_value",
             role="role_value",
             self_link="self_link_value",
             stack_type="stack_type_value",
@@ -5489,6 +5494,7 @@ def test_get_rest_call_success(request_type):
     assert response.purpose == "purpose_value"
     assert response.region == "region_value"
     assert response.reserved_internal_range == "reserved_internal_range_value"
+    assert response.resolve_subnet_mask == "resolve_subnet_mask_value"
     assert response.role == "role_value"
     assert response.self_link == "self_link_value"
     assert response.stack_type == "stack_type_value"
@@ -5761,6 +5767,7 @@ def test_insert_rest_call_success(request_type):
         "purpose": "purpose_value",
         "region": "region_value",
         "reserved_internal_range": "reserved_internal_range_value",
+        "resolve_subnet_mask": "resolve_subnet_mask_value",
         "role": "role_value",
         "secondary_ip_ranges": [
             {
@@ -5780,6 +5787,21 @@ def test_insert_rest_call_success(request_type):
             "system_reserved_internal_ipv6_ranges_value1",
             "system_reserved_internal_ipv6_ranges_value2",
         ],
+        "utilization_details": {
+            "external_ipv6_instance_utilization": {
+                "total_allocated_ip": {"high": 416, "low": 338},
+                "total_free_ip": {},
+            },
+            "external_ipv6_lb_utilization": {},
+            "internal_ipv6_utilization": {},
+            "ipv4_utilizations": [
+                {
+                    "range_name": "range_name_value",
+                    "total_allocated_ip": 1892,
+                    "total_free_ip": 1373,
+                }
+            ],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6316,6 +6338,7 @@ def test_patch_rest_call_success(request_type):
         "purpose": "purpose_value",
         "region": "region_value",
         "reserved_internal_range": "reserved_internal_range_value",
+        "resolve_subnet_mask": "resolve_subnet_mask_value",
         "role": "role_value",
         "secondary_ip_ranges": [
             {
@@ -6335,6 +6358,21 @@ def test_patch_rest_call_success(request_type):
             "system_reserved_internal_ipv6_ranges_value1",
             "system_reserved_internal_ipv6_ranges_value2",
         ],
+        "utilization_details": {
+            "external_ipv6_instance_utilization": {
+                "total_allocated_ip": {"high": 416, "low": 338},
+                "total_free_ip": {},
+            },
+            "external_ipv6_lb_utilization": {},
+            "internal_ipv6_utilization": {},
+            "ipv4_utilizations": [
+                {
+                    "range_name": "range_name_value",
+                    "total_allocated_ip": 1892,
+                    "total_free_ip": 1373,
+                }
+            ],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
