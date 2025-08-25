@@ -1224,7 +1224,29 @@ class Document(proto.Message):
             redacted (bool):
                 Optional. Whether the entity will be redacted
                 for de-identification purposes.
+            method (google.cloud.documentai_v1.types.Document.Entity.Method):
+                Optional. Specifies how the entity's value is
+                obtained.
         """
+
+        class Method(proto.Enum):
+            r"""Specifies how the entity's value is obtained.
+
+            Values:
+                METHOD_UNSPECIFIED (0):
+                    When the method is not specified, it should be treated as
+                    ``EXTRACT``.
+                EXTRACT (1):
+                    The entity's value is directly extracted
+                    as-is from the document text.
+                DERIVE (2):
+                    The entity's value is derived through
+                    inference and is not necessarily an exact text
+                    extraction from the document.
+            """
+            METHOD_UNSPECIFIED = 0
+            EXTRACT = 1
+            DERIVE = 2
 
         class NormalizedValue(proto.Message):
             r"""Parsed and normalized entity value.
@@ -1271,6 +1293,9 @@ class Document(proto.Message):
                     This field is a member of `oneof`_ ``structured_value``.
                 float_value (float):
                     Float value.
+
+                    This field is a member of `oneof`_ ``structured_value``.
+                signature_value (bool):
 
                     This field is a member of `oneof`_ ``structured_value``.
                 text (str):
@@ -1330,6 +1355,11 @@ class Document(proto.Message):
                 number=8,
                 oneof="structured_value",
             )
+            signature_value: bool = proto.Field(
+                proto.BOOL,
+                number=10,
+                oneof="structured_value",
+            )
             text: str = proto.Field(
                 proto.STRING,
                 number=1,
@@ -1383,6 +1413,11 @@ class Document(proto.Message):
         redacted: bool = proto.Field(
             proto.BOOL,
             number=12,
+        )
+        method: "Document.Entity.Method" = proto.Field(
+            proto.ENUM,
+            number=15,
+            enum="Document.Entity.Method",
         )
 
     class EntityRelation(proto.Message):
