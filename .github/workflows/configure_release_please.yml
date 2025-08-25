@@ -35,7 +35,7 @@ jobs:
     # don't run the workflow on forks of googleapis/google-cloud-python
     if: ${{github.repository == 'googleapis/google-cloud-python'}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         # Use a fetch-depth of 2
         # See https://github.com/googleapis/google-cloud-python/issues/12013
         # and https://github.com/actions/checkout#checkout-head.
@@ -44,7 +44,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.13
       - name: Run configure_release_please.py
         run: python3 configure_release_please.py
         working-directory: ./scripts/configure_release_please
