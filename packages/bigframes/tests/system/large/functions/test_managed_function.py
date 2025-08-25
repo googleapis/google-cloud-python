@@ -1121,3 +1121,31 @@ def test_managed_function_series_where_mask(session, dataset_id, scalars_dfs):
     finally:
         # Clean up the gcp assets created for the managed function.
         cleanup_function_assets(is_positive_mf, session.bqclient, ignore_failures=False)
+
+
+def test_managed_function_series_apply_args(session, dataset_id, scalars_dfs):
+    try:
+
+        with pytest.warns(bfe.PreviewWarning, match="udf is in preview."):
+
+            @session.udf(dataset=dataset_id, name=prefixer.create_prefix())
+            def foo_list(x: int, y0: float, y1: bytes, y2: bool) -> list[str]:
+                return [str(x), str(y0), str(y1), str(y2)]
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_result = (
+            scalars_df["int64_too"]
+            .apply(foo_list, args=(12.34, b"hello world", False))
+            .to_pandas()
+        )
+        pd_result = scalars_pandas_df["int64_too"].apply(
+            foo_list, args=(12.34, b"hello world", False)
+        )
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(foo_list, session.bqclient, ignore_failures=False)
