@@ -249,6 +249,12 @@ class AnalyticsAdminServiceAsyncClient:
     parse_reporting_data_annotation_path = staticmethod(
         AnalyticsAdminServiceClient.parse_reporting_data_annotation_path
     )
+    reporting_identity_settings_path = staticmethod(
+        AnalyticsAdminServiceClient.reporting_identity_settings_path
+    )
+    parse_reporting_identity_settings_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_reporting_identity_settings_path
+    )
     rollup_property_source_link_path = staticmethod(
         AnalyticsAdminServiceClient.rollup_property_source_link_path
     )
@@ -10009,132 +10015,6 @@ class AnalyticsAdminServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def set_automated_ga4_configuration_opt_out(
-        self,
-        request: Optional[
-            Union[analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
-        r"""Sets the opt out status for the automated GA4 setup
-        process for a UA property.
-        Note: this has no effect on GA4 property.
-
-        Args:
-            request (Optional[Union[google.analytics.admin_v1alpha.types.SetAutomatedGa4ConfigurationOptOutRequest, dict]]):
-                The request object. Request for setting the opt out
-                status for the automated GA4 setup
-                process.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.SetAutomatedGa4ConfigurationOptOutResponse:
-                Response message for setting the opt
-                out status for the automated GA4 setup
-                process.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest
-        ):
-            request = analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_automated_ga4_configuration_opt_out
-        ]
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def fetch_automated_ga4_configuration_opt_out(
-        self,
-        request: Optional[
-            Union[analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
-        r"""Fetches the opt out status for the automated GA4
-        setup process for a UA property.
-        Note: this has no effect on GA4 property.
-
-        Args:
-            request (Optional[Union[google.analytics.admin_v1alpha.types.FetchAutomatedGa4ConfigurationOptOutRequest, dict]]):
-                The request object. Request for fetching the opt out
-                status for the automated GA4 setup
-                process.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.FetchAutomatedGa4ConfigurationOptOutResponse:
-                Response message for fetching the opt
-                out status for the automated GA4 setup
-                process.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest
-        ):
-            request = analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest(
-                request
-            )
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_automated_ga4_configuration_opt_out
-        ]
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
     async def create_big_query_link(
         self,
         request: Optional[
@@ -10793,231 +10673,6 @@ class AnalyticsAdminServiceAsyncClient:
                 )
             ),
         )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def create_connected_site_tag(
-        self,
-        request: Optional[
-            Union[analytics_admin.CreateConnectedSiteTagRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> analytics_admin.CreateConnectedSiteTagResponse:
-        r"""Creates a connected site tag for a Universal
-        Analytics property. You can create a maximum of 20
-        connected site tags per property. Note: This API cannot
-        be used on GA4 properties.
-
-        Args:
-            request (Optional[Union[google.analytics.admin_v1alpha.types.CreateConnectedSiteTagRequest, dict]]):
-                The request object. Request message for
-                CreateConnectedSiteTag RPC.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.CreateConnectedSiteTagResponse:
-                Response message for
-                CreateConnectedSiteTag RPC.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, analytics_admin.CreateConnectedSiteTagRequest):
-            request = analytics_admin.CreateConnectedSiteTagRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_connected_site_tag
-        ]
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def delete_connected_site_tag(
-        self,
-        request: Optional[
-            Union[analytics_admin.DeleteConnectedSiteTagRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
-        r"""Deletes a connected site tag for a Universal
-        Analytics property. Note: this has no effect on GA4
-        properties.
-
-        Args:
-            request (Optional[Union[google.analytics.admin_v1alpha.types.DeleteConnectedSiteTagRequest, dict]]):
-                The request object. Request message for
-                DeleteConnectedSiteTag RPC.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, analytics_admin.DeleteConnectedSiteTagRequest):
-            request = analytics_admin.DeleteConnectedSiteTagRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_connected_site_tag
-        ]
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-    async def list_connected_site_tags(
-        self,
-        request: Optional[
-            Union[analytics_admin.ListConnectedSiteTagsRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> analytics_admin.ListConnectedSiteTagsResponse:
-        r"""Lists the connected site tags for a Universal
-        Analytics property. A maximum of 20 connected site tags
-        will be returned. Note: this has no effect on GA4
-        property.
-
-        Args:
-            request (Optional[Union[google.analytics.admin_v1alpha.types.ListConnectedSiteTagsRequest, dict]]):
-                The request object. Request message for
-                ListConnectedSiteTags RPC.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.ListConnectedSiteTagsResponse:
-                Response message for
-                ListConnectedSiteTags RPC.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, analytics_admin.ListConnectedSiteTagsRequest):
-            request = analytics_admin.ListConnectedSiteTagsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_connected_site_tags
-        ]
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def fetch_connected_ga4_property(
-        self,
-        request: Optional[
-            Union[analytics_admin.FetchConnectedGa4PropertyRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> analytics_admin.FetchConnectedGa4PropertyResponse:
-        r"""Given a specified UA property, looks up the GA4
-        property connected to it. Note: this cannot be used with
-        GA4 properties.
-
-        Args:
-            request (Optional[Union[google.analytics.admin_v1alpha.types.FetchConnectedGa4PropertyRequest, dict]]):
-                The request object. Request for looking up GA4 property
-                connected to a UA property.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.FetchConnectedGa4PropertyResponse:
-                Response for looking up GA4 property
-                connected to a UA property.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, analytics_admin.FetchConnectedGa4PropertyRequest):
-            request = analytics_admin.FetchConnectedGa4PropertyRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_connected_ga4_property
-        ]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -14703,7 +14358,7 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSubpropertySyncConfigsAsyncPager:
-        r"""List all Subproperty Sync Configs on a property.
+        r"""List all ``SubpropertySyncConfig`` resources for a property.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.ListSubpropertySyncConfigsRequest, dict]]):
@@ -14805,16 +14460,14 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.SubpropertySyncConfig:
-        r"""Updates a Subproperty Sync Config.
+        r"""Updates a ``SubpropertySyncConfig``.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.UpdateSubpropertySyncConfigRequest, dict]]):
                 The request object. Request message for
                 UpdateSubpropertySyncConfig RPC.
             subproperty_sync_config (:class:`google.analytics.admin_v1alpha.types.SubpropertySyncConfig`):
-                Required. The SubpropertySyncConfig
-                to update.
-
+                Required. The ``SubpropertySyncConfig`` to update.
                 This corresponds to the ``subproperty_sync_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -14915,7 +14568,7 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.SubpropertySyncConfig:
-        r"""Lookup for a single Subproperty Sync Config.
+        r"""Lookup for a single ``SubpropertySyncConfig``.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.GetSubpropertySyncConfigRequest, dict]]):
@@ -14975,6 +14628,98 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.get_subproperty_sync_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_reporting_identity_settings(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetReportingIdentitySettingsRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.ReportingIdentitySettings:
+        r"""Returns the singleton data retention settings for
+        this property.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.GetReportingIdentitySettingsRequest, dict]]):
+                The request object. Request message for
+                GetReportingIdentitySettings RPC.
+            name (:class:`str`):
+                Required. The name of the settings to
+                lookup. Format:
+
+                properties/{property}/reportingIdentitySettings
+                Example:
+                "properties/1000/reportingIdentitySettings"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ReportingIdentitySettings:
+                A resource containing settings
+                related to reporting identity.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.GetReportingIdentitySettingsRequest):
+            request = analytics_admin.GetReportingIdentitySettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_reporting_identity_settings
         ]
 
         # Certain fields should be provided within the metadata header;
