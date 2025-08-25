@@ -18,13 +18,13 @@ from google.shopping.merchant_reports import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_reports_v1beta.services.report_service.async_client import (
+from google.shopping.merchant_reports_v1.services.report_service.async_client import (
     ReportServiceAsyncClient,
 )
-from google.shopping.merchant_reports_v1beta.services.report_service.client import (
+from google.shopping.merchant_reports_v1.services.report_service.client import (
     ReportServiceClient,
 )
-from google.shopping.merchant_reports_v1beta.types.reports import (
+from google.shopping.merchant_reports_v1.types.reports import (
     BestSellersBrandView,
     BestSellersProductClusterView,
     CompetitiveVisibilityBenchmarkView,

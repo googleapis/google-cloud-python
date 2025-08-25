@@ -1,0 +1,37 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# TODO(https://github.com/googleapis/google-cloud-python/issues/14142):
+# Reduce this timeout by moving the installation of Python runtimes to a separate base image
+timeout: 7200s  # 2 hours for the first uncached run, can be lowered later.
+steps:
+  # A single step using the Kaniko executor to build and cache
+  - name: 'gcr.io/kaniko-project/executor:latest'
+    args:
+      # Specifies the Dockerfile path
+      - '--dockerfile=.generator/Dockerfile'
+      # Specifies the build context directory
+      - '--context=.'
+      # The final destination for the image
+      - '--destination=gcr.io/$PROJECT_ID/python-librarian-generator:latest'
+      # Enables Kaniko's remote registry caching
+      - '--cache=true'
+      # (Optional but recommended) Sets a time-to-live for cache layers
+      - '--cache-ttl=24h'
+
+# The 'images' section is no longer needed because Kaniko pushes the image itself.
+
+options:
+  default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
+  machineType: E2_HIGHCPU_32

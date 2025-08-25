@@ -173,10 +173,6 @@ __protobuf__ = proto.module(
         "GetChannelGroupRequest",
         "ListChannelGroupsRequest",
         "ListChannelGroupsResponse",
-        "SetAutomatedGa4ConfigurationOptOutRequest",
-        "SetAutomatedGa4ConfigurationOptOutResponse",
-        "FetchAutomatedGa4ConfigurationOptOutRequest",
-        "FetchAutomatedGa4ConfigurationOptOutResponse",
         "CreateBigQueryLinkRequest",
         "GetBigQueryLinkRequest",
         "ListBigQueryLinksRequest",
@@ -187,18 +183,11 @@ __protobuf__ = proto.module(
         "UpdateEnhancedMeasurementSettingsRequest",
         "GetDataRedactionSettingsRequest",
         "UpdateDataRedactionSettingsRequest",
-        "CreateConnectedSiteTagRequest",
-        "CreateConnectedSiteTagResponse",
-        "DeleteConnectedSiteTagRequest",
-        "ListConnectedSiteTagsRequest",
-        "ListConnectedSiteTagsResponse",
         "CreateAdSenseLinkRequest",
         "GetAdSenseLinkRequest",
         "DeleteAdSenseLinkRequest",
         "ListAdSenseLinksRequest",
         "ListAdSenseLinksResponse",
-        "FetchConnectedGa4PropertyRequest",
-        "FetchConnectedGa4PropertyResponse",
         "CreateEventCreateRuleRequest",
         "UpdateEventCreateRuleRequest",
         "DeleteEventCreateRuleRequest",
@@ -239,6 +228,7 @@ __protobuf__ = proto.module(
         "ListSubpropertySyncConfigsRequest",
         "ListSubpropertySyncConfigsResponse",
         "UpdateSubpropertySyncConfigRequest",
+        "GetReportingIdentitySettingsRequest",
     },
 )
 
@@ -3773,74 +3763,6 @@ class ListChannelGroupsResponse(proto.Message):
     )
 
 
-class SetAutomatedGa4ConfigurationOptOutRequest(proto.Message):
-    r"""Request for setting the opt out status for the automated GA4
-    setup process.
-
-    Attributes:
-        property (str):
-            Required. The UA property to set the opt out
-            status. Note this request uses the internal
-            property ID, not the tracking ID of the form
-            UA-XXXXXX-YY. Format:
-            properties/{internalWebPropertyId}
-            Example: properties/1234
-        opt_out (bool):
-            The status to set.
-    """
-
-    property: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    opt_out: bool = proto.Field(
-        proto.BOOL,
-        number=2,
-    )
-
-
-class SetAutomatedGa4ConfigurationOptOutResponse(proto.Message):
-    r"""Response message for setting the opt out status for the
-    automated GA4 setup process.
-
-    """
-
-
-class FetchAutomatedGa4ConfigurationOptOutRequest(proto.Message):
-    r"""Request for fetching the opt out status for the automated GA4
-    setup process.
-
-    Attributes:
-        property (str):
-            Required. The UA property to get the opt out
-            status. Note this request uses the internal
-            property ID, not the tracking ID of the form
-            UA-XXXXXX-YY. Format:
-            properties/{internalWebPropertyId}
-            Example: properties/1234
-    """
-
-    property: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class FetchAutomatedGa4ConfigurationOptOutResponse(proto.Message):
-    r"""Response message for fetching the opt out status for the
-    automated GA4 setup process.
-
-    Attributes:
-        opt_out (bool):
-            The opt out status for the UA property.
-    """
-
-    opt_out: bool = proto.Field(
-        proto.BOOL,
-        number=1,
-    )
-
-
 class CreateBigQueryLinkRequest(proto.Message):
     r"""Request message for CreateBigQueryLink RPC.
 
@@ -4070,98 +3992,6 @@ class UpdateDataRedactionSettingsRequest(proto.Message):
     )
 
 
-class CreateConnectedSiteTagRequest(proto.Message):
-    r"""Request message for CreateConnectedSiteTag RPC.
-
-    Attributes:
-        property (str):
-            The Universal Analytics property to create
-            connected site tags for. This API does not
-            support GA4 properties. Format:
-            properties/{universalAnalyticsPropertyId}
-            Example: properties/1234
-        connected_site_tag (google.analytics.admin_v1alpha.types.ConnectedSiteTag):
-            Required. The tag to add to the Universal
-            Analytics property
-    """
-
-    property: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    connected_site_tag: resources.ConnectedSiteTag = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message=resources.ConnectedSiteTag,
-    )
-
-
-class CreateConnectedSiteTagResponse(proto.Message):
-    r"""Response message for CreateConnectedSiteTag RPC."""
-
-
-class DeleteConnectedSiteTagRequest(proto.Message):
-    r"""Request message for DeleteConnectedSiteTag RPC.
-
-    Attributes:
-        property (str):
-            The Universal Analytics property to delete
-            connected site tags for. This API does not
-            support GA4 properties. Format:
-            properties/{universalAnalyticsPropertyId}
-            Example: properties/1234
-        tag_id (str):
-            Tag ID to forward events to. Also known as
-            the Measurement ID, or the "G-ID"  (For example:
-            G-12345).
-    """
-
-    property: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    tag_id: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-
-
-class ListConnectedSiteTagsRequest(proto.Message):
-    r"""Request message for ListConnectedSiteTags RPC.
-
-    Attributes:
-        property (str):
-            The Universal Analytics property to fetch connected site
-            tags for. This does not work on GA4 properties. A maximum of
-            20 connected site tags will be returned. Example Format:
-            ``properties/1234``
-    """
-
-    property: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class ListConnectedSiteTagsResponse(proto.Message):
-    r"""Response message for ListConnectedSiteTags RPC.
-
-    Attributes:
-        connected_site_tags (MutableSequence[google.analytics.admin_v1alpha.types.ConnectedSiteTag]):
-            The site tags for the Universal Analytics
-            property. A maximum of 20 connected site tags
-            will be returned.
-    """
-
-    connected_site_tags: MutableSequence[
-        resources.ConnectedSiteTag
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.ConnectedSiteTag,
-    )
-
-
 class CreateAdSenseLinkRequest(proto.Message):
     r"""Request message to be passed to CreateAdSenseLink method.
 
@@ -4279,42 +4109,6 @@ class ListAdSenseLinksResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
-    )
-
-
-class FetchConnectedGa4PropertyRequest(proto.Message):
-    r"""Request for looking up GA4 property connected to a UA
-    property.
-
-    Attributes:
-        property (str):
-            Required. The UA property for which to look up the connected
-            GA4 property. Note this request uses the internal property
-            ID, not the tracking ID of the form UA-XXXXXX-YY. Format:
-            properties/{internal_web_property_id} Example:
-            properties/1234
-    """
-
-    property: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class FetchConnectedGa4PropertyResponse(proto.Message):
-    r"""Response for looking up GA4 property connected to a UA
-    property.
-
-    Attributes:
-        property (str):
-            The GA4 property connected to the UA property. An empty
-            string is returned when there is no connected GA4 property.
-            Format: properties/{property_id} Example: properties/1234
-    """
-
-    property: str = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 
@@ -5246,8 +5040,21 @@ class SubmitUserDeletionRequest(proto.Message):
 
             This field is a member of `oneof`_ ``user``.
         user_provided_data (str):
-            The un-hashed, unencrypted, `user-provided
+            `User-provided
             data <https://support.google.com/analytics/answer/14077171>`__.
+            May contain either one email address or one phone number.
+
+            Email addresses should be normalized as such:
+
+            -  lowercase
+            -  remove periods before @ for gmail.com/googlemail.com
+               addresses
+            -  remove all spaces
+
+            Phone numbers should be normalized as such:
+
+            -  remove all non digit characters
+            -  add + prefix
 
             This field is a member of `oneof`_ ``user``.
         name (str):
@@ -5357,7 +5164,7 @@ class ListSubpropertySyncConfigsResponse(proto.Message):
 
     Attributes:
         subproperty_sync_configs (MutableSequence[google.analytics.admin_v1alpha.types.SubpropertySyncConfig]):
-            List of Subproperty Sync Configs.
+            List of ``SubpropertySyncConfig`` resources.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
@@ -5386,8 +5193,7 @@ class UpdateSubpropertySyncConfigRequest(proto.Message):
 
     Attributes:
         subproperty_sync_config (google.analytics.admin_v1alpha.types.SubpropertySyncConfig):
-            Required. The SubpropertySyncConfig to
-            update.
+            Required. The ``SubpropertySyncConfig`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The list of fields to update. Field names must be
             in snake case (for example, "field_to_update"). Omitted
@@ -5404,6 +5210,25 @@ class UpdateSubpropertySyncConfigRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetReportingIdentitySettingsRequest(proto.Message):
+    r"""Request message for GetReportingIdentitySettings RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the settings to lookup.
+            Format:
+
+            properties/{property}/reportingIdentitySettings
+            Example:
+            "properties/1000/reportingIdentitySettings".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

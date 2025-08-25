@@ -1,14 +1,14 @@
 Python Client for Shopping Type Protos
 ======================================
 
-|preview| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `Shopping Type Protos`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-shopping-type.svg
    :target: https://pypi.org/project/google-shopping-type/

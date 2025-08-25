@@ -22,9 +22,12 @@ import pytest
 
 from cli import (
     GENERATE_REQUEST_FILE,
+    BUILD_REQUEST_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
     _build_bazel_target,
+    _clean_up_files_after_post_processing,
+    _copy_files_needed_for_post_processing,
     _determine_bazel_rule,
     _get_library_id,
     _locate_and_extract_artifact,
@@ -43,6 +46,26 @@ def mock_generate_request_file(tmp_path, monkeypatch):
     """Creates the mock request file at the correct path inside a temp dir."""
     # Create the path as expected by the script: .librarian/generate-request.json
     request_path = f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir()
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_content = {
+        "id": "google-cloud-language",
+        "apis": [{"path": "google/cloud/language/v1"}],
+    }
+    request_file.write_text(json.dumps(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
+
+
+@pytest.fixture
+def mock_build_request_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/build-request.json
+    request_path = f"{LIBRARIAN_DIR}/{BUILD_REQUEST_FILE}"
     request_dir = tmp_path / os.path.dirname(request_path)
     request_dir.mkdir()
     request_file = request_dir / os.path.basename(request_path)
@@ -110,10 +133,8 @@ def test_determine_bazel_rule_success(mocker, caplog):
     Tests the happy path of _determine_bazel_rule.
     """
     caplog.set_level(logging.INFO)
-    mock_result = MagicMock(
-        stdout="//google/cloud/language/v1:google-cloud-language-v1-py\n"
-    )
-    mocker.patch("cli.subprocess.run", return_value=mock_result)
+    mock_content = 'name = "google-cloud-language-v1-py",\n'
+    mocker.patch("cli.open", mock_open(read_data=mock_content))
 
     rule = _determine_bazel_rule("google/cloud/language/v1", "source")
 
@@ -131,15 +152,35 @@ def test_build_bazel_target_success(mocker, caplog):
     assert "Bazel build for mock/bazel:rule rule completed successfully" in caplog.text
 
 
+def test_build_bazel_target_fails_to_find_rule_match(mocker, caplog):
+    """
+    Tests that ValueError is raised if the subprocess command fails.
+    """
+    caplog.set_level(logging.ERROR)
+    mock_content = '"google-cloud-language-v1-py",\n'
+    mocker.patch("cli.open", mock_open(read_data=mock_content))
+
+    with pytest.raises(ValueError):
+        _build_bazel_target("mock/bazel:rule", "source")
+
+
+def test_build_bazel_target_fails_to_determine_rule(caplog):
+    """
+    Tests that ValueError is raised if the subprocess command fails.
+    """
+    caplog.set_level(logging.ERROR)
+    with pytest.raises(ValueError):
+        _build_bazel_target("mock/bazel:rule", "source")
+
+
 def test_build_bazel_target_fails(mocker, caplog):
     """
     Tests that ValueError is raised if the subprocess command fails.
     """
     caplog.set_level(logging.ERROR)
-    mocker.patch(
-        "cli.subprocess.run",
-        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Build failed"),
-    )
+    mock_content = '"google-cloud-language-v1-py",\n'
+    mocker.patch("cli.open", mock_open(read_data=mock_content))
+
     with pytest.raises(ValueError):
         _build_bazel_target("mock/bazel:rule", "source")
 
@@ -174,7 +215,7 @@ def test_locate_and_extract_artifact_success(mocker, caplog):
         "google-cloud-language",
         "source",
         "output",
-        "google/cloud/language/v1"
+        "google/cloud/language/v1",
     )
     assert (
         "Found artifact at: /path/to/bazel-bin/google/cloud/language/v1/rule-py.tar.gz"
@@ -205,6 +246,9 @@ def test_locate_and_extract_artifact_fails(mocker, caplog):
         _locate_and_extract_artifact(
             "//google/cloud/language/v1:rule-py",
             "google-cloud-language",
+            "source",
+            "output",
+            "google/cloud/language/v1",
         )
 
 
@@ -214,25 +258,16 @@ def test_run_post_processor_success(mocker, caplog):
     """
     caplog.set_level(logging.INFO)
     mocker.patch("cli.SYNTHTOOL_INSTALLED", return_value=True)
-    mock_subprocess = mocker.patch("cli.subprocess.run")
+    mock_chdir = mocker.patch("cli.os.chdir")
+    mock_owlbot_main = mocker.patch(
+        "cli.synthtool.languages.python_mono_repo.owlbot_main"
+    )
+    _run_post_processor("output", "google-cloud-language")
 
-    _run_post_processor()
+    mock_chdir.assert_called_once()
 
-    mock_subprocess.assert_called_once()
-
-    assert mock_subprocess.call_args.kwargs["cwd"] == "output"
+    mock_owlbot_main.assert_called_once_with("packages/google-cloud-language")
     assert "Python post-processor ran successfully." in caplog.text
-
-
-def test_locate_and_extract_artifact_fails(mocker, caplog):
-    """
-    Tests that an exception is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.INFO)
-    mocker.patch("cli.SYNTHTOOL_INSTALLED", return_value=True)
-
-    with pytest.raises(FileNotFoundError):
-        _run_post_processor()
 
 
 def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
@@ -247,10 +282,23 @@ def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
     mock_build_target = mocker.patch("cli._build_bazel_target")
     mock_locate_and_extract_artifact = mocker.patch("cli._locate_and_extract_artifact")
     mock_run_post_processor = mocker.patch("cli._run_post_processor")
+    mock_copy_files_needed_for_post_processing = mocker.patch(
+        "cli._copy_files_needed_for_post_processing"
+    )
+    mock_clean_up_files_after_post_processing = mocker.patch(
+        "cli._clean_up_files_after_post_processing"
+    )
 
     handle_generate()
 
     mock_determine_rule.assert_called_once_with("google/cloud/language/v1", "source")
+    mock_run_post_processor.assert_called_once_with("output", "google-cloud-language")
+    mock_copy_files_needed_for_post_processing.assert_called_once_with(
+        "output", "input", "google-cloud-language"
+    )
+    mock_clean_up_files_after_post_processing.assert_called_once_with(
+        "output", "google-cloud-language"
+    )
 
 
 def test_handle_generate_fail(caplog):
@@ -271,14 +319,15 @@ def test_run_individual_session_success(mocker, caplog):
 
     test_session = "unit-3.9"
     test_library_id = "test-library"
-    _run_individual_session(test_session, test_library_id)
+    repo = "repo"
+    _run_individual_session(test_session, test_library_id, repo)
 
     expected_command = [
         "nox",
         "-s",
         test_session,
         "-f",
-        f"{REPO_DIR}/packages/{test_library_id}",
+        f"{REPO_DIR}/packages/{test_library_id}/noxfile.py",
     ]
     mock_subprocess_run.assert_called_once_with(expected_command, text=True, check=True)
 
@@ -293,23 +342,25 @@ def test_run_individual_session_failure(mocker):
     )
 
     with pytest.raises(subprocess.CalledProcessError):
-        _run_individual_session("lint", "another-library")
+        _run_individual_session("lint", "another-library", "repo")
 
 
-def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
+def test_run_nox_sessions_success(
+    mocker, mock_generate_request_data_for_nox, mock_build_request_file
+):
     """Tests that _run_nox_sessions successfully runs all specified sessions."""
     mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
     mocker.patch("cli._get_library_id", return_value="mock-library")
     mock_run_individual_session = mocker.patch("cli._run_individual_session")
 
     sessions_to_run = ["unit-3.9", "lint"]
-    _run_nox_sessions(sessions_to_run, "librarian")
+    _run_nox_sessions(sessions_to_run, "librarian", "repo")
 
     assert mock_run_individual_session.call_count == len(sessions_to_run)
     mock_run_individual_session.assert_has_calls(
         [
-            mocker.call("unit-3.9", "mock-library"),
-            mocker.call("lint", "mock-library"),
+            mocker.call("unit-3.9", "mock-library", "repo"),
+            mocker.call("lint", "mock-library", "repo"),
         ]
     )
 
@@ -319,7 +370,7 @@ def test_run_nox_sessions_read_file_failure(mocker):
     mocker.patch("cli._read_json_file", side_effect=FileNotFoundError("file not found"))
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"], "librarian")
+        _run_nox_sessions(["unit-3.9"], "librarian", "repo")
 
 
 def test_run_nox_sessions_get_library_id_failure(mocker):
@@ -331,7 +382,7 @@ def test_run_nox_sessions_get_library_id_failure(mocker):
     )
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"], "librarian")
+        _run_nox_sessions(["unit-3.9"], "librarian", "repo")
 
 
 def test_run_nox_sessions_individual_session_failure(
@@ -347,7 +398,7 @@ def test_run_nox_sessions_individual_session_failure(
 
     sessions_to_run = ["unit-3.9", "lint"]
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(sessions_to_run, "librarian")
+        _run_nox_sessions(sessions_to_run, "librarian", "repo")
 
     # Check that _run_individual_session was called at least once
     assert mock_run_individual_session.call_count > 0
@@ -388,3 +439,18 @@ def test_invalid_json(mocker):
 
     with pytest.raises(json.JSONDecodeError):
         _read_json_file("fake/path.json")
+
+
+def test_copy_files_needed_for_post_processing_success(mocker):
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    _copy_files_needed_for_post_processing("output", "input", "library_id")
+
+    mock_makedirs.assert_called()
+    mock_shutil_copy.assert_called_once()
+
+
+def test_clean_up_files_after_post_processing_success(mocker):
+    mock_shutil_rmtree = mocker.patch("shutil.rmtree")
+    mock_os_remove = mocker.patch("os.remove")
+    _clean_up_files_after_post_processing("output", "library_id")

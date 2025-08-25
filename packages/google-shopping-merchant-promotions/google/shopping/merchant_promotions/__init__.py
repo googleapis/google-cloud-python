@@ -18,20 +18,20 @@ from google.shopping.merchant_promotions import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_promotions_v1beta.services.promotions_service.async_client import (
+from google.shopping.merchant_promotions_v1.services.promotions_service.async_client import (
     PromotionsServiceAsyncClient,
 )
-from google.shopping.merchant_promotions_v1beta.services.promotions_service.client import (
+from google.shopping.merchant_promotions_v1.services.promotions_service.client import (
     PromotionsServiceClient,
 )
-from google.shopping.merchant_promotions_v1beta.types.promotions import (
+from google.shopping.merchant_promotions_v1.types.promotions import (
     GetPromotionRequest,
     InsertPromotionRequest,
     ListPromotionsRequest,
     ListPromotionsResponse,
     Promotion,
 )
-from google.shopping.merchant_promotions_v1beta.types.promotions_common import (
+from google.shopping.merchant_promotions_v1.types.promotions_common import (
     Attributes,
     CouponValueType,
     OfferType,

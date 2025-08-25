@@ -20,6 +20,7 @@ from .resources import (
     ElementaryStream,
     Encryption,
     Input,
+    InputAttributes,
     Job,
     JobConfig,
     JobTemplate,
@@ -32,6 +33,7 @@ from .resources import (
     SegmentSettings,
     SpriteSheet,
     TextStream,
+    TrackDefinition,
     VideoStream,
 )
 from .services import (
@@ -54,6 +56,7 @@ __all__ = (
     "ElementaryStream",
     "Encryption",
     "Input",
+    "InputAttributes",
     "Job",
     "JobConfig",
     "JobTemplate",
@@ -66,6 +69,7 @@ __all__ = (
     "SegmentSettings",
     "SpriteSheet",
     "TextStream",
+    "TrackDefinition",
     "VideoStream",
     "CreateJobRequest",
     "CreateJobTemplateRequest",

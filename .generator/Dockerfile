@@ -138,38 +138,6 @@ RUN apt-get update && \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Create the group and user, but only if they don't already exist.
-# NOTE: A user needs to be configured by passing down the UID/GID with the 
-# docker build command to allow the user running the librarian CLI to have
-# the permissions within the /app and /bazel_cache directories in the following way:
-# DOCKER_BUILDKIT=1 docker build -f .generator/Dockerfile  --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t python-librarian-generator:latest .
-ARG UID=1000
-ARG GID=1000
-
-RUN if ! getent group $GID > /dev/null; then \
-        groupadd -g $GID myuser; \
-    fi && \
-    if ! getent passwd $UID > /dev/null; then \
-        useradd -u $UID -g $GID -ms /bin/bash myuser; \
-    fi
-
-# 2025/08/05 08:27:44 could not create directory /.cache/bazelisk: mkdir /.cache: permission denied
-# Traceback (most recent call last):
-#   File "/app/./cli.py", line 147, in _build_bazel_target
-#     subprocess.run(
-#   File "/usr/local/lib/python3.9/subprocess.py", line 528, in run
-#     raise CalledProcessError(retcode, process.args,
-# subprocess.CalledProcessError: Command '['bazelisk', '--output_base=/bazel_cache/_bazel_ubuntu/output_base', 'build', '--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos', '--incompatible_strict_action_env', '//google/cloud/language/v1beta2:language-v1beta2-py']' returned non-zero exit status 1
-# We'll point both to the /bazel_cache directory which will be mounted as a volume.
-ENV BAZELISK_HOME="/bazel_cache/bazelisk"
-ENV BAZEL_HOME="/bazel_cache/bazel"
-RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
-             ${BAZEL_HOME}/_bazel_ubuntu/output_base \
-             ${BAZELISK_HOME} && \
-    chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
-
-USER $UID
-
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.9 /usr/local/lib/python3.9
@@ -190,7 +158,8 @@ COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
 
 # Copy bazel cache from the builder.
-COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
+COPY --from=builder /bazel_cache /bazel_cache
+RUN chmod -R 777 /bazel_cache
 
 # Set the working directory in the container.
 WORKDIR /app
@@ -207,7 +176,7 @@ bazel_env/bin/python3.9 -m pip install /tmp/synthtool nox && \
 rm -rf /tmp/synthtool
 
 # Copy the CLI script into the container.
-COPY --chown=$UID:$GID .generator/cli.py .
+COPY .generator/cli.py .
 RUN chmod a+rx ./cli.py
 
 ENTRYPOINT ["python3.9", "./cli.py"]

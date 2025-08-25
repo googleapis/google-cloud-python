@@ -1702,6 +1702,7 @@ def test_find_closest_building_insights_rest_required_fields(
     assert not set(unset_fields) - set(
         (
             "exact_quality_required",
+            "experiments",
             "location",
             "required_quality",
         )
@@ -1764,6 +1765,7 @@ def test_find_closest_building_insights_rest_unset_required_fields():
         set(
             (
                 "exactQualityRequired",
+                "experiments",
                 "location",
                 "requiredQuality",
             )
@@ -1842,6 +1844,7 @@ def test_get_data_layers_rest_required_fields(
     assert not set(unset_fields) - set(
         (
             "exact_quality_required",
+            "experiments",
             "location",
             "pixel_size_meters",
             "radius_meters",
@@ -1913,6 +1916,7 @@ def test_get_data_layers_rest_unset_required_fields():
         set(
             (
                 "exactQualityRequired",
+                "experiments",
                 "location",
                 "pixelSizeMeters",
                 "radiusMeters",
