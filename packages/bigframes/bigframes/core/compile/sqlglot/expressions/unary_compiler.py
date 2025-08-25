@@ -177,14 +177,96 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     )
 
 
+@UNARY_OP_REGISTRATION.register(ops.StrContainsOp)
+def _(op: ops.StrContainsOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Like(this=expr.expr, expression=sge.convert(f"%{op.pat}%"))
+
+
 @UNARY_OP_REGISTRATION.register(ops.StrContainsRegexOp)
 def _(op: ops.StrContainsRegexOp, expr: TypedExpr) -> sge.Expression:
     return sge.RegexpLike(this=expr.expr, expression=sge.convert(op.pat))
 
 
-@UNARY_OP_REGISTRATION.register(ops.StrContainsOp)
-def _(op: ops.StrContainsOp, expr: TypedExpr) -> sge.Expression:
-    return sge.Like(this=expr.expr, expression=sge.convert(f"%{op.pat}%"))
+@UNARY_OP_REGISTRATION.register(ops.StrExtractOp)
+def _(op: ops.StrExtractOp, expr: TypedExpr) -> sge.Expression:
+    return sge.RegexpExtract(
+        this=expr.expr, expression=sge.convert(op.pat), group=sge.convert(op.n)
+    )
+
+
+@UNARY_OP_REGISTRATION.register(ops.StrFindOp)
+def _(op: ops.StrFindOp, expr: TypedExpr) -> sge.Expression:
+    # INSTR is 1-based, so we need to adjust the start position.
+    start = sge.convert(op.start + 1) if op.start is not None else sge.convert(1)
+    if op.end is not None:
+        # BigQuery's INSTR doesn't support `end`, so we need to use SUBSTR.
+        return sge.func(
+            "INSTR",
+            sge.Substring(
+                this=expr.expr,
+                start=start,
+                length=sge.convert(op.end - (op.start or 0)),
+            ),
+            sge.convert(op.substr),
+        ) - sge.convert(1)
+    else:
+        return sge.func(
+            "INSTR",
+            expr.expr,
+            sge.convert(op.substr),
+            start,
+        ) - sge.convert(1)
+
+
+@UNARY_OP_REGISTRATION.register(ops.StrLstripOp)
+def _(op: ops.StrLstripOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Trim(this=expr.expr, expression=sge.convert(op.to_strip), side="LEFT")
+
+
+@UNARY_OP_REGISTRATION.register(ops.StrPadOp)
+def _(op: ops.StrPadOp, expr: TypedExpr) -> sge.Expression:
+    pad_length = sge.func(
+        "GREATEST", sge.Length(this=expr.expr), sge.convert(op.length)
+    )
+    if op.side == "left":
+        return sge.func(
+            "LPAD",
+            expr.expr,
+            pad_length,
+            sge.convert(op.fillchar),
+        )
+    elif op.side == "right":
+        return sge.func(
+            "RPAD",
+            expr.expr,
+            pad_length,
+            sge.convert(op.fillchar),
+        )
+    else:  # side == both
+        lpad_amount = sge.Cast(
+            this=sge.func(
+                "SAFE_DIVIDE",
+                sge.Sub(this=pad_length, expression=sge.Length(this=expr.expr)),
+                sge.convert(2),
+            ),
+            to="INT64",
+        ) + sge.Length(this=expr.expr)
+        return sge.func(
+            "RPAD",
+            sge.func(
+                "LPAD",
+                expr.expr,
+                lpad_amount,
+                sge.convert(op.fillchar),
+            ),
+            pad_length,
+            sge.convert(op.fillchar),
+        )
+
+
+@UNARY_OP_REGISTRATION.register(ops.StrRepeatOp)
+def _(op: ops.StrRepeatOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Repeat(this=expr.expr, times=sge.convert(op.repeats))
 
 
 @UNARY_OP_REGISTRATION.register(ops.date_op)
@@ -444,11 +526,6 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Extract(this=sge.Identifier(this="MONTH"), expression=expr.expr)
 
 
-@UNARY_OP_REGISTRATION.register(ops.StrLstripOp)
-def _(op: ops.StrLstripOp, expr: TypedExpr) -> sge.Expression:
-    return sge.Trim(this=expr.expr, expression=sge.convert(op.to_strip), side="LEFT")
-
-
 @UNARY_OP_REGISTRATION.register(ops.neg_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Neg(this=expr.expr)
@@ -482,6 +559,18 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
 @UNARY_OP_REGISTRATION.register(ops.quarter_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Extract(this=sge.Identifier(this="QUARTER"), expression=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.ReplaceStrOp)
+def _(op: ops.ReplaceStrOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("REPLACE", expr.expr, sge.convert(op.pat), sge.convert(op.repl))
+
+
+@UNARY_OP_REGISTRATION.register(ops.RegexReplaceStrOp)
+def _(op: ops.RegexReplaceStrOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func(
+        "REGEXP_REPLACE", expr.expr, sge.convert(op.pat), sge.convert(op.repl)
+    )
 
 
 @UNARY_OP_REGISTRATION.register(ops.reverse_op)
