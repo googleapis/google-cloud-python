@@ -199,14 +199,6 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_create_connected_site_tag(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_create_connected_site_tag(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_create_conversion_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -391,10 +383,6 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_connected_site_tag(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
             def pre_delete_conversion_event(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -466,22 +454,6 @@ class AnalyticsAdminServiceRestInterceptor:
             def pre_delete_subproperty_event_filter(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
-
-            def pre_fetch_automated_ga4_configuration_opt_out(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_fetch_automated_ga4_configuration_opt_out(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_fetch_connected_ga4_property(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_fetch_connected_ga4_property(self, response):
-                logging.log(f"Received response: {response}")
-                return response
 
             def pre_get_access_binding(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -699,6 +671,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_reporting_identity_settings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_reporting_identity_settings(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_rollup_property_source_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -800,14 +780,6 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_list_channel_groups(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_list_connected_site_tags(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_list_connected_site_tags(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1004,14 +976,6 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_search_change_history_events(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_set_automated_ga4_configuration_opt_out(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_set_automated_ga4_configuration_opt_out(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1915,58 +1879,6 @@ class AnalyticsAdminServiceRestInterceptor:
         `post_create_channel_group` interceptor. The (possibly modified) response returned by
         `post_create_channel_group` will be passed to
         `post_create_channel_group_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_create_connected_site_tag(
-        self,
-        request: analytics_admin.CreateConnectedSiteTagRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.CreateConnectedSiteTagRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for create_connected_site_tag
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_create_connected_site_tag(
-        self, response: analytics_admin.CreateConnectedSiteTagResponse
-    ) -> analytics_admin.CreateConnectedSiteTagResponse:
-        """Post-rpc interceptor for create_connected_site_tag
-
-        DEPRECATED. Please use the `post_create_connected_site_tag_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code. This `post_create_connected_site_tag` interceptor runs
-        before the `post_create_connected_site_tag_with_metadata` interceptor.
-        """
-        return response
-
-    def post_create_connected_site_tag_with_metadata(
-        self,
-        response: analytics_admin.CreateConnectedSiteTagResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.CreateConnectedSiteTagResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for create_connected_site_tag
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the AnalyticsAdminService server but before it is returned to user code.
-
-        We recommend only using this `post_create_connected_site_tag_with_metadata`
-        interceptor in new development instead of the `post_create_connected_site_tag` interceptor.
-        When both interceptors are used, this `post_create_connected_site_tag_with_metadata` interceptor runs after the
-        `post_create_connected_site_tag` interceptor. The (possibly modified) response returned by
-        `post_create_connected_site_tag` will be passed to
-        `post_create_connected_site_tag_with_metadata`.
         """
         return response, metadata
 
@@ -3058,21 +2970,6 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return request, metadata
 
-    def pre_delete_connected_site_tag(
-        self,
-        request: analytics_admin.DeleteConnectedSiteTagRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.DeleteConnectedSiteTagRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for delete_connected_site_tag
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
     def pre_delete_conversion_event(
         self,
         request: analytics_admin.DeleteConversionEventRequest,
@@ -3356,110 +3253,6 @@ class AnalyticsAdminServiceRestInterceptor:
         before they are sent to the AnalyticsAdminService server.
         """
         return request, metadata
-
-    def pre_fetch_automated_ga4_configuration_opt_out(
-        self,
-        request: analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for fetch_automated_ga4_configuration_opt_out
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_fetch_automated_ga4_configuration_opt_out(
-        self, response: analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse
-    ) -> analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
-        """Post-rpc interceptor for fetch_automated_ga4_configuration_opt_out
-
-        DEPRECATED. Please use the `post_fetch_automated_ga4_configuration_opt_out_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code. This `post_fetch_automated_ga4_configuration_opt_out` interceptor runs
-        before the `post_fetch_automated_ga4_configuration_opt_out_with_metadata` interceptor.
-        """
-        return response
-
-    def post_fetch_automated_ga4_configuration_opt_out_with_metadata(
-        self,
-        response: analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for fetch_automated_ga4_configuration_opt_out
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the AnalyticsAdminService server but before it is returned to user code.
-
-        We recommend only using this `post_fetch_automated_ga4_configuration_opt_out_with_metadata`
-        interceptor in new development instead of the `post_fetch_automated_ga4_configuration_opt_out` interceptor.
-        When both interceptors are used, this `post_fetch_automated_ga4_configuration_opt_out_with_metadata` interceptor runs after the
-        `post_fetch_automated_ga4_configuration_opt_out` interceptor. The (possibly modified) response returned by
-        `post_fetch_automated_ga4_configuration_opt_out` will be passed to
-        `post_fetch_automated_ga4_configuration_opt_out_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_fetch_connected_ga4_property(
-        self,
-        request: analytics_admin.FetchConnectedGa4PropertyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.FetchConnectedGa4PropertyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for fetch_connected_ga4_property
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_fetch_connected_ga4_property(
-        self, response: analytics_admin.FetchConnectedGa4PropertyResponse
-    ) -> analytics_admin.FetchConnectedGa4PropertyResponse:
-        """Post-rpc interceptor for fetch_connected_ga4_property
-
-        DEPRECATED. Please use the `post_fetch_connected_ga4_property_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code. This `post_fetch_connected_ga4_property` interceptor runs
-        before the `post_fetch_connected_ga4_property_with_metadata` interceptor.
-        """
-        return response
-
-    def post_fetch_connected_ga4_property_with_metadata(
-        self,
-        response: analytics_admin.FetchConnectedGa4PropertyResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.FetchConnectedGa4PropertyResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for fetch_connected_ga4_property
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the AnalyticsAdminService server but before it is returned to user code.
-
-        We recommend only using this `post_fetch_connected_ga4_property_with_metadata`
-        interceptor in new development instead of the `post_fetch_connected_ga4_property` interceptor.
-        When both interceptors are used, this `post_fetch_connected_ga4_property_with_metadata` interceptor runs after the
-        `post_fetch_connected_ga4_property` interceptor. The (possibly modified) response returned by
-        `post_fetch_connected_ga4_property` will be passed to
-        `post_fetch_connected_ga4_property_with_metadata`.
-        """
-        return response, metadata
 
     def pre_get_access_binding(
         self,
@@ -4787,6 +4580,57 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_reporting_identity_settings(
+        self,
+        request: analytics_admin.GetReportingIdentitySettingsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetReportingIdentitySettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_reporting_identity_settings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_reporting_identity_settings(
+        self, response: resources.ReportingIdentitySettings
+    ) -> resources.ReportingIdentitySettings:
+        """Post-rpc interceptor for get_reporting_identity_settings
+
+        DEPRECATED. Please use the `post_get_reporting_identity_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code. This `post_get_reporting_identity_settings` interceptor runs
+        before the `post_get_reporting_identity_settings_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_reporting_identity_settings_with_metadata(
+        self,
+        response: resources.ReportingIdentitySettings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resources.ReportingIdentitySettings, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_reporting_identity_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnalyticsAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_get_reporting_identity_settings_with_metadata`
+        interceptor in new development instead of the `post_get_reporting_identity_settings` interceptor.
+        When both interceptors are used, this `post_get_reporting_identity_settings_with_metadata` interceptor runs after the
+        `post_get_reporting_identity_settings` interceptor. The (possibly modified) response returned by
+        `post_get_reporting_identity_settings` will be passed to
+        `post_get_reporting_identity_settings_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_rollup_property_source_link(
         self,
         request: analytics_admin.GetRollupPropertySourceLinkRequest,
@@ -5450,58 +5294,6 @@ class AnalyticsAdminServiceRestInterceptor:
         `post_list_channel_groups` interceptor. The (possibly modified) response returned by
         `post_list_channel_groups` will be passed to
         `post_list_channel_groups_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_list_connected_site_tags(
-        self,
-        request: analytics_admin.ListConnectedSiteTagsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.ListConnectedSiteTagsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for list_connected_site_tags
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_list_connected_site_tags(
-        self, response: analytics_admin.ListConnectedSiteTagsResponse
-    ) -> analytics_admin.ListConnectedSiteTagsResponse:
-        """Post-rpc interceptor for list_connected_site_tags
-
-        DEPRECATED. Please use the `post_list_connected_site_tags_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code. This `post_list_connected_site_tags` interceptor runs
-        before the `post_list_connected_site_tags_with_metadata` interceptor.
-        """
-        return response
-
-    def post_list_connected_site_tags_with_metadata(
-        self,
-        response: analytics_admin.ListConnectedSiteTagsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.ListConnectedSiteTagsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for list_connected_site_tags
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the AnalyticsAdminService server but before it is returned to user code.
-
-        We recommend only using this `post_list_connected_site_tags_with_metadata`
-        interceptor in new development instead of the `post_list_connected_site_tags` interceptor.
-        When both interceptors are used, this `post_list_connected_site_tags_with_metadata` interceptor runs after the
-        `post_list_connected_site_tags` interceptor. The (possibly modified) response returned by
-        `post_list_connected_site_tags` will be passed to
-        `post_list_connected_site_tags_with_metadata`.
         """
         return response, metadata
 
@@ -6758,58 +6550,6 @@ class AnalyticsAdminServiceRestInterceptor:
         `post_search_change_history_events` interceptor. The (possibly modified) response returned by
         `post_search_change_history_events` will be passed to
         `post_search_change_history_events_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_set_automated_ga4_configuration_opt_out(
-        self,
-        request: analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for set_automated_ga4_configuration_opt_out
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_set_automated_ga4_configuration_opt_out(
-        self, response: analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse
-    ) -> analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
-        """Post-rpc interceptor for set_automated_ga4_configuration_opt_out
-
-        DEPRECATED. Please use the `post_set_automated_ga4_configuration_opt_out_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code. This `post_set_automated_ga4_configuration_opt_out` interceptor runs
-        before the `post_set_automated_ga4_configuration_opt_out_with_metadata` interceptor.
-        """
-        return response
-
-    def post_set_automated_ga4_configuration_opt_out_with_metadata(
-        self,
-        response: analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for set_automated_ga4_configuration_opt_out
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the AnalyticsAdminService server but before it is returned to user code.
-
-        We recommend only using this `post_set_automated_ga4_configuration_opt_out_with_metadata`
-        interceptor in new development instead of the `post_set_automated_ga4_configuration_opt_out` interceptor.
-        When both interceptors are used, this `post_set_automated_ga4_configuration_opt_out_with_metadata` interceptor runs after the
-        `post_set_automated_ga4_configuration_opt_out` interceptor. The (possibly modified) response returned by
-        `post_set_automated_ga4_configuration_opt_out` will be passed to
-        `post_set_automated_ga4_configuration_opt_out_with_metadata`.
         """
         return response, metadata
 
@@ -10750,164 +10490,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 )
             return resp
 
-    class _CreateConnectedSiteTag(
-        _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag,
-        AnalyticsAdminServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash("AnalyticsAdminServiceRestTransport.CreateConnectedSiteTag")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: analytics_admin.CreateConnectedSiteTagRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> analytics_admin.CreateConnectedSiteTagResponse:
-            r"""Call the create connected site tag method over HTTP.
-
-            Args:
-                request (~.analytics_admin.CreateConnectedSiteTagRequest):
-                    The request object. Request message for
-                CreateConnectedSiteTag RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.analytics_admin.CreateConnectedSiteTagResponse:
-                    Response message for
-                CreateConnectedSiteTag RPC.
-
-            """
-
-            http_options = (
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_create_connected_site_tag(
-                request, metadata
-            )
-            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateConnectedSiteTag",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "CreateConnectedSiteTag",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = AnalyticsAdminServiceRestTransport._CreateConnectedSiteTag._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.CreateConnectedSiteTagResponse()
-            pb_resp = analytics_admin.CreateConnectedSiteTagResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_create_connected_site_tag(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_connected_site_tag_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = (
-                        analytics_admin.CreateConnectedSiteTagResponse.to_json(response)
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_connected_site_tag",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "CreateConnectedSiteTag",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     class _CreateConversionEvent(
         _BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent,
         AnalyticsAdminServiceRestStub,
@@ -14833,122 +14415,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteConnectedSiteTag(
-        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag,
-        AnalyticsAdminServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash("AnalyticsAdminServiceRestTransport.DeleteConnectedSiteTag")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: analytics_admin.DeleteConnectedSiteTagRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ):
-            r"""Call the delete connected site tag method over HTTP.
-
-            Args:
-                request (~.analytics_admin.DeleteConnectedSiteTagRequest):
-                    The request object. Request message for
-                DeleteConnectedSiteTag RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-            """
-
-            http_options = (
-                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_delete_connected_site_tag(
-                request, metadata
-            )
-            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = json_format.MessageToJson(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteConnectedSiteTag",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "DeleteConnectedSiteTag",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = AnalyticsAdminServiceRestTransport._DeleteConnectedSiteTag._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
     class _DeleteConversionEvent(
         _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConversionEvent,
         AnalyticsAdminServiceRestStub,
@@ -16908,334 +16374,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
-
-    class _FetchAutomatedGa4ConfigurationOptOut(
-        _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut,
-        AnalyticsAdminServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash(
-                "AnalyticsAdminServiceRestTransport.FetchAutomatedGa4ConfigurationOptOut"
-            )
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
-            r"""Call the fetch automated ga4
-            configuration opt out method over HTTP.
-
-                Args:
-                    request (~.analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest):
-                        The request object. Request for fetching the opt out
-                    status for the automated GA4 setup
-                    process.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
-
-                Returns:
-                    ~.analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
-                        Response message for fetching the opt
-                    out status for the automated GA4 setup
-                    process.
-
-            """
-
-            http_options = (
-                _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_http_options()
-            )
-
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_fetch_automated_ga4_configuration_opt_out(
-                request, metadata
-            )
-            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.FetchAutomatedGa4ConfigurationOptOut",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "FetchAutomatedGa4ConfigurationOptOut",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = AnalyticsAdminServiceRestTransport._FetchAutomatedGa4ConfigurationOptOut._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse()
-            pb_resp = analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse.pb(
-                resp
-            )
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_fetch_automated_ga4_configuration_opt_out(
-                resp
-            )
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_automated_ga4_configuration_opt_out_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse.to_json(
-                        response
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.fetch_automated_ga4_configuration_opt_out",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "FetchAutomatedGa4ConfigurationOptOut",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _FetchConnectedGa4Property(
-        _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property,
-        AnalyticsAdminServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash("AnalyticsAdminServiceRestTransport.FetchConnectedGa4Property")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: analytics_admin.FetchConnectedGa4PropertyRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> analytics_admin.FetchConnectedGa4PropertyResponse:
-            r"""Call the fetch connected ga4
-            property method over HTTP.
-
-                Args:
-                    request (~.analytics_admin.FetchConnectedGa4PropertyRequest):
-                        The request object. Request for looking up GA4 property
-                    connected to a UA property.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
-
-                Returns:
-                    ~.analytics_admin.FetchConnectedGa4PropertyResponse:
-                        Response for looking up GA4 property
-                    connected to a UA property.
-
-            """
-
-            http_options = (
-                _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_fetch_connected_ga4_property(
-                request, metadata
-            )
-            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.FetchConnectedGa4Property",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "FetchConnectedGa4Property",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = AnalyticsAdminServiceRestTransport._FetchConnectedGa4Property._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.FetchConnectedGa4PropertyResponse()
-            pb_resp = analytics_admin.FetchConnectedGa4PropertyResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_fetch_connected_ga4_property(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_connected_ga4_property_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = (
-                        analytics_admin.FetchConnectedGa4PropertyResponse.to_json(
-                            response
-                        )
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.fetch_connected_ga4_property",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "FetchConnectedGa4Property",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
 
     class _GetAccessBinding(
         _BaseAnalyticsAdminServiceRestTransport._BaseGetAccessBinding,
@@ -21387,6 +20525,164 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 )
             return resp
 
+    class _GetReportingIdentitySettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetReportingIdentitySettings,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "AnalyticsAdminServiceRestTransport.GetReportingIdentitySettings"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.GetReportingIdentitySettingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> resources.ReportingIdentitySettings:
+            r"""Call the get reporting identity
+            settings method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.GetReportingIdentitySettingsRequest):
+                        The request object. Request message for
+                    GetReportingIdentitySettings RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.resources.ReportingIdentitySettings:
+                        A resource containing settings
+                    related to reporting identity.
+
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetReportingIdentitySettings._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_reporting_identity_settings(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetReportingIdentitySettings._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetReportingIdentitySettings._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetReportingIdentitySettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetReportingIdentitySettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AnalyticsAdminServiceRestTransport._GetReportingIdentitySettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.ReportingIdentitySettings()
+            pb_resp = resources.ReportingIdentitySettings.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_reporting_identity_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_reporting_identity_settings_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ReportingIdentitySettings.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_reporting_identity_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetReportingIdentitySettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetRollupPropertySourceLink(
         _BaseAnalyticsAdminServiceRestTransport._BaseGetRollupPropertySourceLink,
         AnalyticsAdminServiceRestStub,
@@ -23387,166 +22683,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     extra={
                         "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "rpcName": "ListChannelGroups",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _ListConnectedSiteTags(
-        _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags,
-        AnalyticsAdminServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash("AnalyticsAdminServiceRestTransport.ListConnectedSiteTags")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: analytics_admin.ListConnectedSiteTagsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> analytics_admin.ListConnectedSiteTagsResponse:
-            r"""Call the list connected site tags method over HTTP.
-
-            Args:
-                request (~.analytics_admin.ListConnectedSiteTagsRequest):
-                    The request object. Request message for
-                ListConnectedSiteTags RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.analytics_admin.ListConnectedSiteTagsResponse:
-                    Response message for
-                ListConnectedSiteTags RPC.
-
-            """
-
-            http_options = (
-                _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_list_connected_site_tags(
-                request, metadata
-            )
-            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListConnectedSiteTags",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "ListConnectedSiteTags",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = (
-                AnalyticsAdminServiceRestTransport._ListConnectedSiteTags._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.ListConnectedSiteTagsResponse()
-            pb_resp = analytics_admin.ListConnectedSiteTagsResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_list_connected_site_tags(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_connected_site_tags_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = (
-                        analytics_admin.ListConnectedSiteTagsResponse.to_json(response)
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_connected_site_tags",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "ListConnectedSiteTags",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -27442,177 +26578,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     extra={
                         "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "rpcName": "SearchChangeHistoryEvents",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _SetAutomatedGa4ConfigurationOptOut(
-        _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut,
-        AnalyticsAdminServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash(
-                "AnalyticsAdminServiceRestTransport.SetAutomatedGa4ConfigurationOptOut"
-            )
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
-            r"""Call the set automated ga4
-            configuration opt out method over HTTP.
-
-                Args:
-                    request (~.analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest):
-                        The request object. Request for setting the opt out
-                    status for the automated GA4 setup
-                    process.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
-
-                Returns:
-                    ~.analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
-                        Response message for setting the opt
-                    out status for the automated GA4 setup
-                    process.
-
-            """
-
-            http_options = (
-                _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_http_options()
-            )
-
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_set_automated_ga4_configuration_opt_out(
-                request, metadata
-            )
-            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.SetAutomatedGa4ConfigurationOptOut",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "SetAutomatedGa4ConfigurationOptOut",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = AnalyticsAdminServiceRestTransport._SetAutomatedGa4ConfigurationOptOut._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse()
-            pb_resp = analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse.pb(
-                resp
-            )
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_set_automated_ga4_configuration_opt_out(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_set_automated_ga4_configuration_opt_out_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse.to_json(
-                        response
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.set_automated_ga4_configuration_opt_out",
-                    extra={
-                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "rpcName": "SetAutomatedGa4ConfigurationOptOut",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -32439,17 +31404,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         return self._CreateChannelGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_connected_site_tag(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateConnectedSiteTagRequest],
-        analytics_admin.CreateConnectedSiteTagResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._CreateConnectedSiteTag(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def create_conversion_event(
         self,
     ) -> Callable[
@@ -32699,14 +31653,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         return self._DeleteChannelGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_connected_site_tag(
-        self,
-    ) -> Callable[[analytics_admin.DeleteConnectedSiteTagRequest], empty_pb2.Empty]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._DeleteConnectedSiteTag(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def delete_conversion_event(
         self,
     ) -> Callable[[analytics_admin.DeleteConversionEventRequest], empty_pb2.Empty]:
@@ -32856,28 +31802,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSubpropertyEventFilter(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def fetch_automated_ga4_configuration_opt_out(
-        self,
-    ) -> Callable[
-        [analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest],
-        analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._FetchAutomatedGa4ConfigurationOptOut(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def fetch_connected_ga4_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.FetchConnectedGa4PropertyRequest],
-        analytics_admin.FetchConnectedGa4PropertyResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._FetchConnectedGa4Property(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_access_binding(
@@ -33137,6 +32061,17 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         return self._GetReportingDataAnnotation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_reporting_identity_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetReportingIdentitySettingsRequest],
+        resources.ReportingIdentitySettings,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetReportingIdentitySettings(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_rollup_property_source_link(
         self,
     ) -> Callable[
@@ -33275,17 +32210,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListChannelGroups(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_connected_site_tags(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListConnectedSiteTagsRequest],
-        analytics_admin.ListConnectedSiteTagsResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ListConnectedSiteTags(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_conversion_events(
@@ -33556,17 +32480,6 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchChangeHistoryEvents(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def set_automated_ga4_configuration_opt_out(
-        self,
-    ) -> Callable[
-        [analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest],
-        analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._SetAutomatedGa4ConfigurationOptOut(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def submit_user_deletion(
