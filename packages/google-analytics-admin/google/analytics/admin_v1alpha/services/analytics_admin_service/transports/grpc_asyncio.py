@@ -3503,74 +3503,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_channel_group"]
 
     @property
-    def set_automated_ga4_configuration_opt_out(
-        self,
-    ) -> Callable[
-        [analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest],
-        Awaitable[analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse],
-    ]:
-        r"""Return a callable for the set automated ga4
-        configuration opt out method over gRPC.
-
-        Sets the opt out status for the automated GA4 setup
-        process for a UA property.
-        Note: this has no effect on GA4 property.
-
-        Returns:
-            Callable[[~.SetAutomatedGa4ConfigurationOptOutRequest],
-                    Awaitable[~.SetAutomatedGa4ConfigurationOptOutResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "set_automated_ga4_configuration_opt_out" not in self._stubs:
-            self._stubs[
-                "set_automated_ga4_configuration_opt_out"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/SetAutomatedGa4ConfigurationOptOut",
-                request_serializer=analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest.serialize,
-                response_deserializer=analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse.deserialize,
-            )
-        return self._stubs["set_automated_ga4_configuration_opt_out"]
-
-    @property
-    def fetch_automated_ga4_configuration_opt_out(
-        self,
-    ) -> Callable[
-        [analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest],
-        Awaitable[analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse],
-    ]:
-        r"""Return a callable for the fetch automated ga4
-        configuration opt out method over gRPC.
-
-        Fetches the opt out status for the automated GA4
-        setup process for a UA property.
-        Note: this has no effect on GA4 property.
-
-        Returns:
-            Callable[[~.FetchAutomatedGa4ConfigurationOptOutRequest],
-                    Awaitable[~.FetchAutomatedGa4ConfigurationOptOutResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "fetch_automated_ga4_configuration_opt_out" not in self._stubs:
-            self._stubs[
-                "fetch_automated_ga4_configuration_opt_out"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/FetchAutomatedGa4ConfigurationOptOut",
-                request_serializer=analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest.serialize,
-                response_deserializer=analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse.deserialize,
-            )
-        return self._stubs["fetch_automated_ga4_configuration_opt_out"]
-
-    @property
     def create_big_query_link(
         self,
     ) -> Callable[
@@ -3778,133 +3710,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=resources.EnhancedMeasurementSettings.deserialize,
             )
         return self._stubs["update_enhanced_measurement_settings"]
-
-    @property
-    def create_connected_site_tag(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateConnectedSiteTagRequest],
-        Awaitable[analytics_admin.CreateConnectedSiteTagResponse],
-    ]:
-        r"""Return a callable for the create connected site tag method over gRPC.
-
-        Creates a connected site tag for a Universal
-        Analytics property. You can create a maximum of 20
-        connected site tags per property. Note: This API cannot
-        be used on GA4 properties.
-
-        Returns:
-            Callable[[~.CreateConnectedSiteTagRequest],
-                    Awaitable[~.CreateConnectedSiteTagResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_connected_site_tag" not in self._stubs:
-            self._stubs["create_connected_site_tag"] = self._logged_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateConnectedSiteTag",
-                request_serializer=analytics_admin.CreateConnectedSiteTagRequest.serialize,
-                response_deserializer=analytics_admin.CreateConnectedSiteTagResponse.deserialize,
-            )
-        return self._stubs["create_connected_site_tag"]
-
-    @property
-    def delete_connected_site_tag(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteConnectedSiteTagRequest], Awaitable[empty_pb2.Empty]
-    ]:
-        r"""Return a callable for the delete connected site tag method over gRPC.
-
-        Deletes a connected site tag for a Universal
-        Analytics property. Note: this has no effect on GA4
-        properties.
-
-        Returns:
-            Callable[[~.DeleteConnectedSiteTagRequest],
-                    Awaitable[~.Empty]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_connected_site_tag" not in self._stubs:
-            self._stubs["delete_connected_site_tag"] = self._logged_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteConnectedSiteTag",
-                request_serializer=analytics_admin.DeleteConnectedSiteTagRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_connected_site_tag"]
-
-    @property
-    def list_connected_site_tags(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListConnectedSiteTagsRequest],
-        Awaitable[analytics_admin.ListConnectedSiteTagsResponse],
-    ]:
-        r"""Return a callable for the list connected site tags method over gRPC.
-
-        Lists the connected site tags for a Universal
-        Analytics property. A maximum of 20 connected site tags
-        will be returned. Note: this has no effect on GA4
-        property.
-
-        Returns:
-            Callable[[~.ListConnectedSiteTagsRequest],
-                    Awaitable[~.ListConnectedSiteTagsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_connected_site_tags" not in self._stubs:
-            self._stubs["list_connected_site_tags"] = self._logged_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListConnectedSiteTags",
-                request_serializer=analytics_admin.ListConnectedSiteTagsRequest.serialize,
-                response_deserializer=analytics_admin.ListConnectedSiteTagsResponse.deserialize,
-            )
-        return self._stubs["list_connected_site_tags"]
-
-    @property
-    def fetch_connected_ga4_property(
-        self,
-    ) -> Callable[
-        [analytics_admin.FetchConnectedGa4PropertyRequest],
-        Awaitable[analytics_admin.FetchConnectedGa4PropertyResponse],
-    ]:
-        r"""Return a callable for the fetch connected ga4 property method over gRPC.
-
-        Given a specified UA property, looks up the GA4
-        property connected to it. Note: this cannot be used with
-        GA4 properties.
-
-        Returns:
-            Callable[[~.FetchConnectedGa4PropertyRequest],
-                    Awaitable[~.FetchConnectedGa4PropertyResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "fetch_connected_ga4_property" not in self._stubs:
-            self._stubs[
-                "fetch_connected_ga4_property"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/FetchConnectedGa4Property",
-                request_serializer=analytics_admin.FetchConnectedGa4PropertyRequest.serialize,
-                response_deserializer=analytics_admin.FetchConnectedGa4PropertyResponse.deserialize,
-            )
-        return self._stubs["fetch_connected_ga4_property"]
 
     @property
     def get_ad_sense_link(
@@ -5097,7 +4902,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the list subproperty sync configs method over gRPC.
 
-        List all Subproperty Sync Configs on a property.
+        List all ``SubpropertySyncConfig`` resources for a property.
 
         Returns:
             Callable[[~.ListSubpropertySyncConfigsRequest],
@@ -5128,7 +4933,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the update subproperty sync config method over gRPC.
 
-        Updates a Subproperty Sync Config.
+        Updates a ``SubpropertySyncConfig``.
 
         Returns:
             Callable[[~.UpdateSubpropertySyncConfigRequest],
@@ -5159,7 +4964,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
     ]:
         r"""Return a callable for the get subproperty sync config method over gRPC.
 
-        Lookup for a single Subproperty Sync Config.
+        Lookup for a single ``SubpropertySyncConfig``.
 
         Returns:
             Callable[[~.GetSubpropertySyncConfigRequest],
@@ -5180,6 +4985,39 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=resources.SubpropertySyncConfig.deserialize,
             )
         return self._stubs["get_subproperty_sync_config"]
+
+    @property
+    def get_reporting_identity_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetReportingIdentitySettingsRequest],
+        Awaitable[resources.ReportingIdentitySettings],
+    ]:
+        r"""Return a callable for the get reporting identity
+        settings method over gRPC.
+
+        Returns the singleton data retention settings for
+        this property.
+
+        Returns:
+            Callable[[~.GetReportingIdentitySettingsRequest],
+                    Awaitable[~.ReportingIdentitySettings]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_reporting_identity_settings" not in self._stubs:
+            self._stubs[
+                "get_reporting_identity_settings"
+            ] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetReportingIdentitySettings",
+                request_serializer=analytics_admin.GetReportingIdentitySettingsRequest.serialize,
+                response_deserializer=resources.ReportingIdentitySettings.deserialize,
+            )
+        return self._stubs["get_reporting_identity_settings"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
@@ -5704,16 +5542,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.set_automated_ga4_configuration_opt_out: self._wrap_method(
-                self.set_automated_ga4_configuration_opt_out,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.fetch_automated_ga4_configuration_opt_out: self._wrap_method(
-                self.fetch_automated_ga4_configuration_opt_out,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.create_big_query_link: self._wrap_method(
                 self.create_big_query_link,
                 default_timeout=None,
@@ -5747,26 +5575,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
             self.update_enhanced_measurement_settings: self._wrap_method(
                 self.update_enhanced_measurement_settings,
                 default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.create_connected_site_tag: self._wrap_method(
-                self.create_connected_site_tag,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_connected_site_tag: self._wrap_method(
-                self.delete_connected_site_tag,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_connected_site_tags: self._wrap_method(
-                self.list_connected_site_tags,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.fetch_connected_ga4_property: self._wrap_method(
-                self.fetch_connected_ga4_property,
-                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_ad_sense_link: self._wrap_method(
@@ -5976,6 +5784,11 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
             ),
             self.get_subproperty_sync_config: self._wrap_method(
                 self.get_subproperty_sync_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_reporting_identity_settings: self._wrap_method(
+                self.get_reporting_identity_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
