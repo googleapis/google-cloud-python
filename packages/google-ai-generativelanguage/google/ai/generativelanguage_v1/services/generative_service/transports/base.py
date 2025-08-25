@@ -208,6 +208,11 @@ class GenerativeServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_operation: gapic_v1.method.wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -314,6 +319,12 @@ class GenerativeServiceTransport(abc.ABC):
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
         raise NotImplementedError()
 
     @property

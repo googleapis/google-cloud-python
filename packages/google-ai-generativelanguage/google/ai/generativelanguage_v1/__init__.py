@@ -24,7 +24,14 @@ from .services.generative_service import (
 )
 from .services.model_service import ModelServiceAsyncClient, ModelServiceClient
 from .types.citation import CitationMetadata, CitationSource
-from .types.content import Blob, Content, Modality, ModalityTokenCount, Part
+from .types.content import (
+    Blob,
+    Content,
+    Modality,
+    ModalityTokenCount,
+    Part,
+    VideoMetadata,
+)
 from .types.generative_service import (
     BatchEmbedContentsRequest,
     BatchEmbedContentsResponse,
@@ -45,6 +52,8 @@ from .types.generative_service import (
     SearchEntryPoint,
     Segment,
     TaskType,
+    UrlContextMetadata,
+    UrlMetadata,
 )
 from .types.model import Model
 from .types.model_service import GetModelRequest, ListModelsRequest, ListModelsResponse
@@ -88,4 +97,7 @@ __all__ = (
     "SearchEntryPoint",
     "Segment",
     "TaskType",
+    "UrlContextMetadata",
+    "UrlMetadata",
+    "VideoMetadata",
 )
