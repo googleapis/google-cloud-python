@@ -118,7 +118,7 @@ class DataChatServiceClientMeta(type):
 
 class DataChatServiceClient(metaclass=DataChatServiceClientMeta):
     """Service to ask a natural language question on top of BigQuery
-    and LookerStudio datasources to get back streamed responses of
+    and Looker Studio datasources to get back streamed responses of
     various kinds to help provide a rich conversational answer.
     """
 
@@ -754,7 +754,9 @@ class DataChatServiceClient(metaclass=DataChatServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Iterable[data_chat_service.Message]:
-        r"""Answers a data question by generating a stream of [Message]s.
+        r"""Answers a data question by generating a stream of
+        [Message][google.cloud.geminidataanalytics.v1alpha.Message]
+        objects.
 
         .. code-block:: python
 
@@ -806,8 +808,8 @@ class DataChatServiceClient(metaclass=DataChatServiceClientMeta):
 
         Returns:
             Iterable[google.cloud.geminidataanalytics_v1beta.types.Message]:
-                A message from an internaction
-                between the user and the system.
+                A message from an interaction between
+                the user and the system.
 
         """
         # Create or coerce a protobuf request object.
@@ -903,8 +905,11 @@ class DataChatServiceClient(metaclass=DataChatServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             conversation_id (str):
-                Optional. The conversation id of the
-                conversation to create.
+                Optional. The conversation id of the conversation to
+                create. Must be unique within the parent. The allowed
+                format is: ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``. If not
+                provided, the server will auto-generate a value for the
+                id.
 
                 This corresponds to the ``conversation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -980,7 +985,7 @@ class DataChatServiceClient(metaclass=DataChatServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> conversation.Conversation:
-        r"""Gets details of a single conversation using
+        r"""Gets details of a single conversation by using
         conversation id and parent.
 
         .. code-block:: python

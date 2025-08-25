@@ -1146,7 +1146,8 @@ class DataAgentServiceClient(metaclass=DataAgentServiceClientMeta):
             data_agent_id (str):
                 Optional. Id of the requesting object. Must be unique
                 within the parent. The allowed format is:
-                ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
+                ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``. If not provided,
+                the server will auto-generate a value for the id.
 
                 This corresponds to the ``data_agent_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

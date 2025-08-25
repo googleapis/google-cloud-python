@@ -15,11 +15,6 @@
                 "retrieve_big_query_recent_relevant_tables"
               ]
             },
-            "RetrieveBigQueryTableContext": {
-              "methods": [
-                "retrieve_big_query_table_context"
-              ]
-            },
             "RetrieveBigQueryTableContexts": {
               "methods": [
                 "retrieve_big_query_table_contexts"
@@ -50,11 +45,6 @@
                 "retrieve_big_query_recent_relevant_tables"
               ]
             },
-            "RetrieveBigQueryTableContext": {
-              "methods": [
-                "retrieve_big_query_table_context"
-              ]
-            },
             "RetrieveBigQueryTableContexts": {
               "methods": [
                 "retrieve_big_query_table_contexts"
@@ -83,11 +73,6 @@
             "RetrieveBigQueryRecentRelevantTables": {
               "methods": [
                 "retrieve_big_query_recent_relevant_tables"
-              ]
-            },
-            "RetrieveBigQueryTableContext": {
-              "methods": [
-                "retrieve_big_query_table_context"
               ]
             },
             "RetrieveBigQueryTableContexts": {
