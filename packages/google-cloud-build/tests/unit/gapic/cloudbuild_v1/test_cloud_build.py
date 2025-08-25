@@ -15549,6 +15549,7 @@ def test_create_worker_pool_rest_call_success(request_type):
             "worker_config": {
                 "machine_type": "machine_type_value",
                 "disk_size_gb": 1261,
+                "enable_nested_virtualization": True,
             },
             "network_config": {
                 "peered_network": "peered_network_value",
@@ -16030,6 +16031,7 @@ def test_update_worker_pool_rest_call_success(request_type):
             "worker_config": {
                 "machine_type": "machine_type_value",
                 "disk_size_gb": 1261,
+                "enable_nested_virtualization": True,
             },
             "network_config": {
                 "peered_network": "peered_network_value",
