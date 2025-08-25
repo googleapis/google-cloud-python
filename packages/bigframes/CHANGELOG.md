@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.17.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.16.0...v2.17.0) (2025-08-22)
+
+
+### Features
+
+* Add isin local execution impl ([#1993](https://github.com/googleapis/python-bigquery-dataframes/issues/1993)) ([26df6e6](https://github.com/googleapis/python-bigquery-dataframes/commit/26df6e691bb27ed09322a81214faedbf3639b32e))
+* Add reset_index names, col_level, col_fill, allow_duplicates args ([#2017](https://github.com/googleapis/python-bigquery-dataframes/issues/2017)) ([c02a1b6](https://github.com/googleapis/python-bigquery-dataframes/commit/c02a1b67d27758815430bb8006ac3a72cea55a89))
+* Support callable for series mask method ([#2014](https://github.com/googleapis/python-bigquery-dataframes/issues/2014)) ([5ac32eb](https://github.com/googleapis/python-bigquery-dataframes/commit/5ac32ebe17cfda447870859f5dd344b082b4d3d0))
+
 ## [2.16.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.15.0...v2.16.0) (2025-08-20)
 
 
