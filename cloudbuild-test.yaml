@@ -24,7 +24,7 @@ steps:
       # Specifies the build context directory
       - '--context=.'
       # The final destination for the image
-      - '--destination=us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-dev/python-librarian-generator:latest'
+      - '--destination=gcr.io/$PROJECT_ID/python-librarian-generator:latest'
       # Enables Kaniko's remote registry caching
       - '--cache=true'
       # (Optional but recommended) Sets a time-to-live for cache layers
@@ -33,5 +33,5 @@ steps:
 # The 'images' section is no longer needed because Kaniko pushes the image itself.
 
 options:
-  logging: CLOUD_LOGGING_ONLY
+  default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
   machineType: E2_HIGHCPU_32
