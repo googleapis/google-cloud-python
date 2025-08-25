@@ -36,7 +36,7 @@ jobs:
       - name: Get current date
         id: date
         run: echo "current_date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         # Use a fetch-depth of 2
         # See https://github.com/googleapis/google-cloud-python/issues/12013
         # and https://github.com/actions/checkout#checkout-head.
@@ -45,7 +45,7 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.13"
       - name: Install script dependencies
         run: pip3 install -r requirements.txt
         working-directory: ./scripts
