@@ -406,6 +406,18 @@ def test_mask_series_cond(scalars_df_index, scalars_pandas_df_index):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_mask_callable(scalars_df_index, scalars_pandas_df_index):
+    def is_positive(x):
+        return x > 0
+
+    bf_df = scalars_df_index[["int64_too", "int64_col", "float64_col"]]
+    pd_df = scalars_pandas_df_index[["int64_too", "int64_col", "float64_col"]]
+    bf_result = bf_df.mask(cond=is_positive, other=lambda x: x + 1).to_pandas()
+    pd_result = pd_df.mask(cond=is_positive, other=lambda x: x + 1)
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
 def test_where_multi_column(scalars_df_index, scalars_pandas_df_index):
     # Test when a dataframe has multi-columns.
     columns = ["int64_col", "float64_col"]

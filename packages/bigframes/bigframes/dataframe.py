@@ -2828,6 +2828,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             for item in df.itertuples(index=index, name=name):
                 yield item
 
+    def _apply_callable(self, condition):
+        """Executes the possible callable condition as needed."""
+        if callable(condition):
+            # When it's a bigframes function.
+            if hasattr(condition, "bigframes_bigquery_function"):
+                return self.apply(condition, axis=1)
+
+            # When it's a plain Python function.
+            return condition(self)
+
+        # When it's not a callable.
+        return condition
+
     def where(self, cond, other=None):
         if isinstance(other, bigframes.series.Series):
             raise ValueError("Seires is not a supported replacement type!")
@@ -2839,16 +2852,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         # Execute it with the DataFrame when cond or/and other is callable.
         # It can be either a plain python function or remote/managed function.
-        if callable(cond):
-            if hasattr(cond, "bigframes_bigquery_function"):
-                cond = self.apply(cond, axis=1)
-            else:
-                cond = cond(self)
-        if callable(other):
-            if hasattr(other, "bigframes_bigquery_function"):
-                other = self.apply(other, axis=1)
-            else:
-                other = other(self)
+        cond = self._apply_callable(cond)
+        other = self._apply_callable(other)
 
         aligned_block, (_, _) = self._block.join(cond._block, how="left")
         # No left join is needed when 'other' is None or constant.
@@ -2899,7 +2904,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return result
 
     def mask(self, cond, other=None):
-        return self.where(~cond, other=other)
+        return self.where(~self._apply_callable(cond), other=other)
 
     def dropna(
         self,
