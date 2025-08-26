@@ -1232,6 +1232,9 @@ class ChatServiceAsyncClient:
                 -  ``accessory_widgets`` (Requires `app
                    authentication </chat/api/guides/auth/service-accounts>`__.)
 
+                -  ``quoted_message_metadata`` (Only allows removal of
+                   the quoted message.)
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

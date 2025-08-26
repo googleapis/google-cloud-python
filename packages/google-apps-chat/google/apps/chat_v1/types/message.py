@@ -232,10 +232,19 @@ class Message(proto.Message):
             Output only. Information about a deleted message. A message
             is deleted when ``delete_time`` is set.
         quoted_message_metadata (google.apps.chat_v1.types.QuotedMessageMetadata):
-            Output only. Information about a message
-            that's quoted by a Google Chat user in a space.
-            Google Chat users can quote a message to reply
-            to it.
+            Optional. Information about a message that another message
+            quotes.
+
+            When you create a message, you can quote messages within the
+            same thread, or quote a root message to create a new root
+            message. However, you can't quote a message reply from a
+            different thread.
+
+            When you update a message, you can't add or replace the
+            ``quotedMessageMetadata`` field, but you can remove it.
+
+            For example usage, see `Quote another
+            message <https://developers.google.com/workspace/chat/create-messages#quote-a-message>`__.
         attached_gifs (MutableSequence[google.apps.chat_v1.types.AttachedGif]):
             Output only. GIF images that are attached to
             the message.
@@ -397,17 +406,33 @@ class AttachedGif(proto.Message):
 
 
 class QuotedMessageMetadata(proto.Message):
-    r"""Information about a quoted message.
+    r"""Information about a message that another message quotes.
+
+    When you create a message, you can quote messages within the same
+    thread, or quote a root message to create a new root message.
+    However, you can't quote a message reply from a different thread.
+
+    When you update a message, you can't add or replace the
+    ``quotedMessageMetadata`` field, but you can remove it.
+
+    For example usage, see `Quote another
+    message <https://developers.google.com/workspace/chat/create-messages#quote-a-message>`__.
 
     Attributes:
         name (str):
-            Output only. Resource name of the quoted message.
+            Required. Resource name of the message that is quoted.
 
             Format: ``spaces/{space}/messages/{message}``
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The timestamp when the quoted
-            message was created or when the quoted message
-            was last updated.
+            Required. The timestamp when the quoted message was created
+            or when the quoted message was last updated.
+
+            If the message was edited, use this field,
+            ``last_update_time``. If the message was never edited, use
+            ``create_time``.
+
+            If ``last_update_time`` doesn't match the latest version of
+            the quoted message, the request fails.
     """
 
     name: str = proto.Field(
@@ -679,6 +704,9 @@ class UpdateMessageRequest(proto.Message):
 
             -  ``accessory_widgets`` (Requires `app
                authentication </chat/api/guides/auth/service-accounts>`__.)
+
+            -  ``quoted_message_metadata`` (Only allows removal of the
+               quoted message.)
         allow_missing (bool):
             Optional. If ``true`` and the message isn't found, a new
             message is created and ``updateMask`` is ignored. The
