@@ -11,5 +11,5 @@ branchProtectionRules:
     - 'Kokoro system-3.12'
     - 'cla/google'
     - 'Samples - Lint'
-    - 'Samples - Python 3.8'
+    - 'Samples - Python 3.9'
     - 'Samples - Python 3.12'

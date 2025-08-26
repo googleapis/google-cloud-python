@@ -56,14 +56,15 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.7
+Python >= 3.9
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 Python == 2.7.
 Python == 3.5.
 Python == 3.6.
-
+Python == 3.7.
+Python == 3.8.
 
 Mac/Linux
 ^^^^^^^^^

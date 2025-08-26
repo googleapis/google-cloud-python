@@ -236,6 +236,8 @@ s.move(
         ".github/release-please.yml",
         ".kokoro/test-samples-impl.sh",
         ".kokoro/presubmit/presubmit.cfg",
+        ".kokoro/samples/python3.7/**",
+        ".kokoro/samples/python3.8/**",
     ],
 )
 
@@ -258,6 +260,17 @@ s.replace("CONTRIBUTING.rst", "samples/snippets", "samples/samples")
 # ----------------------------------------------------------------------------
 
 python.py_samples()
+
+s.replace(
+    "samples/**/noxfile.py",
+    'BLACK_VERSION = "black==22.3.0"',
+    'BLACK_VERSION = "black==23.7.0"',
+)
+s.replace(
+    "samples/**/noxfile.py",
+    r'ALL_VERSIONS = \["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"\]',
+    'ALL_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]',
+)
 
 # Use a python runtime which is available in the owlbot post processor here
 # https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
