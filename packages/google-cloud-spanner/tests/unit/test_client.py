@@ -46,7 +46,8 @@ class TestClient(unittest.TestCase):
         },
     }
     DEFAULT_TRANSACTION_OPTIONS = DefaultTransactionOptions(
-        isolation_level="SERIALIZABLE"
+        isolation_level="SERIALIZABLE",
+        read_lock_mode="PESSIMISTIC",
     )
 
     def _get_target_class(self):

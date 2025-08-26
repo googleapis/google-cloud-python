@@ -509,6 +509,7 @@ class Session(object):
                    This does not exclude the transaction from being recorded in the change streams with
                    the DDL option `allow_txn_exclusion` being false or unset.
                    "isolation_level" sets the isolation level for the transaction.
+                   "read_lock_mode" sets the read lock mode for the transaction.
 
         :rtype: Any
         :returns: The return value of ``func``.
@@ -525,6 +526,7 @@ class Session(object):
             "exclude_txn_from_change_streams", None
         )
         isolation_level = kw.pop("isolation_level", None)
+        read_lock_mode = kw.pop("read_lock_mode", None)
 
         database = self._database
         log_commit_stats = database.log_commit_stats
@@ -549,6 +551,7 @@ class Session(object):
                 txn.transaction_tag = transaction_tag
                 txn.exclude_txn_from_change_streams = exclude_txn_from_change_streams
                 txn.isolation_level = isolation_level
+                txn.read_lock_mode = read_lock_mode
 
                 if self.is_multiplexed:
                     txn._multiplexed_session_previous_transaction_id = (

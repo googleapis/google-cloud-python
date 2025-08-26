@@ -61,6 +61,9 @@ class Transaction(_SnapshotBase, _BatchBase):
     isolation_level: TransactionOptions.IsolationLevel = (
         TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED
     )
+    read_lock_mode: TransactionOptions.ReadWrite.ReadLockMode = (
+        TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED
+    )
 
     # Override defaults from _SnapshotBase.
     _multi_use: bool = True
@@ -89,7 +92,8 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         merge_transaction_options = TransactionOptions(
             read_write=TransactionOptions.ReadWrite(
-                multiplexed_session_previous_transaction_id=self._multiplexed_session_previous_transaction_id
+                multiplexed_session_previous_transaction_id=self._multiplexed_session_previous_transaction_id,
+                read_lock_mode=self.read_lock_mode,
             ),
             exclude_txn_from_change_streams=self.exclude_txn_from_change_streams,
             isolation_level=self.isolation_level,
@@ -784,6 +788,9 @@ class BatchTransactionId:
 @dataclass
 class DefaultTransactionOptions:
     isolation_level: str = TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED
+    read_lock_mode: str = (
+        TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED
+    )
     _defaultReadWriteTransactionOptions: Optional[TransactionOptions] = field(
         init=False, repr=False
     )
@@ -791,7 +798,10 @@ class DefaultTransactionOptions:
     def __post_init__(self):
         """Initialize _defaultReadWriteTransactionOptions automatically"""
         self._defaultReadWriteTransactionOptions = TransactionOptions(
-            isolation_level=self.isolation_level
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=self.read_lock_mode,
+            ),
+            isolation_level=self.isolation_level,
         )
 
     @property

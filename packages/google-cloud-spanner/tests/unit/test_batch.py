@@ -300,6 +300,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         max_commit_delay_in=None,
         exclude_txn_from_change_streams=False,
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
+        read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
     ):
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
@@ -315,6 +316,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
             max_commit_delay=max_commit_delay_in,
             exclude_txn_from_change_streams=exclude_txn_from_change_streams,
             isolation_level=isolation_level,
+            read_lock_mode=read_lock_mode,
         )
 
         self.assertEqual(committed, now)
@@ -346,6 +348,10 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(
             single_use_txn.isolation_level,
             isolation_level,
+        )
+        self.assertEqual(
+            single_use_txn.read_write.read_lock_mode,
+            read_lock_mode,
         )
         req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertEqual(
@@ -422,6 +428,25 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self._test_commit_with_options(
             request_options=request_options,
             isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+        )
+
+    def test_commit_w_read_lock_mode(self):
+        request_options = RequestOptions(
+            request_tag="tag-1",
+        )
+        self._test_commit_with_options(
+            request_options=request_options,
+            read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+        )
+
+    def test_commit_w_isolation_level_and_read_lock_mode(self):
+        request_options = RequestOptions(
+            request_tag="tag-1",
+        )
+        self._test_commit_with_options(
+            request_options=request_options,
+            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+            read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
         )
 
     def test_context_mgr_already_committed(self):

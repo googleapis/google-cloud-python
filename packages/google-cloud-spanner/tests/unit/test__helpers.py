@@ -978,7 +978,10 @@ class Test_merge_transaction_options(unittest.TestCase):
 
     def test_default_options_and_merge_none(self):
         default = TransactionOptions(
-            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ
+            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
+            ),
         )
         merge = None
         result = self._callFUT(default, merge)
@@ -988,7 +991,10 @@ class Test_merge_transaction_options(unittest.TestCase):
     def test_default_none_and_merge_options(self):
         default = None
         merge = TransactionOptions(
-            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE
+            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE,
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
         )
         expected = merge
         result = self._callFUT(default, merge)
@@ -1039,6 +1045,67 @@ class Test_merge_transaction_options(unittest.TestCase):
         expected = TransactionOptions(
             isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE,
             read_write=TransactionOptions.ReadWrite(),
+            exclude_txn_from_change_streams=True,
+        )
+        result = self._callFUT(default, merge)
+        self.assertEqual(result, expected)
+
+    def test_default_and_merge_read_lock_mode_options(self):
+        default = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
+            ),
+        )
+        merge = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+            exclude_txn_from_change_streams=True,
+        )
+        expected = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+            exclude_txn_from_change_streams=True,
+        )
+        result = self._callFUT(default, merge)
+        self.assertEqual(result, expected)
+
+    def test_default_read_lock_mode_and_merge_options(self):
+        default = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+        )
+        merge = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(),
+            exclude_txn_from_change_streams=True,
+        )
+        expected = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+            exclude_txn_from_change_streams=True,
+        )
+        result = self._callFUT(default, merge)
+        self.assertEqual(result, expected)
+
+    def test_default_read_lock_mode_and_merge_options_isolation_unspecified(self):
+        default = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+        )
+        merge = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
+            ),
+            exclude_txn_from_change_streams=True,
+        )
+        expected = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
             exclude_txn_from_change_streams=True,
         )
         result = self._callFUT(default, merge)

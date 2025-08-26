@@ -142,6 +142,7 @@ class TestTransaction(OpenTelemetryBase):
         query_options=None,
         exclude_txn_from_change_streams=False,
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
+        read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
     ):
         stats_pb = ResultSetStats(row_count_exact=1)
 
@@ -152,6 +153,7 @@ class TestTransaction(OpenTelemetryBase):
         transaction.transaction_tag = self.TRANSACTION_TAG
         transaction.exclude_txn_from_change_streams = exclude_txn_from_change_streams
         transaction.isolation_level = isolation_level
+        transaction.read_lock_mode = read_lock_mode
         transaction._execute_sql_request_count = count
 
         row_count = transaction.execute_update(
@@ -174,11 +176,14 @@ class TestTransaction(OpenTelemetryBase):
         count=0,
         exclude_txn_from_change_streams=False,
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
+        read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
     ):
         if begin is True:
             expected_transaction = TransactionSelector(
                 begin=TransactionOptions(
-                    read_write=TransactionOptions.ReadWrite(),
+                    read_write=TransactionOptions.ReadWrite(
+                        read_lock_mode=read_lock_mode
+                    ),
                     exclude_txn_from_change_streams=exclude_txn_from_change_streams,
                     isolation_level=isolation_level,
                 )
@@ -635,6 +640,68 @@ class TestTransaction(OpenTelemetryBase):
             request=self._execute_update_expected_request(
                 database=database,
                 isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+            ),
+            retry=RETRY,
+            timeout=TIMEOUT,
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
+        )
+
+    def test_transaction_should_include_begin_w_read_lock_mode_with_first_update(
+        self,
+    ):
+        database = _Database()
+        session = _Session(database)
+        api = database.spanner_api = self._make_spanner_api()
+        transaction = self._make_one(session)
+        self._execute_update_helper(
+            transaction=transaction,
+            api=api,
+            read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+        )
+
+        api.execute_sql.assert_called_once_with(
+            request=self._execute_update_expected_request(
+                database=database,
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+            retry=RETRY,
+            timeout=TIMEOUT,
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
+        )
+
+    def test_transaction_should_include_begin_w_isolation_level_and_read_lock_mode_with_first_update(
+        self,
+    ):
+        database = _Database()
+        session = _Session(database)
+        api = database.spanner_api = self._make_spanner_api()
+        transaction = self._make_one(session)
+        self._execute_update_helper(
+            transaction=transaction,
+            api=api,
+            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+            read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
+        )
+
+        api.execute_sql.assert_called_once_with(
+            request=self._execute_update_expected_request(
+                database=database,
+                isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
             ),
             retry=RETRY,
             timeout=TIMEOUT,

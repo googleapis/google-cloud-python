@@ -2310,6 +2310,243 @@ class TestSession(OpenTelemetryBase):
             ],
         )
 
+    def test_run_in_transaction_w_read_lock_mode_at_request(self):
+        database = self._make_database()
+        api = database.spanner_api = build_spanner_api()
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        def unit_of_work(txn, *args, **kw):
+            txn.insert("test", [], [])
+            return 42
+
+        return_value = session.run_in_transaction(
+            unit_of_work, "abc", read_lock_mode="OPTIMISTIC"
+        )
+
+        self.assertEqual(return_value, 42)
+
+        expected_options = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+        )
+        api.begin_transaction.assert_called_once_with(
+            request=BeginTransactionRequest(
+                session=self.SESSION_NAME, options=expected_options
+            ),
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
+        )
+
+    def test_run_in_transaction_w_read_lock_mode_at_client(self):
+        database = self._make_database(
+            default_transaction_options=DefaultTransactionOptions(
+                read_lock_mode="OPTIMISTIC"
+            )
+        )
+        api = database.spanner_api = build_spanner_api()
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        def unit_of_work(txn, *args, **kw):
+            txn.insert("test", [], [])
+            return 42
+
+        return_value = session.run_in_transaction(unit_of_work, "abc")
+
+        self.assertEqual(return_value, 42)
+
+        expected_options = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+        )
+        api.begin_transaction.assert_called_once_with(
+            request=BeginTransactionRequest(
+                session=self.SESSION_NAME, options=expected_options
+            ),
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
+        )
+
+    def test_run_in_transaction_w_read_lock_mode_at_request_overrides_client(self):
+        database = self._make_database(
+            default_transaction_options=DefaultTransactionOptions(
+                read_lock_mode="PESSIMISTIC"
+            )
+        )
+        api = database.spanner_api = build_spanner_api()
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        def unit_of_work(txn, *args, **kw):
+            txn.insert("test", [], [])
+            return 42
+
+        return_value = session.run_in_transaction(
+            unit_of_work,
+            "abc",
+            read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+        )
+
+        self.assertEqual(return_value, 42)
+
+        expected_options = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+        )
+        api.begin_transaction.assert_called_once_with(
+            request=BeginTransactionRequest(
+                session=self.SESSION_NAME, options=expected_options
+            ),
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
+        )
+
+    def test_run_in_transaction_w_isolation_level_and_read_lock_mode_at_request(self):
+        database = self._make_database()
+        api = database.spanner_api = build_spanner_api()
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        def unit_of_work(txn, *args, **kw):
+            txn.insert("test", [], [])
+            return 42
+
+        return_value = session.run_in_transaction(
+            unit_of_work,
+            "abc",
+            read_lock_mode="PESSIMISTIC",
+            isolation_level="REPEATABLE_READ",
+        )
+
+        self.assertEqual(return_value, 42)
+
+        expected_options = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
+            ),
+            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+        )
+        api.begin_transaction.assert_called_once_with(
+            request=BeginTransactionRequest(
+                session=self.SESSION_NAME, options=expected_options
+            ),
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
+        )
+
+    def test_run_in_transaction_w_isolation_level_and_read_lock_mode_at_client(self):
+        database = self._make_database(
+            default_transaction_options=DefaultTransactionOptions(
+                read_lock_mode="PESSIMISTIC",
+                isolation_level="REPEATABLE_READ",
+            )
+        )
+        api = database.spanner_api = build_spanner_api()
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        def unit_of_work(txn, *args, **kw):
+            txn.insert("test", [], [])
+            return 42
+
+        return_value = session.run_in_transaction(unit_of_work, "abc")
+
+        self.assertEqual(return_value, 42)
+
+        expected_options = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC,
+            ),
+            isolation_level=TransactionOptions.IsolationLevel.REPEATABLE_READ,
+        )
+        api.begin_transaction.assert_called_once_with(
+            request=BeginTransactionRequest(
+                session=self.SESSION_NAME, options=expected_options
+            ),
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
+        )
+
+    def test_run_in_transaction_w_isolation_level_and_read_lock_mode_at_request_overrides_client(
+        self,
+    ):
+        database = self._make_database(
+            default_transaction_options=DefaultTransactionOptions(
+                read_lock_mode="PESSIMISTIC",
+                isolation_level="REPEATABLE_READ",
+            )
+        )
+        api = database.spanner_api = build_spanner_api()
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        def unit_of_work(txn, *args, **kw):
+            txn.insert("test", [], [])
+            return 42
+
+        return_value = session.run_in_transaction(
+            unit_of_work,
+            "abc",
+            read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE,
+        )
+
+        self.assertEqual(return_value, 42)
+
+        expected_options = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC,
+            ),
+            isolation_level=TransactionOptions.IsolationLevel.SERIALIZABLE,
+        )
+        api.begin_transaction.assert_called_once_with(
+            request=BeginTransactionRequest(
+                session=self.SESSION_NAME, options=expected_options
+            ),
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
+        )
+
     def test_delay_helper_w_no_delay(self):
         metadata_mock = mock.Mock()
         metadata_mock.trailing_metadata.return_value = {}

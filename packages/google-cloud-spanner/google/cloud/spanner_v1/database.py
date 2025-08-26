@@ -882,6 +882,7 @@ class Database(object):
         max_commit_delay=None,
         exclude_txn_from_change_streams=False,
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
+        read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
         **kw,
     ):
         """Return an object which wraps a batch.
@@ -914,6 +915,11 @@ class Database(object):
         :param isolation_level:
                 (Optional) Sets the isolation level for this transaction. This overrides any default isolation level set for the client.
 
+        :type read_lock_mode:
+            :class:`google.cloud.spanner_v1.types.TransactionOptions.ReadWrite.ReadLockMode`
+        :param read_lock_mode:
+                (Optional) Sets the read lock mode for this transaction. This overrides any default read lock mode set for the client.
+
         :rtype: :class:`~google.cloud.spanner_v1.database.BatchCheckout`
         :returns: new wrapper
         """
@@ -924,6 +930,7 @@ class Database(object):
             max_commit_delay,
             exclude_txn_from_change_streams,
             isolation_level,
+            read_lock_mode,
             **kw,
         )
 
@@ -996,6 +1003,7 @@ class Database(object):
                    This does not exclude the transaction from being recorded in the change streams with
                    the DDL option `allow_txn_exclusion` being false or unset.
                    "isolation_level" sets the isolation level for the transaction.
+                   "read_lock_mode" sets the read lock mode for the transaction.
 
         :rtype: Any
         :returns: The return value of ``func``.
@@ -1310,6 +1318,7 @@ class BatchCheckout(object):
         max_commit_delay=None,
         exclude_txn_from_change_streams=False,
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
+        read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
         **kw,
     ):
         self._database: Database = database
@@ -1325,6 +1334,7 @@ class BatchCheckout(object):
         self._max_commit_delay = max_commit_delay
         self._exclude_txn_from_change_streams = exclude_txn_from_change_streams
         self._isolation_level = isolation_level
+        self._read_lock_mode = read_lock_mode
         self._kw = kw
 
     def __enter__(self):
@@ -1357,6 +1367,7 @@ class BatchCheckout(object):
                     max_commit_delay=self._max_commit_delay,
                     exclude_txn_from_change_streams=self._exclude_txn_from_change_streams,
                     isolation_level=self._isolation_level,
+                    read_lock_mode=self._read_lock_mode,
                     **self._kw,
                 )
         finally:

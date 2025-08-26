@@ -149,6 +149,7 @@ class Batch(_BatchBase):
         max_commit_delay=None,
         exclude_txn_from_change_streams=False,
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
+        read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
         timeout_secs=DEFAULT_RETRY_TIMEOUT_SECS,
         default_retry_delay=None,
     ):
@@ -182,6 +183,11 @@ class Batch(_BatchBase):
         :param isolation_level:
                 (Optional) Sets isolation level for the transaction.
 
+        :type read_lock_mode:
+            :class:`google.cloud.spanner_v1.types.TransactionOptions.ReadWrite.ReadLockMode`
+        :param read_lock_mode:
+                (Optional) Sets the read lock mode for this transaction.
+
         :type timeout_secs: int
         :param timeout_secs: (Optional) The maximum time in seconds to wait for the commit to complete.
 
@@ -208,7 +214,9 @@ class Batch(_BatchBase):
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
         txn_options = TransactionOptions(
-            read_write=TransactionOptions.ReadWrite(),
+            read_write=TransactionOptions.ReadWrite(
+                read_lock_mode=read_lock_mode,
+            ),
             exclude_txn_from_change_streams=exclude_txn_from_change_streams,
             isolation_level=isolation_level,
         )
