@@ -200,6 +200,19 @@ def make_query_response(
             make_query_request({"writeIncrementalResults": True}),
             id="job_config-with-incremental-results",
         ),
+        pytest.param(
+            job_query.QueryJobConfig(
+                reservation="foo",
+                max_slots=100,
+            ),
+            make_query_request(
+                {
+                    "maxSlots": "100",
+                    "reservation": "foo",
+                }
+            ),
+            id="job_config-with-reservation-and-slots",
+        ),
     ),
 )
 def test__to_query_request(job_config, expected):
@@ -1047,6 +1060,21 @@ def test_make_job_id_w_job_id_overrides_prefix():
             job_query.QueryJobConfig(write_incremental_results=True),
             True,
             id="write_incremental_results",
+        ),
+        pytest.param(
+            job_query.QueryJobConfig(job_timeout_ms=1000),
+            True,
+            id="job_timeout_ms",
+        ),
+        pytest.param(
+            job_query.QueryJobConfig(reservation="foo"),
+            True,
+            id="reservation",
+        ),
+        pytest.param(
+            job_query.QueryJobConfig(max_slots=20),
+            True,
+            id="max_slots",
         ),
     ),
 )

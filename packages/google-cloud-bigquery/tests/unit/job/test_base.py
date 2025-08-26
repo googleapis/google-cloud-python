@@ -1276,3 +1276,44 @@ class Test_JobConfig(unittest.TestCase):
         job_config = self._make_one()
         job_config.reservation = "foo"
         self.assertEqual(job_config._properties["reservation"], "foo")
+
+    def test_max_slots_miss(self):
+        job_config = self._make_one()
+        self.assertEqual(job_config.max_slots, None)
+
+    def test_max_slots_set_and_clear(self):
+        job_config = self._make_one()
+        job_config.max_slots = 14
+        self.assertEqual(job_config.max_slots, 14)
+        job_config.max_slots = None
+        self.assertEqual(job_config.max_slots, None)
+
+    def test_max_slots_hit_str(self):
+        job_config = self._make_one()
+        job_config._properties["maxSlots"] = "4"
+        self.assertEqual(job_config.max_slots, 4)
+
+    def test_max_slots_hit_int(self):
+        job_config = self._make_one()
+        job_config._properties["maxSlots"] = int(3)
+        self.assertEqual(job_config.max_slots, 3)
+
+    def test_max_slots_hit_invalid(self):
+        job_config = self._make_one()
+        job_config._properties["maxSlots"] = object()
+        self.assertEqual(job_config.max_slots, None)
+
+    def test_max_slots_update_in_place(self):
+        job_config = self._make_one()
+        job_config.max_slots = 45  # update in place
+        self.assertEqual(job_config.max_slots, 45)
+
+    def test_max_slots_setter_invalid(self):
+        job_config = self._make_one()
+        with self.assertRaises(ValueError):
+            job_config.max_slots = "foo"
+
+    def test_max_slots_setter(self):
+        job_config = self._make_one()
+        job_config.max_slots = 123
+        self.assertEqual(job_config._properties["maxSlots"], "123")

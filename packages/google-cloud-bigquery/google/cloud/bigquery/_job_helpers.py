@@ -658,6 +658,9 @@ def _supported_by_jobs_query(request_body: Dict[str, Any]) -> bool:
         "requestId",
         "createSession",
         "writeIncrementalResults",
+        "jobTimeoutMs",
+        "reservation",
+        "maxSlots",
     }
 
     unsupported_keys = request_keys - keys_allowlist

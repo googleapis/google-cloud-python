@@ -172,6 +172,11 @@ class TestQueryJobConfig(_Base):
         config.write_incremental_results = True
         self.assertEqual(config.write_incremental_results, True)
 
+    def test_max_slots(self):
+        config = self._get_target_class()()
+        config.max_slots = 99
+        self.assertEqual(config.max_slots, 99)
+
     def test_create_session(self):
         config = self._get_target_class()()
         self.assertIsNone(config.create_session)
