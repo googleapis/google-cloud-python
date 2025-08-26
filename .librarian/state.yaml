@@ -8,7 +8,7 @@ libraries:
   - path: google/cloud/language/v2
   - path: google/cloud/language/v1
   source_roots:
-  - ^packages/google-cloud-language
+  - packages/google-cloud-language
   preserve_regex:
   - .OwlBot.yaml
   - CHANGELOG.md
