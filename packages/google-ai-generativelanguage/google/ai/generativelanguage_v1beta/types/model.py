@@ -112,6 +112,8 @@ class Model(proto.Message):
             ``top_k`` isn't allowed as a generation parameter.
 
             This field is a member of `oneof`_ ``_top_k``.
+        thinking (bool):
+            Whether the model supports thinking.
     """
 
     name: str = proto.Field(
@@ -165,6 +167,10 @@ class Model(proto.Message):
         proto.INT32,
         number=11,
         optional=True,
+    )
+    thinking: bool = proto.Field(
+        proto.BOOL,
+        number=15,
     )
 
 

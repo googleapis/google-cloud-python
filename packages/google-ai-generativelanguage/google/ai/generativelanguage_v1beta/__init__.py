@@ -71,6 +71,8 @@ from .types.content import (
     Tool,
     ToolConfig,
     Type,
+    UrlContext,
+    VideoMetadata,
 )
 from .types.discuss_service import (
     CountMessageTokensRequest,
@@ -81,7 +83,7 @@ from .types.discuss_service import (
     Message,
     MessagePrompt,
 )
-from .types.file import File, VideoMetadata
+from .types.file import File, VideoFileMetadata
 from .types.file_service import (
     CreateFileRequest,
     CreateFileResponse,
@@ -126,6 +128,7 @@ from .types.generative_service import (
     GroundingMetadata,
     GroundingSupport,
     LogprobsResult,
+    MultiSpeakerVoiceConfig,
     PrebuiltVoiceConfig,
     RealtimeInputConfig,
     RetrievalMetadata,
@@ -134,9 +137,12 @@ from .types.generative_service import (
     SemanticRetrieverConfig,
     SessionResumptionConfig,
     SessionResumptionUpdate,
+    SpeakerVoiceConfig,
     SpeechConfig,
     TaskType,
     ThinkingConfig,
+    UrlContextMetadata,
+    UrlMetadata,
     UsageMetadata,
     VoiceConfig,
 )
@@ -390,6 +396,7 @@ __all__ = (
     "ModalityTokenCount",
     "Model",
     "ModelServiceClient",
+    "MultiSpeakerVoiceConfig",
     "Part",
     "Permission",
     "PermissionServiceClient",
@@ -417,6 +424,7 @@ __all__ = (
     "SemanticRetrieverConfig",
     "SessionResumptionConfig",
     "SessionResumptionUpdate",
+    "SpeakerVoiceConfig",
     "SpeechConfig",
     "StringList",
     "TaskType",
@@ -441,8 +449,12 @@ __all__ = (
     "UpdateDocumentRequest",
     "UpdatePermissionRequest",
     "UpdateTunedModelRequest",
+    "UrlContext",
+    "UrlContextMetadata",
+    "UrlMetadata",
     "UsageMetadata",
     "Video",
+    "VideoFileMetadata",
     "VideoMetadata",
     "VoiceConfig",
 )

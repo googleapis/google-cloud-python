@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ai.generativelanguage_v1beta.types import citation
@@ -31,12 +32,16 @@ __protobuf__ = proto.module(
         "GenerateContentRequest",
         "PrebuiltVoiceConfig",
         "VoiceConfig",
+        "SpeakerVoiceConfig",
+        "MultiSpeakerVoiceConfig",
         "SpeechConfig",
         "ThinkingConfig",
         "GenerationConfig",
         "SemanticRetrieverConfig",
         "GenerateContentResponse",
         "Candidate",
+        "UrlContextMetadata",
+        "UrlMetadata",
         "LogprobsResult",
         "AttributionSourceId",
         "GroundingAttribution",
@@ -285,6 +290,45 @@ class VoiceConfig(proto.Message):
     )
 
 
+class SpeakerVoiceConfig(proto.Message):
+    r"""The configuration for a single speaker in a multi speaker
+    setup.
+
+    Attributes:
+        speaker (str):
+            Required. The name of the speaker to use.
+            Should be the same as in the prompt.
+        voice_config (google.ai.generativelanguage_v1beta.types.VoiceConfig):
+            Required. The configuration for the voice to
+            use.
+    """
+
+    speaker: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    voice_config: "VoiceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="VoiceConfig",
+    )
+
+
+class MultiSpeakerVoiceConfig(proto.Message):
+    r"""The configuration for the multi-speaker setup.
+
+    Attributes:
+        speaker_voice_configs (MutableSequence[google.ai.generativelanguage_v1beta.types.SpeakerVoiceConfig]):
+            Required. All the enabled speaker voices.
+    """
+
+    speaker_voice_configs: MutableSequence["SpeakerVoiceConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="SpeakerVoiceConfig",
+    )
+
+
 class SpeechConfig(proto.Message):
     r"""The speech generation config.
 
@@ -292,6 +336,9 @@ class SpeechConfig(proto.Message):
         voice_config (google.ai.generativelanguage_v1beta.types.VoiceConfig):
             The configuration in case of single-voice
             output.
+        multi_speaker_voice_config (google.ai.generativelanguage_v1beta.types.MultiSpeakerVoiceConfig):
+            Optional. The configuration for the multi-speaker setup. It
+            is mutually exclusive with the voice_config field.
         language_code (str):
             Optional. Language code (in BCP 47 format,
             e.g. "en-US") for speech synthesis.
@@ -307,6 +354,11 @@ class SpeechConfig(proto.Message):
         proto.MESSAGE,
         number=1,
         message="VoiceConfig",
+    )
+    multi_speaker_voice_config: "MultiSpeakerVoiceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="MultiSpeakerVoiceConfig",
     )
     language_code: str = proto.Field(
         proto.STRING,
@@ -443,6 +495,47 @@ class GenerationConfig(proto.Message):
             JSON response. Refer to the `JSON text generation
             guide <https://ai.google.dev/gemini-api/docs/json-mode>`__
             for more details.
+        response_json_schema (google.protobuf.struct_pb2.Value):
+            Optional. Output schema of the generated response. This is
+            an alternative to ``response_schema`` that accepts `JSON
+            Schema <https://json-schema.org/>`__.
+
+            If set, ``response_schema`` must be omitted, but
+            ``response_mime_type`` is required.
+
+            While the full JSON Schema may be sent, not all features are
+            supported. Specifically, only the following properties are
+            supported:
+
+            -  ``$id``
+            -  ``$defs``
+            -  ``$ref``
+            -  ``$anchor``
+            -  ``type``
+            -  ``format``
+            -  ``title``
+            -  ``description``
+            -  ``enum`` (for strings and numbers)
+            -  ``items``
+            -  ``prefixItems``
+            -  ``minItems``
+            -  ``maxItems``
+            -  ``minimum``
+            -  ``maximum``
+            -  ``anyOf``
+            -  ``oneOf`` (interpreted the same as ``anyOf``)
+            -  ``properties``
+            -  ``additionalProperties``
+            -  ``required``
+
+            The non-standard ``propertyOrdering`` property may also be
+            set.
+
+            Cyclic references are unrolled to a limited degree and, as
+            such, may only be used within non-required properties.
+            (Nullable properties are not sufficient.) If ``$ref`` is set
+            on a sub-schema, no other properties, except for than those
+            starting as a ``$``, may be set.
         presence_penalty (float):
             Optional. Presence penalty applied to the next token's
             logprobs if the token has already been seen in the response.
@@ -611,6 +704,11 @@ class GenerationConfig(proto.Message):
         number=14,
         message=gag_content.Schema,
     )
+    response_json_schema: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=struct_pb2.Value,
+    )
     presence_penalty: float = proto.Field(
         proto.FLOAT,
         number=15,
@@ -741,6 +839,8 @@ class GenerateContentResponse(proto.Message):
         model_version (str):
             Output only. The model version used to
             generate the response.
+        response_id (str):
+            Output only. response_id is used to identify each response.
     """
 
     class PromptFeedback(proto.Message):
@@ -906,6 +1006,10 @@ class GenerateContentResponse(proto.Message):
         proto.STRING,
         number=4,
     )
+    response_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class Candidate(proto.Message):
@@ -956,6 +1060,9 @@ class Candidate(proto.Message):
         logprobs_result (google.ai.generativelanguage_v1beta.types.LogprobsResult):
             Output only. Log-likelihood scores for the
             response tokens and top tokens
+        url_context_metadata (google.ai.generativelanguage_v1beta.types.UrlContextMetadata):
+            Output only. Metadata related to url context
+            retrieval tool.
     """
 
     class FinishReason(proto.Enum):
@@ -997,6 +1104,9 @@ class Candidate(proto.Message):
             IMAGE_SAFETY (11):
                 Token generation stopped because generated
                 images contain safety violations.
+            UNEXPECTED_TOOL_CALL (12):
+                Model generated a tool call but no tools were
+                enabled in the request.
         """
         FINISH_REASON_UNSPECIFIED = 0
         STOP = 1
@@ -1010,6 +1120,7 @@ class Candidate(proto.Message):
         SPII = 9
         MALFORMED_FUNCTION_CALL = 10
         IMAGE_SAFETY = 11
+        UNEXPECTED_TOOL_CALL = 12
 
     index: int = proto.Field(
         proto.INT32,
@@ -1060,6 +1171,62 @@ class Candidate(proto.Message):
         proto.MESSAGE,
         number=11,
         message="LogprobsResult",
+    )
+    url_context_metadata: "UrlContextMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="UrlContextMetadata",
+    )
+
+
+class UrlContextMetadata(proto.Message):
+    r"""Metadata related to url context retrieval tool.
+
+    Attributes:
+        url_metadata (MutableSequence[google.ai.generativelanguage_v1beta.types.UrlMetadata]):
+            List of url context.
+    """
+
+    url_metadata: MutableSequence["UrlMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="UrlMetadata",
+    )
+
+
+class UrlMetadata(proto.Message):
+    r"""Context of the a single url retrieval.
+
+    Attributes:
+        retrieved_url (str):
+            Retrieved url by the tool.
+        url_retrieval_status (google.ai.generativelanguage_v1beta.types.UrlMetadata.UrlRetrievalStatus):
+            Status of the url retrieval.
+    """
+
+    class UrlRetrievalStatus(proto.Enum):
+        r"""Status of the url retrieval.
+
+        Values:
+            URL_RETRIEVAL_STATUS_UNSPECIFIED (0):
+                Default value. This value is unused.
+            URL_RETRIEVAL_STATUS_SUCCESS (1):
+                Url retrieval is successful.
+            URL_RETRIEVAL_STATUS_ERROR (2):
+                Url retrieval is failed due to error.
+        """
+        URL_RETRIEVAL_STATUS_UNSPECIFIED = 0
+        URL_RETRIEVAL_STATUS_SUCCESS = 1
+        URL_RETRIEVAL_STATUS_ERROR = 2
+
+    retrieved_url: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    url_retrieval_status: UrlRetrievalStatus = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=UrlRetrievalStatus,
     )
 
 
@@ -1541,7 +1708,7 @@ class GenerateAnswerRequest(proto.Message):
             ANSWER_STYLE_UNSPECIFIED (0):
                 Unspecified answer style.
             ABSTRACTIVE (1):
-                Succint but abstract style.
+                Succinct but abstract style.
             EXTRACTIVE (2):
                 Very brief and extractive style.
             VERBOSE (3):
@@ -2256,6 +2423,7 @@ class BidiGenerateContentSetup(proto.Message):
             -  ``response_mime_type``
             -  ``logprobs``
             -  ``response_schema``
+            -  ``response_json_schema``
             -  ``stop_sequence``
             -  ``routing_config``
             -  ``audio_timestamp``
@@ -2286,6 +2454,10 @@ class BidiGenerateContentSetup(proto.Message):
             If included, the server will automatically
             reduce the size of the context when it exceeds
             the configured length.
+        input_audio_transcription (google.ai.generativelanguage_v1beta.types.AudioTranscriptionConfig):
+            Optional. If set, enables transcription of
+            voice input. The transcription aligns with the
+            input audio language, if configured.
         output_audio_transcription (google.ai.generativelanguage_v1beta.types.AudioTranscriptionConfig):
             Optional. If set, enables transcription of
             the model's audio output. The transcription
@@ -2326,6 +2498,11 @@ class BidiGenerateContentSetup(proto.Message):
         proto.MESSAGE,
         number=8,
         message="ContextWindowCompressionConfig",
+    )
+    input_audio_transcription: "AudioTranscriptionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="AudioTranscriptionConfig",
     )
     output_audio_transcription: "AudioTranscriptionConfig" = proto.Field(
         proto.MESSAGE,
@@ -2612,11 +2789,22 @@ class BidiGenerateContentServerContent(proto.Message):
         grounding_metadata (google.ai.generativelanguage_v1beta.types.GroundingMetadata):
             Output only. Grounding metadata for the
             generated content.
+        input_transcription (google.ai.generativelanguage_v1beta.types.BidiGenerateContentTranscription):
+            Output only. Input audio transcription. The
+            transcription is sent independently of the other
+            server messages and there is no guaranteed
+            ordering.
         output_transcription (google.ai.generativelanguage_v1beta.types.BidiGenerateContentTranscription):
-            Output only. Output audio transcription. The transcription
-            is sent independently of the other server messages and there
-            is no guaranteed ordering, in particular not between
-            ``server_content`` and this ``output_transcription``.
+            Output only. Output audio transcription. These
+            transcriptions are part of the Generation output of the
+            server. The last output transcription of this turn is sent
+            before either ``generation_complete`` or ``interrupted``,
+            which in turn are followed by ``turn_complete``. There is no
+            guaranteed exact ordering between transcriptions and other
+            ``model_turn`` output but the server tries to send the
+            transcripts close to the corresponding audio output.
+        url_context_metadata (google.ai.generativelanguage_v1beta.types.UrlContextMetadata):
+
     """
 
     model_turn: gag_content.Content = proto.Field(
@@ -2642,10 +2830,20 @@ class BidiGenerateContentServerContent(proto.Message):
         number=4,
         message="GroundingMetadata",
     )
+    input_transcription: "BidiGenerateContentTranscription" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="BidiGenerateContentTranscription",
+    )
     output_transcription: "BidiGenerateContentTranscription" = proto.Field(
         proto.MESSAGE,
         number=7,
         message="BidiGenerateContentTranscription",
+    )
+    url_context_metadata: "UrlContextMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="UrlContextMetadata",
     )
 
 

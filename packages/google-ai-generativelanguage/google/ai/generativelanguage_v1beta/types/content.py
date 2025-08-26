@@ -17,7 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
+from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -29,9 +31,11 @@ __protobuf__ = proto.module(
         "Part",
         "Blob",
         "FileData",
+        "VideoMetadata",
         "ExecutableCode",
         "CodeExecutionResult",
         "Tool",
+        "UrlContext",
         "GoogleSearchRetrieval",
         "DynamicRetrievalConfig",
         "CodeExecution",
@@ -69,9 +73,6 @@ class Type(proto.Enum):
             Object type.
         NULL (7):
             Null type.
-            HACK: We use this to handle optional parameters,
-            which users are specifying optional things by
-            using a OneOf with a second type of NULL.
     """
     TYPE_UNSPECIFIED = 0
     STRING = 1
@@ -193,9 +194,18 @@ class Part(proto.Message):
             Result of executing the ``ExecutableCode``.
 
             This field is a member of `oneof`_ ``data``.
+        video_metadata (google.ai.generativelanguage_v1beta.types.VideoMetadata):
+            Optional. Video metadata. The metadata should only be
+            specified while the video data is presented in inline_data
+            or file_data.
+
+            This field is a member of `oneof`_ ``metadata``.
         thought (bool):
             Optional. Indicates if the part is thought
             from the model.
+        thought_signature (bytes):
+            Optional. An opaque signature for the thought
+            so it can be reused in subsequent requests.
     """
 
     text: str = proto.Field(
@@ -239,9 +249,19 @@ class Part(proto.Message):
         oneof="data",
         message="CodeExecutionResult",
     )
+    video_metadata: "VideoMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="metadata",
+        message="VideoMetadata",
+    )
     thought: bool = proto.Field(
         proto.BOOL,
         number=11,
+    )
+    thought_signature: bytes = proto.Field(
+        proto.BYTES,
+        number=13,
     )
 
 
@@ -291,6 +311,36 @@ class FileData(proto.Message):
     file_uri: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class VideoMetadata(proto.Message):
+    r"""Metadata describes the input video content.
+
+    Attributes:
+        start_offset (google.protobuf.duration_pb2.Duration):
+            Optional. The start offset of the video.
+        end_offset (google.protobuf.duration_pb2.Duration):
+            Optional. The end offset of the video.
+        fps (float):
+            Optional. The frame rate of the video sent to the model. If
+            not specified, the default value will be 1.0. The fps range
+            is (0.0, 24.0].
+    """
+
+    start_offset: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    end_offset: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    fps: float = proto.Field(
+        proto.DOUBLE,
+        number=3,
     )
 
 
@@ -415,13 +465,27 @@ class Tool(proto.Message):
             Optional. GoogleSearch tool type.
             Tool to support Google Search in Model. Powered
             by Google.
+        url_context (google.ai.generativelanguage_v1beta.types.UrlContext):
+            Optional. Tool to support URL context
+            retrieval.
     """
 
     class GoogleSearch(proto.Message):
         r"""GoogleSearch tool type.
         Tool to support Google Search in Model. Powered by Google.
 
+        Attributes:
+            time_range_filter (google.type.interval_pb2.Interval):
+                Optional. Filter search results to a specific
+                time range. If customers set a start time, they
+                must set an end time (and vice versa).
         """
+
+        time_range_filter: interval_pb2.Interval = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=interval_pb2.Interval,
+        )
 
     function_declarations: MutableSequence["FunctionDeclaration"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -443,6 +507,15 @@ class Tool(proto.Message):
         number=4,
         message=GoogleSearch,
     )
+    url_context: "UrlContext" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="UrlContext",
+    )
+
+
+class UrlContext(proto.Message):
+    r"""Tool to support URL context retrieval."""
 
 
 class GoogleSearchRetrieval(proto.Message):
@@ -621,6 +694,27 @@ class FunctionDeclaration(proto.Message):
             parameter.
 
             This field is a member of `oneof`_ ``_parameters``.
+        parameters_json_schema (google.protobuf.struct_pb2.Value):
+            Optional. Describes the parameters to the function in JSON
+            Schema format. The schema must describe an object where the
+            properties are the parameters to the function. For example:
+
+            ::
+
+               {
+                 "type": "object",
+                 "properties": {
+                   "name": { "type": "string" },
+                   "age": { "type": "integer" }
+                 },
+                 "additionalProperties": false,
+                 "required": ["name", "age"],
+                 "propertyOrdering": ["name", "age"]
+               }
+
+            This field is mutually exclusive with ``parameters``.
+
+            This field is a member of `oneof`_ ``_parameters_json_schema``.
         response (google.ai.generativelanguage_v1beta.types.Schema):
             Optional. Describes the output from this
             function in JSON Schema format. Reflects the
@@ -629,7 +723,40 @@ class FunctionDeclaration(proto.Message):
             the function.
 
             This field is a member of `oneof`_ ``_response``.
+        response_json_schema (google.protobuf.struct_pb2.Value):
+            Optional. Describes the output from this function in JSON
+            Schema format. The value specified by the schema is the
+            response value of the function.
+
+            This field is mutually exclusive with ``response``.
+
+            This field is a member of `oneof`_ ``_response_json_schema``.
+        behavior (google.ai.generativelanguage_v1beta.types.FunctionDeclaration.Behavior):
+            Optional. Specifies the function Behavior.
+            Currently only supported by the
+            BidiGenerateContent method.
     """
+
+    class Behavior(proto.Enum):
+        r"""Defines the function behavior. Defaults to ``BLOCKING``.
+
+        Values:
+            UNSPECIFIED (0):
+                This value is unused.
+            BLOCKING (1):
+                If set, the system will wait to receive the
+                function response before continuing the
+                conversation.
+            NON_BLOCKING (2):
+                If set, the system will not wait to receive
+                the function response. Instead, it will attempt
+                to handle function responses as they become
+                available while maintaining the conversation
+                between the user and the model.
+        """
+        UNSPECIFIED = 0
+        BLOCKING = 1
+        NON_BLOCKING = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -645,11 +772,28 @@ class FunctionDeclaration(proto.Message):
         optional=True,
         message="Schema",
     )
+    parameters_json_schema: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        optional=True,
+        message=struct_pb2.Value,
+    )
     response: "Schema" = proto.Field(
         proto.MESSAGE,
         number=4,
         optional=True,
         message="Schema",
+    )
+    response_json_schema: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        optional=True,
+        message=struct_pb2.Value,
+    )
+    behavior: Behavior = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Behavior,
     )
 
 
@@ -700,6 +844,9 @@ class FunctionResponse(proto.Message):
     the model. This should contain the result of a\ ``FunctionCall``
     made based on model prediction.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             Optional. The id of the function call this response is for.
@@ -712,7 +859,48 @@ class FunctionResponse(proto.Message):
         response (google.protobuf.struct_pb2.Struct):
             Required. The function response in JSON
             object format.
+        will_continue (bool):
+            Optional. Signals that function call continues, and more
+            responses will be returned, turning the function call into a
+            generator. Is only applicable to NON_BLOCKING function
+            calls, is ignored otherwise. If set to false, future
+            responses will not be considered. It is allowed to return
+            empty ``response`` with ``will_continue=False`` to signal
+            that the function call is finished. This may still trigger
+            the model generation. To avoid triggering the generation and
+            finish the function call, additionally set ``scheduling`` to
+            ``SILENT``.
+        scheduling (google.ai.generativelanguage_v1beta.types.FunctionResponse.Scheduling):
+            Optional. Specifies how the response should be scheduled in
+            the conversation. Only applicable to NON_BLOCKING function
+            calls, is ignored otherwise. Defaults to WHEN_IDLE.
+
+            This field is a member of `oneof`_ ``_scheduling``.
     """
+
+    class Scheduling(proto.Enum):
+        r"""Specifies how the response should be scheduled in the
+        conversation.
+
+        Values:
+            SCHEDULING_UNSPECIFIED (0):
+                This value is unused.
+            SILENT (1):
+                Only add the result to the conversation
+                context, do not interrupt or trigger generation.
+            WHEN_IDLE (2):
+                Add the result to the conversation context,
+                and prompt to generate output without
+                interrupting ongoing generation.
+            INTERRUPT (3):
+                Add the result to the conversation context,
+                interrupt ongoing generation and prompt to
+                generate output.
+        """
+        SCHEDULING_UNSPECIFIED = 0
+        SILENT = 1
+        WHEN_IDLE = 2
+        INTERRUPT = 3
 
     id: str = proto.Field(
         proto.STRING,
@@ -726,6 +914,16 @@ class FunctionResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Struct,
+    )
+    will_continue: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    scheduling: Scheduling = proto.Field(
+        proto.ENUM,
+        number=5,
+        optional=True,
+        enum=Scheduling,
     )
 
 
@@ -778,6 +976,12 @@ class Schema(proto.Message):
             Optional. Properties of Type.OBJECT.
         required (MutableSequence[str]):
             Optional. Required properties of Type.OBJECT.
+        min_properties (int):
+            Optional. Minimum number of the properties
+            for Type.OBJECT.
+        max_properties (int):
+            Optional. Maximum number of the properties
+            for Type.OBJECT.
         minimum (float):
             Optional. SCHEMA FIELDS FOR TYPE INTEGER and
             NUMBER Minimum value of the Type.INTEGER and
@@ -789,6 +993,17 @@ class Schema(proto.Message):
             and Type.NUMBER
 
             This field is a member of `oneof`_ ``_maximum``.
+        min_length (int):
+            Optional. SCHEMA FIELDS FOR TYPE STRING
+            Minimum length of the Type.STRING
+        max_length (int):
+            Optional. Maximum length of the Type.STRING
+        pattern (str):
+            Optional. Pattern of the Type.STRING to
+            restrict a string to a regular expression.
+        example (google.protobuf.struct_pb2.Value):
+            Optional. Example of the object. Will only
+            populated when the object is the root.
         any_of (MutableSequence[google.ai.generativelanguage_v1beta.types.Schema]):
             Optional. The value should be validated
             against any (one or more) of the subschemas in
@@ -855,6 +1070,14 @@ class Schema(proto.Message):
         proto.STRING,
         number=8,
     )
+    min_properties: int = proto.Field(
+        proto.INT64,
+        number=9,
+    )
+    max_properties: int = proto.Field(
+        proto.INT64,
+        number=10,
+    )
     minimum: float = proto.Field(
         proto.DOUBLE,
         number=11,
@@ -864,6 +1087,23 @@ class Schema(proto.Message):
         proto.DOUBLE,
         number=12,
         optional=True,
+    )
+    min_length: int = proto.Field(
+        proto.INT64,
+        number=13,
+    )
+    max_length: int = proto.Field(
+        proto.INT64,
+        number=14,
+    )
+    pattern: str = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    example: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=struct_pb2.Value,
     )
     any_of: MutableSequence["Schema"] = proto.RepeatedField(
         proto.MESSAGE,
