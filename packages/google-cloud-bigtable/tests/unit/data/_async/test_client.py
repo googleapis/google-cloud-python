@@ -52,13 +52,21 @@ from tests.unit.data.execute_query.sql_helpers import (
 if CrossSync.is_async:
     from google.api_core import grpc_helpers_async
     from google.cloud.bigtable.data._async.client import TableAsync
+    from google.cloud.bigtable.data._async._swappable_channel import (
+        AsyncSwappableChannel,
+    )
 
     CrossSync.add_mapping("grpc_helpers", grpc_helpers_async)
+    CrossSync.add_mapping("SwappableChannel", AsyncSwappableChannel)
 else:
     from google.api_core import grpc_helpers
     from google.cloud.bigtable.data._sync_autogen.client import Table  # noqa: F401
+    from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
+        SwappableChannel,
+    )
 
     CrossSync.add_mapping("grpc_helpers", grpc_helpers)
+    CrossSync.add_mapping("SwappableChannel", SwappableChannel)
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_client"
 
@@ -229,6 +237,7 @@ class TestBigtableDataClientAsync:
             client, "_ping_and_warm_instances", CrossSync.Mock()
         ) as ping_and_warm:
             client._emulator_host = None
+            client.transport._grpc_channel = CrossSync.SwappableChannel(mock.Mock)
             client._start_background_channel_refresh()
             assert client._channel_refresh_task is not None
             assert isinstance(client._channel_refresh_task, CrossSync.Task)
@@ -384,44 +393,31 @@ class TestBigtableDataClientAsync:
         """
         _manage channel should call ping and warm internally
         """
-        import time
         import threading
 
-        if CrossSync.is_async:
-            from google.cloud.bigtable_v2.services.bigtable.transports.grpc_asyncio import (
-                _LoggingClientAIOInterceptor as Interceptor,
-            )
-        else:
-            from google.cloud.bigtable_v2.services.bigtable.transports.grpc import (
-                _LoggingClientInterceptor as Interceptor,
-            )
-
-        client_mock = mock.Mock()
-        client_mock.transport._interceptor = Interceptor()
-        client_mock._is_closed.is_set.return_value = False
-        client_mock._channel_init_time = time.monotonic()
-        orig_channel = client_mock.transport.grpc_channel
+        client = self._make_client(project="project-id", use_emulator=True)
+        orig_channel = client.transport.grpc_channel
         # should ping an warm all new channels, and old channels if sleeping
         sleep_tuple = (
             (asyncio, "sleep") if CrossSync.is_async else (threading.Event, "wait")
         )
-        with mock.patch.object(*sleep_tuple):
-            # stop process after close is called
-            orig_channel.close.side_effect = asyncio.CancelledError
-            ping_and_warm = client_mock._ping_and_warm_instances = CrossSync.Mock()
+        with mock.patch.object(*sleep_tuple) as sleep_mock:
+            # stop process after loop
+            sleep_mock.side_effect = [None, asyncio.CancelledError]
+            ping_and_warm = client._ping_and_warm_instances = CrossSync.Mock()
             # should ping and warm old channel then new if sleep > 0
             try:
-                await self._get_target_class()._manage_channel(client_mock, 10)
+                await client._manage_channel(10)
             except asyncio.CancelledError:
                 pass
             # should have called at loop start, and after replacement
             assert ping_and_warm.call_count == 2
             # should have replaced channel once
-            assert client_mock.transport._grpc_channel != orig_channel
+            assert client.transport.grpc_channel._channel != orig_channel
             # make sure new and old channels were warmed
             called_with = [call[1]["channel"] for call in ping_and_warm.call_args_list]
             assert orig_channel in called_with
-            assert client_mock.transport.grpc_channel in called_with
+            assert client.transport.grpc_channel._channel in called_with
 
     @CrossSync.pytest
     @pytest.mark.parametrize(
@@ -439,8 +435,6 @@ class TestBigtableDataClientAsync:
         import time
         import random
 
-        channel = mock.Mock()
-        channel.close = CrossSync.Mock()
         with mock.patch.object(random, "uniform") as uniform:
             uniform.side_effect = lambda min_, max_: min_
             with mock.patch.object(time, "time") as time_mock:
@@ -449,8 +443,7 @@ class TestBigtableDataClientAsync:
                     sleep.side_effect = [None for i in range(num_cycles - 1)] + [
                         asyncio.CancelledError
                     ]
-                    client = self._make_client(project="project-id")
-                    client.transport._grpc_channel = channel
+                    client = self._make_client(project="project-id", use_emulator=True)
                     with mock.patch.object(
                         client.transport, "create_channel", CrossSync.Mock
                     ):
@@ -506,26 +499,27 @@ class TestBigtableDataClientAsync:
         expected_refresh = 0.5
         grpc_lib = grpc.aio if CrossSync.is_async else grpc
         new_channel = grpc_lib.insecure_channel("localhost:8080")
+        create_channel_mock = mock.Mock()
+        create_channel_mock.return_value = new_channel
+        refreshable_channel = CrossSync.SwappableChannel(create_channel_mock)
 
         with mock.patch.object(CrossSync, "event_wait") as sleep:
             sleep.side_effect = [None for i in range(num_cycles)] + [RuntimeError]
-            with mock.patch.object(
-                CrossSync.grpc_helpers, "create_channel"
-            ) as create_channel:
-                create_channel.return_value = new_channel
-                client = self._make_client(project="project-id")
-                create_channel.reset_mock()
-                try:
-                    await client._manage_channel(
-                        refresh_interval_min=expected_refresh,
-                        refresh_interval_max=expected_refresh,
-                        grace_period=0,
-                    )
-                except RuntimeError:
-                    pass
-                assert sleep.call_count == num_cycles + 1
-                assert create_channel.call_count == num_cycles
-            await client.close()
+            client = self._make_client(project="project-id")
+            client.transport._grpc_channel = refreshable_channel
+            create_channel_mock.reset_mock()
+            sleep.reset_mock()
+            try:
+                await client._manage_channel(
+                    refresh_interval_min=expected_refresh,
+                    refresh_interval_max=expected_refresh,
+                    grace_period=0,
+                )
+            except RuntimeError:
+                pass
+            assert sleep.call_count == num_cycles + 1
+            assert create_channel_mock.call_count == num_cycles
+        await client.close()
 
     @CrossSync.pytest
     async def test__register_instance(self):

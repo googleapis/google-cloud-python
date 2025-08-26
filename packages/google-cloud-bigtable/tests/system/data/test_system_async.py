@@ -28,6 +28,14 @@ from google.cloud.bigtable.data._cross_sync import CrossSync
 
 from . import TEST_FAMILY, TEST_FAMILY_2, TEST_AGGREGATE_FAMILY
 
+if CrossSync.is_async:
+    from google.cloud.bigtable_v2.services.bigtable.transports.grpc_asyncio import (
+        _LoggingClientAIOInterceptor as GapicInterceptor,
+    )
+else:
+    from google.cloud.bigtable_v2.services.bigtable.transports.grpc import (
+        _LoggingClientInterceptor as GapicInterceptor,
+    )
 
 __CROSS_SYNC_OUTPUT__ = "tests.system.data.test_system_autogen"
 
@@ -111,11 +119,14 @@ class TempRowBuilderAsync:
 
 @CrossSync.convert_class(sync_name="TestSystem")
 class TestSystemAsync:
+    def _make_client(self):
+        project = os.getenv("GOOGLE_CLOUD_PROJECT") or None
+        return CrossSync.DataClient(project=project)
+
     @CrossSync.convert
     @CrossSync.pytest_fixture(scope="session")
     async def client(self):
-        project = os.getenv("GOOGLE_CLOUD_PROJECT") or None
-        async with CrossSync.DataClient(project=project) as client:
+        async with self._make_client() as client:
             yield client
 
     @CrossSync.convert
@@ -260,8 +271,7 @@ class TestSystemAsync:
         """
         await temp_rows.add_row(b"row_key_1")
         await temp_rows.add_row(b"row_key_2")
-        project = os.getenv("GOOGLE_CLOUD_PROJECT") or None
-        client = CrossSync.DataClient(project=project)
+        client = self._make_client()
         # start custom refresh task
         try:
             client._channel_refresh_task = CrossSync.create_task(
@@ -274,13 +284,24 @@ class TestSystemAsync:
             await CrossSync.yield_to_event_loop()
             async with client.get_table(instance_id, table_id) as table:
                 rows = await table.read_rows({})
-                first_channel = client.transport.grpc_channel
+                channel_wrapper = client.transport.grpc_channel
+                first_channel = client.transport.grpc_channel._channel
                 assert len(rows) == 2
                 await CrossSync.sleep(2)
                 rows_after_refresh = await table.read_rows({})
                 assert len(rows_after_refresh) == 2
-                assert client.transport.grpc_channel is not first_channel
-                print(table)
+                assert client.transport.grpc_channel is channel_wrapper
+                assert client.transport.grpc_channel._channel is not first_channel
+                # ensure gapic's logging interceptor is still active
+                if CrossSync.is_async:
+                    interceptors = (
+                        client.transport.grpc_channel._channel._unary_unary_interceptors
+                    )
+                    assert GapicInterceptor in [type(i) for i in interceptors]
+                else:
+                    assert isinstance(
+                        client.transport._logged_channel._interceptor, GapicInterceptor
+                    )
         finally:
             await client.close()
 

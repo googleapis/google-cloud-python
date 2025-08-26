@@ -290,7 +290,6 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
             always_use_jwt_access=always_use_jwt_access,
             api_audience=api_audience,
         )
-
         if not self._grpc_channel:
             # initialize with the provided callable or the default channel
             channel_init = channel or type(self).create_channel

@@ -92,13 +92,22 @@ if CrossSync.is_async:
     from google.cloud.bigtable_v2.services.bigtable.transports import (
         BigtableGrpcAsyncIOTransport as TransportType,
     )
+    from google.cloud.bigtable_v2.services.bigtable import (
+        BigtableAsyncClient as GapicClient,
+    )
     from google.cloud.bigtable.data._async.mutations_batcher import _MB_SIZE
+    from google.cloud.bigtable.data._async._swappable_channel import (
+        AsyncSwappableChannel,
+    )
 else:
     from typing import Iterable  # noqa: F401
     from grpc import insecure_channel
-    from grpc import intercept_channel
     from google.cloud.bigtable_v2.services.bigtable.transports import BigtableGrpcTransport as TransportType  # type: ignore
+    from google.cloud.bigtable_v2.services.bigtable import BigtableClient as GapicClient  # type: ignore
     from google.cloud.bigtable.data._sync_autogen.mutations_batcher import _MB_SIZE
+    from google.cloud.bigtable.data._sync_autogen._swappable_channel import (  # noqa: F401
+        SwappableChannel,
+    )
 
 
 if TYPE_CHECKING:
@@ -182,7 +191,6 @@ class BigtableDataClientAsync(ClientWithProject):
         client_options = cast(
             Optional[client_options_lib.ClientOptions], client_options
         )
-        custom_channel = None
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
         if self._emulator_host is not None:
             warnings.warn(
@@ -191,11 +199,11 @@ class BigtableDataClientAsync(ClientWithProject):
                 stacklevel=2,
             )
             # use insecure channel if emulator is set
-            custom_channel = insecure_channel(self._emulator_host)
             if credentials is None:
                 credentials = google.auth.credentials.AnonymousCredentials()
             if project is None:
                 project = _DEFAULT_BIGTABLE_EMULATOR_CLIENT
+
         # initialize client
         ClientWithProject.__init__(
             self,
@@ -203,12 +211,12 @@ class BigtableDataClientAsync(ClientWithProject):
             project=project,
             client_options=client_options,
         )
-        self._gapic_client = CrossSync.GapicClient(
+        self._gapic_client = GapicClient(
             credentials=credentials,
             client_options=client_options,
             client_info=self.client_info,
             transport=lambda *args, **kwargs: TransportType(
-                *args, **kwargs, channel=custom_channel
+                *args, **kwargs, channel=self._build_grpc_channel
             ),
         )
         if (
@@ -234,7 +242,7 @@ class BigtableDataClientAsync(ClientWithProject):
         self._instance_owners: dict[_WarmedInstanceKey, Set[int]] = {}
         self._channel_init_time = time.monotonic()
         self._channel_refresh_task: CrossSync.Task[None] | None = None
-        self._executor = (
+        self._executor: concurrent.futures.ThreadPoolExecutor | None = (
             concurrent.futures.ThreadPoolExecutor() if not CrossSync.is_async else None
         )
         if self._emulator_host is None:
@@ -248,6 +256,29 @@ class BigtableDataClientAsync(ClientWithProject):
                     RuntimeWarning,
                     stacklevel=2,
                 )
+
+    @CrossSync.convert(replace_symbols={"AsyncSwappableChannel": "SwappableChannel"})
+    def _build_grpc_channel(self, *args, **kwargs) -> AsyncSwappableChannel:
+        """
+        This method is called by the gapic transport to create a grpc channel.
+
+        The init arguments passed down are captured in a partial used by AsyncSwappableChannel
+        to create new channel instances in the future, as part of the channel refresh logic
+
+        Emulators always use an inseucre channel
+
+        Args:
+          - *args: positional arguments passed by the gapic layer to create a new channel with
+          - **kwargs: keyword arguments passed by the gapic layer to create a new channel with
+        Returns:
+          a custom wrapped swappable channel
+        """
+        if self._emulator_host is not None:
+            # emulators use insecure channel
+            create_channel_fn = partial(insecure_channel, self._emulator_host)
+        else:
+            create_channel_fn = partial(TransportType.create_channel, *args, **kwargs)
+        return AsyncSwappableChannel(create_channel_fn)
 
     @property
     def universe_domain(self) -> str:
@@ -364,7 +395,12 @@ class BigtableDataClientAsync(ClientWithProject):
         )
         return [r or None for r in result_list]
 
-    @CrossSync.convert
+    def _invalidate_channel_stubs(self):
+        """Helper to reset the cached stubs. Needed when changing out the grpc channel"""
+        self.transport._stubs = {}
+        self.transport._prep_wrapped_messages(self.client_info)
+
+    @CrossSync.convert(replace_symbols={"AsyncSwappableChannel": "SwappableChannel"})
     async def _manage_channel(
         self,
         refresh_interval_min: float = 60 * 35,
@@ -389,13 +425,17 @@ class BigtableDataClientAsync(ClientWithProject):
             grace_period: time to allow previous channel to serve existing
                 requests before closing, in seconds
         """
+        if not isinstance(self.transport.grpc_channel, AsyncSwappableChannel):
+            warnings.warn("Channel does not support auto-refresh.")
+            return
+        super_channel: AsyncSwappableChannel = self.transport.grpc_channel
         first_refresh = self._channel_init_time + random.uniform(
             refresh_interval_min, refresh_interval_max
         )
         next_sleep = max(first_refresh - time.monotonic(), 0)
         if next_sleep > 0:
             # warm the current channel immediately
-            await self._ping_and_warm_instances(channel=self.transport.grpc_channel)
+            await self._ping_and_warm_instances(channel=super_channel)
         # continuously refresh the channel every `refresh_interval` seconds
         while not self._is_closed.is_set():
             await CrossSync.event_wait(
@@ -408,24 +448,11 @@ class BigtableDataClientAsync(ClientWithProject):
                 break
             start_timestamp = time.monotonic()
             # prepare new channel for use
-            # TODO: refactor to avoid using internal references: https://github.com/googleapis/python-bigtable/issues/1094
-            old_channel = self.transport.grpc_channel
-            new_channel = self.transport.create_channel()
-            if CrossSync.is_async:
-                new_channel._unary_unary_interceptors.append(
-                    self.transport._interceptor
-                )
-            else:
-                new_channel = intercept_channel(
-                    new_channel, self.transport._interceptor
-                )
+            new_channel = super_channel.create_channel()
             await self._ping_and_warm_instances(channel=new_channel)
             # cycle channel out of use, with long grace window before closure
-            self.transport._grpc_channel = new_channel
-            self.transport._logged_channel = new_channel
-            # invalidate caches
-            self.transport._stubs = {}
-            self.transport._prep_wrapped_messages(self.client_info)
+            old_channel = super_channel.swap_channel(new_channel)
+            self._invalidate_channel_stubs()
             # give old_channel a chance to complete existing rpcs
             if CrossSync.is_async:
                 await old_channel.close(grace_period)
@@ -433,7 +460,7 @@ class BigtableDataClientAsync(ClientWithProject):
                 if grace_period:
                     self._is_closed.wait(grace_period)  # type: ignore
                 old_channel.close()  # type: ignore
-            # subtract thed time spent waiting for the channel to be replaced
+            # subtract the time spent waiting for the channel to be replaced
             next_refresh = random.uniform(refresh_interval_min, refresh_interval_max)
             next_sleep = max(next_refresh - (time.monotonic() - start_timestamp), 0)
 
@@ -895,24 +922,32 @@ class _DataApiTargetAsync(abc.ABC):
         self.table_name = self.client._gapic_client.table_path(
             self.client.project, instance_id, table_id
         )
-        self.app_profile_id = app_profile_id
+        self.app_profile_id: str | None = app_profile_id
 
-        self.default_operation_timeout = default_operation_timeout
-        self.default_attempt_timeout = default_attempt_timeout
-        self.default_read_rows_operation_timeout = default_read_rows_operation_timeout
-        self.default_read_rows_attempt_timeout = default_read_rows_attempt_timeout
-        self.default_mutate_rows_operation_timeout = (
+        self.default_operation_timeout: float = default_operation_timeout
+        self.default_attempt_timeout: float | None = default_attempt_timeout
+        self.default_read_rows_operation_timeout: float = (
+            default_read_rows_operation_timeout
+        )
+        self.default_read_rows_attempt_timeout: float | None = (
+            default_read_rows_attempt_timeout
+        )
+        self.default_mutate_rows_operation_timeout: float = (
             default_mutate_rows_operation_timeout
         )
-        self.default_mutate_rows_attempt_timeout = default_mutate_rows_attempt_timeout
+        self.default_mutate_rows_attempt_timeout: float | None = (
+            default_mutate_rows_attempt_timeout
+        )
 
-        self.default_read_rows_retryable_errors = (
+        self.default_read_rows_retryable_errors: Sequence[type[Exception]] = (
             default_read_rows_retryable_errors or ()
         )
-        self.default_mutate_rows_retryable_errors = (
+        self.default_mutate_rows_retryable_errors: Sequence[type[Exception]] = (
             default_mutate_rows_retryable_errors or ()
         )
-        self.default_retryable_errors = default_retryable_errors or ()
+        self.default_retryable_errors: Sequence[type[Exception]] = (
+            default_retryable_errors or ()
+        )
 
         try:
             self._register_instance_future = CrossSync.create_task(
