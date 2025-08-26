@@ -90,8 +90,8 @@ class ExecuteQueryIterator:
         self._app_profile_id = app_profile_id
         self._client = client
         self._instance_id = instance_id
-        self._prepare_metadata = prepare_metadata
-        self._final_metadata = None
+        self._prepare_metadata: Metadata = prepare_metadata
+        self._final_metadata: Metadata | None = None
         self._byte_cursor = _ByteCursor()
         self._reader: _Reader[QueryResultRow] = _QueryResultRowReader()
         self.has_received_token = False
