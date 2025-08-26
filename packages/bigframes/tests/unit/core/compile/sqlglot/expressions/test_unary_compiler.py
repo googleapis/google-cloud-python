@@ -174,6 +174,27 @@ def test_geo_st_boundary(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_geo_st_buffer(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.GeoStBufferOp(1.0, 8.0, False), "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_geo_st_centroid(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.geo_st_centroid_op, "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_geo_st_convexhull(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.geo_st_convexhull_op, "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_geo_st_geogfromtext(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["string_col"]]
     sql = _apply_unary_op(bf_df, ops.geo_st_geogfromtext_op, "string_col")
@@ -366,6 +387,15 @@ def test_log1p(scalar_types_df: bpd.DataFrame, snapshot):
 def test_lower(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["string_col"]]
     sql = _apply_unary_op(bf_df, ops.lower_op, "string_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_map(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(
+        bf_df, ops.MapOp(mappings=(("value1", "mapped1"),)), "string_col"
+    )
 
     snapshot.assert_match(sql, "out.sql")
 
