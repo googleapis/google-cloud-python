@@ -49,7 +49,7 @@ steps:
       - '/workspace/googleapis:/app/source/googleapis'
       # Mount the generate-request.json from this repo's workspace.
       - '-v'
-      - '/workspace/.librarian/generate-request.json:/app/librarian/generate-request.json'
+      - '/workspace/.librarian:/app/librarian'
       # The image that was built in the first step.
       - 'gcr.io/$PROJECT_ID/python-librarian-generator:latest'
       # The command to execute inside the container.
