@@ -21,7 +21,13 @@ import pyarrow as pa
 from bigframes.core import array_value, bigframe_node, expression, local_data, nodes
 import bigframes.operations
 from bigframes.operations import aggregations as agg_ops
-from bigframes.operations import bool_ops, comparison_ops, generic_ops, numeric_ops
+from bigframes.operations import (
+    bool_ops,
+    comparison_ops,
+    generic_ops,
+    numeric_ops,
+    string_ops,
+)
 from bigframes.session import executor, semi_executor
 
 if TYPE_CHECKING:
@@ -69,6 +75,10 @@ _COMPATIBLE_SCALAR_OPS = (
     generic_ops.IsInOp,
     generic_ops.IsNullOp,
     generic_ops.NotNullOp,
+    string_ops.StartsWithOp,
+    string_ops.EndsWithOp,
+    string_ops.StrContainsOp,
+    string_ops.StrContainsRegexOp,
 )
 _COMPATIBLE_AGG_OPS = (
     agg_ops.SizeOp,

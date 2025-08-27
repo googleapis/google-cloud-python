@@ -301,6 +301,34 @@ if polars_installed:
             assert isinstance(op, string_ops.StrConcatOp)
             return pl.concat_str(l_input, r_input)
 
+        @compile_op.register(string_ops.StrContainsOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.StrContainsOp)
+            return input.str.contains(pattern=op.pat, literal=True)
+
+        @compile_op.register(string_ops.StrContainsRegexOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.StrContainsRegexOp)
+            return input.str.contains(pattern=op.pat, literal=False)
+
+        @compile_op.register(string_ops.StartsWithOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.StartsWithOp)
+            if len(op.pat) == 1:
+                return input.str.starts_with(op.pat[0])
+            else:
+                return pl.any_horizontal(
+                    *(input.str.starts_with(pat) for pat in op.pat)
+                )
+
+        @compile_op.register(string_ops.EndsWithOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.EndsWithOp)
+            if len(op.pat) == 1:
+                return input.str.ends_with(op.pat[0])
+            else:
+                return pl.any_horizontal(*(input.str.ends_with(pat) for pat in op.pat))
+
         @compile_op.register(dt_ops.StrftimeOp)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, dt_ops.StrftimeOp)
