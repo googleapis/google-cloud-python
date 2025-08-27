@@ -423,3 +423,18 @@ def test_engines_isin_op(scalars_array_value: array_value.ArrayValue, engine):
     )
 
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+def test_engines_isin_op_nested_filter(
+    scalars_array_value: array_value.ArrayValue, engine
+):
+    isin_clause = ops.IsInOp((1, 2, 3)).as_expr(expression.deref("int64_col"))
+    filter_clause = ops.invert_op.as_expr(
+        ops.or_op.as_expr(
+            expression.deref("bool_col"), ops.invert_op.as_expr(isin_clause)
+        )
+    )
+    arr = scalars_array_value.filter(filter_clause)
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)

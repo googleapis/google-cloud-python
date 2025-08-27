@@ -44,7 +44,7 @@ def lower_ops(
                     return maybe_rule.lower(expr)
             return expr
 
-        return lower_expr_step(expr.transform_children(lower_expr_step))
+        return expr.bottom_up(lower_expr_step)
 
     def lower_node(node: bigframe_node.BigFrameNode) -> bigframe_node.BigFrameNode:
         if isinstance(
