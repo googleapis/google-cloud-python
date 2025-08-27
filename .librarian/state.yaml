@@ -1,23 +1,26 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-dev/python-librarian-generator:latest
 libraries:
-- id: google-cloud-language
-  version: 2.17.2
-  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
-  apis:
-  - path: google/cloud/language/v1beta2
-  - path: google/cloud/language/v2
-  - path: google/cloud/language/v1
-  source_roots:
-  - packages/google-cloud-language
-  preserve_regex:
-  - .OwlBot.yaml
-  - CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  remove_regex:
-  - ^packages/google-cloud-language
+    - id: google-cloud-language
+      version: 2.17.2
+      last_generated_commit: 3b2a2ae91db23a9c879b2b725d6a5de6bd64a800
+      apis:
+        - path: google/cloud/language/v1beta2
+          service_config: language_v1beta2.yaml
+        - path: google/cloud/language/v2
+          service_config: language_v2.yaml
+        - path: google/cloud/language/v1
+          service_config: language_v1.yaml
+      source_roots:
+        - packages/google-cloud-language
+      preserve_regex:
+        - .OwlBot.yaml
+        - CHANGELOG.md
+        - docs/CHANGELOG.md
+        - docs/README.rst
+        - samples/README.txt
+        - tar.gz
+        - gapic_version.py
+        - samples/generated_samples/snippet_metadata_
+        - scripts/client-post-processing
+      remove_regex:
+        - ^packages/google-cloud-language
