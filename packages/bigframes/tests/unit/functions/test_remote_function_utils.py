@@ -243,6 +243,78 @@ def test_package_existed_helper():
     assert not _utils._package_existed([], "pandas")
 
 
+def _function_add_one(x):
+    return x + 1
+
+
+def _function_add_two(x):
+    return x + 2
+
+
+@pytest.mark.parametrize(
+    "func1, func2, should_be_equal, description",
+    [
+        (
+            _function_add_one,
+            _function_add_one,
+            True,
+            "Identical functions should have the same hash.",
+        ),
+        (
+            _function_add_one,
+            _function_add_two,
+            False,
+            "Different functions should have different hashes.",
+        ),
+    ],
+)
+def test_get_hash_without_package_requirements(
+    func1, func2, should_be_equal, description
+):
+    """Tests function hashes without any requirements."""
+    hash1 = _utils.get_hash(func1)
+    hash2 = _utils.get_hash(func2)
+
+    if should_be_equal:
+        assert hash1 == hash2, f"FAILED: {description}"
+    else:
+        assert hash1 != hash2, f"FAILED: {description}"
+
+
+@pytest.mark.parametrize(
+    "reqs1, reqs2, should_be_equal, description",
+    [
+        (
+            None,
+            ["pandas>=1.0"],
+            False,
+            "Hash with or without requirements should differ from hash.",
+        ),
+        (
+            ["pandas", "numpy", "scikit-learn"],
+            ["numpy", "scikit-learn", "pandas"],
+            True,
+            "Same requirements should produce the same hash.",
+        ),
+        (
+            ["pandas==1.0"],
+            ["pandas==2.0"],
+            False,
+            "Different requirement versions should produce different hashes.",
+        ),
+    ],
+)
+def test_get_hash_with_package_requirements(reqs1, reqs2, should_be_equal, description):
+    """Tests how package requirements affect the final hash."""
+    hash1 = _utils.get_hash(_function_add_one, package_requirements=reqs1)
+    hash2 = _utils.get_hash(_function_add_one, package_requirements=reqs2)
+
+    if should_be_equal:
+        assert hash1 == hash2, f"FAILED: {description}"
+    else:
+        assert hash1 != hash2, f"FAILED: {description}"
+
+
 # Helper functions for signature inspection tests
 def _func_one_arg_annotated(x: int) -> int:
     """A function with one annotated arg and an annotated return type."""
