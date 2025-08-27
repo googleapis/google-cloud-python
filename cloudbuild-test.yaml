@@ -49,7 +49,7 @@ steps:
       - '/workspace/googleapis:/app/source'
       # Mount the generate-request.json from this repo's workspace.
       - '-v'
-      - '/workspace/.generator/test-resources/generate-request.json:/app/librarian/generate-request.json'
+      - '/workspace/.generator/test-resources:/app/librarian'
       # Mount the generator-input from this repo's workspace.
       - '-v'
       - '/workspace/.librarian/generator-input:/app/input'
