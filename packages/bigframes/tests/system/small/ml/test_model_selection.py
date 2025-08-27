@@ -13,12 +13,14 @@
 # limitations under the License.
 
 import math
+from typing import cast
 
 import pandas as pd
 import pytest
 
 from bigframes.ml import model_selection
 import bigframes.pandas as bpd
+import bigframes.session
 
 
 @pytest.mark.parametrize(
@@ -217,6 +219,78 @@ def test_train_test_split_seeded_correct_rows(
             ]
         ].loc[test_index],
     )
+
+
+def test_train_test_split_no_shuffle_correct_shape(
+    penguins_df_default_index: bpd.DataFrame,
+):
+    X = penguins_df_default_index[["species"]]
+    y = penguins_df_default_index["body_mass_g"]
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(
+        X, y, shuffle=False
+    )
+    assert isinstance(X_train, bpd.DataFrame)
+    assert isinstance(X_test, bpd.DataFrame)
+    assert isinstance(y_train, bpd.Series)
+    assert isinstance(y_test, bpd.Series)
+
+    assert X_train.shape == (258, 1)
+    assert X_test.shape == (86, 1)
+    assert y_train.shape == (258,)
+    assert y_test.shape == (86,)
+
+
+def test_train_test_split_no_shuffle_correct_rows(
+    session: bigframes.session.Session, penguins_pandas_df_default_index: bpd.DataFrame
+):
+    # Note that we're using `penguins_pandas_df_default_index` as this test depends
+    # on a stable row order being present end to end
+    # filter down to the chunkiest penguins, to keep our test code a reasonable size
+    all_data = penguins_pandas_df_default_index[
+        penguins_pandas_df_default_index.body_mass_g > 5500
+    ].sort_index()
+
+    # Note that bigframes loses the index if it doesn't have a name
+    all_data.index.name = "rowindex"
+
+    df = session.read_pandas(all_data)
+
+    X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+        ]
+    ]
+    y = df["body_mass_g"]
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(
+        X, y, shuffle=False
+    )
+
+    X_train_pd = cast(bpd.DataFrame, X_train).to_pandas()
+    X_test_pd = cast(bpd.DataFrame, X_test).to_pandas()
+    y_train_pd = cast(bpd.Series, y_train).to_pandas()
+    y_test_pd = cast(bpd.Series, y_test).to_pandas()
+
+    total_rows = len(all_data)
+    train_size = 0.75
+    train_rows = int(total_rows * train_size)
+    test_rows = total_rows - train_rows
+
+    expected_X_train = all_data.head(train_rows)[
+        ["species", "island", "culmen_length_mm"]
+    ]
+    expected_y_train = all_data.head(train_rows)["body_mass_g"]
+
+    expected_X_test = all_data.tail(test_rows)[
+        ["species", "island", "culmen_length_mm"]
+    ]
+    expected_y_test = all_data.tail(test_rows)["body_mass_g"]
+
+    pd.testing.assert_frame_equal(X_train_pd, expected_X_train)
+    pd.testing.assert_frame_equal(X_test_pd, expected_X_test)
+    pd.testing.assert_series_equal(y_train_pd, expected_y_train)
+    pd.testing.assert_series_equal(y_test_pd, expected_y_test)
 
 
 @pytest.mark.parametrize(

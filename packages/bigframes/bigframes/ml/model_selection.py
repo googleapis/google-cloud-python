@@ -18,6 +18,7 @@ https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_select
 
 
 import inspect
+from itertools import chain
 import time
 from typing import cast, Generator, List, Optional, Union
 
@@ -36,11 +37,8 @@ def train_test_split(
     train_size: Union[float, None] = None,
     random_state: Union[int, None] = None,
     stratify: Union[bpd.Series, None] = None,
+    shuffle: bool = True,
 ) -> List[Union[bpd.DataFrame, bpd.Series]]:
-
-    # TODO(garrettwu): scikit-learn throws an error when the dataframes don't have the same
-    # number of rows. We probably want to do something similar. Now the implementation is based
-    # on index. We'll move to based on ordering first.
 
     if test_size is None:
         if train_size is None:
@@ -59,6 +57,26 @@ def train_test_split(
     if train_size + test_size > 1.0:
         raise ValueError(
             f"The sum of train_size and test_size exceeds 1.0. train_size: {train_size}. test_size: {test_size}"
+        )
+
+    if not shuffle:
+        if stratify is not None:
+            raise ValueError(
+                "Stratified train/test split is not implemented for shuffle=False"
+            )
+        bf_arrays = list(utils.batch_convert_to_bf_equivalent(*arrays))
+
+        total_rows = len(bf_arrays[0])
+        train_rows = int(total_rows * train_size)
+        test_rows = total_rows - train_rows
+
+        return list(
+            chain.from_iterable(
+                [
+                    [bf_array.head(train_rows), bf_array.tail(test_rows)]
+                    for bf_array in bf_arrays
+                ]
+            )
         )
 
     dfs = list(utils.batch_convert_to_dataframe(*arrays))

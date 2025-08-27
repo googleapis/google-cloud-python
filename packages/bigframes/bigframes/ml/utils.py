@@ -79,6 +79,30 @@ def batch_convert_to_series(
     )
 
 
+def batch_convert_to_bf_equivalent(
+    *input: ArrayType, session: Optional[Session] = None
+) -> Generator[Union[bpd.DataFrame, bpd.Series], None, None]:
+    """Converts the input to BigFrames DataFrame or Series.
+
+    Args:
+        session:
+            The session to convert local pandas instances to BigFrames counter-parts.
+            It is not used if the input itself is already a BigFrame data frame or series.
+
+    """
+    _validate_sessions(*input, session=session)
+
+    for frame in input:
+        if isinstance(frame, bpd.DataFrame) or isinstance(frame, pd.DataFrame):
+            yield convert.to_bf_dataframe(frame, default_index=None, session=session)
+        elif isinstance(frame, bpd.Series) or isinstance(frame, pd.Series):
+            yield convert.to_bf_series(
+                _get_only_column(frame), default_index=None, session=session
+            )
+        else:
+            raise ValueError(f"Unsupported type: {type(frame)}")
+
+
 def _validate_sessions(*input: ArrayType, session: Optional[Session]):
     session_ids = set(
         i._session.session_id
