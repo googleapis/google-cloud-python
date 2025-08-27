@@ -50,6 +50,9 @@ steps:
       # Mount the generate-request.json from this repo's workspace.
       - '-v'
       - '/workspace/.generator/test-resources/generate-request.json:/app/librarian/generate-request.json'
+      # Mount the generator-input from this repo's workspace.
+      - '-v'
+      - '/workspace/.librarian/generator-input:/app/input'
       # The image that was built in the first step.
       - 'gcr.io/$PROJECT_ID/python-librarian-generator:latest'
       # The command to execute inside the container.
