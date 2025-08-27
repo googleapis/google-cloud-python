@@ -1138,6 +1138,67 @@ def test_assign_new_column_w_setitem_list_error(scalars_dfs):
         bf_df["new_col"] = [1, 2, 3]
 
 
+@pytest.mark.parametrize(
+    ("key", "value"),
+    [
+        pytest.param(["int64_col", "int64_too"], 1, id="scalar_to_existing_column"),
+        pytest.param(
+            ["int64_col", "int64_too"], [1, 2], id="sequence_to_existing_column"
+        ),
+        pytest.param(
+            ["int64_col", "new_col"], [1, 2], id="sequence_to_partial_new_column"
+        ),
+        pytest.param(
+            ["new_col", "new_col_too"], [1, 2], id="sequence_to_full_new_column"
+        ),
+    ],
+)
+def test_setitem_multicolumn_with_literals(scalars_dfs, key, value):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df.copy()
+    pd_result = scalars_pandas_df.copy()
+
+    bf_result[key] = value
+    pd_result[key] = value
+
+    pd.testing.assert_frame_equal(pd_result, bf_result.to_pandas(), check_dtype=False)
+
+
+def test_setitem_multicolumn_with_literals_different_lengths_raise_error(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+    bf_result = scalars_df.copy()
+
+    with pytest.raises(ValueError):
+        bf_result[["int64_col", "int64_too"]] = [1]
+
+
+def test_setitem_multicolumn_with_dataframes(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df.copy()
+    pd_result = scalars_pandas_df.copy()
+
+    bf_result[["int64_col", "int64_too"]] = bf_result[["int64_too", "int64_col"]] / 2
+    pd_result[["int64_col", "int64_too"]] = pd_result[["int64_too", "int64_col"]] / 2
+
+    pd.testing.assert_frame_equal(pd_result, bf_result.to_pandas(), check_dtype=False)
+
+
+def test_setitem_multicolumn_with_dataframes_series_on_rhs_raise_error(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+    bf_result = scalars_df.copy()
+
+    with pytest.raises(ValueError):
+        bf_result[["int64_col", "int64_too"]] = bf_result["int64_col"] / 2
+
+
+def test_setitem_multicolumn_with_dataframes_different_lengths_raise_error(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+    bf_result = scalars_df.copy()
+
+    with pytest.raises(ValueError):
+        bf_result[["int64_col"]] = bf_result[["int64_col", "int64_too"]] / 2
+
+
 def test_assign_existing_column(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     kwargs = {"int64_col": 2}

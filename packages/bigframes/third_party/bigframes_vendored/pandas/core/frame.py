@@ -7626,11 +7626,43 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [3 rows x 5 columns]
 
+        You can assign a scalar to multiple columns.
+
+            >>> df[["age", "new_age"]] = 25
+            >>> df
+                name  age location country  new_age
+            0  alpha   25       WA     USA       25
+            1   beta   25       NY     USA       25
+            2  gamma   25       CA     USA       25
+            <BLANKLINE>
+            [3 rows x 5 columns]
+
+        You can use a sequence of scalars for assignment of multiple columns:
+
+            >>> df[["age", "is_happy"]] = [20, True]
+            >>> df
+                name  age location country  new_age  is_happy
+            0  alpha   20       WA     USA       25      True
+            1   beta   20       NY     USA       25      True
+            2  gamma   20       CA     USA       25      True
+            <BLANKLINE>
+            [3 rows x 6 columns]
+
+        You can use a dataframe for assignment of multiple columns:
+            >>> df[["age", "new_age"]] = df[["new_age", "age"]]
+            >>> df
+            name  age location country  new_age  is_happy
+            0  alpha   25       WA     USA       20      True
+            1   beta   25       NY     USA       20      True
+            2  gamma   25       CA     USA       20      True
+            <BLANKLINE>
+            [3 rows x 6 columns]
+
         Args:
             key (column index):
                 It can be a new column to be inserted, or an existing column to
                 be modified.
-            value (scalar or Series):
+            value (scalar, Sequence, DataFrame, or Series):
                 Value to be assigned to the column
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

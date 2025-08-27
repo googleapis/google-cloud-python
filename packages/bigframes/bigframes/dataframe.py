@@ -26,6 +26,7 @@ import textwrap
 import traceback
 import typing
 from typing import (
+    Any,
     Callable,
     Dict,
     Hashable,
@@ -91,6 +92,7 @@ if typing.TYPE_CHECKING:
     import bigframes.session
 
     SingleItemValue = Union[bigframes.series.Series, int, float, str, Callable]
+    MultiItemValue = Union["DataFrame", Sequence[int | float | str | Callable]]
 
 LevelType = typing.Hashable
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
@@ -884,8 +886,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         df = self.drop(columns=[key])
         self._set_block(df._get_block())
 
-    def __setitem__(self, key: str, value: SingleItemValue):
-        df = self._assign_single_item(key, value)
+    def __setitem__(
+        self, key: str | list[str], value: SingleItemValue | MultiItemValue
+    ):
+        if isinstance(key, list):
+            df = self._assign_multi_items(key, value)
+        else:
+            df = self._assign_single_item(key, value)
         self._set_block(df._get_block())
 
     __setitem__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__setitem__)
@@ -2212,7 +2219,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _assign_single_item(
         self,
         k: str,
-        v: SingleItemValue,
+        v: SingleItemValue | MultiItemValue,
     ) -> DataFrame:
         if isinstance(v, bigframes.series.Series):
             return self._assign_series_join_on_index(k, v)
@@ -2230,7 +2237,33 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         elif utils.is_list_like(v):
             return self._assign_single_item_listlike(k, v)
         else:
-            return self._assign_scalar(k, v)
+            return self._assign_scalar(k, v)  # type: ignore
+
+    def _assign_multi_items(
+        self,
+        k: list[str],
+        v: SingleItemValue | MultiItemValue,
+    ) -> DataFrame:
+        value_sources: Sequence[Any] = []
+        if isinstance(v, DataFrame):
+            value_sources = [v[col] for col in v.columns]
+        elif isinstance(v, bigframes.series.Series):
+            # For behavior consistency with Pandas.
+            raise ValueError("Columns must be same length as key")
+        elif isinstance(v, Sequence):
+            value_sources = v
+        else:
+            # We assign the same scalar value to all target columns.
+            value_sources = [v] * len(k)
+
+        if len(value_sources) != len(k):
+            raise ValueError("Columns must be same length as key")
+
+        # Repeatedly assign columns in order.
+        result = self._assign_single_item(k[0], value_sources[0])
+        for target, source in zip(k[1:], value_sources[1:]):
+            result = result._assign_single_item(target, source)
+        return result
 
     def _assign_single_item_listlike(self, k: str, v: Sequence) -> DataFrame:
         given_rows = len(v)
