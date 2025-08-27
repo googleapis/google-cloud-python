@@ -856,7 +856,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 voice.language_code = "language_code_value"
 
                 audio_config = texttospeech_v1.AudioConfig()
-                audio_config.audio_encoding = "PCM"
+                audio_config.audio_encoding = "M4A"
 
                 request = texttospeech_v1.SynthesizeSpeechRequest(
                     input=input,
