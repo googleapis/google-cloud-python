@@ -38,6 +38,18 @@ steps:
     args: ['clone', '--depth', '1', 'https://github.com/googleapis/googleapis.git', '/workspace/googleapis']
     waitFor: ['-']
 
+  # Step 3: Prepare a writable directory for I/O.
+  # This step creates a new directory and copies the input file into it.
+  - name: 'alpine'
+    id: 'prepare-io-dir'
+    args:
+      - 'sh'
+      - '-c'
+      - |
+        mkdir -p /workspace/librarian-io && \
+        cp /workspace/.generator/test-resources/generate-request.json /workspace/librarian-io/
+    waitFor: ['-']
+
   # Step 3: Run the generator to generate the library code.
   - name: 'gcr.io/cloud-builders/docker'
     id: 'generate-library'
@@ -49,7 +61,7 @@ steps:
       - '/workspace/googleapis:/app/source'
       # Mount the generate-request.json from this repo's workspace.
       - '-v'
-      - '/workspace/.generator/test-resources:/app/librarian'
+      - '/workspace/librarian-io:/app/librarian'
       # Mount the generator-input from this repo's workspace.
       - '-v'
       - '/workspace/.librarian/generator-input:/app/input'
