@@ -290,7 +290,7 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
         library_id(str): The library id to be used for post processing.
     """
     path_to_library = f"packages/{library_id}"
-    shutil.rmtree(f"{output}/{path_to_library}/.nox")
+    # shutil.rmtree(f"{output}/{path_to_library}/.nox")
     os.remove(f"{output}/{path_to_library}/CHANGELOG.md")
     os.remove(f"{output}/{path_to_library}/docs/CHANGELOG.md")
     os.remove(f"{output}/{path_to_library}/docs/README.rst")
