@@ -46,7 +46,7 @@ steps:
       - '--rm'
       # Mount the cloned googleapis repo from the workspace.
       - '-v'
-      - '/workspace/googleapis:/app/source/googleapis'
+      - '/workspace/googleapis:/app/source'
       # Mount the generate-request.json from this repo's workspace.
       - '-v'
       - '/workspace/.generator/test-resources/generate-request.json:/app/librarian/generate-request.json'
