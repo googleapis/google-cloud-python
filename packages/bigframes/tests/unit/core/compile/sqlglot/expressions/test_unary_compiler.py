@@ -125,6 +125,18 @@ def test_dayofyear(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_endswith(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(bf_df, ops.EndsWithOp(pat=("ab",)), "string_col")
+    snapshot.assert_match(sql, "single_pattern.sql")
+
+    sql = _apply_unary_op(bf_df, ops.EndsWithOp(pat=("ab", "cd")), "string_col")
+    snapshot.assert_match(sql, "multiple_patterns.sql")
+
+    sql = _apply_unary_op(bf_df, ops.EndsWithOp(pat=()), "string_col")
+    snapshot.assert_match(sql, "no_pattern.sql")
+
+
 def test_exp(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.exp_op, "float64_col")
@@ -501,6 +513,18 @@ def test_sqrt(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_startswith(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(bf_df, ops.StartsWithOp(pat=("ab",)), "string_col")
+    snapshot.assert_match(sql, "single_pattern.sql")
+
+    sql = _apply_unary_op(bf_df, ops.StartsWithOp(pat=("ab", "cd")), "string_col")
+    snapshot.assert_match(sql, "multiple_patterns.sql")
+
+    sql = _apply_unary_op(bf_df, ops.StartsWithOp(pat=()), "string_col")
+    snapshot.assert_match(sql, "no_pattern.sql")
+
+
 def test_str_get(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["string_col"]]
     sql = _apply_unary_op(bf_df, ops.StrGetOp(1), "string_col")
@@ -650,6 +674,12 @@ def test_sinh(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_string_split(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(bf_df, ops.StringSplitOp(pat=","), "string_col")
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_tan(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.tan_op, "float64_col")
@@ -789,4 +819,10 @@ def test_year(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["timestamp_col"]]
     sql = _apply_unary_op(bf_df, ops.year_op, "timestamp_col")
 
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_zfill(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(bf_df, ops.ZfillOp(width=10), "string_col")
     snapshot.assert_match(sql, "out.sql")
