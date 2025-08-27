@@ -39,7 +39,6 @@ steps:
     waitFor: ['-']
 
   # Step 3: Run the generator to generate the library code.
-  # This step waits for the image to be built and the repo to be cloned.
   - name: 'gcr.io/cloud-builders/docker'
     id: 'generate-library'
     args:
