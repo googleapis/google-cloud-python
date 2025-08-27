@@ -76,6 +76,32 @@ def test_get_cloud_function_name(func_hash, session_id, uniq_suffix, expected_na
     assert result == expected_name
 
 
+@pytest.mark.parametrize(
+    "function_hash, session_id, uniq_suffix, expected_name",
+    [
+        (
+            "hash123",
+            "session456",
+            None,
+            "bigframes_session456_hash123",
+        ),
+        (
+            "hash789",
+            "sessionABC",
+            "suffixDEF",
+            "bigframes_sessionABC_hash789_suffixDEF",
+        ),
+    ],
+)
+def test_get_bigframes_function_name(
+    function_hash, session_id, uniq_suffix, expected_name
+):
+    """Tests the construction of the BigQuery function name from its parts."""
+    result = _utils.get_bigframes_function_name(function_hash, session_id, uniq_suffix)
+
+    assert result == expected_name
+
+
 def test_get_updated_package_requirements_no_extra_package():
     """Tests with no extra package."""
     result = _utils.get_updated_package_requirements(capture_references=False)
