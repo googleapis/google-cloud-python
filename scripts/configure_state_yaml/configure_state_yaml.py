@@ -44,7 +44,9 @@ def configure_state_yaml() -> None:
     with open(PACKAGES_TO_ONBOARD_YAML, "r") as packages_to_onboard_yaml_file:
         packages_to_onboard = yaml.safe_load(packages_to_onboard_yaml_file)
 
-    state_dict["image"] = "us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-dev/python-librarian-generator:latest"
+    state_dict[
+        "image"
+    ] = "us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-dev/python-librarian-generator:latest"
     state_dict["libraries"] = []
     for package_name in packages_to_onboard["packages_to_onboard"]:
         package_path = Path(PACKAGES_DIR / package_name).resolve()
@@ -65,10 +67,11 @@ def configure_state_yaml() -> None:
                 "version": release_please_manifest[f"packages/{package_name}"],
                 "last_generated_commit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
                 "apis": api_paths,
-                "source_roots": [f"^packages/{package_path.name}"],
+                "source_roots": [f"packages/{package_path.name}"],
                 "preserve_regex": [
                     ".OwlBot.yaml",
-                    "CHANGELOG.md",
+                    # Use the full path to avoid ambiguity with the root CHANGELOG.md
+                    f"packages/{package_path.name}/CHANGELOG.md",
                     "docs/CHANGELOG.md",
                     "docs/README.rst",
                     "samples/README.txt",
@@ -77,7 +80,8 @@ def configure_state_yaml() -> None:
                     "samples/generated_samples/snippet_metadata_",
                     "scripts/client-post-processing",
                 ],
-                "remove_regex": [f"^packages/{package_path.name}"],
+                "remove_regex": [f"packages/{package_path.name}"],
+                "tag_format": "{id}-v{version}",
             }
         )
 
