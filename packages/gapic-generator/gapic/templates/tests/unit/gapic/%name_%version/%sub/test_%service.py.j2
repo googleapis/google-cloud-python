@@ -224,7 +224,11 @@ def test__get_api_endpoint():
 
 {% if service.version %}
 {% for method in service.methods.values() %}{% with method_name = method.name|snake_case %}
-{% for mode in ["", "async"] %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2428): Restore async test `
+ # once it properly runs as an async test with `@pytest.mark.asyncio`
+ # Add "async" to the list below `for mode in ["", "async"]`
+#}
+{% for mode in [""] %}
 {% if mode == "async" %}
 async def test_{{ method_name }}_api_version_header_async(transport_name="grpc"):
     client = {{ service.async_client_name }}(credentials=async_anonymous_credentials(), transport=transport_name)

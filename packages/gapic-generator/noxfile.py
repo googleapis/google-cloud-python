@@ -392,9 +392,9 @@ def showcase(
     """Run the Showcase test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
-        # Exclude pytest-asyncio==1.0.0 while we investigate the recent failure described in
+        # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
-        session.install("pytest", "pytest-asyncio!=1.0.0")
+        session.install("pytest", "pytest-asyncio<1.0.0")
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -424,9 +424,9 @@ def showcase_w_rest_async(
     with showcase_library(
         session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
     ):
-        # Exclude pytest-asyncio==1.0.0 while we investigate the recent failure described in
+        # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
-        session.install("pytest", "pytest-asyncio!=1.0.0")
+        session.install("pytest", "pytest-asyncio<1.0.0")
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -589,7 +589,8 @@ def showcase_mypy(
     """Perform typecheck analysis on the generated Showcase library."""
 
     session.install(
-        "mypy",
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410): Use the latest version of mypy
+        "mypy<1.16.0",
         "types-setuptools",
         "types-protobuf",
         "types-requests",
