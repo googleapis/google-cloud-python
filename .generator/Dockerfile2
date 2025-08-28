@@ -97,11 +97,11 @@ RUN apt-get update && \
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=python /usr/local/bin/python3.9 /usr/local/bin/
 COPY --from=python /usr/local/lib/python3.9 /usr/local/lib/python3.9
-COPY --from=bazelisk /usr/local/include/python3.9 /usr/local/include/python3.9
+COPY --from=python /usr/local/include/python3.9 /usr/local/include/python3.9
 
 COPY --from=python /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=python /usr/local/lib/python3.13 /usr/local/lib/python3.13
-COPY --from=bazelisk /usr/local/include/python3.9 /usr/local/include/python3.9
+COPY --from=python /usr/local/include/python3.13 /usr/local/include/python3.13
 
 # Copy the bazelisk executable from the builder.
 # COPY --from=bazelisk /usr/local/bin/bazelisk /usr/local/bin/

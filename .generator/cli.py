@@ -144,10 +144,10 @@ def _build_bazel_target(bazel_rule: str, source: str):
         # See https://bazel.build/remote/caching#disk-cache which explains using a file system as a 'remote cache'.
         command = [
             "bazelisk",
-            "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
+            # "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
             "build",
-            "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos",
-            "--incompatible_strict_action_env",
+            # "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos",
+            # "--incompatible_strict_action_env",
             bazel_rule,
         ]
         subprocess.run(
