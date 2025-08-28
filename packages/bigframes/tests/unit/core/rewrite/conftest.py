@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,9 @@
 import unittest.mock as mock
 
 import google.cloud.bigquery
+import pytest
 
 import bigframes.core as core
-import bigframes.core.nodes as nodes
-import bigframes.core.rewrite.slices
 import bigframes.core.schema
 
 TABLE_REF = google.cloud.bigquery.TableReference.from_string("project.dataset.table")
@@ -31,27 +30,22 @@ TABLE = google.cloud.bigquery.Table(
 )
 FAKE_SESSION = mock.create_autospec(bigframes.Session, instance=True)
 type(FAKE_SESSION)._strictly_ordered = mock.PropertyMock(return_value=True)
-LEAF = core.ArrayValue.from_table(
-    session=FAKE_SESSION,
-    table=TABLE,
-    schema=bigframes.core.schema.ArraySchema.from_bq_table(TABLE),
-).node
 
 
-def test_rewrite_noop_slice():
-    slice = nodes.SliceNode(LEAF, None, None)
-    result = bigframes.core.rewrite.slices.rewrite_slice(slice)
-    assert result == LEAF
+@pytest.fixture
+def table():
+    return TABLE
 
 
-def test_rewrite_reverse_slice():
-    slice = nodes.SliceNode(LEAF, None, None, -1)
-    result = bigframes.core.rewrite.slices.rewrite_slice(slice)
-    assert result == nodes.ReversedNode(LEAF)
+@pytest.fixture
+def fake_session():
+    return FAKE_SESSION
 
 
-def test_rewrite_filter_slice():
-    slice = nodes.SliceNode(LEAF, None, 2)
-    result = bigframes.core.rewrite.slices.rewrite_slice(slice)
-    assert list(result.fields) == list(LEAF.fields)
-    assert isinstance(result.child, nodes.FilterNode)
+@pytest.fixture
+def leaf(fake_session, table):
+    return core.ArrayValue.from_table(
+        session=fake_session,
+        table=table,
+        schema=bigframes.core.schema.ArraySchema.from_bq_table(table),
+    ).node
