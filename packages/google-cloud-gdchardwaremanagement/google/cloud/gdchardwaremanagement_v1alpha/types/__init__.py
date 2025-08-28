@@ -40,6 +40,7 @@ from .resources import (
     ZoneNetworkConfig,
 )
 from .service import (
+    CancelOrderRequest,
     CreateCommentRequest,
     CreateHardwareGroupRequest,
     CreateHardwareRequest,
@@ -77,6 +78,7 @@ from .service import (
     ListZonesResponse,
     OperationMetadata,
     RecordActionOnCommentRequest,
+    RequestOrderDateChangeRequest,
     SignalZoneStateRequest,
     SubmitOrderRequest,
     UpdateHardwareGroupRequest,
@@ -111,6 +113,7 @@ __all__ = (
     "ZoneNetworkConfig",
     "Entity",
     "PowerSupply",
+    "CancelOrderRequest",
     "CreateCommentRequest",
     "CreateHardwareGroupRequest",
     "CreateHardwareRequest",
@@ -148,6 +151,7 @@ __all__ = (
     "ListZonesResponse",
     "OperationMetadata",
     "RecordActionOnCommentRequest",
+    "RequestOrderDateChangeRequest",
     "SignalZoneStateRequest",
     "SubmitOrderRequest",
     "UpdateHardwareGroupRequest",

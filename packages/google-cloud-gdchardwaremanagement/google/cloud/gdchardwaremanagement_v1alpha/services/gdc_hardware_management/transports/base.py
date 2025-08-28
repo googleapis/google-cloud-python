@@ -209,6 +209,20 @@ class GDCHardwareManagementTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.cancel_order: gapic_v1.method.wrap_method(
+                self.cancel_order,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.list_sites: gapic_v1.method.wrap_method(
                 self.list_sites,
                 default_retry=retries.Retry(
@@ -552,6 +566,11 @@ class GDCHardwareManagementTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.request_order_date_change: gapic_v1.method.wrap_method(
+                self.request_order_date_change,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -647,6 +666,15 @@ class GDCHardwareManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.SubmitOrderRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_order(
+        self,
+    ) -> Callable[
+        [service.CancelOrderRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -911,6 +939,15 @@ class GDCHardwareManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.SignalZoneStateRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def request_order_date_change(
+        self,
+    ) -> Callable[
+        [service.RequestOrderDateChangeRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
