@@ -1232,46 +1232,10 @@ class Block:
                 index_labels=[None],
             ).transpose(original_row_index=pd.Index([None]), single_row_mode=True)
         else:  # axis_n == 1
-            # using offsets as identity to group on.
-            # TODO: Allow to promote identity/total_order columns instead for better perf
-            expr_with_offsets, offset_col = self.expr.promote_offsets()
-            stacked_expr, (_, value_col_ids, passthrough_cols,) = unpivot(
-                expr_with_offsets,
-                row_labels=self.column_labels,
-                unpivot_columns=[tuple(self.value_columns)],
-                passthrough_columns=[*self.index_columns, offset_col],
-            )
-            # these corresponed to passthrough_columns provided to unpivot
-            index_cols = passthrough_cols[:-1]
-            og_offset_col = passthrough_cols[-1]
-            index_aggregations = [
-                (
-                    ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(col_id)),
-                    col_id,
-                )
-                for col_id in index_cols
-            ]
-            # TODO: may need add NullaryAggregation in main_aggregation
-            # when agg add support for axis=1, needed for agg("size", axis=1)
-            assert isinstance(
-                operation, agg_ops.UnaryAggregateOp
-            ), f"Expected a unary operation, but got {operation}. Please report this error and how you got here to the BigQuery DataFrames team (bit.ly/bigframes-feedback)."
-            main_aggregation = (
-                ex.UnaryAggregation(operation, ex.deref(value_col_ids[0])),
-                value_col_ids[0],
-            )
-            # Drop row identity after aggregating over it
-            result_expr = stacked_expr.aggregate(
-                [*index_aggregations, main_aggregation],
-                by_column_ids=[og_offset_col],
-                dropna=dropna,
-            ).drop_columns([og_offset_col])
-            return Block(
-                result_expr,
-                index_columns=index_cols,
-                column_labels=[None],
-                index_labels=self.index.names,
-            )
+            as_array = ops.ToArrayOp().as_expr(*(col for col in self.value_columns))
+            reduced = ops.ArrayReduceOp(operation).as_expr(as_array)
+            block, id = self.project_expr(reduced, None)
+            return block.select_column(id)
 
     def aggregate_size(
         self,

@@ -13,10 +13,11 @@
 # limitations under the License.
 
 import dataclasses
+import functools
 import typing
 
 from bigframes import dtypes
-from bigframes.operations import base_ops
+from bigframes.operations import aggregations, base_ops
 
 
 @dataclasses.dataclass(frozen=True)
@@ -63,3 +64,27 @@ class ArraySliceOp(base_ops.UnaryOp):
             return input_type
         else:
             raise TypeError("Input type must be an array or string-like type.")
+
+
+class ToArrayOp(base_ops.NaryOp):
+    name: typing.ClassVar[str] = "array"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        # very permissive, maybe should force caller to do this?
+        common_type = functools.reduce(
+            lambda t1, t2: dtypes.coerce_to_common(t1, t2),
+            input_types,
+        )
+        return dtypes.list_type(common_type)
+
+
+@dataclasses.dataclass(frozen=True)
+class ArrayReduceOp(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "array_reduce"
+    aggregation: aggregations.AggregateOp
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        assert dtypes.is_array_like(input_type)
+        inner_type = dtypes.get_array_inner_type(input_type)
+        return self.aggregation.output_type(inner_type)

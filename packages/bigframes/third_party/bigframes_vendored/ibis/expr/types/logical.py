@@ -353,6 +353,9 @@ class BooleanColumn(NumericColumn, BooleanValue):
             return Deferred(Call(resolve_exists_subquery, _))
         elif len(parents) == 1:
             op = ops.Any(self, where=self._bind_to_parent_table(where))
+        elif len(parents) == 0:
+            # array reduction case
+            op = ops.Any(self, where=self._bind_to_parent_table(where))
         else:
             raise NotImplementedError(
                 f'Cannot compute "any" for expression of type {type(self)} '

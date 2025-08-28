@@ -1201,6 +1201,28 @@ def array_slice_op_impl(x: ibis_types.Value, op: ops.ArraySliceOp):
         return res
 
 
+@scalar_op_compiler.register_nary_op(ops.ToArrayOp, pass_op=False)
+def to_arry_op_impl(*values: ibis_types.Value):
+    do_upcast_bool = any(t.type().is_numeric() for t in values)
+    if do_upcast_bool:
+        values = tuple(
+            val.cast(ibis_dtypes.int64) if val.type().is_boolean() else val
+            for val in values
+        )
+    return ibis_api.array(values)
+
+
+@scalar_op_compiler.register_unary_op(ops.ArrayReduceOp, pass_op=True)
+def array_reduce_op_impl(x: ibis_types.Value, op: ops.ArrayReduceOp):
+    import bigframes.core.compile.ibis_compiler.aggregate_compiler as agg_compilers
+
+    return typing.cast(ibis_types.ArrayValue, x).reduce(
+        lambda arr_vals: agg_compilers.compile_unary_agg(
+            op.aggregation, typing.cast(ibis_types.Column, arr_vals)
+        )
+    )
+
+
 # JSON Ops
 @scalar_op_compiler.register_binary_op(ops.JSONSet, pass_op=True)
 def json_set_op_impl(x: ibis_types.Value, y: ibis_types.Value, op: ops.JSONSet):

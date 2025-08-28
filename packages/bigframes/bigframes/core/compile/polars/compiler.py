@@ -31,6 +31,7 @@ import bigframes.core.rewrite.schema_binding
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+import bigframes.operations.array_ops as arr_ops
 import bigframes.operations.bool_ops as bool_ops
 import bigframes.operations.comparison_ops as comp_ops
 import bigframes.operations.datetime_ops as dt_ops
@@ -352,6 +353,36 @@ if polars_installed:
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, json_ops.JSONDecode)
             return input.str.json_decode(_DTYPE_MAPPING[op.to_type])
+
+        @compile_op.register(arr_ops.ToArrayOp)
+        def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:
+            return pl.concat_list(*inputs)
+
+        @compile_op.register(arr_ops.ArrayReduceOp)
+        def _(self, op: ops.ArrayReduceOp, input: pl.Expr) -> pl.Expr:
+            # TODO: Unify this with general aggregation compilation?
+            if isinstance(op.aggregation, agg_ops.MinOp):
+                return input.list.min()
+            if isinstance(op.aggregation, agg_ops.MaxOp):
+                return input.list.max()
+            if isinstance(op.aggregation, agg_ops.SumOp):
+                return input.list.sum()
+            if isinstance(op.aggregation, agg_ops.MeanOp):
+                return input.list.mean()
+            if isinstance(op.aggregation, agg_ops.CountOp):
+                return input.list.len()
+            if isinstance(op.aggregation, agg_ops.StdOp):
+                return input.list.std()
+            if isinstance(op.aggregation, agg_ops.VarOp):
+                return input.list.var()
+            if isinstance(op.aggregation, agg_ops.AnyOp):
+                return input.list.any()
+            if isinstance(op.aggregation, agg_ops.AllOp):
+                return input.list.all()
+            else:
+                raise NotImplementedError(
+                    f"Haven't implemented array aggregation: {op.aggregation}"
+                )
 
     @dataclasses.dataclass(frozen=True)
     class PolarsAggregateCompiler:

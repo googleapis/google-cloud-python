@@ -699,6 +699,9 @@ class BigQueryCompiler(SQLGlotCompiler):
     def visit_ArrayMap(self, op, *, arg, body, param):
         return self.f.array(sg.select(body).from_(self._unnest(arg, as_=param)))
 
+    def visit_ArrayReduce(self, op, *, arg, body, param):
+        return sg.select(body).from_(self._unnest(arg, as_=param)).subquery()
+
     def visit_ArrayZip(self, op, *, arg):
         lengths = [self.f.array_length(arr) - 1 for arr in arg]
         idx = sg.to_identifier(util.gen_name("bq_arr_idx"))

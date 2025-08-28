@@ -252,7 +252,7 @@ def rewrite_project_input(value, relation):
     # relation
     return value.replace(
         project_wrap_analytic | project_wrap_reduction,
-        filter=p.Value & ~p.WindowFunction,
+        filter=p.Value & ~p.WindowFunction & ~p.ArrayReduce,
         context={"rel": relation},
     )
 

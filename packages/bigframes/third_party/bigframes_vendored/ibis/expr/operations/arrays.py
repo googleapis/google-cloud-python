@@ -106,6 +106,21 @@ class ArrayMap(Value):
 
 
 @public
+class ArrayReduce(Value):
+    """Apply a function to every element of an array."""
+
+    arg: Value[dt.Array]
+    body: Value
+    param: str
+
+    shape = rlz.shape_like("arg")
+
+    @attribute
+    def dtype(self) -> dt.DataType:
+        return self.body.dtype
+
+
+@public
 class ArrayFilter(Value):
     """Filter array elements with a function."""
 

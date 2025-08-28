@@ -90,3 +90,10 @@ def repeated_data_source(
     repeated_pandas_df: pd.DataFrame,
 ) -> local_data.ManagedArrowTable:
     return local_data.ManagedArrowTable.from_pandas(repeated_pandas_df)
+
+
+@pytest.fixture(scope="module")
+def arrays_array_value(
+    repeated_data_source: local_data.ManagedArrowTable, fake_session: bigframes.Session
+):
+    return ArrayValue.from_managed(repeated_data_source, fake_session)

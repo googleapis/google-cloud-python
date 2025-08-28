@@ -14,7 +14,13 @@
 
 from __future__ import annotations
 
-from bigframes.operations.array_ops import ArrayIndexOp, ArraySliceOp, ArrayToStringOp
+from bigframes.operations.array_ops import (
+    ArrayIndexOp,
+    ArrayReduceOp,
+    ArraySliceOp,
+    ArrayToStringOp,
+    ToArrayOp,
+)
 from bigframes.operations.base_ops import (
     BinaryOp,
     NaryOp,
@@ -405,4 +411,6 @@ __all__ = [
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",
+    "ToArrayOp",
+    "ArrayReduceOp",
 ]
