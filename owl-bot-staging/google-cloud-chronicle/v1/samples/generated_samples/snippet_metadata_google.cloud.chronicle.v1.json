@@ -1,0 +1,5279 @@
+{
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.chronicle.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-chronicle",
+    "version": "0.1.0"
+  },
+  "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.create_data_access_label",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.CreateDataAccessLabel",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "CreateDataAccessLabel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateDataAccessLabelRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_access_label",
+            "type": "google.cloud.chronicle_v1.types.DataAccessLabel"
+          },
+          {
+            "name": "data_access_label_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessLabel",
+        "shortName": "create_data_access_label"
+      },
+      "description": "Sample for CreateDataAccessLabel",
+      "file": "chronicle_v1_generated_data_access_control_service_create_data_access_label_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_CreateDataAccessLabel_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_create_data_access_label_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.create_data_access_label",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.CreateDataAccessLabel",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "CreateDataAccessLabel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateDataAccessLabelRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_access_label",
+            "type": "google.cloud.chronicle_v1.types.DataAccessLabel"
+          },
+          {
+            "name": "data_access_label_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessLabel",
+        "shortName": "create_data_access_label"
+      },
+      "description": "Sample for CreateDataAccessLabel",
+      "file": "chronicle_v1_generated_data_access_control_service_create_data_access_label_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_CreateDataAccessLabel_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_create_data_access_label_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.create_data_access_scope",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.CreateDataAccessScope",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "CreateDataAccessScope"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateDataAccessScopeRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_access_scope",
+            "type": "google.cloud.chronicle_v1.types.DataAccessScope"
+          },
+          {
+            "name": "data_access_scope_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessScope",
+        "shortName": "create_data_access_scope"
+      },
+      "description": "Sample for CreateDataAccessScope",
+      "file": "chronicle_v1_generated_data_access_control_service_create_data_access_scope_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_CreateDataAccessScope_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_create_data_access_scope_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.create_data_access_scope",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.CreateDataAccessScope",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "CreateDataAccessScope"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateDataAccessScopeRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_access_scope",
+            "type": "google.cloud.chronicle_v1.types.DataAccessScope"
+          },
+          {
+            "name": "data_access_scope_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessScope",
+        "shortName": "create_data_access_scope"
+      },
+      "description": "Sample for CreateDataAccessScope",
+      "file": "chronicle_v1_generated_data_access_control_service_create_data_access_scope_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_CreateDataAccessScope_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_create_data_access_scope_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.delete_data_access_label",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.DeleteDataAccessLabel",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "DeleteDataAccessLabel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.DeleteDataAccessLabelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_data_access_label"
+      },
+      "description": "Sample for DeleteDataAccessLabel",
+      "file": "chronicle_v1_generated_data_access_control_service_delete_data_access_label_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_DeleteDataAccessLabel_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_delete_data_access_label_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.delete_data_access_label",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.DeleteDataAccessLabel",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "DeleteDataAccessLabel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.DeleteDataAccessLabelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_data_access_label"
+      },
+      "description": "Sample for DeleteDataAccessLabel",
+      "file": "chronicle_v1_generated_data_access_control_service_delete_data_access_label_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_DeleteDataAccessLabel_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_delete_data_access_label_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.delete_data_access_scope",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.DeleteDataAccessScope",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "DeleteDataAccessScope"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.DeleteDataAccessScopeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_data_access_scope"
+      },
+      "description": "Sample for DeleteDataAccessScope",
+      "file": "chronicle_v1_generated_data_access_control_service_delete_data_access_scope_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_DeleteDataAccessScope_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_delete_data_access_scope_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.delete_data_access_scope",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.DeleteDataAccessScope",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "DeleteDataAccessScope"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.DeleteDataAccessScopeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_data_access_scope"
+      },
+      "description": "Sample for DeleteDataAccessScope",
+      "file": "chronicle_v1_generated_data_access_control_service_delete_data_access_scope_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_DeleteDataAccessScope_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_delete_data_access_scope_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.get_data_access_label",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.GetDataAccessLabel",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "GetDataAccessLabel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetDataAccessLabelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessLabel",
+        "shortName": "get_data_access_label"
+      },
+      "description": "Sample for GetDataAccessLabel",
+      "file": "chronicle_v1_generated_data_access_control_service_get_data_access_label_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_GetDataAccessLabel_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_get_data_access_label_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.get_data_access_label",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.GetDataAccessLabel",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "GetDataAccessLabel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetDataAccessLabelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessLabel",
+        "shortName": "get_data_access_label"
+      },
+      "description": "Sample for GetDataAccessLabel",
+      "file": "chronicle_v1_generated_data_access_control_service_get_data_access_label_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_GetDataAccessLabel_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_get_data_access_label_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.get_data_access_scope",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.GetDataAccessScope",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "GetDataAccessScope"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetDataAccessScopeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessScope",
+        "shortName": "get_data_access_scope"
+      },
+      "description": "Sample for GetDataAccessScope",
+      "file": "chronicle_v1_generated_data_access_control_service_get_data_access_scope_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_GetDataAccessScope_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_get_data_access_scope_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.get_data_access_scope",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.GetDataAccessScope",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "GetDataAccessScope"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetDataAccessScopeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessScope",
+        "shortName": "get_data_access_scope"
+      },
+      "description": "Sample for GetDataAccessScope",
+      "file": "chronicle_v1_generated_data_access_control_service_get_data_access_scope_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_GetDataAccessScope_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_get_data_access_scope_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.list_data_access_labels",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.ListDataAccessLabels",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "ListDataAccessLabels"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListDataAccessLabelsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.data_access_control_service.pagers.ListDataAccessLabelsAsyncPager",
+        "shortName": "list_data_access_labels"
+      },
+      "description": "Sample for ListDataAccessLabels",
+      "file": "chronicle_v1_generated_data_access_control_service_list_data_access_labels_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_ListDataAccessLabels_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_list_data_access_labels_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.list_data_access_labels",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.ListDataAccessLabels",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "ListDataAccessLabels"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListDataAccessLabelsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.data_access_control_service.pagers.ListDataAccessLabelsPager",
+        "shortName": "list_data_access_labels"
+      },
+      "description": "Sample for ListDataAccessLabels",
+      "file": "chronicle_v1_generated_data_access_control_service_list_data_access_labels_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_ListDataAccessLabels_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_list_data_access_labels_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.list_data_access_scopes",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.ListDataAccessScopes",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "ListDataAccessScopes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListDataAccessScopesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.data_access_control_service.pagers.ListDataAccessScopesAsyncPager",
+        "shortName": "list_data_access_scopes"
+      },
+      "description": "Sample for ListDataAccessScopes",
+      "file": "chronicle_v1_generated_data_access_control_service_list_data_access_scopes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_ListDataAccessScopes_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_list_data_access_scopes_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.list_data_access_scopes",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.ListDataAccessScopes",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "ListDataAccessScopes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListDataAccessScopesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.data_access_control_service.pagers.ListDataAccessScopesPager",
+        "shortName": "list_data_access_scopes"
+      },
+      "description": "Sample for ListDataAccessScopes",
+      "file": "chronicle_v1_generated_data_access_control_service_list_data_access_scopes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_ListDataAccessScopes_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_list_data_access_scopes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.update_data_access_label",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.UpdateDataAccessLabel",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "UpdateDataAccessLabel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateDataAccessLabelRequest"
+          },
+          {
+            "name": "data_access_label",
+            "type": "google.cloud.chronicle_v1.types.DataAccessLabel"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessLabel",
+        "shortName": "update_data_access_label"
+      },
+      "description": "Sample for UpdateDataAccessLabel",
+      "file": "chronicle_v1_generated_data_access_control_service_update_data_access_label_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_UpdateDataAccessLabel_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_update_data_access_label_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.update_data_access_label",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.UpdateDataAccessLabel",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "UpdateDataAccessLabel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateDataAccessLabelRequest"
+          },
+          {
+            "name": "data_access_label",
+            "type": "google.cloud.chronicle_v1.types.DataAccessLabel"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessLabel",
+        "shortName": "update_data_access_label"
+      },
+      "description": "Sample for UpdateDataAccessLabel",
+      "file": "chronicle_v1_generated_data_access_control_service_update_data_access_label_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_UpdateDataAccessLabel_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_update_data_access_label_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient",
+          "shortName": "DataAccessControlServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceAsyncClient.update_data_access_scope",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.UpdateDataAccessScope",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "UpdateDataAccessScope"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateDataAccessScopeRequest"
+          },
+          {
+            "name": "data_access_scope",
+            "type": "google.cloud.chronicle_v1.types.DataAccessScope"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessScope",
+        "shortName": "update_data_access_scope"
+      },
+      "description": "Sample for UpdateDataAccessScope",
+      "file": "chronicle_v1_generated_data_access_control_service_update_data_access_scope_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_UpdateDataAccessScope_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_update_data_access_scope_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient",
+          "shortName": "DataAccessControlServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.DataAccessControlServiceClient.update_data_access_scope",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.DataAccessControlService.UpdateDataAccessScope",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.DataAccessControlService",
+            "shortName": "DataAccessControlService"
+          },
+          "shortName": "UpdateDataAccessScope"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateDataAccessScopeRequest"
+          },
+          {
+            "name": "data_access_scope",
+            "type": "google.cloud.chronicle_v1.types.DataAccessScope"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.DataAccessScope",
+        "shortName": "update_data_access_scope"
+      },
+      "description": "Sample for UpdateDataAccessScope",
+      "file": "chronicle_v1_generated_data_access_control_service_update_data_access_scope_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_DataAccessControlService_UpdateDataAccessScope_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_data_access_control_service_update_data_access_scope_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient",
+          "shortName": "EntityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient.create_watchlist",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.CreateWatchlist",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "CreateWatchlist"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateWatchlistRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "watchlist",
+            "type": "google.cloud.chronicle_v1.types.Watchlist"
+          },
+          {
+            "name": "watchlist_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Watchlist",
+        "shortName": "create_watchlist"
+      },
+      "description": "Sample for CreateWatchlist",
+      "file": "chronicle_v1_generated_entity_service_create_watchlist_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_CreateWatchlist_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_create_watchlist_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceClient",
+          "shortName": "EntityServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceClient.create_watchlist",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.CreateWatchlist",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "CreateWatchlist"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateWatchlistRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "watchlist",
+            "type": "google.cloud.chronicle_v1.types.Watchlist"
+          },
+          {
+            "name": "watchlist_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Watchlist",
+        "shortName": "create_watchlist"
+      },
+      "description": "Sample for CreateWatchlist",
+      "file": "chronicle_v1_generated_entity_service_create_watchlist_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_CreateWatchlist_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_create_watchlist_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient",
+          "shortName": "EntityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient.delete_watchlist",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.DeleteWatchlist",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "DeleteWatchlist"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.DeleteWatchlistRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "force",
+            "type": "bool"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_watchlist"
+      },
+      "description": "Sample for DeleteWatchlist",
+      "file": "chronicle_v1_generated_entity_service_delete_watchlist_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_DeleteWatchlist_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_delete_watchlist_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceClient",
+          "shortName": "EntityServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceClient.delete_watchlist",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.DeleteWatchlist",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "DeleteWatchlist"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.DeleteWatchlistRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "force",
+            "type": "bool"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_watchlist"
+      },
+      "description": "Sample for DeleteWatchlist",
+      "file": "chronicle_v1_generated_entity_service_delete_watchlist_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_DeleteWatchlist_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_delete_watchlist_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient",
+          "shortName": "EntityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient.get_watchlist",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.GetWatchlist",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "GetWatchlist"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetWatchlistRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Watchlist",
+        "shortName": "get_watchlist"
+      },
+      "description": "Sample for GetWatchlist",
+      "file": "chronicle_v1_generated_entity_service_get_watchlist_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_GetWatchlist_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_get_watchlist_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceClient",
+          "shortName": "EntityServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceClient.get_watchlist",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.GetWatchlist",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "GetWatchlist"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetWatchlistRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Watchlist",
+        "shortName": "get_watchlist"
+      },
+      "description": "Sample for GetWatchlist",
+      "file": "chronicle_v1_generated_entity_service_get_watchlist_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_GetWatchlist_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_get_watchlist_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient",
+          "shortName": "EntityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient.list_watchlists",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.ListWatchlists",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "ListWatchlists"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListWatchlistsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.entity_service.pagers.ListWatchlistsAsyncPager",
+        "shortName": "list_watchlists"
+      },
+      "description": "Sample for ListWatchlists",
+      "file": "chronicle_v1_generated_entity_service_list_watchlists_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_ListWatchlists_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_list_watchlists_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceClient",
+          "shortName": "EntityServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceClient.list_watchlists",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.ListWatchlists",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "ListWatchlists"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListWatchlistsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.entity_service.pagers.ListWatchlistsPager",
+        "shortName": "list_watchlists"
+      },
+      "description": "Sample for ListWatchlists",
+      "file": "chronicle_v1_generated_entity_service_list_watchlists_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_ListWatchlists_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_list_watchlists_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient",
+          "shortName": "EntityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceAsyncClient.update_watchlist",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.UpdateWatchlist",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "UpdateWatchlist"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateWatchlistRequest"
+          },
+          {
+            "name": "watchlist",
+            "type": "google.cloud.chronicle_v1.types.Watchlist"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Watchlist",
+        "shortName": "update_watchlist"
+      },
+      "description": "Sample for UpdateWatchlist",
+      "file": "chronicle_v1_generated_entity_service_update_watchlist_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_UpdateWatchlist_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_update_watchlist_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.EntityServiceClient",
+          "shortName": "EntityServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.EntityServiceClient.update_watchlist",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.EntityService.UpdateWatchlist",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.EntityService",
+            "shortName": "EntityService"
+          },
+          "shortName": "UpdateWatchlist"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateWatchlistRequest"
+          },
+          {
+            "name": "watchlist",
+            "type": "google.cloud.chronicle_v1.types.Watchlist"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Watchlist",
+        "shortName": "update_watchlist"
+      },
+      "description": "Sample for UpdateWatchlist",
+      "file": "chronicle_v1_generated_entity_service_update_watchlist_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_EntityService_UpdateWatchlist_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_entity_service_update_watchlist_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.InstanceServiceAsyncClient",
+          "shortName": "InstanceServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.InstanceServiceAsyncClient.get_instance",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.InstanceService.GetInstance",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.InstanceService",
+            "shortName": "InstanceService"
+          },
+          "shortName": "GetInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Instance",
+        "shortName": "get_instance"
+      },
+      "description": "Sample for GetInstance",
+      "file": "chronicle_v1_generated_instance_service_get_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_InstanceService_GetInstance_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_instance_service_get_instance_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.InstanceServiceClient",
+          "shortName": "InstanceServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.InstanceServiceClient.get_instance",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.InstanceService.GetInstance",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.InstanceService",
+            "shortName": "InstanceService"
+          },
+          "shortName": "GetInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Instance",
+        "shortName": "get_instance"
+      },
+      "description": "Sample for GetInstance",
+      "file": "chronicle_v1_generated_instance_service_get_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_InstanceService_GetInstance_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_instance_service_get_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.ReferenceListServiceAsyncClient",
+          "shortName": "ReferenceListServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.ReferenceListServiceAsyncClient.create_reference_list",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.ReferenceListService.CreateReferenceList",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.ReferenceListService",
+            "shortName": "ReferenceListService"
+          },
+          "shortName": "CreateReferenceList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateReferenceListRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "reference_list",
+            "type": "google.cloud.chronicle_v1.types.ReferenceList"
+          },
+          {
+            "name": "reference_list_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.ReferenceList",
+        "shortName": "create_reference_list"
+      },
+      "description": "Sample for CreateReferenceList",
+      "file": "chronicle_v1_generated_reference_list_service_create_reference_list_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_ReferenceListService_CreateReferenceList_async",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_reference_list_service_create_reference_list_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.ReferenceListServiceClient",
+          "shortName": "ReferenceListServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.ReferenceListServiceClient.create_reference_list",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.ReferenceListService.CreateReferenceList",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.ReferenceListService",
+            "shortName": "ReferenceListService"
+          },
+          "shortName": "CreateReferenceList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateReferenceListRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "reference_list",
+            "type": "google.cloud.chronicle_v1.types.ReferenceList"
+          },
+          {
+            "name": "reference_list_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.ReferenceList",
+        "shortName": "create_reference_list"
+      },
+      "description": "Sample for CreateReferenceList",
+      "file": "chronicle_v1_generated_reference_list_service_create_reference_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_ReferenceListService_CreateReferenceList_sync",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_reference_list_service_create_reference_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.ReferenceListServiceAsyncClient",
+          "shortName": "ReferenceListServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.ReferenceListServiceAsyncClient.get_reference_list",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.ReferenceListService.GetReferenceList",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.ReferenceListService",
+            "shortName": "ReferenceListService"
+          },
+          "shortName": "GetReferenceList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetReferenceListRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.ReferenceList",
+        "shortName": "get_reference_list"
+      },
+      "description": "Sample for GetReferenceList",
+      "file": "chronicle_v1_generated_reference_list_service_get_reference_list_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_ReferenceListService_GetReferenceList_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_reference_list_service_get_reference_list_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.ReferenceListServiceClient",
+          "shortName": "ReferenceListServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.ReferenceListServiceClient.get_reference_list",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.ReferenceListService.GetReferenceList",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.ReferenceListService",
+            "shortName": "ReferenceListService"
+          },
+          "shortName": "GetReferenceList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetReferenceListRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.ReferenceList",
+        "shortName": "get_reference_list"
+      },
+      "description": "Sample for GetReferenceList",
+      "file": "chronicle_v1_generated_reference_list_service_get_reference_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_ReferenceListService_GetReferenceList_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_reference_list_service_get_reference_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.ReferenceListServiceAsyncClient",
+          "shortName": "ReferenceListServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.ReferenceListServiceAsyncClient.list_reference_lists",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.ReferenceListService.ListReferenceLists",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.ReferenceListService",
+            "shortName": "ReferenceListService"
+          },
+          "shortName": "ListReferenceLists"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListReferenceListsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.reference_list_service.pagers.ListReferenceListsAsyncPager",
+        "shortName": "list_reference_lists"
+      },
+      "description": "Sample for ListReferenceLists",
+      "file": "chronicle_v1_generated_reference_list_service_list_reference_lists_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_ReferenceListService_ListReferenceLists_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_reference_list_service_list_reference_lists_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.ReferenceListServiceClient",
+          "shortName": "ReferenceListServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.ReferenceListServiceClient.list_reference_lists",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.ReferenceListService.ListReferenceLists",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.ReferenceListService",
+            "shortName": "ReferenceListService"
+          },
+          "shortName": "ListReferenceLists"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListReferenceListsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.reference_list_service.pagers.ListReferenceListsPager",
+        "shortName": "list_reference_lists"
+      },
+      "description": "Sample for ListReferenceLists",
+      "file": "chronicle_v1_generated_reference_list_service_list_reference_lists_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_ReferenceListService_ListReferenceLists_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_reference_list_service_list_reference_lists_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.ReferenceListServiceAsyncClient",
+          "shortName": "ReferenceListServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.ReferenceListServiceAsyncClient.update_reference_list",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.ReferenceListService.UpdateReferenceList",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.ReferenceListService",
+            "shortName": "ReferenceListService"
+          },
+          "shortName": "UpdateReferenceList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateReferenceListRequest"
+          },
+          {
+            "name": "reference_list",
+            "type": "google.cloud.chronicle_v1.types.ReferenceList"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.ReferenceList",
+        "shortName": "update_reference_list"
+      },
+      "description": "Sample for UpdateReferenceList",
+      "file": "chronicle_v1_generated_reference_list_service_update_reference_list_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_ReferenceListService_UpdateReferenceList_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_reference_list_service_update_reference_list_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.ReferenceListServiceClient",
+          "shortName": "ReferenceListServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.ReferenceListServiceClient.update_reference_list",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.ReferenceListService.UpdateReferenceList",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.ReferenceListService",
+            "shortName": "ReferenceListService"
+          },
+          "shortName": "UpdateReferenceList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateReferenceListRequest"
+          },
+          {
+            "name": "reference_list",
+            "type": "google.cloud.chronicle_v1.types.ReferenceList"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.ReferenceList",
+        "shortName": "update_reference_list"
+      },
+      "description": "Sample for UpdateReferenceList",
+      "file": "chronicle_v1_generated_reference_list_service_update_reference_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_ReferenceListService_UpdateReferenceList_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_reference_list_service_update_reference_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.create_retrohunt",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.CreateRetrohunt",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "CreateRetrohunt"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateRetrohuntRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retrohunt",
+            "type": "google.cloud.chronicle_v1.types.Retrohunt"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_retrohunt"
+      },
+      "description": "Sample for CreateRetrohunt",
+      "file": "chronicle_v1_generated_rule_service_create_retrohunt_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_CreateRetrohunt_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_create_retrohunt_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.create_retrohunt",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.CreateRetrohunt",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "CreateRetrohunt"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateRetrohuntRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retrohunt",
+            "type": "google.cloud.chronicle_v1.types.Retrohunt"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_retrohunt"
+      },
+      "description": "Sample for CreateRetrohunt",
+      "file": "chronicle_v1_generated_rule_service_create_retrohunt_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_CreateRetrohunt_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_create_retrohunt_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.create_rule",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.CreateRule",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "CreateRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateRuleRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "rule",
+            "type": "google.cloud.chronicle_v1.types.Rule"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Rule",
+        "shortName": "create_rule"
+      },
+      "description": "Sample for CreateRule",
+      "file": "chronicle_v1_generated_rule_service_create_rule_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_CreateRule_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_create_rule_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.create_rule",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.CreateRule",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "CreateRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.CreateRuleRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "rule",
+            "type": "google.cloud.chronicle_v1.types.Rule"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Rule",
+        "shortName": "create_rule"
+      },
+      "description": "Sample for CreateRule",
+      "file": "chronicle_v1_generated_rule_service_create_rule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_CreateRule_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_create_rule_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.delete_rule",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.DeleteRule",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "DeleteRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.DeleteRuleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_rule"
+      },
+      "description": "Sample for DeleteRule",
+      "file": "chronicle_v1_generated_rule_service_delete_rule_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_DeleteRule_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_delete_rule_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.delete_rule",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.DeleteRule",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "DeleteRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.DeleteRuleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_rule"
+      },
+      "description": "Sample for DeleteRule",
+      "file": "chronicle_v1_generated_rule_service_delete_rule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_DeleteRule_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_delete_rule_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.get_retrohunt",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.GetRetrohunt",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "GetRetrohunt"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetRetrohuntRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Retrohunt",
+        "shortName": "get_retrohunt"
+      },
+      "description": "Sample for GetRetrohunt",
+      "file": "chronicle_v1_generated_rule_service_get_retrohunt_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_GetRetrohunt_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_get_retrohunt_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.get_retrohunt",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.GetRetrohunt",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "GetRetrohunt"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetRetrohuntRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Retrohunt",
+        "shortName": "get_retrohunt"
+      },
+      "description": "Sample for GetRetrohunt",
+      "file": "chronicle_v1_generated_rule_service_get_retrohunt_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_GetRetrohunt_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_get_retrohunt_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.get_rule_deployment",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.GetRuleDeployment",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "GetRuleDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetRuleDeploymentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.RuleDeployment",
+        "shortName": "get_rule_deployment"
+      },
+      "description": "Sample for GetRuleDeployment",
+      "file": "chronicle_v1_generated_rule_service_get_rule_deployment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_GetRuleDeployment_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_get_rule_deployment_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.get_rule_deployment",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.GetRuleDeployment",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "GetRuleDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetRuleDeploymentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.RuleDeployment",
+        "shortName": "get_rule_deployment"
+      },
+      "description": "Sample for GetRuleDeployment",
+      "file": "chronicle_v1_generated_rule_service_get_rule_deployment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_GetRuleDeployment_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_get_rule_deployment_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.get_rule",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.GetRule",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "GetRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetRuleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Rule",
+        "shortName": "get_rule"
+      },
+      "description": "Sample for GetRule",
+      "file": "chronicle_v1_generated_rule_service_get_rule_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_GetRule_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_get_rule_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.get_rule",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.GetRule",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "GetRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.GetRuleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Rule",
+        "shortName": "get_rule"
+      },
+      "description": "Sample for GetRule",
+      "file": "chronicle_v1_generated_rule_service_get_rule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_GetRule_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_get_rule_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.list_retrohunts",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.ListRetrohunts",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "ListRetrohunts"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListRetrohuntsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.rule_service.pagers.ListRetrohuntsAsyncPager",
+        "shortName": "list_retrohunts"
+      },
+      "description": "Sample for ListRetrohunts",
+      "file": "chronicle_v1_generated_rule_service_list_retrohunts_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_ListRetrohunts_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_list_retrohunts_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.list_retrohunts",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.ListRetrohunts",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "ListRetrohunts"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListRetrohuntsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.rule_service.pagers.ListRetrohuntsPager",
+        "shortName": "list_retrohunts"
+      },
+      "description": "Sample for ListRetrohunts",
+      "file": "chronicle_v1_generated_rule_service_list_retrohunts_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_ListRetrohunts_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_list_retrohunts_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.list_rule_deployments",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.ListRuleDeployments",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "ListRuleDeployments"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListRuleDeploymentsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.rule_service.pagers.ListRuleDeploymentsAsyncPager",
+        "shortName": "list_rule_deployments"
+      },
+      "description": "Sample for ListRuleDeployments",
+      "file": "chronicle_v1_generated_rule_service_list_rule_deployments_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_ListRuleDeployments_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_list_rule_deployments_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.list_rule_deployments",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.ListRuleDeployments",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "ListRuleDeployments"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListRuleDeploymentsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.rule_service.pagers.ListRuleDeploymentsPager",
+        "shortName": "list_rule_deployments"
+      },
+      "description": "Sample for ListRuleDeployments",
+      "file": "chronicle_v1_generated_rule_service_list_rule_deployments_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_ListRuleDeployments_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_list_rule_deployments_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.list_rule_revisions",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.ListRuleRevisions",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "ListRuleRevisions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListRuleRevisionsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.rule_service.pagers.ListRuleRevisionsAsyncPager",
+        "shortName": "list_rule_revisions"
+      },
+      "description": "Sample for ListRuleRevisions",
+      "file": "chronicle_v1_generated_rule_service_list_rule_revisions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_ListRuleRevisions_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_list_rule_revisions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.list_rule_revisions",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.ListRuleRevisions",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "ListRuleRevisions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListRuleRevisionsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.rule_service.pagers.ListRuleRevisionsPager",
+        "shortName": "list_rule_revisions"
+      },
+      "description": "Sample for ListRuleRevisions",
+      "file": "chronicle_v1_generated_rule_service_list_rule_revisions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_ListRuleRevisions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_list_rule_revisions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.list_rules",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.ListRules",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "ListRules"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListRulesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.rule_service.pagers.ListRulesAsyncPager",
+        "shortName": "list_rules"
+      },
+      "description": "Sample for ListRules",
+      "file": "chronicle_v1_generated_rule_service_list_rules_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_ListRules_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_list_rules_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.list_rules",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.ListRules",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "ListRules"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.ListRulesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.services.rule_service.pagers.ListRulesPager",
+        "shortName": "list_rules"
+      },
+      "description": "Sample for ListRules",
+      "file": "chronicle_v1_generated_rule_service_list_rules_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_ListRules_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_list_rules_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.update_rule_deployment",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.UpdateRuleDeployment",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "UpdateRuleDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateRuleDeploymentRequest"
+          },
+          {
+            "name": "rule_deployment",
+            "type": "google.cloud.chronicle_v1.types.RuleDeployment"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.RuleDeployment",
+        "shortName": "update_rule_deployment"
+      },
+      "description": "Sample for UpdateRuleDeployment",
+      "file": "chronicle_v1_generated_rule_service_update_rule_deployment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_UpdateRuleDeployment_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_update_rule_deployment_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.update_rule_deployment",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.UpdateRuleDeployment",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "UpdateRuleDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateRuleDeploymentRequest"
+          },
+          {
+            "name": "rule_deployment",
+            "type": "google.cloud.chronicle_v1.types.RuleDeployment"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.RuleDeployment",
+        "shortName": "update_rule_deployment"
+      },
+      "description": "Sample for UpdateRuleDeployment",
+      "file": "chronicle_v1_generated_rule_service_update_rule_deployment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_UpdateRuleDeployment_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_update_rule_deployment_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient",
+          "shortName": "RuleServiceAsyncClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceAsyncClient.update_rule",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.UpdateRule",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "UpdateRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateRuleRequest"
+          },
+          {
+            "name": "rule",
+            "type": "google.cloud.chronicle_v1.types.Rule"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Rule",
+        "shortName": "update_rule"
+      },
+      "description": "Sample for UpdateRule",
+      "file": "chronicle_v1_generated_rule_service_update_rule_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_UpdateRule_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_update_rule_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.chronicle_v1.RuleServiceClient",
+          "shortName": "RuleServiceClient"
+        },
+        "fullName": "google.cloud.chronicle_v1.RuleServiceClient.update_rule",
+        "method": {
+          "fullName": "google.cloud.chronicle.v1.RuleService.UpdateRule",
+          "service": {
+            "fullName": "google.cloud.chronicle.v1.RuleService",
+            "shortName": "RuleService"
+          },
+          "shortName": "UpdateRule"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.chronicle_v1.types.UpdateRuleRequest"
+          },
+          {
+            "name": "rule",
+            "type": "google.cloud.chronicle_v1.types.Rule"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.chronicle_v1.types.Rule",
+        "shortName": "update_rule"
+      },
+      "description": "Sample for UpdateRule",
+      "file": "chronicle_v1_generated_rule_service_update_rule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "chronicle_v1_generated_RuleService_UpdateRule_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "chronicle_v1_generated_rule_service_update_rule_sync.py"
+    }
+  ]
+}
