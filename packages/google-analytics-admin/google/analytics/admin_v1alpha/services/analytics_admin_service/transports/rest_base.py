@@ -1042,63 +1042,6 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseCreateConnectedSiteTag:
-        def __hash__(self):  # pragma: NO COVER
-            return NotImplementedError("__hash__ must be implemented.")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        @staticmethod
-        def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:createConnectedSiteTag",
-                    "body": "*",
-                },
-            ]
-            return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.CreateConnectedSiteTagRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            return body
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_unset_required_fields(
-                    query_params
-                )
-            )
-
-            query_params["$alt"] = "json;enum-encoding=int"
-            return query_params
-
     class _BaseCreateConversionEvent:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -2541,48 +2484,6 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseDeleteConnectedSiteTag:
-        def __hash__(self):  # pragma: NO COVER
-            return NotImplementedError("__hash__ must be implemented.")
-
-        @staticmethod
-        def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:deleteConnectedSiteTag",
-                    "body": "*",
-                },
-            ]
-            return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.DeleteConnectedSiteTagRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            return body
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-
-            query_params["$alt"] = "json;enum-encoding=int"
-            return query_params
-
     class _BaseDeleteConversionEvent:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -3391,114 +3292,6 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             query_params.update(
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSubpropertyEventFilter._get_unset_required_fields(
-                    query_params
-                )
-            )
-
-            query_params["$alt"] = "json;enum-encoding=int"
-            return query_params
-
-    class _BaseFetchAutomatedGa4ConfigurationOptOut:
-        def __hash__(self):  # pragma: NO COVER
-            return NotImplementedError("__hash__ must be implemented.")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        @staticmethod
-        def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:fetchAutomatedGa4ConfigurationOptOut",
-                    "body": "*",
-                },
-            ]
-            return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest.pb(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            return body
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_unset_required_fields(
-                    query_params
-                )
-            )
-
-            query_params["$alt"] = "json;enum-encoding=int"
-            return query_params
-
-    class _BaseFetchConnectedGa4Property:
-        def __hash__(self):  # pragma: NO COVER
-            return NotImplementedError("__hash__ must be implemented.")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "property": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        @staticmethod
-        def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/properties:fetchConnectedGa4Property",
-                },
-            ]
-            return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.FetchConnectedGa4PropertyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property._get_unset_required_fields(
                     query_params
                 )
             )
@@ -4787,6 +4580,53 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseGetReportingIdentitySettings:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/reportingIdentitySettings}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = analytics_admin.GetReportingIdentitySettingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetReportingIdentitySettings._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseGetRollupPropertySourceLink:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -5368,48 +5208,6 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             query_params.update(
                 _BaseAnalyticsAdminServiceRestTransport._BaseListChannelGroups._get_unset_required_fields(
                     query_params
-                )
-            )
-
-            query_params["$alt"] = "json;enum-encoding=int"
-            return query_params
-
-    class _BaseListConnectedSiteTags:
-        def __hash__(self):  # pragma: NO COVER
-            return NotImplementedError("__hash__ must be implemented.")
-
-        @staticmethod
-        def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:listConnectedSiteTags",
-                    "body": "*",
-                },
-            ]
-            return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.ListConnectedSiteTagsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            return body
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
                 )
             )
 
@@ -6623,65 +6421,6 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             query_params.update(
                 _BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents._get_unset_required_fields(
-                    query_params
-                )
-            )
-
-            query_params["$alt"] = "json;enum-encoding=int"
-            return query_params
-
-    class _BaseSetAutomatedGa4ConfigurationOptOut:
-        def __hash__(self):  # pragma: NO COVER
-            return NotImplementedError("__hash__ must be implemented.")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        @staticmethod
-        def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:setAutomatedGa4ConfigurationOptOut",
-                    "body": "*",
-                },
-            ]
-            return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest.pb(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            return body
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_unset_required_fields(
                     query_params
                 )
             )
