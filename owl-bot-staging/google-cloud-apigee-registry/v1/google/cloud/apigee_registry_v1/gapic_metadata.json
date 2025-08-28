@@ -1,0 +1,617 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.apigee_registry_v1",
+  "protoPackage": "google.cloud.apigeeregistry.v1",
+  "schema": "1.0",
+  "services": {
+    "Provisioning": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ProvisioningClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ProvisioningAsyncClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ProvisioningClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Registry": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "RegistryClient",
+          "rpcs": {
+            "CreateApi": {
+              "methods": [
+                "create_api"
+              ]
+            },
+            "CreateApiDeployment": {
+              "methods": [
+                "create_api_deployment"
+              ]
+            },
+            "CreateApiSpec": {
+              "methods": [
+                "create_api_spec"
+              ]
+            },
+            "CreateApiVersion": {
+              "methods": [
+                "create_api_version"
+              ]
+            },
+            "CreateArtifact": {
+              "methods": [
+                "create_artifact"
+              ]
+            },
+            "DeleteApi": {
+              "methods": [
+                "delete_api"
+              ]
+            },
+            "DeleteApiDeployment": {
+              "methods": [
+                "delete_api_deployment"
+              ]
+            },
+            "DeleteApiDeploymentRevision": {
+              "methods": [
+                "delete_api_deployment_revision"
+              ]
+            },
+            "DeleteApiSpec": {
+              "methods": [
+                "delete_api_spec"
+              ]
+            },
+            "DeleteApiSpecRevision": {
+              "methods": [
+                "delete_api_spec_revision"
+              ]
+            },
+            "DeleteApiVersion": {
+              "methods": [
+                "delete_api_version"
+              ]
+            },
+            "DeleteArtifact": {
+              "methods": [
+                "delete_artifact"
+              ]
+            },
+            "GetApi": {
+              "methods": [
+                "get_api"
+              ]
+            },
+            "GetApiDeployment": {
+              "methods": [
+                "get_api_deployment"
+              ]
+            },
+            "GetApiSpec": {
+              "methods": [
+                "get_api_spec"
+              ]
+            },
+            "GetApiSpecContents": {
+              "methods": [
+                "get_api_spec_contents"
+              ]
+            },
+            "GetApiVersion": {
+              "methods": [
+                "get_api_version"
+              ]
+            },
+            "GetArtifact": {
+              "methods": [
+                "get_artifact"
+              ]
+            },
+            "GetArtifactContents": {
+              "methods": [
+                "get_artifact_contents"
+              ]
+            },
+            "ListApiDeploymentRevisions": {
+              "methods": [
+                "list_api_deployment_revisions"
+              ]
+            },
+            "ListApiDeployments": {
+              "methods": [
+                "list_api_deployments"
+              ]
+            },
+            "ListApiSpecRevisions": {
+              "methods": [
+                "list_api_spec_revisions"
+              ]
+            },
+            "ListApiSpecs": {
+              "methods": [
+                "list_api_specs"
+              ]
+            },
+            "ListApiVersions": {
+              "methods": [
+                "list_api_versions"
+              ]
+            },
+            "ListApis": {
+              "methods": [
+                "list_apis"
+              ]
+            },
+            "ListArtifacts": {
+              "methods": [
+                "list_artifacts"
+              ]
+            },
+            "ReplaceArtifact": {
+              "methods": [
+                "replace_artifact"
+              ]
+            },
+            "RollbackApiDeployment": {
+              "methods": [
+                "rollback_api_deployment"
+              ]
+            },
+            "RollbackApiSpec": {
+              "methods": [
+                "rollback_api_spec"
+              ]
+            },
+            "TagApiDeploymentRevision": {
+              "methods": [
+                "tag_api_deployment_revision"
+              ]
+            },
+            "TagApiSpecRevision": {
+              "methods": [
+                "tag_api_spec_revision"
+              ]
+            },
+            "UpdateApi": {
+              "methods": [
+                "update_api"
+              ]
+            },
+            "UpdateApiDeployment": {
+              "methods": [
+                "update_api_deployment"
+              ]
+            },
+            "UpdateApiSpec": {
+              "methods": [
+                "update_api_spec"
+              ]
+            },
+            "UpdateApiVersion": {
+              "methods": [
+                "update_api_version"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "RegistryAsyncClient",
+          "rpcs": {
+            "CreateApi": {
+              "methods": [
+                "create_api"
+              ]
+            },
+            "CreateApiDeployment": {
+              "methods": [
+                "create_api_deployment"
+              ]
+            },
+            "CreateApiSpec": {
+              "methods": [
+                "create_api_spec"
+              ]
+            },
+            "CreateApiVersion": {
+              "methods": [
+                "create_api_version"
+              ]
+            },
+            "CreateArtifact": {
+              "methods": [
+                "create_artifact"
+              ]
+            },
+            "DeleteApi": {
+              "methods": [
+                "delete_api"
+              ]
+            },
+            "DeleteApiDeployment": {
+              "methods": [
+                "delete_api_deployment"
+              ]
+            },
+            "DeleteApiDeploymentRevision": {
+              "methods": [
+                "delete_api_deployment_revision"
+              ]
+            },
+            "DeleteApiSpec": {
+              "methods": [
+                "delete_api_spec"
+              ]
+            },
+            "DeleteApiSpecRevision": {
+              "methods": [
+                "delete_api_spec_revision"
+              ]
+            },
+            "DeleteApiVersion": {
+              "methods": [
+                "delete_api_version"
+              ]
+            },
+            "DeleteArtifact": {
+              "methods": [
+                "delete_artifact"
+              ]
+            },
+            "GetApi": {
+              "methods": [
+                "get_api"
+              ]
+            },
+            "GetApiDeployment": {
+              "methods": [
+                "get_api_deployment"
+              ]
+            },
+            "GetApiSpec": {
+              "methods": [
+                "get_api_spec"
+              ]
+            },
+            "GetApiSpecContents": {
+              "methods": [
+                "get_api_spec_contents"
+              ]
+            },
+            "GetApiVersion": {
+              "methods": [
+                "get_api_version"
+              ]
+            },
+            "GetArtifact": {
+              "methods": [
+                "get_artifact"
+              ]
+            },
+            "GetArtifactContents": {
+              "methods": [
+                "get_artifact_contents"
+              ]
+            },
+            "ListApiDeploymentRevisions": {
+              "methods": [
+                "list_api_deployment_revisions"
+              ]
+            },
+            "ListApiDeployments": {
+              "methods": [
+                "list_api_deployments"
+              ]
+            },
+            "ListApiSpecRevisions": {
+              "methods": [
+                "list_api_spec_revisions"
+              ]
+            },
+            "ListApiSpecs": {
+              "methods": [
+                "list_api_specs"
+              ]
+            },
+            "ListApiVersions": {
+              "methods": [
+                "list_api_versions"
+              ]
+            },
+            "ListApis": {
+              "methods": [
+                "list_apis"
+              ]
+            },
+            "ListArtifacts": {
+              "methods": [
+                "list_artifacts"
+              ]
+            },
+            "ReplaceArtifact": {
+              "methods": [
+                "replace_artifact"
+              ]
+            },
+            "RollbackApiDeployment": {
+              "methods": [
+                "rollback_api_deployment"
+              ]
+            },
+            "RollbackApiSpec": {
+              "methods": [
+                "rollback_api_spec"
+              ]
+            },
+            "TagApiDeploymentRevision": {
+              "methods": [
+                "tag_api_deployment_revision"
+              ]
+            },
+            "TagApiSpecRevision": {
+              "methods": [
+                "tag_api_spec_revision"
+              ]
+            },
+            "UpdateApi": {
+              "methods": [
+                "update_api"
+              ]
+            },
+            "UpdateApiDeployment": {
+              "methods": [
+                "update_api_deployment"
+              ]
+            },
+            "UpdateApiSpec": {
+              "methods": [
+                "update_api_spec"
+              ]
+            },
+            "UpdateApiVersion": {
+              "methods": [
+                "update_api_version"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "RegistryClient",
+          "rpcs": {
+            "CreateApi": {
+              "methods": [
+                "create_api"
+              ]
+            },
+            "CreateApiDeployment": {
+              "methods": [
+                "create_api_deployment"
+              ]
+            },
+            "CreateApiSpec": {
+              "methods": [
+                "create_api_spec"
+              ]
+            },
+            "CreateApiVersion": {
+              "methods": [
+                "create_api_version"
+              ]
+            },
+            "CreateArtifact": {
+              "methods": [
+                "create_artifact"
+              ]
+            },
+            "DeleteApi": {
+              "methods": [
+                "delete_api"
+              ]
+            },
+            "DeleteApiDeployment": {
+              "methods": [
+                "delete_api_deployment"
+              ]
+            },
+            "DeleteApiDeploymentRevision": {
+              "methods": [
+                "delete_api_deployment_revision"
+              ]
+            },
+            "DeleteApiSpec": {
+              "methods": [
+                "delete_api_spec"
+              ]
+            },
+            "DeleteApiSpecRevision": {
+              "methods": [
+                "delete_api_spec_revision"
+              ]
+            },
+            "DeleteApiVersion": {
+              "methods": [
+                "delete_api_version"
+              ]
+            },
+            "DeleteArtifact": {
+              "methods": [
+                "delete_artifact"
+              ]
+            },
+            "GetApi": {
+              "methods": [
+                "get_api"
+              ]
+            },
+            "GetApiDeployment": {
+              "methods": [
+                "get_api_deployment"
+              ]
+            },
+            "GetApiSpec": {
+              "methods": [
+                "get_api_spec"
+              ]
+            },
+            "GetApiSpecContents": {
+              "methods": [
+                "get_api_spec_contents"
+              ]
+            },
+            "GetApiVersion": {
+              "methods": [
+                "get_api_version"
+              ]
+            },
+            "GetArtifact": {
+              "methods": [
+                "get_artifact"
+              ]
+            },
+            "GetArtifactContents": {
+              "methods": [
+                "get_artifact_contents"
+              ]
+            },
+            "ListApiDeploymentRevisions": {
+              "methods": [
+                "list_api_deployment_revisions"
+              ]
+            },
+            "ListApiDeployments": {
+              "methods": [
+                "list_api_deployments"
+              ]
+            },
+            "ListApiSpecRevisions": {
+              "methods": [
+                "list_api_spec_revisions"
+              ]
+            },
+            "ListApiSpecs": {
+              "methods": [
+                "list_api_specs"
+              ]
+            },
+            "ListApiVersions": {
+              "methods": [
+                "list_api_versions"
+              ]
+            },
+            "ListApis": {
+              "methods": [
+                "list_apis"
+              ]
+            },
+            "ListArtifacts": {
+              "methods": [
+                "list_artifacts"
+              ]
+            },
+            "ReplaceArtifact": {
+              "methods": [
+                "replace_artifact"
+              ]
+            },
+            "RollbackApiDeployment": {
+              "methods": [
+                "rollback_api_deployment"
+              ]
+            },
+            "RollbackApiSpec": {
+              "methods": [
+                "rollback_api_spec"
+              ]
+            },
+            "TagApiDeploymentRevision": {
+              "methods": [
+                "tag_api_deployment_revision"
+              ]
+            },
+            "TagApiSpecRevision": {
+              "methods": [
+                "tag_api_spec_revision"
+              ]
+            },
+            "UpdateApi": {
+              "methods": [
+                "update_api"
+              ]
+            },
+            "UpdateApiDeployment": {
+              "methods": [
+                "update_api_deployment"
+              ]
+            },
+            "UpdateApiSpec": {
+              "methods": [
+                "update_api_spec"
+              ]
+            },
+            "UpdateApiVersion": {
+              "methods": [
+                "update_api_version"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
