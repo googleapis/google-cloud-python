@@ -87,12 +87,12 @@ RUN git clone https://github.com/googleapis/googleapis.git \
 RUN tar -czf /bazel-cache.tar.gz /bazel/.cache/bazel
 
 FROM bazelisk
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    # To avoid bazel error
-    # "python interpreter `python3` not found in PATH"
-    python3-dev \
-    && apt-get clean
+# RUN apt-get update && \
+#     apt-get install -y --no-install-recommends \
+#     # To avoid bazel error
+#     # "python interpreter `python3` not found in PATH"
+#     python3-dev \
+#     && apt-get clean
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=python /usr/local/bin/python3.9 /usr/local/bin/
@@ -107,12 +107,12 @@ COPY --from=python /usr/local/include/python3.13 /usr/local/include/python3.13
 # COPY --from=bazelisk /usr/local/bin/bazelisk /usr/local/bin/
 COPY --from=bazelisk-cache /bazel-cache.tar.gz /bazel-cache.tar.gz
 
-RUN mkdir /bazel && chmod 777 /bazel
+# RUN mkdir /bazel && chmod 777 /bazel
 
 # Create a virtual env and set the Path to fix the missing nox error
 # when running the post processor changes.
-RUN /usr/local/bin/python3.9 -m venv bazel_env
-RUN . bazel_env/bin/activate
+# RUN /usr/local/bin/python3.9 -m venv bazel_env
+# RUN . bazel_env/bin/activate
 
 ENV PATH=/app/bazel_env/bin:$PATH
 
