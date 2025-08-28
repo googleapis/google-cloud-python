@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "GDCHardwareManagementClient",
           "rpcs": {
+            "CancelOrder": {
+              "methods": [
+                "cancel_order"
+              ]
+            },
             "CreateComment": {
               "methods": [
                 "create_comment"
@@ -148,6 +153,11 @@
             "RecordActionOnComment": {
               "methods": [
                 "record_action_on_comment"
+              ]
+            },
+            "RequestOrderDateChange": {
+              "methods": [
+                "request_order_date_change"
               ]
             },
             "SignalZoneState": {
@@ -190,6 +200,11 @@
         "grpc-async": {
           "libraryClient": "GDCHardwareManagementAsyncClient",
           "rpcs": {
+            "CancelOrder": {
+              "methods": [
+                "cancel_order"
+              ]
+            },
             "CreateComment": {
               "methods": [
                 "create_comment"
@@ -328,6 +343,11 @@
             "RecordActionOnComment": {
               "methods": [
                 "record_action_on_comment"
+              ]
+            },
+            "RequestOrderDateChange": {
+              "methods": [
+                "request_order_date_change"
               ]
             },
             "SignalZoneState": {
@@ -370,6 +390,11 @@
         "rest": {
           "libraryClient": "GDCHardwareManagementClient",
           "rpcs": {
+            "CancelOrder": {
+              "methods": [
+                "cancel_order"
+              ]
+            },
             "CreateComment": {
               "methods": [
                 "create_comment"
@@ -508,6 +533,11 @@
             "RecordActionOnComment": {
               "methods": [
                 "record_action_on_comment"
+              ]
+            },
+            "RequestOrderDateChange": {
+              "methods": [
+                "request_order_date_change"
               ]
             },
             "SignalZoneState": {

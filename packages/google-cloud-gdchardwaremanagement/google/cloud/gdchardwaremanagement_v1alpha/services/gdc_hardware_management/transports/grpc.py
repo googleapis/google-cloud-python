@@ -493,6 +493,32 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["submit_order"]
 
     @property
+    def cancel_order(
+        self,
+    ) -> Callable[[service.CancelOrderRequest], operations_pb2.Operation]:
+        r"""Return a callable for the cancel order method over gRPC.
+
+        Cancels an order.
+
+        Returns:
+            Callable[[~.CancelOrderRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_order" not in self._stubs:
+            self._stubs["cancel_order"] = self._logged_channel.unary_unary(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/CancelOrder",
+                request_serializer=service.CancelOrderRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["cancel_order"]
+
+    @property
     def list_sites(
         self,
     ) -> Callable[[service.ListSitesRequest], service.ListSitesResponse]:
@@ -1246,6 +1272,32 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["signal_zone_state"]
+
+    @property
+    def request_order_date_change(
+        self,
+    ) -> Callable[[service.RequestOrderDateChangeRequest], operations_pb2.Operation]:
+        r"""Return a callable for the request order date change method over gRPC.
+
+        Updates the requested date change of a single Order.
+
+        Returns:
+            Callable[[~.RequestOrderDateChangeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "request_order_date_change" not in self._stubs:
+            self._stubs["request_order_date_change"] = self._logged_channel.unary_unary(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/RequestOrderDateChange",
+                request_serializer=service.RequestOrderDateChangeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["request_order_date_change"]
 
     def close(self):
         self._logged_channel.close()

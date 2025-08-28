@@ -49,6 +49,7 @@ from .types.resources import (
     ZoneNetworkConfig,
 )
 from .types.service import (
+    CancelOrderRequest,
     CreateCommentRequest,
     CreateHardwareGroupRequest,
     CreateHardwareRequest,
@@ -86,6 +87,7 @@ from .types.service import (
     ListZonesResponse,
     OperationMetadata,
     RecordActionOnCommentRequest,
+    RequestOrderDateChangeRequest,
     SignalZoneStateRequest,
     SubmitOrderRequest,
     UpdateHardwareGroupRequest,
@@ -97,6 +99,7 @@ from .types.service import (
 
 __all__ = (
     "GDCHardwareManagementAsyncClient",
+    "CancelOrderRequest",
     "ChangeLogEntry",
     "Comment",
     "Contact",
@@ -150,6 +153,7 @@ __all__ = (
     "PowerSupply",
     "RackSpace",
     "RecordActionOnCommentRequest",
+    "RequestOrderDateChangeRequest",
     "SignalZoneStateRequest",
     "Site",
     "Sku",
