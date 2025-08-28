@@ -2970,14 +2970,8 @@ def test_update_reservations_rest_flattened():
             region_commitments_update_reservations_request_resource=compute.RegionCommitmentsUpdateReservationsRequest(
                 reservations=[
                     compute.Reservation(
-                        aggregate_reservation=compute.AllocationAggregateReservation(
-                            in_use_resources=[
-                                compute.AllocationAggregateReservationReservedResourceInfo(
-                                    accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                        accelerator_count=1805
-                                    )
-                                )
-                            ]
+                        advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                            reservation_operational_mode="reservation_operational_mode_value"
                         )
                     )
                 ]
@@ -3025,14 +3019,8 @@ def test_update_reservations_rest_flattened_error(transport: str = "rest"):
             region_commitments_update_reservations_request_resource=compute.RegionCommitmentsUpdateReservationsRequest(
                 reservations=[
                     compute.Reservation(
-                        aggregate_reservation=compute.AllocationAggregateReservation(
-                            in_use_resources=[
-                                compute.AllocationAggregateReservationReservedResourceInfo(
-                                    accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                        accelerator_count=1805
-                                    )
-                                )
-                            ]
+                        advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                            reservation_operational_mode="reservation_operational_mode_value"
                         )
                     )
                 ]
@@ -3215,14 +3203,8 @@ def test_update_reservations_unary_rest_flattened():
             region_commitments_update_reservations_request_resource=compute.RegionCommitmentsUpdateReservationsRequest(
                 reservations=[
                     compute.Reservation(
-                        aggregate_reservation=compute.AllocationAggregateReservation(
-                            in_use_resources=[
-                                compute.AllocationAggregateReservationReservedResourceInfo(
-                                    accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                        accelerator_count=1805
-                                    )
-                                )
-                            ]
+                        advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                            reservation_operational_mode="reservation_operational_mode_value"
                         )
                     )
                 ]
@@ -3270,14 +3252,8 @@ def test_update_reservations_unary_rest_flattened_error(transport: str = "rest")
             region_commitments_update_reservations_request_resource=compute.RegionCommitmentsUpdateReservationsRequest(
                 reservations=[
                     compute.Reservation(
-                        aggregate_reservation=compute.AllocationAggregateReservation(
-                            in_use_resources=[
-                                compute.AllocationAggregateReservationReservedResourceInfo(
-                                    accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                        accelerator_count=1805
-                                    )
-                                )
-                            ]
+                        advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                            reservation_operational_mode="reservation_operational_mode_value"
                         )
                     )
                 ]
@@ -3730,6 +3706,9 @@ def test_insert_rest_call_success(request_type):
         "region": "region_value",
         "reservations": [
             {
+                "advanced_deployment_control": {
+                    "reservation_operational_mode": "reservation_operational_mode_value"
+                },
                 "aggregate_reservation": {
                     "in_use_resources": [
                         {
@@ -3757,6 +3736,7 @@ def test_insert_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "protection_tier": "protection_tier_value",
                 "reservation_mode": "reservation_mode_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"
@@ -4450,6 +4430,9 @@ def test_update_rest_call_success(request_type):
         "region": "region_value",
         "reservations": [
             {
+                "advanced_deployment_control": {
+                    "reservation_operational_mode": "reservation_operational_mode_value"
+                },
                 "aggregate_reservation": {
                     "in_use_resources": [
                         {
@@ -4477,6 +4460,7 @@ def test_update_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "protection_tier": "protection_tier_value",
                 "reservation_mode": "reservation_mode_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"
@@ -4809,6 +4793,9 @@ def test_update_reservations_rest_call_success(request_type):
     request_init["region_commitments_update_reservations_request_resource"] = {
         "reservations": [
             {
+                "advanced_deployment_control": {
+                    "reservation_operational_mode": "reservation_operational_mode_value"
+                },
                 "aggregate_reservation": {
                     "in_use_resources": [
                         {
@@ -4836,6 +4823,7 @@ def test_update_reservations_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "protection_tier": "protection_tier_value",
                 "reservation_mode": "reservation_mode_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"

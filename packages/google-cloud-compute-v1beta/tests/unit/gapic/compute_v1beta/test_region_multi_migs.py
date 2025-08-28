@@ -2694,6 +2694,55 @@ def test_insert_rest_call_success(request_type):
         "region": "region_value",
         "resource_policies": {"workload_policy": "workload_policy_value"},
         "self_link": "self_link_value",
+        "status": {
+            "applied_accelerator_topologies": [
+                {
+                    "accelerator_topology": "accelerator_topology_value",
+                    "accelerator_topology_state": "accelerator_topology_state_value",
+                    "accelerator_topology_state_last_check": {
+                        "error": {
+                            "errors": [
+                                {
+                                    "code": "code_value",
+                                    "error_details": [
+                                        {
+                                            "error_info": {
+                                                "domain": "domain_value",
+                                                "metadatas": {},
+                                                "reason": "reason_value",
+                                            },
+                                            "help_": {
+                                                "links": [
+                                                    {
+                                                        "description": "description_value",
+                                                        "url": "url_value",
+                                                    }
+                                                ]
+                                            },
+                                            "localized_message": {
+                                                "locale": "locale_value",
+                                                "message": "message_value",
+                                            },
+                                            "quota_info": {
+                                                "dimensions": {},
+                                                "future_limit": 0.1305,
+                                                "limit": 0.543,
+                                                "limit_name": "limit_name_value",
+                                                "metric_name": "metric_name_value",
+                                                "rollout_status": "rollout_status_value",
+                                            },
+                                        }
+                                    ],
+                                    "location": "location_value",
+                                    "message": "message_value",
+                                }
+                            ]
+                        },
+                        "timestamp": "timestamp_value",
+                    },
+                }
+            ]
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
