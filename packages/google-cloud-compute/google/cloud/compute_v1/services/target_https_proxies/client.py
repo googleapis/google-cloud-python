@@ -1164,11 +1164,11 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 \*
                 [Regional](/compute/docs/reference/rest/v1/regionTargetHttpsProxies)
                 A target HTTPS proxy is a component of Google Cloud
-                HTTPS load balancers. \* targetHttpProxies are used by
+                HTTPS load balancers. \* targetHttpsProxies are used by
                 global external Application Load Balancers, classic
                 Application Load Balancers, cross-region internal
                 Application Load Balancers, and Traffic Director. \*
-                regionTargetHttpProxies are used by regional internal
+                regionTargetHttpsProxies are used by regional internal
                 Application Load Balancers and regional external
                 Application Load Balancers. Forwarding rules reference a
                 target HTTPS proxy, and the target proxy then references
