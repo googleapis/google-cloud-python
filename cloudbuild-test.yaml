@@ -47,9 +47,6 @@ steps:
       # Mount the cloned googleapis repo from the workspace.
       - '-v'
       - '/workspace/googleapis:/app/source'
-      # Mount the generate-request.json from this repo's workspace.
-      - '-v'
-      - '/workspace/librarian-io:/app/librarian'
       # Mount the generator-input from this repo's workspace.
       - '-v'
       - '/workspace/.librarian/generator-input:/app/input'
