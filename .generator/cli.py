@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import argparse
+from datetime import datetime
 import glob
 import json
 import logging
+from pathlib import Path
 import os
 import re
 import shutil
@@ -23,6 +25,7 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Dict, List
+import yaml
 
 try:
     import synthtool
@@ -36,13 +39,16 @@ except ImportError as e:  # pragma: NO COVER
 
 logger = logging.getLogger()
 
-LIBRARIAN_DIR = "librarian"
-GENERATE_REQUEST_FILE = "generate-request.json"
-INPUT_DIR = "input"
 BUILD_REQUEST_FILE = "build-request.json"
-SOURCE_DIR = "source"
+GENERATE_REQUEST_FILE = "generate-request.json"
+RELEASE_INIT_REQUEST_FILE = "release-init-request.json"
+STATE_YAML_FILE = "state.yaml"
+
+INPUT_DIR = "input"
+LIBRARIAN_DIR = "librarian"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
+SOURCE_DIR = "source"
 
 
 def _read_json_file(path: str) -> Dict:
@@ -429,6 +435,219 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     logger.info("'build' command executed.")
 
 
+def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
+    """ Note the request data may have multiple libraries in it. Locate all 
+    libraries which should be prepared for release. This can be done by
+    checking whether the `release_triggered` field is `true`.
+
+    Args:
+        library_entries(Dict): Dictionary containing all of the libraries
+        present in the repository.
+    
+    Returns:
+        List[dict]: List of all libraries which should be prepared for release,
+        along with the corresponding information for the release.
+    """
+    return [library for library in library_entries["libraries"] if library.get("release_triggered")]
+
+def handle_release_init(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR):
+    """The main coordinator for the release process.
+
+    This function prepares for the release of client libraries by reading a
+    `librarian/release-init-request.json` file. The primary responsibility is
+    to update all required files with the new version and commit information
+    for libraries that have the `release_triggered` field set to `true`.
+
+    See https://github.com/googleapis/librarian/blob/main/doc/container-contract.md#generate-container-command
+
+    Args:
+        librarian(str): Path to the directory in the container which contains
+            the `release-init-request.json` file
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+        output(str): Path to the directory in the container where modified
+            code should be placed.
+    """
+
+    try:
+        # Read a release-init-request.json file
+        request_data = _read_json_file(f"{librarian}/{RELEASE_INIT_REQUEST_FILE}")
+        libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(request_data)
+        for library_release_data in libraries_to_prep_for_release:
+            version = library_release_data["version"]
+            library_changes = library_release_data["changes"]
+            print(library_changes)
+            package_name=library_release_data["id"]
+
+            previous_version = None
+            # get previous version from repo/.librarian/state.yaml
+            with open(f"{repo}/.librarian/{STATE_YAML_FILE}", "r") as state_yaml_file:
+                state_yaml = yaml.safe_load(state_yaml_file)
+                library = [specific_library for specific_library in state_yaml["libraries"] if specific_library["id"] == package_name][0]
+                previous_version = library["version"]
+
+            if not previous_version:
+                raise Exception("Could not determine previous version from state.yaml")
+
+            path_to_library = f"packages/{package_name}"
+            _update_version_for_library(repo, output, path_to_library, version)
+            if previous_version != version:
+                # only update the changelog if the version changed
+                _update_changelog_for_library(repo, output, library_changes, version, previous_version, package_name)
+
+            source_path = f"{repo}/CHANGELOG.md"
+            output_path = f"{output}/CHANGELOG.md"
+            with open(source_path, "r") as changelog_input_file:
+                content = changelog_input_file.read()
+
+            # Construct a regular expression to find the package and its version.
+            # - re.escape(package_name) handles package names with special characters.
+            # - (==) is a capturing group for the '==' separator.
+            # - [\d\.]+ matches the current version number (digits and dots).
+            pattern = re.compile(
+                f"(\\[{re.escape(package_name)})(==)([\\d\\.]+)(\\])"
+            )
+
+            # The replacement string uses backreferences (\g<n>) to keep the parts
+            # we want (package name, brackets) and insert the new version.
+            replacement = f"\\g<1>=={version}\\g<4>"
+
+            # Replace the version string in the content
+            new_content = pattern.sub(replacement, content)
+
+            # Write the updated content back to the file
+            with open(output_path, 'w') as f:
+                f.write(new_content)
+            print(f"✅ Successfully updated '{package_name}' to version '{version}' in {output_path}")
+    except Exception as e:
+        raise ValueError("Release init failed.") from e
+
+def _update_changelog_for_library(repo: str, output: str, library_changes: List[Dict], version: str, previous_version: str, package_name: str):
+    """
+    Prepends a new release entry with multiple, grouped changes to a changelog.
+    """
+    path_to_library = f"packages/{package_name}"
+
+    repo_url = "https://github.com/googleapis/google-cloud-python"
+    try:
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        entry_parts = []
+
+        # 1. Create the main version header
+        version_header = (
+            f"## [{version}]({repo_url}/compare/{package_name}-v{previous_version}"
+            f"...{package_name}-v{version}) ({current_date})"
+        )
+        entry_parts.append(version_header)
+        import itertools
+        library_changes.sort(key=lambda x: x['type'])
+        # TODO Create a dictionary of feat/fix
+        result = {key: list(group) for key, group in itertools.groupby(library_changes, key=lambda x: x['type'])}
+        # 2. Iterate through the dictionary to create grouped change lists
+        for key, value in result.items():
+            if key.replace("!", "") in ["feat", "fix", "docs"]:
+                entry_parts.append(f"\n\n### {key}\n")
+                for change in value:
+                    commit_link = f"([{change['source_commit_hash']}]({repo_url}/commit/{change['source_commit_hash']}))"
+                    entry_parts.append(f"* {change['subject']} {commit_link}")
+        
+        new_entry_text = "\n".join(entry_parts)
+        source_path = f"{repo}/{path_to_library}/CHANGELOG.md"
+        output_path = f"{output}/{path_to_library}/CHANGELOG.md"
+        os.makedirs(Path(output_path).parent, exist_ok=True)
+        shutil.copy(
+            source_path,
+            output_path
+        )
+
+        # Read the existing content
+        with open(output_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        # Define the anchor pattern to insert after
+        anchor_pattern = re.compile(
+            r"(\[1\]: https://pypi\.org/project/google-cloud-language/#history)",
+            re.MULTILINE
+        )
+
+        # Replace the anchor with itself plus the new, formatted entry
+        replacement_text = f"\\g<1>\n\n{new_entry_text}"
+        updated_content, num_subs = anchor_pattern.subn(replacement_text, content, count=1)
+
+        if num_subs == 0:
+            raise ValueError("Changelog anchor '[1]: ...#history' not found.")
+
+        # Write the updated content back to the file
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(updated_content)
+
+        print(f"✅ Successfully added changelog entry for v{version} to {output_path}")
+
+    except FileNotFoundError:
+        print(f"❌ Error: File not found at {output_path}")
+    except Exception as e:
+        print(f"❌ An error occurred: {e}")
+
+    
+def _update_version_for_library(repo: str, output: str, path_to_library: str, version: str):
+    gapic_version_files = Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py")
+    for version_file in gapic_version_files:
+        output_path = f"{output}/{version_file.relative_to(repo)}"
+        os.makedirs(Path(output_path).parent)
+        shutil.copy(
+            version_file,
+            output_path
+        )
+    
+        # Read the original file content
+        with open(output_path, 'r') as f:
+            content = f.read()
+
+        # This regex finds the line with `__version__`.
+        # - `(__version__\s*=\s*["'])`: Captures the part before the version number (e.g., `__version__ = "`).
+        # - `[^"']+`: Matches the current version string itself (any character that is not a quote).
+        # - `(["'].*)`: Captures the closing quote and the rest of the line (e.g., `"  # {x-release-please-version}`).
+        pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+        
+        # The replacement string uses f-string formatting with backreferences to the captured groups.
+        # `\\g<1>` is the first captured group (e.g., `__version__ = "`).
+        # `\\g<3>` is the third captured group (e.g., `"  # ...`).
+        replacement_string = f"\\g<1>{version}\\g<3>"
+
+        # Use re.sub() to perform the replacement
+        new_content, num_replacements = re.subn(pattern, replacement_string, content)
+        # Check if the version string was found and replaced
+        if num_replacements > 0:
+            # Write the updated content back to the file
+            with open(output_path, 'w') as f:
+                f.write(new_content)
+            print(f"✅ Successfully updated version in '{output_path}' to '{version}'.")
+        else:
+            raise Exception(f"Could not find the version string in '{output_path}'. File was not modified.")
+
+    snippet_metadata_files = Path(f"{repo}/{path_to_library}").rglob("samples/**/*.json")
+    for metadata_file in snippet_metadata_files:
+        output_path = f"{output}/{metadata_file.relative_to(repo)}"
+        os.makedirs(Path(output_path).parent, exist_ok=True)
+        shutil.copy(
+            metadata_file,
+            output_path
+        )
+
+        metadata_contents = _read_json_file(metadata_file)
+
+        # Navigate to the specific key and update its value
+        metadata_contents["clientLibrary"]["version"] = version
+
+        #metadata_file.relativeto
+        with open(output_path, "w") as f:
+            json.dump(metadata_contents, f, indent=2)
+            f.write("\n")
+
+        
+
+
 if __name__ == "__main__":  # pragma: NO COVER
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
     subparsers = parser.add_subparsers(
@@ -440,12 +659,14 @@ if __name__ == "__main__":  # pragma: NO COVER
         "configure": handle_configure,
         "generate": handle_generate,
         "build": handle_build,
+        "release-init": handle_release_init,
     }
 
     for command_name, help_text in [
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
         ("build", "Run unit tests via nox for the generated library."),
+        ("release-init", "Prepare to release a specific library")
     ]:
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
@@ -495,5 +716,7 @@ if __name__ == "__main__":  # pragma: NO COVER
         )
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
+    elif args.command == "release-init":
+        args.func(librarian=args.librarian, repo=args.repo, output=args.output)
     else:
         args.func()
