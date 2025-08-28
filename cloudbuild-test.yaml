@@ -61,7 +61,7 @@ steps:
 
   # Step 4: Run the generator to test the library code.
   - name: 'gcr.io/cloud-builders/docker'
-  - id: 'build-library'
+    id: 'build-library'
     waitFor: ['generate-library']
     args:
       - 'run'
