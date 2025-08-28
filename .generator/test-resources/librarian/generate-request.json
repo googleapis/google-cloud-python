@@ -24,7 +24,7 @@
   ],
   "preserve_regex": [
     ".OwlBot.yaml",
-    "CHANGELOG.md",
+    "packages/google-cloud-language/CHANGELOG.md",
     "docs/CHANGELOG.md",
     "docs/README.rst",
     "samples/README.txt",
