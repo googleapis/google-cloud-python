@@ -438,7 +438,7 @@ class TextToSpeechAsyncClient:
                 voice.language_code = "language_code_value"
 
                 audio_config = texttospeech_v1beta1.AudioConfig()
-                audio_config.audio_encoding = "PCM"
+                audio_config.audio_encoding = "M4A"
 
                 request = texttospeech_v1beta1.SynthesizeSpeechRequest(
                     input=input,
@@ -547,7 +547,7 @@ class TextToSpeechAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Awaitable[AsyncIterable[cloud_tts.StreamingSynthesizeResponse]]:
         r"""Performs bidirectional streaming speech synthesis:
-        receive audio while sending text.
+        receives audio while sending text.
 
         .. code-block:: python
 

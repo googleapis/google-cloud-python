@@ -768,7 +768,7 @@ class TextToSpeechLongAudioSynthesizeClient(
                 input.text = "text_value"
 
                 audio_config = texttospeech_v1beta1.AudioConfig()
-                audio_config.audio_encoding = "PCM"
+                audio_config.audio_encoding = "M4A"
 
                 voice = texttospeech_v1beta1.VoiceSelectionParams()
                 voice.language_code = "language_code_value"
