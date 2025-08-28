@@ -21,6 +21,7 @@ import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 from typing import Dict, List
 
 try:
@@ -278,12 +279,6 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
                     post_processing_file,
                     f"{output}/{path_to_library}/scripts/client-post-processing",
                 )
-
-
-import glob
-import os
-import shutil
-from pathlib import Path
 
 
 def _clean_up_files_after_post_processing(output: str, library_id: str):
