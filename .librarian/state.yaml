@@ -1,4 +1,4 @@
-image: python-librarian-generator:latest
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-dev/python-librarian-generator:latest
 libraries:
 - id: google-cloud-language
   version: 2.17.2
@@ -8,7 +8,7 @@ libraries:
   - path: google/cloud/language/v2
   - path: google/cloud/language/v1
   source_roots:
-  - ^packages/google-cloud-language
+  - packages/google-cloud-language
   preserve_regex:
   - .OwlBot.yaml
   - CHANGELOG.md

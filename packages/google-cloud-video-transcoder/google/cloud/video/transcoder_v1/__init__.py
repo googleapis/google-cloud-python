@@ -29,6 +29,7 @@ from .types.resources import (
     ElementaryStream,
     Encryption,
     Input,
+    InputAttributes,
     Job,
     JobConfig,
     JobTemplate,
@@ -41,6 +42,7 @@ from .types.resources import (
     SegmentSettings,
     SpriteSheet,
     TextStream,
+    TrackDefinition,
     VideoStream,
 )
 from .types.services import (
@@ -70,6 +72,7 @@ __all__ = (
     "GetJobRequest",
     "GetJobTemplateRequest",
     "Input",
+    "InputAttributes",
     "Job",
     "JobConfig",
     "JobTemplate",
@@ -86,6 +89,7 @@ __all__ = (
     "SegmentSettings",
     "SpriteSheet",
     "TextStream",
+    "TrackDefinition",
     "TranscoderServiceClient",
     "VideoStream",
 )

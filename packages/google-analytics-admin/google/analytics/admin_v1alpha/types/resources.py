@@ -74,12 +74,12 @@ __protobuf__ = proto.module(
         "AccessBinding",
         "BigQueryLink",
         "EnhancedMeasurementSettings",
-        "ConnectedSiteTag",
         "DataRedactionSettings",
         "AdSenseLink",
         "RollupPropertySourceLink",
         "ReportingDataAnnotation",
         "SubpropertySyncConfig",
+        "ReportingIdentitySettings",
     },
 )
 
@@ -294,6 +294,8 @@ class ChangeHistoryResourceType(proto.Enum):
             ReportingDataAnnotation resource
         SUBPROPERTY_SYNC_CONFIG (33):
             SubpropertySyncConfig resource
+        REPORTING_IDENTITY_SETTINGS (34):
+            ReportingIdentitySettings resource
     """
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
@@ -324,6 +326,7 @@ class ChangeHistoryResourceType(proto.Enum):
     CALCULATED_METRIC = 31
     REPORTING_DATA_ANNOTATION = 32
     SUBPROPERTY_SYNC_CONFIG = 33
+    REPORTING_IDENTITY_SETTINGS = 34
 
 
 class GoogleSignalsState(proto.Enum):
@@ -1645,6 +1648,11 @@ class ChangeHistoryChange(proto.Message):
                 resource in change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            reporting_identity_settings (google.analytics.admin_v1alpha.types.ReportingIdentitySettings):
+                A snapshot of a ReportingIdentitySettings
+                resource in change history.
+
+                This field is a member of `oneof`_ ``resource``.
         """
 
         account: "Account" = proto.Field(
@@ -1818,6 +1826,12 @@ class ChangeHistoryChange(proto.Message):
             number=33,
             oneof="resource",
             message="SubpropertySyncConfig",
+        )
+        reporting_identity_settings: "ReportingIdentitySettings" = proto.Field(
+            proto.MESSAGE,
+            number=34,
+            oneof="resource",
+            message="ReportingIdentitySettings",
         )
 
     resource: str = proto.Field(
@@ -3216,30 +3230,6 @@ class EnhancedMeasurementSettings(proto.Message):
     )
 
 
-class ConnectedSiteTag(proto.Message):
-    r"""Configuration for a specific Connected Site Tag.
-
-    Attributes:
-        display_name (str):
-            Required. User-provided display name for the
-            connected site tag. Must be less than 256
-            characters.
-        tag_id (str):
-            Required. "Tag ID to forward events to. Also
-            known as the Measurement ID, or the "G-ID"  (For
-            example: G-12345).
-    """
-
-    display_name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    tag_id: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-
-
 class DataRedactionSettings(proto.Message):
     r"""Settings for client-side data redaction. Singleton resource
     under a Web Stream.
@@ -3495,15 +3485,15 @@ class SubpropertySyncConfig(proto.Message):
             Example: properties/1234/subpropertySyncConfigs/5678
         apply_to_property (str):
             Output only. Immutable. Resource name of the
-            Subproperty that these settings apply to.
+            subproperty that these settings apply to.
         custom_dimension_and_metric_sync_mode (google.analytics.admin_v1alpha.types.SubpropertySyncConfig.SynchronizationMode):
             Required. Specifies the Custom Dimension /
-            Metric synchronization mode for the Subproperty.
+            Metric synchronization mode for the subproperty.
 
             If set to ALL, Custom Dimension / Metric
             synchronization will be immediately enabled.
             Local configuration of Custom Dimensions /
-            Metrics will not be allowed on the Subproperty
+            Metrics will not be allowed on the subproperty
             so long as the synchronization mode is set to
             ALL.
 
@@ -3514,7 +3504,7 @@ class SubpropertySyncConfig(proto.Message):
     """
 
     class SynchronizationMode(proto.Enum):
-        r"""Synchronization modes for a Subproperty
+        r"""Synchronization modes for a subproperty
 
         Values:
             SYNCHRONIZATION_MODE_UNSPECIFIED (0):
@@ -3522,11 +3512,11 @@ class SubpropertySyncConfig(proto.Message):
                 specified.
             NONE (1):
                 Entities are not synchronized.
-                Local edits are allowed on the Subproperty.
+                Local edits are allowed on the subproperty.
             ALL (2):
-                Entities are synchronized from Parent
-                Property. Local mutations are not allowed on the
-                Subproperty (Create / Update / Delete)
+                Entities are synchronized from parent
+                property. Local mutations are not allowed on the
+                subproperty (Create / Update / Delete)
         """
         SYNCHRONIZATION_MODE_UNSPECIFIED = 0
         NONE = 1
@@ -3544,6 +3534,50 @@ class SubpropertySyncConfig(proto.Message):
         proto.ENUM,
         number=3,
         enum=SynchronizationMode,
+    )
+
+
+class ReportingIdentitySettings(proto.Message):
+    r"""A resource containing settings related to reporting identity.
+
+    Attributes:
+        name (str):
+            Output only. Identifier. Resource name for this reporting
+            identity settings singleton resource. Format:
+            properties/{property_id}/reportingIdentitySettings Example:
+            "properties/1234/reportingIdentitySettings".
+        reporting_identity (google.analytics.admin_v1alpha.types.ReportingIdentitySettings.ReportingIdentity):
+            The strategy used for identifying user
+            identities in reports.
+    """
+
+    class ReportingIdentity(proto.Enum):
+        r"""Various strategies for identifying user identities in
+        reports.
+
+        Values:
+            IDENTITY_BLENDING_STRATEGY_UNSPECIFIED (0):
+                Unspecified blending strategy.
+            BLENDED (1):
+                Blended reporting identity strategy.
+            OBSERVED (2):
+                Observed reporting identity strategy.
+            DEVICE_BASED (3):
+                Device-based reporting identity strategy.
+        """
+        IDENTITY_BLENDING_STRATEGY_UNSPECIFIED = 0
+        BLENDED = 1
+        OBSERVED = 2
+        DEVICE_BASED = 3
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reporting_identity: ReportingIdentity = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ReportingIdentity,
     )
 
 

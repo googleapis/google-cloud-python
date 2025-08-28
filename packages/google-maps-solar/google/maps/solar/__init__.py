@@ -25,6 +25,7 @@ from google.maps.solar_v1.types.solar_service import (
     CashPurchaseSavings,
     DataLayers,
     DataLayerView,
+    Experiment,
     FinancedPurchaseSavings,
     FinancialAnalysis,
     FinancialDetails,
@@ -66,6 +67,7 @@ __all__ = (
     "SolarPanelConfig",
     "SolarPotential",
     "DataLayerView",
+    "Experiment",
     "ImageryQuality",
     "SolarPanelOrientation",
 )

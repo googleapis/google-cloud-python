@@ -81,7 +81,8 @@ class AudioEncoding(proto.Enum):
 
     Values:
         AUDIO_ENCODING_UNSPECIFIED (0):
-            Not specified. Will return result
+            Not specified. Only used by GenerateVoiceCloningKey.
+            Otherwise, will return result
             [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
         LINEAR16 (1):
             Uncompressed 16-bit signed little-endian
@@ -109,6 +110,8 @@ class AudioEncoding(proto.Enum):
             samples (Linear PCM). Note that as opposed to
             LINEAR16, audio won't be wrapped in a WAV (or
             any other) header.
+        M4A (8):
+            M4A audio.
     """
     AUDIO_ENCODING_UNSPECIFIED = 0
     LINEAR16 = 1
@@ -117,6 +120,7 @@ class AudioEncoding(proto.Enum):
     MULAW = 5
     ALAW = 6
     PCM = 7
+    M4A = 8
 
 
 class ListVoicesRequest(proto.Message):
@@ -520,6 +524,10 @@ class VoiceSelectionParams(proto.Message):
             [VoiceCloneParams.voice_clone_key] is set, the service
             chooses the voice clone matching the specified
             configuration.
+        model_name (str):
+            Optional. The name of the model. If set, the
+            service will choose the model matching the
+            specified configuration.
     """
 
     language_code: str = proto.Field(
@@ -544,6 +552,10 @@ class VoiceSelectionParams(proto.Message):
         proto.MESSAGE,
         number=5,
         message="VoiceCloneParams",
+    )
+    model_name: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -802,6 +814,11 @@ class StreamingSynthesisInput(proto.Message):
             may not be used with any other voices.
 
             This field is a member of `oneof`_ ``input_source``.
+        prompt (str):
+            This is system instruction supported only for
+            controllable voice models.
+
+            This field is a member of `oneof`_ ``_prompt``.
     """
 
     text: str = proto.Field(
@@ -813,6 +830,11 @@ class StreamingSynthesisInput(proto.Message):
         proto.STRING,
         number=5,
         oneof="input_source",
+    )
+    prompt: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
     )
 
 

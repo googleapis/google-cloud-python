@@ -6505,6 +6505,19 @@ def test_create_job_rest_call_success(request_type):
                             },
                         },
                     },
+                    "attributes": {
+                        "track_definitions": [
+                            {
+                                "input_track": 1188,
+                                "languages": ["languages_value1", "languages_value2"],
+                                "detect_languages": True,
+                                "detected_languages": [
+                                    "detected_languages_value1",
+                                    "detected_languages_value2",
+                                ],
+                            }
+                        ]
+                    },
                 }
             ],
             "edit_list": [
@@ -7344,6 +7357,19 @@ def test_create_job_template_rest_call_success(request_type):
                                 "deinterlace_all_frames": True,
                             },
                         },
+                    },
+                    "attributes": {
+                        "track_definitions": [
+                            {
+                                "input_track": 1188,
+                                "languages": ["languages_value1", "languages_value2"],
+                                "detect_languages": True,
+                                "detected_languages": [
+                                    "detected_languages_value1",
+                                    "detected_languages_value2",
+                                ],
+                            }
+                        ]
                     },
                 }
             ],
