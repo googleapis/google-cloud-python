@@ -60,7 +60,8 @@ steps:
     waitFor: ['build-generator', 'clone-googleapis']
 
   # Step 4: Run the generator to test the library code.
-  - name: 'build-library'
+  - name: 'gcr.io/cloud-builders/docker'
+  - id: 'build-library'
     waitFor: ['generate-library']
     args:
       - 'run'
