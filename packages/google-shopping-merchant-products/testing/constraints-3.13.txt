@@ -9,4 +9,4 @@ google-api-core>=2
 google-auth>=2
 proto-plus>=1
 protobuf>=6
-google-shopping-type>=0
+google-shopping-type>=1

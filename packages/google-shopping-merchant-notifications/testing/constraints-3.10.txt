@@ -4,4 +4,3 @@
 google-api-core
 proto-plus
 protobuf
-google-shopping-type
