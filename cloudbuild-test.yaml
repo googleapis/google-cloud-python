@@ -58,6 +58,21 @@ steps:
       # The command to execute inside the container.
       - 'generate'
     waitFor: ['build-generator', 'clone-googleapis']
+  - name: 'build-library'
+    waitFor: ['generate-library']
+    args:
+      - 'run'
+      - '--rm'
+      # Mount the test-resources/librarian from this repo's workspace as the librarian dir.
+      - '-v'
+      - '/workspace/.generator/test-resources/librarian:/app/librarian'
+      # The image that was built in the first step.
+      - 'gcr.io/$PROJECT_ID/python-librarian-generator:latest'
+      # The command to execute inside the container.
+      - 'build'
+      # We run build against output instead of repo.
+      - '--output-dir'
+      - '/app/output'
 
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
