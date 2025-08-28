@@ -48,7 +48,7 @@ dependencies = [
     "proto-plus >= 1.22.3, <2.0.0",
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
     "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
-    "google-shopping-type >= 0.1.6, <1.0.0",
+    "google-shopping-type >= 1.0.0, <2.0.0",
 ]
 extras = {}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-datasources"
