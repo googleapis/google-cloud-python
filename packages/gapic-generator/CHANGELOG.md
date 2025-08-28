@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.26.1](https://github.com/googleapis/gapic-generator-python/compare/v1.26.0...v1.26.1) (2025-08-28)
+
+
+### Bug Fixes
+
+* Temporarily disable `test_<service>_api_version_header_async` which is not marked as async ([9382ac3](https://github.com/googleapis/gapic-generator-python/commit/9382ac3546f335116665e10c4132369bc7637a67))
+
 ## [1.26.0](https://github.com/googleapis/gapic-generator-python/compare/v1.25.0...v1.26.0) (2025-05-28)
 
 
