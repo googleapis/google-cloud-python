@@ -503,6 +503,32 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
         return self._stubs["submit_order"]
 
     @property
+    def cancel_order(
+        self,
+    ) -> Callable[[service.CancelOrderRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the cancel order method over gRPC.
+
+        Cancels an order.
+
+        Returns:
+            Callable[[~.CancelOrderRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_order" not in self._stubs:
+            self._stubs["cancel_order"] = self._logged_channel.unary_unary(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/CancelOrder",
+                request_serializer=service.CancelOrderRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["cancel_order"]
+
+    @property
     def list_sites(
         self,
     ) -> Callable[[service.ListSitesRequest], Awaitable[service.ListSitesResponse]]:
@@ -1277,6 +1303,34 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
             )
         return self._stubs["signal_zone_state"]
 
+    @property
+    def request_order_date_change(
+        self,
+    ) -> Callable[
+        [service.RequestOrderDateChangeRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the request order date change method over gRPC.
+
+        Updates the requested date change of a single Order.
+
+        Returns:
+            Callable[[~.RequestOrderDateChangeRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "request_order_date_change" not in self._stubs:
+            self._stubs["request_order_date_change"] = self._logged_channel.unary_unary(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/RequestOrderDateChange",
+                request_serializer=service.RequestOrderDateChangeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["request_order_date_change"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1343,6 +1397,20 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
             ),
             self.submit_order: self._wrap_method(
                 self.submit_order,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.cancel_order: self._wrap_method(
+                self.cancel_order,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=10.0,
@@ -1695,6 +1763,11 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
             ),
             self.signal_zone_state: self._wrap_method(
                 self.signal_zone_state,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.request_order_date_change: self._wrap_method(
+                self.request_order_date_change,
                 default_timeout=None,
                 client_info=client_info,
             ),

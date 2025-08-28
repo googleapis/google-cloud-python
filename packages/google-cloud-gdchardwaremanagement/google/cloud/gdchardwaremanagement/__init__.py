@@ -51,6 +51,7 @@ from google.cloud.gdchardwaremanagement_v1alpha.types.resources import (
     ZoneNetworkConfig,
 )
 from google.cloud.gdchardwaremanagement_v1alpha.types.service import (
+    CancelOrderRequest,
     CreateCommentRequest,
     CreateHardwareGroupRequest,
     CreateHardwareRequest,
@@ -88,6 +89,7 @@ from google.cloud.gdchardwaremanagement_v1alpha.types.service import (
     ListZonesResponse,
     OperationMetadata,
     RecordActionOnCommentRequest,
+    RequestOrderDateChangeRequest,
     SignalZoneStateRequest,
     SubmitOrderRequest,
     UpdateHardwareGroupRequest,
@@ -124,6 +126,7 @@ __all__ = (
     "ZoneNetworkConfig",
     "Entity",
     "PowerSupply",
+    "CancelOrderRequest",
     "CreateCommentRequest",
     "CreateHardwareGroupRequest",
     "CreateHardwareRequest",
@@ -161,6 +164,7 @@ __all__ = (
     "ListZonesResponse",
     "OperationMetadata",
     "RecordActionOnCommentRequest",
+    "RequestOrderDateChangeRequest",
     "SignalZoneStateRequest",
     "SubmitOrderRequest",
     "UpdateHardwareGroupRequest",

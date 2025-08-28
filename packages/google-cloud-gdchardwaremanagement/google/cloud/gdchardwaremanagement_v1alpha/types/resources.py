@@ -126,8 +126,11 @@ class Order(proto.Message):
             motivation for this order. The length of this
             field must be <= 1000 characters.
         fulfillment_time (google.protobuf.timestamp_pb2.Timestamp):
-            Required. Customer specified deadline by when
-            this order should be fulfilled.
+            Deprecated: Please use customer_requested_installation_date
+            instead.
+        customer_requested_installation_date (google.type.date_pb2.Date):
+            Optional. Customer requested installation
+            date for this order.
         region_code (str):
             Required. `Unicode CLDR <http://cldr.unicode.org/>`__ region
             code where this order will be deployed. For a list of valid
@@ -157,6 +160,25 @@ class Order(proto.Message):
         estimated_installation_date (google.type.date_pb2.Date):
             Output only. Estimated installation date for
             this order.
+        estimated_delivery_date (google.type.date_pb2.Date):
+            Output only. Estimated delivery date for this
+            order.
+        migration (bool):
+            Optional. Whether this order is a migration
+            from customer's existing infrastructure.
+        accepted_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the order was
+            moved to ACCEPTED state.
+        requested_date_change (google.type.date_pb2.Date):
+            Output only. The date to which the customer
+            or Google wants to set the scheduled
+            installation date.
+        vendor_notes (str):
+            Output only. Notes for this order, provided
+            by the vendor.
+        vendor_contact (google.cloud.gdchardwaremanagement_v1alpha.types.OrganizationContact):
+            Output only. Contact information of the SI
+            assigned to this order.
     """
 
     class State(proto.Enum):
@@ -300,6 +322,11 @@ class Order(proto.Message):
         number=9,
         message=timestamp_pb2.Timestamp,
     )
+    customer_requested_installation_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=date_pb2.Date,
+    )
     region_code: str = proto.Field(
         proto.STRING,
         number=10,
@@ -341,6 +368,34 @@ class Order(proto.Message):
         proto.MESSAGE,
         number=20,
         message=date_pb2.Date,
+    )
+    estimated_delivery_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=date_pb2.Date,
+    )
+    migration: bool = proto.Field(
+        proto.BOOL,
+        number=23,
+    )
+    accepted_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=timestamp_pb2.Timestamp,
+    )
+    requested_date_change: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message=date_pb2.Date,
+    )
+    vendor_notes: str = proto.Field(
+        proto.STRING,
+        number=26,
+    )
+    vendor_contact: "OrganizationContact" = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        message="OrganizationContact",
     )
 
 
@@ -489,9 +544,9 @@ class HardwareGroup(proto.Message):
             HardwareGroup belongs to. Format:
             ``projects/{project}/locations/{location}/zones/{zone}``
         requested_installation_date (google.type.date_pb2.Date):
-            Optional. Requested installation date for the
-            hardware in this HardwareGroup. Filled in by the
-            customer.
+            Deprecated: This value is not used. Use the
+            requested_installation_date field in the Order resource
+            instead.
     """
 
     class State(proto.Enum):
@@ -641,6 +696,9 @@ class Hardware(proto.Message):
         machine_infos (MutableSequence[google.cloud.gdchardwaremanagement_v1alpha.types.Hardware.MachineInfo]):
             Output only. Per machine asset information
             needed for turnup.
+        estimated_delivery_date (google.type.date_pb2.Date):
+            Output only. The estimated delivery date of
+            the hardware.
     """
 
     class State(proto.Enum):
@@ -881,6 +939,11 @@ class Hardware(proto.Message):
         proto.MESSAGE,
         number=20,
         message=MachineInfo,
+    )
+    estimated_delivery_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=date_pb2.Date,
     )
 
 
@@ -1160,6 +1223,25 @@ class Zone(proto.Message):
         provisioning_state (google.cloud.gdchardwaremanagement_v1alpha.types.Zone.ProvisioningState):
             Output only. Provisioning state for
             configurations like MAC addresses.
+        skip_cluster_provisioning (bool):
+            Optional. Whether to skip the cluster
+            provisioning step during factory turnup. If
+            true, indicates that the Kubernetes cluster will
+            be created after the zone's hardware is
+            installed at the customer site.
+        cluster_intent_required (bool):
+            Output only. Indicates whether a valid
+            cluster intent must be provided by the customer
+            before accepting the order. If true, the order
+            cannot be accepted until cluster intent is
+            present. This is used to enforce early
+            validation and prevent delays caused by missing
+            configuration.
+        cluster_intent_verified (bool):
+            Output only. Indicates whether the provided
+            cluster intent has been successfully verified.
+            This flag ensures cluster intent exists before
+            order can be accepted.
     """
 
     class State(proto.Enum):
@@ -1270,6 +1352,18 @@ class Zone(proto.Message):
         proto.ENUM,
         number=14,
         enum=ProvisioningState,
+    )
+    skip_cluster_provisioning: bool = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
+    cluster_intent_required: bool = proto.Field(
+        proto.BOOL,
+        number=17,
+    )
+    cluster_intent_verified: bool = proto.Field(
+        proto.BOOL,
+        number=18,
     )
 
 
@@ -1493,12 +1587,25 @@ class HardwarePhysicalInfo(proto.Message):
             C_13 (2):
                 C13.
             STANDARD_EU (3):
-                Standard european receptacle.
+                Deprecated: Please use TYPE_G_BS1363, CEE_7_3, CEE_7_5 or
+                TYPE_F instead.
+            TYPE_G_BS1363 (4):
+                Type G / BS1363.
+            CEE_7_3 (5):
+                C 7/3.
+            CEE_7_5 (6):
+                C 7/5.
+            TYPE_F (7):
+                Type F.
         """
         POWER_RECEPTACLE_TYPE_UNSPECIFIED = 0
         NEMA_5_15 = 1
         C_13 = 2
         STANDARD_EU = 3
+        TYPE_G_BS1363 = 4
+        CEE_7_3 = 5
+        CEE_7_5 = 6
+        TYPE_F = 7
 
     class NetworkUplinkType(proto.Enum):
         r"""Valid network uplink types.

@@ -2225,26 +2225,17 @@ def test_update_rest_call_success(request_type):
                 "name": "name_value",
                 "predefined_rollout_plan": "predefined_rollout_plan_value",
                 "retry_uuid": "retry_uuid_value",
-            },
-            "rollout_status": {
-                "ongoing_rollouts": [
-                    {
-                        "rollout": "rollout_value",
-                        "rollout_plan": "rollout_plan_value",
-                        "status": {
-                            "description": "description_value",
-                            "release_status": {
-                                "stage": "stage_value",
-                                "update_date": {"day": 318, "month": 550, "year": 433},
-                            },
-                        },
-                    }
-                ],
-                "previous_rollout": {},
-            },
+            }
         },
         "self_link": "self_link_value",
-        "status": {},
+        "status": {
+            "description": "description_value",
+            "help_link": "help_link_value",
+            "release_status": {
+                "stage": "stage_value",
+                "update_date": {"day": 318, "month": 550, "year": 433},
+            },
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
