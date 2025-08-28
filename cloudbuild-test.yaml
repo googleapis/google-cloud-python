@@ -16,8 +16,9 @@
 # Reduce this timeout by moving the installation of Python runtimes to a separate base image
 timeout: 7200s  # 2 hours for the first uncached run, can be lowered later.
 steps:
-  # A single step using the Kaniko executor to build and cache
+  # Step 1: Build the generator image using Kaniko and push it to the registry.
   - name: 'gcr.io/kaniko-project/executor:latest'
+    id: 'build-generator'
     args:
       # Specifies the Dockerfile path
       - '--dockerfile=.generator/Dockerfile'
@@ -27,10 +28,36 @@ steps:
       - '--destination=gcr.io/$PROJECT_ID/python-librarian-generator:latest'
       # Enables Kaniko's remote registry caching
       - '--cache=true'
-      # (Optional but recommended) Sets a time-to-live for cache layers
+      # Sets a time-to-live for cache layers
       - '--cache-ttl=24h'
 
-# The 'images' section is no longer needed because Kaniko pushes the image itself.
+  # Step 2: Clone the googleapis repository into the workspace.
+  # This runs in parallel with the image build.
+  - name: 'gcr.io/cloud-builders/git'
+    id: 'clone-googleapis'
+    args: ['clone', '--depth', '1', 'https://github.com/googleapis/googleapis.git', '/workspace/googleapis']
+    waitFor: ['-']
+
+  # Step 3: Run the generator to generate the library code.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'generate-library'
+    args:
+      - 'run'
+      - '--rm'
+      # Mount the cloned googleapis repo from the workspace.
+      - '-v'
+      - '/workspace/googleapis:/app/source'
+      # Mount the generator-input from this repo's workspace.
+      - '-v'
+      - '/workspace/.librarian/generator-input:/app/input'
+      # Mount the test-resources/librarian from this repo's workspace as the librarian dir.
+      - '-v'
+      - '/workspace/.generator/test-resources/librarian:/app/librarian'
+      # The image that was built in the first step.
+      - 'gcr.io/$PROJECT_ID/python-librarian-generator:latest'
+      # The command to execute inside the container.
+      - 'generate'
+    waitFor: ['build-generator', 'clone-googleapis']
 
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
