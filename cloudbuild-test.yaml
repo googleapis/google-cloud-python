@@ -53,9 +53,9 @@ steps:
       # Mount the generator-input from this repo's workspace.
       - '-v'
       - '/workspace/.librarian/generator-input:/app/input'
-      # Mount the test-resources from this repo's workspace as the librarian dir.
+      # Mount the test-resources/librarian from this repo's workspace as the librarian dir.
       - '-v'
-      - '/workspace/.generator/test-resources:/app/librarian'
+      - '/workspace/.generator/test-resources/librarian:/app/librarian'
       # The image that was built in the first step.
       - 'gcr.io/$PROJECT_ID/python-librarian-generator:latest'
       # The command to execute inside the container.
