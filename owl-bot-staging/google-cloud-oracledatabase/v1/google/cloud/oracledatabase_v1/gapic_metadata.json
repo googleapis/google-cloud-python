@@ -1,0 +1,403 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.oracledatabase_v1",
+  "protoPackage": "google.cloud.oracledatabase.v1",
+  "schema": "1.0",
+  "services": {
+    "OracleDatabase": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "OracleDatabaseClient",
+          "rpcs": {
+            "CreateAutonomousDatabase": {
+              "methods": [
+                "create_autonomous_database"
+              ]
+            },
+            "CreateCloudExadataInfrastructure": {
+              "methods": [
+                "create_cloud_exadata_infrastructure"
+              ]
+            },
+            "CreateCloudVmCluster": {
+              "methods": [
+                "create_cloud_vm_cluster"
+              ]
+            },
+            "DeleteAutonomousDatabase": {
+              "methods": [
+                "delete_autonomous_database"
+              ]
+            },
+            "DeleteCloudExadataInfrastructure": {
+              "methods": [
+                "delete_cloud_exadata_infrastructure"
+              ]
+            },
+            "DeleteCloudVmCluster": {
+              "methods": [
+                "delete_cloud_vm_cluster"
+              ]
+            },
+            "GenerateAutonomousDatabaseWallet": {
+              "methods": [
+                "generate_autonomous_database_wallet"
+              ]
+            },
+            "GetAutonomousDatabase": {
+              "methods": [
+                "get_autonomous_database"
+              ]
+            },
+            "GetCloudExadataInfrastructure": {
+              "methods": [
+                "get_cloud_exadata_infrastructure"
+              ]
+            },
+            "GetCloudVmCluster": {
+              "methods": [
+                "get_cloud_vm_cluster"
+              ]
+            },
+            "ListAutonomousDatabaseBackups": {
+              "methods": [
+                "list_autonomous_database_backups"
+              ]
+            },
+            "ListAutonomousDatabaseCharacterSets": {
+              "methods": [
+                "list_autonomous_database_character_sets"
+              ]
+            },
+            "ListAutonomousDatabases": {
+              "methods": [
+                "list_autonomous_databases"
+              ]
+            },
+            "ListAutonomousDbVersions": {
+              "methods": [
+                "list_autonomous_db_versions"
+              ]
+            },
+            "ListCloudExadataInfrastructures": {
+              "methods": [
+                "list_cloud_exadata_infrastructures"
+              ]
+            },
+            "ListCloudVmClusters": {
+              "methods": [
+                "list_cloud_vm_clusters"
+              ]
+            },
+            "ListDbNodes": {
+              "methods": [
+                "list_db_nodes"
+              ]
+            },
+            "ListDbServers": {
+              "methods": [
+                "list_db_servers"
+              ]
+            },
+            "ListDbSystemShapes": {
+              "methods": [
+                "list_db_system_shapes"
+              ]
+            },
+            "ListEntitlements": {
+              "methods": [
+                "list_entitlements"
+              ]
+            },
+            "ListGiVersions": {
+              "methods": [
+                "list_gi_versions"
+              ]
+            },
+            "RestartAutonomousDatabase": {
+              "methods": [
+                "restart_autonomous_database"
+              ]
+            },
+            "RestoreAutonomousDatabase": {
+              "methods": [
+                "restore_autonomous_database"
+              ]
+            },
+            "StartAutonomousDatabase": {
+              "methods": [
+                "start_autonomous_database"
+              ]
+            },
+            "StopAutonomousDatabase": {
+              "methods": [
+                "stop_autonomous_database"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "OracleDatabaseAsyncClient",
+          "rpcs": {
+            "CreateAutonomousDatabase": {
+              "methods": [
+                "create_autonomous_database"
+              ]
+            },
+            "CreateCloudExadataInfrastructure": {
+              "methods": [
+                "create_cloud_exadata_infrastructure"
+              ]
+            },
+            "CreateCloudVmCluster": {
+              "methods": [
+                "create_cloud_vm_cluster"
+              ]
+            },
+            "DeleteAutonomousDatabase": {
+              "methods": [
+                "delete_autonomous_database"
+              ]
+            },
+            "DeleteCloudExadataInfrastructure": {
+              "methods": [
+                "delete_cloud_exadata_infrastructure"
+              ]
+            },
+            "DeleteCloudVmCluster": {
+              "methods": [
+                "delete_cloud_vm_cluster"
+              ]
+            },
+            "GenerateAutonomousDatabaseWallet": {
+              "methods": [
+                "generate_autonomous_database_wallet"
+              ]
+            },
+            "GetAutonomousDatabase": {
+              "methods": [
+                "get_autonomous_database"
+              ]
+            },
+            "GetCloudExadataInfrastructure": {
+              "methods": [
+                "get_cloud_exadata_infrastructure"
+              ]
+            },
+            "GetCloudVmCluster": {
+              "methods": [
+                "get_cloud_vm_cluster"
+              ]
+            },
+            "ListAutonomousDatabaseBackups": {
+              "methods": [
+                "list_autonomous_database_backups"
+              ]
+            },
+            "ListAutonomousDatabaseCharacterSets": {
+              "methods": [
+                "list_autonomous_database_character_sets"
+              ]
+            },
+            "ListAutonomousDatabases": {
+              "methods": [
+                "list_autonomous_databases"
+              ]
+            },
+            "ListAutonomousDbVersions": {
+              "methods": [
+                "list_autonomous_db_versions"
+              ]
+            },
+            "ListCloudExadataInfrastructures": {
+              "methods": [
+                "list_cloud_exadata_infrastructures"
+              ]
+            },
+            "ListCloudVmClusters": {
+              "methods": [
+                "list_cloud_vm_clusters"
+              ]
+            },
+            "ListDbNodes": {
+              "methods": [
+                "list_db_nodes"
+              ]
+            },
+            "ListDbServers": {
+              "methods": [
+                "list_db_servers"
+              ]
+            },
+            "ListDbSystemShapes": {
+              "methods": [
+                "list_db_system_shapes"
+              ]
+            },
+            "ListEntitlements": {
+              "methods": [
+                "list_entitlements"
+              ]
+            },
+            "ListGiVersions": {
+              "methods": [
+                "list_gi_versions"
+              ]
+            },
+            "RestartAutonomousDatabase": {
+              "methods": [
+                "restart_autonomous_database"
+              ]
+            },
+            "RestoreAutonomousDatabase": {
+              "methods": [
+                "restore_autonomous_database"
+              ]
+            },
+            "StartAutonomousDatabase": {
+              "methods": [
+                "start_autonomous_database"
+              ]
+            },
+            "StopAutonomousDatabase": {
+              "methods": [
+                "stop_autonomous_database"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "OracleDatabaseClient",
+          "rpcs": {
+            "CreateAutonomousDatabase": {
+              "methods": [
+                "create_autonomous_database"
+              ]
+            },
+            "CreateCloudExadataInfrastructure": {
+              "methods": [
+                "create_cloud_exadata_infrastructure"
+              ]
+            },
+            "CreateCloudVmCluster": {
+              "methods": [
+                "create_cloud_vm_cluster"
+              ]
+            },
+            "DeleteAutonomousDatabase": {
+              "methods": [
+                "delete_autonomous_database"
+              ]
+            },
+            "DeleteCloudExadataInfrastructure": {
+              "methods": [
+                "delete_cloud_exadata_infrastructure"
+              ]
+            },
+            "DeleteCloudVmCluster": {
+              "methods": [
+                "delete_cloud_vm_cluster"
+              ]
+            },
+            "GenerateAutonomousDatabaseWallet": {
+              "methods": [
+                "generate_autonomous_database_wallet"
+              ]
+            },
+            "GetAutonomousDatabase": {
+              "methods": [
+                "get_autonomous_database"
+              ]
+            },
+            "GetCloudExadataInfrastructure": {
+              "methods": [
+                "get_cloud_exadata_infrastructure"
+              ]
+            },
+            "GetCloudVmCluster": {
+              "methods": [
+                "get_cloud_vm_cluster"
+              ]
+            },
+            "ListAutonomousDatabaseBackups": {
+              "methods": [
+                "list_autonomous_database_backups"
+              ]
+            },
+            "ListAutonomousDatabaseCharacterSets": {
+              "methods": [
+                "list_autonomous_database_character_sets"
+              ]
+            },
+            "ListAutonomousDatabases": {
+              "methods": [
+                "list_autonomous_databases"
+              ]
+            },
+            "ListAutonomousDbVersions": {
+              "methods": [
+                "list_autonomous_db_versions"
+              ]
+            },
+            "ListCloudExadataInfrastructures": {
+              "methods": [
+                "list_cloud_exadata_infrastructures"
+              ]
+            },
+            "ListCloudVmClusters": {
+              "methods": [
+                "list_cloud_vm_clusters"
+              ]
+            },
+            "ListDbNodes": {
+              "methods": [
+                "list_db_nodes"
+              ]
+            },
+            "ListDbServers": {
+              "methods": [
+                "list_db_servers"
+              ]
+            },
+            "ListDbSystemShapes": {
+              "methods": [
+                "list_db_system_shapes"
+              ]
+            },
+            "ListEntitlements": {
+              "methods": [
+                "list_entitlements"
+              ]
+            },
+            "ListGiVersions": {
+              "methods": [
+                "list_gi_versions"
+              ]
+            },
+            "RestartAutonomousDatabase": {
+              "methods": [
+                "restart_autonomous_database"
+              ]
+            },
+            "RestoreAutonomousDatabase": {
+              "methods": [
+                "restore_autonomous_database"
+              ]
+            },
+            "StartAutonomousDatabase": {
+              "methods": [
+                "start_autonomous_database"
+              ]
+            },
+            "StopAutonomousDatabase": {
+              "methods": [
+                "stop_autonomous_database"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
