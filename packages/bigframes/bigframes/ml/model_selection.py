@@ -82,7 +82,7 @@ def train_test_split(
     dfs = list(utils.batch_convert_to_dataframe(*arrays))
 
     def _stratify_split(df: bpd.DataFrame, stratify: bpd.Series) -> List[bpd.DataFrame]:
-        """Split a single DF accoding to the stratify Series."""
+        """Split a single DF according to the stratify Series."""
         stratify = stratify.rename("bigframes_stratify_col")  # avoid name conflicts
         merged_df = df.join(stratify.to_frame(), how="outer")
 

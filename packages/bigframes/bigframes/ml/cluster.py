@@ -59,7 +59,7 @@ class KMeans(
         warm_start: bool = False,
     ):
         self.n_clusters = n_clusters
-        # allow the alias to be compatible with sklean
+        # allow the alias to be compatible with sklearn
         self.init = "kmeans++" if init == "k-means++" else init
         self.init_col = init_col
         self.distance_type = distance_type

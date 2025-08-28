@@ -211,7 +211,7 @@ class ARIMAPlus(base.SupervisedTrainableWithIdColPredictor):
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series,
             or pandas.core.frame.DataFrame or pandas.core.series.Series):
-                A dataframe or series of trainging timestamp.
+                A dataframe or series of training timestamp.
             y (bigframes.dataframe.DataFrame, or bigframes.series.Series,
             or pandas.core.frame.DataFrame, or pandas.core.series.Series):
                 Target values for training.

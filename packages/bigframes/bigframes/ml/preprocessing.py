@@ -434,7 +434,7 @@ class OneHotEncoder(
         if columns is None:
             columns = X.columns
         drop = self.drop if self.drop is not None else "none"
-        # minus one here since BQML's inplimentation always includes index 0, and top_k is on top of that.
+        # minus one here since BQML's implementation always includes index 0, and top_k is on top of that.
         top_k = (
             (self.max_categories - 1)
             if self.max_categories is not None

@@ -582,6 +582,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             # Index of column labels can be treated the same as a sequence of column labels.
             pandas.Index,
             bigframes.series.Series,
+            slice,
         ],
     ):  # No return type annotations (like pandas) as type cannot always be determined statically
         # NOTE: This implements the operations described in
