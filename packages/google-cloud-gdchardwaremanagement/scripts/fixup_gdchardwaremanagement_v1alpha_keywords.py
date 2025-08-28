@@ -39,6 +39,7 @@ def partition(
 class gdchardwaremanagementCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'cancel_order': ('name', 'request_id', ),
         'create_comment': ('parent', 'comment', 'comment_id', 'request_id', ),
         'create_hardware': ('parent', 'hardware', 'hardware_id', ),
         'create_hardware_group': ('parent', 'hardware_group', 'hardware_group_id', 'request_id', ),
@@ -67,6 +68,7 @@ class gdchardwaremanagementCallTransformer(cst.CSTTransformer):
         'list_skus': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_zones': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'record_action_on_comment': ('name', 'action_type', ),
+        'request_order_date_change': ('name', 'requested_date', ),
         'signal_zone_state': ('name', 'request_id', 'state_signal', 'provisioning_state_signal', 'step', 'details', ),
         'submit_order': ('name', 'request_id', 'type_', ),
         'update_hardware': ('update_mask', 'hardware', 'request_id', ),

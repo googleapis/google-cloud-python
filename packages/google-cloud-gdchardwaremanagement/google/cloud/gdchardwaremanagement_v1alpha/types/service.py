@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gdchardwaremanagement_v1alpha.types import resources
@@ -33,6 +34,7 @@ __protobuf__ = proto.module(
         "UpdateOrderRequest",
         "DeleteOrderRequest",
         "SubmitOrderRequest",
+        "CancelOrderRequest",
         "ListSitesRequest",
         "ListSitesResponse",
         "GetSiteRequest",
@@ -70,6 +72,7 @@ __protobuf__ = proto.module(
         "DeleteZoneRequest",
         "SignalZoneStateRequest",
         "OperationMetadata",
+        "RequestOrderDateChangeRequest",
     },
 )
 
@@ -338,6 +341,28 @@ class SubmitOrderRequest(proto.Message):
         proto.ENUM,
         number=3,
         enum=Type,
+    )
+
+
+class CancelOrderRequest(proto.Message):
+    r"""A request to cancel an order.
+
+    Attributes:
+        name (str):
+            Required. The name of the order. Format:
+            ``projects/{project}/locations/{location}/orders/{order}``
+        request_id (str):
+            Optional. An optional unique identifier for this request.
+            See `AIP-155 <https://google.aip.dev/155>`__.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1509,6 +1534,9 @@ class SignalZoneStateRequest(proto.Message):
                 Deprecated, but not deleted.
             FACTORY_TURNUP_CHECKS_FAILED (2):
                 The Zone failed in factory turnup checks.
+            VERIFY_CLUSTER_INTENT_PRESENCE (4):
+                Verify that a valid cluster intent is
+                present.
         """
         _pb_options = {"allow_alias": True}
         STATE_SIGNAL_UNSPECIFIED = 0
@@ -1516,6 +1544,7 @@ class SignalZoneStateRequest(proto.Message):
         FACTORY_TURNUP_CHECKS_PASSED = 1
         READY_FOR_SITE_TURNUP = 1
         FACTORY_TURNUP_CHECKS_FAILED = 2
+        VERIFY_CLUSTER_INTENT_PRESENCE = 4
 
     class ProvisioningStateSignal(proto.Enum):
         r"""Valid provisioning state signals for a zone.
@@ -1619,6 +1648,31 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class RequestOrderDateChangeRequest(proto.Message):
+    r"""A request to change the requested date of an order.
+
+    Attributes:
+        name (str):
+            Required. The name of the order to update.
+            Format:
+            projects/{project}/locations/{location}/orders/{order}
+        requested_date (google.type.date_pb2.Date):
+            Required. The date to which the customer or
+            Google wants to set the scheduled installation
+            date.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requested_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=date_pb2.Date,
     )
 
 
