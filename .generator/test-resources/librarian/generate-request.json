@@ -34,6 +34,6 @@
     "scripts/client-post-processing"
   ],
   "remove_regex": [
-    "^packages/google-cloud-language"
+    "packages/google-cloud-language"
   ]
 }
