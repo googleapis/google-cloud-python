@@ -18,6 +18,8 @@ from __future__ import annotations
 
 from collections import abc
 import datetime
+import fnmatch
+import inspect
 import logging
 import os
 import secrets
@@ -1344,12 +1346,24 @@ class Session(
     def _check_file_size(self, filepath: str):
         max_size = 1024 * 1024 * 1024  # 1 GB in bytes
         if filepath.startswith("gs://"):  # GCS file path
+            bucket_name, blob_path = filepath.split("/", 3)[2:]
+
             client = storage.Client()
-            bucket_name, blob_name = filepath.split("/", 3)[2:]
             bucket = client.bucket(bucket_name)
-            blob = bucket.blob(blob_name)
-            blob.reload()
-            file_size = blob.size
+
+            list_blobs_params = inspect.signature(bucket.list_blobs).parameters
+            if "match_glob" in list_blobs_params:
+                # Modern, efficient method for new library versions
+                matching_blobs = bucket.list_blobs(match_glob=blob_path)
+                file_size = sum(blob.size for blob in matching_blobs)
+            else:
+                # Fallback method for older library versions
+                prefix = blob_path.split("*", 1)[0]
+                all_blobs = bucket.list_blobs(prefix=prefix)
+                matching_blobs = [
+                    blob for blob in all_blobs if fnmatch.fnmatch(blob.name, blob_path)
+                ]
+                file_size = sum(blob.size for blob in matching_blobs)
         elif os.path.exists(filepath):  # local file path
             file_size = os.path.getsize(filepath)
         else:
