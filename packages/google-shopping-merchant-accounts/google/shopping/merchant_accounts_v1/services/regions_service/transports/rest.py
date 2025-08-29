@@ -73,6 +73,26 @@ class RegionsServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomRegionsServiceInterceptor(RegionsServiceRestInterceptor):
+            def pre_batch_create_regions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_regions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_delete_regions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_batch_update_regions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_update_regions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_region(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -114,6 +134,120 @@ class RegionsServiceRestInterceptor:
 
 
     """
+
+    def pre_batch_create_regions(
+        self,
+        request: regions.BatchCreateRegionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        regions.BatchCreateRegionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for batch_create_regions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionsService server.
+        """
+        return request, metadata
+
+    def post_batch_create_regions(
+        self, response: regions.BatchCreateRegionsResponse
+    ) -> regions.BatchCreateRegionsResponse:
+        """Post-rpc interceptor for batch_create_regions
+
+        DEPRECATED. Please use the `post_batch_create_regions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the RegionsService server but before
+        it is returned to user code. This `post_batch_create_regions` interceptor runs
+        before the `post_batch_create_regions_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_create_regions_with_metadata(
+        self,
+        response: regions.BatchCreateRegionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        regions.BatchCreateRegionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for batch_create_regions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RegionsService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_regions_with_metadata`
+        interceptor in new development instead of the `post_batch_create_regions` interceptor.
+        When both interceptors are used, this `post_batch_create_regions_with_metadata` interceptor runs after the
+        `post_batch_create_regions` interceptor. The (possibly modified) response returned by
+        `post_batch_create_regions` will be passed to
+        `post_batch_create_regions_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_delete_regions(
+        self,
+        request: regions.BatchDeleteRegionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        regions.BatchDeleteRegionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for batch_delete_regions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionsService server.
+        """
+        return request, metadata
+
+    def pre_batch_update_regions(
+        self,
+        request: regions.BatchUpdateRegionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        regions.BatchUpdateRegionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for batch_update_regions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionsService server.
+        """
+        return request, metadata
+
+    def post_batch_update_regions(
+        self, response: regions.BatchUpdateRegionsResponse
+    ) -> regions.BatchUpdateRegionsResponse:
+        """Post-rpc interceptor for batch_update_regions
+
+        DEPRECATED. Please use the `post_batch_update_regions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the RegionsService server but before
+        it is returned to user code. This `post_batch_update_regions` interceptor runs
+        before the `post_batch_update_regions_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_update_regions_with_metadata(
+        self,
+        response: regions.BatchUpdateRegionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        regions.BatchUpdateRegionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for batch_update_regions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RegionsService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_regions_with_metadata`
+        interceptor in new development instead of the `post_batch_update_regions` interceptor.
+        When both interceptors are used, this `post_batch_update_regions_with_metadata` interceptor runs after the
+        `post_batch_update_regions` interceptor. The (possibly modified) response returned by
+        `post_batch_update_regions` will be passed to
+        `post_batch_update_regions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_region(
         self,
@@ -395,6 +529,428 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _BatchCreateRegions(
+        _BaseRegionsServiceRestTransport._BaseBatchCreateRegions, RegionsServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("RegionsServiceRestTransport.BatchCreateRegions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: regions.BatchCreateRegionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> regions.BatchCreateRegionsResponse:
+            r"""Call the batch create regions method over HTTP.
+
+            Args:
+                request (~.regions.BatchCreateRegionsRequest):
+                    The request object. Request message for the ``BatchCreateRegions`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.regions.BatchCreateRegionsResponse:
+                    Response message for the ``BatchCreateRegions`` method.
+            """
+
+            http_options = (
+                _BaseRegionsServiceRestTransport._BaseBatchCreateRegions._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_create_regions(
+                request, metadata
+            )
+            transcoded_request = _BaseRegionsServiceRestTransport._BaseBatchCreateRegions._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegionsServiceRestTransport._BaseBatchCreateRegions._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseRegionsServiceRestTransport._BaseBatchCreateRegions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1.RegionsServiceClient.BatchCreateRegions",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1.RegionsService",
+                        "rpcName": "BatchCreateRegions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RegionsServiceRestTransport._BatchCreateRegions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = regions.BatchCreateRegionsResponse()
+            pb_resp = regions.BatchCreateRegionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_create_regions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_regions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = regions.BatchCreateRegionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1.RegionsServiceClient.batch_create_regions",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1.RegionsService",
+                        "rpcName": "BatchCreateRegions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchDeleteRegions(
+        _BaseRegionsServiceRestTransport._BaseBatchDeleteRegions, RegionsServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("RegionsServiceRestTransport.BatchDeleteRegions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: regions.BatchDeleteRegionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the batch delete regions method over HTTP.
+
+            Args:
+                request (~.regions.BatchDeleteRegionsRequest):
+                    The request object. Request message for the ``BatchDeleteRegions`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseRegionsServiceRestTransport._BaseBatchDeleteRegions._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_delete_regions(
+                request, metadata
+            )
+            transcoded_request = _BaseRegionsServiceRestTransport._BaseBatchDeleteRegions._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegionsServiceRestTransport._BaseBatchDeleteRegions._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseRegionsServiceRestTransport._BaseBatchDeleteRegions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1.RegionsServiceClient.BatchDeleteRegions",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1.RegionsService",
+                        "rpcName": "BatchDeleteRegions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RegionsServiceRestTransport._BatchDeleteRegions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _BatchUpdateRegions(
+        _BaseRegionsServiceRestTransport._BaseBatchUpdateRegions, RegionsServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("RegionsServiceRestTransport.BatchUpdateRegions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: regions.BatchUpdateRegionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> regions.BatchUpdateRegionsResponse:
+            r"""Call the batch update regions method over HTTP.
+
+            Args:
+                request (~.regions.BatchUpdateRegionsRequest):
+                    The request object. Request message for the ``BatchUpdateRegions`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.regions.BatchUpdateRegionsResponse:
+                    Response message for the ``BatchUpdateRegions`` method.
+            """
+
+            http_options = (
+                _BaseRegionsServiceRestTransport._BaseBatchUpdateRegions._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_update_regions(
+                request, metadata
+            )
+            transcoded_request = _BaseRegionsServiceRestTransport._BaseBatchUpdateRegions._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegionsServiceRestTransport._BaseBatchUpdateRegions._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseRegionsServiceRestTransport._BaseBatchUpdateRegions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1.RegionsServiceClient.BatchUpdateRegions",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1.RegionsService",
+                        "rpcName": "BatchUpdateRegions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RegionsServiceRestTransport._BatchUpdateRegions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = regions.BatchUpdateRegionsResponse()
+            pb_resp = regions.BatchUpdateRegionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_update_regions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_update_regions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = regions.BatchUpdateRegionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1.RegionsServiceClient.batch_update_regions",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1.RegionsService",
+                        "rpcName": "BatchUpdateRegions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _CreateRegion(
         _BaseRegionsServiceRestTransport._BaseCreateRegion, RegionsServiceRestStub
@@ -1117,6 +1673,34 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     },
                 )
             return resp
+
+    @property
+    def batch_create_regions(
+        self,
+    ) -> Callable[
+        [regions.BatchCreateRegionsRequest], regions.BatchCreateRegionsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreateRegions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_delete_regions(
+        self,
+    ) -> Callable[[regions.BatchDeleteRegionsRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchDeleteRegions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_update_regions(
+        self,
+    ) -> Callable[
+        [regions.BatchUpdateRegionsRequest], regions.BatchUpdateRegionsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchUpdateRegions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_region(self) -> Callable[[regions.CreateRegionRequest], regions.Region]:

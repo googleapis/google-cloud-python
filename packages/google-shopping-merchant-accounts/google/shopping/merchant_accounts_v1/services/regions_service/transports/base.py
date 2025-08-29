@@ -143,13 +143,28 @@ class RegionsServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_create_regions: gapic_v1.method.wrap_method(
+                self.batch_create_regions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_region: gapic_v1.method.wrap_method(
                 self.update_region,
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_update_regions: gapic_v1.method.wrap_method(
+                self.batch_update_regions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_region: gapic_v1.method.wrap_method(
                 self.delete_region,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_delete_regions: gapic_v1.method.wrap_method(
+                self.batch_delete_regions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -186,6 +201,18 @@ class RegionsServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def batch_create_regions(
+        self,
+    ) -> Callable[
+        [regions.BatchCreateRegionsRequest],
+        Union[
+            regions.BatchCreateRegionsResponse,
+            Awaitable[regions.BatchCreateRegionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def update_region(
         self,
     ) -> Callable[
@@ -194,10 +221,31 @@ class RegionsServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def batch_update_regions(
+        self,
+    ) -> Callable[
+        [regions.BatchUpdateRegionsRequest],
+        Union[
+            regions.BatchUpdateRegionsResponse,
+            Awaitable[regions.BatchUpdateRegionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_region(
         self,
     ) -> Callable[
         [regions.DeleteRegionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_delete_regions(
+        self,
+    ) -> Callable[
+        [regions.BatchDeleteRegionsRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()

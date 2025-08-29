@@ -229,6 +229,11 @@ from .types.programs import (
     Program,
 )
 from .types.regions import (
+    BatchCreateRegionsRequest,
+    BatchCreateRegionsResponse,
+    BatchDeleteRegionsRequest,
+    BatchUpdateRegionsRequest,
+    BatchUpdateRegionsResponse,
     CreateRegionRequest,
     DeleteRegionRequest,
     GetRegionRequest,
@@ -332,6 +337,11 @@ __all__ = (
     "AutomaticImprovementsServiceClient",
     "AutomaticItemUpdates",
     "AutomaticShippingImprovements",
+    "BatchCreateRegionsRequest",
+    "BatchCreateRegionsResponse",
+    "BatchDeleteRegionsRequest",
+    "BatchUpdateRegionsRequest",
+    "BatchUpdateRegionsResponse",
     "BusinessDayConfig",
     "BusinessIdentity",
     "BusinessIdentityServiceClient",

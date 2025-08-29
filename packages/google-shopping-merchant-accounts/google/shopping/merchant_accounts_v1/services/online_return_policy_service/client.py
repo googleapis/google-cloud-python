@@ -119,7 +119,7 @@ class OnlineReturnPolicyServiceClient(metaclass=OnlineReturnPolicyServiceClientM
 
     programs. This API defines the following resource model:
 
-    - `OnlineReturnPolicy </merchant/api/reference/rpc/google.shopping.merchant.accounts.v1#google.shopping.merchant.accounts.v1.OnlineReturnPolicy>`__
+    - [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
     """
 
     @staticmethod

@@ -549,6 +549,95 @@ class RegionsServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def batch_create_regions(
+        self,
+        request: Optional[Union[regions.BatchCreateRegionsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> regions.BatchCreateRegionsResponse:
+        r"""Creates one or more regions in your Merchant Center
+        account. Executing this method requires admin access.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.shopping import merchant_accounts_v1
+
+            async def sample_batch_create_regions():
+                # Create a client
+                client = merchant_accounts_v1.RegionsServiceAsyncClient()
+
+                # Initialize request argument(s)
+                requests = merchant_accounts_v1.CreateRegionRequest()
+                requests.parent = "parent_value"
+                requests.region_id = "region_id_value"
+
+                request = merchant_accounts_v1.BatchCreateRegionsRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = await client.batch_create_regions(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.shopping.merchant_accounts_v1.types.BatchCreateRegionsRequest, dict]]):
+                The request object. Request message for the ``BatchCreateRegions`` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.shopping.merchant_accounts_v1.types.BatchCreateRegionsResponse:
+                Response message for the BatchCreateRegions method.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, regions.BatchCreateRegionsRequest):
+            request = regions.BatchCreateRegionsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_create_regions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def update_region(
         self,
         request: Optional[Union[regions.UpdateRegionRequest, dict]] = None,
@@ -675,6 +764,90 @@ class RegionsServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def batch_update_regions(
+        self,
+        request: Optional[Union[regions.BatchUpdateRegionsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> regions.BatchUpdateRegionsResponse:
+        r"""Updates one or more regions in your Merchant Center
+        account. Executing this method requires admin access.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.shopping import merchant_accounts_v1
+
+            async def sample_batch_update_regions():
+                # Create a client
+                client = merchant_accounts_v1.RegionsServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = merchant_accounts_v1.BatchUpdateRegionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.batch_update_regions(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.shopping.merchant_accounts_v1.types.BatchUpdateRegionsRequest, dict]]):
+                The request object. Request message for the ``BatchUpdateRegions`` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.shopping.merchant_accounts_v1.types.BatchUpdateRegionsResponse:
+                Response message for the BatchUpdateRegions method.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, regions.BatchUpdateRegionsRequest):
+            request = regions.BatchUpdateRegionsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_update_regions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def delete_region(
         self,
         request: Optional[Union[regions.DeleteRegionRequest, dict]] = None,
@@ -761,6 +934,85 @@ class RegionsServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def batch_delete_regions(
+        self,
+        request: Optional[Union[regions.BatchDeleteRegionsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes multiple regions by name from your Merchant
+        Center account. Executing this method requires admin
+        access.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.shopping import merchant_accounts_v1
+
+            async def sample_batch_delete_regions():
+                # Create a client
+                client = merchant_accounts_v1.RegionsServiceAsyncClient()
+
+                # Initialize request argument(s)
+                requests = merchant_accounts_v1.DeleteRegionRequest()
+                requests.name = "name_value"
+
+                request = merchant_accounts_v1.BatchDeleteRegionsRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                await client.batch_delete_regions(request=request)
+
+        Args:
+            request (Optional[Union[google.shopping.merchant_accounts_v1.types.BatchDeleteRegionsRequest, dict]]):
+                The request object. Request message for the ``BatchDeleteRegions`` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, regions.BatchDeleteRegionsRequest):
+            request = regions.BatchDeleteRegionsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_delete_regions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.

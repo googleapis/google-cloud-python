@@ -387,6 +387,36 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._stubs["create_region"]
 
     @property
+    def batch_create_regions(
+        self,
+    ) -> Callable[
+        [regions.BatchCreateRegionsRequest],
+        Awaitable[regions.BatchCreateRegionsResponse],
+    ]:
+        r"""Return a callable for the batch create regions method over gRPC.
+
+        Creates one or more regions in your Merchant Center
+        account. Executing this method requires admin access.
+
+        Returns:
+            Callable[[~.BatchCreateRegionsRequest],
+                    Awaitable[~.BatchCreateRegionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_create_regions" not in self._stubs:
+            self._stubs["batch_create_regions"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1.RegionsService/BatchCreateRegions",
+                request_serializer=regions.BatchCreateRegionsRequest.serialize,
+                response_deserializer=regions.BatchCreateRegionsResponse.deserialize,
+            )
+        return self._stubs["batch_create_regions"]
+
+    @property
     def update_region(
         self,
     ) -> Callable[[regions.UpdateRegionRequest], Awaitable[regions.Region]]:
@@ -414,6 +444,36 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
         return self._stubs["update_region"]
 
     @property
+    def batch_update_regions(
+        self,
+    ) -> Callable[
+        [regions.BatchUpdateRegionsRequest],
+        Awaitable[regions.BatchUpdateRegionsResponse],
+    ]:
+        r"""Return a callable for the batch update regions method over gRPC.
+
+        Updates one or more regions in your Merchant Center
+        account. Executing this method requires admin access.
+
+        Returns:
+            Callable[[~.BatchUpdateRegionsRequest],
+                    Awaitable[~.BatchUpdateRegionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_update_regions" not in self._stubs:
+            self._stubs["batch_update_regions"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1.RegionsService/BatchUpdateRegions",
+                request_serializer=regions.BatchUpdateRegionsRequest.serialize,
+                response_deserializer=regions.BatchUpdateRegionsResponse.deserialize,
+            )
+        return self._stubs["batch_update_regions"]
+
+    @property
     def delete_region(
         self,
     ) -> Callable[[regions.DeleteRegionRequest], Awaitable[empty_pb2.Empty]]:
@@ -439,6 +499,34 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_region"]
+
+    @property
+    def batch_delete_regions(
+        self,
+    ) -> Callable[[regions.BatchDeleteRegionsRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the batch delete regions method over gRPC.
+
+        Deletes multiple regions by name from your Merchant
+        Center account. Executing this method requires admin
+        access.
+
+        Returns:
+            Callable[[~.BatchDeleteRegionsRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_delete_regions" not in self._stubs:
+            self._stubs["batch_delete_regions"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1.RegionsService/BatchDeleteRegions",
+                request_serializer=regions.BatchDeleteRegionsRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["batch_delete_regions"]
 
     @property
     def list_regions(
@@ -479,13 +567,28 @@ class RegionsServiceGrpcAsyncIOTransport(RegionsServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_create_regions: self._wrap_method(
+                self.batch_create_regions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_region: self._wrap_method(
                 self.update_region,
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_update_regions: self._wrap_method(
+                self.batch_update_regions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_region: self._wrap_method(
                 self.delete_region,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_delete_regions: self._wrap_method(
+                self.batch_delete_regions,
                 default_timeout=None,
                 client_info=client_info,
             ),

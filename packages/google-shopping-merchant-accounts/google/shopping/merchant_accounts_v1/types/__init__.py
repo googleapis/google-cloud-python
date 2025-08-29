@@ -151,6 +151,11 @@ from .programs import (
     Program,
 )
 from .regions import (
+    BatchCreateRegionsRequest,
+    BatchCreateRegionsResponse,
+    BatchDeleteRegionsRequest,
+    BatchUpdateRegionsRequest,
+    BatchUpdateRegionsResponse,
     CreateRegionRequest,
     DeleteRegionRequest,
     GetRegionRequest,
@@ -311,6 +316,11 @@ __all__ = (
     "ListProgramsRequest",
     "ListProgramsResponse",
     "Program",
+    "BatchCreateRegionsRequest",
+    "BatchCreateRegionsResponse",
+    "BatchDeleteRegionsRequest",
+    "BatchUpdateRegionsRequest",
+    "BatchUpdateRegionsResponse",
     "CreateRegionRequest",
     "DeleteRegionRequest",
     "GetRegionRequest",

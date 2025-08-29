@@ -41,6 +41,9 @@ class merchant_accountsCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'accept_terms_of_service': ('name', 'account', 'region_code', ),
         'approve_account_service': ('name', ),
+        'batch_create_regions': ('parent', 'requests', ),
+        'batch_delete_regions': ('parent', 'requests', ),
+        'batch_update_regions': ('parent', 'requests', ),
         'claim_homepage': ('name', 'overwrite', ),
         'create_and_configure_account': ('account', 'service', 'user', ),
         'create_checkout_settings': ('parent', 'checkout_settings', ),
