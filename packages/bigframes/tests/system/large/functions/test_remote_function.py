@@ -1937,6 +1937,114 @@ SELECT "pandas na" AS text, NULL AS num
         )
 
 
+@pytest.mark.flaky(retries=2, delay=120)
+def test_df_apply_axis_1_args(session, scalars_dfs):
+    columns = ["int64_col", "int64_too"]
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    try:
+
+        def the_sum(s1, s2, x):
+            return s1 + s2 + x
+
+        the_sum_mf = session.remote_function(
+            input_types=[int, int, int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+        )(the_sum)
+
+        args1 = (1,)
+
+        # Fails to apply on dataframe with incompatible number of columns and args.
+        with pytest.raises(
+            ValueError,
+            match="^Parameter count mismatch:.* expected 3 parameters but received 4 values \\(2 DataFrame columns and 2 args\\)",
+        ):
+            scalars_df[columns].apply(
+                the_sum_mf,
+                axis=1,
+                args=(
+                    1,
+                    1,
+                ),
+            )
+
+        # Fails to apply on dataframe with incompatible column datatypes.
+        with pytest.raises(
+            ValueError,
+            match="^Data type mismatch for DataFrame columns: Expected .* Received .*",
+        ):
+            scalars_df[columns].assign(
+                int64_col=lambda df: df["int64_col"].astype("Float64")
+            ).apply(the_sum_mf, axis=1, args=args1)
+
+        # Fails to apply on dataframe with incompatible args datatypes.
+        with pytest.raises(
+            ValueError,
+            match="^Data type mismatch for 'args' parameter: Expected .* Received .*",
+        ):
+            scalars_df[columns].apply(the_sum_mf, axis=1, args=("hello world",))
+
+        bf_result = (
+            scalars_df[columns]
+            .dropna()
+            .apply(the_sum_mf, axis=1, args=args1)
+            .to_pandas()
+        )
+        pd_result = scalars_pandas_df[columns].dropna().apply(sum, axis=1, args=args1)
+
+        pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+    finally:
+        # clean up the gcp assets created for the remote function.
+        cleanup_function_assets(the_sum_mf, session.bqclient, ignore_failures=False)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_df_apply_axis_1_series_args(session, scalars_dfs):
+    columns = ["int64_col", "float64_col"]
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    try:
+
+        @session.remote_function(
+            input_types=[bigframes.series.Series, float, str, bool],
+            output_type=list[str],
+            reuse=False,
+            cloud_function_service_account="default",
+        )
+        def foo_list(x, y0: float, y1, y2) -> list[str]:
+            return (
+                [str(x["int64_col"]), str(y0), str(y1), str(y2)]
+                if y2
+                else [str(x["float64_col"])]
+            )
+
+        args1 = (12.34, "hello world", True)
+        bf_result = scalars_df[columns].apply(foo_list, axis=1, args=args1).to_pandas()
+        pd_result = scalars_pandas_df[columns].apply(foo_list, axis=1, args=args1)
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+        args2 = (43.21, "xxx3yyy", False)
+        foo_list_ref = session.read_gbq_function(
+            foo_list.bigframes_bigquery_function, is_row_processor=True
+        )
+        bf_result = (
+            scalars_df[columns].apply(foo_list_ref, axis=1, args=args2).to_pandas()
+        )
+        pd_result = scalars_pandas_df[columns].apply(foo_list, axis=1, args=args2)
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+    finally:
+        # Clean up the gcp assets created for the remote function.
+        cleanup_function_assets(foo_list, session.bqclient, ignore_failures=False)
+
+
 @pytest.mark.parametrize(
     ("memory_mib_args", "expected_memory"),
     [
@@ -2200,19 +2308,19 @@ def test_df_apply_axis_1_multiple_params(session):
         # Fails to apply on dataframe with incompatible number of columns
         with pytest.raises(
             ValueError,
-            match="^BigFrames BigQuery function takes 3 arguments but DataFrame has 2 columns\\.$",
+            match="^Parameter count mismatch:.* expected 3 parameters but received 2 DataFrame columns.",
         ):
             bf_df[["Id", "Age"]].apply(foo, axis=1)
         with pytest.raises(
             ValueError,
-            match="^BigFrames BigQuery function takes 3 arguments but DataFrame has 4 columns\\.$",
+            match="^Parameter count mismatch:.* expected 3 parameters but received 4 DataFrame columns.",
         ):
             bf_df.assign(Country="lalaland").apply(foo, axis=1)
 
         # Fails to apply on dataframe with incompatible column datatypes
         with pytest.raises(
             ValueError,
-            match="^BigFrames BigQuery function takes arguments of types .* but DataFrame dtypes are .*",
+            match="^Data type mismatch for DataFrame columns: Expected .* Received .*",
         ):
             bf_df.assign(Age=bf_df["Age"].astype("Int64")).apply(foo, axis=1)
 
@@ -2284,19 +2392,19 @@ def test_df_apply_axis_1_multiple_params_array_output(session):
         # Fails to apply on dataframe with incompatible number of columns
         with pytest.raises(
             ValueError,
-            match="^BigFrames BigQuery function takes 3 arguments but DataFrame has 2 columns\\.$",
+            match="^Parameter count mismatch:.* expected 3 parameters but received 2 DataFrame columns.",
         ):
             bf_df[["Id", "Age"]].apply(foo, axis=1)
         with pytest.raises(
             ValueError,
-            match="^BigFrames BigQuery function takes 3 arguments but DataFrame has 4 columns\\.$",
+            match="^Parameter count mismatch:.* expected 3 parameters but received 4 DataFrame columns.",
         ):
             bf_df.assign(Country="lalaland").apply(foo, axis=1)
 
         # Fails to apply on dataframe with incompatible column datatypes
         with pytest.raises(
             ValueError,
-            match="^BigFrames BigQuery function takes arguments of types .* but DataFrame dtypes are .*",
+            match="^Data type mismatch for DataFrame columns: Expected .* Received .*",
         ):
             bf_df.assign(Age=bf_df["Age"].astype("Int64")).apply(foo, axis=1)
 
@@ -2358,19 +2466,19 @@ def test_df_apply_axis_1_single_param_non_series(session):
         # Fails to apply on dataframe with incompatible number of columns
         with pytest.raises(
             ValueError,
-            match="^BigFrames BigQuery function takes 1 arguments but DataFrame has 0 columns\\.$",
+            match="^Parameter count mismatch:.* expected 1 parameters but received 0 DataFrame.*",
         ):
             bf_df[[]].apply(foo, axis=1)
         with pytest.raises(
             ValueError,
-            match="^BigFrames BigQuery function takes 1 arguments but DataFrame has 2 columns\\.$",
+            match="^Parameter count mismatch:.* expected 1 parameters but received 2 DataFrame.*",
         ):
             bf_df.assign(Country="lalaland").apply(foo, axis=1)
 
         # Fails to apply on dataframe with incompatible column datatypes
         with pytest.raises(
             ValueError,
-            match="^BigFrames BigQuery function takes arguments of types .* but DataFrame dtypes are .*",
+            match="^Data type mismatch for DataFrame columns: Expected .* Received .*",
         ):
             bf_df.assign(Id=bf_df["Id"].astype("Float64")).apply(foo, axis=1)
 

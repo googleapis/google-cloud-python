@@ -1154,20 +1154,6 @@ def test_df_apply_scalar_func(session, scalars_dfs):
     )
 
 
-def test_read_gbq_function_multiple_inputs_not_a_row_processor(session):
-    with pytest.raises(ValueError) as context:
-        # The remote function has two args, which cannot be row processed. Throw
-        # a ValueError for it.
-        session.read_gbq_function(
-            function_name="bqutil.fn.cw_regexp_instr_2",
-            is_row_processor=True,
-        )
-    assert str(context.value) == (
-        "A multi-input function cannot be a row processor. A row processor function "
-        f"takes in a single input representing the row. {constants.FEEDBACK_LINK}"
-    )
-
-
 @pytest.mark.flaky(retries=2, delay=120)
 def test_df_apply_axis_1(session, scalars_dfs, dataset_id_permanent):
     columns = [

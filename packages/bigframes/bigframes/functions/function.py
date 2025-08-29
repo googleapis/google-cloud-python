@@ -178,13 +178,6 @@ def read_gbq_function(
             ValueError, f"Unknown function '{routine_ref}'."
         )
 
-    if is_row_processor and len(routine.arguments) > 1:
-        raise bf_formatting.create_exception_with_feedback_link(
-            ValueError,
-            "A multi-input function cannot be a row processor. A row processor function "
-            "takes in a single input representing the row.",
-        )
-
     if is_row_processor:
         return _try_import_row_routine(routine, session)
     else:
