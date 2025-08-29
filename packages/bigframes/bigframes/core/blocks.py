@@ -2129,9 +2129,17 @@ class Block:
         import bigframes.core.block_transforms as block_tf
         import bigframes.dataframe as df
 
-        unique_value_block = block_tf.drop_duplicates(
-            self.select_columns(columns), columns
-        )
+        if self.explicitly_ordered:
+            unique_value_block = block_tf.drop_duplicates(
+                self.select_columns(columns), columns
+            )
+        else:
+            unique_value_block, _ = self.aggregate(by_column_ids=columns, dropna=False)
+            col_labels = self._get_labels_for_columns(columns)
+            unique_value_block = unique_value_block.reset_index(
+                drop=False
+            ).with_column_labels(col_labels)
+
         pd_values = (
             df.DataFrame(unique_value_block).head(max_unique_values + 1).to_pandas()
         )

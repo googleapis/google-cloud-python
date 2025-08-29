@@ -265,3 +265,27 @@ def test__resample_with_index(unordered_session, rule, origin, data):
     pd.testing.assert_frame_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
+
+
+@pytest.mark.parametrize(
+    ("values", "index", "columns"),
+    [
+        ("int64_col", "int64_too", ["string_col"]),
+        (["int64_col"], "int64_too", ["string_col"]),
+        (["int64_col", "float64_col"], "int64_too", ["string_col"]),
+    ],
+)
+def test_unordered_df_pivot(
+    scalars_df_unordered, scalars_pandas_df_index, values, index, columns
+):
+    bf_result = scalars_df_unordered.pivot(
+        values=values, index=index, columns=columns
+    ).to_pandas()
+    pd_result = scalars_pandas_df_index.pivot(
+        values=values, index=index, columns=columns
+    )
+
+    # Pandas produces NaN, where bq dataframes produces pd.NA
+    bf_result = bf_result.fillna(float("nan"))
+    pd_result = pd_result.fillna(float("nan"))
+    pd.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)

@@ -586,6 +586,18 @@ def scalars_df_null_index(
 
 
 @pytest.fixture(scope="session")
+def scalars_df_unordered(
+    scalars_table_id: str, unordered_session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """DataFrame pointing at test data."""
+    df = unordered_session.read_gbq(
+        scalars_table_id, index_col=bigframes.enums.DefaultIndexKind.NULL
+    )
+    assert not df._block.explicitly_ordered
+    return df
+
+
+@pytest.fixture(scope="session")
 def scalars_df_2_default_index(
     scalars_df_2_index: bigframes.dataframe.DataFrame,
 ) -> bigframes.dataframe.DataFrame:

@@ -3347,8 +3347,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
         return DataFrame(pivot_block)
 
-    @validations.requires_index
-    @validations.requires_ordering()
     def pivot(
         self,
         *,
@@ -3362,8 +3360,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._pivot(columns=columns, index=index, values=values)
 
-    @validations.requires_index
-    @validations.requires_ordering()
     def pivot_table(
         self,
         values: typing.Optional[
