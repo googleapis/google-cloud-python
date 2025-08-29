@@ -45,6 +45,8 @@ from .content import (
     Tool,
     ToolConfig,
     Type,
+    UrlContext,
+    VideoMetadata,
 )
 from .discuss_service import (
     CountMessageTokensRequest,
@@ -55,7 +57,7 @@ from .discuss_service import (
     Message,
     MessagePrompt,
 )
-from .file import File, VideoMetadata
+from .file import File, VideoFileMetadata
 from .file_service import (
     CreateFileRequest,
     CreateFileResponse,
@@ -100,6 +102,7 @@ from .generative_service import (
     GroundingMetadata,
     GroundingSupport,
     LogprobsResult,
+    MultiSpeakerVoiceConfig,
     PrebuiltVoiceConfig,
     RealtimeInputConfig,
     RetrievalMetadata,
@@ -108,9 +111,12 @@ from .generative_service import (
     SemanticRetrieverConfig,
     SessionResumptionConfig,
     SessionResumptionUpdate,
+    SpeakerVoiceConfig,
     SpeechConfig,
     TaskType,
     ThinkingConfig,
+    UrlContextMetadata,
+    UrlMetadata,
     UsageMetadata,
     VoiceConfig,
 )
@@ -248,6 +254,8 @@ __all__ = (
     "Schema",
     "Tool",
     "ToolConfig",
+    "UrlContext",
+    "VideoMetadata",
     "Modality",
     "Type",
     "CountMessageTokensRequest",
@@ -258,7 +266,7 @@ __all__ = (
     "Message",
     "MessagePrompt",
     "File",
-    "VideoMetadata",
+    "VideoFileMetadata",
     "CreateFileRequest",
     "CreateFileResponse",
     "DeleteFileRequest",
@@ -300,6 +308,7 @@ __all__ = (
     "GroundingMetadata",
     "GroundingSupport",
     "LogprobsResult",
+    "MultiSpeakerVoiceConfig",
     "PrebuiltVoiceConfig",
     "RealtimeInputConfig",
     "RetrievalMetadata",
@@ -308,8 +317,11 @@ __all__ = (
     "SemanticRetrieverConfig",
     "SessionResumptionConfig",
     "SessionResumptionUpdate",
+    "SpeakerVoiceConfig",
     "SpeechConfig",
     "ThinkingConfig",
+    "UrlContextMetadata",
+    "UrlMetadata",
     "UsageMetadata",
     "VoiceConfig",
     "TaskType",

@@ -569,6 +569,11 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -592,6 +597,23 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
     @property
     def kind(self) -> str:
         return "grpc_asyncio"
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
+        r"""Return a callable for the delete_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_operation" not in self._stubs:
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/DeleteOperation",
+                request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["delete_operation"]
 
     @property
     def cancel_operation(

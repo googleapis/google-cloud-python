@@ -31,6 +31,8 @@ __protobuf__ = proto.module(
         "GenerationConfig",
         "GenerateContentResponse",
         "Candidate",
+        "UrlContextMetadata",
+        "UrlMetadata",
         "LogprobsResult",
         "RetrievalMetadata",
         "GroundingMetadata",
@@ -389,6 +391,8 @@ class GenerateContentResponse(proto.Message):
         model_version (str):
             Output only. The model version used to
             generate the response.
+        response_id (str):
+            Output only. response_id is used to identify each response.
     """
 
     class PromptFeedback(proto.Message):
@@ -547,6 +551,10 @@ class GenerateContentResponse(proto.Message):
         proto.STRING,
         number=4,
     )
+    response_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class Candidate(proto.Message):
@@ -592,6 +600,9 @@ class Candidate(proto.Message):
         logprobs_result (google.ai.generativelanguage_v1.types.LogprobsResult):
             Output only. Log-likelihood scores for the
             response tokens and top tokens
+        url_context_metadata (google.ai.generativelanguage_v1.types.UrlContextMetadata):
+            Output only. Metadata related to url context
+            retrieval tool.
     """
 
     class FinishReason(proto.Enum):
@@ -633,6 +644,9 @@ class Candidate(proto.Message):
             IMAGE_SAFETY (11):
                 Token generation stopped because generated
                 images contain safety violations.
+            UNEXPECTED_TOOL_CALL (12):
+                Model generated a tool call but no tools were
+                enabled in the request.
         """
         FINISH_REASON_UNSPECIFIED = 0
         STOP = 1
@@ -646,6 +660,7 @@ class Candidate(proto.Message):
         SPII = 9
         MALFORMED_FUNCTION_CALL = 10
         IMAGE_SAFETY = 11
+        UNEXPECTED_TOOL_CALL = 12
 
     index: int = proto.Field(
         proto.INT32,
@@ -689,6 +704,62 @@ class Candidate(proto.Message):
         proto.MESSAGE,
         number=11,
         message="LogprobsResult",
+    )
+    url_context_metadata: "UrlContextMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="UrlContextMetadata",
+    )
+
+
+class UrlContextMetadata(proto.Message):
+    r"""Metadata related to url context retrieval tool.
+
+    Attributes:
+        url_metadata (MutableSequence[google.ai.generativelanguage_v1.types.UrlMetadata]):
+            List of url context.
+    """
+
+    url_metadata: MutableSequence["UrlMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="UrlMetadata",
+    )
+
+
+class UrlMetadata(proto.Message):
+    r"""Context of the a single url retrieval.
+
+    Attributes:
+        retrieved_url (str):
+            Retrieved url by the tool.
+        url_retrieval_status (google.ai.generativelanguage_v1.types.UrlMetadata.UrlRetrievalStatus):
+            Status of the url retrieval.
+    """
+
+    class UrlRetrievalStatus(proto.Enum):
+        r"""Status of the url retrieval.
+
+        Values:
+            URL_RETRIEVAL_STATUS_UNSPECIFIED (0):
+                Default value. This value is unused.
+            URL_RETRIEVAL_STATUS_SUCCESS (1):
+                Url retrieval is successful.
+            URL_RETRIEVAL_STATUS_ERROR (2):
+                Url retrieval is failed due to error.
+        """
+        URL_RETRIEVAL_STATUS_UNSPECIFIED = 0
+        URL_RETRIEVAL_STATUS_SUCCESS = 1
+        URL_RETRIEVAL_STATUS_ERROR = 2
+
+    retrieved_url: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    url_retrieval_status: UrlRetrievalStatus = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=UrlRetrievalStatus,
     )
 
 

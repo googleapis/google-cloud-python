@@ -57,7 +57,7 @@ class CachedContent(proto.Message):
 
             This field is a member of `oneof`_ ``expiration``.
         name (str):
-            Optional. Identifier. The resource name referring to the
+            Output only. Identifier. The resource name referring to the
             cached content. Format: ``cachedContents/{id}``
 
             This field is a member of `oneof`_ ``_name``.

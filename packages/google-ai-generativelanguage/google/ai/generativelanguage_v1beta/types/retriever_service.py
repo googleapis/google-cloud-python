@@ -286,6 +286,8 @@ class RelevantChunk(proto.Message):
             ``Chunk`` relevance to the query.
         chunk (google.ai.generativelanguage_v1beta.types.Chunk):
             ``Chunk`` associated with the query.
+        document (google.ai.generativelanguage_v1beta.types.Document):
+            ``Document`` associated with the chunk.
     """
 
     chunk_relevance_score: float = proto.Field(
@@ -296,6 +298,11 @@ class RelevantChunk(proto.Message):
         proto.MESSAGE,
         number=2,
         message=retriever.Chunk,
+    )
+    document: retriever.Document = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=retriever.Document,
     )
 
 

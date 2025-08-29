@@ -26,7 +26,7 @@ __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1beta",
     manifest={
         "File",
-        "VideoMetadata",
+        "VideoFileMetadata",
     },
 )
 
@@ -39,7 +39,7 @@ class File(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        video_metadata (google.ai.generativelanguage_v1beta.types.VideoMetadata):
+        video_metadata (google.ai.generativelanguage_v1beta.types.VideoFileMetadata):
             Output only. Metadata for a video.
 
             This field is a member of `oneof`_ ``metadata``.
@@ -118,11 +118,11 @@ class File(proto.Message):
         UPLOADED = 1
         GENERATED = 2
 
-    video_metadata: "VideoMetadata" = proto.Field(
+    video_metadata: "VideoFileMetadata" = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="metadata",
-        message="VideoMetadata",
+        message="VideoFileMetadata",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -184,7 +184,7 @@ class File(proto.Message):
     )
 
 
-class VideoMetadata(proto.Message):
+class VideoFileMetadata(proto.Message):
     r"""Metadata for a video ``File``.
 
     Attributes:

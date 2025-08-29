@@ -107,6 +107,8 @@ from google.ai.generativelanguage_v1beta.types.content import (
     Tool,
     ToolConfig,
     Type,
+    UrlContext,
+    VideoMetadata,
 )
 from google.ai.generativelanguage_v1beta.types.discuss_service import (
     CountMessageTokensRequest,
@@ -117,7 +119,7 @@ from google.ai.generativelanguage_v1beta.types.discuss_service import (
     Message,
     MessagePrompt,
 )
-from google.ai.generativelanguage_v1beta.types.file import File, VideoMetadata
+from google.ai.generativelanguage_v1beta.types.file import File, VideoFileMetadata
 from google.ai.generativelanguage_v1beta.types.file_service import (
     CreateFileRequest,
     CreateFileResponse,
@@ -162,6 +164,7 @@ from google.ai.generativelanguage_v1beta.types.generative_service import (
     GroundingMetadata,
     GroundingSupport,
     LogprobsResult,
+    MultiSpeakerVoiceConfig,
     PrebuiltVoiceConfig,
     RealtimeInputConfig,
     RetrievalMetadata,
@@ -170,9 +173,12 @@ from google.ai.generativelanguage_v1beta.types.generative_service import (
     SemanticRetrieverConfig,
     SessionResumptionConfig,
     SessionResumptionUpdate,
+    SpeakerVoiceConfig,
     SpeechConfig,
     TaskType,
     ThinkingConfig,
+    UrlContextMetadata,
+    UrlMetadata,
     UsageMetadata,
     VoiceConfig,
 )
@@ -328,6 +334,8 @@ __all__ = (
     "Schema",
     "Tool",
     "ToolConfig",
+    "UrlContext",
+    "VideoMetadata",
     "Modality",
     "Type",
     "CountMessageTokensRequest",
@@ -338,7 +346,7 @@ __all__ = (
     "Message",
     "MessagePrompt",
     "File",
-    "VideoMetadata",
+    "VideoFileMetadata",
     "CreateFileRequest",
     "CreateFileResponse",
     "DeleteFileRequest",
@@ -380,6 +388,7 @@ __all__ = (
     "GroundingMetadata",
     "GroundingSupport",
     "LogprobsResult",
+    "MultiSpeakerVoiceConfig",
     "PrebuiltVoiceConfig",
     "RealtimeInputConfig",
     "RetrievalMetadata",
@@ -388,8 +397,11 @@ __all__ = (
     "SemanticRetrieverConfig",
     "SessionResumptionConfig",
     "SessionResumptionUpdate",
+    "SpeakerVoiceConfig",
     "SpeechConfig",
     "ThinkingConfig",
+    "UrlContextMetadata",
+    "UrlMetadata",
     "UsageMetadata",
     "VoiceConfig",
     "TaskType",

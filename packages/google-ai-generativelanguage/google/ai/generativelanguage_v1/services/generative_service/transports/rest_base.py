@@ -405,6 +405,10 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                     "uri": "/v1/{name=tunedModels/*/operations/*}:cancel",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=batches/*}:cancel",
+                },
             ]
             return http_options
 
@@ -418,6 +422,35 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
         def _get_request_body_json(transcoded_request):
             body = json.dumps(transcoded_request["body"])
             return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            return query_params
+
+    class _BaseDeleteOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=operations/**}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=batches/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
@@ -441,7 +474,15 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1/{name=batches/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1/{name=models/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=corpora/*/operations/*}",
                 },
             ]
             return http_options
@@ -471,6 +512,10 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=tunedModels/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=batches}",
                 },
                 {
                     "method": "get",

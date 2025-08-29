@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 from .citation import CitationMetadata, CitationSource
-from .content import Blob, Content, Modality, ModalityTokenCount, Part
+from .content import Blob, Content, Modality, ModalityTokenCount, Part, VideoMetadata
 from .generative_service import (
     BatchEmbedContentsRequest,
     BatchEmbedContentsResponse,
@@ -35,6 +35,8 @@ from .generative_service import (
     SearchEntryPoint,
     Segment,
     TaskType,
+    UrlContextMetadata,
+    UrlMetadata,
 )
 from .model import Model
 from .model_service import GetModelRequest, ListModelsRequest, ListModelsResponse
@@ -47,6 +49,7 @@ __all__ = (
     "Content",
     "ModalityTokenCount",
     "Part",
+    "VideoMetadata",
     "Modality",
     "BatchEmbedContentsRequest",
     "BatchEmbedContentsResponse",
@@ -66,6 +69,8 @@ __all__ = (
     "RetrievalMetadata",
     "SearchEntryPoint",
     "Segment",
+    "UrlContextMetadata",
+    "UrlMetadata",
     "TaskType",
     "Model",
     "GetModelRequest",
