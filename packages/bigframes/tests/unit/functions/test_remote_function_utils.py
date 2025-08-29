@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import inspect
+import sys
 from unittest.mock import patch
 
 import bigframes_vendored.constants as constants
@@ -225,6 +226,26 @@ def test_get_updated_package_requirements_with_existing_cloudpickle():
     )
 
     assert result == expected
+
+
+# Dynamically generate expected python versions for the test
+_major = sys.version_info.major
+_minor = sys.version_info.minor
+_compat_version = f"python{_major}{_minor}"
+_standard_version = f"python-{_major}.{_minor}"
+
+
+@pytest.mark.parametrize(
+    "is_compat, expected_version",
+    [
+        (True, _compat_version),
+        (False, _standard_version),
+    ],
+)
+def test_get_python_version(is_compat, expected_version):
+    """Tests the python version for both standard and compat modes."""
+    result = _utils.get_python_version(is_compat=is_compat)
+    assert result == expected_version
 
 
 def test_package_existed_helper():
