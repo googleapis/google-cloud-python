@@ -30,13 +30,17 @@ from .services.data_chat_service import (
     DataChatServiceAsyncClient,
     DataChatServiceClient,
 )
-from .types.context import AnalysisOptions, ChartOptions, Context, ConversationOptions
+from .types.context import (
+    AnalysisOptions,
+    ChartOptions,
+    Context,
+    ConversationOptions,
+    ExampleQuery,
+)
 from .types.context_retrieval_service import (
     DirectLookup,
     RetrieveBigQueryRecentRelevantTablesRequest,
     RetrieveBigQueryRecentRelevantTablesResponse,
-    RetrieveBigQueryTableContextRequest,
-    RetrieveBigQueryTableContextResponse,
     RetrieveBigQueryTableContextsFromRecentTablesRequest,
     RetrieveBigQueryTableContextsFromRecentTablesResponse,
     RetrieveBigQueryTableContextsRequest,
@@ -99,6 +103,8 @@ from .types.data_chat_service import (
 from .types.datasource import (
     BigQueryTableReference,
     BigQueryTableReferences,
+    DataFilter,
+    DataFilterType,
     Datasource,
     DatasourceReferences,
     Field,
@@ -140,6 +146,8 @@ __all__ = (
     "DataAgentServiceClient",
     "DataAnalyticsAgent",
     "DataChatServiceClient",
+    "DataFilter",
+    "DataFilterType",
     "DataMessage",
     "DataQuery",
     "DataResult",
@@ -148,6 +156,7 @@ __all__ = (
     "DeleteDataAgentRequest",
     "DirectLookup",
     "ErrorMessage",
+    "ExampleQuery",
     "Field",
     "GetConversationRequest",
     "GetDataAgentRequest",
@@ -168,8 +177,6 @@ __all__ = (
     "PrivateLookerInstanceInfo",
     "RetrieveBigQueryRecentRelevantTablesRequest",
     "RetrieveBigQueryRecentRelevantTablesResponse",
-    "RetrieveBigQueryTableContextRequest",
-    "RetrieveBigQueryTableContextResponse",
     "RetrieveBigQueryTableContextsFromRecentTablesRequest",
     "RetrieveBigQueryTableContextsFromRecentTablesResponse",
     "RetrieveBigQueryTableContextsRequest",

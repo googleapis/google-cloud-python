@@ -18,10 +18,6 @@ from google.cloud.geminidataanalytics_v1beta import gapic_version as package_ver
 __version__ = package_version.__version__
 
 
-from .services.context_retrieval_service import (
-    ContextRetrievalServiceAsyncClient,
-    ContextRetrievalServiceClient,
-)
 from .services.data_agent_service import (
     DataAgentServiceAsyncClient,
     DataAgentServiceClient,
@@ -30,22 +26,12 @@ from .services.data_chat_service import (
     DataChatServiceAsyncClient,
     DataChatServiceClient,
 )
-from .types.context import AnalysisOptions, ChartOptions, Context, ConversationOptions
-from .types.context_retrieval_service import (
-    DirectLookup,
-    RetrieveBigQueryRecentRelevantTablesRequest,
-    RetrieveBigQueryRecentRelevantTablesResponse,
-    RetrieveBigQueryTableContextRequest,
-    RetrieveBigQueryTableContextResponse,
-    RetrieveBigQueryTableContextsFromRecentTablesRequest,
-    RetrieveBigQueryTableContextsFromRecentTablesResponse,
-    RetrieveBigQueryTableContextsRequest,
-    RetrieveBigQueryTableContextsResponse,
-    RetrieveBigQueryTableSuggestedDescriptionsRequest,
-    RetrieveBigQueryTableSuggestedDescriptionsResponse,
-    RetrieveBigQueryTableSuggestedExamplesRequest,
-    RetrieveBigQueryTableSuggestedExamplesResponse,
-    TableCandidate,
+from .types.context import (
+    AnalysisOptions,
+    ChartOptions,
+    Context,
+    ConversationOptions,
+    ExampleQuery,
 )
 from .types.conversation import (
     Conversation,
@@ -99,6 +85,8 @@ from .types.data_chat_service import (
 from .types.datasource import (
     BigQueryTableReference,
     BigQueryTableReferences,
+    DataFilter,
+    DataFilterType,
     Datasource,
     DatasourceReferences,
     Field,
@@ -111,7 +99,6 @@ from .types.datasource import (
 )
 
 __all__ = (
-    "ContextRetrievalServiceAsyncClient",
     "DataAgentServiceAsyncClient",
     "DataChatServiceAsyncClient",
     "AnalysisEvent",
@@ -128,7 +115,6 @@ __all__ = (
     "ChartResult",
     "ChatRequest",
     "Context",
-    "ContextRetrievalServiceClient",
     "Conversation",
     "ConversationOptions",
     "ConversationReference",
@@ -140,14 +126,16 @@ __all__ = (
     "DataAgentServiceClient",
     "DataAnalyticsAgent",
     "DataChatServiceClient",
+    "DataFilter",
+    "DataFilterType",
     "DataMessage",
     "DataQuery",
     "DataResult",
     "Datasource",
     "DatasourceReferences",
     "DeleteDataAgentRequest",
-    "DirectLookup",
     "ErrorMessage",
+    "ExampleQuery",
     "Field",
     "GetConversationRequest",
     "GetDataAgentRequest",
@@ -166,18 +154,6 @@ __all__ = (
     "OAuthCredentials",
     "OperationMetadata",
     "PrivateLookerInstanceInfo",
-    "RetrieveBigQueryRecentRelevantTablesRequest",
-    "RetrieveBigQueryRecentRelevantTablesResponse",
-    "RetrieveBigQueryTableContextRequest",
-    "RetrieveBigQueryTableContextResponse",
-    "RetrieveBigQueryTableContextsFromRecentTablesRequest",
-    "RetrieveBigQueryTableContextsFromRecentTablesResponse",
-    "RetrieveBigQueryTableContextsRequest",
-    "RetrieveBigQueryTableContextsResponse",
-    "RetrieveBigQueryTableSuggestedDescriptionsRequest",
-    "RetrieveBigQueryTableSuggestedDescriptionsResponse",
-    "RetrieveBigQueryTableSuggestedExamplesRequest",
-    "RetrieveBigQueryTableSuggestedExamplesResponse",
     "Schema",
     "SchemaMessage",
     "SchemaQuery",
@@ -186,7 +162,6 @@ __all__ = (
     "StudioDatasourceReference",
     "StudioDatasourceReferences",
     "SystemMessage",
-    "TableCandidate",
     "TextMessage",
     "UpdateDataAgentRequest",
     "UserMessage",

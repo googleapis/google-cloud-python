@@ -175,10 +175,14 @@ class ListAccessibleDataAgentsRequest(proto.Message):
             CREATOR_ONLY (2):
                 Only agents created by the user calling the
                 API will be returned.
+            NOT_CREATOR_ONLY (3):
+                Only agents not created by the user calling
+                the API will be returned.
         """
         CREATOR_FILTER_UNSPECIFIED = 0
         NONE = 1
         CREATOR_ONLY = 2
+        NOT_CREATOR_ONLY = 3
 
     parent: str = proto.Field(
         proto.STRING,
@@ -266,7 +270,8 @@ class CreateDataAgentRequest(proto.Message):
         data_agent_id (str):
             Optional. Id of the requesting object. Must be unique within
             the parent. The allowed format is:
-            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
+            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``. If not provided, the
+            server will auto-generate a value for the id.
         data_agent (google.cloud.geminidataanalytics_v1beta.types.DataAgent):
             Required. The resource being created.
         request_id (str):
