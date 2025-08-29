@@ -39,18 +39,42 @@ def gapic_generator_python():
 
     _maybe(
         http_archive,
-        name = "pandoc_linux",
+        name = "pandoc_linux_arm_64",
         build_file_content = _PANDOC_BUILD_FILE,
-        strip_prefix = "pandoc-2.2.1",
-        url = "https://github.com/jgm/pandoc/releases/download/2.2.1/pandoc-2.2.1-linux.tar.gz",
+        strip_prefix = "pandoc-3.7.0.2",
+        url = "https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-linux-arm64.tar.gz",
     )
 
     _maybe(
         http_archive,
-        name = "pandoc_macOS",
+        name = "pandoc_linux_x86_64",
         build_file_content = _PANDOC_BUILD_FILE,
-        strip_prefix = "pandoc-2.2.1",
-        url = "https://github.com/jgm/pandoc/releases/download/2.2.1/pandoc-2.2.1-macOS.zip",
+        strip_prefix = "pandoc-3.7.0.2",
+        url = "https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-linux-amd64.tar.gz",
+    )
+
+    _maybe(
+        http_archive,
+        name = "pandoc_macOS_arm_64",
+        build_file_content = _PANDOC_BUILD_FILE,
+        strip_prefix = "pandoc-3.7.0.2",
+        url = "https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-arm64-macOS.zip",
+    )
+
+    _maybe(
+        http_archive,
+        name = "pandoc_macOS_x86_64",
+        build_file_content = _PANDOC_BUILD_FILE,
+        strip_prefix = "pandoc-3.7.0.2",
+        url = "https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-x86_64-macOS.zip",
+    )
+
+    _maybe(
+        http_archive,
+        name = "pandoc_windows_x86_64",
+        build_file_content = _PANDOC_BUILD_FILE,
+        strip_prefix = "pandoc-3.7.0.2",
+        url = "https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-windows-x86_64.zip",
     )
 
     _rules_gapic_version = "0.5.4"
@@ -70,8 +94,11 @@ def gapic_generator_python():
 
 def gapic_generator_register_toolchains():
     native.register_toolchains(
-        "@gapic_generator_python//:pandoc_toolchain_linux",
-        "@gapic_generator_python//:pandoc_toolchain_macOS",
+        "@gapic_generator_python//:pandoc_toolchain_linux_arm_64",
+        "@gapic_generator_python//:pandoc_toolchain_linux_x86_64",
+        "@gapic_generator_python//:pandoc_toolchain_macOS_arm_64",
+        "@gapic_generator_python//:pandoc_toolchain_macOS_x86_64",
+        "@gapic_generator_python//:pandoc_toolchain_windows_x86_64",
     )
 
 def _maybe(repo_rule, name, strip_repo_prefix = "", **kwargs):

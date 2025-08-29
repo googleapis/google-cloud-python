@@ -10,9 +10,25 @@ toolchain_type(
 pandoc_toolchain(
     exec_compatible_with = [
         "@platforms//os:linux",
+        "@platforms//cpu:arm64",
+    ],
+    platform = "linux_arm_64",
+)
+
+pandoc_toolchain(
+    exec_compatible_with = [
+        "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
-    platform = "linux",
+    platform = "linux_x86_64",
+)
+
+pandoc_toolchain(
+    exec_compatible_with = [
+        "@platforms//os:osx",
+        "@platforms//cpu:arm64",
+    ],
+    platform = "macOS_arm_64",
 )
 
 pandoc_toolchain(
@@ -20,7 +36,15 @@ pandoc_toolchain(
         "@platforms//os:osx",
         "@platforms//cpu:x86_64",
     ],
-    platform = "macOS",
+    platform = "macOS_x86_64",
+)
+
+pandoc_toolchain(
+    exec_compatible_with = [
+        "@platforms//os:windows",
+        "@platforms//cpu:x86_64",
+    ],
+    platform = "windows_x86_64",
 )
 
 pandoc_binary(

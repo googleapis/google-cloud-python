@@ -719,7 +719,7 @@ class EventarcAsyncClient:
                 The fields to be updated; only fields explicitly
                 provided are updated. If no field mask is provided, all
                 provided fields in the request are updated. To update
-                all fields, provide a field mask of "*".
+                all fields, provide a field mask of "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1375,7 +1375,7 @@ class EventarcAsyncClient:
                 The fields to be updated; only fields explicitly
                 provided are updated. If no field mask is provided, all
                 provided fields in the request are updated. To update
-                all fields, provide a field mask of "*".
+                all fields, provide a field mask of "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2476,7 +2476,7 @@ class EventarcAsyncClient:
                 The fields to be updated; only fields explicitly
                 provided are updated. If no field mask is provided, all
                 provided fields in the request are updated. To update
-                all fields, provide a field mask of "*".
+                all fields, provide a field mask of "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

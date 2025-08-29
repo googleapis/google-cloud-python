@@ -976,16 +976,16 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         resources or policies) under a scope. This RPC supports custom
         constraints and the following 10 canned constraints:
 
-        -  storage.uniformBucketLevelAccess
-        -  iam.disableServiceAccountKeyCreation
-        -  iam.allowedPolicyMemberDomains
-        -  compute.vmExternalIpAccess
-        -  appengine.enforceServiceAccountActAsCheck
-        -  gcp.resourceLocations
-        -  compute.trustedImageProjects
-        -  compute.skipDefaultNetworkCreation
-        -  compute.requireOsLogin
-        -  compute.disableNestedVirtualization
+        - storage.uniformBucketLevelAccess
+        - iam.disableServiceAccountKeyCreation
+        - iam.allowedPolicyMemberDomains
+        - compute.vmExternalIpAccess
+        - appengine.enforceServiceAccountActAsCheck
+        - gcp.resourceLocations
+        - compute.trustedImageProjects
+        - compute.skipDefaultNetworkCreation
+        - compute.requireOsLogin
+        - compute.disableNestedVirtualization
 
         This RPC only returns either resources of types supported by
         `searchable asset

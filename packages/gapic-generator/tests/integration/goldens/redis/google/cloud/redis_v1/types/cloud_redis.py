@@ -126,10 +126,10 @@ class Instance(proto.Message):
             latest supported version will be used. Currently, the
             supported values are:
 
-            -  ``REDIS_3_2`` for Redis 3.2 compatibility
-            -  ``REDIS_4_0`` for Redis 4.0 compatibility (default)
-            -  ``REDIS_5_0`` for Redis 5.0 compatibility
-            -  ``REDIS_6_X`` for Redis 6.x compatibility
+            - ``REDIS_3_2`` for Redis 3.2 compatibility
+            - ``REDIS_4_0`` for Redis 4.0 compatibility (default)
+            - ``REDIS_5_0`` for Redis 5.0 compatibility
+            - ``REDIS_6_X`` for Redis 6.x compatibility
         reserved_ip_range (str):
             Optional. For DIRECT_PEERING mode, the CIDR range of
             internal addresses that are reserved for this instance.
@@ -175,20 +175,20 @@ class Instance(proto.Message):
 
             Redis version 3.2 and newer:
 
-            -  maxmemory-policy
-            -  notify-keyspace-events
+            - maxmemory-policy
+            - notify-keyspace-events
 
             Redis version 4.0 and newer:
 
-            -  activedefrag
-            -  lfu-decay-time
-            -  lfu-log-factor
-            -  maxmemory-gb
+            - activedefrag
+            - lfu-decay-time
+            - lfu-log-factor
+            - maxmemory-gb
 
             Redis version 5.0 and newer:
 
-            -  stream-node-max-bytes
-            -  stream-node-max-entries
+            - stream-node-max-bytes
+            - stream-node-max-entries
         tier (google.cloud.redis_v1.types.Instance.Tier):
             Required. The service tier of the instance.
         memory_size_gb (int):
@@ -945,12 +945,11 @@ class CreateInstanceRequest(proto.Message):
             Required. The logical name of the Redis instance in the
             customer project with the following restrictions:
 
-            -  Must contain only lowercase letters, numbers, and
-               hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-40 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the customer project / location
+            - Must contain only lowercase letters, numbers, and hyphens.
+            - Must start with a letter.
+            - Must be between 1-40 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the customer project / location
         instance (google.cloud.redis_v1.types.Instance):
             Required. A Redis [Instance] resource
     """
@@ -981,11 +980,11 @@ class UpdateInstanceRequest(proto.Message):
             paths field may only include these fields from
             [Instance][google.cloud.redis.v1.Instance]:
 
-            -  ``displayName``
-            -  ``labels``
-            -  ``memorySizeGb``
-            -  ``redisConfig``
-            -  ``replica_count``
+            - ``displayName``
+            - ``labels``
+            - ``memorySizeGb``
+            - ``redisConfig``
+            - ``replica_count``
         instance (google.cloud.redis_v1.types.Instance):
             Required. Update description. Only fields specified in
             update_mask are updated.

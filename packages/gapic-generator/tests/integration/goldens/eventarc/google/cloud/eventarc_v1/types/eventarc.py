@@ -207,7 +207,7 @@ class UpdateTriggerRequest(proto.Message):
             The fields to be updated; only fields explicitly provided
             are updated. If no field mask is provided, all provided
             fields in the request are updated. To update all fields,
-            provide a field mask of "*".
+            provide a field mask of "\*".
         allow_missing (bool):
             If set to true, and the trigger is not found, a new trigger
             will be created. In this situation, ``update_mask`` is
@@ -414,7 +414,7 @@ class UpdateChannelRequest(proto.Message):
             The fields to be updated; only fields explicitly provided
             are updated. If no field mask is provided, all provided
             fields in the request are updated. To update all fields,
-            provide a field mask of "*".
+            provide a field mask of "\*".
         validate_only (bool):
             Required. If set, validate the request and
             preview the review, but do not post it.
@@ -694,7 +694,7 @@ class UpdateGoogleChannelConfigRequest(proto.Message):
             The fields to be updated; only fields explicitly provided
             are updated. If no field mask is provided, all provided
             fields in the request are updated. To update all fields,
-            provide a field mask of "*".
+            provide a field mask of "\*".
     """
 
     google_channel_config: gce_google_channel_config.GoogleChannelConfig = proto.Field(
