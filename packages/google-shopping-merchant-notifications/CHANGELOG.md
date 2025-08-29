@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-notifications-v0.1.9...google-shopping-merchant-notifications-v1.0.0) (2025-08-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* set `google.shopping.merchant_notifications_v1` as the default import for `google.shopping.merchant_notifications`
+
+### Features
+
+* set `google.shopping.merchant_notifications_v1` as the default import for `google.shopping.merchant_notifications` ([3f53dc7](https://github.com/googleapis/google-cloud-python/commit/3f53dc75692e7afbc4a058bc414f053cf00da07a))
+* update release level to stable ([3f53dc7](https://github.com/googleapis/google-cloud-python/commit/3f53dc75692e7afbc4a058bc414f053cf00da07a))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-notifications-v0.1.8...google-shopping-merchant-notifications-v0.1.9) (2025-08-06)
 
 

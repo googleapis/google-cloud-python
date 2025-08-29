@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.7...google-shopping-merchant-products-v1.0.0) (2025-08-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* set `google.shopping.merchant_products_v1` as the default import for `google.shopping.merchant_products`
+
+### Features
+
+* set `google.shopping.merchant_products_v1` as the default import for `google.shopping.merchant_products` ([7730040](https://github.com/googleapis/google-cloud-python/commit/773004018ffc585c36910add9956da5103773c81))
+* update release level to stable ([7730040](https://github.com/googleapis/google-cloud-python/commit/773004018ffc585c36910add9956da5103773c81))
+
 ## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.6...google-shopping-merchant-products-v0.2.7) (2025-08-06)
 
 

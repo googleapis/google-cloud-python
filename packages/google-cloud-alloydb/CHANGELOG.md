@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.8...google-cloud-alloydb-v0.4.9) (2025-08-29)
+
+
+### Features
+
+* [google-cloud-alloydb] add data foundry service synthetic data generation API for v1 ([#14252](https://github.com/googleapis/google-cloud-python/issues/14252)) ([da7c91d](https://github.com/googleapis/google-cloud-python/commit/da7c91dea3f36d80240e9a9c2498bdc1524c433e))
+
 ## [0.4.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.7...google-cloud-alloydb-v0.4.8) (2025-06-19)
 
 

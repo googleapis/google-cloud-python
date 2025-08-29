@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-quota-v0.1.9...google-shopping-merchant-quota-v1.0.0) (2025-08-29)
+
+
+### Features
+
+* set `google.shopping.merchant_quota_v1` as the default import for `google.shopping.merchant_quota` ([952e747](https://github.com/googleapis/google-cloud-python/commit/952e747d03daba2d45a2f99801ffe11935bfef0f))
+* update release level to stable ([952e747](https://github.com/googleapis/google-cloud-python/commit/952e747d03daba2d45a2f99801ffe11935bfef0f))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-quota-v0.1.8...google-shopping-merchant-quota-v0.1.9) (2025-08-06)
 
 

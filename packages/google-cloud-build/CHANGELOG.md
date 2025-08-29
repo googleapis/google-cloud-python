@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.31.3...google-cloud-build-v3.32.0) (2025-08-29)
+
+
+### Features
+
+* Add option to enable nested virtualization if available ([47981a8](https://github.com/googleapis/google-cloud-python/commit/47981a80a477c714e489410d4e77979ec1404b27))
+
+
+### Documentation
+
+* Update comments for `machine_type` and `disk_size_gb` ([47981a8](https://github.com/googleapis/google-cloud-python/commit/47981a80a477c714e489410d4e77979ec1404b27))
+
 ## [3.31.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.31.2...google-cloud-build-v3.31.3) (2025-07-26)
 
 

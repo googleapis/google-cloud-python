@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.18...google-ai-generativelanguage-v0.7.0) (2025-08-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* add support for video_metadata
+
+### Features
+
+* add a flag whether the model supports thinking ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add a flag whether the model supports thinking ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add AudioTranscriptionConfig ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add MultiSpeakerVoiceConfig to speech config ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add support for function response scheduling in the conversation ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add support for thought_signature ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add support for UrlContextMetadata ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add support for video_metadata ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add time_range_filter to GoogleSearch tool type ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add UNEXPECTED_TOOL_CALL to the Candidate.FinishReason enum ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+* add url_context to GoogleSearch tool type ([4d08928](https://github.com/googleapis/google-cloud-python/commit/4d08928433140722727f7953d5caefa5fc676c47))
+
 ## [0.6.18](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.17...google-ai-generativelanguage-v0.6.18) (2025-04-29)
 
 

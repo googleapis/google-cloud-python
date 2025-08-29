@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-lfp-v0.1.11...google-shopping-merchant-lfp-v1.0.0) (2025-08-29)
+
+
+### Features
+
+* set `google.shopping.merchant_lfp_v1` as the default import for `google.shopping.merchant_lfp` ([e2f3a1a](https://github.com/googleapis/google-cloud-python/commit/e2f3a1a804f7458fe8180800b5157713b23fcac4))
+* update release level to stable ([e2f3a1a](https://github.com/googleapis/google-cloud-python/commit/e2f3a1a804f7458fe8180800b5157713b23fcac4))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-lfp-v0.1.10...google-shopping-merchant-lfp-v0.1.11) (2025-08-06)
 
 

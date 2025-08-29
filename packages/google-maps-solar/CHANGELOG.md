@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.1.8...google-maps-solar-v0.1.9) (2025-08-29)
+
+
+### Features
+
+* Add `experiments` param to endpoints for access to pre-GA features ([420f939](https://github.com/googleapis/google-cloud-python/commit/420f9399314cc276647c31dec5bc5503f9e504be))
+* Add new `ImageryQuality` tier for allowing satellite-based Solar API results ([420f939](https://github.com/googleapis/google-cloud-python/commit/420f9399314cc276647c31dec5bc5503f9e504be))
+
+
+### Documentation
+
+* Add more detailed descriptions for each `ImageryQuality` tier ([420f939](https://github.com/googleapis/google-cloud-python/commit/420f9399314cc276647c31dec5bc5503f9e504be))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.1.7...google-maps-solar-v0.1.8) (2025-06-11)
 
 

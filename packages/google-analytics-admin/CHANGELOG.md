@@ -1,5 +1,64 @@
 # Changelog
 
+## [0.25.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.24.1...google-analytics-admin-v0.25.0) (2025-08-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove the `FetchAutomatedGa4ConfigurationOptOut` method
+* remove the `CreateConnectedSiteTag` method
+* remove the `DeleteConnectedSiteTag` method
+* remove the `ListConnectedSiteTags` method
+* remove the `FetchConnectedGa4Property` method
+* remove the `SetAutomatedGa4ConfigurationOptOutRequest` resource
+* remove the `SetAutomatedGa4ConfigurationOptOutResponse` resource
+* remove the `FetchAutomatedGa4ConfigurationOptOutRequest` resource
+* remove the `FetchAutomatedGa4ConfigurationOptOutResponse` resource
+* remove the `CreateConnectedSiteTagRequest` resource
+* remove the `CreateConnectedSiteTagResponse` resource
+* remove the `DeleteConnectedSiteTagRequest` resource
+* remove the `ListConnectedSiteTagsRequest` resource
+* remove the `ListConnectedSiteTagsResponse` resource
+* remove the `FetchConnectedGa4PropertyRequest` resource
+* remove the `FetchConnectedGa4PropertyResponse` resource
+* remove the `ConnectedSiteTag` resource
+* remove the `SetAutomatedGa4ConfigurationOptOut` method
+
+### Features
+
+* add reporting_identity_settings` fields to the `ChangeHistoryResource` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* add the `GetReportingIdentitySettings` method ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* add the `GetReportingIdentitySettingsRequest` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* add the `REPORTING_IDENTITY_SETTINGS` resource type to the `ChangeHistoryResourceType` enum ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* add the `ReportingIdentitySettings` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+
+
+### Bug Fixes
+
+* remove the `ConnectedSiteTag` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `CreateConnectedSiteTag` method ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `CreateConnectedSiteTagRequest` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `CreateConnectedSiteTagResponse` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `DeleteConnectedSiteTag` method ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `DeleteConnectedSiteTagRequest` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `FetchAutomatedGa4ConfigurationOptOut` method ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `FetchAutomatedGa4ConfigurationOptOutRequest` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `FetchAutomatedGa4ConfigurationOptOutResponse` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `FetchConnectedGa4Property` method ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `FetchConnectedGa4PropertyRequest` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `FetchConnectedGa4PropertyResponse` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `ListConnectedSiteTags` method ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `ListConnectedSiteTagsRequest` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `ListConnectedSiteTagsResponse` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `SetAutomatedGa4ConfigurationOptOut` method ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `SetAutomatedGa4ConfigurationOptOutRequest` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+* remove the `SetAutomatedGa4ConfigurationOptOutResponse` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+
+
+### Documentation
+
+* provide additional guidelines for the `user_provided_data` field in the `SubmitUserDeletionRequest` resource ([594263e](https://github.com/googleapis/google-cloud-python/commit/594263e519e347dad9a9639ecfe5ec12bdd9d7a0))
+
 ## [0.24.1](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.24.0...google-analytics-admin-v0.24.1) (2025-06-19)
 
 

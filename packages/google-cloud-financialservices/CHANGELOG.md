@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-financialservices-v0.1.2...google-cloud-financialservices-v0.1.3) (2025-08-29)
+
+
+### Features
+
+* add a flag whether the model supports thinking ([29d4c82](https://github.com/googleapis/google-cloud-python/commit/29d4c826247e0d97498419ab7a70f5bd4d9d8a69))
+* add support for UrlContextMetadata ([29d4c82](https://github.com/googleapis/google-cloud-python/commit/29d4c826247e0d97498419ab7a70f5bd4d9d8a69))
+* add support for video_metadata ([29d4c82](https://github.com/googleapis/google-cloud-python/commit/29d4c826247e0d97498419ab7a70f5bd4d9d8a69))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-financialservices-v0.1.1...google-cloud-financialservices-v0.1.2) (2025-04-17)
 
 
