@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.16.0...google-cloud-video-transcoder-v1.17.0) (2025-08-29)
+
+
+### Features
+
+* [google-cloud-video-transcoder] add support for automatically generating subtitle for input videos ([#14286](https://github.com/googleapis/google-cloud-python/issues/14286)) ([35069f7](https://github.com/googleapis/google-cloud-python/commit/35069f768bb9755099eec5591f81e2fe53a49384))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.15.2...google-cloud-video-transcoder-v1.16.0) (2025-07-23)
 
 
