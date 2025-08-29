@@ -126,7 +126,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
 
     programs. This API defines the following resource model:
 
-    - `OnlineReturnPolicy </merchant/api/reference/rpc/google.shopping.merchant.accounts.v1#google.shopping.merchant.accounts.v1.OnlineReturnPolicy>`__
+    - [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

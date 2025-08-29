@@ -26,8 +26,13 @@ __protobuf__ = proto.module(
     manifest={
         "GetRegionRequest",
         "CreateRegionRequest",
+        "BatchCreateRegionsRequest",
+        "BatchCreateRegionsResponse",
         "UpdateRegionRequest",
+        "BatchUpdateRegionsRequest",
+        "BatchUpdateRegionsResponse",
         "DeleteRegionRequest",
+        "BatchDeleteRegionsRequest",
         "ListRegionsRequest",
         "ListRegionsResponse",
         "Region",
@@ -79,6 +84,45 @@ class CreateRegionRequest(proto.Message):
     )
 
 
+class BatchCreateRegionsRequest(proto.Message):
+    r"""Request message for the ``BatchCreateRegions`` method.
+
+    Attributes:
+        parent (str):
+            Required. The account to create one or more regions for.
+            Format: ``accounts/{account}``
+        requests (MutableSequence[google.shopping.merchant_accounts_v1.types.CreateRegionRequest]):
+            Required. The region(s) to create.
+            The maximum number of regions that can be
+            created in a batch is 100.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateRegionRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateRegionRequest",
+    )
+
+
+class BatchCreateRegionsResponse(proto.Message):
+    r"""Response message for the ``BatchCreateRegions`` method.
+
+    Attributes:
+        regions (MutableSequence[google.shopping.merchant_accounts_v1.types.Region]):
+            The created region(s).
+    """
+
+    regions: MutableSequence["Region"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Region",
+    )
+
+
 class UpdateRegionRequest(proto.Message):
     r"""Request message for the ``UpdateRegion`` method.
 
@@ -103,6 +147,45 @@ class UpdateRegionRequest(proto.Message):
     )
 
 
+class BatchUpdateRegionsRequest(proto.Message):
+    r"""Request message for the ``BatchUpdateRegions`` method.
+
+    Attributes:
+        parent (str):
+            Required. The account to update one or more regions for.
+            Format: ``accounts/{account}``
+        requests (MutableSequence[google.shopping.merchant_accounts_v1.types.UpdateRegionRequest]):
+            Required. The region(s) to update.
+            The maximum number of regions that can be
+            updated in a batch is 100.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["UpdateRegionRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateRegionRequest",
+    )
+
+
+class BatchUpdateRegionsResponse(proto.Message):
+    r"""Response message for the ``BatchUpdateRegions`` method.
+
+    Attributes:
+        regions (MutableSequence[google.shopping.merchant_accounts_v1.types.Region]):
+            The updated region(s).
+    """
+
+    regions: MutableSequence["Region"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Region",
+    )
+
+
 class DeleteRegionRequest(proto.Message):
     r"""Request message for the ``DeleteRegion`` method.
 
@@ -115,6 +198,30 @@ class DeleteRegionRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class BatchDeleteRegionsRequest(proto.Message):
+    r"""Request message for the ``BatchDeleteRegions`` method.
+
+    Attributes:
+        parent (str):
+            Required. The account to delete one or more regions from.
+            Format: ``accounts/{account}``
+        requests (MutableSequence[google.shopping.merchant_accounts_v1.types.DeleteRegionRequest]):
+            Required. The names of the regions to delete.
+            A maximum of 100 regions can be deleted in a
+            batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["DeleteRegionRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="DeleteRegionRequest",
     )
 
 

@@ -290,6 +290,11 @@ from google.shopping.merchant_accounts_v1.types.programs import (
     Program,
 )
 from google.shopping.merchant_accounts_v1.types.regions import (
+    BatchCreateRegionsRequest,
+    BatchCreateRegionsResponse,
+    BatchDeleteRegionsRequest,
+    BatchUpdateRegionsRequest,
+    BatchUpdateRegionsResponse,
     CreateRegionRequest,
     DeleteRegionRequest,
     GetRegionRequest,
@@ -496,6 +501,11 @@ __all__ = (
     "ListProgramsRequest",
     "ListProgramsResponse",
     "Program",
+    "BatchCreateRegionsRequest",
+    "BatchCreateRegionsResponse",
+    "BatchDeleteRegionsRequest",
+    "BatchUpdateRegionsRequest",
+    "BatchUpdateRegionsResponse",
     "CreateRegionRequest",
     "DeleteRegionRequest",
     "GetRegionRequest",

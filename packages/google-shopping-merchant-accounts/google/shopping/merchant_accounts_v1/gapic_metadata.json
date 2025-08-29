@@ -1128,6 +1128,21 @@
         "grpc": {
           "libraryClient": "RegionsServiceClient",
           "rpcs": {
+            "BatchCreateRegions": {
+              "methods": [
+                "batch_create_regions"
+              ]
+            },
+            "BatchDeleteRegions": {
+              "methods": [
+                "batch_delete_regions"
+              ]
+            },
+            "BatchUpdateRegions": {
+              "methods": [
+                "batch_update_regions"
+              ]
+            },
             "CreateRegion": {
               "methods": [
                 "create_region"
@@ -1158,6 +1173,21 @@
         "grpc-async": {
           "libraryClient": "RegionsServiceAsyncClient",
           "rpcs": {
+            "BatchCreateRegions": {
+              "methods": [
+                "batch_create_regions"
+              ]
+            },
+            "BatchDeleteRegions": {
+              "methods": [
+                "batch_delete_regions"
+              ]
+            },
+            "BatchUpdateRegions": {
+              "methods": [
+                "batch_update_regions"
+              ]
+            },
             "CreateRegion": {
               "methods": [
                 "create_region"
@@ -1188,6 +1218,21 @@
         "rest": {
           "libraryClient": "RegionsServiceClient",
           "rpcs": {
+            "BatchCreateRegions": {
+              "methods": [
+                "batch_create_regions"
+              ]
+            },
+            "BatchDeleteRegions": {
+              "methods": [
+                "batch_delete_regions"
+              ]
+            },
+            "BatchUpdateRegions": {
+              "methods": [
+                "batch_update_regions"
+              ]
+            },
             "CreateRegion": {
               "methods": [
                 "create_region"
