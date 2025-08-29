@@ -431,7 +431,7 @@ class ConfidentialComputingAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> service.VerifyAttestationResponse:
         r"""Verifies the provided attestation info, returning a
-        signed OIDC token.
+        signed attestation token.
 
         .. code-block:: python
 
@@ -461,7 +461,7 @@ class ConfidentialComputingAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.confidentialcomputing_v1.types.VerifyAttestationRequest, dict]]):
-                The request object. A request for an OIDC token,
+                The request object. A request for an attestation token,
                 providing all the necessary information
                 needed for this service to verify the
                 platform state of the requestor.
@@ -477,7 +477,7 @@ class ConfidentialComputingAsyncClient:
             google.cloud.confidentialcomputing_v1.types.VerifyAttestationResponse:
                 A response once an attestation has
                 been successfully verified, containing a
-                signed OIDC token.
+                signed attestation token.
 
         """
         # Create or coerce a protobuf request object.
@@ -490,6 +490,194 @@ class ConfidentialComputingAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.verify_attestation
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("challenge", request.challenge),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def verify_confidential_space(
+        self,
+        request: Optional[Union[service.VerifyConfidentialSpaceRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> service.VerifyConfidentialSpaceResponse:
+        r"""Verifies whether the provided attestation info is
+        valid, returning a signed attestation token if so.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import confidentialcomputing_v1
+
+            async def sample_verify_confidential_space():
+                # Create a client
+                client = confidentialcomputing_v1.ConfidentialComputingAsyncClient()
+
+                # Initialize request argument(s)
+                request = confidentialcomputing_v1.VerifyConfidentialSpaceRequest(
+                    challenge="challenge_value",
+                )
+
+                # Make the request
+                response = await client.verify_confidential_space(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.confidentialcomputing_v1.types.VerifyConfidentialSpaceRequest, dict]]):
+                The request object. A request for an attestation token,
+                providing all the necessary information
+                needed for this service to verify the
+                platform state of the requestor.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.confidentialcomputing_v1.types.VerifyConfidentialSpaceResponse:
+                VerifyConfidentialSpaceResponse is
+                returned once a Confidential Space
+                attestation has been successfully
+                verified, containing a signed token.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.VerifyConfidentialSpaceRequest):
+            request = service.VerifyConfidentialSpaceRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.verify_confidential_space
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("challenge", request.challenge),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def verify_confidential_gke(
+        self,
+        request: Optional[Union[service.VerifyConfidentialGkeRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> service.VerifyConfidentialGkeResponse:
+        r"""Verifies the provided Confidential GKE attestation
+        info, returning a signed OIDC token.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import confidentialcomputing_v1
+
+            async def sample_verify_confidential_gke():
+                # Create a client
+                client = confidentialcomputing_v1.ConfidentialComputingAsyncClient()
+
+                # Initialize request argument(s)
+                request = confidentialcomputing_v1.VerifyConfidentialGkeRequest(
+                    challenge="challenge_value",
+                )
+
+                # Make the request
+                response = await client.verify_confidential_gke(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.confidentialcomputing_v1.types.VerifyConfidentialGkeRequest, dict]]):
+                The request object. A request for an attestation token,
+                providing all the necessary information
+                needed for this service to verify
+                Confidential GKE platform state of the
+                requestor.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.confidentialcomputing_v1.types.VerifyConfidentialGkeResponse:
+                VerifyConfidentialGkeResponse
+                response is returened once a
+                Confidential GKE attestation has been
+                successfully verified, containing a
+                signed OIDC token.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.VerifyConfidentialGkeRequest):
+            request = service.VerifyConfidentialGkeRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.verify_confidential_gke
         ]
 
         # Certain fields should be provided within the metadata header;
