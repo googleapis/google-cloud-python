@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.17...google-shopping-merchant-reports-v1.0.0) (2025-08-29)
+
+
+### Features
+
+* set `google.shopping.merchant_reports_v1` as the default import for `google.shopping.merchant_reports` ([3e96c4f](https://github.com/googleapis/google-cloud-python/commit/3e96c4f9072580a4090aba5cdda272b216b577c7))
+* update release level to stable ([3e96c4f](https://github.com/googleapis/google-cloud-python/commit/3e96c4f9072580a4090aba5cdda272b216b577c7))
+
 ## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.16...google-shopping-merchant-reports-v0.1.17) (2025-08-06)
 
 
