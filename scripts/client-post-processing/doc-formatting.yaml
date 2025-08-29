@@ -655,6 +655,26 @@ replacements:
                     from the first search call.
     count: 3
   - paths: [
+      packages/google-cloud-maintenance-api/google/cloud/maintenance_api_v1beta/types/maintenance_service.py,
+    ]
+    before: |
+      user_controllable \(bool\):
+      \            Output only. Indicates whether the user has
+      \            some control over that maintenance, either
+      \             proactively before maintenance was scheduled
+    after: |
+      user_controllable (bool):
+                  Output only. Indicates whether the user has
+                  some control over that maintenance, either
+                  proactively before maintenance was scheduled
+    count: 1
+  - paths: [
+      packages/google-cloud-maintenance-api/google/cloud/maintenance_api_v1beta/types/maintenance_service.py,
+    ]
+    before: 'resource.resourceName=~"\*/instance-20241212-211259"'
+    after: 'resource.resourceName=~"\*/instance-20241212-211259"'
+    count: 1
+  - paths: [
       packages/google-cloud-storagebatchoperations/google/cloud/storagebatchoperations_v1/types/storage_batch_operations_types.py,
     ]
     before: |
