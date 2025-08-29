@@ -391,7 +391,7 @@ def docfx(session):
     "protobuf_implementation",
     ["python", "upb", "cpp"],
 )
-def prerelease(session, protobuf_implementation):
+def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
 
     if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
