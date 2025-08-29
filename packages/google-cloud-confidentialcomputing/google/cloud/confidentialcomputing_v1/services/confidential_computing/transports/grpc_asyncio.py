@@ -364,7 +364,7 @@ class ConfidentialComputingGrpcAsyncIOTransport(ConfidentialComputingTransport):
         r"""Return a callable for the verify attestation method over gRPC.
 
         Verifies the provided attestation info, returning a
-        signed OIDC token.
+        signed attestation token.
 
         Returns:
             Callable[[~.VerifyAttestationRequest],
@@ -383,6 +383,66 @@ class ConfidentialComputingGrpcAsyncIOTransport(ConfidentialComputingTransport):
                 response_deserializer=service.VerifyAttestationResponse.deserialize,
             )
         return self._stubs["verify_attestation"]
+
+    @property
+    def verify_confidential_space(
+        self,
+    ) -> Callable[
+        [service.VerifyConfidentialSpaceRequest],
+        Awaitable[service.VerifyConfidentialSpaceResponse],
+    ]:
+        r"""Return a callable for the verify confidential space method over gRPC.
+
+        Verifies whether the provided attestation info is
+        valid, returning a signed attestation token if so.
+
+        Returns:
+            Callable[[~.VerifyConfidentialSpaceRequest],
+                    Awaitable[~.VerifyConfidentialSpaceResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_confidential_space" not in self._stubs:
+            self._stubs["verify_confidential_space"] = self._logged_channel.unary_unary(
+                "/google.cloud.confidentialcomputing.v1.ConfidentialComputing/VerifyConfidentialSpace",
+                request_serializer=service.VerifyConfidentialSpaceRequest.serialize,
+                response_deserializer=service.VerifyConfidentialSpaceResponse.deserialize,
+            )
+        return self._stubs["verify_confidential_space"]
+
+    @property
+    def verify_confidential_gke(
+        self,
+    ) -> Callable[
+        [service.VerifyConfidentialGkeRequest],
+        Awaitable[service.VerifyConfidentialGkeResponse],
+    ]:
+        r"""Return a callable for the verify confidential gke method over gRPC.
+
+        Verifies the provided Confidential GKE attestation
+        info, returning a signed OIDC token.
+
+        Returns:
+            Callable[[~.VerifyConfidentialGkeRequest],
+                    Awaitable[~.VerifyConfidentialGkeResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_confidential_gke" not in self._stubs:
+            self._stubs["verify_confidential_gke"] = self._logged_channel.unary_unary(
+                "/google.cloud.confidentialcomputing.v1.ConfidentialComputing/VerifyConfidentialGke",
+                request_serializer=service.VerifyConfidentialGkeRequest.serialize,
+                response_deserializer=service.VerifyConfidentialGkeResponse.deserialize,
+            )
+        return self._stubs["verify_confidential_gke"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
@@ -403,6 +463,34 @@ class ConfidentialComputingGrpcAsyncIOTransport(ConfidentialComputingTransport):
             ),
             self.verify_attestation: self._wrap_method(
                 self.verify_attestation,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.verify_confidential_space: self._wrap_method(
+                self.verify_confidential_space,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.verify_confidential_gke: self._wrap_method(
+                self.verify_confidential_gke,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=60.0,
