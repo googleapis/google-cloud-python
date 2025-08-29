@@ -334,40 +334,6 @@ class ContextRetrievalServiceGrpcAsyncIOTransport(ContextRetrievalServiceTranspo
         return self._grpc_channel
 
     @property
-    def retrieve_big_query_table_context(
-        self,
-    ) -> Callable[
-        [context_retrieval_service.RetrieveBigQueryTableContextRequest],
-        Awaitable[context_retrieval_service.RetrieveBigQueryTableContextResponse],
-    ]:
-        r"""Return a callable for the retrieve big query table
-        context method over gRPC.
-
-        Retrieves BigQuery table contextual data for provided
-        table references. Contextual data includes table schema
-        information as well as sample values.
-
-        Returns:
-            Callable[[~.RetrieveBigQueryTableContextRequest],
-                    Awaitable[~.RetrieveBigQueryTableContextResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "retrieve_big_query_table_context" not in self._stubs:
-            self._stubs[
-                "retrieve_big_query_table_context"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.geminidataanalytics.v1alpha.ContextRetrievalService/RetrieveBigQueryTableContext",
-                request_serializer=context_retrieval_service.RetrieveBigQueryTableContextRequest.serialize,
-                response_deserializer=context_retrieval_service.RetrieveBigQueryTableContextResponse.deserialize,
-            )
-        return self._stubs["retrieve_big_query_table_context"]
-
-    @property
     def retrieve_big_query_table_contexts(
         self,
     ) -> Callable[
@@ -547,11 +513,6 @@ class ContextRetrievalServiceGrpcAsyncIOTransport(ContextRetrievalServiceTranspo
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.retrieve_big_query_table_context: self._wrap_method(
-                self.retrieve_big_query_table_context,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.retrieve_big_query_table_contexts: self._wrap_method(
                 self.retrieve_big_query_table_contexts,
                 default_timeout=None,

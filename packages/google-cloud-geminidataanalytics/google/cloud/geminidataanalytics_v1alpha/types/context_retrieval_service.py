@@ -24,8 +24,6 @@ from google.cloud.geminidataanalytics_v1alpha.types import datasource
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1alpha",
     manifest={
-        "RetrieveBigQueryTableContextRequest",
-        "RetrieveBigQueryTableContextResponse",
         "RetrieveBigQueryTableContextsRequest",
         "RetrieveBigQueryTableContextsResponse",
         "RetrieveBigQueryTableContextsFromRecentTablesRequest",
@@ -40,91 +38,6 @@ __protobuf__ = proto.module(
         "TableCandidate",
     },
 )
-
-
-class RetrieveBigQueryTableContextRequest(proto.Message):
-    r"""Request for retrieving BigQuery table contextual data via
-    direct lookup.
-
-    Attributes:
-        project (str):
-            Required.
-        parent (str):
-            Required. Parent value for
-            RetrieveBigQueryTableContextRequest. Pattern:
-            ``projects/{project}/locations/{location}`` For location,
-            use "global" for now. Regional location value will be
-            supported in the future.
-        query (str):
-            Optional. User query in natural language.
-        direct_lookup (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.DirectLookup]):
-            Optional. A list of direct lookup parameters.
-    """
-
-    project: str = proto.Field(
-        proto.STRING,
-        number=5,
-    )
-    parent: str = proto.Field(
-        proto.STRING,
-        number=6,
-    )
-    query: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    direct_lookup: MutableSequence["DirectLookup"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="DirectLookup",
-    )
-
-
-class RetrieveBigQueryTableContextResponse(proto.Message):
-    r"""Response for retrieving BigQuery table contextual data via
-    direct lookup.
-
-    Attributes:
-        candidates (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.RetrieveBigQueryTableContextResponse.Candidate]):
-            List of retrieved candidates with their
-            bundled metadata.
-        table_candidates (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.TableCandidate]):
-            List of retrieved candidates with their
-            bundled metadata.
-    """
-
-    class Candidate(proto.Message):
-        r"""A retrieved candidate.
-
-        Attributes:
-            linked_resource (str):
-                The fully qualified resource name of the candidate in its
-                source system, if applicable. E.g. for BigQuery tables, the
-                format is:
-                ``bigquery.googleapis.com/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}``
-            content (str):
-                Content in string format.
-        """
-
-        linked_resource: str = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-        content: str = proto.Field(
-            proto.STRING,
-            number=2,
-        )
-
-    candidates: MutableSequence[Candidate] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=Candidate,
-    )
-    table_candidates: MutableSequence["TableCandidate"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="TableCandidate",
-    )
 
 
 class RetrieveBigQueryTableContextsRequest(proto.Message):
