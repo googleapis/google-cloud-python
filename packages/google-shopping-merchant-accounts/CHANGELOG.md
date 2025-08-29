@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.6...google-shopping-merchant-accounts-v1.0.0) (2025-08-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* set `google.shopping.merchant_accounts_v1` as the default import for `google.shopping.merchant_accounts`
+
+### Features
+
+* set `google.shopping.merchant_accounts_v1` as the default import for `google.shopping.merchant_accounts` ([3b45f35](https://github.com/googleapis/google-cloud-python/commit/3b45f356634e2408c41d8c3cb30ceb97f53affdc))
+* update release level to stable ([3b45f35](https://github.com/googleapis/google-cloud-python/commit/3b45f356634e2408c41d8c3cb30ceb97f53affdc))
+
 ## [0.3.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.5...google-shopping-merchant-accounts-v0.3.6) (2025-08-06)
 
 
