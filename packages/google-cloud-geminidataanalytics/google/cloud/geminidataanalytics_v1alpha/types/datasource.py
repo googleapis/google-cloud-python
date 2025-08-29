@@ -26,6 +26,7 @@ from google.cloud.geminidataanalytics_v1alpha.types import (
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1alpha",
     manifest={
+        "DataFilterType",
         "DatasourceReferences",
         "BigQueryTableReferences",
         "BigQueryTableReference",
@@ -37,8 +38,25 @@ __protobuf__ = proto.module(
         "Datasource",
         "Schema",
         "Field",
+        "DataFilter",
     },
 )
+
+
+class DataFilterType(proto.Enum):
+    r"""The type of filter present on a datasource, such as ALWAYS_FILTER.
+
+    Values:
+        DATA_FILTER_TYPE_UNSPECIFIED (0):
+            The filter type was not specified.
+        ALWAYS_FILTER (1):
+            A filter that the user configures, and any
+            queries to the Explore will always apply this
+            filter by default. Currently only used for
+            Looker data sources.
+    """
+    DATA_FILTER_TYPE_UNSPECIFIED = 0
+    ALWAYS_FILTER = 1
 
 
 class DatasourceReferences(proto.Message):
@@ -57,11 +75,11 @@ class DatasourceReferences(proto.Message):
 
             This field is a member of `oneof`_ ``references``.
         studio (google.cloud.geminidataanalytics_v1alpha.types.StudioDatasourceReferences):
-            References to LookerStudio datasources.
+            References to Looker Studio datasources.
 
             This field is a member of `oneof`_ ``references``.
         looker (google.cloud.geminidataanalytics_v1alpha.types.LookerExploreReferences):
-            References to Looker explores.
+            References to Looker Explores.
 
             This field is a member of `oneof`_ ``references``.
     """
@@ -106,11 +124,15 @@ class BigQueryTableReference(proto.Message):
 
     Attributes:
         project_id (str):
-            Required. The project the table belongs to.
+            Required. The project that the table belongs
+            to.
         dataset_id (str):
-            Required. The dataset the table belongs to.
+            Required. The dataset that the table belongs
+            to.
         table_id (str):
             Required. The table id.
+        schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
+            Optional. The schema of the datasource.
     """
 
     project_id: str = proto.Field(
@@ -125,10 +147,15 @@ class BigQueryTableReference(proto.Message):
         proto.STRING,
         number=4,
     )
+    schema: "Schema" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="Schema",
+    )
 
 
 class StudioDatasourceReferences(proto.Message):
-    r"""Message representing references to LookerStudio datasources.
+    r"""Message representing references to Looker Studio datasources.
 
     Attributes:
         studio_references (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.StudioDatasourceReference]):
@@ -145,7 +172,7 @@ class StudioDatasourceReferences(proto.Message):
 
 
 class StudioDatasourceReference(proto.Message):
-    r"""Message representing a reference to a single LookerStudio
+    r"""Message representing a reference to a single Looker Studio
     datasource.
 
     Attributes:
@@ -169,9 +196,9 @@ class LookerExploreReferences(proto.Message):
             Optional. The credentials to use when calling the Looker
             API.
 
-            Currently supports both oauth token and api keys based
-            credentials, as described in
-            https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk
+            Currently supports both OAuth token and API key-based
+            credentials, as described in `Authentication with an
+            SDK <https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>`__.
     """
 
     explore_references: MutableSequence["LookerExploreReference"] = proto.RepeatedField(
@@ -207,13 +234,13 @@ class LookerExploreReference(proto.Message):
 
             This field is a member of `oneof`_ ``instance``.
         lookml_model (str):
-            Required. Looker Model as outlined in
-            https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures
-            Name of LookML model.
+            Required. Looker model, as outlined in `Major LookML
+            structures <https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures>`__.
+            Name of the LookML model.
         explore (str):
-            Required. Looker Explore as outlined in
-            https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures
-            Name of LookML explore.
+            Required. Looker Explore, as outlined in `Major LookML
+            structures <https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures>`__.
+            Name of the LookML Explore.
         schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
             Optional. The schema of the datasource.
     """
@@ -282,7 +309,7 @@ class Datasource(proto.Message):
 
             This field is a member of `oneof`_ ``reference``.
         studio_datasource_id (str):
-            A reference to a LookerStudio datasource.
+            A reference to a Looker Studio datasource.
 
             This field is a member of `oneof`_ ``reference``.
         looker_explore_reference (google.cloud.geminidataanalytics_v1alpha.types.LookerExploreReference):
@@ -323,10 +350,27 @@ class Schema(proto.Message):
     Attributes:
         fields (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Field]):
             Optional. The fields in the schema.
+        description (str):
+            Optional. A textual description of the
+            table's content and purpose. For example:
+            "Contains information about customer orders in
+            our e-commerce store.".
+        synonyms (MutableSequence[str]):
+            Optional. A list of alternative names or synonyms that can
+            be used to refer to the table. For example: ["sales",
+            "orders", "purchases"]
+        tags (MutableSequence[str]):
+            Optional. A list of tags or keywords associated with the
+            table, used for categorization. For example: ["transaction",
+            "revenue", "customer_data"]
         display_name (str):
             Optional. Table display_name (same as label in
             cloud/data_analytics/anarres/data/looker/proto/model_explore.proto),
             not required, currently only Looker has this field.
+        filters (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.DataFilter]):
+            Optional. The filters on the datasource's
+            underlying data. Currently only used for Looker
+            data sources.
     """
 
     fields: MutableSequence["Field"] = proto.RepeatedField(
@@ -334,9 +378,26 @@ class Schema(proto.Message):
         number=1,
         message="Field",
     )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    synonyms: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
     display_name: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    filters: MutableSequence["DataFilter"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="DataFilter",
     )
 
 
@@ -353,6 +414,14 @@ class Field(proto.Message):
         mode (str):
             Optional. The mode of the field (e.g.,
             NULLABLE, REPEATED).
+        synonyms (MutableSequence[str]):
+            Optional. A list of alternative names or synonyms that can
+            be used to refer to this field. For example: ["id",
+            "customerid", "cust_id"]
+        tags (MutableSequence[str]):
+            Optional. A list of tags or keywords associated with the
+            field, used for categorization. For example: ["identifier",
+            "customer", "pii"]
         display_name (str):
             Optional. Field display_name (same as label in
         subfields (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Field]):
@@ -363,6 +432,11 @@ class Field(proto.Message):
             currently only useful for Looker. We are using a
             string to avoid depending on an external package
             and keep this package self-contained.
+        value_format (str):
+            Optional. Looker only. Value format of the
+            field. Ref:
+
+            https://cloud.google.com/looker/docs/reference/param-field-value-format
     """
 
     name: str = proto.Field(
@@ -381,6 +455,14 @@ class Field(proto.Message):
         proto.STRING,
         number=4,
     )
+    synonyms: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
     display_name: str = proto.Field(
         proto.STRING,
         number=8,
@@ -393,6 +475,43 @@ class Field(proto.Message):
     category: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    value_format: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+
+
+class DataFilter(proto.Message):
+    r"""A filter on a datasource's underlying data. Filter syntax
+    documentation:
+    https://cloud.google.com/looker/docs/filter-expressions
+
+    Attributes:
+        field (str):
+            Optional. The field to filter on. For example:
+            ["event_date", "customer_id", "product_category"]
+        value (str):
+            Optional. The default value used for this filter if the
+            filter is not overridden in a query. For example: ["after
+            2024-01-01", "123", "-fashion"]
+        type_ (google.cloud.geminidataanalytics_v1alpha.types.DataFilterType):
+            Optional. The type of filter present on a datasource, such
+            as ALWAYS_FILTER.
+    """
+
+    field: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_: "DataFilterType" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="DataFilterType",
     )
 
 

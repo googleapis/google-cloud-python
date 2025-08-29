@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1alpha",
     manifest={
         "Context",
+        "ExampleQuery",
         "ConversationOptions",
         "ChartOptions",
         "AnalysisOptions",
@@ -46,11 +47,16 @@ class Context(proto.Message):
             a Pirate) can help the model understand the
             business context around a user question.
         datasource_references (google.cloud.geminidataanalytics_v1alpha.types.DatasourceReferences):
-            Required. Datasources available for answering
-            the question.
+            Required. Data sources that are available for
+            answering the question.
         options (google.cloud.geminidataanalytics_v1alpha.types.ConversationOptions):
             Optional. Additional options for the
             conversation.
+        example_queries (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.ExampleQuery]):
+            Optional. A list of example queries,
+            providing examples of relevant and commonly used
+            SQL queries and their corresponding natural
+            language queries optionally present.
     """
 
     system_instruction: str = proto.Field(
@@ -66,6 +72,43 @@ class Context(proto.Message):
         proto.MESSAGE,
         number=3,
         message="ConversationOptions",
+    )
+    example_queries: MutableSequence["ExampleQuery"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="ExampleQuery",
+    )
+
+
+class ExampleQuery(proto.Message):
+    r"""Example of relevant and commonly used SQL query and its
+    corresponding natural language queries optionally present.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        sql_query (str):
+            Optional. The SQL query that should be generated to answer
+            the natural language question. For example: "SELECT COUNT(*)
+            FROM orders WHERE order_date BETWEEN '2024-01-01' AND
+            '2024-01-31'".
+
+            This field is a member of `oneof`_ ``query``.
+        natural_language_question (str):
+            Optional. A natural language question that a
+            user might ask. For example: "How many orders
+            were placed last month?".
+    """
+
+    sql_query: str = proto.Field(
+        proto.STRING,
+        number=101,
+        oneof="query",
+    )
+    natural_language_question: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

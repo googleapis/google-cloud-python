@@ -185,8 +185,8 @@ class ChatRequest(proto.Message):
 
             This field is a member of `oneof`_ ``context_provider``.
         project (str):
-            Optional. The GCP project to be used for
-            quota and billing.
+            Optional. The Google Cloud project to be used
+            for quota and billing.
         parent (str):
             Required. The parent value for chat request. Pattern:
             ``projects/{project}/locations/{location}``
@@ -235,12 +235,12 @@ class DataAgentContext(proto.Message):
             Required. The name of the data agent
             resource.
         credentials (google.cloud.geminidataanalytics_v1alpha.types.Credentials):
-            Optional. The credentials to use when calling the looker
-            datasource
+            Optional. The credentials to use when calling the Looker
+            data source.
 
-            Currently supports both oauth token and api keys based
-            credentials, as described in
-            https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk
+            Currently supports both OAuth token and API key-based
+            credentials, as described in `Authentication with an
+            SDK <https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>`__.
         context_version (google.cloud.geminidataanalytics_v1alpha.types.DataAgentContext.ContextVersion):
             Optional. Version of context to be used by
             DCS (e.g. STAGING, PUBLISHED)
@@ -305,7 +305,7 @@ class ConversationReference(proto.Message):
 
 
 class Message(proto.Message):
-    r"""A message from an internaction between the user and the
+    r"""A message from an interaction between the user and the
     system.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -616,8 +616,8 @@ class DataMessage(proto.Message):
 
 
 class LookerQuery(proto.Message):
-    r"""A query for retrieving data from a Looker explore. See
-    https://cloud.google.com/looker/docs/reference/looker-api/latest/methods/Query/run_inline_query
+    r"""A query for retrieving data from a Looker Explore. See `Run Inline
+    Query <https://cloud.google.com/looker/docs/reference/looker-api/latest/methods/Query/run_inline_query>`__.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -627,16 +627,16 @@ class LookerQuery(proto.Message):
             Required. The LookML model used to generate
             the query.
         explore (str):
-            Required. The LookML explore used to generate
+            Required. The LookML Explore used to generate
             the query.
         fields (MutableSequence[str]):
             Optional. The fields to retrieve from the
-            explore.
+            Explore.
         filters (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.LookerQuery.Filter]):
             Optional. The filters to apply to the
-            explore.
+            Explore.
         sorts (MutableSequence[str]):
-            Optional. The sorts to apply to the explore.
+            Optional. The sorts to apply to the Explore.
         limit (str):
             Optional. Limit in the query.
 
@@ -766,30 +766,31 @@ class BigQueryJob(proto.Message):
 
     Attributes:
         project_id (str):
-            Required. The project the job belongs to.
+            Required. The project that the job belongs to.
 
             See
-            https://cloud.google.com/bigquery/docs/reference/rest/v2/JobReference
+            `JobReference <https://cloud.google.com/bigquery/docs/reference/rest/v2/JobReference>`__.
         job_id (str):
             Required. The ID of the job.
 
             See
-            https://cloud.google.com/bigquery/docs/reference/rest/v2/JobReference
+            `JobReference <https://cloud.google.com/bigquery/docs/reference/rest/v2/JobReference>`__.
         location (str):
             Optional. The location of the job.
 
             See
-            https://cloud.google.com/bigquery/docs/reference/rest/v2/JobReference
+            `JobReference <https://cloud.google.com/bigquery/docs/reference/rest/v2/JobReference>`__.
         destination_table (google.cloud.geminidataanalytics_v1alpha.types.BigQueryTableReference):
-            Optional. A reference to the destination
-            table of the job's query results.
+            Optional. A reference to the destination table of the job's
+            query results.
+
             See
-            https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationquery
+            `JobConfigurationQuery <https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationquery>`__.
         schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
-            Optional. The schema of the job's query
-            results.
+            Optional. The schema of the job's query results.
+
             See
-            https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobstatistics2
+            `JobStatistics2 <https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobstatistics2>`__.
     """
 
     project_id: str = proto.Field(

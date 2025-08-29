@@ -123,7 +123,7 @@ class DataChatServiceGrpcAsyncIOTransport(DataChatServiceTransport):
     """gRPC AsyncIO backend transport for DataChatService.
 
     Service to ask a natural language question on top of BigQuery
-    and LookerStudio datasources to get back streamed responses of
+    and Looker Studio datasources to get back streamed responses of
     various kinds to help provide a rich conversational answer.
 
     This class defines the same methods as the primary client, so the
@@ -343,7 +343,9 @@ class DataChatServiceGrpcAsyncIOTransport(DataChatServiceTransport):
     ]:
         r"""Return a callable for the chat method over gRPC.
 
-        Answers a data question by generating a stream of [Message]s.
+        Answers a data question by generating a stream of
+        [Message][google.cloud.geminidataanalytics.v1alpha.Message]
+        objects.
 
         Returns:
             Callable[[~.ChatRequest],
@@ -402,7 +404,7 @@ class DataChatServiceGrpcAsyncIOTransport(DataChatServiceTransport):
     ]:
         r"""Return a callable for the get conversation method over gRPC.
 
-        Gets details of a single conversation using
+        Gets details of a single conversation by using
         conversation id and parent.
 
         Returns:
