@@ -153,7 +153,7 @@ def test_expm1(scalar_types_df: bpd.DataFrame, snapshot):
 
 def test_floor_dt(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["timestamp_col"]]
-    sql = _apply_unary_op(bf_df, ops.FloorDtOp("DAY"), "timestamp_col")
+    sql = _apply_unary_op(bf_df, ops.FloorDtOp("D"), "timestamp_col")
 
     snapshot.assert_match(sql, "out.sql")
 

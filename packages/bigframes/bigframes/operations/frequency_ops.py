@@ -27,9 +27,22 @@ from bigframes.operations import base_ops
 @dataclasses.dataclass(frozen=True)
 class FloorDtOp(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "floor_dt"
-    freq: str
+    freq: typing.Literal[
+        "Y",
+        "Q",
+        "M",
+        "W",
+        "D",
+        "h",
+        "min",
+        "s",
+        "ms",
+        "us",
+    ]
 
     def output_type(self, *input_types):
+        if not dtypes.is_datetime_like(input_types[0]):
+            raise TypeError("dt floor requires datetime-like arguments")
         return input_types[0]
 
 

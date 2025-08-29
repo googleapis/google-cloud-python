@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    TIMESTAMP_TRUNC(`bfcol_0`, DAY) AS `bfcol_1`
+    TIMESTAMP_TRUNC(`bfcol_0`, D) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

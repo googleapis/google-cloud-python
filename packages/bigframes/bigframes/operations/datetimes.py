@@ -30,6 +30,7 @@ import bigframes.operations.base
 _ONE_DAY = pandas.Timedelta("1d")
 _ONE_SECOND = pandas.Timedelta("1s")
 _ONE_MICRO = pandas.Timedelta("1us")
+_SUPPORTED_FREQS = ("Y", "Q", "M", "W", "D", "h", "min", "s", "ms", "us")
 
 
 @log_adapter.class_logger
@@ -155,4 +156,6 @@ class DatetimeMethods(
         return self._apply_unary_op(ops.normalize_op)
 
     def floor(self, freq: str) -> series.Series:
-        return self._apply_unary_op(ops.FloorDtOp(freq=freq))
+        if freq not in _SUPPORTED_FREQS:
+            raise ValueError(f"freq must be one of {_SUPPORTED_FREQS}")
+        return self._apply_unary_op(ops.FloorDtOp(freq=freq))  # type: ignore
