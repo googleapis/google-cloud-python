@@ -649,3 +649,19 @@ replacements:
                     happens in the context of the search   results
                     from the first search call.
     count: 3
+  - paths: [
+      packages/google-cloud-storagebatchoperations/google/cloud/storagebatchoperations_v1/types/storage_batch_operations_types.py,
+    ]
+    before: |
+      content_type \(str\):
+      \            Optional. Updates objects Content-Type fixed
+      \            metadata. Unset values will be ignored.
+      \             Set empty values to clear the metadata. Refer
+      \            to documentation in
+    after: |
+      content_type (str):
+                  Optional. Updates objects Content-Type fixed
+                  metadata. Unset values will be ignored.
+                  Set empty values to clear the metadata. Refer
+                  to documentation in
+    count: 1
