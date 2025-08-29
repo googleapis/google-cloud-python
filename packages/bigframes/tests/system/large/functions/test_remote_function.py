@@ -3005,6 +3005,38 @@ def test_remote_function_df_where_mask(session, dataset_id, scalars_dfs):
 
 
 @pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_df_where_other_issue(session, dataset_id, scalars_df_index):
+    try:
+
+        def the_sum(a, b):
+            return a + b
+
+        the_sum_mf = session.remote_function(
+            input_types=[int, float],
+            output_type=float,
+            dataset=dataset_id,
+            reuse=False,
+            cloud_function_service_account="default",
+        )(the_sum)
+
+        int64_cols = ["int64_col", "float64_col"]
+        bf_int64_df = scalars_df_index[int64_cols]
+        bf_int64_df_filtered = bf_int64_df.dropna()
+
+        with pytest.raises(
+            ValueError,
+            match="Seires is not a supported replacement type!",
+        ):
+            # The execution of the callable other=the_sum_mf will return a
+            # Series, which is not a supported replacement type.
+            bf_int64_df_filtered.where(cond=bf_int64_df > 100, other=the_sum_mf)
+
+    finally:
+        # Clean up the gcp assets created for the remote function.
+        cleanup_function_assets(the_sum_mf, session.bqclient, ignore_failures=False)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_df_where_mask_series(session, dataset_id, scalars_dfs):
     try:
 

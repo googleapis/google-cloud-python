@@ -2877,9 +2877,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return condition
 
     def where(self, cond, other=None):
-        if isinstance(other, bigframes.series.Series):
-            raise ValueError("Seires is not a supported replacement type!")
-
         if self.columns.nlevels > 1:
             raise NotImplementedError(
                 "The dataframe.where() method does not support multi-column."
@@ -2889,6 +2886,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # It can be either a plain python function or remote/managed function.
         cond = self._apply_callable(cond)
         other = self._apply_callable(other)
+
+        if isinstance(other, bigframes.series.Series):
+            raise ValueError("Seires is not a supported replacement type!")
 
         aligned_block, (_, _) = self._block.join(cond._block, how="left")
         # No left join is needed when 'other' is None or constant.

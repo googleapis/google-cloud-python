@@ -570,6 +570,18 @@ def test_where_callable_cond_callable_other(scalars_df_index, scalars_pandas_df_
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_where_series_other(scalars_df_index):
+    # When other is a series, throw an error.
+    columns = ["int64_col", "float64_col"]
+    dataframe_bf = scalars_df_index[columns]
+
+    with pytest.raises(
+        ValueError,
+        match="Seires is not a supported replacement type!",
+    ):
+        dataframe_bf.where(dataframe_bf > 0, dataframe_bf["int64_col"])
+
+
 def test_drop_column(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_col"

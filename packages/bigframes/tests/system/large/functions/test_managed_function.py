@@ -1214,6 +1214,37 @@ def test_managed_function_df_where_mask_series(session, dataset_id, scalars_dfs)
         )
 
 
+def test_managed_function_df_where_other_issue(session, dataset_id, scalars_df_index):
+    try:
+
+        def the_sum(s):
+            return s["int64_col"] + s["int64_too"]
+
+        the_sum_mf = session.udf(
+            input_types=bigframes.series.Series,
+            output_type=int,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
+        )(the_sum)
+
+        int64_cols = ["int64_col", "int64_too"]
+
+        bf_int64_df = scalars_df_index[int64_cols]
+        bf_int64_df_filtered = bf_int64_df.dropna()
+
+        with pytest.raises(
+            ValueError,
+            match="Seires is not a supported replacement type!",
+        ):
+            # The execution of the callable other=the_sum_mf will return a
+            # Series, which is not a supported replacement type.
+            bf_int64_df_filtered.where(cond=bf_int64_df_filtered, other=the_sum_mf)
+
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(the_sum_mf, session.bqclient, ignore_failures=False)
+
+
 def test_managed_function_series_where_mask(session, dataset_id, scalars_dfs):
     try:
 
