@@ -367,14 +367,19 @@ replacements:
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc_asyncio.py,
+    ]
+    before: "This API defines the following resource model:\n    --------------------------------------------------------\n\n    `OnlineReturnPolicy"
+    after: "This API defines the following resource model:\n\n    - `OnlineReturnPolicy"
+    count: 4
+  - paths: [
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/async_client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/transports/grpc.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/transports/grpc_asyncio.py,
     ]
-    before: "This API defines the following resource model:\n    --------------------------------------------------------\n\n    `OnlineReturnPolicy"
-    after: "This API defines the following resource model:\n\n    - `OnlineReturnPolicy"
-    count: 8
+    before: "This API defines the following resource model:\n    --------------------------------------------------------\n\n    \\[OnlineReturnPolicy"
+    after: "This API defines the following resource model:\n\n    - [OnlineReturnPolicy"
+    count: 4
   - paths: [
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/async_client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/client.py,
