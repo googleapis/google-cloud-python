@@ -32,8 +32,6 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.8"
-
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.7",
     "3.8",
@@ -43,6 +41,8 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
 ]
+DEFAULT_PYTHON_VERSION = UNIT_TEST_PYTHON_VERSIONS[-1]
+
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
