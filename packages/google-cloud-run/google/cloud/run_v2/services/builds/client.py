@@ -197,12 +197,12 @@ class BuildsClient(metaclass=BuildsClientMeta):
         return self._transport
 
     @staticmethod
-    def worker_pool_path(
+    def build_worker_pool_path(
         project: str,
         location: str,
         worker_pool: str,
     ) -> str:
-        """Returns a fully-qualified worker_pool string."""
+        """Returns a fully-qualified build_worker_pool string."""
         return (
             "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
                 project=project,
@@ -212,8 +212,8 @@ class BuildsClient(metaclass=BuildsClientMeta):
         )
 
     @staticmethod
-    def parse_worker_pool_path(path: str) -> Dict[str, str]:
-        """Parses a worker_pool path into its component segments."""
+    def parse_build_worker_pool_path(path: str) -> Dict[str, str]:
+        """Parses a build_worker_pool path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/workerPools/(?P<worker_pool>.+?)$",
             path,

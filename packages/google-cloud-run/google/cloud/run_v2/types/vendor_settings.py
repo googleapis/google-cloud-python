@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "RevisionScaling",
         "ServiceMesh",
         "ServiceScaling",
+        "WorkerPoolScaling",
         "NodeSelector",
         "BuildConfig",
     },
@@ -328,6 +329,26 @@ class ServiceScaling(proto.Message):
         number=3,
         enum=ScalingMode,
     )
+    manual_instance_count: int = proto.Field(
+        proto.INT32,
+        number=6,
+        optional=True,
+    )
+
+
+class WorkerPoolScaling(proto.Message):
+    r"""Worker pool scaling settings.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        manual_instance_count (int):
+            Optional. The total number of instances in
+            manual scaling mode.
+
+            This field is a member of `oneof`_ ``_manual_instance_count``.
+    """
+
     manual_instance_count: int = proto.Field(
         proto.INT32,
         number=6,

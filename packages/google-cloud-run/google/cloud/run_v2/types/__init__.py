@@ -24,6 +24,11 @@ from .execution import (
     ListExecutionsResponse,
 )
 from .execution_template import ExecutionTemplate
+from .instance_split import (
+    InstanceSplit,
+    InstanceSplitAllocationType,
+    InstanceSplitStatus,
+)
 from .job import (
     CreateJobRequest,
     DeleteJobRequest,
@@ -99,7 +104,18 @@ from .vendor_settings import (
     ServiceMesh,
     ServiceScaling,
     VpcAccess,
+    WorkerPoolScaling,
 )
+from .worker_pool import (
+    CreateWorkerPoolRequest,
+    DeleteWorkerPoolRequest,
+    GetWorkerPoolRequest,
+    ListWorkerPoolsRequest,
+    ListWorkerPoolsResponse,
+    UpdateWorkerPoolRequest,
+    WorkerPool,
+)
+from .worker_pool_revision_template import WorkerPoolRevisionTemplate
 
 __all__ = (
     "StorageSource",
@@ -113,6 +129,9 @@ __all__ = (
     "ListExecutionsRequest",
     "ListExecutionsResponse",
     "ExecutionTemplate",
+    "InstanceSplit",
+    "InstanceSplitStatus",
+    "InstanceSplitAllocationType",
     "CreateJobRequest",
     "DeleteJobRequest",
     "ExecutionReference",
@@ -172,7 +191,16 @@ __all__ = (
     "ServiceMesh",
     "ServiceScaling",
     "VpcAccess",
+    "WorkerPoolScaling",
     "EncryptionKeyRevocationAction",
     "ExecutionEnvironment",
     "IngressTraffic",
+    "CreateWorkerPoolRequest",
+    "DeleteWorkerPoolRequest",
+    "GetWorkerPoolRequest",
+    "ListWorkerPoolsRequest",
+    "ListWorkerPoolsResponse",
+    "UpdateWorkerPoolRequest",
+    "WorkerPool",
+    "WorkerPoolRevisionTemplate",
 )
