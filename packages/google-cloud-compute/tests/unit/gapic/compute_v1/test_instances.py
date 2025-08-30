@@ -23016,6 +23016,16 @@ def test_insert_rest_call_success(request_type):
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
         "resource_status": {
+            "effective_instance_metadata": {
+                "block_project_ssh_keys_metadata_value": True,
+                "enable_guest_attributes_metadata_value": True,
+                "enable_os_inventory_metadata_value": True,
+                "enable_osconfig_metadata_value": True,
+                "enable_oslogin_metadata_value": True,
+                "serial_port_enable_metadata_value": True,
+                "serial_port_logging_enable_metadata_value": True,
+                "vm_dns_setting_metadata_value": "vm_dns_setting_metadata_value_value",
+            },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
                 "block": "block_value",
@@ -29294,6 +29304,16 @@ def test_update_rest_call_success(request_type):
         },
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
         "resource_status": {
+            "effective_instance_metadata": {
+                "block_project_ssh_keys_metadata_value": True,
+                "enable_guest_attributes_metadata_value": True,
+                "enable_os_inventory_metadata_value": True,
+                "enable_osconfig_metadata_value": True,
+                "enable_oslogin_metadata_value": True,
+                "serial_port_enable_metadata_value": True,
+                "serial_port_logging_enable_metadata_value": True,
+                "vm_dns_setting_metadata_value": "vm_dns_setting_metadata_value_value",
+            },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
                 "block": "block_value",
