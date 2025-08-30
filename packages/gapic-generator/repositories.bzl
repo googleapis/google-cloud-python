@@ -9,17 +9,6 @@ filegroup(
 
 def gapic_generator_python():
 
-    _protobuf_version = "3.21.12"
-    _protobuf_sha256 = "930c2c3b5ecc6c9c12615cf5ad93f1cd6e12d0aba862b572e076259970ac3a53"
-    _protobuf_version_in_link = "v{}".format(_protobuf_version)
-    _maybe(
-        http_archive,
-        name = "com_google_protobuf",
-        sha256 = _protobuf_sha256,
-        url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/{}.tar.gz".format(_protobuf_version_in_link),
-        strip_prefix = "protobuf-{}".format(_protobuf_version),
-    )
-
     _maybe(
         http_archive,
         name = "bazel_skylib",
