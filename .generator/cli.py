@@ -14,6 +14,7 @@
 
 import argparse
 import glob
+import itertools
 import json
 import logging
 import os
@@ -21,8 +22,11 @@ import re
 import shutil
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
+
+import yaml
 
 try:
     import synthtool
@@ -36,13 +40,16 @@ except ImportError as e:  # pragma: NO COVER
 
 logger = logging.getLogger()
 
-LIBRARIAN_DIR = "librarian"
-GENERATE_REQUEST_FILE = "generate-request.json"
-INPUT_DIR = "input"
 BUILD_REQUEST_FILE = "build-request.json"
-SOURCE_DIR = "source"
+GENERATE_REQUEST_FILE = "generate-request.json"
+RELEASE_INIT_REQUEST_FILE = "release-init-request.json"
+STATE_YAML_FILE = "state.yaml"
+
+INPUT_DIR = "input"
+LIBRARIAN_DIR = "librarian"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
+SOURCE_DIR = "source"
 
 
 def _read_json_file(path: str) -> Dict:
@@ -433,23 +440,256 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     logger.info("'build' command executed.")
 
 
-if __name__ == "__main__":  # pragma: NO COVER
+def _read_and_process_file(input_path: str, output_path: str, process_func) -> None:
+    """Helper function to read, process, and write a file.
+
+    Args:
+        input_path (str): The path to the file to read.
+        output_path (str): The path to the file to write.
+        process_func (callable): A function that takes the file content as a string
+                                  and returns the modified string.
+    """
+    os.makedirs(Path(output_path).parent, exist_ok=True)
+    shutil.copy(input_path, output_path)
+
+    with open(output_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    updated_content = process_func(content)
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(updated_content)
+
+
+def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
+    """Note the request data may have multiple libraries in it. Locate all
+    libraries which should be prepared for release. This can be done by
+    checking whether the `release_triggered` field is `true`.
+
+    Args:
+        library_entries(Dict): Dictionary containing all of the libraries
+        present in the repository.
+
+    Returns:
+        List[dict]: List of all libraries which should be prepared for release,
+        along with the corresponding information for the release.
+    """
+    return [
+        library
+        for library in library_entries["libraries"]
+        if library.get("release_triggered")
+    ]
+
+
+def handle_release_init(
+    librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR
+):
+    """The main coordinator for the release process.
+
+    This function prepares for the release of client libraries by reading a
+    `librarian/release-init-request.json` file. The primary responsibility is
+    to update all required files with the new version and commit information
+    for libraries that have the `release_triggered` field set to `true`.
+
+    See https://github.com/googleapis/librarian/blob/main/doc/container-contract.md#generate-container-command
+
+    Args:
+        librarian(str): Path to the directory in the container which contains
+            the `release-init-request.json` file
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+        output(str): Path to the directory in the container where modified
+            code should be placed.
+    """
+
+    try:
+        # Read a release-init-request.json file
+        request_data = _read_json_file(f"{librarian}/{RELEASE_INIT_REQUEST_FILE}")
+        libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(
+            request_data
+        )
+
+        # Update the main changelog file
+        source_path = f"{repo}/CHANGELOG.md"
+        output_path = f"{output}/CHANGELOG.md"
+        _update_global_changelog(
+            source_path, output_path, libraries_to_prep_for_release
+        )
+
+        # Process each library to be released
+        for library_release_data in libraries_to_prep_for_release:
+            version = library_release_data["version"]
+            library_changes = library_release_data["changes"]
+            package_name = library_release_data["id"]
+            path_to_library = f"packages/{package_name}"
+
+            # Get previous version from state.yaml
+            previous_version = _get_previous_version(repo, package_name)
+
+            _update_version_for_library(repo, output, path_to_library, version)
+            if previous_version != version:
+                _update_changelog_for_library(
+                    repo,
+                    output,
+                    library_changes,
+                    version,
+                    previous_version,
+                    package_name,
+                )
+
+    except Exception as e:
+        raise ValueError(f"Release init failed: {e}") from e
+
+
+def _get_previous_version(repo: str, package_name: str) -> str:
+    """Gets the previous version of the library from state.yaml."""
+    state_yaml_path = f"{repo}/.librarian/{STATE_YAML_FILE}"
+    if not os.path.exists(state_yaml_path):
+        raise FileNotFoundError(f"State file not found at {state_yaml_path}")
+
+    with open(state_yaml_path, "r") as state_yaml_file:
+        state_yaml = yaml.safe_load(state_yaml_file)
+        for library in state_yaml.get("libraries", []):
+            if library.get("id") == package_name:
+                return library.get("version")
+
+    raise ValueError(
+        f"Could not determine previous version for {package_name} from state.yaml"
+    )
+
+
+def _update_global_changelog(source_path: str, output_path: str, libraries: List[dict]):
+    """Updates the main CHANGELOG.md with new versions."""
+
+    def process_content(content):
+        new_content = content
+        for lib in libraries:
+            package_name = lib["id"]
+            version = lib["version"]
+            pattern = re.compile(f"(\\[{re.escape(package_name)})(==)([\\d\\.]+)(\\])")
+            replacement = f"\\g<1>=={version}\\g<4>"
+            new_content = pattern.sub(replacement, new_content)
+        return new_content
+
+    _read_and_process_file(source_path, output_path, process_content)
+
+
+def _update_changelog_for_library(
+    repo: str,
+    output: str,
+    library_changes: List[Dict],
+    version: str,
+    previous_version: str,
+    package_name: str,
+):
+    """Prepends a new release entry with multiple, grouped changes to a changelog."""
+
+    def process_content(content):
+        repo_url = "https://github.com/googleapis/google-cloud-python"
+        current_date = datetime.now().strftime("%Y-%m-%d")
+
+        # Create the main version header
+        version_header = (
+            f"## [{version}]({repo_url}/compare/{package_name}-v{previous_version}"
+            f"...{package_name}-v{version}) ({current_date})"
+        )
+        entry_parts = [version_header]
+
+        # Group changes by type (e.g., feat, fix, docs)
+        library_changes.sort(key=lambda x: x["type"])
+        grouped_changes = itertools.groupby(library_changes, key=lambda x: x["type"])
+
+        for change_type, changes in grouped_changes:
+            # We only care about feat, fix, docs
+            if change_type.replace("!", "") in ["feat", "fix", "docs"]:
+                entry_parts.append(
+                    f"\n\n### {change_type.capitalize().replace('!', '')}\n"
+                )
+                for change in changes:
+                    commit_link = f"([{change['source_commit_hash']}]({repo_url}/commit/{change['source_commit_hash']}))"
+                    entry_parts.append(f"* {change['subject']} {commit_link}")
+
+        new_entry_text = "\n".join(entry_parts)
+        anchor_pattern = re.compile(
+            r"(\[1\]: https://pypi\.org/project/google-cloud-language/#history)",
+            re.MULTILINE,
+        )
+        replacement_text = f"\\g<1>\n\n{new_entry_text}"
+        updated_content, num_subs = anchor_pattern.subn(
+            replacement_text, content, count=1
+        )
+
+        if num_subs == 0:
+            raise ValueError("Changelog anchor '[1]: ...#history' not found.")
+
+        return updated_content
+
+    source_path = f"{repo}/packages/{package_name}/CHANGELOG.md"
+    output_path = f"{output}/packages/{package_name}/CHANGELOG.md"
+    _read_and_process_file(source_path, output_path, process_content)
+
+
+def _update_version_for_library(
+    repo: str, output: str, path_to_library: str, version: str
+):
+    """Updates the version string in various files for a library."""
+
+    # Find and update gapic_version.py files
+    gapic_version_files = Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py")
+    for version_file in gapic_version_files:
+
+        def process_version_file(content):
+            pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+            replacement_string = f"\\g<1>{version}\\g<3>"
+            new_content, num_replacements = re.subn(
+                pattern, replacement_string, content
+            )
+            if num_replacements == 0:
+                raise Exception(
+                    f"Could not find version string in {version_file}. File was not modified."
+                )
+            return new_content
+
+        output_path = f"{output}/{version_file.relative_to(repo)}"
+        _read_and_process_file(str(version_file), output_path, process_version_file)
+
+    # Find and update snippet_metadata.json files
+    snippet_metadata_files = Path(f"{repo}/{path_to_library}").rglob(
+        "samples/**/*.json"
+    )
+    for metadata_file in snippet_metadata_files:
+        output_path = f"{output}/{metadata_file.relative_to(repo)}"
+        os.makedirs(Path(output_path).parent, exist_ok=True)
+        shutil.copy(metadata_file, output_path)
+
+        metadata_contents = _read_json_file(metadata_file)
+        metadata_contents["clientLibrary"]["version"] = version
+
+        with open(output_path, "w") as f:
+            json.dump(metadata_contents, f, indent=2)
+            f.write("\n")
+
+
+def main():
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
     subparsers = parser.add_subparsers(
         dest="command", required=True, help="Available commands"
     )
 
-    # Define commands
+    # Define commands and their corresponding handler functions
     handler_map = {
         "configure": handle_configure,
         "generate": handle_generate,
         "build": handle_build,
+        "release-init": handle_release_init,
     }
 
     for command_name, help_text in [
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
         ("build", "Run unit tests via nox for the generated library."),
+        ("release-init", "Prepare to release a specific library"),
     ]:
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
@@ -483,21 +723,29 @@ if __name__ == "__main__":  # pragma: NO COVER
             help="Path to the directory in the container which contains google-cloud-python repository",
             default=SOURCE_DIR,
         )
+
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
 
     args = parser.parse_args()
 
-    # Pass specific arguments to the handler functions for generate/build
-    if args.command == "generate":
-        args.func(
-            librarian=args.librarian,
-            source=args.source,
-            output=args.output,
-            input=args.input,
-        )
-    elif args.command == "build":
-        args.func(librarian=args.librarian, repo=args.repo)
-    else:
-        args.func()
+    # Pass arguments to the selected handler function using a dynamic approach
+    handler_args = {
+        k: v for k, v in vars(args).items() if k != "command" and k != "func"
+    }
+    # Filter out arguments not expected by the function
+    import inspect
+
+    handler_func = args.func
+    arg_spec = inspect.getfullargspec(handler_func)
+
+    valid_handler_args = {
+        k: v for k, v in handler_args.items() if k in arg_spec.args or arg_spec.varkw
+    }
+
+    handler_func(**valid_handler_args)
+
+
+if __name__ == "__main__":  # pragma: NO COVER
+    main()
