@@ -1338,6 +1338,7 @@ def test_bucket_ip_filter_patch(storage_client, buckets_to_delete):
     ]
     assert len(reloaded_filter.vpc_network_sources) == 1
 
+
 def test_list_buckets_with_ip_filter(storage_client, buckets_to_delete):
     """Test that listing buckets returns a summarized IP filter."""
     bucket_name = _helpers.unique_name("ip-filter-list")
@@ -1366,4 +1367,3 @@ def test_list_buckets_with_ip_filter(storage_client, buckets_to_delete):
     # Check that the summarized filter does not include full details.
     assert summarized_filter.public_network_source is None
     assert summarized_filter.vpc_network_sources == []
-

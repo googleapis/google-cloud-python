@@ -59,9 +59,7 @@ def _create_signed_list_blobs_url_helper(
         :Response headers end."
 
 
-def test_create_signed_list_blobs_url_v2(
-    storage_client, signing_bucket, no_mtls
-):
+def test_create_signed_list_blobs_url_v2(storage_client, signing_bucket, no_mtls):
     _create_signed_list_blobs_url_helper(
         storage_client,
         signing_bucket,
@@ -83,9 +81,7 @@ def test_create_signed_list_blobs_url_v2_w_expiration(
     )
 
 
-def test_create_signed_list_blobs_url_v4(
-    storage_client, signing_bucket, no_mtls
-):
+def test_create_signed_list_blobs_url_v4(storage_client, signing_bucket, no_mtls):
     _create_signed_list_blobs_url_helper(
         storage_client,
         signing_bucket,
@@ -229,9 +225,7 @@ def test_create_signed_read_url_v4_w_non_ascii_name(
     )
 
 
-def test_create_signed_read_url_v2_w_csek(
-    storage_client, signing_bucket, no_mtls
-):
+def test_create_signed_read_url_v2_w_csek(storage_client, signing_bucket, no_mtls):
     encryption_key = os.urandom(32)
     _create_signed_read_url_helper(
         storage_client,
@@ -242,9 +236,7 @@ def test_create_signed_read_url_v2_w_csek(
     )
 
 
-def test_create_signed_read_url_v4_w_csek(
-    storage_client, signing_bucket, no_mtls
-):
+def test_create_signed_read_url_v4_w_csek(storage_client, signing_bucket, no_mtls):
     encryption_key = os.urandom(32)
     _create_signed_read_url_helper(
         storage_client,
@@ -327,9 +319,7 @@ def test_create_signed_read_url_v4_w_access_token_universe_domain(
         "https://www.googleapis.com/auth/devstorage.read_write",
         "https://www.googleapis.com/auth/iam",
     ]
-    response = universe_domain_iam_client.generate_access_token(
-        name=name, scope=scope
-    )
+    response = universe_domain_iam_client.generate_access_token(name=name, scope=scope)
 
     _create_signed_read_url_helper(
         universe_domain_client,
@@ -340,9 +330,7 @@ def test_create_signed_read_url_v4_w_access_token_universe_domain(
     )
 
 
-def _create_signed_delete_url_helper(
-    client, bucket, version="v2", expiration=None
-):
+def _create_signed_delete_url_helper(client, bucket, version="v2", expiration=None):
     expiration = _morph_expiration(version, expiration)
 
     blob = bucket.blob("DELETE_ME.txt")
@@ -372,9 +360,7 @@ def test_create_signed_delete_url_v2(storage_client, signing_bucket, no_mtls):
 
 
 def test_create_signed_delete_url_v4(storage_client, signing_bucket, no_mtls):
-    _create_signed_delete_url_helper(
-        storage_client, signing_bucket, version="v4"
-    )
+    _create_signed_delete_url_helper(storage_client, signing_bucket, version="v4")
 
 
 def _create_signed_resumable_upload_url_helper(
@@ -393,9 +379,7 @@ def _create_signed_resumable_upload_url_helper(
     )
 
     post_headers = {"x-goog-resumable": "start"}
-    post_response = requests.post(
-        signed_resumable_upload_url, headers=post_headers
-    )
+    post_response = requests.post(signed_resumable_upload_url, headers=post_headers)
     assert (
         post_response.status_code == 201
     ), f"Response content start: {post_response.content} \
@@ -445,9 +429,7 @@ def _create_signed_resumable_upload_url_helper(
         :Response headers end."
 
 
-def test_create_signed_resumable_upload_url_v2(
-    storage_client, signing_bucket, no_mtls
-):
+def test_create_signed_resumable_upload_url_v2(storage_client, signing_bucket, no_mtls):
     _create_signed_resumable_upload_url_helper(
         storage_client,
         signing_bucket,
@@ -455,9 +437,7 @@ def test_create_signed_resumable_upload_url_v2(
     )
 
 
-def test_create_signed_resumable_upload_url_v4(
-    storage_client, signing_bucket, no_mtls
-):
+def test_create_signed_resumable_upload_url_v4(storage_client, signing_bucket, no_mtls):
     _create_signed_resumable_upload_url_helper(
         storage_client,
         signing_bucket,
@@ -494,9 +474,7 @@ def test_generate_signed_post_policy_v4(
     )
     with open(blob_name, "r") as f:
         files = {"file": (blob_name, f)}
-        response = requests.post(
-            policy["url"], data=policy["fields"], files=files
-        )
+        response = requests.post(policy["url"], data=policy["fields"], files=files)
 
     os.remove(blob_name)
     assert (
@@ -549,9 +527,7 @@ def test_generate_signed_post_policy_v4_access_token_sa_email(
     )
     with open(blob_name, "r") as f:
         files = {"file": (blob_name, f)}
-        response = requests.post(
-            policy["url"], data=policy["fields"], files=files
-        )
+        response = requests.post(policy["url"], data=policy["fields"], files=files)
 
     os.remove(blob_name)
     assert (
@@ -591,9 +567,7 @@ def test_generate_signed_post_policy_v4_invalid_field(
     )
     with open(blob_name, "r") as f:
         files = {"file": (blob_name, f)}
-        response = requests.post(
-            policy["url"], data=policy["fields"], files=files
-        )
+        response = requests.post(policy["url"], data=policy["fields"], files=files)
 
     os.remove(blob_name)
     assert (
