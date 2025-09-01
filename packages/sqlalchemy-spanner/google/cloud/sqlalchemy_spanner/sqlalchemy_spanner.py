@@ -718,6 +718,15 @@ class SpannerDDLCompiler(DDLCompiler):
                 text += " STORING (%s)" % ", ".join(
                     [self.preparer.quote(c.name) for c in storing_columns]
                 )
+
+            if options.get("null_filtered", False):
+                text = re.sub(
+                    r"(^\s*CREATE\s+(?:UNIQUE\s+)?)INDEX",
+                    r"\1NULL_FILTERED INDEX",
+                    text,
+                    flags=re.IGNORECASE,
+                )
+
         return text
 
     def get_identity_options(self, identity_options):
