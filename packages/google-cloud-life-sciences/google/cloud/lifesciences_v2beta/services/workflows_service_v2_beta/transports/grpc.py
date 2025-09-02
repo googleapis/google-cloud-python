@@ -362,7 +362,7 @@ class WorkflowsServiceV2BetaGrpcTransport(WorkflowsServiceV2BetaTransport):
         permissions. Authorization requires the following `Google
         IAM <https://cloud.google.com/iam/>`__ permission:
 
-        -  ``lifesciences.workflows.run``
+        - ``lifesciences.workflows.run``
 
         Returns:
             Callable[[~.RunPipelineRequest],

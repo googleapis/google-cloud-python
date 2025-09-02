@@ -216,14 +216,14 @@ class UpdateAlertPolicyRequest(proto.Message):
             existing policy and adding the supplied policy, except for
             the following:
 
-            -  The new policy will have the same ``[ALERT_POLICY_ID]``
-               as the former policy. This gives you continuity with the
-               former policy in your notifications and incidents.
-            -  Conditions in the new policy will keep their former
-               ``[CONDITION_ID]`` if the supplied condition includes the
-               ``name`` field with that ``[CONDITION_ID]``. If the
-               supplied condition omits the ``name`` field, then a new
-               ``[CONDITION_ID]`` is created.
+            - The new policy will have the same ``[ALERT_POLICY_ID]`` as
+              the former policy. This gives you continuity with the
+              former policy in your notifications and incidents.
+            - Conditions in the new policy will keep their former
+              ``[CONDITION_ID]`` if the supplied condition includes the
+              ``name`` field with that ``[CONDITION_ID]``. If the
+              supplied condition omits the ``name`` field, then a new
+              ``[CONDITION_ID]`` is created.
         alert_policy (google.cloud.monitoring_v3.types.AlertPolicy):
             Required. The updated alerting policy or the updated values
             for the fields listed in ``update_mask``. If ``update_mask``

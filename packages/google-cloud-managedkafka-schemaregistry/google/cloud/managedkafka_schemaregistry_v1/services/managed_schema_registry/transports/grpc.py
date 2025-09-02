@@ -126,13 +126,13 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
     of a schema against a subject or a version. The main resource
     hierarchy is as follows:
 
-    -  SchemaRegistry
-    -  SchemaRegistry/Context
-    -  SchemaRegistry/Context/Schema
-    -  SchemaRegistry/Context/Subject
-    -  SchemaRegistry/Context/Subject/Version
-    -  SchemaRegistry/Config
-    -  SchemaRegistry/Mode
+    - SchemaRegistry
+    - SchemaRegistry/Context
+    - SchemaRegistry/Context/Schema
+    - SchemaRegistry/Context/Subject
+    - SchemaRegistry/Context/Subject/Version
+    - SchemaRegistry/Config
+    - SchemaRegistry/Mode
 
     **SchemaRegistry** is the root resource to represent a schema
     registry instance. A customer can have multiple schema registry
@@ -164,12 +164,12 @@ class ManagedSchemaRegistryGrpcTransport(ManagedSchemaRegistryTransport):
     **Mode** represents the mode of a schema registry or a specific
     subject. Three modes are supported:
 
-    -  READONLY: The schema registry is in read-only mode, no write
-       operations allowed..
-    -  READWRITE: The schema registry is in read-write mode, which
-       allows limited write operations on the schema.
-    -  IMPORT: The schema registry is in import mode, which allows more
-       editing operations on the schema for data importing purposes.
+    - READONLY: The schema registry is in read-only mode, no write
+      operations allowed..
+    - READWRITE: The schema registry is in read-write mode, which allows
+      limited write operations on the schema.
+    - IMPORT: The schema registry is in import mode, which allows more
+      editing operations on the schema for data importing purposes.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

@@ -695,7 +695,7 @@ class CreateAclRequest(proto.Message):
             ``transactionalIdPrefixed/{resource_name}``
 
             For acls on all resources of a given type (i.e. the wildcard
-            literal "*"): ``allTopics`` (represents ``topic/*``)
+            literal "\*"): ``allTopics`` (represents ``topic/*``)
             ``allConsumerGroups`` (represents ``consumerGroup/*``)
             ``allTransactionalIds`` (represents ``transactionalId/*``)
         acl (google.cloud.managedkafka_v1.types.Acl):

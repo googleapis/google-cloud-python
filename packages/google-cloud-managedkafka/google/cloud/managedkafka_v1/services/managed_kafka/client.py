@@ -2845,7 +2845,7 @@ class ManagedKafkaClient(metaclass=ManagedKafkaClientMeta):
                 ``transactionalIdPrefixed/{resource_name}``
 
                 For acls on all resources of a given type (i.e. the
-                wildcard literal "*"): ``allTopics`` (represents
+                wildcard literal "\*"): ``allTopics`` (represents
                 ``topic/*``) ``allConsumerGroups`` (represents
                 ``consumerGroup/*``) ``allTransactionalIds`` (represents
                 ``transactionalId/*``)

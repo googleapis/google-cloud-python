@@ -955,11 +955,11 @@ class CreateInstanceRequest(proto.Message):
 
             This value is subject to the following restrictions:
 
-            -  Must be 4-63 characters in length
-            -  Must begin with a letter or digit
-            -  Must contain only lowercase letters, digits, and hyphens
-            -  Must not end with a hyphen
-            -  Must be unique within a location
+            - Must be 4-63 characters in length
+            - Must begin with a letter or digit
+            - Must contain only lowercase letters, digits, and hyphens
+            - Must not end with a hyphen
+            - Must be unique within a location
         instance (google.cloud.memorystore_v1beta.types.Instance):
             Required. The instance to create.
         request_id (str):

@@ -111,16 +111,16 @@ class CreateMicrosoftAdDomainRequest(proto.Message):
             mydomain.myorganization.com, with the following
             restrictions:
 
-            -  Must contain only lowercase letters, numbers, periods and
-               hyphens.
-            -  Must start with a letter.
-            -  Must contain between 2-64 characters.
-            -  Must end with a number or a letter.
-            -  Must not start with period.
-            -  First segement length (mydomain form example above)
-               shouldn't exceed 15 chars.
-            -  The last segment cannot be fully numeric.
-            -  Must be unique within the customer project.
+            - Must contain only lowercase letters, numbers, periods and
+              hyphens.
+            - Must start with a letter.
+            - Must contain between 2-64 characters.
+            - Must end with a number or a letter.
+            - Must not start with period.
+            - First segement length (mydomain form example above)
+              shouldn't exceed 15 chars.
+            - The last segment cannot be fully numeric.
+            - Must be unique within the customer project.
         domain (google.cloud.managedidentities_v1.types.Domain):
             Required. A Managed Identity domain resource.
     """
@@ -286,9 +286,9 @@ class UpdateDomainRequest(proto.Message):
             paths field may only include fields from
             [Domain][google.cloud.managedidentities.v1.Domain]:
 
-            -  ``labels``
-            -  ``locations``
-            -  ``authorized_networks``
+            - ``labels``
+            - ``locations``
+            - ``authorized_networks``
         domain (google.cloud.managedidentities_v1.types.Domain):
             Required. Domain message with updated fields. Only supported
             fields specified in update_mask are updated.
