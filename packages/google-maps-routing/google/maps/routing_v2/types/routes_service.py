@@ -408,17 +408,17 @@ class ComputeRouteMatrixRequest(proto.Message):
             response matrix. Several size restrictions apply to the
             cardinality of origins and destinations:
 
-            -  The sum of the number of origins + the number of
-               destinations specified as either ``place_id`` or
-               ``address`` must be no greater than 50.
-            -  The product of number of origins × number of destinations
-               must be no greater than 625 in any case.
-            -  The product of the number of origins × number of
-               destinations must be no greater than 100 if
-               routing_preference is set to ``TRAFFIC_AWARE_OPTIMAL``.
-            -  The product of the number of origins × number of
-               destinations must be no greater than 100 if travel_mode
-               is set to ``TRANSIT``.
+            - The sum of the number of origins + the number of
+              destinations specified as either ``place_id`` or
+              ``address`` must be no greater than 50.
+            - The product of number of origins × number of destinations
+              must be no greater than 625 in any case.
+            - The product of the number of origins × number of
+              destinations must be no greater than 100 if
+              routing_preference is set to ``TRAFFIC_AWARE_OPTIMAL``.
+            - The product of the number of origins × number of
+              destinations must be no greater than 100 if travel_mode is
+              set to ``TRANSIT``.
         destinations (MutableSequence[google.maps.routing_v2.types.RouteMatrixDestination]):
             Required. Array of destinations, which
             determines the columns of the response matrix.

@@ -1119,12 +1119,11 @@ class GetDataLayersRequest(proto.Message):
             surrounding that centre point for which data should be
             returned. The limitations on this value are:
 
-            -  Any value up to 100m can always be specified.
-            -  Values over 100m can be specified, as long as
-               ``radius_meters`` <= ``pixel_size_meters * 1000``.
-            -  However, for values over 175m, the ``DataLayerView`` in
-               the request must not include monthly flux or hourly
-               shade.
+            - Any value up to 100m can always be specified.
+            - Values over 100m can be specified, as long as
+              ``radius_meters`` <= ``pixel_size_meters * 1000``.
+            - However, for values over 175m, the ``DataLayerView`` in
+              the request must not include monthly flux or hourly shade.
         view (google.maps.solar_v1.types.DataLayerView):
             Optional. The desired subset of the data to
             return.

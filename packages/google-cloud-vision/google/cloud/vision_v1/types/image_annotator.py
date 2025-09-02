@@ -937,11 +937,11 @@ class TextDetectionParams(proto.Message):
             A list of advanced OCR options to further fine-tune OCR
             behavior. Current valid values are:
 
-            -  ``legacy_layout``: a heuristics layout detection
-               algorithm, which serves as an alternative to the current
-               ML-based layout detection algorithm. Customers can choose
-               the best suitable layout algorithm based on their
-               situation.
+            - ``legacy_layout``: a heuristics layout detection
+              algorithm, which serves as an alternative to the current
+              ML-based layout detection algorithm. Customers can choose
+              the best suitable layout algorithm based on their
+              situation.
     """
 
     enable_text_detection_confidence_score: bool = proto.Field(
@@ -1712,16 +1712,16 @@ class GcsDestination(proto.Message):
 
             Examples:
 
-            -  File Prefix: gs://bucket-name/here/filenameprefix The
-               output files will be created in gs://bucket-name/here/
-               and the names of the output files will begin with
-               "filenameprefix".
+            - File Prefix: gs://bucket-name/here/filenameprefix The
+              output files will be created in gs://bucket-name/here/ and
+              the names of the output files will begin with
+              "filenameprefix".
 
-            -  Directory Prefix: gs://bucket-name/some/location/ The
-               output files will be created in
-               gs://bucket-name/some/location/ and the names of the
-               output files could be anything because there was no
-               filename prefix specified.
+            - Directory Prefix: gs://bucket-name/some/location/ The
+              output files will be created in
+              gs://bucket-name/some/location/ and the names of the
+              output files could be anything because there was no
+              filename prefix specified.
 
             If multiple outputs, each response is still
             AnnotateFileResponse, each of which contains some subset of

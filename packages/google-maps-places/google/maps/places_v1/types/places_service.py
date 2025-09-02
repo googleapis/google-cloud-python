@@ -819,16 +819,16 @@ class GetPlaceRequest(proto.Message):
 
             We recommend the following guidelines:
 
-            -  Use session tokens for all Place Autocomplete calls.
-            -  Generate a fresh token for each session. Using a version
-               4 UUID is recommended.
-            -  Ensure that the credentials used for all Place
-               Autocomplete, Place Details, and Address Validation
-               requests within a session belong to the same Cloud
-               Console project.
-            -  Be sure to pass a unique session token for each new
-               session. Using the same token for more than one session
-               will result in each request being billed individually.
+            - Use session tokens for all Place Autocomplete calls.
+            - Generate a fresh token for each session. Using a version 4
+              UUID is recommended.
+            - Ensure that the credentials used for all Place
+              Autocomplete, Place Details, and Address Validation
+              requests within a session belong to the same Cloud Console
+              project.
+            - Be sure to pass a unique session token for each new
+              session. Using the same token for more than one session
+              will result in each request being billed individually.
     """
 
     name: str = proto.Field(
@@ -933,16 +933,16 @@ class AutocompletePlacesRequest(proto.Message):
 
             We recommend the following guidelines:
 
-            -  Use session tokens for all Place Autocomplete calls.
-            -  Generate a fresh token for each session. Using a version
-               4 UUID is recommended.
-            -  Ensure that the credentials used for all Place
-               Autocomplete, Place Details, and Address Validation
-               requests within a session belong to the same Cloud
-               Console project.
-            -  Be sure to pass a unique session token for each new
-               session. Using the same token for more than one session
-               will result in each request being billed individually.
+            - Use session tokens for all Place Autocomplete calls.
+            - Generate a fresh token for each session. Using a version 4
+              UUID is recommended.
+            - Ensure that the credentials used for all Place
+              Autocomplete, Place Details, and Address Validation
+              requests within a session belong to the same Cloud Console
+              project.
+            - Be sure to pass a unique session token for each new
+              session. Using the same token for more than one session
+              will result in each request being billed individually.
         include_pure_service_area_businesses (bool):
             Optional. Include pure service area businesses if the field
             is set to true. Pure service area business is a business

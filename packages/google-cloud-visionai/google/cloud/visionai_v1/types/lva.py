@@ -64,7 +64,7 @@ class OperatorDefinition(proto.Message):
         operator (str):
             The name of this operator.
 
-            Tentatively [A-Z][a-zA-Z0-9]*, e.g., BboxCounter,
+            Tentatively [A-Z][a-zA-Z0-9]\*, e.g., BboxCounter,
             PetDetector, PetDetector1.
         input_args (MutableSequence[google.cloud.visionai_v1.types.OperatorDefinition.ArgumentDefinition]):
             Declares input arguments.
@@ -323,7 +323,7 @@ class AnalyzerDefinition(proto.Message):
         analyzer (str):
             The name of this analyzer.
 
-            Tentatively [a-z][a-z0-9]*(_[a-z0-9]+)*.
+            Tentatively [a-z][a-z0-9]\ *(\_[a-z0-9]+)*.
         operator (str):
             The name of the operator that this analyzer
             runs.
