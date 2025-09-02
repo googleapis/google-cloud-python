@@ -527,23 +527,23 @@ class AccessStateDiff(proto.Message):
             ACCESS_MAYBE_REVOKED (5):
                 This result can occur for the following reasons:
 
-                -  The principal had access under the current policies
-                   (``GRANTED``), but their access after the proposed
-                   changes is ``UNKNOWN``.
+                - The principal had access under the current policies
+                  (``GRANTED``), but their access after the proposed changes
+                  is ``UNKNOWN``.
 
-                -  The principal's access under the current policies is
-                   ``UNKNOWN``, but they will not have access after the
-                   proposed changes (``NOT_GRANTED``).
+                - The principal's access under the current policies is
+                  ``UNKNOWN``, but they will not have access after the
+                  proposed changes (``NOT_GRANTED``).
             ACCESS_MAYBE_GAINED (6):
                 This result can occur for the following reasons:
 
-                -  The principal did not have access under the current
-                   policies (``NOT_GRANTED``), but their access after the
-                   proposed changes is ``UNKNOWN``.
+                - The principal did not have access under the current
+                  policies (``NOT_GRANTED``), but their access after the
+                  proposed changes is ``UNKNOWN``.
 
-                -  The principal's access under the current policies is
-                   ``UNKNOWN``, but they will have access after the proposed
-                   changes (``GRANTED``).
+                - The principal's access under the current policies is
+                  ``UNKNOWN``, but they will have access after the proposed
+                  changes (``GRANTED``).
         """
         ACCESS_CHANGE_TYPE_UNSPECIFIED = 0
         NO_CHANGE = 1

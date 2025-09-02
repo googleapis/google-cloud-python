@@ -490,13 +490,13 @@ class ReachabilityDetails(proto.Message):
             REACHABLE (1):
                 Possible scenarios are:
 
-                -  The configuration analysis determined that a packet
-                   originating from the source is expected to reach the
-                   destination.
-                -  The analysis didn't complete because the user lacks
-                   permission for some of the resources in the trace.
-                   However, at the time the user's permission became
-                   insufficient, the trace had been successful so far.
+                - The configuration analysis determined that a packet
+                  originating from the source is expected to reach the
+                  destination.
+                - The analysis didn't complete because the user lacks
+                  permission for some of the resources in the trace.
+                  However, at the time the user's permission became
+                  insufficient, the trace had been successful so far.
             UNREACHABLE (2):
                 A packet originating from the source is
                 expected to be dropped before reaching the
@@ -515,12 +515,12 @@ class ReachabilityDetails(proto.Message):
                 The configuration analysis did not complete. Possible
                 reasons are:
 
-                -  A permissions error occurred--for example, the user might
-                   not have read permission for all of the resources named
-                   in the test.
-                -  An internal error occurred.
-                -  The analyzer received an invalid or unsupported argument
-                   or was unable to identify a known endpoint.
+                - A permissions error occurred--for example, the user might
+                  not have read permission for all of the resources named in
+                  the test.
+                - An internal error occurred.
+                - The analyzer received an invalid or unsupported argument
+                  or was unable to identify a known endpoint.
         """
         RESULT_UNSPECIFIED = 0
         REACHABLE = 1
@@ -642,11 +642,11 @@ class ProbingDetails(proto.Message):
             UNDETERMINED (4):
                 Reachability could not be determined. Possible reasons are:
 
-                -  The user lacks permission to access some of the network
-                   resources required to run the test.
-                -  No valid source endpoint could be derived from the
-                   request.
-                -  An internal error occurred.
+                - The user lacks permission to access some of the network
+                  resources required to run the test.
+                - No valid source endpoint could be derived from the
+                  request.
+                - An internal error occurred.
         """
         PROBING_RESULT_UNSPECIFIED = 0
         REACHABLE = 1
