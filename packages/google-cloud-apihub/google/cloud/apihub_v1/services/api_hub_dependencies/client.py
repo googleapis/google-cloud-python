@@ -812,10 +812,10 @@ class ApiHubDependenciesClient(metaclass=ApiHubDependenciesClientMeta):
                 which will become the final component of the
                 dependency's resource name. This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if duplicate id is provided by the
-                   client.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if duplicate id is provided by the
+                  client.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
                 characters are ``[a-z][A-Z][0-9]-_``.
@@ -1024,7 +1024,7 @@ class ApiHubDependenciesClient(metaclass=ApiHubDependenciesClientMeta):
         The following fields in the
         [dependency][google.cloud.apihub.v1.Dependency] can be updated:
 
-        -  [description][google.cloud.apihub.v1.Dependency.description]
+        - [description][google.cloud.apihub.v1.Dependency.description]
 
         .. code-block:: python
 

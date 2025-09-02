@@ -203,27 +203,26 @@ class CreateMembershipRequest(proto.Message):
             user, it must use certain authorization scopes and set
             specific values for certain fields:
 
-            -  When `authenticating as a
-               user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-               the ``chat.memberships`` authorization scope is required.
+            - When `authenticating as a
+              user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
+              the ``chat.memberships`` authorization scope is required.
 
-            -  When `authenticating as an
-               app <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__,
-               the ``chat.app.memberships`` authorization scope is
-               required.
+            - When `authenticating as an
+              app <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__,
+              the ``chat.app.memberships`` authorization scope is
+              required.
 
-            -  Set ``user.type`` to ``HUMAN``, and set ``user.name``
-               with format ``users/{user}``, where ``{user}`` can be the
-               email address for the user. For users in the same
-               Workspace organization ``{user}`` can also be the ``id``
-               of the
-               `person <https://developers.google.com/people/api/rest/v1/people>`__
-               from the People API, or the ``id`` for the user in the
-               Directory API. For example, if the People API Person
-               profile ID for ``user@example.com`` is ``123456789``, you
-               can add the user to the space by setting the
-               ``membership.member.name`` to ``users/user@example.com``
-               or ``users/123456789``.
+            - Set ``user.type`` to ``HUMAN``, and set ``user.name`` with
+              format ``users/{user}``, where ``{user}`` can be the email
+              address for the user. For users in the same Workspace
+              organization ``{user}`` can also be the ``id`` of the
+              `person <https://developers.google.com/people/api/rest/v1/people>`__
+              from the People API, or the ``id`` for the user in the
+              Directory API. For example, if the People API Person
+              profile ID for ``user@example.com`` is ``123456789``, you
+              can add the user to the space by setting the
+              ``membership.member.name`` to ``users/user@example.com``
+              or ``users/123456789``.
 
             Inviting users external to the Workspace organization that
             owns the space requires `user
@@ -279,7 +278,7 @@ class UpdateMembershipRequest(proto.Message):
 
             Currently supported field paths:
 
-            -  ``role``
+            - ``role``
         use_admin_access (bool):
             Optional. When ``true``, the method runs using the user's
             Google Workspace administrator privileges.

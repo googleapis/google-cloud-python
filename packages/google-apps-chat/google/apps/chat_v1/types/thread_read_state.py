@@ -68,14 +68,14 @@ class GetThreadReadStateRequest(proto.Message):
 
             To refer to the calling user, set one of the following:
 
-            -  The ``me`` alias. For example,
-               ``users/me/spaces/{space}/threads/{thread}/threadReadState``.
+            - The ``me`` alias. For example,
+              ``users/me/spaces/{space}/threads/{thread}/threadReadState``.
 
-            -  Their Workspace email address. For example,
-               ``users/user@example.com/spaces/{space}/threads/{thread}/threadReadState``.
+            - Their Workspace email address. For example,
+              ``users/user@example.com/spaces/{space}/threads/{thread}/threadReadState``.
 
-            -  Their user id. For example,
-               ``users/123456789/spaces/{space}/threads/{thread}/threadReadState``.
+            - Their user id. For example,
+              ``users/123456789/spaces/{space}/threads/{thread}/threadReadState``.
 
             Format:
             users/{user}/spaces/{space}/threads/{thread}/threadReadState

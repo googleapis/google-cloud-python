@@ -98,9 +98,9 @@ class Space(proto.Message):
             Google Workspace organization. Omit this field when creating
             spaces in the following conditions:
 
-            -  The authenticated user uses a consumer account (unmanaged
-               user account). By default, a space created by a consumer
-               account permits any Google Chat user.
+            - The authenticated user uses a consumer account (unmanaged
+              user account). By default, a space created by a consumer
+              account permits any Google Chat user.
 
             For existing spaces, this field is output only.
         space_threading_state (google.apps.chat_v1.types.Space.SpaceThreadingState):
@@ -180,15 +180,15 @@ class Space(proto.Message):
 
             Setting predefined permission settings supports:
 
-            -  `App
-               authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-               with `administrator
-               approval <https://support.google.com/a?p=chat-app-auth>`__
-               with the ``chat.app.spaces`` or
-               ``chat.app.spaces.create`` scopes.
+            - `App
+              authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+              with `administrator
+              approval <https://support.google.com/a?p=chat-app-auth>`__
+              with the ``chat.app.spaces`` or ``chat.app.spaces.create``
+              scopes.
 
-            -  `User
-               authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+            - `User
+              authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
 
             This field is a member of `oneof`_ ``space_permission_settings``.
         permission_settings (google.apps.chat_v1.types.Space.PermissionSettings):
@@ -199,15 +199,15 @@ class Space(proto.Message):
 
             Reading and updating permission settings supports:
 
-            -  `App
-               authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-               with `administrator
-               approval <https://support.google.com/a?p=chat-app-auth>`__
-               with the ``chat.app.spaces`` scope. Only populated and
-               settable when the Chat app created the space.
+            - `App
+              authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+              with `administrator
+              approval <https://support.google.com/a?p=chat-app-auth>`__
+              with the ``chat.app.spaces`` scope. Only populated and
+              settable when the Chat app created the space.
 
-            -  `User
-               authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+            - `User
+              authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
 
             This field is a member of `oneof`_ ``space_permission_settings``.
         import_mode_expire_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -380,14 +380,14 @@ class Space(proto.Message):
 
                 Reading the target audience supports:
 
-                -  `User
-                   authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+                - `User
+                  authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
 
-                -  `App
-                   authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-                   with `administrator
-                   approval <https://support.google.com/a?p=chat-app-auth>`__
-                   with the ``chat.app.spaces`` scope.
+                - `App
+                  authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+                  with `administrator
+                  approval <https://support.google.com/a?p=chat-app-auth>`__
+                  with the ``chat.app.spaces`` scope.
 
                 This field is not populated when using the ``chat.bot``
                 scope with `app
@@ -914,13 +914,13 @@ class UpdateSpaceRequest(proto.Message):
             ``permissionSettings`` is not supported with
             ``useAdminAccess``. The supported field masks include:
 
-            -  ``permission_settings.manageMembersAndGroups``
-            -  ``permission_settings.modifySpaceDetails``
-            -  ``permission_settings.toggleHistory``
-            -  ``permission_settings.useAtMentionAll``
-            -  ``permission_settings.manageApps``
-            -  ``permission_settings.manageWebhooks``
-            -  ``permission_settings.replyMessages``
+            - ``permission_settings.manageMembersAndGroups``
+            - ``permission_settings.modifySpaceDetails``
+            - ``permission_settings.toggleHistory``
+            - ``permission_settings.useAtMentionAll``
+            - ``permission_settings.manageApps``
+            - ``permission_settings.manageWebhooks``
+            - ``permission_settings.replyMessages``
         use_admin_access (bool):
             Optional. When ``true``, the method runs using the user's
             Google Workspace administrator privileges.
@@ -993,13 +993,13 @@ class SearchSpacesRequest(proto.Message):
 
             You can search by using the following parameters:
 
-            -  ``create_time``
-            -  ``customer``
-            -  ``display_name``
-            -  ``external_user_allowed``
-            -  ``last_active_time``
-            -  ``space_history_state``
-            -  ``space_type``
+            - ``create_time``
+            - ``customer``
+            - ``display_name``
+            - ``external_user_allowed``
+            - ``last_active_time``
+            - ``space_history_state``
+            - ``space_type``
 
             ``create_time`` and ``last_active_time`` accept a timestamp
             in `RFC-3339 <https://www.rfc-editor.org/rfc/rfc3339>`__
@@ -1070,27 +1070,27 @@ class SearchSpacesRequest(proto.Message):
 
             Supported attributes to order by are:
 
-            -  ``membership_count.joined_direct_human_user_count`` —
-               Denotes the count of human users that have directly
-               joined a space.
-            -  ``last_active_time`` — Denotes the time when last
-               eligible item is added to any topic of this space.
-            -  ``create_time`` — Denotes the time of the space creation.
+            - ``membership_count.joined_direct_human_user_count`` —
+              Denotes the count of human users that have directly joined
+              a space.
+            - ``last_active_time`` — Denotes the time when last eligible
+              item is added to any topic of this space.
+            - ``create_time`` — Denotes the time of the space creation.
 
             Valid ordering operation values are:
 
-            -  ``ASC`` for ascending. Default value.
+            - ``ASC`` for ascending. Default value.
 
-            -  ``DESC`` for descending.
+            - ``DESC`` for descending.
 
             The supported syntax are:
 
-            -  ``membership_count.joined_direct_human_user_count DESC``
-            -  ``membership_count.joined_direct_human_user_count ASC``
-            -  ``last_active_time DESC``
-            -  ``last_active_time ASC``
-            -  ``create_time DESC``
-            -  ``create_time ASC``
+            - ``membership_count.joined_direct_human_user_count DESC``
+            - ``membership_count.joined_direct_human_user_count ASC``
+            - ``last_active_time DESC``
+            - ``last_active_time ASC``
+            - ``create_time DESC``
+            - ``create_time ASC``
     """
 
     use_admin_access: bool = proto.Field(

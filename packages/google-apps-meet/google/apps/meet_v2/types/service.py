@@ -115,7 +115,7 @@ class UpdateSpaceRequest(proto.Message):
             updated in the space. If update_mask isn't provided(not set,
             set with empty paths, or only has "" as paths), it defaults
             to update all fields provided with values in the request.
-            Using "*" as update_mask will update all fields, including
+            Using "\*" as update_mask will update all fields, including
             deleting fields not set in the request.
     """
 
@@ -187,17 +187,17 @@ class ListConferenceRecordsRequest(proto.Message):
             format <https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form>`__.
             The following are the filterable fields:
 
-            -  ``space.meeting_code``
-            -  ``space.name``
-            -  ``start_time``
-            -  ``end_time``
+            - ``space.meeting_code``
+            - ``space.name``
+            - ``start_time``
+            - ``end_time``
 
             For example, consider the following filters:
 
-            -  ``space.name = "spaces/NAME"``
-            -  ``space.meeting_code = "abc-mnop-xyz"``
-            -  ``start_time>="2024-01-01T00:00:00.000Z" AND start_time<="2024-01-02T00:00:00.000Z"``
-            -  ``end_time IS NULL``
+            - ``space.name = "spaces/NAME"``
+            - ``space.meeting_code = "abc-mnop-xyz"``
+            - ``start_time>="2024-01-01T00:00:00.000Z" AND start_time<="2024-01-02T00:00:00.000Z"``
+            - ``end_time IS NULL``
     """
 
     page_size: int = proto.Field(
@@ -278,8 +278,8 @@ class ListParticipantsRequest(proto.Message):
             format <https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form>`__.
             The following are the filterable fields:
 
-            -  ``earliest_start_time``
-            -  ``latest_end_time``
+            - ``earliest_start_time``
+            - ``latest_end_time``
 
             For example, ``latest_end_time IS NULL`` returns active
             participants in the conference.
@@ -377,8 +377,8 @@ class ListParticipantSessionsRequest(proto.Message):
             format <https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form>`__.
             The following are the filterable fields:
 
-            -  ``start_time``
-            -  ``end_time``
+            - ``start_time``
+            - ``end_time``
 
             For example, ``end_time IS NULL`` returns active participant
             sessions in the conference record.

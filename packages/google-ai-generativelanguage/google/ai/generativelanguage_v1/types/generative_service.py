@@ -373,11 +373,11 @@ class GenerateContentResponse(proto.Message):
     ``GenerateContentResponse.prompt_feedback`` and for each candidate
     in ``finish_reason`` and in ``safety_ratings``. The API:
 
-    -  Returns either all requested candidates or none of them
-    -  Returns no candidates at all only if there was something wrong
-       with the prompt (check ``prompt_feedback``)
-    -  Reports feedback on each candidate in ``finish_reason`` and
-       ``safety_ratings``.
+    - Returns either all requested candidates or none of them
+    - Returns no candidates at all only if there was something wrong
+      with the prompt (check ``prompt_feedback``)
+    - Reports feedback on each candidate in ``finish_reason`` and
+      ``safety_ratings``.
 
     Attributes:
         candidates (MutableSequence[google.ai.generativelanguage_v1.types.Candidate]):
@@ -1227,7 +1227,7 @@ class CountTokensRequest(proto.Message):
             instructions <https://ai.google.dev/gemini-api/docs/system-instructions>`__,
             and/or function declarations for `function
             calling <https://ai.google.dev/gemini-api/docs/function-calling>`__.
-            ``Model``\ s/\ ``Content``\ s and
+            ``Model``\ s/``Content``\ s and
             ``generate_content_request``\ s are mutually exclusive. You
             can either send ``Model`` + ``Content``\ s or a
             ``generate_content_request``, but never both.

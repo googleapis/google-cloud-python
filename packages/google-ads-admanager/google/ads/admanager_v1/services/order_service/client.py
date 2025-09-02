@@ -946,9 +946,9 @@ class OrderServiceClient(metaclass=OrderServiceClientMeta):
 
         Fields used for literal matching in filter string:
 
-        -  ``order_id``
-        -  ``display_name``
-        -  ``external_order_id``
+        - ``order_id``
+        - ``display_name``
+        - ``external_order_id``
 
         .. code-block:: python
 
