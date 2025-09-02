@@ -129,10 +129,10 @@ class ModelServiceGrpcAsyncIOTransport(ModelServiceTransport):
 
     This service allows you to do the following:
 
-    -  Initiate training of a model.
-    -  Pause training of an existing model.
-    -  List all the available models along with their metadata.
-    -  Control their tuning schedule.
+    - Initiate training of a model.
+    - Pause training of an existing model.
+    - List all the available models along with their metadata.
+    - Control their tuning schedule.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

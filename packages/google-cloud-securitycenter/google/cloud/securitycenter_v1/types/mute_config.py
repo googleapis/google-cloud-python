@@ -57,18 +57,18 @@ class MuteConfig(proto.Message):
 
             The following field and operator combinations are supported:
 
-            -  severity: ``=``, ``:``
-            -  category: ``=``, ``:``
-            -  resource.name: ``=``, ``:``
-            -  resource.project_name: ``=``, ``:``
-            -  resource.project_display_name: ``=``, ``:``
-            -  resource.folders.resource_folder: ``=``, ``:``
-            -  resource.parent_name: ``=``, ``:``
-            -  resource.parent_display_name: ``=``, ``:``
-            -  resource.type: ``=``, ``:``
-            -  finding_class: ``=``, ``:``
-            -  indicator.ip_addresses: ``=``, ``:``
-            -  indicator.domains: ``=``, ``:``
+            - severity: ``=``, ``:``
+            - category: ``=``, ``:``
+            - resource.name: ``=``, ``:``
+            - resource.project_name: ``=``, ``:``
+            - resource.project_display_name: ``=``, ``:``
+            - resource.folders.resource_folder: ``=``, ``:``
+            - resource.parent_name: ``=``, ``:``
+            - resource.parent_display_name: ``=``, ``:``
+            - resource.type: ``=``, ``:``
+            - finding_class: ``=``, ``:``
+            - indicator.ip_addresses: ``=``, ``:``
+            - indicator.domains: ``=``, ``:``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the mute
             config was created. This field is set by the

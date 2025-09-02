@@ -80,10 +80,10 @@ class ModelServiceAsyncClient:
 
     This service allows you to do the following:
 
-    -  Initiate training of a model.
-    -  Pause training of an existing model.
-    -  List all the available models along with their metadata.
-    -  Control their tuning schedule.
+    - Initiate training of a model.
+    - Pause training of an existing model.
+    - List all the available models along with their metadata.
+    - Control their tuning schedule.
     """
 
     _client: ModelServiceClient
