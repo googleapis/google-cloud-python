@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import select
+from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
@@ -73,7 +73,24 @@ LIMIT 1
             '[{"size":"Great","type":"Stadium"}]',
         )
 
-    def _test_insert_json(self, description, expected):
+    def test_insert_fn(self):
+        add_update_count(
+            "INSERT INTO venues (id, name, description) "
+            "VALUES (@a0, @a1, parse_json(@a2, wide_number_mode=>'round'))",
+            1,
+        )
+        self._test_insert_json(
+            func.parse_json(
+                '{"type": "Stadium", "size": "Great"}',
+                text("wide_number_mode=>'round'"),
+            ),
+            '{"type": "Stadium", "size": "Great"}',
+            expected_type_code=TypeCode.STRING,
+        )
+
+    def _test_insert_json(
+        self, description, expected, expected_type_code=TypeCode.JSON
+    ):
         from test.mockserver_tests.json_model import Venue
 
         add_update_count(
@@ -100,7 +117,7 @@ LIMIT 1
         eq_(expected, request.params["a2"])
         eq_(TypeCode.INT64, request.param_types["a0"].code)
         eq_(TypeCode.STRING, request.param_types["a1"].code)
-        eq_(TypeCode.JSON, request.param_types["a2"].code)
+        eq_(expected_type_code, request.param_types["a2"].code)
 
     def test_select_dict(self):
         self._test_select_json(

@@ -98,6 +98,11 @@ def insertmany(session):
 
 
 @nox.session()
+def parse_json(session):
+    _sample(session)
+
+
+@nox.session()
 def _all_samples(session):
     _sample(session)
 
