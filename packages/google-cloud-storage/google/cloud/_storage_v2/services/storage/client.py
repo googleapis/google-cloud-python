@@ -13,8 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import logging as std_logging
 from collections import OrderedDict
+from http import HTTPStatus
+import json
+import logging as std_logging
+import os
 import re
 from typing import (
     Dict,
@@ -23,41 +26,33 @@ from typing import (
     MutableMapping,
     MutableSequence,
     Optional,
-    AsyncIterable,
-    Awaitable,
-    AsyncIterator,
+    Iterable,
+    Iterator,
     Sequence,
     Tuple,
     Type,
     Union,
+    cast,
 )
+import warnings
 
-from google.cloud.storage_v2 import gapic_version as package_version
+from google.cloud._storage_v2 import gapic_version as package_version
 
-from google.api_core.client_options import ClientOptions
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry_async as retries
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
-
 try:
-    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
-
-from google.cloud.storage_v2.services.storage import pagers
-from google.cloud.storage_v2.types import storage
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import StorageTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import StorageGrpcAsyncIOTransport
-from .client import StorageClient
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -68,8 +63,53 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+from google.cloud._storage_v2.services.storage import pagers
+from google.cloud._storage_v2.types import storage
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from .transports.base import StorageTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc import StorageGrpcTransport
+from .transports.grpc_asyncio import StorageGrpcAsyncIOTransport
 
-class StorageAsyncClient:
+
+class StorageClientMeta(type):
+    """Metaclass for the Storage client.
+
+    This provides class-level methods for building and retrieving
+    support objects (e.g. transport) without polluting the client instance
+    objects.
+    """
+
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[StorageTransport]]
+    _transport_registry["grpc"] = StorageGrpcTransport
+    _transport_registry["grpc_asyncio"] = StorageGrpcAsyncIOTransport
+
+    def get_transport_class(
+        cls,
+        label: Optional[str] = None,
+    ) -> Type[StorageTransport]:
+        """Returns an appropriate transport class.
+
+        Args:
+            label: The name of the desired transport. If none is
+                provided, then the first transport in the registry is used.
+
+        Returns:
+            The transport class to use.
+        """
+        # If a specific transport is requested, return that one.
+        if label:
+            return cls._transport_registry[label]
+
+        # No transport is requested; return the default (that is, the first one
+        # in the dictionary).
+        return next(iter(cls._transport_registry.values()))
+
+
+class StorageClient(metaclass=StorageClientMeta):
     """API Overview and Naming Syntax
     ------------------------------
 
@@ -98,35 +138,44 @@ class StorageAsyncClient:
        directory semantics).
     """
 
-    _client: StorageClient
+    @staticmethod
+    def _get_default_mtls_endpoint(api_endpoint):
+        """Converts api endpoint to mTLS endpoint.
 
-    # Copy defaults from the synchronous client for use here.
+        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
+        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
+        Args:
+            api_endpoint (Optional[str]): the api endpoint to convert.
+        Returns:
+            str: converted mTLS api endpoint.
+        """
+        if not api_endpoint:
+            return api_endpoint
+
+        mtls_endpoint_re = re.compile(
+            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
+        )
+
+        m = mtls_endpoint_re.match(api_endpoint)
+        name, mtls, sandbox, googledomain = m.groups()
+        if mtls or not googledomain:
+            return api_endpoint
+
+        if sandbox:
+            return api_endpoint.replace(
+                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
+            )
+
+        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
+
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = StorageClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = StorageClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = StorageClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = StorageClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = "storage.googleapis.com"
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
+        DEFAULT_ENDPOINT
+    )
 
-    bucket_path = staticmethod(StorageClient.bucket_path)
-    parse_bucket_path = staticmethod(StorageClient.parse_bucket_path)
-    crypto_key_path = staticmethod(StorageClient.crypto_key_path)
-    parse_crypto_key_path = staticmethod(StorageClient.parse_crypto_key_path)
-    common_billing_account_path = staticmethod(
-        StorageClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        StorageClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(StorageClient.common_folder_path)
-    parse_common_folder_path = staticmethod(StorageClient.parse_common_folder_path)
-    common_organization_path = staticmethod(StorageClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        StorageClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(StorageClient.common_project_path)
-    parse_common_project_path = staticmethod(StorageClient.parse_common_project_path)
-    common_location_path = staticmethod(StorageClient.common_location_path)
-    parse_common_location_path = staticmethod(StorageClient.parse_common_location_path)
+    _DEFAULT_ENDPOINT_TEMPLATE = "storage.{UNIVERSE_DOMAIN}"
+    _DEFAULT_UNIVERSE = "googleapis.com"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -139,9 +188,11 @@ class StorageAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            StorageAsyncClient: The constructed client.
+            StorageClient: The constructed client.
         """
-        return StorageClient.from_service_account_info.__func__(StorageAsyncClient, info, *args, **kwargs)  # type: ignore
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -155,17 +206,147 @@ class StorageAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            StorageAsyncClient: The constructed client.
+            StorageClient: The constructed client.
         """
-        return StorageClient.from_service_account_file.__func__(StorageAsyncClient, filename, *args, **kwargs)  # type: ignore
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> StorageTransport:
+        """Returns the transport used by the client instance.
+
+        Returns:
+            StorageTransport: The transport used by the client
+                instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def bucket_path(
+        project: str,
+        bucket: str,
+    ) -> str:
+        """Returns a fully-qualified bucket string."""
+        return "projects/{project}/buckets/{bucket}".format(
+            project=project,
+            bucket=bucket,
+        )
+
+    @staticmethod
+    def parse_bucket_path(path: str) -> Dict[str, str]:
+        """Parses a bucket path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/buckets/(?P<bucket>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def crypto_key_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
+        """Returns a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(
+        folder: str,
+    ) -> str:
+        """Returns a fully-qualified folder string."""
+        return "folders/{folder}".format(
+            folder=folder,
+        )
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(
+        organization: str,
+    ) -> str:
+        """Returns a fully-qualified organization string."""
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(
+        project: str,
+    ) -> str:
+        """Returns a fully-qualified project string."""
+        return "projects/{project}".format(
+            project=project,
+        )
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
+        """Returns a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project,
+            location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     @classmethod
     def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
+        cls, client_options: Optional[client_options_lib.ClientOptions] = None
     ):
-        """Return the API endpoint and client cert source for mutual TLS.
+        """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
         (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
@@ -195,16 +376,190 @@ class StorageAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return StorageClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
-    @property
-    def transport(self) -> StorageTransport:
-        """Returns the transport used by the client instance.
+        warnings.warn(
+            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning,
+        )
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
+
+        # Figure out the client cert source to use.
+        client_cert_source = None
+        if use_client_cert == "true":
+            if client_options.client_cert_source:
+                client_cert_source = client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = cls.DEFAULT_ENDPOINT
+
+        return api_endpoint, client_cert_source
+
+    @staticmethod
+    def _read_environment_variables():
+        """Returns the environment variables used by the client.
 
         Returns:
-            StorageTransport: The transport used by the client instance.
+            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
+
+        Raises:
+            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+                any of ["true", "false"].
+            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
+                is not any of ["auto", "never", "always"].
         """
-        return self._client.transport
+        use_client_cert = os.getenv(
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
+        ).lower()
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
+        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+
+    @staticmethod
+    def _get_client_cert_source(provided_cert_source, use_cert_flag):
+        """Return the client cert source to be used by the client.
+
+        Args:
+            provided_cert_source (bytes): The client certificate source provided.
+            use_cert_flag (bool): A flag indicating whether to use the client certificate.
+
+        Returns:
+            bytes or None: The client cert source to be used by the client.
+        """
+        client_cert_source = None
+        if use_cert_flag:
+            if provided_cert_source:
+                client_cert_source = provided_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+        return client_cert_source
+
+    @staticmethod
+    def _get_api_endpoint(
+        api_override, client_cert_source, universe_domain, use_mtls_endpoint
+    ):
+        """Return the API endpoint used by the client.
+
+        Args:
+            api_override (str): The API endpoint override. If specified, this is always
+                the return value of this function and the other arguments are not used.
+            client_cert_source (bytes): The client certificate source used by the client.
+            universe_domain (str): The universe domain used by the client.
+            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
+                Possible values are "always", "auto", or "never".
+
+        Returns:
+            str: The API endpoint to be used by the client.
+        """
+        if api_override is not None:
+            api_endpoint = api_override
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
+            _default_universe = StorageClient._DEFAULT_UNIVERSE
+            if universe_domain != _default_universe:
+                raise MutualTLSChannelError(
+                    f"mTLS is not supported in any universe other than {_default_universe}."
+                )
+            api_endpoint = StorageClient.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = StorageClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=universe_domain
+            )
+        return api_endpoint
+
+    @staticmethod
+    def _get_universe_domain(
+        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
+    ) -> str:
+        """Return the universe domain used by the client.
+
+        Args:
+            client_universe_domain (Optional[str]): The universe domain configured via the client options.
+            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
+
+        Returns:
+            str: The universe domain to be used by the client.
+
+        Raises:
+            ValueError: If the universe domain is an empty string.
+        """
+        universe_domain = StorageClient._DEFAULT_UNIVERSE
+        if client_universe_domain is not None:
+            universe_domain = client_universe_domain
+        elif universe_domain_env is not None:
+            universe_domain = universe_domain_env
+        if len(universe_domain.strip()) == 0:
+            raise ValueError("Universe Domain cannot be an empty string.")
+        return universe_domain
+
+    def _validate_universe_domain(self):
+        """Validates client's and credentials' universe domains are consistent.
+
+        Returns:
+            bool: True iff the configured universe domain is valid.
+
+        Raises:
+            ValueError: If the configured universe domain is not valid.
+        """
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        return True
+
+    def _add_cred_info_for_auth_errors(
+        self, error: core_exceptions.GoogleAPICallError
+    ) -> None:
+        """Adds credential info string to error details for 401/403/404 errors.
+
+        Args:
+            error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
+        """
+        if error.code not in [
+            HTTPStatus.UNAUTHORIZED,
+            HTTPStatus.FORBIDDEN,
+            HTTPStatus.NOT_FOUND,
+        ]:
+            return
+
+        cred = self._transport._credentials
+
+        # get_cred_info is only available in google-auth>=2.35.0
+        if not hasattr(cred, "get_cred_info"):
+            return
+
+        # ignore the type check since pypy test fails when get_cred_info
+        # is not available
+        cred_info = cred.get_cred_info()  # type: ignore
+        if cred_info and hasattr(error._details, "append"):
+            error._details.append(json.dumps(cred_info))
 
     @property
     def api_endpoint(self):
@@ -213,19 +568,16 @@ class StorageAsyncClient:
         Returns:
             str: The API endpoint used by the client instance.
         """
-        return self._client._api_endpoint
+        return self._api_endpoint
 
     @property
     def universe_domain(self) -> str:
         """Return the universe domain used by the client instance.
 
         Returns:
-            str: The universe domain used
-                by the client instance.
+            str: The universe domain used by the client instance.
         """
-        return self._client._universe_domain
-
-    get_transport_class = StorageClient.get_transport_class
+        return self._universe_domain
 
     def __init__(
         self,
@@ -233,11 +585,11 @@ class StorageAsyncClient:
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
             Union[str, StorageTransport, Callable[..., StorageTransport]]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
+        ] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the storage async client.
+        """Instantiates the storage client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -246,7 +598,7 @@ class StorageAsyncClient:
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
             transport (Optional[Union[str,StorageTransport,Callable[..., StorageTransport]]]):
-                The transport to use, or a Callable that constructs and returns a new transport to use.
+                The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
                 arguments as used in the StorageTransport constructor.
                 If set to None, a transport is chosen automatically.
@@ -272,7 +624,7 @@ class StorageAsyncClient:
                 set, no client certificate will be used.
 
                 3. The ``universe_domain`` property can be used to override the
-                default "googleapis.com" universe. Note that ``api_endpoint``
+                default "googleapis.com" universe. Note that the ``api_endpoint``
                 property still takes precedence; and ``universe_domain`` is
                 currently not supported for mTLS.
 
@@ -283,39 +635,126 @@ class StorageAsyncClient:
                 your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = StorageClient(
-            credentials=credentials,
-            transport=transport,
-            client_options=client_options,
-            client_info=client_info,
+        self._client_options = client_options
+        if isinstance(self._client_options, dict):
+            self._client_options = client_options_lib.from_dict(self._client_options)
+        if self._client_options is None:
+            self._client_options = client_options_lib.ClientOptions()
+        self._client_options = cast(
+            client_options_lib.ClientOptions, self._client_options
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
-            _LOGGER.debug(
-                "Created client `google.storage_v2.StorageAsyncClient`.",
-                extra={
-                    "serviceName": "google.storage.v2.Storage",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
-                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
-                    "serviceName": "google.storage.v2.Storage",
-                    "credentialsType": None,
-                },
+        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
+
+        (
+            self._use_client_cert,
+            self._use_mtls_endpoint,
+            self._universe_domain_env,
+        ) = StorageClient._read_environment_variables()
+        self._client_cert_source = StorageClient._get_client_cert_source(
+            self._client_options.client_cert_source, self._use_client_cert
+        )
+        self._universe_domain = StorageClient._get_universe_domain(
+            universe_domain_opt, self._universe_domain_env
+        )
+        self._api_endpoint = None  # updated below, depending on `transport`
+
+        # Initialize the universe domain validation.
+        self._is_universe_domain_valid = False
+
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
+            # Setup logging.
+            client_logging.initialize_logging()
+
+        api_key_value = getattr(self._client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError(
+                "client_options.api_key and credentials are mutually exclusive"
             )
 
-    async def delete_bucket(
+        # Save or instantiate the transport.
+        # Ordinarily, we provide the transport, but allowing a custom transport
+        # instance provides an extensibility point for unusual situations.
+        transport_provided = isinstance(transport, StorageTransport)
+        if transport_provided:
+            # transport is a StorageTransport instance.
+            if credentials or self._client_options.credentials_file or api_key_value:
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its credentials directly."
+                )
+            if self._client_options.scopes:
+                raise ValueError(
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
+                )
+            self._transport = cast(StorageTransport, transport)
+            self._api_endpoint = self._transport.host
+
+        self._api_endpoint = self._api_endpoint or StorageClient._get_api_endpoint(
+            self._client_options.api_endpoint,
+            self._client_cert_source,
+            self._universe_domain,
+            self._use_mtls_endpoint,
+        )
+
+        if not transport_provided:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(
+                google.auth._default, "get_api_key_credentials"
+            ):
+                credentials = google.auth._default.get_api_key_credentials(
+                    api_key_value
+                )
+
+            transport_init: Union[
+                Type[StorageTransport], Callable[..., StorageTransport]
+            ] = (
+                StorageClient.get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., StorageTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
+                credentials=credentials,
+                credentials_file=self._client_options.credentials_file,
+                host=self._api_endpoint,
+                scopes=self._client_options.scopes,
+                client_cert_source_for_mtls=self._client_cert_source,
+                quota_project_id=self._client_options.quota_project_id,
+                client_info=client_info,
+                always_use_jwt_access=True,
+                api_audience=self._client_options.api_audience,
+            )
+
+        if "async" not in str(self._transport):
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                std_logging.DEBUG
+            ):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Created client `google.storage_v2.StorageClient`.",
+                    extra={
+                        "serviceName": "google.storage.v2.Storage",
+                        "universeDomain": getattr(
+                            self._transport._credentials, "universe_domain", ""
+                        ),
+                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialsInfo": getattr(
+                            self.transport._credentials, "get_cred_info", lambda: None
+                        )(),
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
+                        "serviceName": "google.storage.v2.Storage",
+                        "credentialsType": None,
+                    },
+                )
+
+    def delete_bucket(
         self,
         request: Optional[Union[storage.DeleteBucketRequest, dict]] = None,
         *,
@@ -337,9 +776,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_delete_bucket():
+            def sample_delete_bucket():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.DeleteBucketRequest(
@@ -347,17 +786,17 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                await client.delete_bucket(request=request)
+                client.delete_bucket(request=request)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.DeleteBucketRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.DeleteBucketRequest, dict]):
                 The request object. Request message for DeleteBucket.
-            name (:class:`str`):
+            name (str):
                 Required. Name of a bucket to delete.
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -382,17 +821,14 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.DeleteBucketRequest):
             request = storage.DeleteBucketRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_bucket
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_bucket]
 
         header_params = {}
 
@@ -407,17 +843,17 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    async def get_bucket(
+    def get_bucket(
         self,
         request: Optional[Union[storage.GetBucketRequest, dict]] = None,
         *,
@@ -439,9 +875,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_get_bucket():
+            def sample_get_bucket():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.GetBucketRequest(
@@ -449,20 +885,20 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.get_bucket(request=request)
+                response = client.get_bucket(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.GetBucketRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.GetBucketRequest, dict]):
                 The request object. Request message for GetBucket.
-            name (:class:`str`):
+            name (str):
                 Required. Name of a bucket.
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -471,7 +907,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.Bucket:
+            google.cloud._storage_v2.types.Bucket:
                 A bucket.
         """
         # Create or coerce a protobuf request object.
@@ -491,17 +927,14 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.GetBucketRequest):
             request = storage.GetBucketRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_bucket
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.get_bucket]
 
         header_params = {}
 
@@ -516,10 +949,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -529,7 +962,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_bucket(
+    def create_bucket(
         self,
         request: Optional[Union[storage.CreateBucketRequest, dict]] = None,
         *,
@@ -553,9 +986,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_create_bucket():
+            def sample_create_bucket():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.CreateBucketRequest(
@@ -564,15 +997,15 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.create_bucket(request=request)
+                response = client.create_bucket(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.CreateBucketRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.CreateBucketRequest, dict]):
                 The request object. Request message for CreateBucket.
-            parent (:class:`str`):
+            parent (str):
                 Required. The project to which this bucket will belong.
                 This field must either be empty or ``projects/_``. The
                 project ID that owns this bucket should be specified in
@@ -581,7 +1014,7 @@ class StorageAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            bucket (:class:`google.cloud.storage_v2.types.Bucket`):
+            bucket (google.cloud._storage_v2.types.Bucket):
                 Optional. Properties of the new bucket being inserted.
                 The name of the bucket is specified in the ``bucket_id``
                 field. Populating ``bucket.name`` field will result in
@@ -595,7 +1028,7 @@ class StorageAsyncClient:
                 This corresponds to the ``bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            bucket_id (:class:`str`):
+            bucket_id (str):
                 Required. The ID to use for this bucket, which will
                 become the final component of the bucket's resource
                 name. For example, the value ``foo`` might result in a
@@ -604,7 +1037,7 @@ class StorageAsyncClient:
                 This corresponds to the ``bucket_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -613,7 +1046,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.Bucket:
+            google.cloud._storage_v2.types.Bucket:
                 A bucket.
         """
         # Create or coerce a protobuf request object.
@@ -633,21 +1066,18 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.CreateBucketRequest):
             request = storage.CreateBucketRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-        if bucket is not None:
-            request.bucket = bucket
-        if bucket_id is not None:
-            request.bucket_id = bucket_id
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if bucket is not None:
+                request.bucket = bucket
+            if bucket_id is not None:
+                request.bucket_id = bucket_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_bucket
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.create_bucket]
 
         header_params = {}
 
@@ -667,10 +1097,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -680,7 +1110,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_buckets(
+    def list_buckets(
         self,
         request: Optional[Union[storage.ListBucketsRequest, dict]] = None,
         *,
@@ -688,7 +1118,7 @@ class StorageAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListBucketsAsyncPager:
+    ) -> pagers.ListBucketsPager:
         r"""Retrieves a list of buckets for a given project.
 
         .. code-block:: python
@@ -702,9 +1132,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_list_buckets():
+            def sample_list_buckets():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.ListBucketsRequest(
@@ -715,20 +1145,20 @@ class StorageAsyncClient:
                 page_result = client.list_buckets(request=request)
 
                 # Handle the response
-                async for response in page_result:
+                for response in page_result:
                     print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.ListBucketsRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.ListBucketsRequest, dict]):
                 The request object. Request message for ListBuckets.
-            parent (:class:`str`):
+            parent (str):
                 Required. The project whose buckets
                 we are listing.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -737,7 +1167,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.services.storage.pagers.ListBucketsAsyncPager:
+            google.cloud._storage_v2.services.storage.pagers.ListBucketsPager:
                 The result of a call to
                 Buckets.ListBuckets
                 Iterating over this object will yield
@@ -762,17 +1192,14 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.ListBucketsRequest):
             request = storage.ListBucketsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_buckets
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_buckets]
 
         header_params = {}
 
@@ -787,10 +1214,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -798,8 +1225,8 @@ class StorageAsyncClient:
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListBucketsAsyncPager(
+        # an `__iter__` convenience method.
+        response = pagers.ListBucketsPager(
             method=rpc,
             request=request,
             response=response,
@@ -811,7 +1238,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def lock_bucket_retention_policy(
+    def lock_bucket_retention_policy(
         self,
         request: Optional[Union[storage.LockBucketRetentionPolicyRequest, dict]] = None,
         *,
@@ -833,9 +1260,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_lock_bucket_retention_policy():
+            def sample_lock_bucket_retention_policy():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.LockBucketRetentionPolicyRequest(
@@ -844,21 +1271,21 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.lock_bucket_retention_policy(request=request)
+                response = client.lock_bucket_retention_policy(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.LockBucketRetentionPolicyRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.LockBucketRetentionPolicyRequest, dict]):
                 The request object. Request message for
                 LockBucketRetentionPolicyRequest.
-            bucket (:class:`str`):
+            bucket (str):
                 Required. Name of a bucket.
                 This corresponds to the ``bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -867,7 +1294,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.Bucket:
+            google.cloud._storage_v2.types.Bucket:
                 A bucket.
         """
         # Create or coerce a protobuf request object.
@@ -887,16 +1314,15 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.LockBucketRetentionPolicyRequest):
             request = storage.LockBucketRetentionPolicyRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if bucket is not None:
-            request.bucket = bucket
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if bucket is not None:
+                request.bucket = bucket
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.lock_bucket_retention_policy
+        rpc = self._transport._wrapped_methods[
+            self._transport.lock_bucket_retention_policy
         ]
 
         header_params = {}
@@ -912,10 +1338,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -925,7 +1351,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_iam_policy(
+    def get_iam_policy(
         self,
         request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
@@ -952,9 +1378,9 @@ class StorageAsyncClient:
             from google.cloud import storage_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            async def sample_get_iam_policy():
+            def sample_get_iam_policy():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -962,15 +1388,15 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.get_iam_policy(request=request)
+                response = client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for ``GetIamPolicy`` method.
-            resource (:class:`str`):
+            resource (str):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
                 operation documentation for the
@@ -979,7 +1405,7 @@ class StorageAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1034,18 +1460,19 @@ class StorageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        # - The request isn't a proto-plus wrapped type,
-        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+            # Null request, just make one.
+            request = iam_policy_pb2.GetIamPolicyRequest()
+            if resource is not None:
+                request.resource = resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_iam_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
 
         header_params = {}
 
@@ -1067,10 +1494,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1080,7 +1507,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def set_iam_policy(
+    def set_iam_policy(
         self,
         request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
@@ -1107,9 +1534,9 @@ class StorageAsyncClient:
             from google.cloud import storage_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            async def sample_set_iam_policy():
+            def sample_set_iam_policy():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1117,15 +1544,15 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.set_iam_policy(request=request)
+                response = client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for ``SetIamPolicy`` method.
-            resource (:class:`str`):
+            resource (str):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
                 operation documentation for the
@@ -1134,7 +1561,7 @@ class StorageAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1189,18 +1616,19 @@ class StorageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        # - The request isn't a proto-plus wrapped type,
-        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy_pb2.SetIamPolicyRequest(resource=resource)
+            # Null request, just make one.
+            request = iam_policy_pb2.SetIamPolicyRequest()
+            if resource is not None:
+                request.resource = resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_iam_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
 
         header_params = {}
 
@@ -1222,10 +1650,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1235,7 +1663,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def test_iam_permissions(
+    def test_iam_permissions(
         self,
         request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
@@ -1266,9 +1694,9 @@ class StorageAsyncClient:
             from google.cloud import storage_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            async def sample_test_iam_permissions():
+            def sample_test_iam_permissions():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1277,15 +1705,15 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.test_iam_permissions(request=request)
+                response = client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for ``TestIamPermissions`` method.
-            resource (:class:`str`):
+            resource (str):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See
                 the operation documentation for the
@@ -1294,7 +1722,7 @@ class StorageAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`MutableSequence[str]`):
+            permissions (MutableSequence[str]):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
@@ -1303,7 +1731,7 @@ class StorageAsyncClient:
                 This corresponds to the ``permissions`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1328,20 +1756,21 @@ class StorageAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        # - The request isn't a proto-plus wrapped type,
-        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
-            request = iam_policy_pb2.TestIamPermissionsRequest(
-                resource=resource, permissions=permissions
-            )
+            # Null request, just make one.
+            request = iam_policy_pb2.TestIamPermissionsRequest()
+            if resource is not None:
+                request.resource = resource
+            if permissions:
+                request.permissions.extend(permissions)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
 
         header_params = {}
 
@@ -1370,10 +1799,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1383,7 +1812,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_bucket(
+    def update_bucket(
         self,
         request: Optional[Union[storage.UpdateBucketRequest, dict]] = None,
         *,
@@ -1407,31 +1836,31 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_update_bucket():
+            def sample_update_bucket():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.UpdateBucketRequest(
                 )
 
                 # Make the request
-                response = await client.update_bucket(request=request)
+                response = client.update_bucket(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.UpdateBucketRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.UpdateBucketRequest, dict]):
                 The request object. Request for UpdateBucket method.
-            bucket (:class:`google.cloud.storage_v2.types.Bucket`):
+            bucket (google.cloud._storage_v2.types.Bucket):
                 Required. The bucket to update. The bucket's ``name``
                 field will be used to identify the bucket.
 
                 This corresponds to the ``bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. List of fields to be updated.
 
                 To specify ALL fields, equivalent to the JSON API's
@@ -1446,7 +1875,7 @@ class StorageAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1455,7 +1884,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.Bucket:
+            google.cloud._storage_v2.types.Bucket:
                 A bucket.
         """
         # Create or coerce a protobuf request object.
@@ -1475,19 +1904,16 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.UpdateBucketRequest):
             request = storage.UpdateBucketRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if bucket is not None:
-            request.bucket = bucket
-        if update_mask is not None:
-            request.update_mask = update_mask
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if bucket is not None:
+                request.bucket = bucket
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_bucket
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_bucket]
 
         header_params = {}
 
@@ -1502,10 +1928,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1515,7 +1941,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def compose_object(
+    def compose_object(
         self,
         request: Optional[Union[storage.ComposeObjectRequest, dict]] = None,
         *,
@@ -1537,24 +1963,24 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_compose_object():
+            def sample_compose_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.ComposeObjectRequest(
                 )
 
                 # Make the request
-                response = await client.compose_object(request=request)
+                response = client.compose_object(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.ComposeObjectRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.ComposeObjectRequest, dict]):
                 The request object. Request message for ComposeObject.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1563,7 +1989,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.Object:
+            google.cloud._storage_v2.types.Object:
                 An object.
         """
         # Create or coerce a protobuf request object.
@@ -1574,9 +2000,7 @@ class StorageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.compose_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.compose_object]
 
         header_params = {}
 
@@ -1591,10 +2015,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1604,7 +2028,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_object(
+    def delete_object(
         self,
         request: Optional[Union[storage.DeleteObjectRequest, dict]] = None,
         *,
@@ -1649,9 +2073,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_delete_object():
+            def sample_delete_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.DeleteObjectRequest(
@@ -1660,20 +2084,20 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                await client.delete_object(request=request)
+                client.delete_object(request=request)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.DeleteObjectRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.DeleteObjectRequest, dict]):
                 The request object. Message for deleting an object. ``bucket`` and
                 ``object`` **must** be set.
-            bucket (:class:`str`):
+            bucket (str):
                 Required. Name of the bucket in which
                 the object resides.
 
                 This corresponds to the ``bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            object_ (:class:`str`):
+            object_ (str):
                 Required. The name of the finalized object to delete.
                 Note: If you want to delete an unfinalized resumable
                 upload please use ``CancelResumableWrite``.
@@ -1681,7 +2105,7 @@ class StorageAsyncClient:
                 This corresponds to the ``object_`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            generation (:class:`int`):
+            generation (int):
                 Optional. If present, permanently
                 deletes a specific revision of this
                 object (as opposed to the latest
@@ -1690,7 +2114,7 @@ class StorageAsyncClient:
                 This corresponds to the ``generation`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1715,21 +2139,18 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.DeleteObjectRequest):
             request = storage.DeleteObjectRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if bucket is not None:
-            request.bucket = bucket
-        if object_ is not None:
-            request.object_ = object_
-        if generation is not None:
-            request.generation = generation
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if bucket is not None:
+                request.bucket = bucket
+            if object_ is not None:
+                request.object_ = object_
+            if generation is not None:
+                request.generation = generation
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_object]
 
         header_params = {}
 
@@ -1744,17 +2165,17 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    async def restore_object(
+    def restore_object(
         self,
         request: Optional[Union[storage.RestoreObjectRequest, dict]] = None,
         *,
@@ -1778,9 +2199,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_restore_object():
+            def sample_restore_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.RestoreObjectRequest(
@@ -1790,37 +2211,37 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.restore_object(request=request)
+                response = client.restore_object(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.RestoreObjectRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.RestoreObjectRequest, dict]):
                 The request object. Message for restoring an object. ``bucket``, ``object``,
                 and ``generation`` **must** be set.
-            bucket (:class:`str`):
+            bucket (str):
                 Required. Name of the bucket in which
                 the object resides.
 
                 This corresponds to the ``bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            object_ (:class:`str`):
+            object_ (str):
                 Required. The name of the object to
                 restore.
 
                 This corresponds to the ``object_`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            generation (:class:`int`):
+            generation (int):
                 Required. The specific revision of
                 the object to restore.
 
                 This corresponds to the ``generation`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1829,7 +2250,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.Object:
+            google.cloud._storage_v2.types.Object:
                 An object.
         """
         # Create or coerce a protobuf request object.
@@ -1849,21 +2270,18 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.RestoreObjectRequest):
             request = storage.RestoreObjectRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if bucket is not None:
-            request.bucket = bucket
-        if object_ is not None:
-            request.object_ = object_
-        if generation is not None:
-            request.generation = generation
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if bucket is not None:
+                request.bucket = bucket
+            if object_ is not None:
+                request.object_ = object_
+            if generation is not None:
+                request.generation = generation
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.restore_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.restore_object]
 
         header_params = {}
 
@@ -1878,10 +2296,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1891,7 +2309,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def cancel_resumable_write(
+    def cancel_resumable_write(
         self,
         request: Optional[Union[storage.CancelResumableWriteRequest, dict]] = None,
         *,
@@ -1921,9 +2339,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_cancel_resumable_write():
+            def sample_cancel_resumable_write():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.CancelResumableWriteRequest(
@@ -1931,16 +2349,16 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.cancel_resumable_write(request=request)
+                response = client.cancel_resumable_write(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.CancelResumableWriteRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.CancelResumableWriteRequest, dict]):
                 The request object. Message for canceling an in-progress resumable upload.
                 ``upload_id`` **must** be set.
-            upload_id (:class:`str`):
+            upload_id (str):
                 Required. The upload_id of the resumable upload to
                 cancel. This should be copied from the ``upload_id``
                 field of ``StartResumableWriteResponse``.
@@ -1948,7 +2366,7 @@ class StorageAsyncClient:
                 This corresponds to the ``upload_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1957,7 +2375,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.CancelResumableWriteResponse:
+            google.cloud._storage_v2.types.CancelResumableWriteResponse:
                 Empty response message for canceling
                 an in-progress resumable upload, will be
                 extended as needed.
@@ -1980,17 +2398,14 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.CancelResumableWriteRequest):
             request = storage.CancelResumableWriteRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if upload_id is not None:
-            request.upload_id = upload_id
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if upload_id is not None:
+                request.upload_id = upload_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.cancel_resumable_write
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.cancel_resumable_write]
 
         header_params = {}
 
@@ -2007,10 +2422,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2020,7 +2435,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_object(
+    def get_object(
         self,
         request: Optional[Union[storage.GetObjectRequest, dict]] = None,
         *,
@@ -2051,9 +2466,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_get_object():
+            def sample_get_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.GetObjectRequest(
@@ -2062,27 +2477,27 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.get_object(request=request)
+                response = client.get_object(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.GetObjectRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.GetObjectRequest, dict]):
                 The request object. Request message for GetObject.
-            bucket (:class:`str`):
+            bucket (str):
                 Required. Name of the bucket in which
                 the object resides.
 
                 This corresponds to the ``bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            object_ (:class:`str`):
+            object_ (str):
                 Required. Name of the object.
                 This corresponds to the ``object_`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            generation (:class:`int`):
+            generation (int):
                 Optional. If present, selects a
                 specific revision of this object (as
                 opposed to the latest version, the
@@ -2091,7 +2506,7 @@ class StorageAsyncClient:
                 This corresponds to the ``generation`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2100,7 +2515,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.Object:
+            google.cloud._storage_v2.types.Object:
                 An object.
         """
         # Create or coerce a protobuf request object.
@@ -2120,21 +2535,18 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.GetObjectRequest):
             request = storage.GetObjectRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if bucket is not None:
-            request.bucket = bucket
-        if object_ is not None:
-            request.object_ = object_
-        if generation is not None:
-            request.generation = generation
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if bucket is not None:
+                request.bucket = bucket
+            if object_ is not None:
+                request.object_ = object_
+            if generation is not None:
+                request.generation = generation
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.get_object]
 
         header_params = {}
 
@@ -2149,10 +2561,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2172,7 +2584,7 @@ class StorageAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> Awaitable[AsyncIterable[storage.ReadObjectResponse]]:
+    ) -> Iterable[storage.ReadObjectResponse]:
         r"""Retrieves object data.
 
         **IAM Permissions**:
@@ -2192,9 +2604,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_read_object():
+            def sample_read_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.ReadObjectRequest(
@@ -2203,30 +2615,30 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                stream = await client.read_object(request=request)
+                stream = client.read_object(request=request)
 
                 # Handle the response
-                async for response in stream:
+                for response in stream:
                     print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.ReadObjectRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.ReadObjectRequest, dict]):
                 The request object. Request message for ReadObject.
-            bucket (:class:`str`):
+            bucket (str):
                 Required. The name of the bucket
                 containing the object to read.
 
                 This corresponds to the ``bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            object_ (:class:`str`):
+            object_ (str):
                 Required. The name of the object to
                 read.
 
                 This corresponds to the ``object_`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            generation (:class:`int`):
+            generation (int):
                 Optional. If present, selects a
                 specific revision of this object (as
                 opposed to the latest version, the
@@ -2235,7 +2647,7 @@ class StorageAsyncClient:
                 This corresponds to the ``generation`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2244,7 +2656,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            AsyncIterable[google.cloud.storage_v2.types.ReadObjectResponse]:
+            Iterable[google.cloud._storage_v2.types.ReadObjectResponse]:
                 Response message for ReadObject.
         """
         # Create or coerce a protobuf request object.
@@ -2264,21 +2676,18 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.ReadObjectRequest):
             request = storage.ReadObjectRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if bucket is not None:
-            request.bucket = bucket
-        if object_ is not None:
-            request.object_ = object_
-        if generation is not None:
-            request.generation = generation
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if bucket is not None:
+                request.bucket = bucket
+            if object_ is not None:
+                request.object_ = object_
+            if generation is not None:
+                request.generation = generation
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.read_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.read_object]
 
         header_params = {}
 
@@ -2293,7 +2702,7 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -2308,12 +2717,12 @@ class StorageAsyncClient:
 
     def bidi_read_object(
         self,
-        requests: Optional[AsyncIterator[storage.BidiReadObjectRequest]] = None,
+        requests: Optional[Iterator[storage.BidiReadObjectRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> Awaitable[AsyncIterable[storage.BidiReadObjectResponse]]:
+    ) -> Iterable[storage.BidiReadObjectResponse]:
         r"""Reads an object's data.
 
         This is a bi-directional API with the added support for reading
@@ -2347,9 +2756,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_bidi_read_object():
+            def sample_bidi_read_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.BidiReadObjectRequest(
@@ -2366,16 +2775,16 @@ class StorageAsyncClient:
                         yield request
 
                 # Make the request
-                stream = await client.bidi_read_object(requests=request_generator())
+                stream = client.bidi_read_object(requests=request_generator())
 
                 # Handle the response
-                async for response in stream:
+                for response in stream:
                     print(response)
 
         Args:
-            requests (AsyncIterator[`google.cloud.storage_v2.types.BidiReadObjectRequest`]):
-                The request object AsyncIterator. Request message for BidiReadObject.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            requests (Iterator[google.cloud._storage_v2.types.BidiReadObjectRequest]):
+                The request object iterator. Request message for BidiReadObject.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2384,15 +2793,13 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            AsyncIterable[google.cloud.storage_v2.types.BidiReadObjectResponse]:
+            Iterable[google.cloud._storage_v2.types.BidiReadObjectResponse]:
                 Response message for BidiReadObject.
         """
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.bidi_read_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.bidi_read_object]
 
         header_params = {}
 
@@ -2402,7 +2809,7 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -2415,7 +2822,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_object(
+    def update_object(
         self,
         request: Optional[Union[storage.UpdateObjectRequest, dict]] = None,
         *,
@@ -2439,24 +2846,24 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_update_object():
+            def sample_update_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.UpdateObjectRequest(
                 )
 
                 # Make the request
-                response = await client.update_object(request=request)
+                response = client.update_object(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.UpdateObjectRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.UpdateObjectRequest, dict]):
                 The request object. Request message for UpdateObject.
-            object_ (:class:`google.cloud.storage_v2.types.Object`):
+            object_ (google.cloud._storage_v2.types.Object):
                 Required. The object to update.
                 The object's bucket and name fields are
                 used to identify the object to update.
@@ -2469,7 +2876,7 @@ class StorageAsyncClient:
                 This corresponds to the ``object_`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. List of fields to be updated.
 
                 To specify ALL fields, equivalent to the JSON API's
@@ -2484,7 +2891,7 @@ class StorageAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2493,7 +2900,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.Object:
+            google.cloud._storage_v2.types.Object:
                 An object.
         """
         # Create or coerce a protobuf request object.
@@ -2513,19 +2920,16 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.UpdateObjectRequest):
             request = storage.UpdateObjectRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if object_ is not None:
-            request.object_ = object_
-        if update_mask is not None:
-            request.update_mask = update_mask
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if object_ is not None:
+                request.object_ = object_
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_object]
 
         header_params = {}
 
@@ -2540,10 +2944,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2553,9 +2957,9 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def write_object(
+    def write_object(
         self,
-        requests: Optional[AsyncIterator[storage.WriteObjectRequest]] = None,
+        requests: Optional[Iterator[storage.WriteObjectRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2647,9 +3051,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_write_object():
+            def sample_write_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.WriteObjectRequest(
@@ -2668,15 +3072,15 @@ class StorageAsyncClient:
                         yield request
 
                 # Make the request
-                response = await client.write_object(requests=request_generator())
+                response = client.write_object(requests=request_generator())
 
                 # Handle the response
                 print(response)
 
         Args:
-            requests (AsyncIterator[`google.cloud.storage_v2.types.WriteObjectRequest`]):
-                The request object AsyncIterator. Request message for WriteObject.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            requests (Iterator[google.cloud._storage_v2.types.WriteObjectRequest]):
+                The request object iterator. Request message for WriteObject.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2685,21 +3089,19 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.WriteObjectResponse:
+            google.cloud._storage_v2.types.WriteObjectResponse:
                 Response message for WriteObject.
         """
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.write_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.write_object]
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             requests,
             retry=retry,
             timeout=timeout,
@@ -2711,12 +3113,12 @@ class StorageAsyncClient:
 
     def bidi_write_object(
         self,
-        requests: Optional[AsyncIterator[storage.BidiWriteObjectRequest]] = None,
+        requests: Optional[Iterator[storage.BidiWriteObjectRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> Awaitable[AsyncIterable[storage.BidiWriteObjectResponse]]:
+    ) -> Iterable[storage.BidiWriteObjectResponse]:
         r"""Stores a new object and metadata.
 
         This is similar to the WriteObject call with the added support
@@ -2746,9 +3148,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_bidi_write_object():
+            def sample_bidi_write_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.BidiWriteObjectRequest(
@@ -2767,16 +3169,16 @@ class StorageAsyncClient:
                         yield request
 
                 # Make the request
-                stream = await client.bidi_write_object(requests=request_generator())
+                stream = client.bidi_write_object(requests=request_generator())
 
                 # Handle the response
-                async for response in stream:
+                for response in stream:
                     print(response)
 
         Args:
-            requests (AsyncIterator[`google.cloud.storage_v2.types.BidiWriteObjectRequest`]):
-                The request object AsyncIterator. Request message for BidiWriteObject.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            requests (Iterator[google.cloud._storage_v2.types.BidiWriteObjectRequest]):
+                The request object iterator. Request message for BidiWriteObject.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2785,18 +3187,16 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            AsyncIterable[google.cloud.storage_v2.types.BidiWriteObjectResponse]:
+            Iterable[google.cloud._storage_v2.types.BidiWriteObjectResponse]:
                 Response message for BidiWriteObject.
         """
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.bidi_write_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.bidi_write_object]
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -2809,7 +3209,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_objects(
+    def list_objects(
         self,
         request: Optional[Union[storage.ListObjectsRequest, dict]] = None,
         *,
@@ -2817,7 +3217,7 @@ class StorageAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListObjectsAsyncPager:
+    ) -> pagers.ListObjectsPager:
         r"""Retrieves a list of objects matching the criteria.
 
         **IAM Permissions**:
@@ -2839,9 +3239,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_list_objects():
+            def sample_list_objects():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.ListObjectsRequest(
@@ -2852,20 +3252,20 @@ class StorageAsyncClient:
                 page_result = client.list_objects(request=request)
 
                 # Handle the response
-                async for response in page_result:
+                for response in page_result:
                     print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.ListObjectsRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.ListObjectsRequest, dict]):
                 The request object. Request message for ListObjects.
-            parent (:class:`str`):
+            parent (str):
                 Required. Name of the bucket in which
                 to look for objects.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2874,7 +3274,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.services.storage.pagers.ListObjectsAsyncPager:
+            google.cloud._storage_v2.services.storage.pagers.ListObjectsPager:
                 The result of a call to
                 Objects.ListObjects
                 Iterating over this object will yield
@@ -2899,17 +3299,14 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.ListObjectsRequest):
             request = storage.ListObjectsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_objects
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_objects]
 
         header_params = {}
 
@@ -2924,10 +3321,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2935,8 +3332,8 @@ class StorageAsyncClient:
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListObjectsAsyncPager(
+        # an `__iter__` convenience method.
+        response = pagers.ListObjectsPager(
             method=rpc,
             request=request,
             response=response,
@@ -2948,7 +3345,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def rewrite_object(
+    def rewrite_object(
         self,
         request: Optional[Union[storage.RewriteObjectRequest, dict]] = None,
         *,
@@ -2970,9 +3367,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_rewrite_object():
+            def sample_rewrite_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.RewriteObjectRequest(
@@ -2983,13 +3380,13 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.rewrite_object(request=request)
+                response = client.rewrite_object(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.RewriteObjectRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.RewriteObjectRequest, dict]):
                 The request object. Request message for RewriteObject. If the source object
                 is encrypted using a Customer-Supplied Encryption Key
                 the key information must be provided in the
@@ -3001,7 +3398,7 @@ class StorageAsyncClient:
                 encryption_algorithm, encryption_key_bytes, and
                 encryption_key_sha256_bytes fields of the
                 common_object_request_params.customer_encryption field.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3010,7 +3407,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.RewriteResponse:
+            google.cloud._storage_v2.types.RewriteResponse:
                 A rewrite response.
         """
         # Create or coerce a protobuf request object.
@@ -3021,9 +3418,7 @@ class StorageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.rewrite_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.rewrite_object]
 
         header_params = {}
 
@@ -3041,10 +3436,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -3054,7 +3449,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def start_resumable_write(
+    def start_resumable_write(
         self,
         request: Optional[Union[storage.StartResumableWriteRequest, dict]] = None,
         *,
@@ -3087,24 +3482,24 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_start_resumable_write():
+            def sample_start_resumable_write():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.StartResumableWriteRequest(
                 )
 
                 # Make the request
-                response = await client.start_resumable_write(request=request)
+                response = client.start_resumable_write(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.StartResumableWriteRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.StartResumableWriteRequest, dict]):
                 The request object. Request message StartResumableWrite.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3113,7 +3508,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.StartResumableWriteResponse:
+            google.cloud._storage_v2.types.StartResumableWriteResponse:
                 Response object for StartResumableWrite.
         """
         # Create or coerce a protobuf request object.
@@ -3124,9 +3519,7 @@ class StorageAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.start_resumable_write
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.start_resumable_write]
 
         header_params = {}
 
@@ -3143,10 +3536,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -3156,7 +3549,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def query_write_status(
+    def query_write_status(
         self,
         request: Optional[Union[storage.QueryWriteStatusRequest, dict]] = None,
         *,
@@ -3195,9 +3588,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_query_write_status():
+            def sample_query_write_status():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.QueryWriteStatusRequest(
@@ -3205,15 +3598,15 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.query_write_status(request=request)
+                response = client.query_write_status(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.QueryWriteStatusRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.QueryWriteStatusRequest, dict]):
                 The request object. Request object for ``QueryWriteStatus``.
-            upload_id (:class:`str`):
+            upload_id (str):
                 Required. The name of the resume
                 token for the object whose write status
                 is being requested.
@@ -3221,7 +3614,7 @@ class StorageAsyncClient:
                 This corresponds to the ``upload_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3230,7 +3623,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.QueryWriteStatusResponse:
+            google.cloud._storage_v2.types.QueryWriteStatusResponse:
                 Response object for QueryWriteStatus.
         """
         # Create or coerce a protobuf request object.
@@ -3250,17 +3643,14 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.QueryWriteStatusRequest):
             request = storage.QueryWriteStatusRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if upload_id is not None:
-            request.upload_id = upload_id
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if upload_id is not None:
+                request.upload_id = upload_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.query_write_status
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.query_write_status]
 
         header_params = {}
 
@@ -3277,10 +3667,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -3290,7 +3680,7 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def move_object(
+    def move_object(
         self,
         request: Optional[Union[storage.MoveObjectRequest, dict]] = None,
         *,
@@ -3315,9 +3705,9 @@ class StorageAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_v2
 
-            async def sample_move_object():
+            def sample_move_object():
                 # Create a client
-                client = storage_v2.StorageAsyncClient()
+                client = storage_v2.StorageClient()
 
                 # Initialize request argument(s)
                 request = storage_v2.MoveObjectRequest(
@@ -3327,34 +3717,34 @@ class StorageAsyncClient:
                 )
 
                 # Make the request
-                response = await client.move_object(request=request)
+                response = client.move_object(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.storage_v2.types.MoveObjectRequest, dict]]):
+            request (Union[google.cloud._storage_v2.types.MoveObjectRequest, dict]):
                 The request object. Request message for MoveObject.
-            bucket (:class:`str`):
+            bucket (str):
                 Required. Name of the bucket in which
                 the object resides.
 
                 This corresponds to the ``bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            source_object (:class:`str`):
+            source_object (str):
                 Required. Name of the source object.
                 This corresponds to the ``source_object`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            destination_object (:class:`str`):
+            destination_object (str):
                 Required. Name of the destination
                 object.
 
                 This corresponds to the ``destination_object`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -3363,7 +3753,7 @@ class StorageAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.storage_v2.types.Object:
+            google.cloud._storage_v2.types.Object:
                 An object.
         """
         # Create or coerce a protobuf request object.
@@ -3383,21 +3773,18 @@ class StorageAsyncClient:
         #   there are no flattened fields), or create one.
         if not isinstance(request, storage.MoveObjectRequest):
             request = storage.MoveObjectRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if bucket is not None:
-            request.bucket = bucket
-        if source_object is not None:
-            request.source_object = source_object
-        if destination_object is not None:
-            request.destination_object = destination_object
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if bucket is not None:
+                request.bucket = bucket
+            if source_object is not None:
+                request.source_object = source_object
+            if destination_object is not None:
+                request.destination_object = destination_object
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.move_object
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.move_object]
 
         header_params = {}
 
@@ -3412,10 +3799,10 @@ class StorageAsyncClient:
             )
 
         # Validate the universe domain.
-        self._client._validate_universe_domain()
+        self._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -3425,11 +3812,18 @@ class StorageAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "StorageAsyncClient":
+    def __enter__(self) -> "StorageClient":
         return self
 
-    async def __aexit__(self, exc_type, exc, tb):
-        await self.transport.close()
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -3439,5 +3833,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-
-__all__ = ("StorageAsyncClient",)
+__all__ = ("StorageClient",)

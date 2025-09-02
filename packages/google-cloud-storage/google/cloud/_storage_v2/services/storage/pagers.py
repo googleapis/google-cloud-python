@@ -37,14 +37,14 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.storage_v2.types import storage
+from google.cloud._storage_v2.types import storage
 
 
 class ListBucketsPager:
     """A pager for iterating through ``list_buckets`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.storage_v2.types.ListBucketsResponse` object, and
+    :class:`google.cloud._storage_v2.types.ListBucketsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``buckets`` field.
 
@@ -53,7 +53,7 @@ class ListBucketsPager:
     through the ``buckets`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.storage_v2.types.ListBucketsResponse`
+    All the usual :class:`google.cloud._storage_v2.types.ListBucketsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -73,9 +73,9 @@ class ListBucketsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.storage_v2.types.ListBucketsRequest):
+            request (google.cloud._storage_v2.types.ListBucketsRequest):
                 The initial request object.
-            response (google.cloud.storage_v2.types.ListBucketsResponse):
+            response (google.cloud._storage_v2.types.ListBucketsResponse):
                 The initial response object.
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
@@ -120,7 +120,7 @@ class ListBucketsAsyncPager:
     """A pager for iterating through ``list_buckets`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.storage_v2.types.ListBucketsResponse` object, and
+    :class:`google.cloud._storage_v2.types.ListBucketsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``buckets`` field.
 
@@ -129,7 +129,7 @@ class ListBucketsAsyncPager:
     through the ``buckets`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.storage_v2.types.ListBucketsResponse`
+    All the usual :class:`google.cloud._storage_v2.types.ListBucketsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -149,9 +149,9 @@ class ListBucketsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.storage_v2.types.ListBucketsRequest):
+            request (google.cloud._storage_v2.types.ListBucketsRequest):
                 The initial request object.
-            response (google.cloud.storage_v2.types.ListBucketsResponse):
+            response (google.cloud._storage_v2.types.ListBucketsResponse):
                 The initial response object.
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
@@ -200,7 +200,7 @@ class ListObjectsPager:
     """A pager for iterating through ``list_objects`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.storage_v2.types.ListObjectsResponse` object, and
+    :class:`google.cloud._storage_v2.types.ListObjectsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``objects`` field.
 
@@ -209,7 +209,7 @@ class ListObjectsPager:
     through the ``objects`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.storage_v2.types.ListObjectsResponse`
+    All the usual :class:`google.cloud._storage_v2.types.ListObjectsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -229,9 +229,9 @@ class ListObjectsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.storage_v2.types.ListObjectsRequest):
+            request (google.cloud._storage_v2.types.ListObjectsRequest):
                 The initial request object.
-            response (google.cloud.storage_v2.types.ListObjectsResponse):
+            response (google.cloud._storage_v2.types.ListObjectsResponse):
                 The initial response object.
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
@@ -276,7 +276,7 @@ class ListObjectsAsyncPager:
     """A pager for iterating through ``list_objects`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.storage_v2.types.ListObjectsResponse` object, and
+    :class:`google.cloud._storage_v2.types.ListObjectsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``objects`` field.
 
@@ -285,7 +285,7 @@ class ListObjectsAsyncPager:
     through the ``objects`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.storage_v2.types.ListObjectsResponse`
+    All the usual :class:`google.cloud._storage_v2.types.ListObjectsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -305,9 +305,9 @@ class ListObjectsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.storage_v2.types.ListObjectsRequest):
+            request (google.cloud._storage_v2.types.ListObjectsRequest):
                 The initial request object.
-            response (google.cloud.storage_v2.types.ListObjectsResponse):
+            response (google.cloud._storage_v2.types.ListObjectsResponse):
                 The initial response object.
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.

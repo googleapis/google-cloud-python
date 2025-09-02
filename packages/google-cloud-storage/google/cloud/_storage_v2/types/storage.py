@@ -184,7 +184,7 @@ class CreateBucketRequest(proto.Message):
             field must either be empty or ``projects/_``. The project ID
             that owns this bucket should be specified in the
             ``bucket.project`` field.
-        bucket (google.cloud.storage_v2.types.Bucket):
+        bucket (google.cloud._storage_v2.types.Bucket):
             Optional. Properties of the new bucket being inserted. The
             name of the bucket is specified in the ``bucket_id`` field.
             Populating ``bucket.name`` field will result in an error.
@@ -302,7 +302,7 @@ class ListBucketsResponse(proto.Message):
     r"""The result of a call to Buckets.ListBuckets
 
     Attributes:
-        buckets (MutableSequence[google.cloud.storage_v2.types.Bucket]):
+        buckets (MutableSequence[google.cloud._storage_v2.types.Bucket]):
             The list of items.
         next_page_token (str):
             The continuation token, used to page through
@@ -354,7 +354,7 @@ class UpdateBucketRequest(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        bucket (google.cloud.storage_v2.types.Bucket):
+        bucket (google.cloud._storage_v2.types.Bucket):
             Required. The bucket to update. The bucket's ``name`` field
             will be used to identify the bucket.
         if_metageneration_match (int):
@@ -427,9 +427,9 @@ class ComposeObjectRequest(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        destination (google.cloud.storage_v2.types.Object):
+        destination (google.cloud._storage_v2.types.Object):
             Required. Properties of the resulting object.
-        source_objects (MutableSequence[google.cloud.storage_v2.types.ComposeObjectRequest.SourceObject]):
+        source_objects (MutableSequence[google.cloud._storage_v2.types.ComposeObjectRequest.SourceObject]):
             Optional. The list of source objects that
             will be concatenated into a single object.
         destination_predefined_acl (str):
@@ -457,10 +457,10 @@ class ComposeObjectRequest(proto.Message):
             ``projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key``,
             that will be used to encrypt the object. Overrides the
             object metadata's ``kms_key_name`` value, if any.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
-        object_checksums (google.cloud.storage_v2.types.ObjectChecksums):
+        object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. The checksums of the complete
             object. This will be validated against the
             combined checksums of the component objects.
@@ -476,7 +476,7 @@ class ComposeObjectRequest(proto.Message):
             generation (int):
                 Optional. The generation of this object to
                 use as the source.
-            object_preconditions (google.cloud.storage_v2.types.ComposeObjectRequest.SourceObject.ObjectPreconditions):
+            object_preconditions (google.cloud._storage_v2.types.ComposeObjectRequest.SourceObject.ObjectPreconditions):
                 Optional. Conditions that must be met for
                 this operation to execute.
         """
@@ -605,7 +605,7 @@ class DeleteObjectRequest(proto.Message):
             match the given value.
 
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
     """
@@ -709,7 +709,7 @@ class RestoreObjectRequest(proto.Message):
             if bucket has UBLA enabled.
 
             This field is a member of `oneof`_ ``_copy_source_acl``.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
     """
@@ -851,7 +851,7 @@ class ReadObjectRequest(proto.Message):
             match the given value.
 
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -967,7 +967,7 @@ class GetObjectRequest(proto.Message):
             match the given value.
 
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -1045,23 +1045,23 @@ class ReadObjectResponse(proto.Message):
     r"""Response message for ReadObject.
 
     Attributes:
-        checksummed_data (google.cloud.storage_v2.types.ChecksummedData):
+        checksummed_data (google.cloud._storage_v2.types.ChecksummedData):
             A portion of the data for the object. The service **may**
             leave ``data`` empty for any given ``ReadResponse``. This
             enables the service to inform the client that the request is
             still live while it is running an operation to generate more
             data.
-        object_checksums (google.cloud.storage_v2.types.ObjectChecksums):
+        object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             The checksums of the complete object. If the
             object is downloaded in full, the client should
             compute one of these checksums over the
             downloaded object and compare it against the
             value provided here.
-        content_range (google.cloud.storage_v2.types.ContentRange):
+        content_range (google.cloud._storage_v2.types.ContentRange):
             If read_offset and or read_limit was specified on the
             ReadObjectRequest, ContentRange will be populated on the
             first ReadObjectResponse message of the read stream.
-        metadata (google.cloud.storage_v2.types.Object):
+        metadata (google.cloud._storage_v2.types.Object):
             Metadata of the object whose media is being
             returned. Only populated in the first response
             in the stream.
@@ -1133,7 +1133,7 @@ class BidiReadObjectSpec(proto.Message):
             match the given value.
 
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -1148,7 +1148,7 @@ class BidiReadObjectSpec(proto.Message):
                https://cloud.google.com/apis/docs/system-parameters#definitions
 
             This field is a member of `oneof`_ ``_read_mask``.
-        read_handle (google.cloud.storage_v2.types.BidiReadHandle):
+        read_handle (google.cloud._storage_v2.types.BidiReadHandle):
             The client can optionally set this field. The
             read handle is an optimized way of creating new
             streams. Read handles are generated and
@@ -1223,12 +1223,12 @@ class BidiReadObjectRequest(proto.Message):
     r"""Request message for BidiReadObject.
 
     Attributes:
-        read_object_spec (google.cloud.storage_v2.types.BidiReadObjectSpec):
+        read_object_spec (google.cloud._storage_v2.types.BidiReadObjectSpec):
             Optional. The first message of each stream
             should set this field. If this is not the first
             message, an error will be returned. Describes
             the object to read.
-        read_ranges (MutableSequence[google.cloud.storage_v2.types.ReadRange]):
+        read_ranges (MutableSequence[google.cloud._storage_v2.types.ReadRange]):
             Optional. Provides a list of 0 or more (up to
             100) ranges to read. If a single range is large
             enough to require multiple responses, they are
@@ -1256,7 +1256,7 @@ class BidiReadObjectResponse(proto.Message):
     r"""Response message for BidiReadObject.
 
     Attributes:
-        object_data_ranges (MutableSequence[google.cloud.storage_v2.types.ObjectRangeData]):
+        object_data_ranges (MutableSequence[google.cloud._storage_v2.types.ObjectRangeData]):
             A portion of the object's data. The service **may** leave
             data empty for any given ReadResponse. This enables the
             service to inform the client that the request is still live
@@ -1265,12 +1265,12 @@ class BidiReadObjectResponse(proto.Message):
             different read requests. Each ObjectRangeData entry will
             have a read_id set to the same value as the corresponding
             source read request.
-        metadata (google.cloud.storage_v2.types.Object):
+        metadata (google.cloud._storage_v2.types.Object):
             Metadata of the object whose media is being
             returned. Only populated in the first response
             in the stream and not populated when the stream
             is opened with a read handle.
-        read_handle (google.cloud.storage_v2.types.BidiReadHandle):
+        read_handle (google.cloud._storage_v2.types.BidiReadHandle):
             This field will be periodically refreshed,
             however it may not be set in every response. It
             allows the client to more efficiently open
@@ -1304,7 +1304,7 @@ class BidiReadObjectRedirectedError(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        read_handle (google.cloud.storage_v2.types.BidiReadHandle):
+        read_handle (google.cloud._storage_v2.types.BidiReadHandle):
             The read handle for the redirected read. If
             set, the client may use this in the
             BidiReadObjectSpec when retrying the read
@@ -1346,7 +1346,7 @@ class BidiWriteObjectRedirectedError(proto.Message):
             this string verbatim as the value.
 
             This field is a member of `oneof`_ ``_routing_token``.
-        write_handle (google.cloud.storage_v2.types.BidiWriteHandle):
+        write_handle (google.cloud._storage_v2.types.BidiWriteHandle):
             Opaque value describing a previous write. If set, the client
             must use this in an AppendObjectSpec first_message when
             retrying the write stream. If not set, clients may retry the
@@ -1385,7 +1385,7 @@ class BidiReadObjectError(proto.Message):
     reads on the failed stream
 
     Attributes:
-        read_range_errors (MutableSequence[google.cloud.storage_v2.types.ReadRangeError]):
+        read_range_errors (MutableSequence[google.cloud._storage_v2.types.ReadRangeError]):
             The error code for each outstanding read_range
     """
 
@@ -1473,9 +1473,9 @@ class ObjectRangeData(proto.Message):
     r"""Contains data and metadata for a range of an object.
 
     Attributes:
-        checksummed_data (google.cloud.storage_v2.types.ChecksummedData):
+        checksummed_data (google.cloud._storage_v2.types.ChecksummedData):
             A portion of the data for the object.
-        read_range (google.cloud.storage_v2.types.ReadRange):
+        read_range (google.cloud._storage_v2.types.ReadRange):
             The ReadRange describes the content being returned with
             read_id set to the corresponding ReadObjectRequest in the
             stream. Multiple ObjectRangeData messages may have the same
@@ -1547,7 +1547,7 @@ class WriteObjectSpec(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        resource (google.cloud.storage_v2.types.Object):
+        resource (google.cloud._storage_v2.types.Object):
             Required. Destination object, including its
             name and its metadata.
         predefined_acl (str):
@@ -1660,7 +1660,7 @@ class WriteObjectRequest(proto.Message):
             returned from a call to ``StartResumableWriteResponse``.
 
             This field is a member of `oneof`_ ``first_message``.
-        write_object_spec (google.cloud.storage_v2.types.WriteObjectSpec):
+        write_object_spec (google.cloud._storage_v2.types.WriteObjectSpec):
             For non-resumable uploads. Describes the
             overall upload, including the destination bucket
             and object name, preconditions, etc.
@@ -1681,13 +1681,13 @@ class WriteObjectRequest(proto.Message):
             ``data`` chunks sent previously on this stream.
 
             An incorrect value will cause an error.
-        checksummed_data (google.cloud.storage_v2.types.ChecksummedData):
+        checksummed_data (google.cloud._storage_v2.types.ChecksummedData):
             The data to insert. If a crc32c checksum is
             provided that doesn't match the checksum
             computed by the service, the request will fail.
 
             This field is a member of `oneof`_ ``data``.
-        object_checksums (google.cloud.storage_v2.types.ObjectChecksums):
+        object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. Checksums for the complete object. If the
             checksums computed by the service don't match the specified
             checksums the call will fail. May only be provided in the
@@ -1700,7 +1700,7 @@ class WriteObjectRequest(proto.Message):
             error. For a non-resumable write (where the upload_id was
             not set in the first message), it is an error not to set
             this field in the final message of the stream.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
     """
@@ -1759,7 +1759,7 @@ class WriteObjectResponse(proto.Message):
             upload has not finalized.
 
             This field is a member of `oneof`_ ``write_status``.
-        resource (google.cloud.storage_v2.types.Object):
+        resource (google.cloud._storage_v2.types.Object):
             A resource containing the metadata for the
             uploaded object. Only set if the upload has
             finalized.
@@ -1819,7 +1819,7 @@ class AppendObjectSpec(proto.Message):
             if a BidiWriteObjectRedirectedError is returned.
 
             This field is a member of `oneof`_ ``_routing_token``.
-        write_handle (google.cloud.storage_v2.types.BidiWriteHandle):
+        write_handle (google.cloud._storage_v2.types.BidiWriteHandle):
             An optional write handle returned from a previous
             BidiWriteObjectResponse message or a
             BidiWriteObjectRedirectedError error.
@@ -1881,13 +1881,13 @@ class BidiWriteObjectRequest(proto.Message):
             returned from a call to ``StartResumableWriteResponse``.
 
             This field is a member of `oneof`_ ``first_message``.
-        write_object_spec (google.cloud.storage_v2.types.WriteObjectSpec):
+        write_object_spec (google.cloud._storage_v2.types.WriteObjectSpec):
             For non-resumable uploads. Describes the
             overall upload, including the destination bucket
             and object name, preconditions, etc.
 
             This field is a member of `oneof`_ ``first_message``.
-        append_object_spec (google.cloud.storage_v2.types.AppendObjectSpec):
+        append_object_spec (google.cloud._storage_v2.types.AppendObjectSpec):
             For appendable uploads. Describes the object
             to append to.
 
@@ -1907,13 +1907,13 @@ class BidiWriteObjectRequest(proto.Message):
             ``data`` chunks sent previously on this stream.
 
             An invalid value will cause an error.
-        checksummed_data (google.cloud.storage_v2.types.ChecksummedData):
+        checksummed_data (google.cloud._storage_v2.types.ChecksummedData):
             The data to insert. If a crc32c checksum is
             provided that doesn't match the checksum
             computed by the service, the request will fail.
 
             This field is a member of `oneof`_ ``data``.
-        object_checksums (google.cloud.storage_v2.types.ObjectChecksums):
+        object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. Checksums for the complete object. If the
             checksums computed by the service don't match the specified
             checksums the call will fail. May only be provided in the
@@ -1945,7 +1945,7 @@ class BidiWriteObjectRequest(proto.Message):
             error. For a non-resumable write (where the upload_id was
             not set in the first message), it is an error not to set
             this field in the final message of the stream.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
     """
@@ -2018,13 +2018,13 @@ class BidiWriteObjectResponse(proto.Message):
             upload has not finalized.
 
             This field is a member of `oneof`_ ``write_status``.
-        resource (google.cloud.storage_v2.types.Object):
+        resource (google.cloud._storage_v2.types.Object):
             A resource containing the metadata for the
             uploaded object. Only set if the upload has
             finalized.
 
             This field is a member of `oneof`_ ``write_status``.
-        write_handle (google.cloud.storage_v2.types.BidiWriteHandle):
+        write_handle (google.cloud._storage_v2.types.BidiWriteHandle):
             An optional write handle that will
             periodically be present in response messages.
             Clients should save it for later use in
@@ -2197,7 +2197,7 @@ class QueryWriteStatusRequest(proto.Message):
             Required. The name of the resume token for
             the object whose write status is being
             requested.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
     """
@@ -2232,7 +2232,7 @@ class QueryWriteStatusResponse(proto.Message):
             upload has not finalized.
 
             This field is a member of `oneof`_ ``write_status``.
-        resource (google.cloud.storage_v2.types.Object):
+        resource (google.cloud._storage_v2.types.Object):
             A resource containing the metadata for the
             uploaded object. Only set if the upload has
             finalized.
@@ -2287,7 +2287,7 @@ class RewriteObjectRequest(proto.Message):
             specified, the request uses the destination
             bucket's default encryption key, if any, or else
             the Google-managed encryption key.
-        destination (google.cloud.storage_v2.types.Object):
+        destination (google.cloud._storage_v2.types.Object):
             Optional. Properties of the destination, post-rewrite
             object. The ``name``, ``bucket`` and ``kms_key`` fields must
             not be populated (these values are specified in the
@@ -2398,10 +2398,10 @@ class RewriteObjectRequest(proto.Message):
             SHA256 hash of the encryption key used to
             encrypt the source object, if it was encrypted
             with a Customer-Supplied Encryption Key.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
-        object_checksums (google.cloud.storage_v2.types.ObjectChecksums):
+        object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. The checksums of the complete
             object. This will be used to validate the
             destination object after rewriting.
@@ -2534,7 +2534,7 @@ class RewriteResponse(proto.Message):
             continue copying data. This token is present in
             the response only when there is more data to
             copy.
-        resource (google.cloud.storage_v2.types.Object):
+        resource (google.cloud._storage_v2.types.Object):
             A resource containing the metadata for the
             copied-to object. This property is present in
             the response only when copying completes.
@@ -2711,13 +2711,13 @@ class StartResumableWriteRequest(proto.Message):
     r"""Request message StartResumableWrite.
 
     Attributes:
-        write_object_spec (google.cloud.storage_v2.types.WriteObjectSpec):
+        write_object_spec (google.cloud._storage_v2.types.WriteObjectSpec):
             Required. Contains the information necessary
             to start a resumable write.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests related to an object.
-        object_checksums (google.cloud.storage_v2.types.ObjectChecksums):
+        object_checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Optional. The checksums of the complete object. This is used
             to validate the uploaded object. For each upload,
             ``object_checksums`` can be provided when initiating a
@@ -2768,7 +2768,7 @@ class UpdateObjectRequest(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        object_ (google.cloud.storage_v2.types.Object):
+        object_ (google.cloud._storage_v2.types.Object):
             Required. The object to update.
             The object's bucket and name fields are used to
             identify the object to update. If present, the
@@ -2821,7 +2821,7 @@ class UpdateObjectRequest(proto.Message):
             accidentally reset the new field's value.
 
             Not specifying any fields is an error.
-        common_object_request_params (google.cloud.storage_v2.types.CommonObjectRequestParams):
+        common_object_request_params (google.cloud._storage_v2.types.CommonObjectRequestParams):
             Optional. A set of parameters common to
             Storage API requests concerning an object.
         override_unlocked_retention (bool):
@@ -3051,22 +3051,22 @@ class Bucket(proto.Message):
             bucket is created, it defaults to "DEFAULT". For more
             information, see
             https://cloud.google.com/storage/docs/availability-durability#turbo-replication.
-        acl (MutableSequence[google.cloud.storage_v2.types.BucketAccessControl]):
+        acl (MutableSequence[google.cloud._storage_v2.types.BucketAccessControl]):
             Optional. Access controls on the bucket. If
             iam_config.uniform_bucket_level_access is enabled on this
             bucket, requests to set, read, or modify acl is an error.
-        default_object_acl (MutableSequence[google.cloud.storage_v2.types.ObjectAccessControl]):
+        default_object_acl (MutableSequence[google.cloud._storage_v2.types.ObjectAccessControl]):
             Optional. Default access controls to apply to new objects
             when no ACL is provided. If
             iam_config.uniform_bucket_level_access is enabled on this
             bucket, requests to set, read, or modify acl is an error.
-        lifecycle (google.cloud.storage_v2.types.Bucket.Lifecycle):
+        lifecycle (google.cloud._storage_v2.types.Bucket.Lifecycle):
             Optional. The bucket's lifecycle config. See
             [https://developers.google.com/storage/docs/lifecycle]Lifecycle
             Management] for more information.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time of the bucket.
-        cors (MutableSequence[google.cloud.storage_v2.types.Bucket.Cors]):
+        cors (MutableSequence[google.cloud._storage_v2.types.Bucket.Cors]):
             Optional. The bucket's
             [https://www.w3.org/TR/cors/][Cross-Origin Resource Sharing]
             (CORS) config.
@@ -3097,26 +3097,26 @@ class Bucket(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. User-provided labels, in key/value
             pairs.
-        website (google.cloud.storage_v2.types.Bucket.Website):
+        website (google.cloud._storage_v2.types.Bucket.Website):
             Optional. The bucket's website config, controlling how the
             service behaves when accessing bucket contents as a web
             site. See the
             [https://cloud.google.com/storage/docs/static-website][Static
             Website Examples] for more information.
-        versioning (google.cloud.storage_v2.types.Bucket.Versioning):
+        versioning (google.cloud._storage_v2.types.Bucket.Versioning):
             Optional. The bucket's versioning config.
-        logging (google.cloud.storage_v2.types.Bucket.Logging):
+        logging (google.cloud._storage_v2.types.Bucket.Logging):
             Optional. The bucket's logging config, which
             defines the destination bucket and name prefix
             (if any) for the current bucket's logs.
-        owner (google.cloud.storage_v2.types.Owner):
+        owner (google.cloud._storage_v2.types.Owner):
             Output only. The owner of the bucket. This is
             always the project team's owner group.
-        encryption (google.cloud.storage_v2.types.Bucket.Encryption):
+        encryption (google.cloud._storage_v2.types.Bucket.Encryption):
             Optional. Encryption config for a bucket.
-        billing (google.cloud.storage_v2.types.Bucket.Billing):
+        billing (google.cloud._storage_v2.types.Bucket.Billing):
             Optional. The bucket's billing config.
-        retention_policy (google.cloud.storage_v2.types.Bucket.RetentionPolicy):
+        retention_policy (google.cloud._storage_v2.types.Bucket.RetentionPolicy):
             Optional. The bucket's retention policy. The retention
             policy enforces a minimum retention time for all objects
             contained in the bucket, based on their creation time. Any
@@ -3128,34 +3128,34 @@ class Bucket(proto.Message):
             for the lifetime of the bucket. Attempting to remove or
             decrease period of a locked retention policy will result in
             a PERMISSION_DENIED error.
-        iam_config (google.cloud.storage_v2.types.Bucket.IamConfig):
+        iam_config (google.cloud._storage_v2.types.Bucket.IamConfig):
             Optional. The bucket's IAM config.
         satisfies_pzs (bool):
             Optional. Reserved for future use.
-        custom_placement_config (google.cloud.storage_v2.types.Bucket.CustomPlacementConfig):
+        custom_placement_config (google.cloud._storage_v2.types.Bucket.CustomPlacementConfig):
             Optional. Configuration that, if present, specifies the data
             placement for a
             [https://cloud.google.com/storage/docs/locations#location-dr][configurable
             dual-region].
-        autoclass (google.cloud.storage_v2.types.Bucket.Autoclass):
+        autoclass (google.cloud._storage_v2.types.Bucket.Autoclass):
             Optional. The bucket's Autoclass
             configuration. If there is no configuration, the
             Autoclass feature will be disabled and have no
             effect on the bucket.
-        hierarchical_namespace (google.cloud.storage_v2.types.Bucket.HierarchicalNamespace):
+        hierarchical_namespace (google.cloud._storage_v2.types.Bucket.HierarchicalNamespace):
             Optional. The bucket's hierarchical namespace
             configuration. If there is no configuration, the
             hierarchical namespace feature will be disabled
             and have no effect on the bucket.
-        soft_delete_policy (google.cloud.storage_v2.types.Bucket.SoftDeletePolicy):
+        soft_delete_policy (google.cloud._storage_v2.types.Bucket.SoftDeletePolicy):
             Optional. The bucket's soft delete policy.
             The soft delete policy prevents soft-deleted
             objects from being permanently deleted.
-        object_retention (google.cloud.storage_v2.types.Bucket.ObjectRetention):
+        object_retention (google.cloud._storage_v2.types.Bucket.ObjectRetention):
             Optional. The bucket's object retention
             configuration. Must be enabled before objects in
             the bucket may have retention configured.
-        ip_filter (google.cloud.storage_v2.types.Bucket.IpFilter):
+        ip_filter (google.cloud._storage_v2.types.Bucket.IpFilter):
             Optional. The bucket's IP filter
             configuration.
 
@@ -3233,7 +3233,7 @@ class Bucket(proto.Message):
                 will be used to encrypt objects inserted into
                 this bucket, if no encryption method is
                 specified.
-            google_managed_encryption_enforcement_config (google.cloud.storage_v2.types.Bucket.Encryption.GoogleManagedEncryptionEnforcementConfig):
+            google_managed_encryption_enforcement_config (google.cloud._storage_v2.types.Bucket.Encryption.GoogleManagedEncryptionEnforcementConfig):
                 Optional. If omitted, then new objects with
                 GMEK encryption-type is allowed. If set, then
                 new objects created in this bucket must comply
@@ -3242,7 +3242,7 @@ class Bucket(proto.Message):
                 objects only.
 
                 This field is a member of `oneof`_ ``_google_managed_encryption_enforcement_config``.
-            customer_managed_encryption_enforcement_config (google.cloud.storage_v2.types.Bucket.Encryption.CustomerManagedEncryptionEnforcementConfig):
+            customer_managed_encryption_enforcement_config (google.cloud._storage_v2.types.Bucket.Encryption.CustomerManagedEncryptionEnforcementConfig):
                 Optional. If omitted, then new objects with
                 CMEK encryption-type is allowed. If set, then
                 new objects created in this bucket must comply
@@ -3251,7 +3251,7 @@ class Bucket(proto.Message):
                 objects only.
 
                 This field is a member of `oneof`_ ``_customer_managed_encryption_enforcement_config``.
-            customer_supplied_encryption_enforcement_config (google.cloud.storage_v2.types.Bucket.Encryption.CustomerSuppliedEncryptionEnforcementConfig):
+            customer_supplied_encryption_enforcement_config (google.cloud._storage_v2.types.Bucket.Encryption.CustomerSuppliedEncryptionEnforcementConfig):
                 Optional. If omitted, then new objects with
                 CSEK encryption-type is allowed. If set, then
                 new objects created in this bucket must comply
@@ -3397,7 +3397,7 @@ class Bucket(proto.Message):
         r"""Bucket restriction options.
 
         Attributes:
-            uniform_bucket_level_access (google.cloud.storage_v2.types.Bucket.IamConfig.UniformBucketLevelAccess):
+            uniform_bucket_level_access (google.cloud._storage_v2.types.Bucket.IamConfig.UniformBucketLevelAccess):
                 Optional. Bucket restriction options
                 currently enforced on the bucket.
             public_access_prevention (str):
@@ -3450,7 +3450,7 @@ class Bucket(proto.Message):
         https://cloud.google.com/storage/docs/lifecycle.
 
         Attributes:
-            rule (MutableSequence[google.cloud.storage_v2.types.Bucket.Lifecycle.Rule]):
+            rule (MutableSequence[google.cloud._storage_v2.types.Bucket.Lifecycle.Rule]):
                 Optional. A lifecycle management rule, which
                 is made of an action to take and the
                 condition(s) under which the action will be
@@ -3462,9 +3462,9 @@ class Bucket(proto.Message):
             and a condition which will trigger that action.
 
             Attributes:
-                action (google.cloud.storage_v2.types.Bucket.Lifecycle.Rule.Action):
+                action (google.cloud._storage_v2.types.Bucket.Lifecycle.Rule.Action):
                     Optional. The action to take.
-                condition (google.cloud.storage_v2.types.Bucket.Lifecycle.Rule.Condition):
+                condition (google.cloud._storage_v2.types.Bucket.Lifecycle.Rule.Condition):
                     Optional. The condition(s) under which the
                     action will be taken.
             """
@@ -3871,12 +3871,12 @@ class Bucket(proto.Message):
                 to a bucket.".
 
                 This field is a member of `oneof`_ ``_mode``.
-            public_network_source (google.cloud.storage_v2.types.Bucket.IpFilter.PublicNetworkSource):
+            public_network_source (google.cloud._storage_v2.types.Bucket.IpFilter.PublicNetworkSource):
                 Public IPs allowed to operate or access the
                 bucket.
 
                 This field is a member of `oneof`_ ``_public_network_source``.
-            vpc_network_sources (MutableSequence[google.cloud.storage_v2.types.Bucket.IpFilter.VpcNetworkSource]):
+            vpc_network_sources (MutableSequence[google.cloud._storage_v2.types.Bucket.IpFilter.VpcNetworkSource]):
                 Optional. The list of network sources that
                 are allowed to access operations on the bucket
                 or the underlying objects.
@@ -4188,7 +4188,7 @@ class BucketAccessControl(proto.Message):
         domain (str):
             Optional. The domain associated with the
             entity, if any.
-        project_team (google.cloud.storage_v2.types.ProjectTeam):
+        project_team (google.cloud._storage_v2.types.ProjectTeam):
             Optional. The project team associated with
             the entity, if any.
     """
@@ -4331,7 +4331,7 @@ class ObjectContexts(proto.Message):
     r"""All contexts of an object grouped by type.
 
     Attributes:
-        custom (MutableMapping[str, google.cloud.storage_v2.types.ObjectCustomContextPayload]):
+        custom (MutableMapping[str, google.cloud._storage_v2.types.ObjectCustomContextPayload]):
             Optional. User-defined object contexts.
     """
 
@@ -4426,7 +4426,7 @@ class Object(proto.Message):
             §5.2]. If omitted, and the object is accessible to all
             anonymous users, the default will be
             ``public, max-age=3600``.
-        acl (MutableSequence[google.cloud.storage_v2.types.ObjectAccessControl]):
+        acl (MutableSequence[google.cloud._storage_v2.types.ObjectAccessControl]):
             Optional. Access controls on the object. If
             iam_config.uniform_bucket_level_access is enabled on the
             parent bucket, requests to set, read, or modify acl is an
@@ -4453,7 +4453,7 @@ class Object(proto.Message):
             Output only. Number of underlying components
             that make up this object. Components are
             accumulated by compose operations.
-        checksums (google.cloud.storage_v2.types.ObjectChecksums):
+        checksums (google.cloud._storage_v2.types.ObjectChecksums):
             Output only. Hashes for the data part of this
             object. This field is used for output only and
             will be silently ignored if provided in
@@ -4505,7 +4505,7 @@ class Object(proto.Message):
         metadata (MutableMapping[str, str]):
             Optional. User-provided metadata, in
             key/value pairs.
-        contexts (google.cloud.storage_v2.types.ObjectContexts):
+        contexts (google.cloud._storage_v2.types.ObjectContexts):
             Optional. User-defined or system-defined
             object contexts. Each object context is a
             key-payload pair, where the key provides the
@@ -4527,10 +4527,10 @@ class Object(proto.Message):
             will always be set to true or false.
 
             This field is a member of `oneof`_ ``_event_based_hold``.
-        owner (google.cloud.storage_v2.types.Owner):
+        owner (google.cloud._storage_v2.types.Owner):
             Output only. The owner of the object. This
             will always be the uploader of the object.
-        customer_encryption (google.cloud.storage_v2.types.CustomerEncryption):
+        customer_encryption (google.cloud._storage_v2.types.CustomerEncryption):
             Optional. Metadata of Customer-Supplied
             Encryption Key, if the object is encrypted by
             such a key.
@@ -4554,7 +4554,7 @@ class Object(proto.Message):
             accessible.
 
             This field is a member of `oneof`_ ``_hard_delete_time``.
-        retention (google.cloud.storage_v2.types.Object.Retention):
+        retention (google.cloud._storage_v2.types.Object.Retention):
             Optional. Retention configuration of this
             object. May only be configured if the bucket has
             object retention enabled.
@@ -4566,7 +4566,7 @@ class Object(proto.Message):
         expires.
 
         Attributes:
-            mode (google.cloud.storage_v2.types.Object.Retention.Mode):
+            mode (google.cloud._storage_v2.types.Object.Retention.Mode):
                 Optional. The mode of the Retention.
             retain_until_time (google.protobuf.timestamp_pb2.Timestamp):
                 Optional. The timestamp that the object needs
@@ -4812,7 +4812,7 @@ class ObjectAccessControl(proto.Message):
         domain (str):
             Optional. The domain associated with the
             entity, if any.
-        project_team (google.cloud.storage_v2.types.ProjectTeam):
+        project_team (google.cloud._storage_v2.types.ProjectTeam):
             Optional. The project team associated with
             the entity, if any.
     """
@@ -4860,7 +4860,7 @@ class ListObjectsResponse(proto.Message):
     r"""The result of a call to Objects.ListObjects
 
     Attributes:
-        objects (MutableSequence[google.cloud.storage_v2.types.Object]):
+        objects (MutableSequence[google.cloud._storage_v2.types.Object]):
             The list of items.
         prefixes (MutableSequence[str]):
             The list of prefixes of objects

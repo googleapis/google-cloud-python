@@ -33,7 +33,7 @@ import grpc  # type: ignore
 import proto  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.storage_v2.types import storage
+from google.cloud._storage_v2.types import storage
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
