@@ -99,9 +99,9 @@ class ConversationEvent(proto.Message):
 
                 We don't fire this event:
 
-                -  in an API call because we can directly return the error,
-                   or,
-                -  when we can recover from an error.
+                - in an API call because we can directly return the error,
+                  or,
+                - when we can recover from an error.
         """
         TYPE_UNSPECIFIED = 0
         CONVERSATION_STARTED = 1

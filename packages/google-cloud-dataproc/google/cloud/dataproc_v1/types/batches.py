@@ -66,7 +66,7 @@ class CreateBatchRequest(proto.Message):
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
             The value must contain only letters (a-z, A-Z), numbers
-            (0-9), underscores (_), and hyphens (-). The maximum length
+            (0-9), underscores (\_), and hyphens (-). The maximum length
             is 40 characters.
     """
 

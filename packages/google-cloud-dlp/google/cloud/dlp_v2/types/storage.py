@@ -573,8 +573,8 @@ class CustomInfoType(proto.Message):
                     characters. The finding itself will be included in the
                     window, so that hotwords can be used to match substrings of
                     the finding itself. Suppose you want Cloud DLP to promote
-                    the likelihood of the phone number regex "(\d{3})
-                    \\d{3}-\d{4}" if the area code is known to be the area code
+                    the likelihood of the phone number regex "(\\d{3})
+                    \\d{3}-\\d{4}" if the area code is known to be the area code
                     of a company's office. In this case, use the hotword regex
                     "(xxx)", where "xxx" is the area code in question.
 
@@ -758,25 +758,25 @@ class CloudStorageRegexFileSet(proto.Message):
     For example, given the input
     ``{bucket_name: "mybucket", include_regex: ["directory1/.*"], exclude_regex: ["directory1/excluded.*"]}``:
 
-    -  ``gs://mybucket/directory1/myfile`` will be included
-    -  ``gs://mybucket/directory1/directory2/myfile`` will be included
-       (``.*`` matches across ``/``)
-    -  ``gs://mybucket/directory0/directory1/myfile`` will *not* be
-       included (the full path doesn't match any items in
-       ``include_regex``)
-    -  ``gs://mybucket/directory1/excludedfile`` will *not* be included
-       (the path matches an item in ``exclude_regex``)
+    - ``gs://mybucket/directory1/myfile`` will be included
+    - ``gs://mybucket/directory1/directory2/myfile`` will be included
+      (``.*`` matches across ``/``)
+    - ``gs://mybucket/directory0/directory1/myfile`` will *not* be
+      included (the full path doesn't match any items in
+      ``include_regex``)
+    - ``gs://mybucket/directory1/excludedfile`` will *not* be included
+      (the path matches an item in ``exclude_regex``)
 
     If ``include_regex`` is left empty, it will match all files by
     default (this is equivalent to setting ``include_regex: [".*"]``).
 
     Some other common use cases:
 
-    -  ``{bucket_name: "mybucket", exclude_regex: [".*\.pdf"]}`` will
-       include all files in ``mybucket`` except for .pdf files
-    -  ``{bucket_name: "mybucket", include_regex: ["directory/[^/]+"]}``
-       will include all files directly under
-       ``gs://mybucket/directory/``, without matching across ``/``
+    - ``{bucket_name: "mybucket", exclude_regex: [".*\.pdf"]}`` will
+      include all files in ``mybucket`` except for .pdf files
+    - ``{bucket_name: "mybucket", include_regex: ["directory/[^/]+"]}``
+      will include all files directly under
+      ``gs://mybucket/directory/``, without matching across ``/``
 
     Attributes:
         bucket_name (str):
@@ -1145,9 +1145,9 @@ class StorageConfig(proto.Message):
                 timestamp field. When used with Cloud DLP, these
                 pseudo-column names are case sensitive.
 
-                -  ``_PARTITIONTIME``
-                -  ``_PARTITIONDATE``
-                -  ``_PARTITION_LOAD_TIME``
+                - ``_PARTITIONTIME``
+                - ``_PARTITIONDATE``
+                - ``_PARTITION_LOAD_TIME``
 
                 **For Datastore**
 
@@ -1268,8 +1268,8 @@ class HybridOptions(proto.Message):
 
             Examples:
 
-            -  ``"environment" : "production"``
-            -  ``"pipeline" : "etl"``
+            - ``"environment" : "production"``
+            - ``"pipeline" : "etl"``
         table_options (google.cloud.dlp_v2.types.TableOptions):
             If the container is a table, additional
             information to make findings meaningful such as

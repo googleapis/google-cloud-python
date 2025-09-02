@@ -44,7 +44,7 @@ class CustomTuningModel(proto.Message):
         model_version (int):
             The version of the model.
         model_state (google.cloud.discoveryengine_v1alpha.types.CustomTuningModel.ModelState):
-            The state that the model is in (e.g.``TRAINING`` or
+            The state that the model is in (e.g.\ ``TRAINING`` or
             ``TRAINING_FAILED``).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp the Model was created at.

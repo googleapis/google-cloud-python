@@ -46,17 +46,17 @@ class ListFilesRequest(proto.Message):
             fields of the files being filtered. Filter expression is
             case-sensitive. Currently supported field names are:
 
-            -  upload_time
-            -  last_add_time
-            -  last_use_time
-            -  file_name
-            -  mime_type
+            - upload_time
+            - last_add_time
+            - last_use_time
+            - file_name
+            - mime_type
 
             Some examples of filters would be:
 
-            -  "file_name = 'file_1'"
-            -  "file_name = 'file_1' AND mime_type = 'text/plain'"
-            -  "last_use_time > '2025-06-14T12:00:00Z'"
+            - "file_name = 'file_1'"
+            - "file_name = 'file_1' AND mime_type = 'text/plain'"
+            - "last_use_time > '2025-06-14T12:00:00Z'"
 
             For a full description of the filter format, please see
             https://google.aip.dev/160.

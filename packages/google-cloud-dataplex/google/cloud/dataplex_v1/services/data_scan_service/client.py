@@ -894,13 +894,12 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
             data_scan_id (str):
                 Required. DataScan identifier.
 
-                -  Must contain only lowercase letters, numbers and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must end with a number or a letter.
-                -  Must be between 1-63 characters.
-                -  Must be unique within the customer project /
-                   location.
+                - Must contain only lowercase letters, numbers and
+                  hyphens.
+                - Must start with a letter.
+                - Must end with a number or a letter.
+                - Must be between 1-63 characters.
+                - Must be unique within the customer project / location.
 
                 This corresponds to the ``data_scan_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -922,22 +921,22 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
 
                    For example:
 
-                   -  Data quality: generates queries based on the rules
-                      and runs against the data to get data quality
-                      check results. For more information, see [Auto
-                      data quality
-                      overview](\ https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
-                   -  Data profile: analyzes the data in tables and
-                      generates insights about the structure, content
-                      and relationships (such as null percent,
-                      cardinality, min/max/mean, etc). For more
-                      information, see [About data
-                      profiling](\ https://cloud.google.com/dataplex/docs/data-profiling-overview).
-                   -  Data discovery: scans data in Cloud Storage
-                      buckets to extract and then catalog metadata. For
-                      more information, see [Discover and catalog Cloud
-                      Storage
-                      data](\ https://cloud.google.com/bigquery/docs/automatic-discovery).
+                   - Data quality: generates queries based on the rules
+                     and runs against the data to get data quality check
+                     results. For more information, see [Auto data
+                     quality
+                     overview](https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
+                   - Data profile: analyzes the data in tables and
+                     generates insights about the structure, content and
+                     relationships (such as null percent, cardinality,
+                     min/max/mean, etc). For more information, see
+                     [About data
+                     profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview).
+                   - Data discovery: scans data in Cloud Storage buckets
+                     to extract and then catalog metadata. For more
+                     information, see [Discover and catalog Cloud
+                     Storage
+                     data](https://cloud.google.com/bigquery/docs/automatic-discovery).
 
         """
         # Create or coerce a protobuf request object.
@@ -1077,22 +1076,22 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
 
                    For example:
 
-                   -  Data quality: generates queries based on the rules
-                      and runs against the data to get data quality
-                      check results. For more information, see [Auto
-                      data quality
-                      overview](\ https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
-                   -  Data profile: analyzes the data in tables and
-                      generates insights about the structure, content
-                      and relationships (such as null percent,
-                      cardinality, min/max/mean, etc). For more
-                      information, see [About data
-                      profiling](\ https://cloud.google.com/dataplex/docs/data-profiling-overview).
-                   -  Data discovery: scans data in Cloud Storage
-                      buckets to extract and then catalog metadata. For
-                      more information, see [Discover and catalog Cloud
-                      Storage
-                      data](\ https://cloud.google.com/bigquery/docs/automatic-discovery).
+                   - Data quality: generates queries based on the rules
+                     and runs against the data to get data quality check
+                     results. For more information, see [Auto data
+                     quality
+                     overview](https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
+                   - Data profile: analyzes the data in tables and
+                     generates insights about the structure, content and
+                     relationships (such as null percent, cardinality,
+                     min/max/mean, etc). For more information, see
+                     [About data
+                     profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview).
+                   - Data discovery: scans data in Cloud Storage buckets
+                     to extract and then catalog metadata. For more
+                     information, see [Discover and catalog Cloud
+                     Storage
+                     data](https://cloud.google.com/bigquery/docs/automatic-discovery).
 
         """
         # Create or coerce a protobuf request object.
@@ -1350,22 +1349,22 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
 
                    For example:
 
-                   -  Data quality: generates queries based on the rules
-                      and runs against the data to get data quality
-                      check results. For more information, see [Auto
-                      data quality
-                      overview](\ https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
-                   -  Data profile: analyzes the data in tables and
-                      generates insights about the structure, content
-                      and relationships (such as null percent,
-                      cardinality, min/max/mean, etc). For more
-                      information, see [About data
-                      profiling](\ https://cloud.google.com/dataplex/docs/data-profiling-overview).
-                   -  Data discovery: scans data in Cloud Storage
-                      buckets to extract and then catalog metadata. For
-                      more information, see [Discover and catalog Cloud
-                      Storage
-                      data](\ https://cloud.google.com/bigquery/docs/automatic-discovery).
+                   - Data quality: generates queries based on the rules
+                     and runs against the data to get data quality check
+                     results. For more information, see [Auto data
+                     quality
+                     overview](https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
+                   - Data profile: analyzes the data in tables and
+                     generates insights about the structure, content and
+                     relationships (such as null percent, cardinality,
+                     min/max/mean, etc). For more information, see
+                     [About data
+                     profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview).
+                   - Data discovery: scans data in Cloud Storage buckets
+                     to extract and then catalog metadata. For more
+                     information, see [Discover and catalog Cloud
+                     Storage
+                     data](https://cloud.google.com/bigquery/docs/automatic-discovery).
 
         """
         # Create or coerce a protobuf request object.
@@ -1933,11 +1932,10 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
             name (str):
                 Required. The name must be one of the following:
 
-                -  The name of a data scan with at least one successful,
-                   completed data profiling job
-                -  The name of a successful, completed data profiling
-                   job (a data scan job where the job type is data
-                   profiling)
+                - The name of a data scan with at least one successful,
+                  completed data profiling job
+                - The name of a successful, completed data profiling job
+                  (a data scan job where the job type is data profiling)
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

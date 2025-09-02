@@ -44,13 +44,13 @@ class AnswerRecord(proto.Message):
 
     Currently, answer record includes:
 
-    -  human agent assistant article suggestion
-    -  human agent assistant faq article
+    - human agent assistant article suggestion
+    - human agent assistant faq article
 
     It doesn't include:
 
-    -  ``DetectIntent`` intent matching
-    -  ``DetectIntent`` knowledge
+    - ``DetectIntent`` intent matching
+    - ``DetectIntent`` knowledge
 
     Answer records are not related to the conversation history in the
     Dialogflow Console. A Record is generated even when the end-user
@@ -240,24 +240,23 @@ class AgentAssistantFeedback(proto.Message):
 
             For example:
 
-            -  Query: "Can I change my mailing address?"
-            -  Suggested document says: "Items must be
-               returned/exchanged within 60 days of the purchase date."
-            -  [answer_relevance][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.answer_relevance]:
-               [AnswerRelevance.IRRELEVANT][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.AnswerRelevance.IRRELEVANT]
+            - Query: "Can I change my mailing address?"
+            - Suggested document says: "Items must be returned/exchanged
+              within 60 days of the purchase date."
+            - [answer_relevance][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.answer_relevance]:
+              [AnswerRelevance.IRRELEVANT][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.AnswerRelevance.IRRELEVANT]
         document_correctness (google.cloud.dialogflow_v2beta1.types.AgentAssistantFeedback.DocumentCorrectness):
             Optional. Whether or not the information in the document is
             correct.
 
             For example:
 
-            -  Query: "Can I return the package in 2 days once
-               received?"
-            -  Suggested document says: "Items must be
-               returned/exchanged within 60 days of the purchase date."
-            -  Ground truth: "No return or exchange is allowed."
-            -  [document_correctness][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.document_correctness]:
-               [INCORRECT][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.DocumentCorrectness.INCORRECT]
+            - Query: "Can I return the package in 2 days once received?"
+            - Suggested document says: "Items must be returned/exchanged
+              within 60 days of the purchase date."
+            - Ground truth: "No return or exchange is allowed."
+            - [document_correctness][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.document_correctness]:
+              [INCORRECT][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.DocumentCorrectness.INCORRECT]
         document_efficiency (google.cloud.dialogflow_v2beta1.types.AgentAssistantFeedback.DocumentEfficiency):
             Optional. Whether or not the suggested document is
             efficient. For example, if the document is poorly written,
@@ -469,18 +468,18 @@ class ListAnswerRecordsRequest(proto.Message):
             Optional. Filters to restrict results to specific answer
             records. The expression has the following syntax:
 
-             [AND ] ...
+            [AND ] ...
 
             The following fields and operators are supported:
 
-            -  conversation_id with equals(=) operator
+            - conversation_id with equals(=) operator
 
             Examples:
 
-            -  "conversation_id=bar" matches answer records in the
-               projects/foo/locations/global/conversations/bar
-               conversation (assuming the parent is
-               projects/foo/locations/global).
+            - "conversation_id=bar" matches answer records in the
+              projects/foo/locations/global/conversations/bar
+              conversation (assuming the parent is
+              projects/foo/locations/global).
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.

@@ -334,8 +334,8 @@ class DataformGrpcTransport(DataformTransport):
 
         Lists Repositories in a given project and location.
 
-        **Note:** *This method can return repositories not shown in
-        the*\ `Dataform
+        **Note:** *This method can return repositories not shown in the*
+        `Dataform
         UI <https://console.cloud.google.com/bigquery/dataform>`__.
 
         Returns:
@@ -419,7 +419,7 @@ class DataformGrpcTransport(DataformTransport):
 
         **Note:** *This method does not fully
         implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
-        wildcard entry (*) is treated as a bad request, and when the
+        wildcard entry (\*) is treated as a bad request, and when the
         ``field_mask`` is omitted, the request is treated as a full
         update on all modifiable fields.*
 
@@ -1310,7 +1310,7 @@ class DataformGrpcTransport(DataformTransport):
 
         **Note:** *This method does not fully
         implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
-        wildcard entry (*) is treated as a bad request, and when the
+        wildcard entry (\*) is treated as a bad request, and when the
         ``field_mask`` is omitted, the request is treated as a full
         update on all modifiable fields.*
 
@@ -1565,7 +1565,7 @@ class DataformGrpcTransport(DataformTransport):
 
         **Note:** *This method does not fully
         implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
-        wildcard entry (*) is treated as a bad request, and when the
+        wildcard entry (\*) is treated as a bad request, and when the
         ``field_mask`` is omitted, the request is treated as a full
         update on all modifiable fields.*
 
@@ -1826,7 +1826,7 @@ class DataformGrpcTransport(DataformTransport):
 
         **Note:** *This method does not fully
         implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
-        wildcard entry (*) is treated as a bad request, and when the
+        wildcard entry (\*) is treated as a bad request, and when the
         ``field_mask`` is omitted, the request is treated as a full
         update on all modifiable fields.*
 

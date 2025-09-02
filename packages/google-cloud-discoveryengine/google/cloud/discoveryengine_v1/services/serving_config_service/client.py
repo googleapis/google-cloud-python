@@ -788,7 +788,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
                 to update. The following are NOT supported:
 
-                -  [ServingConfig.name][google.cloud.discoveryengine.v1.ServingConfig.name]
+                - [ServingConfig.name][google.cloud.discoveryengine.v1.ServingConfig.name]
 
                 If not set, all supported fields are updated.
 

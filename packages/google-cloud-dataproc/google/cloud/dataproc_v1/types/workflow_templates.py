@@ -63,13 +63,13 @@ class WorkflowTemplate(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.workflowTemplates``, the resource
-               name of the template has the following format:
-               ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
+            - For ``projects.regions.workflowTemplates``, the resource
+              name of the template has the following format:
+              ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
 
-            -  For ``projects.locations.workflowTemplates``, the
-               resource name of the template has the following format:
-               ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
+            - For ``projects.locations.workflowTemplates``, the resource
+              name of the template has the following format:
+              ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
         version (int):
             Optional. Used to perform a consistent read-modify-write.
 
@@ -144,24 +144,24 @@ class WorkflowTemplate(proto.Message):
                 if present, are `CMEK
                 encrypted <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_workflow_template_data>`__:
 
-                -  `FlinkJob
-                   args <https://cloud.google.com/dataproc/docs/reference/rest/v1/FlinkJob>`__
-                -  `HadoopJob
-                   args <https://cloud.google.com/dataproc/docs/reference/rest/v1/HadoopJob>`__
-                -  `SparkJob
-                   args <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkJob>`__
-                -  `SparkRJob
-                   args <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkRJob>`__
-                -  `PySparkJob
-                   args <https://cloud.google.com/dataproc/docs/reference/rest/v1/PySparkJob>`__
-                -  `SparkSqlJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkSqlJob>`__
-                   scriptVariables and queryList.queries
-                -  `HiveJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/HiveJob>`__
-                   scriptVariables and queryList.queries
-                -  `PigJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/PigJob>`__
-                   scriptVariables and queryList.queries
-                -  `PrestoJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob>`__
-                   scriptVariables and queryList.queries
+                - `FlinkJob
+                  args <https://cloud.google.com/dataproc/docs/reference/rest/v1/FlinkJob>`__
+                - `HadoopJob
+                  args <https://cloud.google.com/dataproc/docs/reference/rest/v1/HadoopJob>`__
+                - `SparkJob
+                  args <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkJob>`__
+                - `SparkRJob
+                  args <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkRJob>`__
+                - `PySparkJob
+                  args <https://cloud.google.com/dataproc/docs/reference/rest/v1/PySparkJob>`__
+                - `SparkSqlJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkSqlJob>`__
+                  scriptVariables and queryList.queries
+                - `HiveJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/HiveJob>`__
+                  scriptVariables and queryList.queries
+                - `PigJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/PigJob>`__
+                  scriptVariables and queryList.queries
+                - `PrestoJob <https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob>`__
+                  scriptVariables and queryList.queries
         """
 
         kms_key: str = proto.Field(
@@ -285,11 +285,11 @@ class ManagedCluster(proto.Message):
 
             Label keys must be between 1 and 63 characters long, and
             must conform to the following PCRE regular expression:
-            [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+            [\\p{Ll}\\p{Lo}][\\p{Ll}\\p{Lo}\\p{N}\_-]{0,62}
 
             Label values must be between 1 and 63 characters long, and
             must conform to the following PCRE regular expression:
-            [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+            [\\p{Ll}\\p{Lo}\\p{N}\_-]{0,63}
 
             No more than 32 labels can be associated with a given
             cluster.
@@ -360,7 +360,7 @@ class OrderedJob(proto.Message):
             field from other steps.
 
             The id must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). Cannot begin or end with
+            underscores (\_), and hyphens (-). Cannot begin or end with
             underscore or hyphen. Must consist of between 3 and 50
             characters.
         hadoop_job (google.cloud.dataproc_v1.types.HadoopJob):
@@ -408,11 +408,11 @@ class OrderedJob(proto.Message):
 
             Label keys must be between 1 and 63 characters long, and
             must conform to the following regular expression:
-            [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+            [\\p{Ll}\\p{Lo}][\\p{Ll}\\p{Lo}\\p{N}\_-]{0,62}
 
             Label values must be between 1 and 63 characters long, and
             must conform to the following regular expression:
-            [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+            [\\p{Ll}\\p{Lo}\\p{N}\_-]{0,63}
 
             No more than 32 labels can be associated with a given job.
         scheduling (google.cloud.dataproc_v1.types.JobScheduling):
@@ -521,7 +521,7 @@ class TemplateParameter(proto.Message):
             key, and paired with the parameter value, which are passed
             to the template when the template is instantiated. The name
             must contain only capital letters (A-Z), numbers (0-9), and
-            underscores (_), and must not start with a number. The
+            underscores (\_), and must not start with a number. The
             maximum length is 40 characters.
         fields (MutableSequence[str]):
             Required. Paths to all fields that the parameter replaces. A
@@ -537,44 +537,44 @@ class TemplateParameter(proto.Message):
             Also, field paths can reference fields using the following
             syntax:
 
-            -  Values in maps can be referenced by key:
+            - Values in maps can be referenced by key:
 
-               -  labels['key']
-               -  placement.clusterSelector.clusterLabels['key']
-               -  placement.managedCluster.labels['key']
-               -  placement.clusterSelector.clusterLabels['key']
-               -  jobs['step-id'].labels['key']
+              - labels['key']
+              - placement.clusterSelector.clusterLabels['key']
+              - placement.managedCluster.labels['key']
+              - placement.clusterSelector.clusterLabels['key']
+              - jobs['step-id'].labels['key']
 
-            -  Jobs in the jobs list can be referenced by step-id:
+            - Jobs in the jobs list can be referenced by step-id:
 
-               -  jobs['step-id'].hadoopJob.mainJarFileUri
-               -  jobs['step-id'].hiveJob.queryFileUri
-               -  jobs['step-id'].pySparkJob.mainPythonFileUri
-               -  jobs['step-id'].hadoopJob.jarFileUris[0]
-               -  jobs['step-id'].hadoopJob.archiveUris[0]
-               -  jobs['step-id'].hadoopJob.fileUris[0]
-               -  jobs['step-id'].pySparkJob.pythonFileUris[0]
+              - jobs['step-id'].hadoopJob.mainJarFileUri
+              - jobs['step-id'].hiveJob.queryFileUri
+              - jobs['step-id'].pySparkJob.mainPythonFileUri
+              - jobs['step-id'].hadoopJob.jarFileUris[0]
+              - jobs['step-id'].hadoopJob.archiveUris[0]
+              - jobs['step-id'].hadoopJob.fileUris[0]
+              - jobs['step-id'].pySparkJob.pythonFileUris[0]
 
-            -  Items in repeated fields can be referenced by a
-               zero-based index:
+            - Items in repeated fields can be referenced by a zero-based
+              index:
 
-               -  jobs['step-id'].sparkJob.args[0]
+              - jobs['step-id'].sparkJob.args[0]
 
-            -  Other examples:
+            - Other examples:
 
-               -  jobs['step-id'].hadoopJob.properties['key']
-               -  jobs['step-id'].hadoopJob.args[0]
-               -  jobs['step-id'].hiveJob.scriptVariables['key']
-               -  jobs['step-id'].hadoopJob.mainJarFileUri
-               -  placement.clusterSelector.zone
+              - jobs['step-id'].hadoopJob.properties['key']
+              - jobs['step-id'].hadoopJob.args[0]
+              - jobs['step-id'].hiveJob.scriptVariables['key']
+              - jobs['step-id'].hadoopJob.mainJarFileUri
+              - placement.clusterSelector.zone
 
             It may not be possible to parameterize maps and repeated
             fields in their entirety since only individual map values
             and individual items in repeated fields can be referenced.
             For example, the following field paths are invalid:
 
-            -  placement.clusterSelector.clusterLabels
-            -  jobs['step-id'].sparkJob.args
+            - placement.clusterSelector.clusterLabels
+            - jobs['step-id'].sparkJob.args
         description (str):
             Optional. Brief description of the parameter.
             Must not exceed 1024 characters.
@@ -678,13 +678,13 @@ class WorkflowMetadata(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.workflowTemplates``, the resource
-               name of the template has the following format:
-               ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
+            - For ``projects.regions.workflowTemplates``, the resource
+              name of the template has the following format:
+              ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
 
-            -  For ``projects.locations.workflowTemplates``, the
-               resource name of the template has the following format:
-               ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
+            - For ``projects.locations.workflowTemplates``, the resource
+              name of the template has the following format:
+              ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
         version (int):
             Output only. The version of template at the
             time of workflow instantiation.
@@ -926,13 +926,13 @@ class CreateWorkflowTemplateRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.workflowTemplates.create``, the
-               resource name of the region has the following format:
-               ``projects/{project_id}/regions/{region}``
+            - For ``projects.regions.workflowTemplates.create``, the
+              resource name of the region has the following format:
+              ``projects/{project_id}/regions/{region}``
 
-            -  For ``projects.locations.workflowTemplates.create``, the
-               resource name of the location has the following format:
-               ``projects/{project_id}/locations/{location}``
+            - For ``projects.locations.workflowTemplates.create``, the
+              resource name of the location has the following format:
+              ``projects/{project_id}/locations/{location}``
         template (google.cloud.dataproc_v1.types.WorkflowTemplate):
             Required. The Dataproc workflow template to
             create.
@@ -958,13 +958,13 @@ class GetWorkflowTemplateRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.workflowTemplates.get``, the
-               resource name of the template has the following format:
-               ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
+            - For ``projects.regions.workflowTemplates.get``, the
+              resource name of the template has the following format:
+              ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
 
-            -  For ``projects.locations.workflowTemplates.get``, the
-               resource name of the template has the following format:
-               ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
+            - For ``projects.locations.workflowTemplates.get``, the
+              resource name of the template has the following format:
+              ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
         version (int):
             Optional. The version of workflow template to
             retrieve. Only previously instantiated versions
@@ -992,15 +992,15 @@ class InstantiateWorkflowTemplateRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.workflowTemplates.instantiate``,
-               the resource name of the template has the following
-               format:
-               ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
+            - For ``projects.regions.workflowTemplates.instantiate``,
+              the resource name of the template has the following
+              format:
+              ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
 
-            -  For ``projects.locations.workflowTemplates.instantiate``,
-               the resource name of the template has the following
-               format:
-               ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
+            - For ``projects.locations.workflowTemplates.instantiate``,
+              the resource name of the template has the following
+              format:
+              ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
         version (int):
             Optional. The version of workflow template to
             instantiate. If specified, the workflow will be
@@ -1018,7 +1018,7 @@ class InstantiateWorkflowTemplateRequest(proto.Message):
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
             The tag must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
         parameters (MutableMapping[str, str]):
             Optional. Map from parameter names to values
@@ -1054,15 +1054,15 @@ class InstantiateInlineWorkflowTemplateRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For
-               ``projects.regions.workflowTemplates,instantiateinline``,
-               the resource name of the region has the following format:
-               ``projects/{project_id}/regions/{region}``
+            - For
+              ``projects.regions.workflowTemplates,instantiateinline``,
+              the resource name of the region has the following format:
+              ``projects/{project_id}/regions/{region}``
 
-            -  For
-               ``projects.locations.workflowTemplates.instantiateinline``,
-               the resource name of the location has the following
-               format: ``projects/{project_id}/locations/{location}``
+            - For
+              ``projects.locations.workflowTemplates.instantiateinline``,
+              the resource name of the location has the following
+              format: ``projects/{project_id}/locations/{location}``
         template (google.cloud.dataproc_v1.types.WorkflowTemplate):
             Required. The workflow template to
             instantiate.
@@ -1075,7 +1075,7 @@ class InstantiateInlineWorkflowTemplateRequest(proto.Message):
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
             The tag must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 
@@ -1121,13 +1121,13 @@ class ListWorkflowTemplatesRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.workflowTemplates,list``, the
-               resource name of the region has the following format:
-               ``projects/{project_id}/regions/{region}``
+            - For ``projects.regions.workflowTemplates,list``, the
+              resource name of the region has the following format:
+              ``projects/{project_id}/regions/{region}``
 
-            -  For ``projects.locations.workflowTemplates.list``, the
-               resource name of the location has the following format:
-               ``projects/{project_id}/locations/{location}``
+            - For ``projects.locations.workflowTemplates.list``, the
+              resource name of the location has the following format:
+              ``projects/{project_id}/locations/{location}``
         page_size (int):
             Optional. The maximum number of results to
             return in each response.
@@ -1201,14 +1201,14 @@ class DeleteWorkflowTemplateRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.workflowTemplates.delete``, the
-               resource name of the template has the following format:
-               ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
+            - For ``projects.regions.workflowTemplates.delete``, the
+              resource name of the template has the following format:
+              ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
 
-            -  For ``projects.locations.workflowTemplates.instantiate``,
-               the resource name of the template has the following
-               format:
-               ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
+            - For ``projects.locations.workflowTemplates.instantiate``,
+              the resource name of the template has the following
+              format:
+              ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
         version (int):
             Optional. The version of workflow template to
             delete. If specified, will only delete the

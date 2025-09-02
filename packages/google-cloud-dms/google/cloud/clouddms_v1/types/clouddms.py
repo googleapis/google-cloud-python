@@ -249,7 +249,7 @@ class CreateMigrationJobRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 
@@ -291,7 +291,7 @@ class UpdateMigrationJobRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 
@@ -326,7 +326,7 @@ class DeleteMigrationJobRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
         force (bool):
             The destination CloudSQL connection profile
@@ -775,7 +775,7 @@ class CreateConnectionProfileRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
         validate_only (bool):
             Optional. Only validate the connection
@@ -834,7 +834,7 @@ class UpdateConnectionProfileRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
         validate_only (bool):
             Optional. Only validate the connection
@@ -886,7 +886,7 @@ class DeleteConnectionProfileRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
         force (bool):
             In case of force delete, the CloudSQL replica
@@ -929,7 +929,7 @@ class CreatePrivateConnectionRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
         skip_validation (bool):
             Optional. If set to true, will skip
@@ -1065,7 +1065,7 @@ class DeletePrivateConnectionRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 
@@ -1284,7 +1284,7 @@ class CreateConversionWorkspaceRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 
@@ -1328,7 +1328,7 @@ class UpdateConversionWorkspaceRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 
@@ -1365,7 +1365,7 @@ class DeleteConversionWorkspaceRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
         force (bool):
             Force delete the conversion workspace, even
@@ -1967,7 +1967,7 @@ class CreateMappingRuleRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 
@@ -2005,7 +2005,7 @@ class DeleteMappingRuleRequest(proto.Message):
             It is recommended to always set this value to a UUID.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 

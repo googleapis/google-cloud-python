@@ -93,7 +93,7 @@ class ListTransitionRouteGroupsRequest(proto.Message):
             The language to list transition route groups for. The
             following fields are language dependent:
 
-            -  ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            - ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
             -
 
             ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
@@ -173,7 +173,7 @@ class GetTransitionRouteGroupRequest(proto.Message):
             The language to retrieve the transition route group for. The
             following fields are language dependent:
 
-            -  ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            - ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
             -
 
             ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
@@ -215,7 +215,7 @@ class CreateTransitionRouteGroupRequest(proto.Message):
             The language of the following fields in
             ``TransitionRouteGroup``:
 
-            -  ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            - ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
             -
 
             ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
@@ -256,7 +256,7 @@ class UpdateTransitionRouteGroupRequest(proto.Message):
             The language of the following fields in
             ``TransitionRouteGroup``:
 
-            -  ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            - ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
             -
 
             ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
@@ -301,11 +301,11 @@ class DeleteTransitionRouteGroupRequest(proto.Message):
             page is using. If the transition route group is referenced
             by any page:
 
-            -  If ``force`` is set to false, an error will be returned
-               with message indicating pages that reference the
-               transition route group.
-            -  If ``force`` is set to true, Dialogflow will remove the
-               transition route group, as well as any reference to it.
+            - If ``force`` is set to false, an error will be returned
+              with message indicating pages that reference the
+              transition route group.
+            - If ``force`` is set to true, Dialogflow will remove the
+              transition route group, as well as any reference to it.
     """
 
     name: str = proto.Field(

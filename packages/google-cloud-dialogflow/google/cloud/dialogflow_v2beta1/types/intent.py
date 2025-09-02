@@ -79,8 +79,8 @@ class Intent(proto.Message):
             [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents]
             methods. Supported formats:
 
-            -  ``projects/<Project ID>/agent/intents/<Intent ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``
+            - ``projects/<Project ID>/agent/intents/<Intent ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``
         display_name (str):
             Required. The name of this intent.
         webhook_state (google.cloud.dialogflow_v2beta1.types.Intent.WebhookState):
@@ -90,11 +90,11 @@ class Intent(proto.Message):
             Optional. The priority of this intent. Higher numbers
             represent higher priorities.
 
-            -  If the supplied value is unspecified or 0, the service
-               translates the value to 500,000, which corresponds to the
-               ``Normal`` priority in the console.
-            -  If the supplied value is negative, the intent is ignored
-               in runtime detect intent requests.
+            - If the supplied value is unspecified or 0, the service
+              translates the value to 500,000, which corresponds to the
+              ``Normal`` priority in the console.
+            - If the supplied value is negative, the intent is ignored
+              in runtime detect intent requests.
         is_fallback (bool):
             Optional. Indicates whether this is a
             fallback intent.
@@ -108,10 +108,10 @@ class Intent(proto.Message):
             are either not set or false, then the default value is
             determined as follows:
 
-            -  Before April 15th, 2018 the default is: ml_enabled =
-               false / ml_disabled = true.
-            -  After April 15th, 2018 the default is: ml_enabled = true
-               / ml_disabled = false.
+            - Before April 15th, 2018 the default is: ml_enabled = false
+              / ml_disabled = true.
+            - After April 15th, 2018 the default is: ml_enabled = true /
+              ml_disabled = false.
         ml_disabled (bool):
             Optional. Indicates whether Machine Learning is disabled for
             the intent. Note: If ``ml_disabled`` setting is set to true,
@@ -133,8 +133,8 @@ class Intent(proto.Message):
             Optional. The list of context names required for this intent
             to be triggered. Formats:
 
-            -  ``projects/<Project ID>/agent/sessions/-/contexts/<Context ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/-/contexts/<Context ID>``
+            - ``projects/<Project ID>/agent/sessions/-/contexts/<Context ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/-/contexts/<Context ID>``
         events (MutableSequence[str]):
             Optional. The collection of event names that
             trigger the intent. If the collection of input
@@ -242,11 +242,11 @@ class Intent(proto.Message):
                 multiple parts, where the fields of each part are populated
                 in one of two ways:
 
-                -  ``Part.text`` is set to a part of the phrase that has no
-                   parameters.
-                -  ``Part.text`` is set to a part of the phrase that you
-                   want to annotate, and the ``entity_type``, ``alias``, and
-                   ``user_defined`` fields are all set.
+                - ``Part.text`` is set to a part of the phrase that has no
+                  parameters.
+                - ``Part.text`` is set to a part of the phrase that you want
+                  to annotate, and the ``entity_type``, ``alias``, and
+                  ``user_defined`` fields are all set.
             times_added_count (int):
                 Optional. Indicates how many times this
                 example was added to the intent. Each time a
@@ -349,12 +349,12 @@ class Intent(proto.Message):
             value (str):
                 Optional. The definition of the parameter value. It can be:
 
-                -  a constant string,
-                -  a parameter value defined as ``$parameter_name``,
-                -  an original parameter value defined as
-                   ``$parameter_name.original``,
-                -  a parameter value from some context defined as
-                   ``#context_name.parameter_name``.
+                - a constant string,
+                - a parameter value defined as ``$parameter_name``,
+                - an original parameter value defined as
+                  ``$parameter_name.original``,
+                - a parameter value from some context defined as
+                  ``#context_name.parameter_name``.
             default_value (str):
                 Optional. The default value to use when the ``value`` yields
                 an empty result. Default values can be extracted from
@@ -1235,19 +1235,19 @@ class Intent(proto.Message):
 
                 Image Types
 
-                -  image/jpeg
-                -  image/jpg'
-                -  image/gif
-                -  image/png
+                - image/jpeg
+                - image/jpg'
+                - image/gif
+                - image/png
 
                 Video Types
 
-                -  video/h263
-                -  video/m4v
-                -  video/mp4
-                -  video/mpeg
-                -  video/mpeg4
-                -  video/webm
+                - video/h263
+                - video/m4v
+                - video/mp4
+                - video/mpeg
+                - video/mpeg4
+                - video/webm
 
                 Attributes:
                     file_uri (str):
@@ -2202,8 +2202,8 @@ class GetIntentRequest(proto.Message):
         name (str):
             Required. The name of the intent. Supported formats:
 
-            -  ``projects/<Project ID>/agent/intents/<Intent ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``
+            - ``projects/<Project ID>/agent/intents/<Intent ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``
         language_code (str):
             Optional. The language used to access language-specific
             data. If not specified, the agent's default language is
@@ -2239,8 +2239,8 @@ class CreateIntentRequest(proto.Message):
             Required. The agent to create a intent for. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         intent (google.cloud.dialogflow_v2beta1.types.Intent):
             Required. The intent to create.
         language_code (str):
@@ -2328,8 +2328,8 @@ class DeleteIntentRequest(proto.Message):
 
             Supported formats:
 
-            -  ``projects/<Project ID>/agent/intents/<Intent ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``
+            - ``projects/<Project ID>/agent/intents/<Intent ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``
     """
 
     name: str = proto.Field(
@@ -2354,8 +2354,8 @@ class BatchUpdateIntentsRequest(proto.Message):
             Required. The name of the agent to update or create intents
             in. Supported formats:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         intent_batch_uri (str):
             The URI to a Google Cloud Storage file
             containing intents to update or create. The file
@@ -2439,8 +2439,8 @@ class BatchDeleteIntentsRequest(proto.Message):
             Required. The name of the agent to delete all entities types
             for. Supported formats:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         intents (MutableSequence[google.cloud.dialogflow_v2beta1.types.Intent]):
             Required. The collection of intents to delete. Only intent
             ``name`` must be filled in.

@@ -47,7 +47,7 @@ class CreateNodeGroupRequest(proto.Message):
             specified.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). Cannot begin or end with
+            underscores (\_), and hyphens (-). Cannot begin or end with
             underscore or hyphen. Must consist of from 3 to 33
             characters.
         request_id (str):
@@ -63,7 +63,7 @@ class CreateNodeGroupRequest(proto.Message):
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 
@@ -111,7 +111,7 @@ class ResizeNodeGroupRequest(proto.Message):
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
         graceful_decommission_timeout (google.protobuf.duration_pb2.Duration):
             Optional. Timeout for graceful YARN decommissioning.

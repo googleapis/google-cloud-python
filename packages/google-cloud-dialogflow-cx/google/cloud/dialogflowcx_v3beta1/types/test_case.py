@@ -1239,8 +1239,8 @@ class ExportTestCasesRequest(proto.Message):
 
             For example:
 
-            -  "name = t1 OR name = t2" matches the test case with the
-               exact resource name "t1" or "t2".
+            - "name = t1 OR name = t2" matches the test case with the
+              exact resource name "t1" or "t2".
     """
 
     class DataFormat(proto.Enum):
@@ -1346,7 +1346,7 @@ class ListTestCaseResultsRequest(proto.Message):
             for logical operators. The supported syntax is listed below
             in detail:
 
-             [AND ] ... [AND latest]
+            [AND ] ... [AND latest]
 
             The supported fields and operators are: field operator
             ``environment`` ``=``, ``IN`` (Use value ``draft`` for draft
@@ -1357,13 +1357,13 @@ class ListTestCaseResultsRequest(proto.Message):
 
             Examples:
 
-            -  "environment=draft AND latest" matches the latest test
-               result for each test case in the draft environment.
-            -  "environment IN (e1,e2)" matches any test case results
-               with an environment resource name of either "e1" or "e2".
-            -  "test_time > 1602540713" matches any test case results
-               with test time later than a unix timestamp in seconds
-               1602540713.
+            - "environment=draft AND latest" matches the latest test
+              result for each test case in the draft environment.
+            - "environment IN (e1,e2)" matches any test case results
+              with an environment resource name of either "e1" or "e2".
+            - "test_time > 1602540713" matches any test case results
+              with test time later than a unix timestamp in seconds
+              1602540713.
     """
 
     parent: str = proto.Field(

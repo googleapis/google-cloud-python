@@ -118,11 +118,11 @@ class Participant(proto.Message):
 
             Note:
 
-            -  Please never pass raw user ids to Dialogflow. Always
-               obfuscate your user id first.
-            -  Dialogflow only accepts a UTF-8 encoded string, e.g., a
-               hex digest of a hash function like SHA-512.
-            -  The length of the user id must be <= 256 characters.
+            - Please never pass raw user ids to Dialogflow. Always
+              obfuscate your user id first.
+            - Dialogflow only accepts a UTF-8 encoded string, e.g., a
+              hex digest of a hash function like SHA-512.
+            - The length of the user id must be <= 256 characters.
         documents_metadata_filters (MutableMapping[str, str]):
             Optional. Key-value filters on the metadata of documents
             returned by article suggestion. If specified, article
@@ -533,10 +533,10 @@ class AnalyzeContentResponse(proto.Message):
             The audio data bytes encoded as specified in the request.
             This field is set if:
 
-            -  ``reply_audio_config`` was specified in the request, or
-            -  The automated agent responded with audio to play to the
-               user. In such case, ``reply_audio.config`` contains
-               settings used to synthesize the speech.
+            - ``reply_audio_config`` was specified in the request, or
+            - The automated agent responded with audio to play to the
+              user. In such case, ``reply_audio.config`` contains
+              settings used to synthesize the speech.
 
             In some scenarios, multiple output audio fields may be
             present in the response structure. In these cases, only the
@@ -642,9 +642,9 @@ class StreamingAnalyzeContentRequest(proto.Message):
        [input_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_audio]
        to continue with Speech recognition. However, note that:
 
-       -  Dialogflow will bill you for the audio so far.
-       -  Dialogflow discards all Speech recognition results in favor of
-          the text input.
+       - Dialogflow will bill you for the audio so far.
+       - Dialogflow discards all Speech recognition results in favor of
+         the text input.
 
     3. If
        [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
@@ -727,15 +727,15 @@ class StreamingAnalyzeContentRequest(proto.Message):
 
             Restrictions:
 
-            -  Timeout: 3 mins.
-            -  Audio Encoding: only supports
-               [AudioEncoding.AUDIO_ENCODING_LINEAR_16][google.cloud.dialogflow.v2.AudioEncoding.AUDIO_ENCODING_LINEAR_16]
-               and
-               [AudioEncoding.AUDIO_ENCODING_MULAW][google.cloud.dialogflow.v2.AudioEncoding.AUDIO_ENCODING_MULAW]
-            -  Lifecycle: conversation should be in ``Assist Stage``, go
-               to
-               [Conversations.CreateConversation][google.cloud.dialogflow.v2.Conversations.CreateConversation]
-               for more information.
+            - Timeout: 3 mins.
+            - Audio Encoding: only supports
+              [AudioEncoding.AUDIO_ENCODING_LINEAR_16][google.cloud.dialogflow.v2.AudioEncoding.AUDIO_ENCODING_LINEAR_16]
+              and
+              [AudioEncoding.AUDIO_ENCODING_MULAW][google.cloud.dialogflow.v2.AudioEncoding.AUDIO_ENCODING_MULAW]
+            - Lifecycle: conversation should be in ``Assist Stage``, go
+              to
+              [Conversations.CreateConversation][google.cloud.dialogflow.v2.Conversations.CreateConversation]
+              for more information.
 
             InvalidArgument Error will be returned if the one of
             restriction checks failed.
@@ -857,12 +857,12 @@ class StreamingAnalyzeContentResponse(proto.Message):
             The audio data bytes encoded as specified in the request.
             This field is set if:
 
-            -  The ``reply_audio_config`` field is specified in the
-               request.
-            -  The automated agent, which this output comes from,
-               responded with audio. In such case, the
-               ``reply_audio.config`` field contains settings used to
-               synthesize the speech.
+            - The ``reply_audio_config`` field is specified in the
+              request.
+            - The automated agent, which this output comes from,
+              responded with audio. In such case, the
+              ``reply_audio.config`` field contains settings used to
+              synthesize the speech.
 
             In some scenarios, multiple output audio fields may be
             present in the response structure. In these cases, only the

@@ -122,11 +122,11 @@ class Participant(proto.Message):
 
             Note:
 
-            -  Please never pass raw user ids to Dialogflow. Always
-               obfuscate your user id first.
-            -  Dialogflow only accepts a UTF-8 encoded string, e.g., a
-               hex digest of a hash function like SHA-512.
-            -  The length of the user id must be <= 256 characters.
+            - Please never pass raw user ids to Dialogflow. Always
+              obfuscate your user id first.
+            - Dialogflow only accepts a UTF-8 encoded string, e.g., a
+              hex digest of a hash function like SHA-512.
+            - The length of the user id must be <= 256 characters.
         documents_metadata_filters (MutableMapping[str, str]):
             Optional. Key-value filters on the metadata of documents
             returned by article suggestion. If specified, article
@@ -617,15 +617,15 @@ class SuggestionInput(proto.Message):
             JSON object composed of a collection of (MapKey, MapValue)
             pairs:
 
-            -  MapKey type: string
-            -  MapKey value: parameter name
-            -  MapValue type: If parameter's entity type is a composite
-               entity then use map, otherwise, depending on the
-               parameter value type, it could be one of string, number,
-               boolean, null, list or map.
-            -  MapValue value: If parameter's entity type is a composite
-               entity then use map from composite entity property names
-               to property values, otherwise, use parameter value.
+            - MapKey type: string
+            - MapKey value: parameter name
+            - MapValue type: If parameter's entity type is a composite
+              entity then use map, otherwise, depending on the parameter
+              value type, it could be one of string, number, boolean,
+              null, list or map.
+            - MapValue value: If parameter's entity type is a composite
+              entity then use map from composite entity property names
+              to property values, otherwise, use parameter value.
         intent_input (google.cloud.dialogflow_v2beta1.types.IntentInput):
             The intent to be triggered on V3 agent.
     """
@@ -844,14 +844,14 @@ class AnalyzeContentRequest(proto.Message):
             For BatchCreateMessages API only: Given two messages under
             the same participant:
 
-            -  If send time are different regardless of whether the
-               content of the messages are exactly the same, the
-               conversation will regard them as two distinct messages
-               sent by the participant.
-            -  If send time is the same regardless of whether the
-               content of the messages are exactly the same, the
-               conversation will regard them as same message, and ignore
-               the message received later.
+            - If send time are different regardless of whether the
+              content of the messages are exactly the same, the
+              conversation will regard them as two distinct messages
+              sent by the participant.
+            - If send time is the same regardless of whether the content
+              of the messages are exactly the same, the conversation
+              will regard them as same message, and ignore the message
+              received later.
 
             If the value is not provided, a new request will always be
             regarded as a new message without any de-duplication.
@@ -959,10 +959,10 @@ class AnalyzeContentResponse(proto.Message):
             Optional. The audio data bytes encoded as specified in the
             request. This field is set if:
 
-            -  ``reply_audio_config`` was specified in the request, or
-            -  The automated agent responded with audio to play to the
-               user. In such case, ``reply_audio.config`` contains
-               settings used to synthesize the speech.
+            - ``reply_audio_config`` was specified in the request, or
+            - The automated agent responded with audio to play to the
+              user. In such case, ``reply_audio.config`` contains
+              settings used to synthesize the speech.
 
             In some scenarios, multiple output audio fields may be
             present in the response structure. In these cases, only the
@@ -1091,9 +1091,9 @@ class StreamingAnalyzeContentRequest(proto.Message):
 
        However, note that:
 
-       -  Dialogflow will bill you for the audio so far.
-       -  Dialogflow discards all Speech recognition results in favor of
-          the text input.
+       - Dialogflow will bill you for the audio so far.
+       - Dialogflow discards all Speech recognition results in favor of
+         the text input.
 
     3. If
        [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
@@ -1201,14 +1201,14 @@ class StreamingAnalyzeContentRequest(proto.Message):
 
             Restrictions:
 
-            -  Timeout: 3 mins.
-            -  Audio Encoding: only supports
-               [AudioEncoding.AUDIO_ENCODING_LINEAR_16][google.cloud.dialogflow.v2beta1.AudioEncoding.AUDIO_ENCODING_LINEAR_16]
-               and
-               [AudioEncoding.AUDIO_ENCODING_MULAW][google.cloud.dialogflow.v2beta1.AudioEncoding.AUDIO_ENCODING_MULAW]
-            -  Lifecycle: conversation should be in ``Assist Stage``, go
-               to [Conversation.CreateConversation][] for more
-               information.
+            - Timeout: 3 mins.
+            - Audio Encoding: only supports
+              [AudioEncoding.AUDIO_ENCODING_LINEAR_16][google.cloud.dialogflow.v2beta1.AudioEncoding.AUDIO_ENCODING_LINEAR_16]
+              and
+              [AudioEncoding.AUDIO_ENCODING_MULAW][google.cloud.dialogflow.v2beta1.AudioEncoding.AUDIO_ENCODING_MULAW]
+            - Lifecycle: conversation should be in ``Assist Stage``, go
+              to [Conversation.CreateConversation][] for more
+              information.
 
             InvalidArgument Error will be returned if the one of
             restriction checks failed.
@@ -1344,12 +1344,12 @@ class StreamingAnalyzeContentResponse(proto.Message):
             Optional. The audio data bytes encoded as specified in the
             request. This field is set if:
 
-            -  The ``reply_audio_config`` field is specified in the
-               request.
-            -  The automated agent, which this output comes from,
-               responded with audio. In such case, the
-               ``reply_audio.config`` field contains settings used to
-               synthesize the speech.
+            - The ``reply_audio_config`` field is specified in the
+              request.
+            - The automated agent, which this output comes from,
+              responded with audio. In such case, the
+              ``reply_audio.config`` field contains settings used to
+              synthesize the speech.
 
             In some scenarios, multiple output audio fields may be
             present in the response structure. In these cases, only the
@@ -2548,11 +2548,10 @@ class ResponseMessage(proto.Message):
 
         You may set this, for example:
 
-        -  In the entry fulfillment of a Dialogflow CX Page if entering the
-           page indicates something went extremely wrong in the
-           conversation.
-        -  In a webhook response when you determine that the customer issue
-           can only be handled by a human.
+        - In the entry fulfillment of a Dialogflow CX Page if entering the
+          page indicates something went extremely wrong in the conversation.
+        - In a webhook response when you determine that the customer issue
+          can only be handled by a human.
 
         Attributes:
             metadata (google.protobuf.struct_pb2.Struct):
