@@ -119,8 +119,8 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
     Manages secrets and operations using those secrets. Implements a
     REST model with the following objects:
 
-    -  [Secret][google.cloud.secretmanager.v1beta2.Secret]
-    -  [SecretVersion][google.cloud.secretmanager.v1beta2.SecretVersion]
+    - [Secret][google.cloud.secretmanager.v1beta2.Secret]
+    - [SecretVersion][google.cloud.secretmanager.v1beta2.SecretVersion]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

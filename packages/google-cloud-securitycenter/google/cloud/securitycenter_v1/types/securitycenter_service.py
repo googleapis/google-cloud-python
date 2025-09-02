@@ -179,15 +179,15 @@ class BulkMuteFindingsRequest(proto.Message):
 
             The supported operators are:
 
-            -  ``=`` for all value types.
-            -  ``>``, ``<``, ``>=``, ``<=`` for integer values.
-            -  ``:``, meaning substring matching, for strings.
+            - ``=`` for all value types.
+            - ``>``, ``<``, ``>=``, ``<=`` for integer values.
+            - ``:``, meaning substring matching, for strings.
 
             The supported value types are:
 
-            -  string literals in quotes.
-            -  integer literals without quotes.
-            -  boolean literals ``true`` and ``false`` without quotes.
+            - string literals in quotes.
+            - integer literals without quotes.
+            - boolean literals ``true`` and ``false`` without quotes.
         mute_annotation (str):
             This can be a mute configuration name or any
             identifier for mute/unmute of findings based on
@@ -795,66 +795,66 @@ class GroupAssetsRequest(proto.Message):
             negation. The fields map to those defined in the Asset
             resource. Examples include:
 
-            -  name
-            -  security_center_properties.resource_name
-            -  resource_properties.a_property
-            -  security_marks.marks.marka
+            - name
+            - security_center_properties.resource_name
+            - resource_properties.a_property
+            - security_marks.marks.marka
 
             The supported operators are:
 
-            -  ``=`` for all value types.
-            -  ``>``, ``<``, ``>=``, ``<=`` for integer values.
-            -  ``:``, meaning substring matching, for strings.
+            - ``=`` for all value types.
+            - ``>``, ``<``, ``>=``, ``<=`` for integer values.
+            - ``:``, meaning substring matching, for strings.
 
             The supported value types are:
 
-            -  string literals in quotes.
-            -  integer literals without quotes.
-            -  boolean literals ``true`` and ``false`` without quotes.
+            - string literals in quotes.
+            - integer literals without quotes.
+            - boolean literals ``true`` and ``false`` without quotes.
 
             The following field and operator combinations are supported:
 
-            -  name: ``=``
+            - name: ``=``
 
-            -  update_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+            - update_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-               Usage: This should be milliseconds since epoch or an
-               RFC3339 string. Examples:
-               ``update_time = "2019-06-10T16:07:18-07:00"``
-               ``update_time = 1560208038000``
+              Usage: This should be milliseconds since epoch or an
+              RFC3339 string. Examples:
+              ``update_time = "2019-06-10T16:07:18-07:00"``
+              ``update_time = 1560208038000``
 
-            -  create_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+            - create_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-               Usage: This should be milliseconds since epoch or an
-               RFC3339 string. Examples:
-               ``create_time = "2019-06-10T16:07:18-07:00"``
-               ``create_time = 1560208038000``
+              Usage: This should be milliseconds since epoch or an
+              RFC3339 string. Examples:
+              ``create_time = "2019-06-10T16:07:18-07:00"``
+              ``create_time = 1560208038000``
 
-            -  iam_policy.policy_blob: ``=``, ``:``
+            - iam_policy.policy_blob: ``=``, ``:``
 
-            -  resource_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
-               ``<=``
+            - resource_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
+              ``<=``
 
-            -  security_marks.marks: ``=``, ``:``
+            - security_marks.marks: ``=``, ``:``
 
-            -  security_center_properties.resource_name: ``=``, ``:``
+            - security_center_properties.resource_name: ``=``, ``:``
 
-            -  security_center_properties.resource_display_name: ``=``,
-               ``:``
+            - security_center_properties.resource_display_name: ``=``,
+              ``:``
 
-            -  security_center_properties.resource_type: ``=``, ``:``
+            - security_center_properties.resource_type: ``=``, ``:``
 
-            -  security_center_properties.resource_parent: ``=``, ``:``
+            - security_center_properties.resource_parent: ``=``, ``:``
 
-            -  security_center_properties.resource_parent_display_name:
-               ``=``, ``:``
+            - security_center_properties.resource_parent_display_name:
+              ``=``, ``:``
 
-            -  security_center_properties.resource_project: ``=``, ``:``
+            - security_center_properties.resource_project: ``=``, ``:``
 
-            -  security_center_properties.resource_project_display_name:
-               ``=``, ``:``
+            - security_center_properties.resource_project_display_name:
+              ``=``, ``:``
 
-            -  security_center_properties.resource_owners: ``=``, ``:``
+            - security_center_properties.resource_owners: ``=``, ``:``
 
             For example, ``resource_properties.size = 100`` is a valid
             filter string.
@@ -874,18 +874,18 @@ class GroupAssetsRequest(proto.Message):
             The following fields are supported when compare_duration is
             not set:
 
-            -  security_center_properties.resource_project
-            -  security_center_properties.resource_project_display_name
-            -  security_center_properties.resource_type
-            -  security_center_properties.resource_parent
-            -  security_center_properties.resource_parent_display_name
+            - security_center_properties.resource_project
+            - security_center_properties.resource_project_display_name
+            - security_center_properties.resource_type
+            - security_center_properties.resource_parent
+            - security_center_properties.resource_parent_display_name
 
             The following fields are supported when compare_duration is
             set:
 
-            -  security_center_properties.resource_type
-            -  security_center_properties.resource_project_display_name
-            -  security_center_properties.resource_parent_display_name
+            - security_center_properties.resource_type
+            - security_center_properties.resource_project_display_name
+            - security_center_properties.resource_parent_display_name
         compare_duration (google.protobuf.duration_pb2.Duration):
             When compare_duration is set, the GroupResult's
             "state_change" property is updated to indicate whether the
@@ -903,14 +903,14 @@ class GroupAssetsRequest(proto.Message):
             Possible "state_change" values when compare_duration is
             specified:
 
-            -  "ADDED": indicates that the asset was not present at the
-               start of compare_duration, but present at reference_time.
-            -  "REMOVED": indicates that the asset was present at the
-               start of compare_duration, but not present at
-               reference_time.
-            -  "ACTIVE": indicates that the asset was present at both
-               the start and the end of the time period defined by
-               compare_duration and reference_time.
+            - "ADDED": indicates that the asset was not present at the
+              start of compare_duration, but present at reference_time.
+            - "REMOVED": indicates that the asset was present at the
+              start of compare_duration, but not present at
+              reference_time.
+            - "ACTIVE": indicates that the asset was present at both the
+              start and the end of the time period defined by
+              compare_duration and reference_time.
 
             If compare_duration is not specified, then the only possible
             state_change is "UNUSED", which will be the state_change set
@@ -1035,71 +1035,71 @@ class GroupFindingsRequest(proto.Message):
             and may have a ``-`` character in front of them to indicate
             negation. Examples include:
 
-            -  name
-            -  source_properties.a_property
-            -  security_marks.marks.marka
+            - name
+            - source_properties.a_property
+            - security_marks.marks.marka
 
             The supported operators are:
 
-            -  ``=`` for all value types.
-            -  ``>``, ``<``, ``>=``, ``<=`` for integer values.
-            -  ``:``, meaning substring matching, for strings.
+            - ``=`` for all value types.
+            - ``>``, ``<``, ``>=``, ``<=`` for integer values.
+            - ``:``, meaning substring matching, for strings.
 
             The supported value types are:
 
-            -  string literals in quotes.
-            -  integer literals without quotes.
-            -  boolean literals ``true`` and ``false`` without quotes.
+            - string literals in quotes.
+            - integer literals without quotes.
+            - boolean literals ``true`` and ``false`` without quotes.
 
             The following field and operator combinations are supported:
 
-            -  name: ``=``
+            - name: ``=``
 
-            -  parent: ``=``, ``:``
+            - parent: ``=``, ``:``
 
-            -  resource_name: ``=``, ``:``
+            - resource_name: ``=``, ``:``
 
-            -  state: ``=``, ``:``
+            - state: ``=``, ``:``
 
-            -  category: ``=``, ``:``
+            - category: ``=``, ``:``
 
-            -  external_uri: ``=``, ``:``
+            - external_uri: ``=``, ``:``
 
-            -  event_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+            - event_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-               Usage: This should be milliseconds since epoch or an
-               RFC3339 string. Examples:
-               ``event_time = "2019-06-10T16:07:18-07:00"``
-               ``event_time = 1560208038000``
+              Usage: This should be milliseconds since epoch or an
+              RFC3339 string. Examples:
+              ``event_time = "2019-06-10T16:07:18-07:00"``
+              ``event_time = 1560208038000``
 
-            -  severity: ``=``, ``:``
+            - severity: ``=``, ``:``
 
-            -  workflow_state: ``=``, ``:``
+            - workflow_state: ``=``, ``:``
 
-            -  security_marks.marks: ``=``, ``:``
+            - security_marks.marks: ``=``, ``:``
 
-            -  source_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
-               ``<=``
+            - source_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
+              ``<=``
 
-               For example, ``source_properties.size = 100`` is a valid
-               filter string.
+              For example, ``source_properties.size = 100`` is a valid
+              filter string.
 
-               Use a partial match on the empty string to filter based
-               on a property existing:
-               ``source_properties.my_property : ""``
+              Use a partial match on the empty string to filter based on
+              a property existing:
+              ``source_properties.my_property : ""``
 
-               Use a negated partial match on the empty string to filter
-               based on a property not existing:
-               ``-source_properties.my_property : ""``
+              Use a negated partial match on the empty string to filter
+              based on a property not existing:
+              ``-source_properties.my_property : ""``
 
-            -  resource:
+            - resource:
 
-               -  resource.name: ``=``, ``:``
-               -  resource.parent_name: ``=``, ``:``
-               -  resource.parent_display_name: ``=``, ``:``
-               -  resource.project_name: ``=``, ``:``
-               -  resource.project_display_name: ``=``, ``:``
-               -  resource.type: ``=``, ``:``
+              - resource.name: ``=``, ``:``
+              - resource.parent_name: ``=``, ``:``
+              - resource.parent_display_name: ``=``, ``:``
+              - resource.project_name: ``=``, ``:``
+              - resource.project_display_name: ``=``, ``:``
+              - resource.type: ``=``, ``:``
         group_by (str):
             Required. Expression that defines what assets fields to use
             for grouping (including ``state_change``). The string value
@@ -1109,7 +1109,7 @@ class GroupFindingsRequest(proto.Message):
             The following fields are supported when compare_duration is
             set:
 
-            -  state_change
+            - state_change
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used as a reference point when filtering
             findings. The filter is limited to findings
@@ -1134,18 +1134,18 @@ class GroupFindingsRequest(proto.Message):
             Possible "state_change" values when compare_duration is
             specified:
 
-            -  "CHANGED": indicates that the finding was present and
-               matched the given filter at the start of
-               compare_duration, but changed its state at read_time.
-            -  "UNCHANGED": indicates that the finding was present and
-               matched the given filter at the start of compare_duration
-               and did not change state at read_time.
-            -  "ADDED": indicates that the finding did not match the
-               given filter or was not present at the start of
-               compare_duration, but was present at read_time.
-            -  "REMOVED": indicates that the finding was present and
-               matched the filter at the start of compare_duration, but
-               did not match the filter at read_time.
+            - "CHANGED": indicates that the finding was present and
+              matched the given filter at the start of compare_duration,
+              but changed its state at read_time.
+            - "UNCHANGED": indicates that the finding was present and
+              matched the given filter at the start of compare_duration
+              and did not change state at read_time.
+            - "ADDED": indicates that the finding did not match the
+              given filter or was not present at the start of
+              compare_duration, but was present at read_time.
+            - "REMOVED": indicates that the finding was present and
+              matched the filter at the start of compare_duration, but
+              did not match the filter at read_time.
 
             If compare_duration is not specified, then the only possible
             state_change is "UNUSED", which will be the state_change set
@@ -1344,8 +1344,8 @@ class ListValuedResourcesRequest(proto.Message):
             The filter expression that filters the valued resources in
             the response. Supported fields:
 
-            -  ``resource_value`` supports =
-            -  ``resource_type`` supports =
+            - ``resource_value`` supports =
+            - ``resource_type`` supports =
         page_token (str):
             The value returned by the last
             ``ListValuedResourcesResponse``; indicates that this is a
@@ -1361,15 +1361,15 @@ class ListValuedResourcesRequest(proto.Message):
 
             Supported fields:
 
-            -  ``exposed_score``
+            - ``exposed_score``
 
-            -  ``resource_value``
+            - ``resource_value``
 
-            -  ``resource_type``
+            - ``resource_type``
 
-            -  ``resource``
+            - ``resource``
 
-            -  ``display_name``
+            - ``display_name``
 
             Values should be a comma separated list of fields. For
             example: ``exposed_score,resource_value``.
@@ -1455,7 +1455,7 @@ class ListAttackPathsRequest(proto.Message):
             The filter expression that filters the attack path in the
             response. Supported fields:
 
-            -  ``valued_resources`` supports =
+            - ``valued_resources`` supports =
         page_token (str):
             The value returned by the last ``ListAttackPathsResponse``;
             indicates that this is a continuation of a prior
@@ -1889,67 +1889,67 @@ class ListAssetsRequest(proto.Message):
             negation. The fields map to those defined in the Asset
             resource. Examples include:
 
-            -  name
-            -  security_center_properties.resource_name
-            -  resource_properties.a_property
-            -  security_marks.marks.marka
+            - name
+            - security_center_properties.resource_name
+            - resource_properties.a_property
+            - security_marks.marks.marka
 
             The supported operators are:
 
-            -  ``=`` for all value types.
-            -  ``>``, ``<``, ``>=``, ``<=`` for integer values.
-            -  ``:``, meaning substring matching, for strings.
+            - ``=`` for all value types.
+            - ``>``, ``<``, ``>=``, ``<=`` for integer values.
+            - ``:``, meaning substring matching, for strings.
 
             The supported value types are:
 
-            -  string literals in quotes.
-            -  integer literals without quotes.
-            -  boolean literals ``true`` and ``false`` without quotes.
+            - string literals in quotes.
+            - integer literals without quotes.
+            - boolean literals ``true`` and ``false`` without quotes.
 
             The following are the allowed field and operator
             combinations:
 
-            -  name: ``=``
+            - name: ``=``
 
-            -  update_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+            - update_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-               Usage: This should be milliseconds since epoch or an
-               RFC3339 string. Examples:
-               ``update_time = "2019-06-10T16:07:18-07:00"``
-               ``update_time = 1560208038000``
+              Usage: This should be milliseconds since epoch or an
+              RFC3339 string. Examples:
+              ``update_time = "2019-06-10T16:07:18-07:00"``
+              ``update_time = 1560208038000``
 
-            -  create_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+            - create_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-               Usage: This should be milliseconds since epoch or an
-               RFC3339 string. Examples:
-               ``create_time = "2019-06-10T16:07:18-07:00"``
-               ``create_time = 1560208038000``
+              Usage: This should be milliseconds since epoch or an
+              RFC3339 string. Examples:
+              ``create_time = "2019-06-10T16:07:18-07:00"``
+              ``create_time = 1560208038000``
 
-            -  iam_policy.policy_blob: ``=``, ``:``
+            - iam_policy.policy_blob: ``=``, ``:``
 
-            -  resource_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
-               ``<=``
+            - resource_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
+              ``<=``
 
-            -  security_marks.marks: ``=``, ``:``
+            - security_marks.marks: ``=``, ``:``
 
-            -  security_center_properties.resource_name: ``=``, ``:``
+            - security_center_properties.resource_name: ``=``, ``:``
 
-            -  security_center_properties.resource_display_name: ``=``,
-               ``:``
+            - security_center_properties.resource_display_name: ``=``,
+              ``:``
 
-            -  security_center_properties.resource_type: ``=``, ``:``
+            - security_center_properties.resource_type: ``=``, ``:``
 
-            -  security_center_properties.resource_parent: ``=``, ``:``
+            - security_center_properties.resource_parent: ``=``, ``:``
 
-            -  security_center_properties.resource_parent_display_name:
-               ``=``, ``:``
+            - security_center_properties.resource_parent_display_name:
+              ``=``, ``:``
 
-            -  security_center_properties.resource_project: ``=``, ``:``
+            - security_center_properties.resource_project: ``=``, ``:``
 
-            -  security_center_properties.resource_project_display_name:
-               ``=``, ``:``
+            - security_center_properties.resource_project_display_name:
+              ``=``, ``:``
 
-            -  security_center_properties.resource_owners: ``=``, ``:``
+            - security_center_properties.resource_owners: ``=``, ``:``
 
             For example, ``resource_properties.size = 100`` is a valid
             filter string.
@@ -2004,13 +2004,13 @@ class ListAssetsRequest(proto.Message):
             Possible "state_change" values when compare_duration is
             specified:
 
-            -  "ADDED": indicates that the asset was not present at the
-               start of compare_duration, but present at read_time.
-            -  "REMOVED": indicates that the asset was present at the
-               start of compare_duration, but not present at read_time.
-            -  "ACTIVE": indicates that the asset was present at both
-               the start and the end of the time period defined by
-               compare_duration and read_time.
+            - "ADDED": indicates that the asset was not present at the
+              start of compare_duration, but present at read_time.
+            - "REMOVED": indicates that the asset was present at the
+              start of compare_duration, but not present at read_time.
+            - "ACTIVE": indicates that the asset was present at both the
+              start and the end of the time period defined by
+              compare_duration and read_time.
 
             If compare_duration is not specified, then the only possible
             state_change is "UNUSED", which will be the state_change set
@@ -2178,73 +2178,73 @@ class ListFindingsRequest(proto.Message):
             and may have a ``-`` character in front of them to indicate
             negation. Examples include:
 
-            -  name
-            -  source_properties.a_property
-            -  security_marks.marks.marka
+            - name
+            - source_properties.a_property
+            - security_marks.marks.marka
 
             The supported operators are:
 
-            -  ``=`` for all value types.
-            -  ``>``, ``<``, ``>=``, ``<=`` for integer values.
-            -  ``:``, meaning substring matching, for strings.
+            - ``=`` for all value types.
+            - ``>``, ``<``, ``>=``, ``<=`` for integer values.
+            - ``:``, meaning substring matching, for strings.
 
             The supported value types are:
 
-            -  string literals in quotes.
-            -  integer literals without quotes.
-            -  boolean literals ``true`` and ``false`` without quotes.
+            - string literals in quotes.
+            - integer literals without quotes.
+            - boolean literals ``true`` and ``false`` without quotes.
 
             The following field and operator combinations are supported:
 
-            -  name: ``=``
+            - name: ``=``
 
-            -  parent: ``=``, ``:``
+            - parent: ``=``, ``:``
 
-            -  resource_name: ``=``, ``:``
+            - resource_name: ``=``, ``:``
 
-            -  state: ``=``, ``:``
+            - state: ``=``, ``:``
 
-            -  category: ``=``, ``:``
+            - category: ``=``, ``:``
 
-            -  external_uri: ``=``, ``:``
+            - external_uri: ``=``, ``:``
 
-            -  event_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+            - event_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-               Usage: This should be milliseconds since epoch or an
-               RFC3339 string. Examples:
-               ``event_time = "2019-06-10T16:07:18-07:00"``
-               ``event_time = 1560208038000``
+              Usage: This should be milliseconds since epoch or an
+              RFC3339 string. Examples:
+              ``event_time = "2019-06-10T16:07:18-07:00"``
+              ``event_time = 1560208038000``
 
-            -  severity: ``=``, ``:``
+            - severity: ``=``, ``:``
 
-            -  workflow_state: ``=``, ``:``
+            - workflow_state: ``=``, ``:``
 
-            -  security_marks.marks: ``=``, ``:``
+            - security_marks.marks: ``=``, ``:``
 
-            -  source_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
-               ``<=``
+            - source_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
+              ``<=``
 
-               For example, ``source_properties.size = 100`` is a valid
-               filter string.
+              For example, ``source_properties.size = 100`` is a valid
+              filter string.
 
-               Use a partial match on the empty string to filter based
-               on a property existing:
-               ``source_properties.my_property : ""``
+              Use a partial match on the empty string to filter based on
+              a property existing:
+              ``source_properties.my_property : ""``
 
-               Use a negated partial match on the empty string to filter
-               based on a property not existing:
-               ``-source_properties.my_property : ""``
+              Use a negated partial match on the empty string to filter
+              based on a property not existing:
+              ``-source_properties.my_property : ""``
 
-            -  resource:
+            - resource:
 
-               -  resource.name: ``=``, ``:``
-               -  resource.parent_name: ``=``, ``:``
-               -  resource.parent_display_name: ``=``, ``:``
-               -  resource.project_name: ``=``, ``:``
-               -  resource.project_display_name: ``=``, ``:``
-               -  resource.type: ``=``, ``:``
-               -  resource.folders.resource_folder: ``=``, ``:``
-               -  resource.display_name: ``=``, ``:``
+              - resource.name: ``=``, ``:``
+              - resource.parent_name: ``=``, ``:``
+              - resource.parent_display_name: ``=``, ``:``
+              - resource.project_name: ``=``, ``:``
+              - resource.project_display_name: ``=``, ``:``
+              - resource.type: ``=``, ``:``
+              - resource.folders.resource_folder: ``=``, ``:``
+              - resource.display_name: ``=``, ``:``
         order_by (str):
             Expression that defines what fields and order to use for
             sorting. The string value should follow SQL syntax: comma
@@ -2284,18 +2284,18 @@ class ListFindingsRequest(proto.Message):
             Possible "state_change" values when compare_duration is
             specified:
 
-            -  "CHANGED": indicates that the finding was present and
-               matched the given filter at the start of
-               compare_duration, but changed its state at read_time.
-            -  "UNCHANGED": indicates that the finding was present and
-               matched the given filter at the start of compare_duration
-               and did not change state at read_time.
-            -  "ADDED": indicates that the finding did not match the
-               given filter or was not present at the start of
-               compare_duration, but was present at read_time.
-            -  "REMOVED": indicates that the finding was present and
-               matched the filter at the start of compare_duration, but
-               did not match the filter at read_time.
+            - "CHANGED": indicates that the finding was present and
+              matched the given filter at the start of compare_duration,
+              but changed its state at read_time.
+            - "UNCHANGED": indicates that the finding was present and
+              matched the given filter at the start of compare_duration
+              and did not change state at read_time.
+            - "ADDED": indicates that the finding did not match the
+              given filter or was not present at the start of
+              compare_duration, but was present at read_time.
+            - "REMOVED": indicates that the finding was present and
+              matched the filter at the start of compare_duration, but
+              did not match the filter at read_time.
 
             If compare_duration is not specified, then the only possible
             state_change is "UNUSED", which will be the state_change set
@@ -3181,9 +3181,9 @@ class CreateEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  ``organizations/{organization}/eventThreatDetectionSettings``.
-            -  ``folders/{folder}/eventThreatDetectionSettings``.
-            -  ``projects/{project}/eventThreatDetectionSettings``.
+            - ``organizations/{organization}/eventThreatDetectionSettings``.
+            - ``folders/{folder}/eventThreatDetectionSettings``.
+            - ``projects/{project}/eventThreatDetectionSettings``.
         event_threat_detection_custom_module (google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule):
             Required. The module to create. The
             event_threat_detection_custom_module.name will be ignored
@@ -3211,9 +3211,9 @@ class ValidateEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  ``organizations/{organization}/eventThreatDetectionSettings``.
-            -  ``folders/{folder}/eventThreatDetectionSettings``.
-            -  ``projects/{project}/eventThreatDetectionSettings``.
+            - ``organizations/{organization}/eventThreatDetectionSettings``.
+            - ``folders/{folder}/eventThreatDetectionSettings``.
+            - ``projects/{project}/eventThreatDetectionSettings``.
         raw_text (str):
             Required. The raw text of the module's
             contents. Used to generate error messages.
@@ -3261,9 +3261,9 @@ class DeleteEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  ``organizations/{organization}/eventThreatDetectionSettings/customModules/{module}``.
-            -  ``folders/{folder}/eventThreatDetectionSettings/customModules/{module}``.
-            -  ``projects/{project}/eventThreatDetectionSettings/customModules/{module}``.
+            - ``organizations/{organization}/eventThreatDetectionSettings/customModules/{module}``.
+            - ``folders/{folder}/eventThreatDetectionSettings/customModules/{module}``.
+            - ``projects/{project}/eventThreatDetectionSettings/customModules/{module}``.
     """
 
     name: str = proto.Field(
@@ -3281,9 +3281,9 @@ class GetEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  ``organizations/{organization}/eventThreatDetectionSettings/customModules/{module}``.
-            -  ``folders/{folder}/eventThreatDetectionSettings/customModules/{module}``.
-            -  ``projects/{project}/eventThreatDetectionSettings/customModules/{module}``.
+            - ``organizations/{organization}/eventThreatDetectionSettings/customModules/{module}``.
+            - ``folders/{folder}/eventThreatDetectionSettings/customModules/{module}``.
+            - ``projects/{project}/eventThreatDetectionSettings/customModules/{module}``.
     """
 
     name: str = proto.Field(
@@ -3302,9 +3302,9 @@ class ListDescendantEventThreatDetectionCustomModulesRequest(proto.Message):
 
             Its format is:
 
-            -  ``organizations/{organization}/eventThreatDetectionSettings``.
-            -  ``folders/{folder}/eventThreatDetectionSettings``.
-            -  ``projects/{project}/eventThreatDetectionSettings``.
+            - ``organizations/{organization}/eventThreatDetectionSettings``.
+            - ``folders/{folder}/eventThreatDetectionSettings``.
+            - ``projects/{project}/eventThreatDetectionSettings``.
         page_token (str):
             A page token, received from a previous
             ``ListDescendantEventThreatDetectionCustomModules`` call.
@@ -3375,9 +3375,9 @@ class ListEventThreatDetectionCustomModulesRequest(proto.Message):
 
             Its format is:
 
-            -  ``organizations/{organization}/eventThreatDetectionSettings``.
-            -  ``folders/{folder}/eventThreatDetectionSettings``.
-            -  ``projects/{project}/eventThreatDetectionSettings``.
+            - ``organizations/{organization}/eventThreatDetectionSettings``.
+            - ``folders/{folder}/eventThreatDetectionSettings``.
+            - ``projects/{project}/eventThreatDetectionSettings``.
         page_token (str):
             A page token, received from a previous
             ``ListEventThreatDetectionCustomModules`` call. Provide this
@@ -3471,9 +3471,9 @@ class GetEffectiveEventThreatDetectionCustomModuleRequest(proto.Message):
 
             Its format is:
 
-            -  ``organizations/{organization}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
-            -  ``folders/{folder}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
-            -  ``projects/{project}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+            - ``organizations/{organization}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+            - ``folders/{folder}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+            - ``projects/{project}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
     """
 
     name: str = proto.Field(
@@ -3492,9 +3492,9 @@ class ListEffectiveEventThreatDetectionCustomModulesRequest(proto.Message):
 
             Its format is:
 
-            -  ``organizations/{organization}/eventThreatDetectionSettings``.
-            -  ``folders/{folder}/eventThreatDetectionSettings``.
-            -  ``projects/{project}/eventThreatDetectionSettings``.
+            - ``organizations/{organization}/eventThreatDetectionSettings``.
+            - ``folders/{folder}/eventThreatDetectionSettings``.
+            - ``projects/{project}/eventThreatDetectionSettings``.
         page_token (str):
             A page token, received from a previous
             ``ListEffectiveEventThreatDetectionCustomModules`` call.

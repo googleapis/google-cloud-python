@@ -851,7 +851,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListInsightsPager:
         r"""Lists insights for the specified Cloud Resource. Requires the
-        recommender.*.list IAM permission for the specified insight
+        recommender.\*.list IAM permission for the specified insight
         type.
 
         .. code-block:: python
@@ -888,15 +888,15 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
 
-                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+                - ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+                - ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+                - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-                -  ``folders/[FOLDER_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+                - ``folders/[FOLDER_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+                - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
                 LOCATION here refers to GCP Locations:
                 https://cloud.google.com/about/locations/
@@ -988,7 +988,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> insight.Insight:
-        r"""Gets the requested insight. Requires the recommender.*.get IAM
+        r"""Gets the requested insight. Requires the recommender.\*.get IAM
         permission for the specified insight type.
 
         .. code-block:: python
@@ -1106,7 +1106,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         being updated.
 
         MarkInsightAccepted can be applied to insights in ACTIVE state.
-        Requires the recommender.*.update IAM permission for the
+        Requires the recommender.\*.update IAM permission for the
         specified insight.
 
         .. code-block:: python
@@ -1237,7 +1237,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRecommendationsPager:
         r"""Lists recommendations for the specified Cloud Resource. Requires
-        the recommender.*.list IAM permission for the specified
+        the recommender.\*.list IAM permission for the specified
         recommender.
 
         .. code-block:: python
@@ -1274,15 +1274,15 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
 
-                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+                - ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+                - ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+                - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-                -  ``folders/[FOLDER_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+                - ``folders/[FOLDER_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+                - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
                 LOCATION here refers to GCP Locations:
                 https://cloud.google.com/about/locations/ RECOMMENDER_ID
@@ -1296,25 +1296,25 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 Filter expression to restrict the recommendations
                 returned. Supported filter fields:
 
-                -  ``state_info.state``
+                - ``state_info.state``
 
-                -  ``recommenderSubtype``
+                - ``recommenderSubtype``
 
-                -  ``priority``
+                - ``priority``
 
-                -  ``targetResources``
+                - ``targetResources``
 
                 Examples:
 
-                -  ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
+                - ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
 
-                -  ``recommenderSubtype = REMOVE_ROLE OR recommenderSubtype = REPLACE_ROLE``
+                - ``recommenderSubtype = REMOVE_ROLE OR recommenderSubtype = REPLACE_ROLE``
 
-                -  ``priority = P1 OR priority = P2``
+                - ``priority = P1 OR priority = P2``
 
-                -  ``targetResources : //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1``
+                - ``targetResources : //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1``
 
-                -  ``stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)``
+                - ``stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)``
 
                 The max allowed filter length is 500 characters.
 
@@ -1411,7 +1411,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> recommendation.Recommendation:
         r"""Gets the requested recommendation. Requires the
-        recommender.*.get IAM permission for the specified recommender.
+        recommender.\*.get IAM permission for the specified recommender.
 
         .. code-block:: python
 
@@ -1526,7 +1526,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         MarkRecommendationDismissed can be applied to recommendations in
         ACTIVE state.
 
-        Requires the recommender.*.update IAM permission for the
+        Requires the recommender.\*.update IAM permission for the
         specified recommender.
 
         .. code-block:: python
@@ -1630,7 +1630,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         MarkRecommendationClaimed can be applied to recommendations in
         CLAIMED, SUCCEEDED, FAILED, or ACTIVE state.
 
-        Requires the recommender.*.update IAM permission for the
+        Requires the recommender.\*.update IAM permission for the
         specified recommender.
 
         .. code-block:: python
@@ -1777,7 +1777,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         MarkRecommendationSucceeded can be applied to recommendations in
         ACTIVE, CLAIMED, SUCCEEDED, or FAILED state.
 
-        Requires the recommender.*.update IAM permission for the
+        Requires the recommender.\*.update IAM permission for the
         specified recommender.
 
         .. code-block:: python
@@ -1924,7 +1924,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         MarkRecommendationFailed can be applied to recommendations in
         ACTIVE, CLAIMED, SUCCEEDED, or FAILED state.
 
-        Requires the recommender.*.update IAM permission for the
+        Requires the recommender.\*.update IAM permission for the
         specified recommender.
 
         .. code-block:: python
@@ -2095,13 +2095,13 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
                 Acceptable formats:
 
-                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+                - ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
 
-                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+                - ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
 
-                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+                - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
 
-                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+                - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2331,13 +2331,13 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
                 Acceptable formats:
 
-                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+                - ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+                - ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+                - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+                - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -1128,15 +1128,15 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
                 Some examples of valid filters expressions:
 
-                -  Example 1: eventTime > "2012-04-23T18:25:43.511Z"
-                   eventTime < "2012-04-23T18:30:43.511Z"
-                -  Example 2: eventTime > "2012-04-23T18:25:43.511Z"
-                   eventType = detail-page-view
-                -  Example 3: eventsMissingCatalogItems eventType =
-                   search eventTime < "2018-04-23T18:30:43.511Z"
-                -  Example 4: eventTime > "2012-04-23T18:25:43.511Z"
-                -  Example 5: eventType = search
-                -  Example 6: eventsMissingCatalogItems
+                - Example 1: eventTime > "2012-04-23T18:25:43.511Z"
+                  eventTime < "2012-04-23T18:30:43.511Z"
+                - Example 2: eventTime > "2012-04-23T18:25:43.511Z"
+                  eventType = detail-page-view
+                - Example 3: eventsMissingCatalogItems eventType =
+                  search eventTime < "2018-04-23T18:30:43.511Z"
+                - Example 4: eventTime > "2012-04-23T18:25:43.511Z"
+                - Example 5: eventType = search
+                - Example 6: eventsMissingCatalogItems
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1286,19 +1286,19 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 that will be deleted. The eligible fields for filtering
                 are:
 
-                -  eventType - UserEvent.eventType field of type string.
-                -  eventTime - in ISO 8601 "zulu" format.
-                -  visitorId - field of type string. Specifying this
-                   will delete all events associated with a visitor.
-                -  userId - field of type string. Specifying this will
-                   delete all events associated with a user. Example 1:
-                   Deleting all events in a time range.
-                   ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z"``
-                   Example 2: Deleting specific eventType in time range.
-                   ``eventTime > "2012-04-23T18:25:43.511Z" eventType = "detail-page-view"``
-                   Example 3: Deleting all events for a specific visitor
-                   ``visitorId = visitor1024`` The filtering fields are
-                   assumed to have an implicit AND.
+                - eventType - UserEvent.eventType field of type string.
+                - eventTime - in ISO 8601 "zulu" format.
+                - visitorId - field of type string. Specifying this will
+                  delete all events associated with a visitor.
+                - userId - field of type string. Specifying this will
+                  delete all events associated with a user. Example 1:
+                  Deleting all events in a time range.
+                  ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z"``
+                  Example 2: Deleting specific eventType in time range.
+                  ``eventTime > "2012-04-23T18:25:43.511Z" eventType = "detail-page-view"``
+                  Example 3: Deleting all events for a specific visitor
+                  ``visitorId = visitor1024`` The filtering fields are
+                  assumed to have an implicit AND.
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this

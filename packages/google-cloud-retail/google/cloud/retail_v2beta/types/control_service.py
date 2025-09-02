@@ -49,7 +49,7 @@ class CreateControlRequest(proto.Message):
             the final component of the Control's resource name.
 
             This value should be 4-63 characters, and valid characters
-            are /[a-z][0-9]-_/.
+            are /[a-z][0-9]-\_/.
     """
 
     parent: str = proto.Field(
@@ -78,7 +78,7 @@ class UpdateControlRequest(proto.Message):
             [Control][google.cloud.retail.v2beta.Control] to update. The
             following are NOT supported:
 
-            -  [Control.name][google.cloud.retail.v2beta.Control.name]
+            - [Control.name][google.cloud.retail.v2beta.Control.name]
 
             If not set or empty, all supported fields are updated.
     """
@@ -145,11 +145,11 @@ class ListControlsRequest(proto.Message):
             Optional. A filter to apply on the list results. Supported
             features:
 
-            -  List all the products under the parent branch if
-               [filter][google.cloud.retail.v2beta.ListControlsRequest.filter]
-               is unset.
-            -  List controls that are used in a single ServingConfig:
-               'serving_config = "boosted_home_page_cvr"'
+            - List all the products under the parent branch if
+              [filter][google.cloud.retail.v2beta.ListControlsRequest.filter]
+              is unset.
+            - List controls that are used in a single ServingConfig:
+              'serving_config = "boosted_home_page_cvr"'
     """
 
     parent: str = proto.Field(

@@ -417,6 +417,22 @@ class ConversationalSearchServiceRestTransport(
             resp, _ = self._interceptor.post_conversational_search_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ConversationalSearchServiceClient.conversational_search",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ConversationalSearchService",
+                        "rpcName": "ConversationalSearch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

@@ -297,65 +297,65 @@ class SearchRequest(proto.Message):
 
             Supported keys are:
 
-            -  colorFamilies
-            -  price
-            -  originalPrice
-            -  discount
-            -  variantId
-            -  inventory(place_id,price)
-            -  inventory(place_id,original_price)
-            -  inventory(place_id,attributes.key), where key is any key
-               in the
-               [Product.local_inventories.attributes][google.cloud.retail.v2alpha.LocalInventory.attributes]
-               map.
-            -  attributes.key, where key is any key in the
-               [Product.attributes][google.cloud.retail.v2alpha.Product.attributes]
-               map.
-            -  pickupInStore.id, where id is any
-               [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
-               for
-               [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
-               "pickup-in-store".
-            -  shipToStore.id, where id is any
-               [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
-               for
-               [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
-               "ship-to-store".
-            -  sameDayDelivery.id, where id is any
-               [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
-               for
-               [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
-               "same-day-delivery".
-            -  nextDayDelivery.id, where id is any
-               [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
-               for
-               [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
-               "next-day-delivery".
-            -  customFulfillment1.id, where id is any
-               [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
-               for
-               [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
-               "custom-type-1".
-            -  customFulfillment2.id, where id is any
-               [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
-               for
-               [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
-               "custom-type-2".
-            -  customFulfillment3.id, where id is any
-               [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
-               for
-               [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
-               "custom-type-3".
-            -  customFulfillment4.id, where id is any
-               [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
-               for
-               [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
-               "custom-type-4".
-            -  customFulfillment5.id, where id is any
-               [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
-               for
-               [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
-               "custom-type-5".
+            - colorFamilies
+            - price
+            - originalPrice
+            - discount
+            - variantId
+            - inventory(place_id,price)
+            - inventory(place_id,original_price)
+            - inventory(place_id,attributes.key), where key is any key
+              in the
+              [Product.local_inventories.attributes][google.cloud.retail.v2alpha.LocalInventory.attributes]
+              map.
+            - attributes.key, where key is any key in the
+              [Product.attributes][google.cloud.retail.v2alpha.Product.attributes]
+              map.
+            - pickupInStore.id, where id is any
+              [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+              for
+              [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
+              "pickup-in-store".
+            - shipToStore.id, where id is any
+              [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+              for
+              [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
+              "ship-to-store".
+            - sameDayDelivery.id, where id is any
+              [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+              for
+              [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
+              "same-day-delivery".
+            - nextDayDelivery.id, where id is any
+              [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+              for
+              [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
+              "next-day-delivery".
+            - customFulfillment1.id, where id is any
+              [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+              for
+              [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
+              "custom-type-1".
+            - customFulfillment2.id, where id is any
+              [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+              for
+              [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
+              "custom-type-2".
+            - customFulfillment3.id, where id is any
+              [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+              for
+              [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
+              "custom-type-3".
+            - customFulfillment4.id, where id is any
+              [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+              for
+              [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
+              "custom-type-4".
+            - customFulfillment5.id, where id is any
+              [FulfillmentInfo.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+              for
+              [FulfillmentInfo.type][google.cloud.retail.v2alpha.FulfillmentInfo.type]
+              "custom-type-5".
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
@@ -395,20 +395,20 @@ class SearchRequest(proto.Message):
             The labels applied to a resource must meet the following
             requirements:
 
-            -  Each resource can have multiple labels, up to a maximum
-               of 64.
-            -  Each label must be a key-value pair.
-            -  Keys have a minimum length of 1 character and a maximum
-               length of 63 characters and cannot be empty. Values can
-               be empty and have a maximum length of 63 characters.
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes. All
-               characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  The key portion of a label must be unique. However, you
-               can use the same key with multiple resources.
-            -  Keys must start with a lowercase letter or international
-               character.
+            - Each resource can have multiple labels, up to a maximum of
+              64.
+            - Each label must be a key-value pair.
+            - Keys have a minimum length of 1 character and a maximum
+              length of 63 characters and cannot be empty. Values can be
+              empty and have a maximum length of 63 characters.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes. All
+              characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - The key portion of a label must be unique. However, you
+              can use the same key with multiple resources.
+            - Keys must start with a lowercase letter or international
+              character.
 
             For more information, see `Requirements for
             labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -460,9 +460,9 @@ class SearchRequest(proto.Message):
             Optional. The user attributes that could be used for
             personalization of search results.
 
-            -  Populate at most 100 key-value pairs per query.
-            -  Only supports string keys and repeated string values.
-            -  Duplicate keys are not allowed within a single query.
+            - Populate at most 100 key-value pairs per query.
+            - Only supports string keys and repeated string values.
+            - Duplicate keys are not allowed within a single query.
 
             Example: user_attributes: [ { key: "pets" value { values:
             "dog" values: "cat" } }, { key: "state" value { values: "CA"
@@ -600,11 +600,11 @@ class SearchRequest(proto.Message):
                 Another example, assuming you have the following facets in
                 the request:
 
-                -  "rating", enable_dynamic_position = true
+                - "rating", enable_dynamic_position = true
 
-                -  "price", enable_dynamic_position = false
+                - "price", enable_dynamic_position = false
 
-                -  "brands", enable_dynamic_position = false
+                - "brands", enable_dynamic_position = false
 
                 And also you have a dynamic facets enable, which generates a
                 facet "gender". Then, the final order of the facets in the
@@ -630,41 +630,41 @@ class SearchRequest(proto.Message):
                     [FacetKey.query][google.cloud.retail.v2alpha.SearchRequest.FacetSpec.FacetKey.query]
                     is not specified:
 
-                    -  textual_field =
+                    - textual_field =
 
-                       -  "brands"
-                       -  "categories"
-                       -  "genders"
-                       -  "ageGroups"
-                       -  "availability"
-                       -  "colorFamilies"
-                       -  "colors"
-                       -  "sizes"
-                       -  "materials"
-                       -  "patterns"
-                       -  "conditions"
-                       -  "attributes.key"
-                       -  "pickupInStore"
-                       -  "shipToStore"
-                       -  "sameDayDelivery"
-                       -  "nextDayDelivery"
-                       -  "customFulfillment1"
-                       -  "customFulfillment2"
-                       -  "customFulfillment3"
-                       -  "customFulfillment4"
-                       -  "customFulfillment5"
-                       -  "inventory(place_id,attributes.key)"
+                      - "brands"
+                      - "categories"
+                      - "genders"
+                      - "ageGroups"
+                      - "availability"
+                      - "colorFamilies"
+                      - "colors"
+                      - "sizes"
+                      - "materials"
+                      - "patterns"
+                      - "conditions"
+                      - "attributes.key"
+                      - "pickupInStore"
+                      - "shipToStore"
+                      - "sameDayDelivery"
+                      - "nextDayDelivery"
+                      - "customFulfillment1"
+                      - "customFulfillment2"
+                      - "customFulfillment3"
+                      - "customFulfillment4"
+                      - "customFulfillment5"
+                      - "inventory(place_id,attributes.key)"
 
-                    -  numerical_field =
+                    - numerical_field =
 
-                       -  "price"
-                       -  "discount"
-                       -  "rating"
-                       -  "ratingCount"
-                       -  "attributes.key"
-                       -  "inventory(place_id,price)"
-                       -  "inventory(place_id,original_price)"
-                       -  "inventory(place_id,attributes.key)".
+                      - "price"
+                      - "discount"
+                      - "rating"
+                      - "ratingCount"
+                      - "attributes.key"
+                      - "inventory(place_id,price)"
+                      - "inventory(place_id,original_price)"
+                      - "inventory(place_id,attributes.key)".
                 intervals (MutableSequence[google.cloud.retail_v2alpha.types.Interval]):
                     Set only if values should be bucketized into
                     intervals. Must be set for facets with numerical
@@ -692,23 +692,23 @@ class SearchRequest(proto.Message):
 
                     Must be set for the fulfillment facet keys:
 
-                    -  pickupInStore
+                    - pickupInStore
 
-                    -  shipToStore
+                    - shipToStore
 
-                    -  sameDayDelivery
+                    - sameDayDelivery
 
-                    -  nextDayDelivery
+                    - nextDayDelivery
 
-                    -  customFulfillment1
+                    - customFulfillment1
 
-                    -  customFulfillment2
+                    - customFulfillment2
 
-                    -  customFulfillment3
+                    - customFulfillment3
 
-                    -  customFulfillment4
+                    - customFulfillment4
 
-                    -  customFulfillment5
+                    - customFulfillment5
                 prefixes (MutableSequence[str]):
                     Only get facet values that start with the
                     given string prefix. For example, suppose
@@ -736,13 +736,13 @@ class SearchRequest(proto.Message):
 
                     Allowed values are:
 
-                    -  "count desc", which means order by
-                       [SearchResponse.Facet.values.count][google.cloud.retail.v2alpha.SearchResponse.Facet.FacetValue.count]
-                       descending.
+                    - "count desc", which means order by
+                      [SearchResponse.Facet.values.count][google.cloud.retail.v2alpha.SearchResponse.Facet.FacetValue.count]
+                      descending.
 
-                    -  "value desc", which means order by
-                       [SearchResponse.Facet.values.value][google.cloud.retail.v2alpha.SearchResponse.Facet.FacetValue.value]
-                       descending. Only applies to textual facets.
+                    - "value desc", which means order by
+                      [SearchResponse.Facet.values.value][google.cloud.retail.v2alpha.SearchResponse.Facet.FacetValue.value]
+                      descending. Only applies to textual facets.
 
                     If not set, textual values are sorted in `natural
                     order <https://en.wikipedia.org/wiki/Natural_sort_order>`__;
@@ -906,11 +906,11 @@ class SearchRequest(proto.Message):
 
                     Examples:
 
-                    -  To boost products with product ID "product_1" or
-                       "product_2", and color "Red" or "Blue":
+                    - To boost products with product ID "product_1" or
+                      "product_2", and color "Red" or "Blue":
 
-                       -  (id: ANY("product_1", "product_2")) AND
-                          (colorFamilies: ANY("Red","Blue"))
+                      - (id: ANY("product_1", "product_2")) AND (colorFamilies:
+                        ANY("Red","Blue"))
                 boost (float):
                     Strength of the condition boost, which should be in [-1, 1].
                     Negative boost means demotion. Default is 0.0.
@@ -1515,8 +1515,8 @@ class SearchResponse(proto.Message):
 
                 Possible values:
 
-                -  ``purchased``: Indicates that this product has been
-                   purchased before.
+                - ``purchased``: Indicates that this product has been
+                  purchased before.
             model_scores (MutableMapping[str, google.cloud.retail_v2alpha.types.DoubleList]):
                 Google provided available scores.
         """
