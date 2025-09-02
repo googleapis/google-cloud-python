@@ -60,11 +60,11 @@ class Dataset(proto.Message):
             ``bq://{project}.{dataset}.{table}``. Current table types
             are:
 
-            -  ``party``
-            -  ``account_party_link``
-            -  ``transaction``
-            -  ``risk_case_event``
-            -  ``party_supplementary_data``
+            - ``party``
+            - ``account_party_link``
+            - ``transaction``
+            - ``risk_case_event``
+            - ``party_supplementary_data``
         state (google.cloud.financialservices_v1.types.Dataset.State):
             Output only. State of the dataset (creating,
             active, deleting, etc.)

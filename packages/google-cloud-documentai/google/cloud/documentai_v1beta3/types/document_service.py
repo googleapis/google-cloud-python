@@ -398,22 +398,21 @@ class ListDocumentsRequest(proto.Message):
             Currently support query strings are:
 
             - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``
-            -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``
-            -  ``DisplayName=\"file_name.pdf\"``
-            -  ``EntityType=abc/def``
-            -  ``TagName=\"auto-labeling-running\"|\"sampled\"``
+            - ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``
+            - ``DisplayName=\"file_name.pdf\"``
+            - ``EntityType=abc/def``
+            - ``TagName=\"auto-labeling-running\"|\"sampled\"``
 
             Note:
 
-            -  Only ``AND``, ``=`` and ``!=`` are supported. e.g.
-               ``DisplayName=file_name AND EntityType!=abc`` IS
-               supported.
-            -  Wildcard ``*`` is supported only in ``DisplayName``
-               filter
-            -  No duplicate filter keys are allowed, e.g.
-               ``EntityType=a AND EntityType=b`` is NOT supported.
-            -  String match is case sensitive (for filter
-               ``DisplayName`` & ``EntityType``).
+            - Only ``AND``, ``=`` and ``!=`` are supported. e.g.
+              ``DisplayName=file_name AND EntityType!=abc`` IS
+              supported.
+            - Wildcard ``*`` is supported only in ``DisplayName`` filter
+            - No duplicate filter keys are allowed, e.g.
+              ``EntityType=a AND EntityType=b`` is NOT supported.
+            - String match is case sensitive (for filter ``DisplayName``
+              & ``EntityType``).
         return_total_size (bool):
             Optional. Controls if the request requires a total size of
             matched documents. See

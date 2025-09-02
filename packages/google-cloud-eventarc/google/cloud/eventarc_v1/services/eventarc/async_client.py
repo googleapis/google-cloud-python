@@ -794,7 +794,7 @@ class EventarcAsyncClient:
                 The fields to be updated; only fields explicitly
                 provided are updated. If no field mask is provided, all
                 provided fields in the request are updated. To update
-                all fields, provide a field mask of "*".
+                all fields, provide a field mask of "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1474,7 +1474,7 @@ class EventarcAsyncClient:
                 The fields to be updated; only fields explicitly
                 provided are updated. If no field mask is provided, all
                 provided fields in the request are updated. To update
-                all fields, provide a field mask of "*".
+                all fields, provide a field mask of "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2625,7 +2625,7 @@ class EventarcAsyncClient:
                 The fields to be updated; only fields explicitly
                 provided are updated. If no field mask is provided, all
                 provided fields in the request are updated. To update
-                all fields, provide a field mask of "*".
+                all fields, provide a field mask of "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3137,7 +3137,7 @@ class EventarcAsyncClient:
             message_bus_id (:class:`str`):
                 Required. The user-provided ID to be assigned to the
                 MessageBus. It should match the format
-                (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$)
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$)
 
                 This corresponds to the ``message_bus_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3279,7 +3279,7 @@ class EventarcAsyncClient:
                 explicitly provided are updated. If no field mask is
                 provided, all provided fields in the request are
                 updated. To update all fields, provide a field mask of
-                "*".
+                "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3813,7 +3813,7 @@ class EventarcAsyncClient:
             enrollment_id (:class:`str`):
                 Required. The user-provided ID to be assigned to the
                 Enrollment. It should match the format
-                (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
 
                 This corresponds to the ``enrollment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3960,7 +3960,7 @@ class EventarcAsyncClient:
                 explicitly provided are updated. If no field mask is
                 provided, all provided fields in the request are
                 updated. To update all fields, provide a field mask of
-                "*".
+                "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4628,7 +4628,7 @@ class EventarcAsyncClient:
                 explicitly provided are updated. If no field mask is
                 provided, all provided fields in the request are
                 updated. To update all fields, provide a field mask of
-                "*".
+                "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5156,7 +5156,7 @@ class EventarcAsyncClient:
             google_api_source_id (:class:`str`):
                 Required. The user-provided ID to be assigned to the
                 GoogleApiSource. It should match the format
-                (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
 
                 This corresponds to the ``google_api_source_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5301,7 +5301,7 @@ class EventarcAsyncClient:
                 explicitly provided are updated. If no field mask is
                 provided, all provided fields in the request are
                 updated. To update all fields, provide a field mask of
-                "*".
+                "\*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
