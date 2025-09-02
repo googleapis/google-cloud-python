@@ -350,20 +350,7 @@ replacements:
                   - Bank Mandiri
     count: 1
   - paths: [
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/async_client.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/client.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/transports/grpc.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/transports/grpc_asyncio.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/async_client.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/client.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/transports/grpc.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/transports/grpc_asyncio.py,
-    ]
-    before: name=accounts\/\*\/users\/me\/emailPreferences alias
-    after: "`name=accounts/*/users/me/emailPreferences` alias"
-    count: 16
-  - paths: [
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/async_client.py,
+      packages/google-shopping-merchant-q/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/async_client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc_asyncio.py,
@@ -418,7 +405,7 @@ replacements:
     before: |
       Here's an example of how the aggregated status is computed:\n
       \        Free listings \\\| Shopping ads \\\| Status
-      \        --------------\|--------------\|------------------------------
+      \        --------------\\\|--------------\\\|------------------------------
       \        Approved \\\| Approved \\\| ELIGIBLE Approved \\\| Pending \\\| ELIGIBLE
       \        Approved \\\| Disapproved \\\| ELIGIBLE_LIMITED Pending \\\| Pending \\\|
       \        PENDING Disapproved \\\| Disapproved \\\| NOT_ELIGIBLE_OR_DISAPPROVED\n
@@ -427,7 +414,7 @@ replacements:
       Here's an example of how the aggregated status is computed:\n
               ```
               Free listings \| Shopping ads \| Status
-              --------------|--------------|------------------------------
+              --------------\|--------------\|------------------------------
               Approved \| Approved \| ELIGIBLE Approved \| Pending \| ELIGIBLE
               Approved \| Disapproved \| ELIGIBLE_LIMITED Pending \| Pending \|
               PENDING Disapproved \| Disapproved \| NOT_ELIGIBLE_OR_DISAPPROVED
