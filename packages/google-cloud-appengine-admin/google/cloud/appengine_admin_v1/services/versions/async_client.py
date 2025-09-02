@@ -582,36 +582,36 @@ class VersionsAsyncClient:
 
         **Standard environment**
 
-        -  ```instance_class`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.instance_class>`__
+        - ```instance_class`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.instance_class>`__
 
         *automatic scaling* in the standard environment:
 
-        -  ```automatic_scaling.min_idle_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
-        -  ```automatic_scaling.max_idle_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
-        -  ```automaticScaling.standard_scheduler_settings.max_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StandardSchedulerSettings>`__
-        -  ```automaticScaling.standard_scheduler_settings.min_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StandardSchedulerSettings>`__
-        -  ```automaticScaling.standard_scheduler_settings.target_cpu_utilization`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StandardSchedulerSettings>`__
-        -  ```automaticScaling.standard_scheduler_settings.target_throughput_utilization`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StandardSchedulerSettings>`__
+        - ```automatic_scaling.min_idle_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
+        - ```automatic_scaling.max_idle_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
+        - ```automaticScaling.standard_scheduler_settings.max_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StandardSchedulerSettings>`__
+        - ```automaticScaling.standard_scheduler_settings.min_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StandardSchedulerSettings>`__
+        - ```automaticScaling.standard_scheduler_settings.target_cpu_utilization`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StandardSchedulerSettings>`__
+        - ```automaticScaling.standard_scheduler_settings.target_throughput_utilization`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StandardSchedulerSettings>`__
 
         *basic scaling* or *manual scaling* in the standard environment:
 
-        -  ```serving_status`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.serving_status>`__
-        -  ```manual_scaling.instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#manualscaling>`__
+        - ```serving_status`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.serving_status>`__
+        - ```manual_scaling.instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#manualscaling>`__
 
         **Flexible environment**
 
-        -  ```serving_status`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.serving_status>`__
+        - ```serving_status`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.serving_status>`__
 
         *automatic scaling* in the flexible environment:
 
-        -  ```automatic_scaling.min_total_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
-        -  ```automatic_scaling.max_total_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
-        -  ```automatic_scaling.cool_down_period_sec`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
-        -  ```automatic_scaling.cpu_utilization.target_utilization`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
+        - ```automatic_scaling.min_total_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
+        - ```automatic_scaling.max_total_instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
+        - ```automatic_scaling.cool_down_period_sec`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
+        - ```automatic_scaling.cpu_utilization.target_utilization`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version.FIELDS.automatic_scaling>`__
 
         *manual scaling* in the flexible environment:
 
-        -  ```manual_scaling.instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#manualscaling>`__
+        - ```manual_scaling.instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#manualscaling>`__
 
         .. code-block:: python
 

@@ -337,10 +337,10 @@ class AssetServiceAsyncClient:
                 limited to the resources within the ``scope``. The
                 allowed value must be:
 
-                -  Organization number (such as "organizations/123")
-                -  Folder number (such as "folders/1234")
-                -  Project number (such as "projects/12345")
-                -  Project ID (such as "projects/abc")
+                - Organization number (such as "organizations/123")
+                - Folder number (such as "folders/1234")
+                - Project number (such as "projects/12345")
+                - Project ID (such as "projects/abc")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -496,10 +496,10 @@ class AssetServiceAsyncClient:
                 limited to the resources within the ``scope``. The
                 allowed value must be:
 
-                -  Organization number (such as "organizations/123")
-                -  Folder number (such as "folders/1234")
-                -  Project number (such as "projects/12345")
-                -  Project ID (such as "projects/abc")
+                - Organization number (such as "organizations/123")
+                - Folder number (such as "folders/1234")
+                - Project number (such as "projects/12345")
+                - Project ID (such as "projects/abc")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -507,8 +507,8 @@ class AssetServiceAsyncClient:
             query (:class:`str`):
                 Optional. The query statement. Examples:
 
-                -  "policy:myuser@mydomain.com"
-                -  "policy:(myuser@mydomain.com viewer)"
+                - "policy:myuser@mydomain.com"
+                - "policy:(myuser@mydomain.com viewer)"
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this

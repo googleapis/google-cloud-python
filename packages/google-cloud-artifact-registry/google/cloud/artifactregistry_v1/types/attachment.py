@@ -128,9 +128,9 @@ class ListAttachmentsRequest(proto.Message):
             request. Filter rules are case insensitive. The fields
             eligible for filtering are:
 
-            -  ``target``
-            -  ``type``
-            -  ``attachment_namespace``
+            - ``target``
+            - ``type``
+            - ``attachment_namespace``
         page_size (int):
             The maximum number of attachments to return.
             Maximum page size is 1,000.

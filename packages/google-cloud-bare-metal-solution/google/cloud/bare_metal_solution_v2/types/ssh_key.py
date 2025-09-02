@@ -123,7 +123,7 @@ class CreateSSHKeyRequest(proto.Message):
             Required. The ID to use for the key, which will become the
             final component of the key's resource name.
 
-            This value must match the regex: [a-zA-Z0-9@.-_]{1,64}
+            This value must match the regex: [a-zA-Z0-9@.-\_]{1,64}
     """
 
     parent: str = proto.Field(

@@ -70,12 +70,12 @@ class MetastoreServiceAsyncClient:
 
     The BigLake Metastore API defines the following resource model:
 
-    -  A collection of Google Cloud projects: ``/projects/*``
-    -  Each project has a collection of available locations:
-       ``/locations/*``
-    -  Each location has a collection of catalogs: ``/catalogs/*``
-    -  Each catalog has a collection of databases: ``/databases/*``
-    -  Each database has a collection of tables: ``/tables/*``
+    - A collection of Google Cloud projects: ``/projects/*``
+    - Each project has a collection of available locations:
+      ``/locations/*``
+    - Each location has a collection of catalogs: ``/catalogs/*``
+    - Each catalog has a collection of databases: ``/databases/*``
+    - Each database has a collection of tables: ``/tables/*``
     """
 
     _client: MetastoreServiceClient

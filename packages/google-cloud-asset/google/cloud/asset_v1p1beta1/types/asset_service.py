@@ -41,10 +41,10 @@ class SearchAllResourcesRequest(proto.Message):
             limited to the resources within the ``scope``. The allowed
             value must be:
 
-            -  Organization number (such as "organizations/123")
-            -  Folder number (such as "folders/1234")
-            -  Project number (such as "projects/12345")
-            -  Project ID (such as "projects/abc")
+            - Organization number (such as "organizations/123")
+            - Folder number (such as "folders/1234")
+            - Project number (such as "projects/12345")
+            - Project ID (such as "projects/abc")
         query (str):
             Optional. The query statement.
         asset_types (MutableSequence[str]):
@@ -69,7 +69,7 @@ class SearchAllResourcesRequest(proto.Message):
             sorting order of the results. The default order is
             ascending. Add ``DESC`` after the field name to indicate
             descending order. Redundant space characters are ignored.
-            For example, ``location DESC , name``.
+            For example, ``location DESC ,  name``.
     """
 
     scope: str = proto.Field(
@@ -136,15 +136,15 @@ class SearchAllIamPoliciesRequest(proto.Message):
             limited to the resources within the ``scope``. The allowed
             value must be:
 
-            -  Organization number (such as "organizations/123")
-            -  Folder number (such as "folders/1234")
-            -  Project number (such as "projects/12345")
-            -  Project ID (such as "projects/abc")
+            - Organization number (such as "organizations/123")
+            - Folder number (such as "folders/1234")
+            - Project number (such as "projects/12345")
+            - Project ID (such as "projects/abc")
         query (str):
             Optional. The query statement. Examples:
 
-            -  "policy:myuser@mydomain.com"
-            -  "policy:(myuser@mydomain.com viewer)".
+            - "policy:myuser@mydomain.com"
+            - "policy:(myuser@mydomain.com viewer)".
         page_size (int):
             Optional. The page size for search result pagination. Page
             size is capped at 500 even if a larger value is given. If

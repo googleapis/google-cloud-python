@@ -133,8 +133,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
 
     The AppConnectorsService exposes the following resource:
 
-    -  AppConnectors, named as follows:
-       ``projects/{project_id}/locations/{location_id}/appConnectors/{app_connector_id}``.
+    - AppConnectors, named as follows:
+      ``projects/{project_id}/locations/{location_id}/appConnectors/{app_connector_id}``.
 
     The AppConnectorsService provides methods to manage
     (create/read/update/delete) BeyondCorp AppConnectors.
@@ -1061,10 +1061,10 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
             app_connector_id (str):
                 Optional. User-settable AppConnector resource ID.
 
-                -  Must start with a letter.
-                -  Must contain between 4-63 characters from
-                   ``/[a-z][0-9]-/``.
-                -  Must end with a number or a letter.
+                - Must start with a letter.
+                - Must contain between 4-63 characters from
+                  ``/[a-z][0-9]-/``.
+                - Must end with a number or a letter.
 
                 This corresponds to the ``app_connector_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1212,8 +1212,8 @@ class AppConnectorsServiceClient(metaclass=AppConnectorsServiceClientMeta):
                 repeated paths field may only include these fields from
                 [BeyondCorp.AppConnector]:
 
-                -  ``labels``
-                -  ``display_name``
+                - ``labels``
+                - ``display_name``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

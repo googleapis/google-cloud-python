@@ -318,23 +318,23 @@ class PredictionServiceAsyncClient:
         directly returned in the response. Available for following ML
         problems, and their expected request payloads:
 
-        -  Image Classification - Image in .JPEG, .GIF or .PNG format,
-           image_bytes up to 30MB.
-        -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,
-           image_bytes up to 30MB.
-        -  Text Classification - TextSnippet, content up to 60,000
-           characters, UTF-8 encoded.
-        -  Text Extraction - TextSnippet, content up to 30,000
-           characters, UTF-8 NFC encoded.
-        -  Translation - TextSnippet, content up to 25,000 characters,
-           UTF-8 encoded.
-        -  Tables - Row, with column values matching the columns of the
-           model, up to 5MB. Not available for FORECASTING
+        - Image Classification - Image in .JPEG, .GIF or .PNG format,
+          image_bytes up to 30MB.
+        - Image Object Detection - Image in .JPEG, .GIF or .PNG format,
+          image_bytes up to 30MB.
+        - Text Classification - TextSnippet, content up to 60,000
+          characters, UTF-8 encoded.
+        - Text Extraction - TextSnippet, content up to 30,000
+          characters, UTF-8 NFC encoded.
+        - Translation - TextSnippet, content up to 25,000 characters,
+          UTF-8 encoded.
+        - Tables - Row, with column values matching the columns of the
+          model, up to 5MB. Not available for FORECASTING
 
         [prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type].
 
-        -  Text Sentiment - TextSnippet, content up 500 characters,
-           UTF-8 encoded.
+        - Text Sentiment - TextSnippet, content up 500 characters, UTF-8
+          encoded.
 
         .. code-block:: python
 
@@ -390,25 +390,25 @@ class PredictionServiceAsyncClient:
                 Additional domain-specific parameters, any string must
                 be up to 25000 characters long.
 
-                -  For Image Classification:
+                - For Image Classification:
 
-                   ``score_threshold`` - (float) A value from 0.0 to
-                   1.0. When the model makes predictions for an image,
-                   it will only produce results that have at least this
-                   confidence score. The default is 0.5.
+                  ``score_threshold`` - (float) A value from 0.0 to 1.0.
+                  When the model makes predictions for an image, it will
+                  only produce results that have at least this
+                  confidence score. The default is 0.5.
 
-                -  For Image Object Detection: ``score_threshold`` -
-                   (float) When Model detects objects on the image, it
-                   will only produce bounding boxes which have at least
-                   this confidence score. Value in 0 to 1 range, default
-                   is 0.5. ``max_bounding_box_count`` - (int64) No more
-                   than this number of bounding boxes will be returned
-                   in the response. Default is 100, the requested value
-                   may be limited by server.
+                - For Image Object Detection: ``score_threshold`` -
+                  (float) When Model detects objects on the image, it
+                  will only produce bounding boxes which have at least
+                  this confidence score. Value in 0 to 1 range, default
+                  is 0.5. ``max_bounding_box_count`` - (int64) No more
+                  than this number of bounding boxes will be returned in
+                  the response. Default is 100, the requested value may
+                  be limited by server.
 
-                -  For Tables: feature_importance - (boolean) Whether
-                   feature importance should be populated in the
-                   returned TablesAnnotation. The default is false.
+                - For Tables: feature_importance - (boolean) Whether
+                  feature importance should be populated in the returned
+                  TablesAnnotation. The default is false.
 
                 This corresponds to the ``params`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -503,11 +503,11 @@ class PredictionServiceAsyncClient:
         [response][google.longrunning.Operation.response] field.
         Available for following ML problems:
 
-        -  Image Classification
-        -  Image Object Detection
-        -  Video Classification
-        -  Video Object Tracking \* Text Extraction
-        -  Tables
+        - Image Classification
+        - Image Object Detection
+        - Video Classification
+        - Video Object Tracking \* Text Extraction
+        - Tables
 
         .. code-block:: python
 
@@ -570,85 +570,84 @@ class PredictionServiceAsyncClient:
                 predictions, any string must be up to 25000 characters
                 long.
 
-                -  For Text Classification:
+                - For Text Classification:
 
-                   ``score_threshold`` - (float) A value from 0.0 to
-                   1.0. When the model makes predictions for a text
-                   snippet, it will only produce results that have at
-                   least this confidence score. The default is 0.5.
+                  ``score_threshold`` - (float) A value from 0.0 to 1.0.
+                  When the model makes predictions for a text snippet,
+                  it will only produce results that have at least this
+                  confidence score. The default is 0.5.
 
-                -  For Image Classification:
+                - For Image Classification:
 
-                   ``score_threshold`` - (float) A value from 0.0 to
-                   1.0. When the model makes predictions for an image,
-                   it will only produce results that have at least this
-                   confidence score. The default is 0.5.
+                  ``score_threshold`` - (float) A value from 0.0 to 1.0.
+                  When the model makes predictions for an image, it will
+                  only produce results that have at least this
+                  confidence score. The default is 0.5.
 
-                -  For Image Object Detection:
+                - For Image Object Detection:
 
-                   ``score_threshold`` - (float) When Model detects
-                   objects on the image, it will only produce bounding
-                   boxes which have at least this confidence score.
-                   Value in 0 to 1 range, default is 0.5.
-                   ``max_bounding_box_count`` - (int64) No more than
-                   this number of bounding boxes will be produced per
-                   image. Default is 100, the requested value may be
-                   limited by server.
+                  ``score_threshold`` - (float) When Model detects
+                  objects on the image, it will only produce bounding
+                  boxes which have at least this confidence score. Value
+                  in 0 to 1 range, default is 0.5.
+                  ``max_bounding_box_count`` - (int64) No more than this
+                  number of bounding boxes will be produced per image.
+                  Default is 100, the requested value may be limited by
+                  server.
 
-                -  For Video Classification :
+                - For Video Classification :
 
-                   ``score_threshold`` - (float) A value from 0.0 to
-                   1.0. When the model makes predictions for a video, it
-                   will only produce results that have at least this
-                   confidence score. The default is 0.5.
-                   ``segment_classification`` - (boolean) Set to true to
-                   request segment-level classification. AutoML Video
-                   Intelligence returns labels and their confidence
-                   scores for the entire segment of the video that user
-                   specified in the request configuration. The default
-                   is "true". ``shot_classification`` - (boolean) Set to
-                   true to request shot-level classification. AutoML
-                   Video Intelligence determines the boundaries for each
-                   camera shot in the entire segment of the video that
-                   user specified in the request configuration. AutoML
-                   Video Intelligence then returns labels and their
-                   confidence scores for each detected shot, along with
-                   the start and end time of the shot. WARNING: Model
-                   evaluation is not done for this classification type,
-                   the quality of it depends on training data, but there
-                   are no metrics provided to describe that quality. The
-                   default is "false". ``1s_interval_classification`` -
-                   (boolean) Set to true to request classification for a
-                   video at one-second intervals. AutoML Video
-                   Intelligence returns labels and their confidence
-                   scores for each second of the entire segment of the
-                   video that user specified in the request
-                   configuration. WARNING: Model evaluation is not done
-                   for this classification type, the quality of it
-                   depends on training data, but there are no metrics
-                   provided to describe that quality. The default is
-                   "false".
+                  ``score_threshold`` - (float) A value from 0.0 to 1.0.
+                  When the model makes predictions for a video, it will
+                  only produce results that have at least this
+                  confidence score. The default is 0.5.
+                  ``segment_classification`` - (boolean) Set to true to
+                  request segment-level classification. AutoML Video
+                  Intelligence returns labels and their confidence
+                  scores for the entire segment of the video that user
+                  specified in the request configuration. The default is
+                  "true". ``shot_classification`` - (boolean) Set to
+                  true to request shot-level classification. AutoML
+                  Video Intelligence determines the boundaries for each
+                  camera shot in the entire segment of the video that
+                  user specified in the request configuration. AutoML
+                  Video Intelligence then returns labels and their
+                  confidence scores for each detected shot, along with
+                  the start and end time of the shot. WARNING: Model
+                  evaluation is not done for this classification type,
+                  the quality of it depends on training data, but there
+                  are no metrics provided to describe that quality. The
+                  default is "false". ``1s_interval_classification`` -
+                  (boolean) Set to true to request classification for a
+                  video at one-second intervals. AutoML Video
+                  Intelligence returns labels and their confidence
+                  scores for each second of the entire segment of the
+                  video that user specified in the request
+                  configuration. WARNING: Model evaluation is not done
+                  for this classification type, the quality of it
+                  depends on training data, but there are no metrics
+                  provided to describe that quality. The default is
+                  "false".
 
-                -  For Tables:
+                - For Tables:
 
-                   feature_importance - (boolean) Whether feature
-                   importance should be populated in the returned
-                   TablesAnnotations. The default is false.
+                  feature_importance - (boolean) Whether feature
+                  importance should be populated in the returned
+                  TablesAnnotations. The default is false.
 
-                -  For Video Object Tracking:
+                - For Video Object Tracking:
 
-                   ``score_threshold`` - (float) When Model detects
-                   objects on video frames, it will only produce
-                   bounding boxes which have at least this confidence
-                   score. Value in 0 to 1 range, default is 0.5.
-                   ``max_bounding_box_count`` - (int64) No more than
-                   this number of bounding boxes will be returned per
-                   frame. Default is 100, the requested value may be
-                   limited by server. ``min_bounding_box_size`` -
-                   (float) Only bounding boxes with shortest edge at
-                   least that long as a relative value of video frame
-                   size will be returned. Value in 0 to 1 range. Default
-                   is 0.
+                  ``score_threshold`` - (float) When Model detects
+                  objects on video frames, it will only produce bounding
+                  boxes which have at least this confidence score. Value
+                  in 0 to 1 range, default is 0.5.
+                  ``max_bounding_box_count`` - (int64) No more than this
+                  number of bounding boxes will be returned per frame.
+                  Default is 100, the requested value may be limited by
+                  server. ``min_bounding_box_size`` - (float) Only
+                  bounding boxes with shortest edge at least that long
+                  as a relative value of video frame size will be
+                  returned. Value in 0 to 1 range. Default is 0.
 
                 This corresponds to the ``params`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -153,9 +153,9 @@ class ListFilesRequest(proto.Message):
             Filter rules are case insensitive. The fields eligible for
             filtering are:
 
-            -  ``name``
-            -  ``owner``
-            -  ``annotations``
+            - ``name``
+            - ``owner``
+            - ``annotations``
 
             Examples of using a filter:
 
@@ -164,33 +164,33 @@ class ListFilesRequest(proto.Message):
             ``us-central`` region, in repository ``my-repo``, append the
             following filter expression to your request:
 
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/my-file.txt"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/my-file.txt"``
 
             You can also use wildcards to match any number of characters
             before or after the value:
 
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/my-*"``
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/*file.txt"``
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/*file*"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/my-*"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/*file.txt"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/*file*"``
 
             To filter the results of your request to files owned by the
             version ``1.0`` in package ``pkg1``, append the following
             filter expression to your request:
 
-            -  ``owner="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/1.0"``
+            - ``owner="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/1.0"``
 
             To filter the results of your request to files with the
             annotation key-value pair [``external_link``:
             ``external_link_value``], append the following filter
             expression to your request:
 
-            -  ``"annotations.external_link:external_link_value"``
+            - ``"annotations.external_link:external_link_value"``
 
             To filter just for a specific annotation key
             ``external_link``, append the following filter expression to
             your request:
 
-            -  ``"annotations.external_link"``
+            - ``"annotations.external_link"``
 
             If the annotation key or value contains special characters,
             you can escape them by surrounding the value with backticks.
@@ -199,12 +199,12 @@ class ListFilesRequest(proto.Message):
             [``external.link``:``https://example.com/my-file``], append
             the following filter expression to your request:
 
-            -  :literal:`"annotations.`external.link`:`https://example.com/my-file`"`
+            - :literal:`"annotations.`external.link\`:\`https://example.com/my-file\`"`
 
             You can also filter with annotations with a wildcard to
             match any number of characters before or after the value:
 
-            -  :literal:`"annotations.*_link:`*example.com*`"`
+            - :literal:`"annotations.*_link:\`*example.com*\`"`
         page_size (int):
             The maximum number of files to return.
             Maximum page size is 1,000.

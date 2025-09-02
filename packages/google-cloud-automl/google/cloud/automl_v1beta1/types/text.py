@@ -76,11 +76,11 @@ class TextExtractionModelMetadata(proto.Message):
         model_hint (str):
             Indicates the scope of model use case.
 
-            -  ``default``: Use to train a general text extraction
-               model. Default value.
+            - ``default``: Use to train a general text extraction model.
+              Default value.
 
-            -  ``health_care``: Use to train a text extraction model
-               that is tuned for healthcare applications.
+            - ``health_care``: Use to train a text extraction model that
+              is tuned for healthcare applications.
     """
 
     model_hint: str = proto.Field(
