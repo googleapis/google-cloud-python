@@ -1160,15 +1160,14 @@ class StorageTransferServiceAsyncClient:
                 The ``agent_pool_id`` must meet the following
                 requirements:
 
-                -  Length of 128 characters or less.
-                -  Not start with the string ``goog``.
-                -  Start with a lowercase ASCII character, followed by:
+                - Length of 128 characters or less.
+                - Not start with the string ``goog``.
+                - Start with a lowercase ASCII character, followed by:
 
-                   -  Zero or more: lowercase Latin alphabet characters,
-                      numerals, hyphens (``-``), periods (``.``),
-                      underscores (``_``), or tildes (``~``).
-                   -  One or more numerals or lowercase ASCII
-                      characters.
+                  - Zero or more: lowercase Latin alphabet characters,
+                    numerals, hyphens (``-``), periods (``.``),
+                    underscores (``_``), or tildes (``~``).
+                  - One or more numerals or lowercase ASCII characters.
 
                 As expressed by the regular expression:
                 ``^(?!goog)[a-z]([a-z0-9-._~]*[a-z0-9])?$``.
@@ -1292,14 +1291,14 @@ class StorageTransferServiceAsyncClient:
                 Required. The agent pool to update. ``agent_pool`` is
                 expected to specify following fields:
 
-                -  [name][google.storagetransfer.v1.AgentPool.name]
+                - [name][google.storagetransfer.v1.AgentPool.name]
 
-                -  [display_name][google.storagetransfer.v1.AgentPool.display_name]
+                - [display_name][google.storagetransfer.v1.AgentPool.display_name]
 
-                -  [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
-                   An ``UpdateAgentPoolRequest`` with any other fields
-                   is rejected with the error
-                   [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
+                - [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
+                  An ``UpdateAgentPoolRequest`` with any other fields is
+                  rejected with the error
+                  [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
 
                 This corresponds to the ``agent_pool`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1311,9 +1310,9 @@ class StorageTransferServiceAsyncClient:
                 request. The following ``agentPool`` fields can be
                 updated:
 
-                -  [display_name][google.storagetransfer.v1.AgentPool.display_name]
+                - [display_name][google.storagetransfer.v1.AgentPool.display_name]
 
-                -  [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
+                - [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

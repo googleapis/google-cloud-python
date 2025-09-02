@@ -53,22 +53,22 @@ class Task(proto.Message):
             The task name must have the following format:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
 
-            -  ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
-               ([0-9]), hyphens (-), colons (:), or periods (.). For
-               more information, see `Identifying
-               projects <https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects>`__
-            -  ``LOCATION_ID`` is the canonical ID for the task's
-               location. The list of available locations can be obtained
-               by calling
-               [ListLocations][google.cloud.location.Locations.ListLocations].
-               For more information, see
-               https://cloud.google.com/about/locations/.
-            -  ``QUEUE_ID`` can contain letters ([A-Za-z]), numbers
-               ([0-9]), or hyphens (-). The maximum length is 100
-               characters.
-            -  ``TASK_ID`` can contain only letters ([A-Za-z]), numbers
-               ([0-9]), hyphens (-), or underscores (_). The maximum
-               length is 500 characters.
+            - ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
+              ([0-9]), hyphens (-), colons (:), or periods (.). For more
+              information, see `Identifying
+              projects <https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects>`__
+            - ``LOCATION_ID`` is the canonical ID for the task's
+              location. The list of available locations can be obtained
+              by calling
+              [ListLocations][google.cloud.location.Locations.ListLocations].
+              For more information, see
+              https://cloud.google.com/about/locations/.
+            - ``QUEUE_ID`` can contain letters ([A-Za-z]), numbers
+              ([0-9]), or hyphens (-). The maximum length is 100
+              characters.
+            - ``TASK_ID`` can contain only letters ([A-Za-z]), numbers
+              ([0-9]), hyphens (-), or underscores (\_). The maximum
+              length is 500 characters.
         app_engine_http_request (google.cloud.tasks_v2.types.AppEngineHttpRequest):
             HTTP request that is sent to the App Engine app handler.
 
@@ -110,26 +110,26 @@ class Task(proto.Message):
             The default and maximum values depend on the type of
             request:
 
-            -  For [HTTP tasks][google.cloud.tasks.v2.HttpRequest], the
-               default is 10 minutes. The deadline must be in the
-               interval [15 seconds, 30 minutes].
+            - For [HTTP tasks][google.cloud.tasks.v2.HttpRequest], the
+              default is 10 minutes. The deadline must be in the
+              interval [15 seconds, 30 minutes].
 
-            -  For [App Engine
-               tasks][google.cloud.tasks.v2.AppEngineHttpRequest], 0
-               indicates that the request has the default deadline. The
-               default deadline depends on the `scaling
-               type <https://cloud.google.com/appengine/docs/standard/go/how-instances-are-managed#instance_scaling>`__
-               of the service: 10 minutes for standard apps with
-               automatic scaling, 24 hours for standard apps with manual
-               and basic scaling, and 60 minutes for flex apps. If the
-               request deadline is set, it must be in the interval [15
-               seconds, 24 hours 15 seconds]. Regardless of the task's
-               ``dispatch_deadline``, the app handler will not run for
-               longer than than the service's timeout. We recommend
-               setting the ``dispatch_deadline`` to at most a few
-               seconds more than the app handler's timeout. For more
-               information see
-               `Timeouts <https://cloud.google.com/tasks/docs/creating-appengine-handlers#timeouts>`__.
+            - For [App Engine
+              tasks][google.cloud.tasks.v2.AppEngineHttpRequest], 0
+              indicates that the request has the default deadline. The
+              default deadline depends on the `scaling
+              type <https://cloud.google.com/appengine/docs/standard/go/how-instances-are-managed#instance_scaling>`__
+              of the service: 10 minutes for standard apps with
+              automatic scaling, 24 hours for standard apps with manual
+              and basic scaling, and 60 minutes for flex apps. If the
+              request deadline is set, it must be in the interval [15
+              seconds, 24 hours 15 seconds]. Regardless of the task's
+              ``dispatch_deadline``, the app handler will not run for
+              longer than than the service's timeout. We recommend
+              setting the ``dispatch_deadline`` to at most a few seconds
+              more than the app handler's timeout. For more information
+              see
+              `Timeouts <https://cloud.google.com/tasks/docs/creating-appengine-handlers#timeouts>`__.
 
             ``dispatch_deadline`` will be truncated to the nearest
             millisecond. The deadline is an approximate deadline.

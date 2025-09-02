@@ -1350,12 +1350,12 @@ class IntelligenceConfig(proto.Message):
             The name format varies based on the GCP resource hierarchy
             as follows:
 
-            -  For project:
-               ``projects/{project_number}/locations/global/intelligenceConfig``
-            -  For organization:
-               ``organizations/{org_id}/locations/global/intelligenceConfig``
-            -  For folder:
-               ``folders/{folder_id}/locations/global/intelligenceConfig``
+            - For project:
+              ``projects/{project_number}/locations/global/intelligenceConfig``
+            - For organization:
+              ``organizations/{org_id}/locations/global/intelligenceConfig``
+            - For folder:
+              ``folders/{folder_id}/locations/global/intelligenceConfig``
         edition_config (google.cloud.storage_control_v2.types.IntelligenceConfig.EditionConfig):
             Optional. The edition configuration of the
             ``IntelligenceConfig`` resource.

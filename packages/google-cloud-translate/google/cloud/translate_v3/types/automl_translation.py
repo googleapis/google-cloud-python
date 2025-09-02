@@ -430,7 +430,7 @@ class ListExamplesRequest(proto.Message):
             Optional. An expression for filtering the examples that will
             be returned. Example filter:
 
-            -  ``usage=TRAIN``
+            - ``usage=TRAIN``
         page_size (int):
             Optional. Requested page size. The server can
             return fewer results than requested.
@@ -576,7 +576,7 @@ class Dataset(proto.Message):
         display_name (str):
             The name of the dataset to show in the interface. The name
             can be up to 32 characters long and can consist only of
-            ASCII Latin letters A-Z and a-z, underscores (_), and ASCII
+            ASCII Latin letters A-Z and a-z, underscores (\_), and ASCII
             digits 0-9.
         source_language_code (str):
             The BCP-47 language code of the source
@@ -847,8 +847,8 @@ class Model(proto.Message):
         display_name (str):
             The name of the model to show in the interface. The name can
             be up to 32 characters long and can consist only of ASCII
-            Latin letters A-Z and a-z, underscores (_), and ASCII digits
-            0-9.
+            Latin letters A-Z and a-z, underscores (\_), and ASCII
+            digits 0-9.
         dataset (str):
             The dataset from which the model is trained, in form of
             ``projects/{project-number-or-id}/locations/{location_id}/datasets/{dataset_id}``
