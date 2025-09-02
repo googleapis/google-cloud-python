@@ -670,12 +670,11 @@ class CreateInstanceRequest(proto.Message):
             Required. The logical name of the Memcached instance in the
             user project with the following restrictions:
 
-            -  Must contain only lowercase letters, numbers, and
-               hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-40 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the user project / location.
+            - Must contain only lowercase letters, numbers, and hyphens.
+            - Must start with a letter.
+            - Must be between 1-40 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the user project / location.
 
             If any of the above are not met, the API raises an invalid
             argument error.
@@ -706,7 +705,7 @@ class UpdateInstanceRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Mask of fields to update.
 
-            -  ``displayName``
+            - ``displayName``
         instance (google.cloud.memcache_v1.types.Instance):
             Required. A Memcached Instance. Only fields specified in
             update_mask are updated.

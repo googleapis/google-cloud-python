@@ -787,7 +787,7 @@ class Backup(proto.Message):
         name (str):
             Identifier. Full resource path of the backup. the last part
             of the name is the backup id with the following format:
-            [YYYYMMDDHHMMSS]_[Shorted Instance UID] OR customer
+            [YYYYMMDDHHMMSS]\_[Shorted Instance UID] OR customer
             specified while backup instance. Example:
             20240515123000_1234
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1754,11 +1754,11 @@ class CreateInstanceRequest(proto.Message):
 
             This value is subject to the following restrictions:
 
-            -  Must be 4-63 characters in length
-            -  Must begin with a letter or digit
-            -  Must contain only lowercase letters, digits, and hyphens
-            -  Must not end with a hyphen
-            -  Must be unique within a location
+            - Must be 4-63 characters in length
+            - Must begin with a letter or digit
+            - Must contain only lowercase letters, digits, and hyphens
+            - Must not end with a hyphen
+            - Must be unique within a location
         instance (google.cloud.memorystore_v1.types.Instance):
             Required. The instance to create.
         request_id (str):
@@ -2136,7 +2136,7 @@ class BackupInstanceRequest(proto.Message):
             the default value is 100 years.
         backup_id (str):
             Optional. The id of the backup to be created. If not
-            specified, the default value ([YYYYMMDDHHMMSS]_[Shortened
+            specified, the default value ([YYYYMMDDHHMMSS]\_[Shortened
             Instance UID] is used.
 
             This field is a member of `oneof`_ ``_backup_id``.

@@ -83,26 +83,25 @@ class ManagedIdentitiesServiceAsyncClient:
 
     The Managed Identities service exposes the following resources:
 
-    -  Locations as global, named as follows:
-       ``projects/{project_id}/locations/global``.
+    - Locations as global, named as follows:
+      ``projects/{project_id}/locations/global``.
 
-    -  Domains, named as follows:
-       ``/projects/{project_id}/locations/global/domain/{domain_name}``.
+    - Domains, named as follows:
+      ``/projects/{project_id}/locations/global/domain/{domain_name}``.
 
     The ``{domain_name}`` refers to fully qualified domain name in the
     customer project e.g. mydomain.myorganization.com, with the
     following restrictions:
 
-    -  Must contain only lowercase letters, numbers, periods and
-       hyphens.
-    -  Must start with a letter.
-    -  Must contain between 2-64 characters.
-    -  Must end with a number or a letter.
-    -  Must not start with period.
-    -  First segement length (mydomain form example above) shouldn't
-       exceed 15 chars.
-    -  The last segment cannot be fully numeric.
-    -  Must be unique within the customer project.
+    - Must contain only lowercase letters, numbers, periods and hyphens.
+    - Must start with a letter.
+    - Must contain between 2-64 characters.
+    - Must end with a number or a letter.
+    - Must not start with period.
+    - First segement length (mydomain form example above) shouldn't
+      exceed 15 chars.
+    - The last segment cannot be fully numeric.
+    - Must be unique within the customer project.
     """
 
     _client: ManagedIdentitiesServiceClient
@@ -406,16 +405,16 @@ class ManagedIdentitiesServiceAsyncClient:
                 mydomain.myorganization.com, with the following
                 restrictions:
 
-                -  Must contain only lowercase letters, numbers, periods
-                   and hyphens.
-                -  Must start with a letter.
-                -  Must contain between 2-64 characters.
-                -  Must end with a number or a letter.
-                -  Must not start with period.
-                -  First segement length (mydomain form example above)
-                   shouldn't exceed 15 chars.
-                -  The last segment cannot be fully numeric.
-                -  Must be unique within the customer project.
+                - Must contain only lowercase letters, numbers, periods
+                  and hyphens.
+                - Must start with a letter.
+                - Must contain between 2-64 characters.
+                - Must end with a number or a letter.
+                - Must not start with period.
+                - First segement length (mydomain form example above)
+                  shouldn't exceed 15 chars.
+                - The last segment cannot be fully numeric.
+                - Must be unique within the customer project.
 
                 This corresponds to the ``domain_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -929,9 +928,9 @@ class ManagedIdentitiesServiceAsyncClient:
                 repeated paths field may only include fields from
                 [Domain][google.cloud.managedidentities.v1.Domain]:
 
-                -  ``labels``
-                -  ``locations``
-                -  ``authorized_networks``
+                - ``labels``
+                - ``locations``
+                - ``authorized_networks``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

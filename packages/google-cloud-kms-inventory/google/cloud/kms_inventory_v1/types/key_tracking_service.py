@@ -138,12 +138,12 @@ class SearchProtectedResourcesRequest(proto.Message):
 
             Regular expressions are also supported. For example:
 
-            -  ``compute.googleapis.com.*`` snapshots resources whose
-               type starts with ``compute.googleapis.com``.
-            -  ``.*Image`` snapshots resources whose type ends with
-               ``Image``.
-            -  ``.*Image.*`` snapshots resources whose type contains
-               ``Image``.
+            - ``compute.googleapis.com.*`` snapshots resources whose
+              type starts with ``compute.googleapis.com``.
+            - ``.*Image`` snapshots resources whose type ends with
+              ``Image``.
+            - ``.*Image.*`` snapshots resources whose type contains
+              ``Image``.
 
             See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
             all supported regular expression syntax. If the regular

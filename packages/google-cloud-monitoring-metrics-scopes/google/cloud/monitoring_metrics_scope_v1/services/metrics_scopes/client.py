@@ -787,7 +787,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
         Returns:
             google.cloud.monitoring_metrics_scope_v1.types.MetricsScope:
                 Represents a [Metrics
-                   Scope](\ https://cloud.google.com/monitoring/settings#concept-scope)
+                   Scope](https://cloud.google.com/monitoring/settings#concept-scope)
                    in Cloud Monitoring, which specifies one or more
                    Google projects and zero or more AWS accounts to
                    monitor together.
@@ -1007,7 +1007,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.monitoring_metrics_scope_v1.types.MonitoredProject` A [project being
-                   monitored](\ https://cloud.google.com/monitoring/settings/multiple-projects#create-multi)
+                   monitored](https://cloud.google.com/monitoring/settings/multiple-projects#create-multi)
                    by a Metrics Scope.
 
         """

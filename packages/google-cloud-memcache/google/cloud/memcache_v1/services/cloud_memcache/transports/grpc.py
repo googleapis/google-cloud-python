@@ -119,18 +119,18 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
     model for managing Memorystore Memcached (also called Memcached
     below) instances:
 
-    -  The service works with a collection of cloud projects, named:
-       ``/projects/*``
-    -  Each project has a collection of available locations, named:
-       ``/locations/*``
-    -  Each location has a collection of Memcached instances, named:
-       ``/instances/*``
-    -  As such, Memcached instances are resources of the form:
-       ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+    - The service works with a collection of cloud projects, named:
+      ``/projects/*``
+    - Each project has a collection of available locations, named:
+      ``/locations/*``
+    - Each location has a collection of Memcached instances, named:
+      ``/instances/*``
+    - As such, Memcached instances are resources of the form:
+      ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
     Note that location_id must be a GCP ``region``; for example:
 
-    -  ``projects/my-memcached-project/locations/us-central1/instances/my-memcached``
+    - ``projects/my-memcached-project/locations/us-central1/instances/my-memcached``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

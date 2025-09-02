@@ -78,13 +78,13 @@ class ManagedSchemaRegistryAsyncClient:
     of a schema against a subject or a version. The main resource
     hierarchy is as follows:
 
-    -  SchemaRegistry
-    -  SchemaRegistry/Context
-    -  SchemaRegistry/Context/Schema
-    -  SchemaRegistry/Context/Subject
-    -  SchemaRegistry/Context/Subject/Version
-    -  SchemaRegistry/Config
-    -  SchemaRegistry/Mode
+    - SchemaRegistry
+    - SchemaRegistry/Context
+    - SchemaRegistry/Context/Schema
+    - SchemaRegistry/Context/Subject
+    - SchemaRegistry/Context/Subject/Version
+    - SchemaRegistry/Config
+    - SchemaRegistry/Mode
 
     **SchemaRegistry** is the root resource to represent a schema
     registry instance. A customer can have multiple schema registry
@@ -116,12 +116,12 @@ class ManagedSchemaRegistryAsyncClient:
     **Mode** represents the mode of a schema registry or a specific
     subject. Three modes are supported:
 
-    -  READONLY: The schema registry is in read-only mode, no write
-       operations allowed..
-    -  READWRITE: The schema registry is in read-write mode, which
-       allows limited write operations on the schema.
-    -  IMPORT: The schema registry is in import mode, which allows more
-       editing operations on the schema for data importing purposes.
+    - READONLY: The schema registry is in read-only mode, no write
+      operations allowed..
+    - READWRITE: The schema registry is in read-write mode, which allows
+      limited write operations on the schema.
+    - IMPORT: The schema registry is in import mode, which allows more
+      editing operations on the schema for data importing purposes.
     """
 
     _client: ManagedSchemaRegistryClient
@@ -3308,12 +3308,12 @@ class ManagedSchemaRegistryAsyncClient:
                 Required. The name of the resource to check
                 compatibility for. The format is either of following:
 
-                -  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions`:
-                   Check compatibility with one or more versions of the
-                   specified subject.
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/{subject}/versions/{version}:
-                   Check compatibility with a specific version of the
-                   subject.
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/\*/versions:
+                  Check compatibility with one or more versions of the
+                  specified subject.
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/{subject}/versions/{version}:
+                  Check compatibility with a specific version of the
+                  subject.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3430,10 +3430,10 @@ class ManagedSchemaRegistryAsyncClient:
                 Required. The resource name to get the config for. It
                 can be either of following:
 
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config:
-                   Get config at global level.
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}:
-                   Get config for a specific subject.
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config:
+                  Get config at global level.
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}:
+                  Get config for a specific subject.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3556,10 +3556,10 @@ class ManagedSchemaRegistryAsyncClient:
                 Required. The resource name to update the config for. It
                 can be either of following:
 
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config:
-                   Update config at global level.
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}:
-                   Update config for a specific subject.
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config:
+                  Update config at global level.
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}:
+                  Update config for a specific subject.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3687,7 +3687,7 @@ class ManagedSchemaRegistryAsyncClient:
                 Required. The resource name of subject to delete the
                 config for. The format is
 
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3800,10 +3800,10 @@ class ManagedSchemaRegistryAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the mode. The format is
 
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}:
-                   mode for a schema registry, or
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}:
-                   mode for a specific subject in a specific context
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}:
+                  mode for a schema registry, or
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}:
+                  mode for a specific subject in a specific context
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3925,10 +3925,10 @@ class ManagedSchemaRegistryAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the mode. The format is
 
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}:
-                   mode for a schema registry, or
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}:
-                   mode for a specific subject in a specific context
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}:
+                  mode for a schema registry, or
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}:
+                  mode for a specific subject in a specific context
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4055,8 +4055,8 @@ class ManagedSchemaRegistryAsyncClient:
                 Required. The resource name of subject to delete the
                 mode for. The format is
 
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}
+                - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

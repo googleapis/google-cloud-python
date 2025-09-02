@@ -304,7 +304,7 @@ class TlsConfig(proto.Message):
             Refer to the Apache Kafka documentation for
             ``ssl.principal.mapping.rules`` for the precise formatting
             details and syntax. Example:
-            "RULE:^CN=(.*?),OU=ServiceUsers.*\ $/$1@example.com/,DEFAULT"
+            "RULE:^CN=(.\ *?),OU=ServiceUsers.*\ $/$1@example.com/,DEFAULT"
 
             This is a static Kafka broker configuration. Setting or
             modifying this field will trigger a rolling restart of the
@@ -873,7 +873,7 @@ class Acl(proto.Message):
             ``transactionalIdPrefixed/{resource_name}``
 
             For acls on all resources of a given type (i.e. the wildcard
-            literal "*"): ``allTopics`` (represents ``topic/*``)
+            literal "\*"): ``allTopics`` (represents ``topic/*``)
             ``allConsumerGroups`` (represents ``consumerGroup/*``)
             ``allTransactionalIds`` (represents ``transactionalId/*``)
         acl_entries (MutableSequence[google.cloud.managedkafka_v1.types.AclEntry]):
@@ -898,7 +898,7 @@ class Acl(proto.Message):
         resource_name (str):
             Output only. The ACL resource name derived from the name.
             For cluster resource_type, this is always "kafka-cluster".
-            Can be the wildcard literal "*".
+            Can be the wildcard literal "\*".
         pattern_type (str):
             Output only. The ACL pattern type derived
             from the name. One of: LITERAL, PREFIXED.
@@ -941,7 +941,7 @@ class AclEntry(proto.Message):
             with the Kafka StandardAuthorizer prefix "User:". For
             example:
             "User:test-kafka-client@test-project.iam.gserviceaccount.com".
-            Can be the wildcard `User:*` to refer to all users.
+            Can be the wildcard "User:\*" to refer to all users.
         permission_type (str):
             Required. The permission type. Accepted
             values are (case insensitive): ALLOW, DENY.
@@ -954,7 +954,7 @@ class AclEntry(proto.Message):
             for valid combinations of resource_type and operation for
             different Kafka API requests.
         host (str):
-            Required. The host. Must be set to "*" for Managed Service
+            Required. The host. Must be set to "\*" for Managed Service
             for Apache Kafka.
     """
 

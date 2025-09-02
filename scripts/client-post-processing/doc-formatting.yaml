@@ -496,12 +496,6 @@ replacements:
                   to 100.
     count: 1
   - paths: [
-      packages/google-cloud-managedkafka/google/cloud/managedkafka_v1/types/resources.py,
-    ]
-    before: \"User:\*\"
-    after: "`User:*`"
-    count: 1
-  - paths: [
       packages/google-cloud-network-services/google/cloud/network_services_v1/types/service_lb_policy.py,
     ]
     before: |
@@ -513,15 +507,6 @@ replacements:
                       IG/NEG will be set as drained.\n
                       - An IG/NEG is considered unhealthy if less than
     count: 1
-  - paths: [
-      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/types/schema_registry.py,
-      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/services/managed_schema_registry/client.py,
-      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/services/managed_schema_registry/async_client.py,
-    ]
-    before: |
-      -  projects/\{project\}/locations/\{location\}/schemaRegistries/\{schema_registry\}/compatibility/subjects/\*/versions:
-    after: "-  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions`:\n"
-    count: 3
   - paths: [
       packages/google-cloud-discoveryengine/google/cloud/discoveryengine_v1/types/search_service.py,
       packages/google-cloud-discoveryengine/google/cloud/discoveryengine_v1alpha/types/search_service.py,
@@ -574,12 +559,6 @@ replacements:
                   Output only. Indicates whether the user has
                   some control over that maintenance, either
                   proactively before maintenance was scheduled
-    count: 1
-  - paths: [
-      packages/google-cloud-maintenance-api/google/cloud/maintenance_api_v1beta/types/maintenance_service.py,
-    ]
-    before: 'resource.resourceName=~"\*/instance-20241212-211259"'
-    after: 'resource.resourceName=~"\*/instance-20241212-211259"'
     count: 1
   - paths: [
       packages/google-cloud-storagebatchoperations/google/cloud/storagebatchoperations_v1/types/storage_batch_operations_types.py,
