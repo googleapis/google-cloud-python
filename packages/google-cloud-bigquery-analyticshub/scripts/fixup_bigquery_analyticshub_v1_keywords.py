@@ -39,28 +39,35 @@ def partition(
 class bigquery_analyticshubCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'approve_query_template': ('name', ),
         'create_data_exchange': ('parent', 'data_exchange_id', 'data_exchange', ),
         'create_listing': ('parent', 'listing_id', 'listing', ),
+        'create_query_template': ('parent', 'query_template_id', 'query_template', ),
         'delete_data_exchange': ('name', ),
         'delete_listing': ('name', 'delete_commercial', ),
+        'delete_query_template': ('name', ),
         'delete_subscription': ('name', ),
         'get_data_exchange': ('name', ),
         'get_iam_policy': ('resource', 'options', ),
         'get_listing': ('name', ),
+        'get_query_template': ('name', ),
         'get_subscription': ('name', ),
         'list_data_exchanges': ('parent', 'page_size', 'page_token', ),
         'list_listings': ('parent', 'page_size', 'page_token', ),
         'list_org_data_exchanges': ('organization', 'page_size', 'page_token', ),
+        'list_query_templates': ('parent', 'page_size', 'page_token', ),
         'list_shared_resource_subscriptions': ('resource', 'include_deleted_subscriptions', 'page_size', 'page_token', ),
         'list_subscriptions': ('parent', 'filter', 'page_size', 'page_token', ),
         'refresh_subscription': ('name', ),
         'revoke_subscription': ('name', 'revoke_commercial', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
+        'submit_query_template': ('name', ),
         'subscribe_data_exchange': ('name', 'destination', 'subscription', 'destination_dataset', 'subscriber_contact', ),
         'subscribe_listing': ('name', 'destination_dataset', 'destination_pubsub_subscription', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_data_exchange': ('update_mask', 'data_exchange', ),
         'update_listing': ('update_mask', 'listing', ),
+        'update_query_template': ('query_template', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
