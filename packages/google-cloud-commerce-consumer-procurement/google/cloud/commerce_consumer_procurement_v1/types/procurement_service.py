@@ -142,7 +142,7 @@ class ListOrdersRequest(proto.Message):
             with string values. For example, ``display_name=abc``.
             Supported query attributes are
 
-            -  ``display_name``
+            - ``display_name``
 
             If the query contains special characters other than letters,
             underscore, or digits, the phrase must be quoted with double

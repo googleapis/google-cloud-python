@@ -181,11 +181,11 @@ class Deployment(proto.Message):
             ``gs://<project number>-<region>-blueprint-config``
             Constraints:
 
-            -  The bucket needs to be in the same project as the
-               deployment
-            -  The path cannot be within the path of ``gcs_source``
-            -  The field cannot be updated, including changing its
-               presence
+            - The bucket needs to be in the same project as the
+              deployment
+            - The path cannot be within the path of ``gcs_source``
+            - The field cannot be updated, including changing its
+              presence
 
             This field is a member of `oneof`_ ``_artifacts_gcs_bucket``.
         service_account (str):
@@ -589,18 +589,18 @@ class ListDeploymentsRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/deployments/bar
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/deployments/bar
 
-            -  Filter by labels:
+            - Filter by labels:
 
-               -  Resources that have a key called 'foo' labels.foo:\*
-               -  Resources that have a key called 'foo' whose value is
-                  'bar' labels.foo = bar
+              - Resources that have a key called 'foo' labels.foo:\*
+              - Resources that have a key called 'foo' whose value is
+                'bar' labels.foo = bar
 
-            -  Filter by state:
+            - Filter by state:
 
-               -  Deployments in CREATING state. state=CREATING
+              - Deployments in CREATING state. state=CREATING
         order_by (str):
             Field to use to sort the list.
     """
@@ -703,18 +703,18 @@ class ListRevisionsRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/deployments/dep/revisions/bar
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/deployments/dep/revisions/bar
 
-            -  Filter by labels:
+            - Filter by labels:
 
-               -  Resources that have a key called 'foo' labels.foo:\*
-               -  Resources that have a key called 'foo' whose value is
-                  'bar' labels.foo = bar
+              - Resources that have a key called 'foo' labels.foo:\*
+              - Resources that have a key called 'foo' whose value is
+                'bar' labels.foo = bar
 
-            -  Filter by state:
+            - Filter by state:
 
-               -  Revisions in CREATING state. state=CREATING
+              - Revisions in CREATING state. state=CREATING
         order_by (str):
             Field to use to sort the list.
     """
@@ -1674,8 +1674,8 @@ class ListResourcesRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/deployments/dep/revisions/bar/resources/baz
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/deployments/dep/revisions/bar/resources/baz
         order_by (str):
             Field to use to sort the list.
     """
@@ -1999,12 +1999,12 @@ class Preview(proto.Message):
             Format: ``gs://<project number>-<region>-blueprint-config``
             Constraints:
 
-            -  The bucket needs to be in the same project as the
-               deployment
-            -  The path cannot be within the path of ``gcs_source`` If
-               omitted and deployment resource ref provided has
-               artifacts_gcs_bucket defined, that artifact bucket is
-               used.
+            - The bucket needs to be in the same project as the
+              deployment
+            - The path cannot be within the path of ``gcs_source`` If
+              omitted and deployment resource ref provided has
+              artifacts_gcs_bucket defined, that artifact bucket is
+              used.
 
             This field is a member of `oneof`_ ``_artifacts_gcs_bucket``.
         worker_pool (str):
@@ -2440,18 +2440,18 @@ class ListPreviewsRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/deployments/bar
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/deployments/bar
 
-            -  Filter by labels:
+            - Filter by labels:
 
-               -  Resources that have a key called 'foo' labels.foo:\*
-               -  Resources that have a key called 'foo' whose value is
-                  'bar' labels.foo = bar
+              - Resources that have a key called 'foo' labels.foo:\*
+              - Resources that have a key called 'foo' whose value is
+                'bar' labels.foo = bar
 
-            -  Filter by state:
+            - Filter by state:
 
-               -  Deployments in CREATING state. state=CREATING
+              - Deployments in CREATING state. state=CREATING
         order_by (str):
             Optional. Field to use to sort the list.
     """
@@ -2955,8 +2955,8 @@ class ListResourceChangesRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/previews/dep/resourceChanges/baz
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/previews/dep/resourceChanges/baz
         order_by (str):
             Optional. Field to use to sort the list.
     """
@@ -3176,8 +3176,8 @@ class ListResourceDriftsRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/previews/dep/resourceDrifts/baz
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/previews/dep/resourceDrifts/baz
         order_by (str):
             Optional. Field to use to sort the list.
     """

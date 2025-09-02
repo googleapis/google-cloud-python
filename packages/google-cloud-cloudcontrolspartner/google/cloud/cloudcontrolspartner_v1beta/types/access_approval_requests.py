@@ -173,12 +173,12 @@ class AccessReason(proto.Message):
                 principal to access customer data. ``detail`` is of the form
                 ("#####" is the issue ID):
 
-                -  "Feedback Report: #####"
-                -  "Case Number: #####"
-                -  "Case ID: #####"
-                -  "E-PIN Reference: #####"
-                -  "Google-#####"
-                -  "T-#####".
+                - "Feedback Report: #####"
+                - "Case Number: #####"
+                - "Case ID: #####"
+                - "E-PIN Reference: #####"
+                - "Google-#####"
+                - "T-#####".
             GOOGLE_INITIATED_SERVICE (2):
                 The principal accessed customer data in order
                 to diagnose or resolve a suspected issue in

@@ -516,10 +516,10 @@ class CreateTransferConfigRequest(proto.Message):
                 https://bigquery.cloud.google.com/datatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=authorization_code&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
                 </pre>
 
-            -  The client_id is the OAuth client_id of the data source
-               as returned by ListDataSources method.
-            -  data_source_scopes are the scopes returned by
-               ListDataSources method.
+            - The client_id is the OAuth client_id of the data source as
+              returned by ListDataSources method.
+            - data_source_scopes are the scopes returned by
+              ListDataSources method.
 
             Note that this should not be set when
             ``service_account_name`` is used to create the transfer
@@ -539,10 +539,10 @@ class CreateTransferConfigRequest(proto.Message):
                 https://bigquery.cloud.google.com/datatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=version_info&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
                 </pre>
 
-            -  The client_id is the OAuth client_id of the data source
-               as returned by ListDataSources method.
-            -  data_source_scopes are the scopes returned by
-               ListDataSources method.
+            - The client_id is the OAuth client_id of the data source as
+              returned by ListDataSources method.
+            - data_source_scopes are the scopes returned by
+              ListDataSources method.
 
             Note that this should not be set when
             ``service_account_name`` is used to create the transfer
@@ -616,10 +616,10 @@ class UpdateTransferConfigRequest(proto.Message):
                 https://bigquery.cloud.google.com/datatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=authorization_code&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
                 </pre>
 
-            -  The client_id is the OAuth client_id of the data source
-               as returned by ListDataSources method.
-            -  data_source_scopes are the scopes returned by
-               ListDataSources method.
+            - The client_id is the OAuth client_id of the data source as
+              returned by ListDataSources method.
+            - data_source_scopes are the scopes returned by
+              ListDataSources method.
 
             Note that this should not be set when
             ``service_account_name`` is used to update the transfer
@@ -642,10 +642,10 @@ class UpdateTransferConfigRequest(proto.Message):
                 https://bigquery.cloud.google.com/datatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=version_info&client_id=<var>client_id</var>&scope=<var>data_source_scopes</var>
                 </pre>
 
-            -  The client_id is the OAuth client_id of the data source
-               as returned by ListDataSources method.
-            -  data_source_scopes are the scopes returned by
-               ListDataSources method.
+            - The client_id is the OAuth client_id of the data source as
+              returned by ListDataSources method.
+            - data_source_scopes are the scopes returned by
+              ListDataSources method.
 
             Note that this should not be set when
             ``service_account_name`` is used to update the transfer
