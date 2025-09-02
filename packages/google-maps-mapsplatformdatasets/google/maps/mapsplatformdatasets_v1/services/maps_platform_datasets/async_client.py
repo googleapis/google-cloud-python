@@ -474,7 +474,7 @@ class MapsPlatformDatasetsAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The list of fields to be updated.
 
-                The value "*" is used for full replacement (default).
+                The value "\*" is used for full replacement (default).
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -55,27 +55,27 @@ class CreateTripRequest(proto.Message):
             Required. Unique Trip ID. Subject to the following
             restrictions:
 
-            -  Must be a valid Unicode string.
-            -  Limited to a maximum length of 64 characters.
-            -  Normalized according to [Unicode Normalization Form C]
-               (http://www.unicode.org/reports/tr15/).
-            -  May not contain any of the following ASCII characters:
-               '/', ':', '?', ',', or '#'.
+            - Must be a valid Unicode string.
+            - Limited to a maximum length of 64 characters.
+            - Normalized according to [Unicode Normalization Form C]
+              (http://www.unicode.org/reports/tr15/).
+            - May not contain any of the following ASCII characters:
+              '/', ':', '?', ',', or '#'.
         trip (google.maps.fleetengine_v1.types.Trip):
             Required. Trip entity to create.
 
             When creating a Trip, the following fields are required:
 
-            -  ``trip_type``
-            -  ``pickup_point``
+            - ``trip_type``
+            - ``pickup_point``
 
             The following fields are used if you provide them:
 
-            -  ``number_of_passengers``
-            -  ``vehicle_id``
-            -  ``dropoff_point``
-            -  ``intermediate_destinations``
-            -  ``vehicle_waypoints``
+            - ``number_of_passengers``
+            - ``vehicle_id``
+            - ``dropoff_point``
+            - ``intermediate_destinations``
+            - ``vehicle_waypoints``
 
             All other Trip fields are ignored. For example, all trips
             start with a ``trip_status`` of ``NEW`` even if you pass in
@@ -325,23 +325,23 @@ class UpdateTripRequest(proto.Message):
             The following fields are maintained by the Fleet Engine. Do
             not update them using Trip.update.
 
-            -  ``current_route_segment``
-            -  ``current_route_segment_end_point``
-            -  ``current_route_segment_traffic``
-            -  ``current_route_segment_traffic_version``
-            -  ``current_route_segment_version``
-            -  ``dropoff_time``
-            -  ``eta_to_next_waypoint``
-            -  ``intermediate_destinations_version``
-            -  ``last_location``
-            -  ``name``
-            -  ``number_of_passengers``
-            -  ``pickup_time``
-            -  ``remaining_distance_meters``
-            -  ``remaining_time_to_first_waypoint``
-            -  ``remaining_waypoints``
-            -  ``remaining_waypoints_version``
-            -  ``route``
+            - ``current_route_segment``
+            - ``current_route_segment_end_point``
+            - ``current_route_segment_traffic``
+            - ``current_route_segment_traffic_version``
+            - ``current_route_segment_version``
+            - ``dropoff_time``
+            - ``eta_to_next_waypoint``
+            - ``intermediate_destinations_version``
+            - ``last_location``
+            - ``name``
+            - ``number_of_passengers``
+            - ``pickup_time``
+            - ``remaining_distance_meters``
+            - ``remaining_time_to_first_waypoint``
+            - ``remaining_waypoints``
+            - ``remaining_waypoints_version``
+            - ``route``
 
             When you update the ``Trip.vehicle_id`` for a shared trip,
             you must supply the list of ``Trip.vehicle_waypoints`` to
@@ -407,10 +407,10 @@ class SearchTripsRequest(proto.Message):
             The vehicle associated with the trips in the request. If
             unspecified, the returned trips do not contain:
 
-            -  ``current_route_segment``
-            -  ``remaining_waypoints``
-            -  ``remaining_distance_meters``
-            -  ``eta_to_first_waypoint``
+            - ``current_route_segment``
+            - ``remaining_waypoints``
+            - ``remaining_distance_meters``
+            - ``eta_to_first_waypoint``
         active_trips_only (bool):
             If set to true, the response includes Trips
             that influence a driver's route.

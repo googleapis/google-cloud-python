@@ -757,11 +757,11 @@ class VideoIntelligenceServiceClient(metaclass=VideoIntelligenceServiceClientMet
                 For more information, see `Request
                 URIs <https://cloud.google.com/storage/docs/request-endpoints>`__.
                 To identify multiple videos, a video URI may include
-                wildcards in the ``object-id``. Supported wildcards: '*'
-                to match 0 or more characters; '?' to match 1 character.
-                If unset, the input video should be embedded in the
-                request as ``input_content``. If set, ``input_content``
-                must be unset.
+                wildcards in the ``object-id``. Supported wildcards:
+                '\*' to match 0 or more characters; '?' to match 1
+                character. If unset, the input video should be embedded
+                in the request as ``input_content``. If set,
+                ``input_content`` must be unset.
 
                 This corresponds to the ``input_uri`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -479,30 +479,30 @@ class WorkstationConfig(proto.Message):
                     the `same restrictions as Compute Engine
                     instances <https://cloud.google.com/compute/docs/instances/nested-virtualization/overview#restrictions>`__:
 
-                    -  **Organization policy**: projects, folders, or
-                       organizations may be restricted from creating nested VMs
-                       if the **Disable VM nested virtualization** constraint is
-                       enforced in the organization policy. For more
-                       information, see the Compute Engine section, `Checking
-                       whether nested virtualization is
-                       allowed <https://cloud.google.com/compute/docs/instances/nested-virtualization/managing-constraint#checking_whether_nested_virtualization_is_allowed>`__.
-                    -  **Performance**: nested VMs might experience a 10% or
-                       greater decrease in performance for workloads that are
-                       CPU-bound and possibly greater than a 10% decrease for
-                       workloads that are input/output bound.
-                    -  **Machine Type**: nested virtualization can only be
-                       enabled on workstation configurations that specify a
-                       [machine_type][google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.machine_type]
-                       in the N1 or N2 machine series.
-                    -  **GPUs**: nested virtualization may not be enabled on
-                       workstation configurations with accelerators.
-                    -  **Operating System**: Because `Container-Optimized
-                       OS <https://cloud.google.com/compute/docs/images/os-details#container-optimized_os_cos>`__
-                       does not support nested virtualization, when nested
-                       virtualization is enabled, the underlying Compute Engine
-                       VM instances boot from an `Ubuntu
-                       LTS <https://cloud.google.com/compute/docs/images/os-details#ubuntu_lts>`__
-                       image.
+                    - **Organization policy**: projects, folders, or
+                      organizations may be restricted from creating nested VMs
+                      if the **Disable VM nested virtualization** constraint is
+                      enforced in the organization policy. For more information,
+                      see the Compute Engine section, `Checking whether nested
+                      virtualization is
+                      allowed <https://cloud.google.com/compute/docs/instances/nested-virtualization/managing-constraint#checking_whether_nested_virtualization_is_allowed>`__.
+                    - **Performance**: nested VMs might experience a 10% or
+                      greater decrease in performance for workloads that are
+                      CPU-bound and possibly greater than a 10% decrease for
+                      workloads that are input/output bound.
+                    - **Machine Type**: nested virtualization can only be
+                      enabled on workstation configurations that specify a
+                      [machine_type][google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.machine_type]
+                      in the N1 or N2 machine series.
+                    - **GPUs**: nested virtualization may not be enabled on
+                      workstation configurations with accelerators.
+                    - **Operating System**: Because `Container-Optimized
+                      OS <https://cloud.google.com/compute/docs/images/os-details#container-optimized_os_cos>`__
+                      does not support nested virtualization, when nested
+                      virtualization is enabled, the underlying Compute Engine
+                      VM instances boot from an `Ubuntu
+                      LTS <https://cloud.google.com/compute/docs/images/os-details#ubuntu_lts>`__
+                      image.
                 shielded_instance_config (google.cloud.workstations_v1.types.WorkstationConfig.Host.GceInstance.GceShieldedInstanceConfig):
                     Optional. A set of Compute Engine Shielded
                     instance options.

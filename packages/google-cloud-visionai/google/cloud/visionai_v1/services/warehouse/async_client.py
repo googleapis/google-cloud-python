@@ -1798,7 +1798,7 @@ class WarehouseAsyncClient:
                 fields specified in the update_mask are relative to the
                 resource, not the full request. A field of the resource
                 will be overwritten if it is in the mask. Empty field
-                mask is not allowed. If the mask is "*", it triggers a
+                mask is not allowed. If the mask is "\*", it triggers a
                 full update of the index, and also a whole rebuild of
                 index data.
 
@@ -4584,7 +4584,7 @@ class WarehouseAsyncClient:
                 Required. ID to use for the new search config. Will
                 become the final component of the SearchConfig's
                 resource name. This value should be up to 63 characters,
-                and valid characters are /[a-z][0-9]-_/. The first
+                and valid characters are /[a-z][0-9]-\_/. The first
                 character must be a letter, the last could be a letter
                 or a number.
 
@@ -6403,8 +6403,8 @@ class WarehouseAsyncClient:
                 The fields specified in the update_mask are relative to
                 the resource, not the full request. A field of the
                 resource will be overwritten if it is in the mask. Empty
-                field mask is not allowed. If the mask is "*", then this
-                is a full replacement of the resource.
+                field mask is not allowed. If the mask is "\*", then
+                this is a full replacement of the resource.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7279,13 +7279,13 @@ class WarehouseAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The list of fields to be updated.
 
-                -  Unset ``update_mask`` or set ``update_mask`` to be a
-                   single "*" only will update all updatable fields with
-                   the value provided in ``collection``.
-                -  To update ``display_name`` value to empty string, set
-                   it in the ``collection`` to empty string, and set
-                   ``update_mask`` with "display_name". Same applies to
-                   other updatable string fields in the ``collection``.
+                - Unset ``update_mask`` or set ``update_mask`` to be a
+                  single "\*" only will update all updatable fields with
+                  the value provided in ``collection``.
+                - To update ``display_name`` value to empty string, set
+                  it in the ``collection`` to empty string, and set
+                  ``update_mask`` with "display_name". Same applies to
+                  other updatable string fields in the ``collection``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

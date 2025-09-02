@@ -76,7 +76,7 @@ class Waypoint(proto.Message):
             Indicates that the waypoint is meant for vehicles to stop
             at, where the intention is to either pickup or drop-off.
             When you set this value, the calculated route won't include
-            non-\ ``via`` waypoints on roads that are unsuitable for
+            non-``via`` waypoints on roads that are unsuitable for
             pickup and drop-off. This option works only for ``DRIVE``
             and ``TWO_WHEELER`` travel modes, and when the
             ``location_type`` is
