@@ -74,7 +74,7 @@ steps:
       # The command to execute inside the container.
       - 'build'
       # We run build against output instead of repo.
-      - '--output-dir'
+      - '--repo'
       - '/app/output'
 
 options:
