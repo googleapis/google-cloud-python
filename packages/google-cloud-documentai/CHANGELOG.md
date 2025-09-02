@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.5.0...google-cloud-documentai-v3.6.0) (2025-08-29)
+
+
+### Features
+
+* Added config options for derived fields and signature detection. Some annotation changes changes to mark fields explicitly output only (no changes in semantics just readability) ([6d0eeb7](https://github.com/googleapis/google-cloud-python/commit/6d0eeb7e4ae05a8ce9b2849eb9caf554b6e449c4))
+
+
+### Documentation
+
+* A comment for field `create_time` in message `.google.cloud.documentai.v1.Processor`  is changed to describe as output only. ([6d0eeb7](https://github.com/googleapis/google-cloud-python/commit/6d0eeb7e4ae05a8ce9b2849eb9caf554b6e449c4))
+* A comment for field `create_time` in message `.google.cloud.documentai.v1.ProcessorVersion`  is changed to describe as output only. ([6d0eeb7](https://github.com/googleapis/google-cloud-python/commit/6d0eeb7e4ae05a8ce9b2849eb9caf554b6e449c4))
+* A comment for field `deprecation_info` in message `.google.cloud.documentai.v1.ProcessorVersion`  is changed to describe as output only. ([6d0eeb7](https://github.com/googleapis/google-cloud-python/commit/6d0eeb7e4ae05a8ce9b2849eb9caf554b6e449c4))
+* A comment for field `document_schema` in message `.google.cloud.documentai.v1.ProcessorVersion` is changed to describe as output only. ([6d0eeb7](https://github.com/googleapis/google-cloud-python/commit/6d0eeb7e4ae05a8ce9b2849eb9caf554b6e449c4))
+* A comment for field `kms_key_name` in message `.google.cloud.documentai.v1.ProcessorVersion`  is changed to describe as output only. ([6d0eeb7](https://github.com/googleapis/google-cloud-python/commit/6d0eeb7e4ae05a8ce9b2849eb9caf554b6e449c4))
+* A comment for field `kms_key_version_name` in message `.google.cloud.documentai.v1.ProcessorVersion`  is changed to describe as output only. ([6d0eeb7](https://github.com/googleapis/google-cloud-python/commit/6d0eeb7e4ae05a8ce9b2849eb9caf554b6e449c4))
+* A comment for field `latest_evaluation` in message `.google.cloud.documentai.v1.ProcessorVersion`  is changed to describe as output only. ([6d0eeb7](https://github.com/googleapis/google-cloud-python/commit/6d0eeb7e4ae05a8ce9b2849eb9caf554b6e449c4))
+
 ## [3.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.4.0...google-cloud-documentai-v3.5.0) (2025-04-29)
 
 

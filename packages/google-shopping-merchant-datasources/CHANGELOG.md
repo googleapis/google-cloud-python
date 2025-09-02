@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v0.1.11...google-shopping-merchant-datasources-v1.0.0) (2025-08-29)
+
+
+### Features
+
+* set `google.shopping.merchant_datasources_v1` as the default import for `google.shopping.merchant_datasources` ([ea780cb](https://github.com/googleapis/google-cloud-python/commit/ea780cbf37f86b042d9a8831491d80e710ed6170))
+* update release level to stable ([ea780cb](https://github.com/googleapis/google-cloud-python/commit/ea780cbf37f86b042d9a8831491d80e710ed6170))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v0.1.10...google-shopping-merchant-datasources-v0.1.11) (2025-08-06)
 
 

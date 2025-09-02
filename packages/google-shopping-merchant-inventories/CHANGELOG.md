@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.16...google-shopping-merchant-inventories-v1.0.0) (2025-08-29)
+
+
+### Features
+
+* set `google.shopping.merchant_inventories_v1` as the default import for `google.shopping.merchant_inventories` ([72cfa14](https://github.com/googleapis/google-cloud-python/commit/72cfa14f225918b6316904dff959803036cc0a3c))
+* update release level to stable ([72cfa14](https://github.com/googleapis/google-cloud-python/commit/72cfa14f225918b6316904dff959803036cc0a3c))
+
 ## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.15...google-shopping-merchant-inventories-v0.1.16) (2025-08-06)
 
 
