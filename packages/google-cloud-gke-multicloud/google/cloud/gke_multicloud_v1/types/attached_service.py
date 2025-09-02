@@ -262,18 +262,18 @@ class UpdateAttachedClusterRequest(proto.Message):
             paths field can only include these fields from
             [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]:
 
-            -  ``annotations``.
-            -  ``authorization.admin_groups``.
-            -  ``authorization.admin_users``.
-            -  ``binary_authorization.evaluation_mode``.
-            -  ``description``.
-            -  ``logging_config.component_config.enable_components``.
-            -  ``monitoring_config.managed_prometheus_config.enabled``.
-            -  ``platform_version``.
-            -  ``proxy_config.kubernetes_secret.name``.
-            -  ``proxy_config.kubernetes_secret.namespace``.
-            -  ``security_posture_config.vulnerability_mode``
-            -  ``monitoring_config.cloud_monitoring_config.enabled``
+            - ``annotations``.
+            - ``authorization.admin_groups``.
+            - ``authorization.admin_users``.
+            - ``binary_authorization.evaluation_mode``.
+            - ``description``.
+            - ``logging_config.component_config.enable_components``.
+            - ``monitoring_config.managed_prometheus_config.enabled``.
+            - ``platform_version``.
+            - ``proxy_config.kubernetes_secret.name``.
+            - ``proxy_config.kubernetes_secret.namespace``.
+            - ``security_posture_config.vulnerability_mode``
+            - ``monitoring_config.cloud_monitoring_config.enabled``
     """
 
     attached_cluster: attached_resources.AttachedCluster = proto.Field(

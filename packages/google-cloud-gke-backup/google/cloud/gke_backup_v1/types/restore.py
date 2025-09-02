@@ -66,8 +66,8 @@ class Restore(proto.Message):
             Output only. The target cluster into which this Restore will
             restore data. Valid formats:
 
-            -  ``projects/*/locations/*/clusters/*``
-            -  ``projects/*/zones/*/clusters/*``
+            - ``projects/*/locations/*/clusters/*``
+            - ``projects/*/zones/*/clusters/*``
 
             Inherited from parent RestorePlan's
             [cluster][google.cloud.gkebackup.v1.RestorePlan.cluster]
@@ -471,14 +471,14 @@ class RestoreConfig(proto.Message):
                 MERGE_SKIP_ON_CONFLICT except that it will apply the volume
                 data policy for the conflicting PVCs:
 
-                -  RESTORE_VOLUME_DATA_FROM_BACKUP: restore data only and
-                   respect the reclaim policy of the original PV;
-                -  REUSE_VOLUME_HANDLE_FROM_BACKUP: reconnect and respect
-                   the reclaim policy of the original PV;
-                -  NO_VOLUME_DATA_RESTORATION: new provision and respect the
-                   reclaim policy of the original PV. Note that this mode
-                   could cause data loss as the original PV can be retained
-                   or deleted depending on its reclaim policy.
+                - RESTORE_VOLUME_DATA_FROM_BACKUP: restore data only and
+                  respect the reclaim policy of the original PV;
+                - REUSE_VOLUME_HANDLE_FROM_BACKUP: reconnect and respect the
+                  reclaim policy of the original PV;
+                - NO_VOLUME_DATA_RESTORATION: new provision and respect the
+                  reclaim policy of the original PV. Note that this mode
+                  could cause data loss as the original PV can be retained
+                  or deleted depending on its reclaim policy.
             MERGE_REPLACE_ON_CONFLICT (5):
                 This mode merges the backup and the target
                 cluster and replaces the conflicting resources

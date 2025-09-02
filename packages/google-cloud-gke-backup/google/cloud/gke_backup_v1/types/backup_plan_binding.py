@@ -59,8 +59,8 @@ class BackupPlanBinding(proto.Message):
             Output only. Immutable. The fully qualified name of the
             cluster that is being backed up Valid formats:
 
-            -  ``projects/*/locations/*/clusters/*``
-            -  ``projects/*/zones/*/clusters/*``
+            - ``projects/*/locations/*/clusters/*``
+            - ``projects/*/zones/*/clusters/*``
         backup_plan_details (google.cloud.gke_backup_v1.types.BackupPlanBinding.BackupPlanDetails):
             Output only. Contains details about the
             backup plan/backup.

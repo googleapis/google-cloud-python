@@ -59,11 +59,11 @@ class DataAgent(proto.Message):
         display_name (str):
             Optional. User friendly display name.
 
-            -  Must be between 1-256 characters.
+            - Must be between 1-256 characters.
         description (str):
             Optional. Description of the agent.
 
-            -  Must be between 1-1024 characters.
+            - Must be between 1-1024 characters.
         labels (MutableMapping[str, str]):
             Optional. Labels to help users filter related agents. For
             example, "sales", "business", "etl", and so on. Note labels

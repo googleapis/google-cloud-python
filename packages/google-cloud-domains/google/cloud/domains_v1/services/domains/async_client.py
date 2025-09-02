@@ -1340,11 +1340,11 @@ class DomainsAsyncClient:
         ``labels``. To update other fields, use the appropriate custom
         update method:
 
-        -  To update management settings, see
-           ``ConfigureManagementSettings``
-        -  To update DNS configuration, see ``ConfigureDnsSettings``
-        -  To update contact information, see
-           ``ConfigureContactSettings``
+        - To update management settings, see
+          ``ConfigureManagementSettings``
+        - To update DNS configuration, see ``ConfigureDnsSettings``
+        - To update contact information, see
+          ``ConfigureContactSettings``
 
         .. code-block:: python
 
@@ -2173,9 +2173,9 @@ class DomainsAsyncClient:
         billing </domains/pricing#billing-models>`__, this method works
         if:
 
-        -  ``state`` is ``EXPORTED`` with ``expire_time`` in the past
-        -  ``state`` is ``REGISTRATION_FAILED``
-        -  ``state`` is ``TRANSFER_FAILED``
+        - ``state`` is ``EXPORTED`` with ``expire_time`` in the past
+        - ``state`` is ``REGISTRATION_FAILED``
+        - ``state`` is ``TRANSFER_FAILED``
 
         When an active registration is successfully deleted, you can
         continue to use the domain in `Google

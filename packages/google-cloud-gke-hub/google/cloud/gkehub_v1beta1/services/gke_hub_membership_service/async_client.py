@@ -919,7 +919,7 @@ class GkeHubMembershipServiceAsyncClient:
                 to null or empty string to delete the key from the map.
                 It's not possible to update a key's value to the empty
                 string. If you specify the update_mask to be a special
-                path "*", fully replaces all user-modifiable fields to
+                path "\*", fully replaces all user-modifiable fields to
                 match ``resource``.
 
                 This corresponds to the ``resource`` field

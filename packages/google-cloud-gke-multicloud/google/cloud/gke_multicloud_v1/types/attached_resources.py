@@ -113,7 +113,7 @@ class AttachedCluster(proto.Message):
             (optional) and name (required), separated by a slash (/).
             Prefix must be a DNS subdomain. Name must be 63 characters
             or less, begin and end with alphanumerics, with dashes (-),
-            underscores (_), dots (.), and alphanumerics between.
+            underscores (\_), dots (.), and alphanumerics between.
         workload_identity_config (google.cloud.gke_multicloud_v1.types.WorkloadIdentityConfig):
             Output only. Workload Identity settings.
         logging_config (google.cloud.gke_multicloud_v1.types.LoggingConfig):

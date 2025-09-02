@@ -71,24 +71,23 @@ class ListMembershipsRequest(proto.Message):
 
             Examples:
 
-            -  Name is ``bar`` in project ``foo-proj`` and location
-               ``global``:
+            - Name is ``bar`` in project ``foo-proj`` and location
+              ``global``:
 
-               name =
-               "projects/foo-proj/locations/global/membership/bar"
+              name = "projects/foo-proj/locations/global/membership/bar"
 
-            -  Memberships that have a label called ``foo``:
+            - Memberships that have a label called ``foo``:
 
-               labels.foo:\*
+              labels.foo:\*
 
-            -  Memberships that have a label called ``foo`` whose value
-               is ``bar``:
+            - Memberships that have a label called ``foo`` whose value
+              is ``bar``:
 
-               labels.foo = bar
+              labels.foo = bar
 
-            -  Memberships in the CREATING state:
+            - Memberships in the CREATING state:
 
-               state = CREATING
+              state = CREATING
         order_by (str):
             Optional. One or more fields to compare and
             use to sort the output. See
@@ -294,7 +293,7 @@ class UpdateMembershipRequest(proto.Message):
             updating a map field, set the value of a key to null or
             empty string to delete the key from the map. It's not
             possible to update a key's value to the empty string. If you
-            specify the update_mask to be a special path "*", fully
+            specify the update_mask to be a special path "\*", fully
             replaces all user-modifiable fields to match ``resource``.
         request_id (str):
             Optional. A request ID to identify requests.
@@ -488,20 +487,19 @@ class ListFeaturesRequest(proto.Message):
 
             Examples:
 
-            -  Feature with the name "servicemesh" in project
-               "foo-proj":
+            - Feature with the name "servicemesh" in project "foo-proj":
 
-               name =
-               "projects/foo-proj/locations/global/features/servicemesh"
+              name =
+              "projects/foo-proj/locations/global/features/servicemesh"
 
-            -  Features that have a label called ``foo``:
+            - Features that have a label called ``foo``:
 
-               labels.foo:\*
+              labels.foo:\*
 
-            -  Features that have a label called ``foo`` whose value is
-               ``bar``:
+            - Features that have a label called ``foo`` whose value is
+              ``bar``:
 
-               labels.foo = bar
+              labels.foo = bar
         order_by (str):
             One or more fields to compare and use to sort
             the output. See
@@ -689,7 +687,7 @@ class UpdateFeatureRequest(proto.Message):
             map field, set the value of a key to null or empty string to
             delete the key from the map. It's not possible to update a
             key's value to the empty string. If you specify the
-            update_mask to be a special path "*", fully replaces all
+            update_mask to be a special path "\*", fully replaces all
             user-modifiable fields to match ``resource``.
         request_id (str):
             Optional. A request ID to identify requests.

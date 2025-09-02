@@ -152,7 +152,7 @@ class AzureCluster(proto.Message):
             (optional) and name (required), separated by a slash (/).
             Prefix must be a DNS subdomain. Name must be 63 characters
             or less, begin and end with alphanumerics, with dashes (-),
-            underscores (_), dots (.), and alphanumerics between.
+            underscores (\_), dots (.), and alphanumerics between.
         workload_identity_config (google.cloud.gke_multicloud_v1.types.WorkloadIdentityConfig):
             Output only. Workload Identity settings.
         cluster_ca_certificate (str):
@@ -691,7 +691,7 @@ class AzureClient(proto.Message):
             (optional) and name (required), separated by a slash (/).
             Prefix must be a DNS subdomain. Name must be 63 characters
             or less, begin and end with alphanumerics, with dashes (-),
-            underscores (_), dots (.), and alphanumerics between.
+            underscores (\_), dots (.), and alphanumerics between.
         pem_certificate (str):
             Output only. The PEM encoded x509
             certificate.
@@ -893,7 +893,7 @@ class AzureNodePool(proto.Message):
             (optional) and name (required), separated by a slash (/).
             Prefix must be a DNS subdomain. Name must be 63 characters
             or less, begin and end with alphanumerics, with dashes (-),
-            underscores (_), dots (.), and alphanumerics between.
+            underscores (\_), dots (.), and alphanumerics between.
         max_pods_constraint (google.cloud.gke_multicloud_v1.types.MaxPodsConstraint):
             Required. The constraint on the maximum
             number of pods that can be run simultaneously on
@@ -1066,7 +1066,7 @@ class AzureNodeConfig(proto.Message):
             Virtual Machine Scale Sets.
 
             Specify at most 50 pairs containing alphanumerics, spaces,
-            and symbols (.+-=_:@/). Keys can be up to 127 Unicode
+            and symbols (.+-=\_:@/). Keys can be up to 127 Unicode
             characters. Values can be up to 255 Unicode characters.
         image_type (str):
             Optional. The OS image type to use on node pool instances.
