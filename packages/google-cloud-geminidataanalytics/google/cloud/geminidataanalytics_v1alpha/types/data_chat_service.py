@@ -83,9 +83,9 @@ class ListMessagesRequest(proto.Message):
 
             ListMessages allows filtering by:
 
-            -  create_time (e.g.,
-               ``createTime > "2025-01-28T06:51:56-08:00"``)
-            -  update_time
+            - create_time (e.g.,
+              ``createTime > "2025-01-28T06:51:56-08:00"``)
+            - update_time
     """
 
     parent: str = proto.Field(
@@ -702,8 +702,8 @@ class DataQuery(proto.Message):
             intent. It is used to name the corresponding data result, so
             that it can be referenced in later steps.
 
-            -  Example: "total_sales_by_product"
-            -  Example: "sales_for_product_12345".
+            - Example: "total_sales_by_product"
+            - Example: "sales_for_product_12345".
         datasources (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Datasource]):
             Optional. The datasources available to answer
             the question.
@@ -734,8 +734,8 @@ class DataResult(proto.Message):
             around by reference, and serves as a signal about its
             meaning.
 
-            -  Example: "total_sales_by_product"
-            -  Example: "sales_for_product_12345".
+            - Example: "total_sales_by_product"
+            - Example: "sales_for_product_12345".
         schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
             Optional. The schema of the data.
         data (MutableSequence[google.protobuf.struct_pb2.Struct]):

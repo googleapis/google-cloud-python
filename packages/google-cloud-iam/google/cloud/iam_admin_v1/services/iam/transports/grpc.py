@@ -118,21 +118,21 @@ class IAMGrpcTransport(IAMTransport):
     You can use this service to work with all of the following
     resources:
 
-    -  **Service accounts**, which identify an application or a virtual
-       machine (VM) instance rather than a person
-    -  **Service account keys**, which service accounts use to
-       authenticate with Google APIs
-    -  **IAM policies for service accounts**, which specify the roles
-       that a principal has for the service account
-    -  **IAM custom roles**, which help you limit the number of
-       permissions that you grant to principals
+    - **Service accounts**, which identify an application or a virtual
+      machine (VM) instance rather than a person
+    - **Service account keys**, which service accounts use to
+      authenticate with Google APIs
+    - **IAM policies for service accounts**, which specify the roles
+      that a principal has for the service account
+    - **IAM custom roles**, which help you limit the number of
+      permissions that you grant to principals
 
     In addition, you can use this service to complete the following
     tasks, among others:
 
-    -  Test whether a service account can use specific permissions
-    -  Check which roles you can grant for a specific resource
-    -  Lint, or validate, condition expressions in an IAM policy
+    - Test whether a service account can use specific permissions
+    - Check which roles you can grant for a specific resource
+    - Lint, or validate, condition expressions in an IAM policy
 
     When you read data from the IAM API, each read is eventually
     consistent. In other words, if you write data with the IAM API, then
@@ -1174,21 +1174,21 @@ class IAMGrpcTransport(IAMTransport):
         When you delete a custom role, the following changes occur
         immediately:
 
-        -  You cannot bind a principal to the custom role in an IAM
-           [Policy][google.iam.v1.Policy].
-        -  Existing bindings to the custom role are not changed, but
-           they have no effect.
-        -  By default, the response from
-           [ListRoles][google.iam.admin.v1.IAM.ListRoles] does not
-           include the custom role.
+        - You cannot bind a principal to the custom role in an IAM
+          [Policy][google.iam.v1.Policy].
+        - Existing bindings to the custom role are not changed, but they
+          have no effect.
+        - By default, the response from
+          [ListRoles][google.iam.admin.v1.IAM.ListRoles] does not
+          include the custom role.
 
         You have 7 days to undelete the custom role. After 7 days, the
         following changes occur:
 
-        -  The custom role is permanently deleted and cannot be
-           recovered.
-        -  If an IAM policy contains a binding to the custom role, the
-           binding is permanently removed.
+        - The custom role is permanently deleted and cannot be
+          recovered.
+        - If an IAM policy contains a binding to the custom role, the
+          binding is permanently removed.
 
         Returns:
             Callable[[~.DeleteRoleRequest],

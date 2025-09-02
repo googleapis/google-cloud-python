@@ -175,14 +175,14 @@ class ServiceAccount(proto.Message):
 
             Use one of the following formats:
 
-            -  ``projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}``
-            -  ``projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}``
+            - ``projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}``
+            - ``projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}``
 
             As an alternative, you can use the ``-`` wildcard character
             instead of the project ID:
 
-            -  ``projects/-/serviceAccounts/{EMAIL_ADDRESS}``
-            -  ``projects/-/serviceAccounts/{UNIQUE_ID}``
+            - ``projects/-/serviceAccounts/{EMAIL_ADDRESS}``
+            - ``projects/-/serviceAccounts/{UNIQUE_ID}``
 
             When possible, avoid using the ``-`` wildcard character,
             because it can cause response messages to contain misleading
@@ -1166,28 +1166,28 @@ class ListRolesRequest(proto.Message):
             Each resource type's ``parent`` value format is described
             below:
 
-            -  ```roles.list()`` <https://cloud.google.com/iam/reference/rest/v1/roles/list>`__:
-               An empty string. This method doesn't require a resource;
-               it simply returns all `predefined
-               roles <https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>`__
-               in Cloud IAM. Example request URL:
-               ``https://iam.googleapis.com/v1/roles``
+            - ```roles.list()`` <https://cloud.google.com/iam/reference/rest/v1/roles/list>`__:
+              An empty string. This method doesn't require a resource;
+              it simply returns all `predefined
+              roles <https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>`__
+              in Cloud IAM. Example request URL:
+              ``https://iam.googleapis.com/v1/roles``
 
-            -  ```projects.roles.list()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/list>`__:
-               ``projects/{PROJECT_ID}``. This method lists all
-               project-level `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__.
-               Example request URL:
-               ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles``
+            - ```projects.roles.list()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/list>`__:
+              ``projects/{PROJECT_ID}``. This method lists all
+              project-level `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__.
+              Example request URL:
+              ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles``
 
-            -  ```organizations.roles.list()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/list>`__:
-               ``organizations/{ORGANIZATION_ID}``. This method lists
-               all organization-level `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__.
-               Example request URL:
-               ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles``
+            - ```organizations.roles.list()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/list>`__:
+              ``organizations/{ORGANIZATION_ID}``. This method lists all
+              organization-level `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__.
+              Example request URL:
+              ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles``
 
-            Note: Wildcard (*) values are invalid; you must specify a
+            Note: Wildcard (\*) values are invalid; you must specify a
             complete project ID or organization ID.
         page_size (int):
             Optional limit on the number of roles to
@@ -1269,30 +1269,30 @@ class GetRoleRequest(proto.Message):
             Each resource type's ``name`` value format is described
             below:
 
-            -  ```roles.get()`` <https://cloud.google.com/iam/reference/rest/v1/roles/get>`__:
-               ``roles/{ROLE_NAME}``. This method returns results from
-               all `predefined
-               roles <https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>`__
-               in Cloud IAM. Example request URL:
-               ``https://iam.googleapis.com/v1/roles/{ROLE_NAME}``
+            - ```roles.get()`` <https://cloud.google.com/iam/reference/rest/v1/roles/get>`__:
+              ``roles/{ROLE_NAME}``. This method returns results from
+              all `predefined
+              roles <https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>`__
+              in Cloud IAM. Example request URL:
+              ``https://iam.googleapis.com/v1/roles/{ROLE_NAME}``
 
-            -  ```projects.roles.get()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/get>`__:
-               ``projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``. This
-               method returns only `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
-               that have been created at the project level. Example
-               request URL:
-               ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``
+            - ```projects.roles.get()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/get>`__:
+              ``projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``. This
+              method returns only `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
+              that have been created at the project level. Example
+              request URL:
+              ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``
 
-            -  ```organizations.roles.get()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/get>`__:
-               ``organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``.
-               This method returns only `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
-               that have been created at the organization level. Example
-               request URL:
-               ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``
+            - ```organizations.roles.get()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/get>`__:
+              ``organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``.
+              This method returns only `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
+              that have been created at the organization level. Example
+              request URL:
+              ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``
 
-            Note: Wildcard (*) values are invalid; you must specify a
+            Note: Wildcard (\*) values are invalid; you must specify a
             complete project ID or organization ID.
     """
 
@@ -1315,21 +1315,21 @@ class CreateRoleRequest(proto.Message):
             Each resource type's ``parent`` value format is described
             below:
 
-            -  ```projects.roles.create()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/create>`__:
-               ``projects/{PROJECT_ID}``. This method creates
-               project-level `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__.
-               Example request URL:
-               ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles``
+            - ```projects.roles.create()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/create>`__:
+              ``projects/{PROJECT_ID}``. This method creates
+              project-level `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__.
+              Example request URL:
+              ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles``
 
-            -  ```organizations.roles.create()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/create>`__:
-               ``organizations/{ORGANIZATION_ID}``. This method creates
-               organization-level `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__.
-               Example request URL:
-               ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles``
+            - ```organizations.roles.create()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/create>`__:
+              ``organizations/{ORGANIZATION_ID}``. This method creates
+              organization-level `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__.
+              Example request URL:
+              ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles``
 
-            Note: Wildcard (*) values are invalid; you must specify a
+            Note: Wildcard (\*) values are invalid; you must specify a
             complete project ID or organization ID.
         role_id (str):
             The role ID to use for this role.
@@ -1369,23 +1369,23 @@ class UpdateRoleRequest(proto.Message):
             Each resource type's ``name`` value format is described
             below:
 
-            -  ```projects.roles.patch()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/patch>`__:
-               ``projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``. This
-               method updates only `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
-               that have been created at the project level. Example
-               request URL:
-               ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``
+            - ```projects.roles.patch()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/patch>`__:
+              ``projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``. This
+              method updates only `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
+              that have been created at the project level. Example
+              request URL:
+              ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``
 
-            -  ```organizations.roles.patch()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/patch>`__:
-               ``organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``.
-               This method updates only `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
-               that have been created at the organization level. Example
-               request URL:
-               ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``
+            - ```organizations.roles.patch()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/patch>`__:
+              ``organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``.
+              This method updates only `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
+              that have been created at the organization level. Example
+              request URL:
+              ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``
 
-            Note: Wildcard (*) values are invalid; you must specify a
+            Note: Wildcard (\*) values are invalid; you must specify a
             complete project ID or organization ID.
         role (google.cloud.iam_admin_v1.types.Role):
             The updated role.
@@ -1423,23 +1423,23 @@ class DeleteRoleRequest(proto.Message):
             Each resource type's ``name`` value format is described
             below:
 
-            -  ```projects.roles.delete()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/delete>`__:
-               ``projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``. This
-               method deletes only `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
-               that have been created at the project level. Example
-               request URL:
-               ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``
+            - ```projects.roles.delete()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/delete>`__:
+              ``projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``. This
+              method deletes only `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
+              that have been created at the project level. Example
+              request URL:
+              ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``
 
-            -  ```organizations.roles.delete()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/delete>`__:
-               ``organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``.
-               This method deletes only `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
-               that have been created at the organization level. Example
-               request URL:
-               ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``
+            - ```organizations.roles.delete()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/delete>`__:
+              ``organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``.
+              This method deletes only `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
+              that have been created at the organization level. Example
+              request URL:
+              ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``
 
-            Note: Wildcard (*) values are invalid; you must specify a
+            Note: Wildcard (\*) values are invalid; you must specify a
             complete project ID or organization ID.
         etag (bytes):
             Used to perform a consistent
@@ -1469,23 +1469,23 @@ class UndeleteRoleRequest(proto.Message):
             Each resource type's ``name`` value format is described
             below:
 
-            -  ```projects.roles.undelete()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/undelete>`__:
-               ``projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``. This
-               method undeletes only `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
-               that have been created at the project level. Example
-               request URL:
-               ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``
+            - ```projects.roles.undelete()`` <https://cloud.google.com/iam/reference/rest/v1/projects.roles/undelete>`__:
+              ``projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``. This
+              method undeletes only `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
+              that have been created at the project level. Example
+              request URL:
+              ``https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}``
 
-            -  ```organizations.roles.undelete()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/undelete>`__:
-               ``organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``.
-               This method undeletes only `custom
-               roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
-               that have been created at the organization level. Example
-               request URL:
-               ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``
+            - ```organizations.roles.undelete()`` <https://cloud.google.com/iam/reference/rest/v1/organizations.roles/undelete>`__:
+              ``organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``.
+              This method undeletes only `custom
+              roles <https://cloud.google.com/iam/docs/understanding-custom-roles>`__
+              that have been created at the organization level. Example
+              request URL:
+              ``https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}``
 
-            Note: Wildcard (*) values are invalid; you must specify a
+            Note: Wildcard (\*) values are invalid; you must specify a
             complete project ID or organization ID.
         etag (bytes):
             Used to perform a consistent
@@ -1817,11 +1817,11 @@ class LintResult(proto.Message):
                 policy evaluation in ``checkPolicy``. This includes the
                 following common scenarios:
 
-                -  Unsatisfiable condition: Expired timestamp in date/time
-                   condition.
-                -  Ineffective condition: Condition on a <principal, role>
-                   pair which is granted unconditionally in another binding
-                   of the same policy.
+                - Unsatisfiable condition: Expired timestamp in date/time
+                  condition.
+                - Ineffective condition: Condition on a <principal, role>
+                  pair which is granted unconditionally in another binding
+                  of the same policy.
             NOTICE (3):
                 Reserved for the issues that are not severe as
                 ``ERROR``/``WARNING``, but need special handling. For

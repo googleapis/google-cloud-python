@@ -72,21 +72,21 @@ class IAMAsyncClient:
     You can use this service to work with all of the following
     resources:
 
-    -  **Service accounts**, which identify an application or a virtual
-       machine (VM) instance rather than a person
-    -  **Service account keys**, which service accounts use to
-       authenticate with Google APIs
-    -  **IAM policies for service accounts**, which specify the roles
-       that a principal has for the service account
-    -  **IAM custom roles**, which help you limit the number of
-       permissions that you grant to principals
+    - **Service accounts**, which identify an application or a virtual
+      machine (VM) instance rather than a person
+    - **Service account keys**, which service accounts use to
+      authenticate with Google APIs
+    - **IAM policies for service accounts**, which specify the roles
+      that a principal has for the service account
+    - **IAM custom roles**, which help you limit the number of
+      permissions that you grant to principals
 
     In addition, you can use this service to complete the following
     tasks, among others:
 
-    -  Test whether a service account can use specific permissions
-    -  Check which roles you can grant for a specific resource
-    -  Lint, or validate, condition expressions in an IAM policy
+    - Test whether a service account can use specific permissions
+    - Check which roles you can grant for a specific resource
+    - Lint, or validate, condition expressions in an IAM policy
 
     When you read data from the IAM API, each read is eventually
     consistent. In other words, if you write data with the IAM API, then
@@ -509,7 +509,7 @@ class IAMAsyncClient:
                    a virtual machine (VM) instance, not a person. You
                    can use a service account to call Google APIs. To
                    learn more, read the [overview of service
-                   accounts](\ https://cloud.google.com/iam/help/service-accounts/overview).
+                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
                    When you create a service account, you specify the
                    project ID that owns the service account, as well as
@@ -653,7 +653,7 @@ class IAMAsyncClient:
                    a virtual machine (VM) instance, not a person. You
                    can use a service account to call Google APIs. To
                    learn more, read the [overview of service
-                   accounts](\ https://cloud.google.com/iam/help/service-accounts/overview).
+                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
                    When you create a service account, you specify the
                    project ID that owns the service account, as well as
@@ -787,7 +787,7 @@ class IAMAsyncClient:
                    a virtual machine (VM) instance, not a person. You
                    can use a service account to call Google APIs. To
                    learn more, read the [overview of service
-                   accounts](\ https://cloud.google.com/iam/help/service-accounts/overview).
+                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
                    When you create a service account, you specify the
                    project ID that owns the service account, as well as
@@ -891,7 +891,7 @@ class IAMAsyncClient:
                    a virtual machine (VM) instance, not a person. You
                    can use a service account to call Google APIs. To
                    learn more, read the [overview of service
-                   accounts](\ https://cloud.google.com/iam/help/service-accounts/overview).
+                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
                    When you create a service account, you specify the
                    project ID that owns the service account, as well as
@@ -2324,7 +2324,7 @@ class IAMAsyncClient:
         Returns:
             google.cloud.iam_admin_v1.types.SignBlobResponse:
                 Deprecated. [Migrate to Service Account Credentials
-                   API](\ https://cloud.google.com/iam/help/credentials/migrate-api).
+                   API](https://cloud.google.com/iam/help/credentials/migrate-api).
 
                    The service account sign blob response.
 
@@ -2482,7 +2482,7 @@ class IAMAsyncClient:
         Returns:
             google.cloud.iam_admin_v1.types.SignJwtResponse:
                 Deprecated. [Migrate to Service Account Credentials
-                   API](\ https://cloud.google.com/iam/help/credentials/migrate-api).
+                   API](https://cloud.google.com/iam/help/credentials/migrate-api).
 
                    The service account sign JWT response.
 
@@ -2626,19 +2626,19 @@ class IAMAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2786,19 +2786,19 @@ class IAMAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -3456,21 +3456,21 @@ class IAMAsyncClient:
         When you delete a custom role, the following changes occur
         immediately:
 
-        -  You cannot bind a principal to the custom role in an IAM
-           [Policy][google.iam.v1.Policy].
-        -  Existing bindings to the custom role are not changed, but
-           they have no effect.
-        -  By default, the response from
-           [ListRoles][google.iam.admin.v1.IAM.ListRoles] does not
-           include the custom role.
+        - You cannot bind a principal to the custom role in an IAM
+          [Policy][google.iam.v1.Policy].
+        - Existing bindings to the custom role are not changed, but they
+          have no effect.
+        - By default, the response from
+          [ListRoles][google.iam.admin.v1.IAM.ListRoles] does not
+          include the custom role.
 
         You have 7 days to undelete the custom role. After 7 days, the
         following changes occur:
 
-        -  The custom role is permanently deleted and cannot be
-           recovered.
-        -  If an IAM policy contains a binding to the custom role, the
-           binding is permanently removed.
+        - The custom role is permanently deleted and cannot be
+          recovered.
+        - If an IAM policy contains a binding to the custom role, the
+          binding is permanently removed.
 
         .. code-block:: python
 

@@ -1596,20 +1596,20 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
         When uploading source code to the generated signed URL, please
         follow these restrictions:
 
-        -  Source file type should be a zip file.
-        -  No credentials should be attached - the signed URLs provide
-           access to the target bucket using internal service identity;
-           if credentials were attached, the identity from the
-           credentials would be used, but that identity does not have
-           permissions to upload files to the URL.
+        - Source file type should be a zip file.
+        - No credentials should be attached - the signed URLs provide
+          access to the target bucket using internal service identity;
+          if credentials were attached, the identity from the
+          credentials would be used, but that identity does not have
+          permissions to upload files to the URL.
 
         When making a HTTP PUT request, specify this header:
 
-        -  ``content-type: application/zip``
+        - ``content-type: application/zip``
 
         Do not specify this header:
 
-        -  ``Authorization: Bearer YOUR_TOKEN``
+        - ``Authorization: Bearer YOUR_TOKEN``
 
         .. code-block:: python
 
