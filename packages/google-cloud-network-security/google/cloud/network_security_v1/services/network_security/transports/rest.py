@@ -1288,11 +1288,20 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                         "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
                         "body": "*",
                     },
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
+                        "body": "*",
+                    },
                 ],
                 "google.longrunning.Operations.DeleteOperation": [
                     {
                         "method": "delete",
                         "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                    },
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
                     },
                 ],
                 "google.longrunning.Operations.GetOperation": [
@@ -1300,11 +1309,19 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                         "method": "get",
                         "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                    },
                 ],
                 "google.longrunning.Operations.ListOperations": [
                     {
                         "method": "get",
                         "uri": "/v1/{name=projects/*/locations/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=organizations/*/locations/*}/operations",
                     },
                 ],
             }
