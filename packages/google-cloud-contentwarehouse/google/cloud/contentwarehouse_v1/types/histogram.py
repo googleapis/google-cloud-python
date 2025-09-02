@@ -142,7 +142,7 @@ class HistogramQueryResult(proto.Message):
 
             The key format is:
 
-            -  (for string histogram) string values stored in the field.
+            - (for string histogram) string values stored in the field.
     """
 
     histogram_query: str = proto.Field(

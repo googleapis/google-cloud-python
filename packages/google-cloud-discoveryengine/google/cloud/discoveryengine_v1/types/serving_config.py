@@ -82,11 +82,11 @@ class ServingConfig(proto.Message):
             e.g. ``medium-diversity`` or ``high-diversity``. Currently
             supported values:
 
-            -  ``no-diversity``
-            -  ``low-diversity``
-            -  ``medium-diversity``
-            -  ``high-diversity``
-            -  ``auto-diversity``
+            - ``no-diversity``
+            - ``low-diversity``
+            - ``medium-diversity``
+            - ``high-diversity``
+            - ``auto-diversity``
 
             If not specified, we choose default based on recommendation
             model type. Default value: ``no-diversity``.
@@ -107,21 +107,21 @@ class ServingConfig(proto.Message):
             The ranking expression is a single function or multiple
             functions that are joined by "+".
 
-            -  ranking_expression = function, { " + ", function };
+            - ranking_expression = function, { " + ", function };
 
             Supported functions:
 
-            -  double \* relevance_score
-            -  double \* dotProduct(embedding_field_path)
+            - double \* relevance_score
+            - double \* dotProduct(embedding_field_path)
 
             Function variables:
 
-            -  ``relevance_score``: pre-defined keywords, used for
-               measure relevance between query and document.
-            -  ``embedding_field_path``: the document embedding field
-               used with query embedding vector.
-            -  ``dotProduct``: embedding function between
-               embedding_field_path and query embedding vector.
+            - ``relevance_score``: pre-defined keywords, used for
+              measure relevance between query and document.
+            - ``embedding_field_path``: the document embedding field
+              used with query embedding vector.
+            - ``dotProduct``: embedding function between
+              embedding_field_path and query embedding vector.
 
             Example ranking expression:
 
@@ -208,19 +208,19 @@ class ServingConfig(proto.Message):
         r"""Specifies the configurations needed for Media Discovery. Currently
         we support:
 
-        -  ``demote_content_watched``: Threshold for watched content
-           demotion. Customers can specify if using watched content demotion
-           or use viewed detail page. Using the content watched demotion,
-           customers need to specify the watched minutes or percentage
-           exceeds the threshold, the content will be demoted in the
-           recommendation result.
-        -  ``promote_fresh_content``: cutoff days for fresh content
-           promotion. Customers can specify if using content freshness
-           promotion. If the content was published within the cutoff days,
-           the content will be promoted in the recommendation result. Can
-           only be set if
-           [SolutionType][google.cloud.discoveryengine.v1.SolutionType] is
-           [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        - ``demote_content_watched``: Threshold for watched content
+          demotion. Customers can specify if using watched content demotion
+          or use viewed detail page. Using the content watched demotion,
+          customers need to specify the watched minutes or percentage
+          exceeds the threshold, the content will be demoted in the
+          recommendation result.
+        - ``promote_fresh_content``: cutoff days for fresh content
+          promotion. Customers can specify if using content freshness
+          promotion. If the content was published within the cutoff days,
+          the content will be promoted in the recommendation result. Can
+          only be set if
+          [SolutionType][google.cloud.discoveryengine.v1.SolutionType] is
+          [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -245,11 +245,11 @@ class ServingConfig(proto.Message):
                 Specifies the event type used for demoting recommendation
                 result. Currently supported values:
 
-                -  ``view-item``: Item viewed.
-                -  ``media-play``: Start/resume watching a video, playing a
-                   song, etc.
-                -  ``media-complete``: Finished or stopped midway through a
-                   video, song, etc.
+                - ``view-item``: Item viewed.
+                - ``media-play``: Start/resume watching a video, playing a
+                  song, etc.
+                - ``media-complete``: Finished or stopped midway through a
+                  video, song, etc.
 
                 If unset, watch history demotion will not be applied.
                 Content freshness demotion will still be applied.
@@ -292,8 +292,7 @@ class ServingConfig(proto.Message):
         r"""Specifies the configurations needed for Generic Discovery.Currently
         we support:
 
-        -  ``content_search_spec``: configuration for generic content
-           search.
+        - ``content_search_spec``: configuration for generic content search.
 
         Attributes:
             content_search_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec):

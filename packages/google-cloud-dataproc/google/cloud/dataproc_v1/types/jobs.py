@@ -1097,7 +1097,7 @@ class JobReference(proto.Message):
             project.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), or hyphens (-). The maximum length is 100
+            underscores (\_), or hyphens (-). The maximum length is 100
             characters.
 
             If not specified by the caller, the job ID will be provided
@@ -1499,7 +1499,7 @@ class SubmitJobRequest(proto.Message):
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
             The id must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 40
+            underscores (\_), and hyphens (-). The maximum length is 40
             characters.
     """
 

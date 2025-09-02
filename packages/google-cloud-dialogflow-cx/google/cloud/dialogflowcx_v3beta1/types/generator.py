@@ -292,8 +292,8 @@ class CreateGeneratorRequest(proto.Message):
         language_code (str):
             The language to create generators for the following fields:
 
-            -  ``Generator.prompt_text.text`` If not specified, the
-               agent's default language is used.
+            - ``Generator.prompt_text.text`` If not specified, the
+              agent's default language is used.
     """
 
     parent: str = proto.Field(
@@ -355,12 +355,11 @@ class DeleteGeneratorRequest(proto.Message):
             generators that are used by pages/flows/transition route
             groups:
 
-            -  If ``force`` is set to false, an error will be returned
-               with message indicating the referenced resources.
-            -  If ``force`` is set to true, Dialogflow will remove the
-               generator, as well as any references to the generator
-               (i.e. [Generator][Fulfillment.generator]) in
-               fulfillments.
+            - If ``force`` is set to false, an error will be returned
+              with message indicating the referenced resources.
+            - If ``force`` is set to true, Dialogflow will remove the
+              generator, as well as any references to the generator
+              (i.e. [Generator][Fulfillment.generator]) in fulfillments.
     """
 
     name: str = proto.Field(

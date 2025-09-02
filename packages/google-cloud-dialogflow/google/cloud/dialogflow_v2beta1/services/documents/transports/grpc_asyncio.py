@@ -423,10 +423,10 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``:
-           [Document][google.cloud.dialogflow.v2beta1.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``:
+          [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -466,10 +466,10 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``:
-           [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``:
+          [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
 
         Returns:
             Callable[[~.ImportDocumentsRequest],
@@ -504,10 +504,10 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -545,10 +545,10 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``:
-           [Document][google.cloud.dialogflow.v2beta1.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``:
+          [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -594,10 +594,10 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``:
-           [Document][google.cloud.dialogflow.v2beta1.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``:
+          [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.

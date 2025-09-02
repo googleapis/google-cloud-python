@@ -347,12 +347,12 @@ class Job(proto.Message):
             of the labels map are UTF8 strings that comply with the
             following restrictions:
 
-            -  Keys must conform to regexp:
-               [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
-            -  Values must conform to regexp:
-               [\p{Ll}\p{Lo}\p{N}_-]{0,63}
-            -  Both keys and values are additionally constrained to be
-               <= 128 bytes in size.
+            - Keys must conform to regexp:
+              [\\p{Ll}\\p{Lo}][\\p{Ll}\\p{Lo}\\p{N}\_-]{0,62}
+            - Values must conform to regexp:
+              [\\p{Ll}\\p{Lo}\\p{N}\_-]{0,63}
+            - Both keys and values are additionally constrained to be <=
+              128 bytes in size.
         location (str):
             Optional. The [regional endpoint]
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
@@ -1384,19 +1384,19 @@ class Step(proto.Message):
     Here's an example of a sequence of steps which together implement a
     Map-Reduce job:
 
-    -  Read a collection of data from some source, parsing the
-       collection's elements.
+    - Read a collection of data from some source, parsing the
+      collection's elements.
 
-    -  Validate the elements.
+    - Validate the elements.
 
-    -  Apply a user-defined function to map each element to some value
-       and extract an element-specific key value.
+    - Apply a user-defined function to map each element to some value
+      and extract an element-specific key value.
 
-    -  Group elements with the same key into a single element with that
-       key, transforming a multiply-keyed collection into a
-       uniquely-keyed collection.
+    - Group elements with the same key into a single element with that
+      key, transforming a multiply-keyed collection into a
+      uniquely-keyed collection.
 
-    -  Write the elements out to some data sink.
+    - Write the elements out to some data sink.
 
     Note that the Cloud Dataflow service may be used to run many
     different types of jobs, not just Map-Reduce.

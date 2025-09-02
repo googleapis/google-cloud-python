@@ -252,7 +252,7 @@ class TagTemplate(proto.Message):
             Display name for this template. Defaults to an empty string.
 
             The name must contain only Unicode letters, numbers (0-9),
-            underscores (_), dashes (-), spaces ( ), and can't start or
+            underscores (\_), dashes (-), spaces ( ), and can't start or
             end with spaces. The maximum length is 200 characters.
         is_publicly_readable (bool):
             Indicates whether tags created with this template are
@@ -273,11 +273,11 @@ class TagTemplate(proto.Message):
             The keys to this map are tag template field IDs. The IDs
             have the following limitations:
 
-            -  Can contain uppercase and lowercase letters, numbers
-               (0-9) and underscores (_).
-            -  Must be at least 1 character and at most 64 characters
-               long.
-            -  Must start with a letter or underscore.
+            - Can contain uppercase and lowercase letters, numbers (0-9)
+              and underscores (\_).
+            - Must be at least 1 character and at most 64 characters
+              long.
+            - Must start with a letter or underscore.
         dataplex_transfer_status (google.cloud.datacatalog_v1.types.TagTemplate.DataplexTransferStatus):
             Optional. Transfer status of the TagTemplate
     """
@@ -345,14 +345,14 @@ class TagTemplateField(proto.Message):
             the location specified in its name.
 
             The name must contain only letters (a-z, A-Z), numbers
-            (0-9), or underscores (_), and must start with a letter or
+            (0-9), or underscores (\_), and must start with a letter or
             underscore. The maximum length is 64 characters.
         display_name (str):
             The display name for this field. Defaults to an empty
             string.
 
             The name must contain only Unicode letters, numbers (0-9),
-            underscores (_), dashes (-), spaces ( ), and can't start or
+            underscores (\_), dashes (-), spaces ( ), and can't start or
             end with spaces. The maximum length is 200 characters.
         type_ (google.cloud.datacatalog_v1.types.FieldType):
             Required. The type of value this tag field
@@ -474,7 +474,7 @@ class FieldType(proto.Message):
                     empty string.
 
                     The name must contain only Unicode letters, numbers (0-9),
-                    underscores (_), dashes (-), spaces ( ), and can't start or
+                    underscores (\_), dashes (-), spaces ( ), and can't start or
                     end with spaces. The maximum length is 200 characters.
             """
 

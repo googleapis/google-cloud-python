@@ -357,7 +357,7 @@ class AgentsAsyncClient:
                    conversations required for your system.
 
                    For more information about agents, see the [Agent
-                   guide](\ https://cloud.google.com/dialogflow/docs/agents-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/agents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -482,7 +482,7 @@ class AgentsAsyncClient:
                    conversations required for your system.
 
                    For more information about agents, see the [Agent
-                   guide](\ https://cloud.google.com/dialogflow/docs/agents-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/agents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -784,10 +784,10 @@ class AgentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -932,10 +932,10 @@ class AgentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``:
-           [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``:
+          [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]
 
         .. code-block:: python
 
@@ -1079,10 +1079,10 @@ class AgentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         The operation only tracks when importing is complete, not when
         it is done training.
@@ -1215,10 +1215,10 @@ class AgentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         The operation only tracks when restoring is complete, not when
         it is done training.

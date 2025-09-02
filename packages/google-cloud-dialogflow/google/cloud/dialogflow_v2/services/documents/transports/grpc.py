@@ -406,9 +406,9 @@ class DocumentsGrpcTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        - ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         Returns:
             Callable[[~.CreateDocumentRequest],
@@ -443,10 +443,10 @@ class DocumentsGrpcTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        -  ``response``:
-           [ImportDocumentsResponse][google.cloud.dialogflow.v2.ImportDocumentsResponse]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        - ``response``:
+          [ImportDocumentsResponse][google.cloud.dialogflow.v2.ImportDocumentsResponse]
 
         Returns:
             Callable[[~.ImportDocumentsRequest],
@@ -479,10 +479,10 @@ class DocumentsGrpcTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Returns:
             Callable[[~.DeleteDocumentRequest],
@@ -515,9 +515,9 @@ class DocumentsGrpcTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        - ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         Returns:
             Callable[[~.UpdateDocumentRequest],
@@ -554,9 +554,9 @@ class DocumentsGrpcTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        - ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -593,9 +593,9 @@ class DocumentsGrpcTransport(DocumentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        - ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         Returns:
             Callable[[~.ExportDocumentRequest],

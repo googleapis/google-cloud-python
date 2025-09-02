@@ -78,7 +78,7 @@ class TelephonyDtmf(proto.Enum):
         DTMF_D (14):
             Letter: 'D'.
         DTMF_STAR (15):
-            Asterisk/star: '*'.
+            Asterisk/star: '\*'.
         DTMF_POUND (16):
             Pound/diamond/hash/square/gate/octothorpe:
             '#'.
@@ -198,19 +198,19 @@ class SpeechModelVariant(proto.Enum):
         USE_ENHANCED (3):
             Use an enhanced model variant:
 
-            -  If an enhanced variant does not exist for the given
-               [model][google.cloud.dialogflow.v2beta1.InputAudioConfig.model]
-               and request language, Dialogflow falls back to the
-               standard variant.
+            - If an enhanced variant does not exist for the given
+              [model][google.cloud.dialogflow.v2beta1.InputAudioConfig.model]
+              and request language, Dialogflow falls back to the
+              standard variant.
 
-               The `Cloud Speech
-               documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
-               describes which models have enhanced variants.
+              The `Cloud Speech
+              documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
+              describes which models have enhanced variants.
 
-            -  If the API caller isn't eligible for enhanced models,
-               Dialogflow returns an error. Please see the `Dialogflow
-               docs <https://cloud.google.com/dialogflow/docs/data-logging>`__
-               for how to make your project eligible.
+            - If the API caller isn't eligible for enhanced models,
+              Dialogflow returns an error. Please see the `Dialogflow
+              docs <https://cloud.google.com/dialogflow/docs/data-logging>`__
+              for how to make your project eligible.
     """
     SPEECH_MODEL_VARIANT_UNSPECIFIED = 0
     USE_BEST_AVAILABLE = 1
@@ -289,11 +289,10 @@ class SpeechContext(proto.Message):
 
             This list can be used to:
 
-            -  improve accuracy for words and phrases you expect the
-               user to say, e.g. typical commands for your Dialogflow
-               agent
-            -  add additional words to the speech recognizer vocabulary
-            -  ...
+            - improve accuracy for words and phrases you expect the user
+              to say, e.g. typical commands for your Dialogflow agent
+            - add additional words to the speech recognizer vocabulary
+            - ...
 
             See the `Cloud Speech
             documentation <https://cloud.google.com/speech-to-text/quotas>`__
@@ -301,11 +300,11 @@ class SpeechContext(proto.Message):
         boost (float):
             Optional. Boost for this context compared to other contexts:
 
-            -  If the boost is positive, Dialogflow will increase the
-               probability that the phrases in this context are
-               recognized over similar sounding phrases.
-            -  If the boost is unspecified or non-positive, Dialogflow
-               will not apply any boost.
+            - If the boost is positive, Dialogflow will increase the
+              probability that the phrases in this context are
+              recognized over similar sounding phrases.
+            - If the boost is unspecified or non-positive, Dialogflow
+              will not apply any boost.
 
             Dialogflow recommends that you use boosts in the range (0,
             20] and that you find a value that fits your use case with
@@ -383,13 +382,13 @@ class BargeInConfig(proto.Message):
     input as soon as it starts playing back the audio from the previous
     response. The playback is modeled into two phases:
 
-    -  No barge-in phase: which goes first and during which speech
-       detection should not be carried out.
+    - No barge-in phase: which goes first and during which speech
+      detection should not be carried out.
 
-    -  Barge-in phase: which follows the no barge-in phase and during
-       which the API starts speech detection and may inform the client
-       that an utterance has been detected. Note that no-speech event is
-       not expected in this phase.
+    - Barge-in phase: which follows the no barge-in phase and during
+      which the API starts speech detection and may inform the client
+      that an utterance has been detected. Note that no-speech event is
+      not expected in this phase.
 
     The client provides this configuration in terms of the durations of
     those two phases. The durations are measured in terms of the audio
@@ -770,9 +769,9 @@ class SpeechToTextConfig(proto.Message):
             for more details. If you specify a model, the following
             models typically have the best performance:
 
-            -  phone_call (best for Agent Assist and telephony)
-            -  latest_short (best for Dialogflow non-telephony)
-            -  command_and_search
+            - phone_call (best for Agent Assist and telephony)
+            - latest_short (best for Dialogflow non-telephony)
+            - command_and_search
 
             Leave this field unspecified to use `Agent Speech
             settings <https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>`__

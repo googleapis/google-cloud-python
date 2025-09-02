@@ -324,14 +324,14 @@ class Task(proto.Message):
                 key/value string. These will be interpolated before passing
                 the args to the driver. Currently supported placeholders:
 
-                -  ${task_id}
-                -  ${job_time} To pass positional args, set the key as
-                   TASK_ARGS. The value should be a comma-separated string
-                   of all the positional arguments. To use a delimiter other
-                   than comma, refer to
-                   https://cloud.google.com/sdk/gcloud/reference/topic/escaping.
-                   In case of other keys being present in the args, then
-                   TASK_ARGS will be passed as the last argument.
+                - ${task_id}
+                - ${job_time} To pass positional args, set the key as
+                  TASK_ARGS. The value should be a comma-separated string of
+                  all the positional arguments. To use a delimiter other
+                  than comma, refer to
+                  https://cloud.google.com/sdk/gcloud/reference/topic/escaping.
+                  In case of other keys being present in the args, then
+                  TASK_ARGS will be passed as the last argument.
             service_account (str):
                 Required. Service account to use to execute a
                 task. If not provided, the default Compute

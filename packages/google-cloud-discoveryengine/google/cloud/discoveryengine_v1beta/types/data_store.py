@@ -62,11 +62,10 @@ class DataStore(proto.Message):
             solutions for each
             [industry_vertical][google.cloud.discoveryengine.v1beta.DataStore.industry_vertical]:
 
-            -  ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
-               ``SOLUTION_TYPE_SEARCH``.
-            -  ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is
-               automatically enrolled. Other solutions cannot be
-               enrolled.
+            - ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
+              ``SOLUTION_TYPE_SEARCH``.
+            - ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is automatically
+              enrolled. Other solutions cannot be enrolled.
         default_schema_id (str):
             Output only. The id of the default
             [Schema][google.cloud.discoveryengine.v1beta.Schema]
@@ -294,7 +293,7 @@ class LanguageInfo(proto.Message):
         region (str):
             Output only. Region part of normalized_language_code, if
             present. E.g.: ``en-US`` -> ``US``, ``zh-Hans-HK`` ->
-            ``HK``, ``en`` -> \``.
+            ``HK``, ``en`` -> \`\`.
     """
 
     language_code: str = proto.Field(

@@ -4047,23 +4047,23 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 Optional. To search evaluations, you can filter by the
                 following:
 
-                -  evaluation\_job.evaluation_job_id (the last part of
-                   [EvaluationJob.name][google.cloud.datalabeling.v1beta1.EvaluationJob.name])
-                -  evaluation\_job.model_id (the {model_name} portion of
-                   [EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version])
-                -  evaluation\_job.evaluation_job_run_time_start
-                   (Minimum threshold for the
-                   [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time]
-                   that created the evaluation)
-                -  evaluation\_job.evaluation_job_run_time_end (Maximum
-                   threshold for the
-                   [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time]
-                   that created the evaluation)
-                -  evaluation\_job.job_state
-                   ([EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state])
-                -  annotation\_spec.display_name (the Evaluation
-                   contains a metric for the annotation spec with this
-                   [displayName][google.cloud.datalabeling.v1beta1.AnnotationSpec.display_name])
+                - evaluation\_job.evaluation_job_id (the last part of
+                  [EvaluationJob.name][google.cloud.datalabeling.v1beta1.EvaluationJob.name])
+                - evaluation\_job.model_id (the {model_name} portion of
+                  [EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version])
+                - evaluation\_job.evaluation_job_run_time_start (Minimum
+                  threshold for the
+                  [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time]
+                  that created the evaluation)
+                - evaluation\_job.evaluation_job_run_time_end (Maximum
+                  threshold for the
+                  [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time]
+                  that created the evaluation)
+                - evaluation\_job.job_state
+                  ([EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state])
+                - annotation\_spec.display_name (the Evaluation contains
+                  a metric for the annotation spec with this
+                  [displayName][google.cloud.datalabeling.v1beta1.AnnotationSpec.display_name])
 
                 To filter by multiple critiera, use the ``AND`` operator
                 or the ``OR`` operator. The following examples shows a
@@ -4477,9 +4477,9 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
                 Optional. Mask for which fields to update. You can only
                 provide the following fields:
 
-                -  ``evaluationJobConfig.humanAnnotationConfig.instruction``
-                -  ``evaluationJobConfig.exampleCount``
-                -  ``evaluationJobConfig.exampleSamplePercentage``
+                - ``evaluationJobConfig.humanAnnotationConfig.instruction``
+                - ``evaluationJobConfig.exampleCount``
+                - ``evaluationJobConfig.exampleSamplePercentage``
 
                 You can provide more than one of these fields by
                 separating them with commas.

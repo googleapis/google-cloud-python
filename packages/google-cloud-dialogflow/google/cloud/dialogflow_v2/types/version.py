@@ -48,10 +48,10 @@ class Version(proto.Message):
     custom environments. You can create a variety of custom environments
     for:
 
-    -  testing
-    -  development
-    -  production
-    -  etc.
+    - testing
+    - development
+    - production
+    - etc.
 
     For more information, see the `versions and environments
     guide <https://cloud.google.com/dialogflow/docs/agents-versions>`__.
@@ -61,8 +61,8 @@ class Version(proto.Message):
             Output only. The unique identifier of this agent version.
             Supported formats:
 
-            -  ``projects/<Project ID>/agent/versions/<Version ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
         description (str):
             Optional. The developer-provided description
             of this version.
@@ -132,8 +132,8 @@ class ListVersionsRequest(proto.Message):
             Required. The agent to list all versions from. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         page_size (int):
             Optional. The maximum number of items to
             return in a single page. By default 100 and at
@@ -195,8 +195,8 @@ class GetVersionRequest(proto.Message):
         name (str):
             Required. The name of the version. Supported formats:
 
-            -  ``projects/<Project ID>/agent/versions/<Version ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
     """
 
     name: str = proto.Field(
@@ -214,8 +214,8 @@ class CreateVersionRequest(proto.Message):
             Required. The agent to create a version for. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         version (google.cloud.dialogflow_v2.types.Version):
             Required. The version to create.
     """
@@ -239,8 +239,8 @@ class UpdateVersionRequest(proto.Message):
         version (google.cloud.dialogflow_v2.types.Version):
             Required. The version to update. Supported formats:
 
-            -  ``projects/<Project ID>/agent/versions/<Version ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The mask to control which fields
             get updated.
@@ -267,8 +267,8 @@ class DeleteVersionRequest(proto.Message):
             Required. The name of the version to delete. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent/versions/<Version ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
     """
 
     name: str = proto.Field(

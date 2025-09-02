@@ -1048,7 +1048,7 @@ class DeveloperConnectAsyncClient:
                 Required. The ID to use for the repository, which will
                 become the final component of the repository's resource
                 name. This ID should be unique in the connection. Allows
-                alphanumeric characters and any of -._~%!$&'()*+,;=@.
+                alphanumeric characters and any of -.\_~%!$&'()*+,;=@.
 
                 This corresponds to the ``git_repository_link_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

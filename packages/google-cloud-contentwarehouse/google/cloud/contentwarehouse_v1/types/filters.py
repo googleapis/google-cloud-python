@@ -102,7 +102,7 @@ class DocumentQuery(proto.Message):
             Supported operators are: ``=``, ``!=``, ``<``, ``<=``,
             ``>``, and ``>=`` where the left of the operator is a
             property name and the right of the operator is a number or a
-            quoted string. You must escape backslash (\) and quote (")
+            quoted string. You must escape backslash (\\) and quote (")
             characters. Supported functions are
             ``LOWER([property_name])`` to perform a case insensitive
             match and ``EMPTY([property_name])`` to filter on the
@@ -294,8 +294,8 @@ class PropertyFilter(proto.Message):
             Supported operators are: ``=``, ``!=``, ``<``, ``<=``,
             ``>``, ``>=``, and ``~~`` where the left of the operator is
             a property name and the right of the operator is a number or
-            a quoted string. You must escape backslash (\) and quote (")
-            characters.
+            a quoted string. You must escape backslash (\\) and quote
+            (") characters.
 
             ``~~`` is the LIKE operator. The right of the operator must
             be a string. The only supported property data type for LIKE
@@ -331,8 +331,8 @@ class PropertyFilter(proto.Message):
 
             CMEK compliant deployment only supports:
 
-            -  Operators: ``=``, ``<``, ``<=``, ``>``, and ``>=``.
-            -  Boolean expressions: AND and OR.
+            - Operators: ``=``, ``<``, ``<=``, ``>``, and ``>=``.
+            - Boolean expressions: AND and OR.
     """
 
     document_schema_name: str = proto.Field(

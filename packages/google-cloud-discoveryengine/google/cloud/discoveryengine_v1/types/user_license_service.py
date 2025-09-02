@@ -64,20 +64,19 @@ class ListUserLicensesRequest(proto.Message):
 
             Supported fields:
 
-            -  ``license_assignment_state``
+            - ``license_assignment_state``
 
             Examples:
 
-            -  ``license_assignment_state = ASSIGNED`` to list assigned
-               user licenses.
-            -  ``license_assignment_state = NO_LICENSE`` to list not
-               licensed users.
-            -  ``license_assignment_state = NO_LICENSE_ATTEMPTED_LOGIN``
-               to list users who attempted login but no license
-               assigned.
-            -  ``license_assignment_state != NO_LICENSE_ATTEMPTED_LOGIN``
-               to filter out users who attempted login but no license
-               assigned.
+            - ``license_assignment_state = ASSIGNED`` to list assigned
+              user licenses.
+            - ``license_assignment_state = NO_LICENSE`` to list not
+              licensed users.
+            - ``license_assignment_state = NO_LICENSE_ATTEMPTED_LOGIN``
+              to list users who attempted login but no license assigned.
+            - ``license_assignment_state != NO_LICENSE_ATTEMPTED_LOGIN``
+              to filter out users who attempted login but no license
+              assigned.
     """
 
     parent: str = proto.Field(

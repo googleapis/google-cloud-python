@@ -1162,6 +1162,22 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             ) = self._interceptor.post_server_streaming_detect_intent_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3beta1.SessionsClient.server_streaming_detect_intent",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3beta1.Sessions",
+                        "rpcName": "ServerStreamingDetectIntent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StreamingDetectIntent(

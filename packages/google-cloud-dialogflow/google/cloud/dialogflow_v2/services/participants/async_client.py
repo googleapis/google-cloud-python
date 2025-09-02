@@ -1038,9 +1038,9 @@ class ParticipantsAsyncClient:
                    to continue with Speech recognition. However, note
                    that:
 
-                   -  Dialogflow will bill you for the audio so far.
-                   -  Dialogflow discards all Speech recognition results
-                      in favor of the text input.
+                   - Dialogflow will bill you for the audio so far.
+                   - Dialogflow discards all Speech recognition results
+                     in favor of the text input.
 
                 3. If
                    [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
@@ -1072,13 +1072,14 @@ class ParticipantsAsyncClient:
                       Each recognition_result represents a more complete
                       transcript of what the user said. The last
                       recognition_result has is_final set to true.
+
                    2. In virtual agent stage: if
                       enable_partial_automated_agent_reply is true, the
                       following N (currently 1 <= N <= 4) messages
                       contain automated_agent_reply and optionally
                       reply_audio returned by the virtual agent. The
-                      first (N-1) automated_agent_replys will have
-                      automated_agent_reply_type set to PARTIAL. The
+                      first (N-1) automated_agent_reply`s will have
+                      \`automated_agent_reply_type set to PARTIAL. The
                       last automated_agent_reply has
                       automated_agent_reply_type set to FINAL. If
                       enable_partial_automated_agent_reply is not

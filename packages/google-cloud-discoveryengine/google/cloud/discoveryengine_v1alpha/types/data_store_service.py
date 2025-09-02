@@ -383,7 +383,7 @@ class UpdateDocumentProcessingConfigRequest(proto.Message):
             [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
             to update. The following are the only supported fields:
 
-            -  [DocumentProcessingConfig.ocr_config][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config]
+            - [DocumentProcessingConfig.ocr_config][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config]
 
             If not set, all supported fields are updated.
     """

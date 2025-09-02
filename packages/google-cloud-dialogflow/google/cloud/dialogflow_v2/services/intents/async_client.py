@@ -519,7 +519,7 @@ class IntentsAsyncClient:
                    known as intent classification.
 
                    For more information, see the [intent
-                   guide](\ https://cloud.google.com/dialogflow/docs/intents-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -666,7 +666,7 @@ class IntentsAsyncClient:
                    known as intent classification.
 
                    For more information, see the [intent
-                   guide](\ https://cloud.google.com/dialogflow/docs/intents-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -814,7 +814,7 @@ class IntentsAsyncClient:
                    known as intent classification.
 
                    For more information, see the [intent
-                   guide](\ https://cloud.google.com/dialogflow/docs/intents-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -996,10 +996,10 @@ class IntentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``:
-           [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2.BatchUpdateIntentsResponse]
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``:
+          [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2.BatchUpdateIntentsResponse]
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1158,10 +1158,10 @@ class IntentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training

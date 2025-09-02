@@ -421,10 +421,9 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [CreateVersionOperationMetadata][google.cloud.dialogflow.cx.v3.CreateVersionOperationMetadata]
-        -  ``response``:
-           [Version][google.cloud.dialogflow.cx.v3.Version]
+        - ``metadata``:
+          [CreateVersionOperationMetadata][google.cloud.dialogflow.cx.v3.CreateVersionOperationMetadata]
+        - ``response``: [Version][google.cloud.dialogflow.cx.v3.Version]
 
         Returns:
             Callable[[~.CreateVersionRequest],
@@ -511,10 +510,10 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Returns:
             Callable[[~.LoadVersionRequest],

@@ -996,8 +996,8 @@ class DataScanEvent(proto.Message):
                 The percentage of the records selected from the dataset for
                 DataScan.
 
-                -  Value ranges between 0.0 and 100.0.
-                -  Value 0.0 or 100.0 imply that sampling was not applied.
+                - Value ranges between 0.0 and 100.0.
+                - Value 0.0 or 100.0 imply that sampling was not applied.
             row_filter_applied (bool):
                 Boolean indicating whether a row filter was
                 applied in the DataScan job.
@@ -1027,8 +1027,8 @@ class DataScanEvent(proto.Message):
                 The percentage of the records selected from the dataset for
                 DataScan.
 
-                -  Value ranges between 0.0 and 100.0.
-                -  Value 0.0 or 100.0 imply that sampling was not applied.
+                - Value ranges between 0.0 and 100.0.
+                - Value 0.0 or 100.0 imply that sampling was not applied.
             row_filter_applied (bool):
                 Boolean indicating whether a row filter was
                 applied in the DataScan job.

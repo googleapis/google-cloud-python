@@ -85,11 +85,11 @@ class CreateDataScanRequest(proto.Message):
         data_scan_id (str):
             Required. DataScan identifier.
 
-            -  Must contain only lowercase letters, numbers and hyphens.
-            -  Must start with a letter.
-            -  Must end with a number or a letter.
-            -  Must be between 1-63 characters.
-            -  Must be unique within the customer project / location.
+            - Must contain only lowercase letters, numbers and hyphens.
+            - Must start with a letter.
+            - Must end with a number or a letter.
+            - Must be between 1-63 characters.
+            - Must be unique within the customer project / location.
         validate_only (bool):
             Optional. Only validate the request, but do not perform
             mutations. The default is ``false``.
@@ -400,8 +400,8 @@ class ListDataScanJobsRequest(proto.Message):
 
             Allowed fields are:
 
-            -  ``start_time``
-            -  ``end_time``
+            - ``start_time``
+            - ``end_time``
 
             ``start_time`` and ``end_time`` expect RFC-3339 formatted
             strings (e.g. 2018-10-08T18:30:00-07:00).
@@ -465,10 +465,10 @@ class GenerateDataQualityRulesRequest(proto.Message):
         name (str):
             Required. The name must be one of the following:
 
-            -  The name of a data scan with at least one successful,
-               completed data profiling job
-            -  The name of a successful, completed data profiling job (a
-               data scan job where the job type is data profiling)
+            - The name of a data scan with at least one successful,
+              completed data profiling job
+            - The name of a successful, completed data profiling job (a
+              data scan job where the job type is data profiling)
     """
 
     name: str = proto.Field(
@@ -500,19 +500,19 @@ class DataScan(proto.Message):
 
     For example:
 
-    -  Data quality: generates queries based on the rules and runs
-       against the data to get data quality check results. For more
-       information, see `Auto data quality
-       overview <https://cloud.google.com/dataplex/docs/auto-data-quality-overview>`__.
-    -  Data profile: analyzes the data in tables and generates insights
-       about the structure, content and relationships (such as null
-       percent, cardinality, min/max/mean, etc). For more information,
-       see `About data
-       profiling <https://cloud.google.com/dataplex/docs/data-profiling-overview>`__.
-    -  Data discovery: scans data in Cloud Storage buckets to extract
-       and then catalog metadata. For more information, see `Discover
-       and catalog Cloud Storage
-       data <https://cloud.google.com/bigquery/docs/automatic-discovery>`__.
+    - Data quality: generates queries based on the rules and runs
+      against the data to get data quality check results. For more
+      information, see `Auto data quality
+      overview <https://cloud.google.com/dataplex/docs/auto-data-quality-overview>`__.
+    - Data profile: analyzes the data in tables and generates insights
+      about the structure, content and relationships (such as null
+      percent, cardinality, min/max/mean, etc). For more information,
+      see `About data
+      profiling <https://cloud.google.com/dataplex/docs/data-profiling-overview>`__.
+    - Data discovery: scans data in Cloud Storage buckets to extract and
+      then catalog metadata. For more information, see `Discover and
+      catalog Cloud Storage
+      data <https://cloud.google.com/bigquery/docs/automatic-discovery>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -536,11 +536,11 @@ class DataScan(proto.Message):
         description (str):
             Optional. Description of the scan.
 
-            -  Must be between 1-1024 characters.
+            - Must be between 1-1024 characters.
         display_name (str):
             Optional. User friendly display name.
 
-            -  Must be between 1-256 characters.
+            - Must be between 1-256 characters.
         labels (MutableMapping[str, str]):
             Optional. User-defined labels for the scan.
         state (google.cloud.dataplex_v1.types.State):

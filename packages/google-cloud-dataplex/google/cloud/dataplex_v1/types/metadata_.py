@@ -165,12 +165,11 @@ class ListEntitiesRequest(proto.Message):
             Optional. The following filter parameters can be added to
             the URL to limit the entities returned by the API:
 
-            -  Entity ID: ?filter="id=entityID"
-            -  Asset ID: ?filter="asset=assetID"
-            -  Data path ?filter="data_path=gs://my-bucket"
-            -  Is HIVE compatible: ?filter="hive_compatible=true"
-            -  Is BigQuery compatible:
-               ?filter="bigquery_compatible=true".
+            - Entity ID: ?filter="id=entityID"
+            - Asset ID: ?filter="asset=assetID"
+            - Data path ?filter="data_path=gs://my-bucket"
+            - Is HIVE compatible: ?filter="hive_compatible=true"
+            - Is BigQuery compatible: ?filter="bigquery_compatible=true".
     """
 
     class EntityView(proto.Enum):
@@ -306,27 +305,27 @@ class ListPartitionsRequest(proto.Message):
             Optional. Filter the partitions returned to the caller using
             a key value pair expression. Supported operators and syntax:
 
-            -  logic operators: AND, OR
-            -  comparison operators: <, >, >=, <= ,=, !=
-            -  LIKE operators:
+            - logic operators: AND, OR
+            - comparison operators: <, >, >=, <= ,=, !=
+            - LIKE operators:
 
-               -  The right hand of a LIKE operator supports "." and "*"
-                  for wildcard searches, for example "value1 LIKE
-                  ".*oo.*"
+              - The right hand of a LIKE operator supports "." and "\*"
+                for wildcard searches, for example "value1 LIKE
+                ".\ *oo.*"
 
-            -  parenthetical grouping: ( )
+            - parenthetical grouping: ( )
 
             Sample filter expression: \`?filter="key1 < value1 OR key2 >
             value2"
 
             **Notes:**
 
-            -  Keys to the left of operators are case insensitive.
-            -  Partition results are sorted first by creation time, then
-               by lexicographic order.
-            -  Up to 20 key value filter pairs are allowed, but due to
-               performance considerations, only the first 10 will be
-               used as a filter.
+            - Keys to the left of operators are case insensitive.
+            - Partition results are sorted first by creation time, then
+              by lexicographic order.
+            - Up to 20 key value filter pairs are allowed, but due to
+              performance considerations, only the first 10 will be used
+              as a filter.
     """
 
     parent: str = proto.Field(
@@ -723,17 +722,17 @@ class Schema(proto.Message):
             managed by Dataplex. The default is ``false`` (managed by
             Dataplex).
 
-            -  Set to ``false``\ to enable Dataplex discovery to update
-               the schema. including new data discovery, schema
-               inference, and schema evolution. Users retain the ability
-               to input and edit the schema. Dataplex treats schema
-               input by the user as though produced by a previous
-               Dataplex discovery operation, and it will evolve the
-               schema and take action based on that treatment.
+            - Set to ``false``\ to enable Dataplex discovery to update
+              the schema. including new data discovery, schema
+              inference, and schema evolution. Users retain the ability
+              to input and edit the schema. Dataplex treats schema input
+              by the user as though produced by a previous Dataplex
+              discovery operation, and it will evolve the schema and
+              take action based on that treatment.
 
-            -  Set to ``true`` to fully manage the entity schema. This
-               setting guarantees that Dataplex will not change schema
-               fields.
+            - Set to ``true`` to fully manage the entity schema. This
+              setting guarantees that Dataplex will not change schema
+              fields.
         fields (MutableSequence[google.cloud.dataplex_v1.types.Schema.SchemaField]):
             Optional. The sequence of fields describing data in table
             entities. **Note:** BigQuery SchemaFields are immutable.

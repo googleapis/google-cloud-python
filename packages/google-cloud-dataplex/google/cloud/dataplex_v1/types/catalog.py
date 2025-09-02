@@ -207,20 +207,20 @@ class AspectType(proto.Message):
 
                 Primitive types:
 
-                -  string
-                -  integer
-                -  boolean
-                -  double
-                -  datetime. Must be of the format RFC3339 UTC "Zulu"
-                   (Examples: "2014-10-02T15:01:23Z" and
-                   "2014-10-02T15:01:23.045123456Z").
+                - string
+                - integer
+                - boolean
+                - double
+                - datetime. Must be of the format RFC3339 UTC "Zulu"
+                  (Examples: "2014-10-02T15:01:23Z" and
+                  "2014-10-02T15:01:23.045123456Z").
 
                 Complex types:
 
-                -  enum
-                -  array
-                -  map
-                -  record
+                - enum
+                - array
+                - map
+                - record
             record_fields (MutableSequence[google.cloud.dataplex_v1.types.AspectType.MetadataTemplate]):
                 Optional. Field definition. You must specify
                 it if the type is record. It defines the nested
@@ -324,10 +324,10 @@ class AspectType(proto.Message):
                     special meaning to string fields. The following values are
                     supported:
 
-                    -  richText: The field must be interpreted as a rich text
-                       field.
-                    -  url: A fully qualified URL link.
-                    -  resource: A service qualified resource reference.
+                    - richText: The field must be interpreted as a rich text
+                      field.
+                    - url: A fully qualified URL link.
+                    - resource: A service qualified resource reference.
                 string_values (MutableSequence[str]):
                     Optional. Suggested hints for string fields.
                     You can use them to suggest values to users
@@ -796,10 +796,10 @@ class Entry(proto.Message):
             Depending on how the aspect is attached to the entry, the
             format of the aspect key can be one of the following:
 
-            -  If the aspect is attached directly to the entry:
-               ``{project_id_or_number}.{location_id}.{aspect_type_id}``
-            -  If the aspect is attached to an entry's path:
-               ``{project_id_or_number}.{location_id}.{aspect_type_id}@{path}``
+            - If the aspect is attached directly to the entry:
+              ``{project_id_or_number}.{location_id}.{aspect_type_id}``
+            - If the aspect is attached to an entry's path:
+              ``{project_id_or_number}.{location_id}.{aspect_type_id}@{path}``
         parent_entry (str):
             Optional. Immutable. The resource name of the parent entry,
             in the format
@@ -1271,9 +1271,9 @@ class ListEntryTypesRequest(proto.Message):
             Optional. Filter request. Filters are case-sensitive. The
             service supports the following formats:
 
-            -  labels.key1 = "value1"
-            -  labels:key1
-            -  name = "value"
+            - labels.key1 = "value1"
+            - labels:key1
+            - name = "value"
 
             These restrictions can be conjoined with AND, OR, and NOT
             conjunctions.
@@ -1467,9 +1467,9 @@ class ListAspectTypesRequest(proto.Message):
             Optional. Filter request. Filters are case-sensitive. The
             service supports the following formats:
 
-            -  labels.key1 = "value1"
-            -  labels:key1
-            -  name = "value"
+            - labels.key1 = "value1"
+            - labels:key1
+            - name = "value"
 
             These restrictions can be conjoined with AND, OR, and NOT
             conjunctions.
@@ -1619,17 +1619,17 @@ class UpdateEntryRequest(proto.Message):
             Optional. The map keys of the Aspects which the service
             should modify. It supports the following syntaxes:
 
-            -  ``<aspect_type_reference>`` - matches an aspect of the
-               given type and empty path.
-            -  ``<aspect_type_reference>@path`` - matches an aspect of
-               the given type and specified path. For example, to attach
-               an aspect to a field that is specified by the ``schema``
-               aspect, the path should have the format
-               ``Schema.<field_name>``.
-            -  ``<aspect_type_reference>@*`` - matches aspects of the
-               given type for all paths.
-            -  ``*@path`` - matches aspects of all types on the given
-               path.
+            - ``<aspect_type_reference>`` - matches an aspect of the
+              given type and empty path.
+            - ``<aspect_type_reference>@path`` - matches an aspect of
+              the given type and specified path. For example, to attach
+              an aspect to a field that is specified by the ``schema``
+              aspect, the path should have the format
+              ``Schema.<field_name>``.
+            - ``<aspect_type_reference>@*`` - matches aspects of the
+              given type for all paths.
+            - ``*@path`` - matches aspects of all types on the given
+              path.
 
             The service will not remove existing aspects matching the
             syntax unless ``delete_missing_aspects`` is set to true.
@@ -1699,8 +1699,8 @@ class ListEntriesRequest(proto.Message):
             case-sensitive. You can filter the request by the following
             fields:
 
-            -  entry_type
-            -  entry_source.display_name
+            - entry_type
+            - entry_source.display_name
 
             The comparison operators are =, !=, <, >, <=, >=. The
             service compares strings according to lexical order.
@@ -1708,16 +1708,16 @@ class ListEntriesRequest(proto.Message):
             You can use the logical operators AND, OR, NOT in the
             filter.
 
-            You can use Wildcard "*", but for entry_type you need to
+            You can use Wildcard "\*", but for entry_type you need to
             provide the full project id or number.
 
             Example filter expressions:
 
-            -  "entry_source.display_name=AnExampleDisplayName"
-            -  "entry_type=projects/example-project/locations/global/entryTypes/example-entry_type"
-            -  "entry_type=projects/example-project/locations/us/entryTypes/a\*
-               OR entry_type=projects/another-project/locations/\*"
-            -  "NOT entry_source.display_name=AnotherExampleDisplayName".
+            - "entry_source.display_name=AnExampleDisplayName"
+            - "entry_type=projects/example-project/locations/global/entryTypes/example-entry_type"
+            - "entry_type=projects/example-project/locations/us/entryTypes/a\*
+              OR entry_type=projects/another-project/locations/\*"
+            - "NOT entry_source.display_name=AnotherExampleDisplayName".
     """
 
     parent: str = proto.Field(
@@ -1877,9 +1877,9 @@ class SearchEntriesRequest(proto.Message):
             Optional. Specifies the ordering of results. Supported
             values are:
 
-            -  ``relevance`` (default)
-            -  ``last_modified_timestamp``
-            -  ``last_modified_timestamp asc``
+            - ``relevance`` (default)
+            - ``last_modified_timestamp``
+            - ``last_modified_timestamp asc``
         scope (str):
             Optional. The scope under which the search should be
             operating. It must either be ``organizations/<org_id>`` or
@@ -2049,15 +2049,15 @@ class ImportItem(proto.Message):
         aspect_keys (MutableSequence[str]):
             The aspects to modify. Supports the following syntaxes:
 
-            -  ``{aspect_type_reference}``: matches aspects that belong
-               to the specified aspect type and are attached directly to
-               the entry.
-            -  ``{aspect_type_reference}@{path}``: matches aspects that
-               belong to the specified aspect type and path.
-            -  ``{aspect_type_reference}@*`` : matches aspects of the
-               given type for all paths.
-            -  ``*@path`` : matches aspects of all types on the given
-               path.
+            - ``{aspect_type_reference}``: matches aspects that belong
+              to the specified aspect type and are attached directly to
+              the entry.
+            - ``{aspect_type_reference}@{path}``: matches aspects that
+              belong to the specified aspect type and path.
+            - ``{aspect_type_reference}@*`` : matches aspects of the
+              given type for all paths.
+            - ``*@path`` : matches aspects of all types on the given
+              path.
 
             Replace ``{aspect_type_reference}`` with a reference to the
             aspect type, in the format
@@ -2162,9 +2162,9 @@ class ListMetadataJobsRequest(proto.Message):
             Optional. Filter request. Filters are case-sensitive. The
             service supports the following formats:
 
-            -  ``labels.key1 = "value1"``
-            -  ``labels:key1``
-            -  ``name = "value"``
+            - ``labels.key1 = "value1"``
+            - ``labels:key1``
+            - ``name = "value"``
 
             You can combine filters with ``AND``, ``OR``, and ``NOT``
             operators.
@@ -2388,12 +2388,12 @@ class MetadataJob(proto.Message):
 
         You can run the following kinds of metadata import jobs:
 
-        -  Full sync of entries with incremental import of their aspects.
-           Supported for custom entries.
-        -  Incremental import of aspects only. Supported for aspects that
-           belong to custom entries and system entries. For custom entries,
-           you can modify both optional aspects and required aspects. For
-           system entries, you can modify optional aspects.
+        - Full sync of entries with incremental import of their aspects.
+          Supported for custom entries.
+        - Incremental import of aspects only. Supported for aspects that
+          belong to custom entries and system entries. For custom entries,
+          you can modify both optional aspects and required aspects. For
+          system entries, you can modify optional aspects.
 
         Attributes:
             source_storage_uri (str):
@@ -2623,14 +2623,14 @@ class MetadataJob(proto.Message):
                     Whether the metadata export job is an organization-level
                     export job.
 
-                    -  If ``true``, the job exports the entries from the same
-                       organization and VPC Service Controls perimeter as the
-                       job. The project that the job belongs to determines the
-                       VPC Service Controls perimeter. If you set the job scope
-                       to be at the organization level, then don't provide a
-                       list of projects or entry groups.
-                    -  If ``false``, you must specify a list of projects or a
-                       list of entry groups whose entries you want to export.
+                    - If ``true``, the job exports the entries from the same
+                      organization and VPC Service Controls perimeter as the
+                      job. The project that the job belongs to determines the
+                      VPC Service Controls perimeter. If you set the job scope
+                      to be at the organization level, then don't provide a list
+                      of projects or entry groups.
+                    - If ``false``, you must specify a list of projects or a
+                      list of entry groups whose entries you want to export.
 
                     The default is ``false``.
                 projects (MutableSequence[str]):
