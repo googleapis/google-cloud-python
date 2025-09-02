@@ -188,11 +188,11 @@ class ApiConfig(proto.Message):
             If multiple files are specified, the files are merged with
             the following rules:
 
-            -  All singular scalar fields are merged using "last one
-               wins" semantics in the order of the files uploaded.
-            -  Repeated fields are concatenated.
-            -  Singular embedded messages are merged using these rules
-               for nested fields.
+            - All singular scalar fields are merged using "last one
+              wins" semantics in the order of the files uploaded.
+            - Repeated fields are concatenated.
+            - Singular embedded messages are merged using these rules
+              for nested fields.
     """
 
     class State(proto.Enum):

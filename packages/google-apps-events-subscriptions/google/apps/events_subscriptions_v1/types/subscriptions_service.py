@@ -138,10 +138,10 @@ class UpdateSubscriptionRequest(proto.Message):
             You can update one of the following fields in a
             subscription:
 
-            -  [``expire_time``][google.apps.events.subscriptions.v1.Subscription.expire_time]:
-               The timestamp when the subscription expires.
-            -  [``ttl``][google.apps.events.subscriptions.v1.Subscription.ttl]:
-               The time-to-live (TTL) or duration of the subscription.
+            - [``expire_time``][google.apps.events.subscriptions.v1.Subscription.expire_time]:
+              The timestamp when the subscription expires.
+            - [``ttl``][google.apps.events.subscriptions.v1.Subscription.ttl]:
+              The time-to-live (TTL) or duration of the subscription.
         validate_only (bool):
             Optional. If set to ``true``, validates and previews the
             request, but doesn't update the subscription.

@@ -1274,7 +1274,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
                 and ``annotations``. If an update mask is not provided,
                 the service treats it as an implied mask equivalent to
                 all allowed fields that are set on the wire. If the
-                field mask has a special value "*", the service treats
+                field mask has a special value "\*", the service treats
                 it equivalent to replace all allowed mutable fields.
 
                 This corresponds to the ``update_mask`` field

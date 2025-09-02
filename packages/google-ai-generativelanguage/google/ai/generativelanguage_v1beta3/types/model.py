@@ -39,18 +39,18 @@ class Model(proto.Message):
             Format: ``models/{model}`` with a ``{model}`` naming
             convention of:
 
-            -  "{base_model_id}-{version}"
+            - "{base_model_id}-{version}"
 
             Examples:
 
-            -  ``models/chat-bison-001``
+            - ``models/chat-bison-001``
         base_model_id (str):
             Required. The name of the base model, pass this to the
             generation request.
 
             Examples:
 
-            -  ``chat-bison``
+            - ``chat-bison``
         version (str):
             Required. The version number of the model.
 

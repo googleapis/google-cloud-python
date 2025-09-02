@@ -589,7 +589,7 @@ class SpacesServiceAsyncClient:
                 updated in the space. If update_mask isn't provided(not
                 set, set with empty paths, or only has "" as paths), it
                 defaults to update all fields provided with values in
-                the request. Using "*" as update_mask will update all
+                the request. Using "\*" as update_mask will update all
                 fields, including deleting fields not set in the
                 request.
 
@@ -742,7 +742,7 @@ class SpacesServiceAsyncClient:
                    WebRTC.
 
                    See [Meet Media API
-                   overview](\ https://developers.google.com/meet/media-api/guides/overview)
+                   overview](https://developers.google.com/meet/media-api/guides/overview)
                    for more details about this connection.
 
         """

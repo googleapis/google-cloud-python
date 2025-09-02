@@ -120,13 +120,13 @@ class ListHostProjectRegistrationsRequest(proto.Message):
             The following fields in the ``HostProjectRegistration`` are
             eligible for filtering:
 
-            -  ``name`` - The name of the HostProjectRegistration.
-            -  ``create_time`` - The time at which the
-               HostProjectRegistration was created. The value should be
-               in the (RFC3339)[https://tools.ietf.org/html/rfc3339]
-               format.
-            -  ``gcp_project`` - The Google cloud project associated
-               with the HostProjectRegistration.
+            - ``name`` - The name of the HostProjectRegistration.
+            - ``create_time`` - The time at which the
+              HostProjectRegistration was created. The value should be
+              in the (RFC3339)[https://tools.ietf.org/html/rfc3339]
+              format.
+            - ``gcp_project`` - The Google cloud project associated with
+              the HostProjectRegistration.
         order_by (str):
             Optional. Hint for how to order the results.
     """

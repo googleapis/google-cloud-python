@@ -578,11 +578,11 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
     This API allows a customer to manage accesses to cloud resources by
     Google personnel. It defines the following resource model:
 
-    -  The API has a collection of
-       [ApprovalRequest][google.cloud.accessapproval.v1.ApprovalRequest]
-       resources, named ``approvalRequests/{approval_request}``
-    -  The API has top-level settings per Project/Folder/Organization,
-       named ``accessApprovalSettings``
+    - The API has a collection of
+      [ApprovalRequest][google.cloud.accessapproval.v1.ApprovalRequest]
+      resources, named ``approvalRequests/{approval_request}``
+    - The API has top-level settings per Project/Folder/Organization,
+      named ``accessApprovalSettings``
 
     The service also periodically emails a list of recipients, defined
     at the Project/Folder/Organization level in the

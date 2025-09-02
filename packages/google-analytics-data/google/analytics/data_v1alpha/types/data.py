@@ -481,7 +481,7 @@ class DimensionExpression(proto.Message):
             delimiter (str):
                 The delimiter placed between dimension names.
 
-                Delimiters are often single characters such as "|" or ","
+                Delimiters are often single characters such as "\|" or ","
                 but can be longer strings. If a dimension value contains the
                 delimiter, both will be present in response with no
                 distinction. For example if dimension 1 value = "US,FR",
