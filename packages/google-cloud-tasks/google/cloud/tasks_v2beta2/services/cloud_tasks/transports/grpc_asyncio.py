@@ -655,7 +655,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         IAM <https://cloud.google.com/iam>`__ permission on the
         specified resource parent:
 
-        -  ``cloudtasks.queues.getIamPolicy``
+        - ``cloudtasks.queues.getIamPolicy``
 
         Returns:
             Callable[[~.GetIamPolicyRequest],
@@ -693,7 +693,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         IAM <https://cloud.google.com/iam>`__ permission on the
         specified resource parent:
 
-        -  ``cloudtasks.queues.setIamPolicy``
+        - ``cloudtasks.queues.setIamPolicy``
 
         Returns:
             Callable[[~.SetIamPolicyRequest],
@@ -822,11 +822,11 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         Tasks cannot be updated after creation; there is no UpdateTask
         command.
 
-        -  For [App Engine
-           queues][google.cloud.tasks.v2beta2.AppEngineHttpTarget], the
-           maximum task size is 100KB.
-        -  For [pull queues][google.cloud.tasks.v2beta2.PullTarget], the
-           maximum task size is 1MB.
+        - For [App Engine
+          queues][google.cloud.tasks.v2beta2.AppEngineHttpTarget], the
+          maximum task size is 100KB.
+        - For [pull queues][google.cloud.tasks.v2beta2.PullTarget], the
+          maximum task size is 1MB.
 
         Returns:
             Callable[[~.CreateTaskRequest],

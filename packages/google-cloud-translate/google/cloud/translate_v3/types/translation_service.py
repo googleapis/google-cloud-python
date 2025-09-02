@@ -143,14 +143,14 @@ class TranslateTextRequest(proto.Message):
 
             The format depends on model type:
 
-            -  AutoML Translation models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
+            - AutoML Translation models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
-            -  General (built-in) models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+            - General (built-in) models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
 
-            -  Translation LLM models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/translation-llm``,
+            - Translation LLM models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/general/translation-llm``,
 
             For global (non-regionalized) requests, use ``location-id``
             ``global``. For example,
@@ -529,11 +529,11 @@ class GetSupportedLanguagesRequest(proto.Message):
 
             The format depends on model type:
 
-            -  AutoML Translation models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
+            - AutoML Translation models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
-            -  General (built-in) models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+            - General (built-in) models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
 
             Returns languages supported by the specified model. If
             missing, we get supported languages of Google general NMT
@@ -652,7 +652,7 @@ class InputConfig(proto.Message):
 
             You could use https://github.com/Clever/csvlint to check
             potential formatting errors in your tsv file. csvlint
-            --delimiter='\t' your_input_file.tsv
+            --delimiter='\\t' your_input_file.tsv
 
             The other supported file extensions are ``.txt`` or
             ``.html``, which is treated as a single large chunk of text.
@@ -705,8 +705,8 @@ class OutputConfig(proto.Message):
             BatchTranslateTextRequest).
 
             Output files (tsv) generated are compliant with RFC 4180
-            except that record delimiters are '\n' instead of '\r\n'. We
-            don't provide any way to change record delimiters.
+            except that record delimiters are '\\n' instead of '\\r\\n'.
+            We don't provide any way to change record delimiters.
 
             While the input files are being processed, we write/update
             an index file 'index.csv' under 'output_uri_prefix' (for
@@ -815,10 +815,10 @@ class DocumentInputConfig(proto.Message):
             through bytes content the mime_type must be provided.
             Currently supported mime types are:
 
-            -  application/pdf
-            -  application/vnd.openxmlformats-officedocument.wordprocessingml.document
-            -  application/vnd.openxmlformats-officedocument.presentationml.presentation
-            -  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+            - application/pdf
+            - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            - application/vnd.openxmlformats-officedocument.presentationml.presentation
+            - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
     """
 
     content: bytes = proto.Field(
@@ -855,11 +855,11 @@ class DocumentOutputConfig(proto.Message):
 
             For a DocumentInputConfig.contents provided document, the
             output file will have the name
-            "output_[trg]_translations.[ext]", where
+            "output\_[trg]_translations.[ext]", where
 
-            -  [trg] corresponds to the translated file's language code,
-            -  [ext] corresponds to the translated file's extension
-               according to its mime type.
+            - [trg] corresponds to the translated file's language code,
+            - [ext] corresponds to the translated file's extension
+              according to its mime type.
 
             For a DocumentInputConfig.gcs_uri provided document, the
             output file will have a name according to its URI. For
@@ -868,18 +868,18 @@ class DocumentOutputConfig(proto.Message):
             will have an output URI:
             ``gs://my_bucket/a_b_c_[trg]_translations.[ext]``, where
 
-            -  [trg] corresponds to the translated file's language code,
-            -  [ext] corresponds to the translated file's extension
-               according to its mime type.
+            - [trg] corresponds to the translated file's language code,
+            - [ext] corresponds to the translated file's extension
+              according to its mime type.
 
             If the document was directly provided through the request,
             then the output document will have the format:
             ``gs://my_bucket/translated_document_[trg]_translations.[ext]``,
             where
 
-            -  [trg] corresponds to the translated file's language code,
-            -  [ext] corresponds to the translated file's extension
-               according to its mime type.
+            - [trg] corresponds to the translated file's language code,
+            - [ext] corresponds to the translated file's extension
+              according to its mime type.
 
             If a glossary was provided, then the output URI for the
             glossary translation will be equal to the default output URI
@@ -902,10 +902,10 @@ class DocumentOutputConfig(proto.Message):
             same as the input file's mime type. Currently only support
             the output mime type to be the same as input mime type.
 
-            -  application/pdf
-            -  application/vnd.openxmlformats-officedocument.wordprocessingml.document
-            -  application/vnd.openxmlformats-officedocument.presentationml.presentation
-            -  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+            - application/pdf
+            - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            - application/vnd.openxmlformats-officedocument.presentationml.presentation
+            - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
     """
 
     gcs_destination: "GcsDestination" = proto.Field(
@@ -970,11 +970,11 @@ class TranslateDocumentRequest(proto.Message):
 
             The format depends on model type:
 
-            -  AutoML Translation models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
+            - AutoML Translation models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
-            -  General (built-in) models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+            - General (built-in) models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
 
             If not provided, the default Google model (NMT) will be used
             for translation.
@@ -1184,11 +1184,11 @@ class BatchTranslateTextRequest(proto.Message):
 
             The value format depends on model type:
 
-            -  AutoML Translation models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
+            - AutoML Translation models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
-            -  General (built-in) models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+            - General (built-in) models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
 
             If the map is empty or a specific model is not requested for
             a language pair, then default google model (nmt) is used.
@@ -1403,20 +1403,20 @@ class GlossaryInputConfig(proto.Message):
 
             For unidirectional glossaries:
 
-            -  TSV/CSV (``.tsv``/``.csv``): Two column file, tab- or
-               comma-separated. The first column is source text. The
-               second column is target text. No headers in this file.
-               The first row contains data and not column names.
+            - TSV/CSV (``.tsv``/``.csv``): Two column file, tab- or
+              comma-separated. The first column is source text. The
+              second column is target text. No headers in this file. The
+              first row contains data and not column names.
 
-            -  TMX (``.tmx``): TMX file with parallel data defining
-               source/target term pairs.
+            - TMX (``.tmx``): TMX file with parallel data defining
+              source/target term pairs.
 
             For equivalent term sets glossaries:
 
-            -  CSV (``.csv``): Multi-column CSV file defining equivalent
-               glossary terms in multiple languages. See documentation
-               for more information -
-               `glossaries <https://cloud.google.com/translate/docs/advanced/glossary>`__.
+            - CSV (``.csv``): Multi-column CSV file defining equivalent
+              glossary terms in multiple languages. See documentation
+              for more information -
+              `glossaries <https://cloud.google.com/translate/docs/advanced/glossary>`__.
 
             This field is a member of `oneof`_ ``source``.
     """
@@ -2105,11 +2105,11 @@ class BatchTranslateDocumentRequest(proto.Message):
 
             The value format depends on model type:
 
-            -  AutoML Translation models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
+            - AutoML Translation models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
-            -  General (built-in) models:
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+            - General (built-in) models:
+              ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
 
             If the map is empty or a specific model is not requested for
             a language pair, then default google model (nmt) is used.
@@ -2123,8 +2123,8 @@ class BatchTranslateDocumentRequest(proto.Message):
 
             Supported file format conversion includes:
 
-            -  ``application/pdf`` to
-               ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
+            - ``application/pdf`` to
+              ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
 
             If nothing specified, output files will be in the same
             format as the original file.
@@ -2212,13 +2212,13 @@ class BatchDocumentInputConfig(proto.Message):
             File mime type is determined based on extension. Supported
             mime type includes:
 
-            -  ``pdf``, application/pdf
-            -  ``docx``,
-               application/vnd.openxmlformats-officedocument.wordprocessingml.document
-            -  ``pptx``,
-               application/vnd.openxmlformats-officedocument.presentationml.presentation
-            -  ``xlsx``,
-               application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+            - ``pdf``, application/pdf
+            - ``docx``,
+              application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            - ``pptx``,
+              application/vnd.openxmlformats-officedocument.presentationml.presentation
+            - ``xlsx``,
+              application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 
             The max file size to support for ``.docx``, ``.pptx`` and
             ``.xlsx`` is 100MB. The max file size to support for
@@ -2521,8 +2521,8 @@ class TranslateTextGlossaryConfig(proto.Message):
 
             The format depends on the glossary:
 
-            -  User-provided custom glossary:
-               ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``
+            - User-provided custom glossary:
+              ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``
         ignore_case (bool):
             Optional. Indicates match is case insensitive. The default
             value is ``false`` if missing.

@@ -64,13 +64,13 @@ class HistogramQueryResult(proto.Message):
 
             The key format is:
 
-            -  (for string histogram) string values stored in the field.
-            -  (for named numeric bucket) name specified in ``bucket()``
-               function, like for ``bucket(0, MAX, "non-negative")``,
-               the key will be ``non-negative``.
-            -  (for anonymous numeric bucket) range formatted as
-               ``<low>-<high>``, for example, ``0-1000``, ``MIN-0``, and
-               ``0-MAX``.
+            - (for string histogram) string values stored in the field.
+            - (for named numeric bucket) name specified in ``bucket()``
+              function, like for ``bucket(0, MAX, "non-negative")``, the
+              key will be ``non-negative``.
+            - (for anonymous numeric bucket) range formatted as
+              ``<low>-<high>``, for example, ``0-1000``, ``MIN-0``, and
+              ``0-MAX``.
     """
 
     histogram_query: str = proto.Field(

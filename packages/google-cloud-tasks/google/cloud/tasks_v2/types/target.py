@@ -73,31 +73,30 @@ class HttpRequest(proto.Message):
     returned or no response is received, the task will be retried
     according to the following:
 
-    -  User-specified throttling: [retry
-       configuration][google.cloud.tasks.v2.Queue.retry_config], [rate
-       limits][google.cloud.tasks.v2.Queue.rate_limits], and the
-       [queue's state][google.cloud.tasks.v2.Queue.state].
+    - User-specified throttling: [retry
+      configuration][google.cloud.tasks.v2.Queue.retry_config], [rate
+      limits][google.cloud.tasks.v2.Queue.rate_limits], and the [queue's
+      state][google.cloud.tasks.v2.Queue.state].
 
-    -  System throttling: To prevent the worker from overloading, Cloud
-       Tasks may temporarily reduce the queue's effective rate.
-       User-specified settings will not be changed.
+    - System throttling: To prevent the worker from overloading, Cloud
+      Tasks may temporarily reduce the queue's effective rate.
+      User-specified settings will not be changed.
 
     System throttling happens because:
 
-    -  Cloud Tasks backs off on all errors. Normally the backoff
-       specified in [rate
-       limits][google.cloud.tasks.v2.Queue.rate_limits] will be used.
-       But if the worker returns ``429`` (Too Many Requests), ``503``
-       (Service Unavailable), or the rate of errors is high, Cloud Tasks
-       will use a higher backoff rate. The retry specified in the
-       ``Retry-After`` HTTP response header is considered.
+    - Cloud Tasks backs off on all errors. Normally the backoff
+      specified in [rate
+      limits][google.cloud.tasks.v2.Queue.rate_limits] will be used. But
+      if the worker returns ``429`` (Too Many Requests), ``503``
+      (Service Unavailable), or the rate of errors is high, Cloud Tasks
+      will use a higher backoff rate. The retry specified in the
+      ``Retry-After`` HTTP response header is considered.
 
-    -  To prevent traffic spikes and to smooth sudden increases in
-       traffic, dispatches ramp up slowly when the queue is newly
-       created or idle and if large numbers of tasks suddenly become
-       available to dispatch (due to spikes in create task rates, the
-       queue being unpaused, or many tasks that are scheduled at the
-       same time).
+    - To prevent traffic spikes and to smooth sudden increases in
+      traffic, dispatches ramp up slowly when the queue is newly created
+      or idle and if large numbers of tasks suddenly become available to
+      dispatch (due to spikes in create task rates, the queue being
+      unpaused, or many tasks that are scheduled at the same time).
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -137,13 +136,13 @@ class HttpRequest(proto.Message):
             A partial list of headers that will be ignored or replaced
             is:
 
-            -  Host: This will be computed by Cloud Tasks and derived
-               from
-               [HttpRequest.url][google.cloud.tasks.v2.HttpRequest.url].
-            -  Content-Length: This will be computed by Cloud Tasks.
-            -  User-Agent: This will be set to ``"Google-Cloud-Tasks"``.
-            -  ``X-Google-*``: Google use only.
-            -  ``X-AppEngine-*``: Google use only.
+            - Host: This will be computed by Cloud Tasks and derived
+              from
+              [HttpRequest.url][google.cloud.tasks.v2.HttpRequest.url].
+            - Content-Length: This will be computed by Cloud Tasks.
+            - User-Agent: This will be set to ``"Google-Cloud-Tasks"``.
+            - ``X-Google-*``: Google use only.
+            - ``X-AppEngine-*``: Google use only.
 
             ``Content-Type`` won't be set by Cloud Tasks. You can
             explicitly set ``Content-Type`` to a media type when the
@@ -249,17 +248,17 @@ class AppEngineHttpRequest(proto.Message):
     to construct the URL that the task is delivered to can be set at the
     queue-level or task-level:
 
-    -  If [app_engine_routing_override is set on the
-       queue][google.cloud.tasks.v2.Queue.app_engine_routing_override],
-       this value is used for all tasks in the queue, no matter what the
-       setting is for the [task-level
-       app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].
+    - If [app_engine_routing_override is set on the
+      queue][google.cloud.tasks.v2.Queue.app_engine_routing_override],
+      this value is used for all tasks in the queue, no matter what the
+      setting is for the [task-level
+      app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].
 
     The ``url`` that the task will be sent to is:
 
-    -  ``url =`` [host][google.cloud.tasks.v2.AppEngineRouting.host]
-       ``+``
-       [relative_uri][google.cloud.tasks.v2.AppEngineHttpRequest.relative_uri]
+    - ``url =`` [host][google.cloud.tasks.v2.AppEngineRouting.host]
+      ``+``
+      [relative_uri][google.cloud.tasks.v2.AppEngineHttpRequest.relative_uri]
 
     Tasks can be dispatched to secure app handlers, unsecure app
     handlers, and URIs restricted with
@@ -298,11 +297,11 @@ class AppEngineHttpRequest(proto.Message):
         app_engine_routing (google.cloud.tasks_v2.types.AppEngineRouting):
             Task-level setting for App Engine routing.
 
-            -  If [app_engine_routing_override is set on the
-               queue][google.cloud.tasks.v2.Queue.app_engine_routing_override],
-               this value is used for all tasks in the queue, no matter
-               what the setting is for the [task-level
-               app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].
+            - If [app_engine_routing_override is set on the
+              queue][google.cloud.tasks.v2.Queue.app_engine_routing_override],
+              this value is used for all tasks in the queue, no matter
+              what the setting is for the [task-level
+              app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].
         relative_uri (str):
             The relative URI.
 
@@ -323,31 +322,31 @@ class AppEngineHttpRequest(proto.Message):
 
             Cloud Tasks sets some headers to default values:
 
-            -  ``User-Agent``: By default, this header is
-               ``"AppEngine-Google; (+http://code.google.com/appengine)"``.
-               This header can be modified, but Cloud Tasks will append
-               ``"AppEngine-Google; (+http://code.google.com/appengine)"``
-               to the modified ``User-Agent``.
+            - ``User-Agent``: By default, this header is
+              ``"AppEngine-Google; (+http://code.google.com/appengine)"``.
+              This header can be modified, but Cloud Tasks will append
+              ``"AppEngine-Google; (+http://code.google.com/appengine)"``
+              to the modified ``User-Agent``.
 
             If the task has a
             [body][google.cloud.tasks.v2.AppEngineHttpRequest.body],
             Cloud Tasks sets the following headers:
 
-            -  ``Content-Type``: By default, the ``Content-Type`` header
-               is set to ``"application/octet-stream"``. The default can
-               be overridden by explicitly setting ``Content-Type`` to a
-               particular media type when the [task is
-               created][google.cloud.tasks.v2.CloudTasks.CreateTask].
-               For example, ``Content-Type`` can be set to
-               ``"application/json"``.
-            -  ``Content-Length``: This is computed by Cloud Tasks. This
-               value is output only. It cannot be changed.
+            - ``Content-Type``: By default, the ``Content-Type`` header
+              is set to ``"application/octet-stream"``. The default can
+              be overridden by explicitly setting ``Content-Type`` to a
+              particular media type when the [task is
+              created][google.cloud.tasks.v2.CloudTasks.CreateTask]. For
+              example, ``Content-Type`` can be set to
+              ``"application/json"``.
+            - ``Content-Length``: This is computed by Cloud Tasks. This
+              value is output only. It cannot be changed.
 
             The headers below cannot be set or overridden:
 
-            -  ``Host``
-            -  ``X-Google-*``
-            -  ``X-AppEngine-*``
+            - ``Host``
+            - ``X-Google-*``
+            - ``X-AppEngine-*``
 
             In addition, Cloud Tasks sets some headers when the task is
             dispatched, such as headers containing information about the

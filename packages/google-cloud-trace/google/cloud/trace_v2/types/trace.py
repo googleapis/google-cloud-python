@@ -49,7 +49,7 @@ class Span(proto.Message):
             Required. The resource name of the span in the following
             format:
 
-            -  ``projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]``
+            - ``projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]``
 
             ``[TRACE_ID]`` is a unique identifier for a trace within a
             project; it is a 32-character hexadecimal encoding of a

@@ -874,13 +874,13 @@ class DatasetConfig(proto.Message):
             The object must be a text file where each line has one of
             the following entries:
 
-            -  Project number, formatted as
-               ``projects/{project_number}``, for example,
-               ``projects/1234567890``.
-            -  Folder identifier, formatted as
-               ``folders/{folder_number}``, for example,
-               ``folders/9876543210``. Path must be in the format
-               ``gs://{bucket_name}/{object_name}``.
+            - Project number, formatted as
+              ``projects/{project_number}``, for example,
+              ``projects/1234567890``.
+            - Folder identifier, formatted as
+              ``folders/{folder_number}``, for example,
+              ``folders/9876543210``. Path must be in the format
+              ``gs://{bucket_name}/{object_name}``.
 
             This field is a member of `oneof`_ ``source_options``.
         include_cloud_storage_locations (google.cloud.storageinsights_v1.types.DatasetConfig.CloudStorageLocations):

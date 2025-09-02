@@ -157,7 +157,7 @@ class JobQuery(proto.Message):
             Supported operators are: ``=``, ``!=``, ``<``, ``<=``,
             ``>``, and ``>=`` where the left of the operator is a custom
             field key and the right of the operator is a number or a
-            quoted string. You must escape backslash (\) and quote (")
+            quoted string. You must escape backslash (\\) and quote (")
             characters.
 
             Supported functions are ``LOWER([field_name])`` to perform a

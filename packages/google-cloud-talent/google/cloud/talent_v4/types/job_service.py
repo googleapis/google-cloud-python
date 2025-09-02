@@ -204,23 +204,23 @@ class ListJobsRequest(proto.Message):
 
             The fields eligible for filtering are:
 
-            -  ``companyName``
-            -  ``requisitionId``
-            -  ``status`` Available values: OPEN, EXPIRED, ALL. Defaults
-               to OPEN if no value is specified.
+            - ``companyName``
+            - ``requisitionId``
+            - ``status`` Available values: OPEN, EXPIRED, ALL. Defaults
+              to OPEN if no value is specified.
 
             At least one of ``companyName`` and ``requisitionId`` must
             present or an INVALID_ARGUMENT error is thrown.
 
             Sample Query:
 
-            -  companyName = "projects/foo/tenants/bar/companies/baz"
-            -  companyName = "projects/foo/tenants/bar/companies/baz"
-               AND requisitionId = "req-1"
-            -  companyName = "projects/foo/tenants/bar/companies/baz"
-               AND status = "EXPIRED"
-            -  requisitionId = "req-1"
-            -  requisitionId = "req-1" AND status = "EXPIRED".
+            - companyName = "projects/foo/tenants/bar/companies/baz"
+            - companyName = "projects/foo/tenants/bar/companies/baz" AND
+              requisitionId = "req-1"
+            - companyName = "projects/foo/tenants/bar/companies/baz" AND
+              status = "EXPIRED"
+            - requisitionId = "req-1"
+            - requisitionId = "req-1" AND status = "EXPIRED".
         page_token (str):
             The starting point of a query result.
         page_size (int):
@@ -339,115 +339,114 @@ class SearchJobsRequest(proto.Message):
 
             Available aggregation function calls are:
 
-            -  ``count(string_histogram_facet)``: Count the number of
-               matching entities, for each distinct attribute value.
-            -  ``count(numeric_histogram_facet, list of buckets)``:
-               Count the number of matching entities within each bucket.
+            - ``count(string_histogram_facet)``: Count the number of
+              matching entities, for each distinct attribute value.
+            - ``count(numeric_histogram_facet, list of buckets)``: Count
+              the number of matching entities within each bucket.
 
             A maximum of 200 histogram buckets are supported.
 
             Data types:
 
-            -  Histogram facet: facet names with format
-               ``[a-zA-Z][a-zA-Z0-9_]+``.
-            -  String: string like "any string with backslash escape for
-               quote(")."
-            -  Number: whole number and floating point number like 10,
-               -1 and -0.01.
-            -  List: list of elements with comma(,) separator surrounded
-               by square brackets, for example, [1, 2, 3] and ["one",
-               "two", "three"].
+            - Histogram facet: facet names with format
+              ``[a-zA-Z][a-zA-Z0-9_]+``.
+            - String: string like "any string with backslash escape for
+              quote(")."
+            - Number: whole number and floating point number like 10, -1
+              and -0.01.
+            - List: list of elements with comma(,) separator surrounded
+              by square brackets, for example, [1, 2, 3] and ["one",
+              "two", "three"].
 
             Built-in constants:
 
-            -  MIN (minimum number similar to java Double.MIN_VALUE)
-            -  MAX (maximum number similar to java Double.MAX_VALUE)
+            - MIN (minimum number similar to java Double.MIN_VALUE)
+            - MAX (maximum number similar to java Double.MAX_VALUE)
 
             Built-in functions:
 
-            -  bucket(start, end[, label]): bucket built-in function
-               creates a bucket with range of [start, end). Note that
-               the end is exclusive, for example, bucket(1, MAX,
-               "positive number") or bucket(1, 10).
+            - bucket(start, end[, label]): bucket built-in function
+              creates a bucket with range of [start, end). Note that the
+              end is exclusive, for example, bucket(1, MAX, "positive
+              number") or bucket(1, 10).
 
             Job histogram facets:
 
-            -  company_display_name: histogram by
-               [Job.company_display_name][google.cloud.talent.v4.Job.company_display_name].
-            -  employment_type: histogram by
-               [Job.employment_types][google.cloud.talent.v4.Job.employment_types],
-               for example, "FULL_TIME", "PART_TIME".
-            -  company_size (DEPRECATED): histogram by
-               [CompanySize][google.cloud.talent.v4.CompanySize], for
-               example, "SMALL", "MEDIUM", "BIG".
-            -  publish_time_in_day: histogram by the
-               [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
-               in days. Must specify list of numeric buckets in spec.
-            -  publish_time_in_month: histogram by the
-               [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
-               in months. Must specify list of numeric buckets in spec.
-            -  publish_time_in_year: histogram by the
-               [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
-               in years. Must specify list of numeric buckets in spec.
-            -  degree_types: histogram by the
-               [Job.degree_types][google.cloud.talent.v4.Job.degree_types],
-               for example, "Bachelors", "Masters".
-            -  job_level: histogram by the
-               [Job.job_level][google.cloud.talent.v4.Job.job_level],
-               for example, "Entry Level".
-            -  country: histogram by the country code of jobs, for
-               example, "US", "FR".
-            -  admin1: histogram by the admin1 code of jobs, which is a
-               global placeholder referring to the state, province, or
-               the particular term a country uses to define the
-               geographic structure below the country level, for
-               example, "CA", "IL".
-            -  city: histogram by a combination of the "city name,
-               admin1 code". For example, "Mountain View, CA", "New
-               York, NY".
-            -  admin1_country: histogram by a combination of the "admin1
-               code, country", for example, "CA, US", "IL, US".
-            -  city_coordinate: histogram by the city center's GPS
-               coordinates (latitude and longitude), for example,
-               37.4038522,-122.0987765. Since the coordinates of a city
-               center can change, customers may need to refresh them
-               periodically.
-            -  locale: histogram by the
-               [Job.language_code][google.cloud.talent.v4.Job.language_code],
-               for example, "en-US", "fr-FR".
-            -  language: histogram by the language subtag of the
-               [Job.language_code][google.cloud.talent.v4.Job.language_code],
-               for example, "en", "fr".
-            -  category: histogram by the
-               [JobCategory][google.cloud.talent.v4.JobCategory], for
-               example, "COMPUTER_AND_IT", "HEALTHCARE".
-            -  base_compensation_unit: histogram by the
-               [CompensationInfo.CompensationUnit][google.cloud.talent.v4.CompensationInfo.CompensationUnit]
-               of base salary, for example, "WEEKLY", "MONTHLY".
-            -  base_compensation: histogram by the base salary. Must
-               specify list of numeric buckets to group results by.
-            -  annualized_base_compensation: histogram by the base
-               annualized salary. Must specify list of numeric buckets
-               to group results by.
-            -  annualized_total_compensation: histogram by the total
-               annualized salary. Must specify list of numeric buckets
-               to group results by.
-            -  string_custom_attribute: histogram by string
-               [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes].
-               Values can be accessed via square bracket notations like
-               string_custom_attribute["key1"].
-            -  numeric_custom_attribute: histogram by numeric
-               [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes].
-               Values can be accessed via square bracket notations like
-               numeric_custom_attribute["key1"]. Must specify list of
-               numeric buckets to group results by.
+            - company_display_name: histogram by
+              [Job.company_display_name][google.cloud.talent.v4.Job.company_display_name].
+            - employment_type: histogram by
+              [Job.employment_types][google.cloud.talent.v4.Job.employment_types],
+              for example, "FULL_TIME", "PART_TIME".
+            - company_size (DEPRECATED): histogram by
+              [CompanySize][google.cloud.talent.v4.CompanySize], for
+              example, "SMALL", "MEDIUM", "BIG".
+            - publish_time_in_day: histogram by the
+              [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
+              in days. Must specify list of numeric buckets in spec.
+            - publish_time_in_month: histogram by the
+              [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
+              in months. Must specify list of numeric buckets in spec.
+            - publish_time_in_year: histogram by the
+              [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
+              in years. Must specify list of numeric buckets in spec.
+            - degree_types: histogram by the
+              [Job.degree_types][google.cloud.talent.v4.Job.degree_types],
+              for example, "Bachelors", "Masters".
+            - job_level: histogram by the
+              [Job.job_level][google.cloud.talent.v4.Job.job_level], for
+              example, "Entry Level".
+            - country: histogram by the country code of jobs, for
+              example, "US", "FR".
+            - admin1: histogram by the admin1 code of jobs, which is a
+              global placeholder referring to the state, province, or
+              the particular term a country uses to define the
+              geographic structure below the country level, for example,
+              "CA", "IL".
+            - city: histogram by a combination of the "city name, admin1
+              code". For example, "Mountain View, CA", "New York, NY".
+            - admin1_country: histogram by a combination of the "admin1
+              code, country", for example, "CA, US", "IL, US".
+            - city_coordinate: histogram by the city center's GPS
+              coordinates (latitude and longitude), for example,
+              37.4038522,-122.0987765. Since the coordinates of a city
+              center can change, customers may need to refresh them
+              periodically.
+            - locale: histogram by the
+              [Job.language_code][google.cloud.talent.v4.Job.language_code],
+              for example, "en-US", "fr-FR".
+            - language: histogram by the language subtag of the
+              [Job.language_code][google.cloud.talent.v4.Job.language_code],
+              for example, "en", "fr".
+            - category: histogram by the
+              [JobCategory][google.cloud.talent.v4.JobCategory], for
+              example, "COMPUTER_AND_IT", "HEALTHCARE".
+            - base_compensation_unit: histogram by the
+              [CompensationInfo.CompensationUnit][google.cloud.talent.v4.CompensationInfo.CompensationUnit]
+              of base salary, for example, "WEEKLY", "MONTHLY".
+            - base_compensation: histogram by the base salary. Must
+              specify list of numeric buckets to group results by.
+            - annualized_base_compensation: histogram by the base
+              annualized salary. Must specify list of numeric buckets to
+              group results by.
+            - annualized_total_compensation: histogram by the total
+              annualized salary. Must specify list of numeric buckets to
+              group results by.
+            - string_custom_attribute: histogram by string
+              [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes].
+              Values can be accessed via square bracket notations like
+              string_custom_attribute["key1"].
+            - numeric_custom_attribute: histogram by numeric
+              [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes].
+              Values can be accessed via square bracket notations like
+              numeric_custom_attribute["key1"]. Must specify list of
+              numeric buckets to group results by.
 
             Example expressions:
 
-            -  ``count(admin1)``
-            -  ``count(base_compensation, [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)])``
-            -  ``count(string_custom_attribute["some-string-custom-attribute"])``
-            -  ``count(numeric_custom_attribute["some-numeric-custom-attribute"], [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative")])``
+            - ``count(admin1)``
+            - ``count(base_compensation, [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)])``
+            - ``count(string_custom_attribute["some-string-custom-attribute"])``
+            - ``count(numeric_custom_attribute["some-numeric-custom-attribute"], [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative")])``
         job_view (google.cloud.talent_v4.types.JobView):
             The desired job attributes returned for jobs in the search
             response. Defaults to
@@ -485,59 +484,59 @@ class SearchJobsRequest(proto.Message):
 
             Supported options are:
 
-            -  ``"relevance desc"``: By relevance descending, as
-               determined by the API algorithms. Relevance thresholding
-               of query results is only available with this ordering.
-            -  ``"posting_publish_time desc"``: By
-               [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
-               descending.
-            -  ``"posting_update_time desc"``: By
-               [Job.posting_update_time][google.cloud.talent.v4.Job.posting_update_time]
-               descending.
-            -  ``"title"``: By
-               [Job.title][google.cloud.talent.v4.Job.title] ascending.
-            -  ``"title desc"``: By
-               [Job.title][google.cloud.talent.v4.Job.title] descending.
-            -  ``"annualized_base_compensation"``: By job's
-               [CompensationInfo.annualized_base_compensation_range][google.cloud.talent.v4.CompensationInfo.annualized_base_compensation_range]
-               ascending. Jobs whose annualized base compensation is
-               unspecified are put at the end of search results.
-            -  ``"annualized_base_compensation desc"``: By job's
-               [CompensationInfo.annualized_base_compensation_range][google.cloud.talent.v4.CompensationInfo.annualized_base_compensation_range]
-               descending. Jobs whose annualized base compensation is
-               unspecified are put at the end of search results.
-            -  ``"annualized_total_compensation"``: By job's
-               [CompensationInfo.annualized_total_compensation_range][google.cloud.talent.v4.CompensationInfo.annualized_total_compensation_range]
-               ascending. Jobs whose annualized base compensation is
-               unspecified are put at the end of search results.
-            -  ``"annualized_total_compensation desc"``: By job's
-               [CompensationInfo.annualized_total_compensation_range][google.cloud.talent.v4.CompensationInfo.annualized_total_compensation_range]
-               descending. Jobs whose annualized base compensation is
-               unspecified are put at the end of search results.
-            -  ``"custom_ranking desc"``: By the relevance score
-               adjusted to the
-               [SearchJobsRequest.CustomRankingInfo.ranking_expression][google.cloud.talent.v4.SearchJobsRequest.CustomRankingInfo.ranking_expression]
-               with weight factor assigned by
-               [SearchJobsRequest.CustomRankingInfo.importance_level][google.cloud.talent.v4.SearchJobsRequest.CustomRankingInfo.importance_level]
-               in descending order.
-            -  Location sorting: Use the special syntax to order jobs by
-               distance: ``"distance_from('Hawaii')"``: Order by
-               distance from Hawaii. ``"distance_from(19.89, 155.5)"``:
-               Order by distance from a coordinate.
-               ``"distance_from('Hawaii'), distance_from('Puerto Rico')"``:
-               Order by multiple locations. See details below.
-               ``"distance_from('Hawaii'), distance_from(19.89, 155.5)"``:
-               Order by multiple locations. See details below. The
-               string can have a maximum of 256 characters. When
-               multiple distance centers are provided, a job that is
-               close to any of the distance centers would have a high
-               rank. When a job has multiple locations, the job location
-               closest to one of the distance centers will be used. Jobs
-               that don't have locations will be ranked at the bottom.
-               Distance is calculated with a precision of 11.3 meters
-               (37.4 feet). Diversification strategy is still applied
-               unless explicitly disabled in
-               [diversification_level][google.cloud.talent.v4.SearchJobsRequest.diversification_level].
+            - ``"relevance desc"``: By relevance descending, as
+              determined by the API algorithms. Relevance thresholding
+              of query results is only available with this ordering.
+            - ``"posting_publish_time desc"``: By
+              [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
+              descending.
+            - ``"posting_update_time desc"``: By
+              [Job.posting_update_time][google.cloud.talent.v4.Job.posting_update_time]
+              descending.
+            - ``"title"``: By
+              [Job.title][google.cloud.talent.v4.Job.title] ascending.
+            - ``"title desc"``: By
+              [Job.title][google.cloud.talent.v4.Job.title] descending.
+            - ``"annualized_base_compensation"``: By job's
+              [CompensationInfo.annualized_base_compensation_range][google.cloud.talent.v4.CompensationInfo.annualized_base_compensation_range]
+              ascending. Jobs whose annualized base compensation is
+              unspecified are put at the end of search results.
+            - ``"annualized_base_compensation desc"``: By job's
+              [CompensationInfo.annualized_base_compensation_range][google.cloud.talent.v4.CompensationInfo.annualized_base_compensation_range]
+              descending. Jobs whose annualized base compensation is
+              unspecified are put at the end of search results.
+            - ``"annualized_total_compensation"``: By job's
+              [CompensationInfo.annualized_total_compensation_range][google.cloud.talent.v4.CompensationInfo.annualized_total_compensation_range]
+              ascending. Jobs whose annualized base compensation is
+              unspecified are put at the end of search results.
+            - ``"annualized_total_compensation desc"``: By job's
+              [CompensationInfo.annualized_total_compensation_range][google.cloud.talent.v4.CompensationInfo.annualized_total_compensation_range]
+              descending. Jobs whose annualized base compensation is
+              unspecified are put at the end of search results.
+            - ``"custom_ranking desc"``: By the relevance score adjusted
+              to the
+              [SearchJobsRequest.CustomRankingInfo.ranking_expression][google.cloud.talent.v4.SearchJobsRequest.CustomRankingInfo.ranking_expression]
+              with weight factor assigned by
+              [SearchJobsRequest.CustomRankingInfo.importance_level][google.cloud.talent.v4.SearchJobsRequest.CustomRankingInfo.importance_level]
+              in descending order.
+            - Location sorting: Use the special syntax to order jobs by
+              distance: ``"distance_from('Hawaii')"``: Order by distance
+              from Hawaii. ``"distance_from(19.89, 155.5)"``: Order by
+              distance from a coordinate.
+              ``"distance_from('Hawaii'), distance_from('Puerto Rico')"``:
+              Order by multiple locations. See details below.
+              ``"distance_from('Hawaii'), distance_from(19.89, 155.5)"``:
+              Order by multiple locations. See details below. The string
+              can have a maximum of 256 characters. When multiple
+              distance centers are provided, a job that is close to any
+              of the distance centers would have a high rank. When a job
+              has multiple locations, the job location closest to one of
+              the distance centers will be used. Jobs that don't have
+              locations will be ranked at the bottom. Distance is
+              calculated with a precision of 11.3 meters (37.4 feet).
+              Diversification strategy is still applied unless
+              explicitly disabled in
+              [diversification_level][google.cloud.talent.v4.SearchJobsRequest.diversification_level].
         diversification_level (google.cloud.talent_v4.types.SearchJobsRequest.DiversificationLevel):
             Controls whether highly similar jobs are returned next to
             each other in the search results. Jobs are identified as
