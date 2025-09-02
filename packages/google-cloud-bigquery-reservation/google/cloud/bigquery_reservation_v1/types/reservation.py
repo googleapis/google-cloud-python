@@ -1348,9 +1348,9 @@ class SearchAssignmentsRequest(proto.Message):
 
             Examples:
 
-            -  ``assignee=projects/myproject``
-            -  ``assignee=folders/123``
-            -  ``assignee=organizations/456``
+            - ``assignee=projects/myproject``
+            - ``assignee=folders/123``
+            - ``assignee=organizations/456``
         page_size (int):
             The maximum number of items to return per
             page.
@@ -1393,9 +1393,9 @@ class SearchAllAssignmentsRequest(proto.Message):
 
             Examples:
 
-            -  ``assignee=projects/myproject``
-            -  ``assignee=folders/123``
-            -  ``assignee=organizations/456``
+            - ``assignee=projects/myproject``
+            - ``assignee=folders/123``
+            - ``assignee=organizations/456``
         page_size (int):
             The maximum number of items to return per
             page.
