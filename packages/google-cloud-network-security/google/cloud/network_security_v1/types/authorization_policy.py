@@ -117,7 +117,7 @@ class AuthorizationPolicy(proto.Message):
                     authorization. At least one principal should match. Each
                     peer can be an exact match, or a prefix match (example,
                     "namespace/*") or a suffix match (example,
-                    "*/service-account") or a presence match "*". Authorization
+                    "*/service-account") or a presence match "\*". Authorization
                     based on the principal name without certificate validation
                     (configured by ServerTlsPolicy resource) is considered
                     insecure.
@@ -148,8 +148,8 @@ class AuthorizationPolicy(proto.Message):
                     Required. List of host names to match. Matched against the
                     ":authority" header in http requests. At least one host
                     should match. Each host can be an exact match, or a prefix
-                    match (example "mydomain.*") or a suffix match (example
-                    "*.myorg.com") or a presence (any) match "*".
+                    match (example "mydomain.\ *") or a suffix match (example
+                    "*.myorg.com") or a presence (any) match "\*".
                 ports (MutableSequence[int]):
                     Required. List of destination ports to match.
                     At least one port should match.

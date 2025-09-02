@@ -36,12 +36,11 @@ class OSPolicy(proto.Message):
             Required. The id of the OS policy with the following
             restrictions:
 
-            -  Must contain only lowercase letters, numbers, and
-               hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-63 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the assignment.
+            - Must contain only lowercase letters, numbers, and hyphens.
+            - Must start with a letter.
+            - Must be between 1-63 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the assignment.
         description (str):
             Policy description.
             Length of the description is limited to 1024
@@ -96,7 +95,7 @@ class OSPolicy(proto.Message):
             os_version (str):
                 The OS version
 
-                Prefix matches are supported if asterisk(*) is provided as
+                Prefix matches are supported if asterisk(\*) is provided as
                 the last character. For example, to match all versions with
                 a major version of ``7``, specify the following value for
                 this field ``7.*``
@@ -134,12 +133,11 @@ class OSPolicy(proto.Message):
                 Required. The id of the resource with the following
                 restrictions:
 
-                -  Must contain only lowercase letters, numbers, and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-63 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the OS policy.
+                - Must contain only lowercase letters, numbers, and hyphens.
+                - Must start with a letter.
+                - Must be between 1-63 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the OS policy.
             pkg (google.cloud.osconfig_v1.types.OSPolicy.Resource.PackageResource):
                 Package resource
 
@@ -330,9 +328,9 @@ class OSPolicy(proto.Message):
                     pull_deps (bool):
                         Whether dependencies should also be installed.
 
-                        -  install when false: ``dpkg -i package``
-                        -  install when true:
-                           ``apt-get update && apt-get -y install package.deb``
+                        - install when false: ``dpkg -i package``
+                        - install when true:
+                          ``apt-get update && apt-get -y install package.deb``
                 """
 
                 source: "OSPolicy.Resource.File" = proto.Field(
@@ -348,8 +346,8 @@ class OSPolicy(proto.Message):
             class APT(proto.Message):
                 r"""A package managed by APT.
 
-                -  install: ``apt-get update && apt-get -y install [name]``
-                -  remove: ``apt-get -y remove [name]``
+                - install: ``apt-get update && apt-get -y install [name]``
+                - remove: ``apt-get -y remove [name]``
 
                 Attributes:
                     name (str):
@@ -371,10 +369,10 @@ class OSPolicy(proto.Message):
                     pull_deps (bool):
                         Whether dependencies should also be installed.
 
-                        -  install when false:
-                           ``rpm --upgrade --replacepkgs package.rpm``
-                        -  install when true: ``yum -y install package.rpm`` or
-                           ``zypper -y install package.rpm``
+                        - install when false:
+                          ``rpm --upgrade --replacepkgs package.rpm``
+                        - install when true: ``yum -y install package.rpm`` or
+                          ``zypper -y install package.rpm``
                 """
 
                 source: "OSPolicy.Resource.File" = proto.Field(
@@ -390,8 +388,8 @@ class OSPolicy(proto.Message):
             class YUM(proto.Message):
                 r"""A package managed by YUM.
 
-                -  install: ``yum -y install package``
-                -  remove: ``yum -y remove package``
+                - install: ``yum -y install package``
+                - remove: ``yum -y remove package``
 
                 Attributes:
                     name (str):
@@ -406,8 +404,8 @@ class OSPolicy(proto.Message):
             class Zypper(proto.Message):
                 r"""A package managed by Zypper.
 
-                -  install: ``zypper -y install package``
-                -  remove: ``zypper -y rm package``
+                - install: ``zypper -y install package``
+                - remove: ``zypper -y rm package``
 
                 Attributes:
                     name (str):
@@ -422,8 +420,8 @@ class OSPolicy(proto.Message):
             class GooGet(proto.Message):
                 r"""A package managed by GooGet.
 
-                -  install: ``googet -noconfirm install package``
-                -  remove: ``googet -noconfirm remove package``
+                - install: ``googet -noconfirm install package``
+                - remove: ``googet -noconfirm remove package``
 
                 Attributes:
                     name (str):

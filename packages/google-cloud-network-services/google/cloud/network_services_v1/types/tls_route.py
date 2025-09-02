@@ -184,8 +184,8 @@ class TlsRoute(proto.Message):
                 the backend referenced by the service_name field. This is
                 computed as:
 
-                -  weight/Sum(weights in destinations) Weights in all
-                   destinations does not need to sum up to 100.
+                - weight/Sum(weights in destinations) Weights in all
+                  destinations does not need to sum up to 100.
         """
 
         service_name: str = proto.Field(

@@ -246,13 +246,13 @@ class ExtensionChain(proto.Message):
                 the default setting of ``FALSE`` is used, one of the
                 following happens:
 
-                -  If response headers have not been delivered to the
-                   downstream client, a generic 500 error is returned to the
-                   client. The error response can be tailored by configuring
-                   a custom error response in the load balancer.
+                - If response headers have not been delivered to the
+                  downstream client, a generic 500 error is returned to the
+                  client. The error response can be tailored by configuring
+                  a custom error response in the load balancer.
 
-                -  If response headers have been delivered, then the HTTP
-                   stream to the downstream client is reset.
+                - If response headers have been delivered, then the HTTP
+                  stream to the downstream client is reset.
             forward_headers (MutableSequence[str]):
                 Optional. List of the HTTP headers to forward
                 to the extension (from the client or backend).
@@ -284,13 +284,13 @@ class ExtensionChain(proto.Message):
 
                 This field is subject to following limitations:
 
-                -  The total size of the metadata must be less than 1KiB.
-                -  The total number of keys in the metadata must be less
-                   than 16.
-                -  The length of each key must be less than 64 characters.
-                -  The length of each value must be less than 1024
-                   characters.
-                -  All values must be strings.
+                - The total size of the metadata must be less than 1KiB.
+                - The total number of keys in the metadata must be less than
+                  16.
+                - The length of each key must be less than 64 characters.
+                - The length of each value must be less than 1024
+                  characters.
+                - All values must be strings.
         """
 
         name: str = proto.Field(
@@ -1107,13 +1107,13 @@ class AuthzExtension(proto.Message):
             the default setting of ``FALSE`` is used, one of the
             following happens:
 
-            -  If response headers have not been delivered to the
-               downstream client, a generic 500 error is returned to the
-               client. The error response can be tailored by configuring
-               a custom error response in the load balancer.
+            - If response headers have not been delivered to the
+              downstream client, a generic 500 error is returned to the
+              client. The error response can be tailored by configuring
+              a custom error response in the load balancer.
 
-            -  If response headers have been delivered, then the HTTP
-               stream to the downstream client is reset.
+            - If response headers have been delivered, then the HTTP
+              stream to the downstream client is reset.
         metadata (google.protobuf.struct_pb2.Struct):
             Optional. The metadata provided here is included as part of
             the ``metadata_context`` (of type

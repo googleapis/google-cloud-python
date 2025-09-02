@@ -678,7 +678,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Creates a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.CreateUserWorkloadsSecretRequest],
@@ -713,7 +713,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         field in the response are cleared.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.GetUserWorkloadsSecretRequest],
@@ -745,7 +745,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Lists user workloads Secrets.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.ListUserWorkloadsSecretsRequest],
@@ -779,7 +779,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Updates a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.UpdateUserWorkloadsSecretRequest],
@@ -812,7 +812,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Deletes a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.DeleteUserWorkloadsSecretRequest],
@@ -847,7 +847,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Creates a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.CreateUserWorkloadsConfigMapRequest],
@@ -881,7 +881,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Gets an existing user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.GetUserWorkloadsConfigMapRequest],
@@ -916,7 +916,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Lists user workloads ConfigMaps.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.ListUserWorkloadsConfigMapsRequest],
@@ -951,7 +951,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Updates a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.UpdateUserWorkloadsConfigMapRequest],
@@ -985,7 +985,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Deletes a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         Returns:
             Callable[[~.DeleteUserWorkloadsConfigMapRequest],

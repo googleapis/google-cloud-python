@@ -37,11 +37,11 @@ class DiagnosticConfig(proto.Message):
 
             Permissions: User Managed Notebooks:
 
-            -  storage.buckets.writer: Must be given to the project's
-               service account attached to VM. Google Managed Notebooks:
-            -  storage.buckets.writer: Must be given to the project's
-               service account or user credentials attached to VM
-               depending on authentication mode.
+            - storage.buckets.writer: Must be given to the project's
+              service account attached to VM. Google Managed Notebooks:
+            - storage.buckets.writer: Must be given to the project's
+              service account or user credentials attached to VM
+              depending on authentication mode.
 
             Cloud Storage bucket Log file will be written to
             ``gs://$GCS_BUCKET/$RELATIVE_PATH/$VM_DATE_$TIME.tar.gz``

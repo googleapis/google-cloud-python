@@ -1054,7 +1054,7 @@ class ExecStepConfig(proto.Message):
             interpreter is specified the script will be executed
             directly, which will likely only succeed for scripts with
             [shebang lines]
-            (https://en.wikipedia.org/wiki/Shebang_(Unix)).
+            (https://en.wikipedia.org/wiki/Shebang\_(Unix)).
     """
 
     class Interpreter(proto.Enum):

@@ -151,8 +151,8 @@ class Gateway(proto.Message):
     class Type(proto.Enum):
         r"""The type of the customer-managed gateway. Possible values are:
 
-        -  OPEN_MESH
-        -  SECURE_WEB_GATEWAY
+        - OPEN_MESH
+        - SECURE_WEB_GATEWAY
 
         Values:
             TYPE_UNSPECIFIED (0):
@@ -172,8 +172,8 @@ class Gateway(proto.Message):
     class IpVersion(proto.Enum):
         r"""The types of IP version for the gateway. Possible values are:
 
-        -  IPV4
-        -  IPV6
+        - IPV4
+        - IPV6
 
         Values:
             IP_VERSION_UNSPECIFIED (0):
@@ -193,8 +193,8 @@ class Gateway(proto.Message):
         traffic. Today, this field only applies to Gateways of type
         SECURE_WEB_GATEWAY. Possible values are:
 
-        -  EXPLICIT_ROUTING_MODE
-        -  NEXT_HOP_ROUTING_MODE
+        - EXPLICIT_ROUTING_MODE
+        - NEXT_HOP_ROUTING_MODE
 
         Values:
             EXPLICIT_ROUTING_MODE (0):

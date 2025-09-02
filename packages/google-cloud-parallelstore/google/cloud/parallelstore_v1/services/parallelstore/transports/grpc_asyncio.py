@@ -127,18 +127,18 @@ class ParallelstoreGrpcAsyncIOTransport(ParallelstoreTransport):
     parallelstore API and defines the following resource model for
     managing instances:
 
-    -  The service works with a collection of cloud projects, named:
-       ``/projects/*``
-    -  Each project has a collection of available locations, named:
-       ``/locations/*``
-    -  Each location has a collection of instances named
-       ``/instances/*``.
-    -  Parallelstore instances are resources of the form:
-       ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+    - The service works with a collection of cloud projects, named:
+      ``/projects/*``
+    - Each project has a collection of available locations, named:
+      ``/locations/*``
+    - Each location has a collection of instances named
+      ``/instances/*``.
+    - Parallelstore instances are resources of the form:
+      ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
     Note that location_id must be a Google Cloud ``zone``; for example:
 
-    -  ``projects/12345/locations/us-central1-c/instances/my-parallelstore-share``
+    - ``projects/12345/locations/us-central1-c/instances/my-parallelstore-share``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

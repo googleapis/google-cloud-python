@@ -108,11 +108,11 @@ class LoadBalancerType(proto.Enum):
 class Trace(proto.Message):
     r"""Trace represents one simulated packet forwarding path.
 
-    -  Each trace contains multiple ordered steps.
-    -  Each step is in a particular state with associated configuration.
-    -  State is categorized as final or non-final states.
-    -  Each final state has a reason associated.
-    -  Each trace must end with a final state (the last step).
+    - Each trace contains multiple ordered steps.
+    - Each step is in a particular state with associated configuration.
+    - State is categorized as final or non-final states.
+    - Each final state has a reason associated.
+    - Each trace must end with a final state (the last step).
 
     ::
 
@@ -1278,9 +1278,9 @@ class GoogleServiceInfo(proto.Message):
             GFE_PROXY_OR_HEALTH_CHECK_PROBER (2):
                 One of two services sharing IP ranges:
 
-                -  Load Balancer proxy
-                -  Centralized Health Check prober
-                   https://cloud.google.com/load-balancing/docs/firewall-rules
+                - Load Balancer proxy
+                - Centralized Health Check prober
+                  https://cloud.google.com/load-balancing/docs/firewall-rules
             CLOUD_DNS (3):
                 Connectivity from Cloud DNS to forwarding
                 targets or alternate name servers that use

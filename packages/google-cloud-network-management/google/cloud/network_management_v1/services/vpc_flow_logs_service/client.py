@@ -993,11 +993,11 @@ class VpcFlowLogsServiceClient(metaclass=VpcFlowLogsServiceClientMeta):
            creating another configuration with the same fields but
            different values for the following fields will fail as well:
 
-           -  name
-           -  create_time
-           -  update_time
-           -  labels
-           -  description
+           - name
+           - create_time
+           - update_time
+           - labels
+           - description
 
         .. code-block:: python
 
@@ -1156,11 +1156,11 @@ class VpcFlowLogsServiceClient(metaclass=VpcFlowLogsServiceClientMeta):
            updating another configuration with the same fields but
            different values for the following fields will fail as well:
 
-           -  name
-           -  create_time
-           -  update_time
-           -  labels
-           -  description
+           - name
+           - create_time
+           - update_time
+           - labels
+           - description
 
         .. code-block:: python
 
