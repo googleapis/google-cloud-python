@@ -75,7 +75,7 @@ steps:
       - 'build'
       # We run build against the checked in google-cloud-language package.
       - '--repo'
-      - '/workspace/packages/google-cloud-language'
+      - '/workspace'
 
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
