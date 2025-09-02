@@ -69,7 +69,7 @@ steps:
       # Mount the test-resources/librarian from this repo's workspace as the librarian dir.
       - '-v'
       - '/workspace/.generator/test-resources/librarian:/app/librarian'
-      # We run build against the checked in google-cloud-language package.
+      # We run the `build` command against the checked in google-cloud-language package.
       - '-v'
       - '/workspace:/app/repo'
       # The image that was built in the first step.
