@@ -132,12 +132,12 @@ class DataprocMetastoreFederationClient(
     The Dataproc Metastore Federation API defines the following resource
     model:
 
-    -  The service works with a collection of Google Cloud projects.
-    -  Each project has a collection of available locations.
-    -  Each location has a collection of federations.
-    -  Dataproc Metastore Federations are resources with names of the
-       form:
-       ``projects/{project_number}/locations/{location_id}/federations/{federation_id}``.
+    - The service works with a collection of Google Cloud projects.
+    - Each project has a collection of available locations.
+    - Each location has a collection of federations.
+    - Dataproc Metastore Federations are resources with names of the
+      form:
+      ``projects/{project_number}/locations/{location_id}/federations/{federation_id}``.
     """
 
     @staticmethod

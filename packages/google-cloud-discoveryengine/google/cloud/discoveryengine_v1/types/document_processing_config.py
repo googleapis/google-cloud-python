@@ -53,19 +53,19 @@ class DocumentProcessingConfig(proto.Message):
             Map from file type to override the default parsing
             configuration based on the file type. Supported keys:
 
-            -  ``pdf``: Override parsing config for PDF files, either
-               digital parsing, ocr parsing or layout parsing is
-               supported.
-            -  ``html``: Override parsing config for HTML files, only
-               digital parsing and layout parsing are supported.
-            -  ``docx``: Override parsing config for DOCX files, only
-               digital parsing and layout parsing are supported.
-            -  ``pptx``: Override parsing config for PPTX files, only
-               digital parsing and layout parsing are supported.
-            -  ``xlsm``: Override parsing config for XLSM files, only
-               digital parsing and layout parsing are supported.
-            -  ``xlsx``: Override parsing config for XLSX files, only
-               digital parsing and layout parsing are supported.
+            - ``pdf``: Override parsing config for PDF files, either
+              digital parsing, ocr parsing or layout parsing is
+              supported.
+            - ``html``: Override parsing config for HTML files, only
+              digital parsing and layout parsing are supported.
+            - ``docx``: Override parsing config for DOCX files, only
+              digital parsing and layout parsing are supported.
+            - ``pptx``: Override parsing config for PPTX files, only
+              digital parsing and layout parsing are supported.
+            - ``xlsm``: Override parsing config for XLSM files, only
+              digital parsing and layout parsing are supported.
+            - ``xlsx``: Override parsing config for XLSX files, only
+              digital parsing and layout parsing are supported.
     """
 
     class ChunkingConfig(proto.Message):
@@ -179,7 +179,7 @@ class DocumentProcessingConfig(proto.Message):
                     Optional. Contains the required structure types to extract
                     from the document. Supported values:
 
-                    -  ``shareholder-structure``
+                    - ``shareholder-structure``
                 exclude_html_elements (MutableSequence[str]):
                     Optional. List of HTML elements to exclude
                     from the parsed content.

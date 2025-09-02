@@ -64,8 +64,8 @@ class EntityType(proto.Message):
             [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes]
             methods. Supported formats:
 
-            -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
         display_name (str):
             Required. The name of the entity type.
         kind (google.cloud.dialogflow_v2beta1.types.EntityType.Kind):
@@ -132,12 +132,12 @@ class EntityType(proto.Message):
 
                 For ``KIND_MAP`` entity types:
 
-                -  A reference value to be used in place of synonyms.
+                - A reference value to be used in place of synonyms.
 
                 For ``KIND_LIST`` entity types:
 
-                -  A string that can contain references to other entity
-                   types (with or without aliases).
+                - A string that can contain references to other entity types
+                  (with or without aliases).
             synonyms (MutableSequence[str]):
                 Required. A collection of value synonyms. For example, if
                 the entity type is *vegetable*, and ``value`` is
@@ -145,8 +145,8 @@ class EntityType(proto.Message):
 
                 For ``KIND_LIST`` entity types:
 
-                -  This collection must contain exactly one synonym equal to
-                   ``value``.
+                - This collection must contain exactly one synonym equal to
+                  ``value``.
         """
 
         value: str = proto.Field(
@@ -196,8 +196,8 @@ class ListEntityTypesRequest(proto.Message):
             Required. The agent to list all entity types from. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         language_code (str):
             Optional. The language used to access language-specific
             data. If not specified, the agent's default language is
@@ -269,8 +269,8 @@ class GetEntityTypeRequest(proto.Message):
         name (str):
             Required. The name of the entity type. Supported formats:
 
-            -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
         language_code (str):
             Optional. The language used to access language-specific
             data. If not specified, the agent's default language is
@@ -298,8 +298,8 @@ class CreateEntityTypeRequest(proto.Message):
             Required. The agent to create a entity type for. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         entity_type (google.cloud.dialogflow_v2beta1.types.EntityType):
             Required. The entity type to create.
         language_code (str):
@@ -368,8 +368,8 @@ class DeleteEntityTypeRequest(proto.Message):
             Required. The name of the entity type to delete. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
     """
 
     name: str = proto.Field(
@@ -394,8 +394,8 @@ class BatchUpdateEntityTypesRequest(proto.Message):
             Required. The name of the agent to update or create entity
             types in. Supported formats:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         entity_type_batch_uri (str):
             The URI to a Google Cloud Storage file
             containing entity types to update or create. The
@@ -472,8 +472,8 @@ class BatchDeleteEntityTypesRequest(proto.Message):
             Required. The name of the agent to delete all entities types
             for. Supported formats:
 
-            -  ``projects/<Project ID>/agent``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``.
+            - ``projects/<Project ID>/agent``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent``.
         entity_type_names (MutableSequence[str]):
             Required. The names entity types to delete. All names must
             point to the same agent as ``parent``.
@@ -498,8 +498,8 @@ class BatchCreateEntitiesRequest(proto.Message):
             Required. The name of the entity type to create entities in.
             Supported formats:
 
-            -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
         entities (MutableSequence[google.cloud.dialogflow_v2beta1.types.EntityType.Entity]):
             Required. The entities to create.
         language_code (str):
@@ -534,8 +534,8 @@ class BatchUpdateEntitiesRequest(proto.Message):
             Required. The name of the entity type to update or create
             entities in. Supported formats:
 
-            -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
         entities (MutableSequence[google.cloud.dialogflow_v2beta1.types.EntityType.Entity]):
             Required. The entities to update or create.
         language_code (str):
@@ -578,8 +578,8 @@ class BatchDeleteEntitiesRequest(proto.Message):
             Required. The name of the entity type to delete entries for.
             Supported formats:
 
-            -  ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
         entity_values (MutableSequence[str]):
             Required. The reference ``values`` of the entities to
             delete. Note that these are not fully-qualified names, i.e.

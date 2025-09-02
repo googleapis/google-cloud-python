@@ -94,16 +94,16 @@ class Page(proto.Message):
             flow-level ones will have higher priority and will be put
             before the agent-level ones.
 
-            -  If multiple transition routes within a page scope refer
-               to the same intent, then the precedence order is: page's
-               transition route -> page's transition route group ->
-               flow's transition routes.
+            - If multiple transition routes within a page scope refer to
+              the same intent, then the precedence order is: page's
+              transition route -> page's transition route group ->
+              flow's transition routes.
 
-            -  If multiple transition route groups within a page contain
-               the same intent, then the first group in the ordered list
-               takes precedence.
+            - If multiple transition route groups within a page contain
+              the same intent, then the first group in the ordered list
+              takes precedence.
 
-            Format:\ ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
+            Format:``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``
             for agent-level groups.
@@ -115,20 +115,20 @@ class Page(proto.Message):
             When we are in a certain page, the TransitionRoutes are
             evaluated in the following order:
 
-            -  TransitionRoutes defined in the page with intent
-               specified.
-            -  TransitionRoutes defined in the [transition route
-               groups][google.cloud.dialogflow.cx.v3beta1.Page.transition_route_groups]
-               with intent specified.
-            -  TransitionRoutes defined in flow with intent specified.
-            -  TransitionRoutes defined in the [transition route
-               groups][google.cloud.dialogflow.cx.v3beta1.Flow.transition_route_groups]
-               with intent specified.
-            -  TransitionRoutes defined in the page with only condition
-               specified.
-            -  TransitionRoutes defined in the [transition route
-               groups][google.cloud.dialogflow.cx.v3beta1.Page.transition_route_groups]
-               with only condition specified.
+            - TransitionRoutes defined in the page with intent
+              specified.
+            - TransitionRoutes defined in the [transition route
+              groups][google.cloud.dialogflow.cx.v3beta1.Page.transition_route_groups]
+              with intent specified.
+            - TransitionRoutes defined in flow with intent specified.
+            - TransitionRoutes defined in the [transition route
+              groups][google.cloud.dialogflow.cx.v3beta1.Flow.transition_route_groups]
+              with intent specified.
+            - TransitionRoutes defined in the page with only condition
+              specified.
+            - TransitionRoutes defined in the [transition route
+              groups][google.cloud.dialogflow.cx.v3beta1.Page.transition_route_groups]
+              with only condition specified.
         event_handlers (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EventHandler]):
             Handlers associated with the page to handle
             events such as webhook errors, no match or no
@@ -264,11 +264,11 @@ class Form(proto.Message):
                     reprompt for the parameter or transition to a different
                     page/flow. The supported events are:
 
-                    -  ``sys.no-match-<N>``, where N can be from 1 to 6
-                    -  ``sys.no-match-default``
-                    -  ``sys.no-input-<N>``, where N can be from 1 to 6
-                    -  ``sys.no-input-default``
-                    -  ``sys.invalid-parameter``
+                    - ``sys.no-match-<N>``, where N can be from 1 to 6
+                    - ``sys.no-match-default``
+                    - ``sys.no-input-<N>``, where N can be from 1 to 6
+                    - ``sys.no-input-default``
+                    - ``sys.invalid-parameter``
 
                     ``initial_prompt_fulfillment`` provides the first prompt for
                     the parameter.
@@ -361,17 +361,17 @@ class EventHandler(proto.Message):
     can be handled during a session. When the specified event happens,
     the following actions are taken in order:
 
-    -  If there is a
-       [``trigger_fulfillment``][google.cloud.dialogflow.cx.v3beta1.EventHandler.trigger_fulfillment]
-       associated with the event, it will be called.
-    -  If there is a
-       [``target_page``][google.cloud.dialogflow.cx.v3beta1.EventHandler.target_page]
-       associated with the event, the session will transition into the
-       specified page.
-    -  If there is a
-       [``target_flow``][google.cloud.dialogflow.cx.v3beta1.EventHandler.target_flow]
-       associated with the event, the session will transition into the
-       specified flow.
+    - If there is a
+      [``trigger_fulfillment``][google.cloud.dialogflow.cx.v3beta1.EventHandler.trigger_fulfillment]
+      associated with the event, it will be called.
+    - If there is a
+      [``target_page``][google.cloud.dialogflow.cx.v3beta1.EventHandler.target_page]
+      associated with the event, the session will transition into the
+      specified page.
+    - If there is a
+      [``target_flow``][google.cloud.dialogflow.cx.v3beta1.EventHandler.target_flow]
+      associated with the event, the session will transition into the
+      specified flow.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -446,17 +446,17 @@ class TransitionRoute(proto.Message):
     session. When a specified transition is matched, the following
     actions are taken in order:
 
-    -  If there is a
-       [``trigger_fulfillment``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.trigger_fulfillment]
-       associated with the transition, it will be called.
-    -  If there is a
-       [``target_page``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.target_page]
-       associated with the transition, the session will transition into
-       the specified page.
-    -  If there is a
-       [``target_flow``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.target_flow]
-       associated with the transition, the session will transition into
-       the specified flow.
+    - If there is a
+      [``trigger_fulfillment``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.trigger_fulfillment]
+      associated with the transition, it will be called.
+    - If there is a
+      [``target_page``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.target_page]
+      associated with the transition, the session will transition into
+      the specified page.
+    - If there is a
+      [``target_flow``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.target_flow]
+      associated with the transition, the session will transition into
+      the specified flow.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -555,22 +555,22 @@ class ListPagesRequest(proto.Message):
             The language to list pages for. The following fields are
             language dependent:
 
-            -  ``Page.entry_fulfillment.messages``
-            -  ``Page.entry_fulfillment.conditional_cases``
-            -  ``Page.event_handlers.trigger_fulfillment.messages``
-            -  ``Page.event_handlers.trigger_fulfillment.conditional_cases``
-            -  ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
+            - ``Page.entry_fulfillment.messages``
+            - ``Page.entry_fulfillment.conditional_cases``
+            - ``Page.event_handlers.trigger_fulfillment.messages``
+            - ``Page.event_handlers.trigger_fulfillment.conditional_cases``
+            - ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
             -
 
             ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases``
 
-            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
+            - ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
             -
 
             ``Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases``
 
-            -  ``Page.transition_routes.trigger_fulfillment.messages``
-            -  ``Page.transition_routes.trigger_fulfillment.conditional_cases``
+            - ``Page.transition_routes.trigger_fulfillment.messages``
+            - ``Page.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -644,22 +644,22 @@ class GetPageRequest(proto.Message):
             The language to retrieve the page for. The following fields
             are language dependent:
 
-            -  ``Page.entry_fulfillment.messages``
-            -  ``Page.entry_fulfillment.conditional_cases``
-            -  ``Page.event_handlers.trigger_fulfillment.messages``
-            -  ``Page.event_handlers.trigger_fulfillment.conditional_cases``
-            -  ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
+            - ``Page.entry_fulfillment.messages``
+            - ``Page.entry_fulfillment.conditional_cases``
+            - ``Page.event_handlers.trigger_fulfillment.messages``
+            - ``Page.event_handlers.trigger_fulfillment.conditional_cases``
+            - ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
             -
 
             ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases``
 
-            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
+            - ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
             -
 
             ``Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases``
 
-            -  ``Page.transition_routes.trigger_fulfillment.messages``
-            -  ``Page.transition_routes.trigger_fulfillment.conditional_cases``
+            - ``Page.transition_routes.trigger_fulfillment.messages``
+            - ``Page.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -691,22 +691,22 @@ class CreatePageRequest(proto.Message):
         language_code (str):
             The language of the following fields in ``page``:
 
-            -  ``Page.entry_fulfillment.messages``
-            -  ``Page.entry_fulfillment.conditional_cases``
-            -  ``Page.event_handlers.trigger_fulfillment.messages``
-            -  ``Page.event_handlers.trigger_fulfillment.conditional_cases``
-            -  ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
+            - ``Page.entry_fulfillment.messages``
+            - ``Page.entry_fulfillment.conditional_cases``
+            - ``Page.event_handlers.trigger_fulfillment.messages``
+            - ``Page.event_handlers.trigger_fulfillment.conditional_cases``
+            - ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
             -
 
             ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases``
 
-            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
+            - ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
             -
 
             ``Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases``
 
-            -  ``Page.transition_routes.trigger_fulfillment.messages``
-            -  ``Page.transition_routes.trigger_fulfillment.conditional_cases``
+            - ``Page.transition_routes.trigger_fulfillment.messages``
+            - ``Page.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -740,22 +740,22 @@ class UpdatePageRequest(proto.Message):
         language_code (str):
             The language of the following fields in ``page``:
 
-            -  ``Page.entry_fulfillment.messages``
-            -  ``Page.entry_fulfillment.conditional_cases``
-            -  ``Page.event_handlers.trigger_fulfillment.messages``
-            -  ``Page.event_handlers.trigger_fulfillment.conditional_cases``
-            -  ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
+            - ``Page.entry_fulfillment.messages``
+            - ``Page.entry_fulfillment.conditional_cases``
+            - ``Page.event_handlers.trigger_fulfillment.messages``
+            - ``Page.event_handlers.trigger_fulfillment.conditional_cases``
+            - ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
             -
 
             ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases``
 
-            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
+            - ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
             -
 
             ``Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases``
 
-            -  ``Page.transition_routes.trigger_fulfillment.messages``
-            -  ``Page.transition_routes.trigger_fulfillment.conditional_cases``
+            - ``Page.transition_routes.trigger_fulfillment.messages``
+            - ``Page.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -796,14 +796,13 @@ class DeletePageRequest(proto.Message):
             This field has no effect for pages with no incoming
             transitions. For pages with incoming transitions:
 
-            -  If ``force`` is set to false, an error will be returned
-               with message indicating the incoming transitions.
-            -  If ``force`` is set to true, Dialogflow will remove the
-               page, as well as any transitions to the page (i.e.
-               [Target page][EventHandler.target_page] in event handlers
-               or [Target page][TransitionRoute.target_page] in
-               transition routes that point to this page will be
-               cleared).
+            - If ``force`` is set to false, an error will be returned
+              with message indicating the incoming transitions.
+            - If ``force`` is set to true, Dialogflow will remove the
+              page, as well as any transitions to the page (i.e. [Target
+              page][EventHandler.target_page] in event handlers or
+              [Target page][TransitionRoute.target_page] in transition
+              routes that point to this page will be cleared).
     """
 
     name: str = proto.Field(

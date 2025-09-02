@@ -46,7 +46,7 @@ class UpdateServingConfigRequest(proto.Message):
             [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig]
             to update. The following are NOT supported:
 
-            -  [ServingConfig.name][google.cloud.discoveryengine.v1alpha.ServingConfig.name]
+            - [ServingConfig.name][google.cloud.discoveryengine.v1alpha.ServingConfig.name]
 
             If not set, all supported fields are updated.
     """

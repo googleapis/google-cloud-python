@@ -50,8 +50,8 @@ class Fulfillment(proto.Message):
             Required. The unique identifier of the fulfillment.
             Supported formats:
 
-            -  ``projects/<Project ID>/agent/fulfillment``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/fulfillment``
+            - ``projects/<Project ID>/agent/fulfillment``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/fulfillment``
 
             This field is not used for Fulfillment in an Environment.
         display_name (str):
@@ -182,8 +182,8 @@ class GetFulfillmentRequest(proto.Message):
         name (str):
             Required. The name of the fulfillment. Supported formats:
 
-            -  ``projects/<Project ID>/agent/fulfillment``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/fulfillment``
+            - ``projects/<Project ID>/agent/fulfillment``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/fulfillment``
     """
 
     name: str = proto.Field(

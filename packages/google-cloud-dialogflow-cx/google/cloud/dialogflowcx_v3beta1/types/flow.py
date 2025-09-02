@@ -159,32 +159,32 @@ class Flow(proto.Message):
         transition_routes (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRoute]):
             A flow's transition routes serve two purposes:
 
-            -  They are responsible for matching the user's first
-               utterances in the flow.
-            -  They are inherited by every page's [transition
-               routes][Page.transition_routes] and can support use cases
-               such as the user saying "help" or "can I talk to a
-               human?", which can be handled in a common way regardless
-               of the current page. Transition routes defined in the
-               page have higher priority than those defined in the flow.
+            - They are responsible for matching the user's first
+              utterances in the flow.
+            - They are inherited by every page's [transition
+              routes][Page.transition_routes] and can support use cases
+              such as the user saying "help" or "can I talk to a
+              human?", which can be handled in a common way regardless
+              of the current page. Transition routes defined in the page
+              have higher priority than those defined in the flow.
 
             TransitionRoutes are evaluated in the following order:
 
-            -  TransitionRoutes with intent specified.
-            -  TransitionRoutes with only condition specified.
+            - TransitionRoutes with intent specified.
+            - TransitionRoutes with only condition specified.
 
             TransitionRoutes with intent specified are inherited by
             pages in the flow.
         event_handlers (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EventHandler]):
             A flow's event handlers serve two purposes:
 
-            -  They are responsible for handling events (e.g. no match,
-               webhook errors) in the flow.
-            -  They are inherited by every page's [event
-               handlers][Page.event_handlers], which can be used to
-               handle common events regardless of the current page.
-               Event handlers defined in the page have higher priority
-               than those defined in the flow.
+            - They are responsible for handling events (e.g. no match,
+              webhook errors) in the flow.
+            - They are inherited by every page's [event
+              handlers][Page.event_handlers], which can be used to
+              handle common events regardless of the current page. Event
+              handlers defined in the page have higher priority than
+              those defined in the flow.
 
             Unlike
             [transition_routes][google.cloud.dialogflow.cx.v3beta1.Flow.transition_routes],
@@ -194,14 +194,14 @@ class Flow(proto.Message):
         transition_route_groups (MutableSequence[str]):
             A flow's transition route group serve two purposes:
 
-            -  They are responsible for matching the user's first
-               utterances in the flow.
-            -  They are inherited by every page's [transition route
-               groups][Page.transition_route_groups]. Transition route
-               groups defined in the page have higher priority than
-               those defined in the flow.
+            - They are responsible for matching the user's first
+              utterances in the flow.
+            - They are inherited by every page's [transition route
+              groups][Page.transition_route_groups]. Transition route
+              groups defined in the page have higher priority than those
+              defined in the flow.
 
-            Format:\ ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
+            Format:``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             or
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``
             for agent-level groups.
@@ -317,10 +317,10 @@ class CreateFlowRequest(proto.Message):
         language_code (str):
             The language of the following fields in ``flow``:
 
-            -  ``Flow.event_handlers.trigger_fulfillment.messages``
-            -  ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
-            -  ``Flow.transition_routes.trigger_fulfillment.messages``
-            -  ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+            - ``Flow.event_handlers.trigger_fulfillment.messages``
+            - ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
+            - ``Flow.transition_routes.trigger_fulfillment.messages``
+            - ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -356,14 +356,13 @@ class DeleteFlowRequest(proto.Message):
             This field has no effect for flows with no incoming
             transitions. For flows with incoming transitions:
 
-            -  If ``force`` is set to false, an error will be returned
-               with message indicating the incoming transitions.
-            -  If ``force`` is set to true, Dialogflow will remove the
-               flow, as well as any transitions to the flow (i.e.
-               [Target flow][EventHandler.target_flow] in event handlers
-               or [Target flow][TransitionRoute.target_flow] in
-               transition routes that point to this flow will be
-               cleared).
+            - If ``force`` is set to false, an error will be returned
+              with message indicating the incoming transitions.
+            - If ``force`` is set to true, Dialogflow will remove the
+              flow, as well as any transitions to the flow (i.e. [Target
+              flow][EventHandler.target_flow] in event handlers or
+              [Target flow][TransitionRoute.target_flow] in transition
+              routes that point to this flow will be cleared).
     """
 
     name: str = proto.Field(
@@ -394,10 +393,10 @@ class ListFlowsRequest(proto.Message):
             The language to list flows for. The following fields are
             language dependent:
 
-            -  ``Flow.event_handlers.trigger_fulfillment.messages``
-            -  ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
-            -  ``Flow.transition_routes.trigger_fulfillment.messages``
-            -  ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+            - ``Flow.event_handlers.trigger_fulfillment.messages``
+            - ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
+            - ``Flow.transition_routes.trigger_fulfillment.messages``
+            - ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -465,10 +464,10 @@ class GetFlowRequest(proto.Message):
             The language to retrieve the flow for. The following fields
             are language dependent:
 
-            -  ``Flow.event_handlers.trigger_fulfillment.messages``
-            -  ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
-            -  ``Flow.transition_routes.trigger_fulfillment.messages``
-            -  ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+            - ``Flow.event_handlers.trigger_fulfillment.messages``
+            - ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
+            - ``Flow.transition_routes.trigger_fulfillment.messages``
+            - ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -501,10 +500,10 @@ class UpdateFlowRequest(proto.Message):
         language_code (str):
             The language of the following fields in ``flow``:
 
-            -  ``Flow.event_handlers.trigger_fulfillment.messages``
-            -  ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
-            -  ``Flow.transition_routes.trigger_fulfillment.messages``
-            -  ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
+            - ``Flow.event_handlers.trigger_fulfillment.messages``
+            - ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
+            - ``Flow.transition_routes.trigger_fulfillment.messages``
+            - ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many

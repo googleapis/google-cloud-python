@@ -49,7 +49,7 @@ class AutoscalingPolicy(proto.Message):
             Required. The policy id.
 
             The id must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). Cannot begin or end with
+            underscores (\_), and hyphens (-). Cannot begin or end with
             underscore or hyphen. Must consist of between 3 and 50
             characters.
         name (str):
@@ -57,13 +57,13 @@ class AutoscalingPolicy(proto.Message):
             as described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.autoscalingPolicies``, the
-               resource name of the policy has the following format:
-               ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
+            - For ``projects.regions.autoscalingPolicies``, the resource
+              name of the policy has the following format:
+              ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
 
-            -  For ``projects.locations.autoscalingPolicies``, the
-               resource name of the policy has the following format:
-               ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
+            - For ``projects.locations.autoscalingPolicies``, the
+              resource name of the policy has the following format:
+              ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
         basic_algorithm (google.cloud.dataproc_v1.types.BasicAutoscalingAlgorithm):
 
             This field is a member of `oneof`_ ``algorithm``.
@@ -290,13 +290,13 @@ class CreateAutoscalingPolicyRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.autoscalingPolicies.create``, the
-               resource name of the region has the following format:
-               ``projects/{project_id}/regions/{region}``
+            - For ``projects.regions.autoscalingPolicies.create``, the
+              resource name of the region has the following format:
+              ``projects/{project_id}/regions/{region}``
 
-            -  For ``projects.locations.autoscalingPolicies.create``,
-               the resource name of the location has the following
-               format: ``projects/{project_id}/locations/{location}``
+            - For ``projects.locations.autoscalingPolicies.create``, the
+              resource name of the location has the following format:
+              ``projects/{project_id}/locations/{location}``
         policy (google.cloud.dataproc_v1.types.AutoscalingPolicy):
             Required. The autoscaling policy to create.
     """
@@ -321,13 +321,13 @@ class GetAutoscalingPolicyRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.autoscalingPolicies.get``, the
-               resource name of the policy has the following format:
-               ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
+            - For ``projects.regions.autoscalingPolicies.get``, the
+              resource name of the policy has the following format:
+              ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
 
-            -  For ``projects.locations.autoscalingPolicies.get``, the
-               resource name of the policy has the following format:
-               ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
+            - For ``projects.locations.autoscalingPolicies.get``, the
+              resource name of the policy has the following format:
+              ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
     """
 
     name: str = proto.Field(
@@ -363,13 +363,13 @@ class DeleteAutoscalingPolicyRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.autoscalingPolicies.delete``, the
-               resource name of the policy has the following format:
-               ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
+            - For ``projects.regions.autoscalingPolicies.delete``, the
+              resource name of the policy has the following format:
+              ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
 
-            -  For ``projects.locations.autoscalingPolicies.delete``,
-               the resource name of the policy has the following format:
-               ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
+            - For ``projects.locations.autoscalingPolicies.delete``, the
+              resource name of the policy has the following format:
+              ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
     """
 
     name: str = proto.Field(
@@ -387,13 +387,13 @@ class ListAutoscalingPoliciesRequest(proto.Message):
             described in
             https://cloud.google.com/apis/design/resource_names.
 
-            -  For ``projects.regions.autoscalingPolicies.list``, the
-               resource name of the region has the following format:
-               ``projects/{project_id}/regions/{region}``
+            - For ``projects.regions.autoscalingPolicies.list``, the
+              resource name of the region has the following format:
+              ``projects/{project_id}/regions/{region}``
 
-            -  For ``projects.locations.autoscalingPolicies.list``, the
-               resource name of the location has the following format:
-               ``projects/{project_id}/locations/{location}``
+            - For ``projects.locations.autoscalingPolicies.list``, the
+              resource name of the location has the following format:
+              ``projects/{project_id}/locations/{location}``
         page_size (int):
             Optional. The maximum number of results to
             return in each response. Must be less than or

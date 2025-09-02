@@ -39,9 +39,9 @@ class AnnotatedString(proto.Message):
 
     Table Data:
 
-    -  "country" - dimension
-    -  "population" - metric
-    -  "Africa" - value in the "continent" column
+    - "country" - dimension
+    - "population" - metric
+    - "Africa" - value in the "continent" column
 
     text_formatted = ``"top countries by population in Africa"``
 

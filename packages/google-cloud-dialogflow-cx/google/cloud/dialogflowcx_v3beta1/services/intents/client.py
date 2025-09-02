@@ -1352,10 +1352,10 @@ class IntentsClient(metaclass=IntentsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ImportIntentsMetadata][google.cloud.dialogflow.cx.v3beta1.ImportIntentsMetadata]
-        -  ``response``:
-           [ImportIntentsResponse][google.cloud.dialogflow.cx.v3beta1.ImportIntentsResponse]
+        - ``metadata``:
+          [ImportIntentsMetadata][google.cloud.dialogflow.cx.v3beta1.ImportIntentsMetadata]
+        - ``response``:
+          [ImportIntentsResponse][google.cloud.dialogflow.cx.v3beta1.ImportIntentsResponse]
 
         .. code-block:: python
 
@@ -1461,10 +1461,10 @@ class IntentsClient(metaclass=IntentsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ExportIntentsMetadata][google.cloud.dialogflow.cx.v3beta1.ExportIntentsMetadata]
-        -  ``response``:
-           [ExportIntentsResponse][google.cloud.dialogflow.cx.v3beta1.ExportIntentsResponse]
+        - ``metadata``:
+          [ExportIntentsMetadata][google.cloud.dialogflow.cx.v3beta1.ExportIntentsMetadata]
+        - ``response``:
+          [ExportIntentsResponse][google.cloud.dialogflow.cx.v3beta1.ExportIntentsResponse]
 
         .. code-block:: python
 

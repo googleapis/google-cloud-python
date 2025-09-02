@@ -54,10 +54,10 @@ class Environment(proto.Message):
     custom environments. You can create a variety of custom environments
     for:
 
-    -  testing
-    -  development
-    -  production
-    -  etc.
+    - testing
+    - development
+    - production
+    - etc.
 
     For more information, see the `versions and environments
     guide <https://cloud.google.com/dialogflow/docs/agents-versions>`__.
@@ -67,8 +67,8 @@ class Environment(proto.Message):
             Output only. The unique identifier of this agent
             environment. Supported formats:
 
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
 
             The environment ID for the default environment is ``-``.
         description (str):
@@ -80,8 +80,8 @@ class Environment(proto.Message):
             Optional. The agent version loaded into this environment.
             Supported formats:
 
-            -  ``projects/<Project ID>/agent/versions/<Version ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/agent/versions/<Version ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
         state (google.cloud.dialogflow_v2.types.Environment.State):
             Output only. The state of this environment.
             This field is read-only, i.e., it cannot be set
@@ -214,8 +214,8 @@ class ListEnvironmentsRequest(proto.Message):
         parent (str):
             Required. The agent to list all environments from. Format:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         page_size (int):
             Optional. The maximum number of items to
             return in a single page. By default 100 and at
@@ -277,8 +277,8 @@ class GetEnvironmentRequest(proto.Message):
         name (str):
             Required. The name of the environment. Supported formats:
 
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
 
             The environment ID for the default environment is ``-``.
     """
@@ -298,8 +298,8 @@ class CreateEnvironmentRequest(proto.Message):
             Required. The agent to create an environment for. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent``
+            - ``projects/<Project ID>/agent``
+            - ``projects/<Project ID>/locations/<Location ID>/agent``
         environment (google.cloud.dialogflow_v2.types.Environment):
             Required. The environment to create.
         environment_id (str):
@@ -364,8 +364,8 @@ class DeleteEnvironmentRequest(proto.Message):
         name (str):
             Required. The name of the environment to delete. / Format:
 
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
 
             The environment ID for the default environment is ``-``.
     """
@@ -385,8 +385,8 @@ class GetEnvironmentHistoryRequest(proto.Message):
             Required. The name of the environment to retrieve history
             for. Supported formats:
 
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
 
             The environment ID for the default environment is ``-``.
         page_size (int):
@@ -421,8 +421,8 @@ class EnvironmentHistory(proto.Message):
             Output only. The name of the environment this history is
             for. Supported formats:
 
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/agent/environments/<Environment ID>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
 
             The environment ID for the default environment is ``-``.
         entries (MutableSequence[google.cloud.dialogflow_v2.types.EnvironmentHistory.Entry]):

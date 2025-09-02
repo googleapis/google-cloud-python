@@ -757,8 +757,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 Required. The agent to list all versions from. Supported
                 formats:
 
-                -  ``projects/<Project ID>/agent``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent``
+                - ``projects/<Project ID>/agent``
+                - ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -881,8 +881,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
             name (str):
                 Required. The name of the version. Supported formats:
 
-                -  ``projects/<Project ID>/agent/versions/<Version ID>``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+                - ``projects/<Project ID>/agent/versions/<Version ID>``
+                - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -910,14 +910,14 @@ class VersionsClient(metaclass=VersionsClientMeta):
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   -  testing
-                   -  development
-                   -  production
-                   -  etc.
+                   - testing
+                   - development
+                   - production
+                   - etc.
 
                    For more information, see the [versions and
                    environments
-                   guide](\ https://cloud.google.com/dialogflow/docs/agents-versions).
+                   guide](https://cloud.google.com/dialogflow/docs/agents-versions).
 
         """
         # Create or coerce a protobuf request object.
@@ -1015,8 +1015,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 Required. The agent to create a version for. Supported
                 formats:
 
-                -  ``projects/<Project ID>/agent``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent``
+                - ``projects/<Project ID>/agent``
+                - ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1049,14 +1049,14 @@ class VersionsClient(metaclass=VersionsClientMeta):
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   -  testing
-                   -  development
-                   -  production
-                   -  etc.
+                   - testing
+                   - development
+                   - production
+                   - etc.
 
                    For more information, see the [versions and
                    environments
-                   guide](\ https://cloud.google.com/dialogflow/docs/agents-versions).
+                   guide](https://cloud.google.com/dialogflow/docs/agents-versions).
 
         """
         # Create or coerce a protobuf request object.
@@ -1156,8 +1156,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
             version (google.cloud.dialogflow_v2beta1.types.Version):
                 Required. The version to update. Supported formats:
 
-                -  ``projects/<Project ID>/agent/versions/<Version ID>``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+                - ``projects/<Project ID>/agent/versions/<Version ID>``
+                - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
 
                 This corresponds to the ``version`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1192,14 +1192,14 @@ class VersionsClient(metaclass=VersionsClientMeta):
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   -  testing
-                   -  development
-                   -  production
-                   -  etc.
+                   - testing
+                   - development
+                   - production
+                   - etc.
 
                    For more information, see the [versions and
                    environments
-                   guide](\ https://cloud.google.com/dialogflow/docs/agents-versions).
+                   guide](https://cloud.google.com/dialogflow/docs/agents-versions).
 
         """
         # Create or coerce a protobuf request object.
@@ -1294,8 +1294,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 Required. The name of the version to delete. Supported
                 formats:
 
-                -  ``projects/<Project ID>/agent/versions/<Version ID>``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
+                - ``projects/<Project ID>/agent/versions/<Version ID>``
+                - ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

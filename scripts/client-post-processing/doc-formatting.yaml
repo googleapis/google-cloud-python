@@ -178,18 +178,6 @@ replacements:
     after: "                1024. Any integer between 256 and 4500 is\n                considered valid.\n"
     count: 3
   - paths: [
-      packages/google-cloud-dataplex/google/cloud/dataplex_v1/types/catalog.py,
-    ]
-    before: entry_type=projects\/another-project\/locations\/\*
-    after: "entry_type=projects/another-project/locations/\\*"
-    count: 1
-  - paths: [
-      packages/google-cloud-deploy/google/cloud/deploy_v1/types/cloud_deploy.py,
-    ]
-    before: \"gs:\/\/my-bucket\/dir\/configs\/\*\"
-    after: "`gs://my-bucket/dir/configs/*`"
-    count: 1
-  - paths: [
       packages/google-cloud-dms/google/cloud/clouddms_v1/types/conversionworkspace_resources.py,
     ]
     before: |

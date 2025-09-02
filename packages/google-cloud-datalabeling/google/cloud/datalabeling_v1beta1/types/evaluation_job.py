@@ -267,17 +267,17 @@ class EvaluationJobConfig(proto.Message):
             this configuration, there are requirements for several
             fields:
 
-            -  ``dataType`` must be one of ``IMAGE``, ``TEXT``, or
-               ``GENERAL_DATA``.
-            -  ``annotationType`` must be one of
-               ``IMAGE_CLASSIFICATION_ANNOTATION``,
-               ``TEXT_CLASSIFICATION_ANNOTATION``,
-               ``GENERAL_CLASSIFICATION_ANNOTATION``, or
-               ``IMAGE_BOUNDING_BOX_ANNOTATION`` (image object
-               detection).
-            -  If your machine learning model performs classification,
-               you must specify ``classificationMetadata.isMultiLabel``.
-            -  You must specify ``bigquerySource`` (not ``gcsSource``).
+            - ``dataType`` must be one of ``IMAGE``, ``TEXT``, or
+              ``GENERAL_DATA``.
+            - ``annotationType`` must be one of
+              ``IMAGE_CLASSIFICATION_ANNOTATION``,
+              ``TEXT_CLASSIFICATION_ANNOTATION``,
+              ``GENERAL_CLASSIFICATION_ANNOTATION``, or
+              ``IMAGE_BOUNDING_BOX_ANNOTATION`` (image object
+              detection).
+            - If your machine learning model performs classification,
+              you must specify ``classificationMetadata.isMultiLabel``.
+            - You must specify ``bigquerySource`` (not ``gcsSource``).
         evaluation_config (google.cloud.datalabeling_v1beta1.types.EvaluationConfig):
             Required. Details for calculating evaluation metrics and
             creating
@@ -309,18 +309,18 @@ class EvaluationJobConfig(proto.Message):
 
             You can provide the following entries in this field:
 
-            -  ``data_json_key``: the data key for prediction input. You
-               must provide either this key or ``reference_json_key``.
-            -  ``reference_json_key``: the data reference key for
-               prediction input. You must provide either this key or
-               ``data_json_key``.
-            -  ``label_json_key``: the label key for prediction output.
-               Required.
-            -  ``label_score_json_key``: the score key for prediction
-               output. Required.
-            -  ``bounding_box_json_key``: the bounding box key for
-               prediction output. Required if your model version perform
-               image object detection.
+            - ``data_json_key``: the data key for prediction input. You
+              must provide either this key or ``reference_json_key``.
+            - ``reference_json_key``: the data reference key for
+              prediction input. You must provide either this key or
+              ``data_json_key``.
+            - ``label_json_key``: the label key for prediction output.
+              Required.
+            - ``label_score_json_key``: the score key for prediction
+              output. Required.
+            - ``bounding_box_json_key``: the bounding box key for
+              prediction output. Required if your model version perform
+              image object detection.
 
             Learn `how to configure prediction
             keys </ml-engine/docs/continuous-evaluation/create-job#prediction-keys>`__.

@@ -59,10 +59,10 @@ class Instruction(proto.Message):
             classification task. The CSV file should have exact two
             columns, in the following format:
 
-            -  The first column is labeled data, such as an image
-               reference, text.
-            -  The second column is comma separated labels associated
-               with data.
+            - The first column is labeled data, such as an image
+              reference, text.
+            - The second column is comma separated labels associated
+              with data.
         pdf_instruction (google.cloud.datalabeling_v1beta1.types.PdfInstruction):
             Instruction from a PDF document. The PDF
             should be in a Cloud Storage bucket.

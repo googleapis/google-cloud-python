@@ -80,20 +80,20 @@ class ConverseConversationRequest(proto.Message):
             The user labels applied to a resource must meet the
             following requirements:
 
-            -  Each resource can have multiple labels, up to a maximum
-               of 64.
-            -  Each label must be a key-value pair.
-            -  Keys have a minimum length of 1 character and a maximum
-               length of 63 characters and cannot be empty. Values can
-               be empty and have a maximum length of 63 characters.
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes. All
-               characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  The key portion of a label must be unique. However, you
-               can use the same key with multiple resources.
-            -  Keys must start with a lowercase letter or international
-               character.
+            - Each resource can have multiple labels, up to a maximum of
+              64.
+            - Each label must be a key-value pair.
+            - Keys have a minimum length of 1 character and a maximum
+              length of 63 characters and cannot be empty. Values can be
+              empty and have a maximum length of 63 characters.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes. All
+              characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - The key portion of a label must be unique. However, you
+              can use the same key with multiple resources.
+            - Keys must start with a lowercase letter or international
+              character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -245,7 +245,7 @@ class UpdateConversationRequest(proto.Message):
             [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
             to update. The following are NOT supported:
 
-            -  [Conversation.name][google.cloud.discoveryengine.v1beta.Conversation.name]
+            - [Conversation.name][google.cloud.discoveryengine.v1beta.Conversation.name]
 
             If not set or empty, all supported fields are updated.
     """
@@ -318,9 +318,9 @@ class ListConversationsRequest(proto.Message):
             ascending order. Use "desc" after a field name for
             descending. Supported fields:
 
-            -  ``update_time``
-            -  ``create_time``
-            -  ``conversation_name``
+            - ``update_time``
+            - ``create_time``
+            - ``conversation_name``
 
             Example: "update_time desc" "create_time".
     """
@@ -441,20 +441,20 @@ class AnswerQueryRequest(proto.Message):
             The user labels applied to a resource must meet the
             following requirements:
 
-            -  Each resource can have multiple labels, up to a maximum
-               of 64.
-            -  Each label must be a key-value pair.
-            -  Keys have a minimum length of 1 character and a maximum
-               length of 63 characters and cannot be empty. Values can
-               be empty and have a maximum length of 63 characters.
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes. All
-               characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  The key portion of a label must be unique. However, you
-               can use the same key with multiple resources.
-            -  Keys must start with a lowercase letter or international
-               character.
+            - Each resource can have multiple labels, up to a maximum of
+              64.
+            - Each label must be a key-value pair.
+            - Keys have a minimum length of 1 character and a maximum
+              length of 63 characters and cannot be empty. Values can be
+              empty and have a maximum length of 63 characters.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes. All
+              characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - The key portion of a label must be unique. However, you
+              can use the same key with multiple resources.
+            - Keys must start with a lowercase letter or international
+              character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -1234,7 +1234,7 @@ class UpdateSessionRequest(proto.Message):
             [Session][google.cloud.discoveryengine.v1beta.Session] to
             update. The following are NOT supported:
 
-            -  [Session.name][google.cloud.discoveryengine.v1beta.Session.name]
+            - [Session.name][google.cloud.discoveryengine.v1beta.Session.name]
 
             If not set or empty, all supported fields are updated.
     """
@@ -1307,14 +1307,14 @@ class ListSessionsRequest(proto.Message):
             A comma-separated list of fields to filter by, in EBNF
             grammar. The supported fields are:
 
-            -  ``user_pseudo_id``
-            -  ``state``
-            -  ``display_name``
-            -  ``starred``
-            -  ``is_pinned``
-            -  ``labels``
-            -  ``create_time``
-            -  ``update_time``
+            - ``user_pseudo_id``
+            - ``state``
+            - ``display_name``
+            - ``starred``
+            - ``is_pinned``
+            - ``labels``
+            - ``create_time``
+            - ``update_time``
 
             Examples: "user_pseudo_id = some_id" "display_name =
             "some_name"" "starred = true" "is_pinned=true AND (NOT
@@ -1324,17 +1324,17 @@ class ListSessionsRequest(proto.Message):
             ascending order. Use "desc" after a field name for
             descending. Supported fields:
 
-            -  ``update_time``
-            -  ``create_time``
-            -  ``session_name``
-            -  ``is_pinned``
+            - ``update_time``
+            - ``create_time``
+            - ``session_name``
+            - ``is_pinned``
 
             Example:
 
-            -  "update_time desc"
-            -  "create_time"
-            -  "is_pinned desc,update_time desc": list sessions by
-               is_pinned first, then by update_time.
+            - "update_time desc"
+            - "create_time"
+            - "is_pinned desc,update_time desc": list sessions by
+              is_pinned first, then by update_time.
     """
 
     parent: str = proto.Field(

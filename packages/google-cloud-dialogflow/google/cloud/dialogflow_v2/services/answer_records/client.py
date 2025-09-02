@@ -946,13 +946,13 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
 
                    Currently, answer record includes:
 
-                   -  human agent assistant article suggestion
-                   -  human agent assistant faq article
+                   - human agent assistant article suggestion
+                   - human agent assistant faq article
 
                    It doesn't include:
 
-                   -  DetectIntent intent matching
-                   -  DetectIntent knowledge
+                   - DetectIntent intent matching
+                   - DetectIntent knowledge
 
                    Answer records are not related to the conversation
                    history in the Dialogflow Console. A Record is

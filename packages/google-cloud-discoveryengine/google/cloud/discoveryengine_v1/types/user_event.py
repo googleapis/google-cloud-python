@@ -49,31 +49,31 @@ class UserEvent(proto.Message):
 
             Generic values:
 
-            -  ``search``: Search for Documents.
-            -  ``view-item``: Detailed page view of a Document.
-            -  ``view-item-list``: View of a panel or ordered list of
-               Documents.
-            -  ``view-home-page``: View of the home page.
-            -  ``view-category-page``: View of a category page, e.g.
-               Home > Men > Jeans
-            -  ``add-feedback``: Add a user feedback.
+            - ``search``: Search for Documents.
+            - ``view-item``: Detailed page view of a Document.
+            - ``view-item-list``: View of a panel or ordered list of
+              Documents.
+            - ``view-home-page``: View of the home page.
+            - ``view-category-page``: View of a category page, e.g. Home
+              > Men > Jeans
+            - ``add-feedback``: Add a user feedback.
 
             Retail-related values:
 
-            -  ``add-to-cart``: Add an item(s) to cart, e.g. in Retail
-               online shopping
-            -  ``purchase``: Purchase an item(s)
+            - ``add-to-cart``: Add an item(s) to cart, e.g. in Retail
+              online shopping
+            - ``purchase``: Purchase an item(s)
 
             Media-related values:
 
-            -  ``media-play``: Start/resume watching a video, playing a
-               song, etc.
-            -  ``media-complete``: Finished or stopped midway through a
-               video, song, etc.
+            - ``media-play``: Start/resume watching a video, playing a
+              song, etc.
+            - ``media-complete``: Finished or stopped midway through a
+              video, song, etc.
 
             Custom conversion value:
 
-            -  ``conversion``: Customer defined conversion event.
+            - ``conversion``: Customer defined conversion event.
         conversion_type (str):
             Optional. Conversion type.
 
@@ -175,12 +175,12 @@ class UserEvent(proto.Message):
 
             The value must be one of:
 
-            -  [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1.RecommendResponse.attribution_token]
-               for events that are the result of
-               [RecommendationService.Recommend][google.cloud.discoveryengine.v1.RecommendationService.Recommend].
-            -  [SearchResponse.attribution_token][google.cloud.discoveryengine.v1.SearchResponse.attribution_token]
-               for events that are the result of
-               [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search].
+            - [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1.RecommendResponse.attribution_token]
+              for events that are the result of
+              [RecommendationService.Recommend][google.cloud.discoveryengine.v1.RecommendationService.Recommend].
+            - [SearchResponse.attribution_token][google.cloud.discoveryengine.v1.SearchResponse.attribution_token]
+              for events that are the result of
+              [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search].
 
             This token enables us to accurately attribute page view or
             conversion completion back to the event and the particular
@@ -220,11 +220,11 @@ class UserEvent(proto.Message):
 
             This field is optional except for the following event types:
 
-            -  ``view-item``
-            -  ``add-to-cart``
-            -  ``purchase``
-            -  ``media-play``
-            -  ``media-complete``
+            - ``view-item``
+            - ``add-to-cart``
+            - ``purchase``
+            - ``media-play``
+            - ``media-complete``
 
             In a ``search`` event, this field represents the documents
             returned to the end user on the current page (the end user
@@ -278,12 +278,12 @@ class UserEvent(proto.Message):
             This field needs to pass all below criteria, otherwise an
             ``INVALID_ARGUMENT`` error is returned:
 
-            -  The key must be a UTF-8 encoded string with a length
-               limit of 5,000 characters.
-            -  For text attributes, at most 400 values are allowed.
-               Empty values are not allowed. Each value must be a UTF-8
-               encoded string with a length limit of 256 characters.
-            -  For number attributes, at most 400 values are allowed.
+            - The key must be a UTF-8 encoded string with a length limit
+              of 5,000 characters.
+            - For text attributes, at most 400 values are allowed. Empty
+              values are not allowed. Each value must be a UTF-8 encoded
+              string with a length limit of 256 characters.
+            - For number attributes, at most 400 values are allowed.
 
             For product recommendations, an example of extra user
             information is ``traffic_channel``, which is how a user
@@ -591,12 +591,12 @@ class TransactionInfo(proto.Message):
             manufacturing costs, shipping expenses not borne by the end
             user, or any other costs, such that:
 
-            -  Profit =
-               [value][google.cloud.discoveryengine.v1.TransactionInfo.value]
-               -
-               [tax][google.cloud.discoveryengine.v1.TransactionInfo.tax]
-               -
-               [cost][google.cloud.discoveryengine.v1.TransactionInfo.cost]
+            - Profit =
+              [value][google.cloud.discoveryengine.v1.TransactionInfo.value]
+              -
+              [tax][google.cloud.discoveryengine.v1.TransactionInfo.tax]
+              -
+              [cost][google.cloud.discoveryengine.v1.TransactionInfo.cost]
 
             This field is a member of `oneof`_ ``_cost``.
         discount_value (float):
@@ -618,12 +618,12 @@ class TransactionInfo(proto.Message):
             can be larger than
             [TransactionInfo.value][google.cloud.discoveryengine.v1.TransactionInfo.value]:
 
-            -  Profit =
-               [value][google.cloud.discoveryengine.v1.TransactionInfo.value]
-               -
-               [tax][google.cloud.discoveryengine.v1.TransactionInfo.tax]
-               -
-               [cost][google.cloud.discoveryengine.v1.TransactionInfo.cost]
+            - Profit =
+              [value][google.cloud.discoveryengine.v1.TransactionInfo.value]
+              -
+              [tax][google.cloud.discoveryengine.v1.TransactionInfo.tax]
+              -
+              [cost][google.cloud.discoveryengine.v1.TransactionInfo.cost]
 
             This field is a member of `oneof`_ ``_discount_value``.
     """
@@ -694,8 +694,8 @@ class DocumentInfo(proto.Message):
 
             Required for events of the following event types:
 
-            -  ``add-to-cart``
-            -  ``purchase``
+            - ``add-to-cart``
+            - ``purchase``
 
             This field is a member of `oneof`_ ``_quantity``.
         promotion_ids (MutableSequence[str]):

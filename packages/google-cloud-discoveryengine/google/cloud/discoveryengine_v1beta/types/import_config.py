@@ -81,30 +81,30 @@ class GcsSource(proto.Message):
 
             Supported values for document imports:
 
-            -  ``document`` (default): One JSON
-               [Document][google.cloud.discoveryengine.v1beta.Document]
-               per line. Each document must have a valid
-               [Document.id][google.cloud.discoveryengine.v1beta.Document.id].
-            -  ``content``: Unstructured data (e.g. PDF, HTML). Each
-               file matched by ``input_uris`` becomes a document, with
-               the ID set to the first 128 bits of SHA256(URI) encoded
-               as a hex string.
-            -  ``custom``: One custom data JSON per row in arbitrary
-               format that conforms to the defined
-               [Schema][google.cloud.discoveryengine.v1beta.Schema] of
-               the data store. This can only be used by the GENERIC Data
-               Store vertical.
-            -  ``csv``: A CSV file with header conforming to the defined
-               [Schema][google.cloud.discoveryengine.v1beta.Schema] of
-               the data store. Each entry after the header is imported
-               as a Document. This can only be used by the GENERIC Data
-               Store vertical.
+            - ``document`` (default): One JSON
+              [Document][google.cloud.discoveryengine.v1beta.Document]
+              per line. Each document must have a valid
+              [Document.id][google.cloud.discoveryengine.v1beta.Document.id].
+            - ``content``: Unstructured data (e.g. PDF, HTML). Each file
+              matched by ``input_uris`` becomes a document, with the ID
+              set to the first 128 bits of SHA256(URI) encoded as a hex
+              string.
+            - ``custom``: One custom data JSON per row in arbitrary
+              format that conforms to the defined
+              [Schema][google.cloud.discoveryengine.v1beta.Schema] of
+              the data store. This can only be used by the GENERIC Data
+              Store vertical.
+            - ``csv``: A CSV file with header conforming to the defined
+              [Schema][google.cloud.discoveryengine.v1beta.Schema] of
+              the data store. Each entry after the header is imported as
+              a Document. This can only be used by the GENERIC Data
+              Store vertical.
 
             Supported values for user event imports:
 
-            -  ``user_event`` (default): One JSON
-               [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
-               per line.
+            - ``user_event`` (default): One JSON
+              [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
+              per line.
     """
 
     input_uris: MutableSequence[str] = proto.RepeatedField(
@@ -151,25 +151,25 @@ class BigQuerySource(proto.Message):
 
             Supported values for user event imports:
 
-            -  ``user_event`` (default): One
-               [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
-               per row.
+            - ``user_event`` (default): One
+              [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
+              per row.
 
             Supported values for document imports:
 
-            -  ``document`` (default): One
-               [Document][google.cloud.discoveryengine.v1beta.Document]
-               format per row. Each document must have a valid
-               [Document.id][google.cloud.discoveryengine.v1beta.Document.id]
-               and one of
-               [Document.json_data][google.cloud.discoveryengine.v1beta.Document.json_data]
-               or
-               [Document.struct_data][google.cloud.discoveryengine.v1beta.Document.struct_data].
-            -  ``custom``: One custom data per row in arbitrary format
-               that conforms to the defined
-               [Schema][google.cloud.discoveryengine.v1beta.Schema] of
-               the data store. This can only be used by the GENERIC Data
-               Store vertical.
+            - ``document`` (default): One
+              [Document][google.cloud.discoveryengine.v1beta.Document]
+              format per row. Each document must have a valid
+              [Document.id][google.cloud.discoveryengine.v1beta.Document.id]
+              and one of
+              [Document.json_data][google.cloud.discoveryengine.v1beta.Document.json_data]
+              or
+              [Document.struct_data][google.cloud.discoveryengine.v1beta.Document.struct_data].
+            - ``custom``: One custom data per row in arbitrary format
+              that conforms to the defined
+              [Schema][google.cloud.discoveryengine.v1beta.Schema] of
+              the data store. This can only be used by the GENERIC Data
+              Store vertical.
     """
 
     partition_date: date_pb2.Date = proto.Field(
@@ -325,11 +325,11 @@ class BigtableOptions(proto.Message):
                 The encoding mode of the values when the type is not STRING.
                 Acceptable encoding values are:
 
-                -  ``TEXT``: indicates values are alphanumeric text strings.
-                -  ``BINARY``: indicates values are encoded using
-                   ``HBase Bytes.toBytes`` family of functions. This can be
-                   overridden for a specific column by listing that column
-                   in ``columns`` and specifying an encoding for it.
+                - ``TEXT``: indicates values are alphanumeric text strings.
+                - ``BINARY``: indicates values are encoded using
+                  ``HBase Bytes.toBytes`` family of functions. This can be
+                  overridden for a specific column by listing that column in
+                  ``columns`` and specifying an encoding for it.
             type_ (google.cloud.discoveryengine_v1beta.types.BigtableOptions.Type):
                 The type of values in this column family. The values are
                 expected to be encoded using ``HBase Bytes.toBytes``
@@ -381,11 +381,11 @@ class BigtableOptions(proto.Message):
                 The encoding mode of the values when the type is not
                 ``STRING``. Acceptable encoding values are:
 
-                -  ``TEXT``: indicates values are alphanumeric text strings.
-                -  ``BINARY``: indicates values are encoded using
-                   ``HBase Bytes.toBytes`` family of functions. This can be
-                   overridden for a specific column by listing that column
-                   in ``columns`` and specifying an encoding for it.
+                - ``TEXT``: indicates values are alphanumeric text strings.
+                - ``BINARY``: indicates values are encoded using
+                  ``HBase Bytes.toBytes`` family of functions. This can be
+                  overridden for a specific column by listing that column in
+                  ``columns`` and specifying an encoding for it.
             type_ (google.cloud.discoveryengine_v1beta.types.BigtableOptions.Type):
                 The type of values in this column family. The values are
                 expected to be encoded using ``HBase Bytes.toBytes``
@@ -972,18 +972,18 @@ class ImportDocumentsRequest(proto.Message):
 
             Supported data sources:
 
-            -  [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource].
-               [GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema]
-               must be ``custom`` or ``csv``. Otherwise, an
-               INVALID_ARGUMENT error is thrown.
-            -  [BigQuerySource][google.cloud.discoveryengine.v1beta.BigQuerySource].
-               [BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema]
-               must be ``custom`` or ``csv``. Otherwise, an
-               INVALID_ARGUMENT error is thrown.
-            -  [SpannerSource][google.cloud.discoveryengine.v1beta.SpannerSource].
-            -  [CloudSqlSource][google.cloud.discoveryengine.v1beta.CloudSqlSource].
-            -  [FirestoreSource][google.cloud.discoveryengine.v1beta.FirestoreSource].
-            -  [BigtableSource][google.cloud.discoveryengine.v1beta.BigtableSource].
+            - [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource].
+              [GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema]
+              must be ``custom`` or ``csv``. Otherwise, an
+              INVALID_ARGUMENT error is thrown.
+            - [BigQuerySource][google.cloud.discoveryengine.v1beta.BigQuerySource].
+              [BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema]
+              must be ``custom`` or ``csv``. Otherwise, an
+              INVALID_ARGUMENT error is thrown.
+            - [SpannerSource][google.cloud.discoveryengine.v1beta.SpannerSource].
+            - [CloudSqlSource][google.cloud.discoveryengine.v1beta.CloudSqlSource].
+            - [FirestoreSource][google.cloud.discoveryengine.v1beta.FirestoreSource].
+            - [BigtableSource][google.cloud.discoveryengine.v1beta.BigtableSource].
         id_field (str):
             The field indicates the ID field or column to be used as
             unique IDs of the documents.
@@ -1013,18 +1013,18 @@ class ImportDocumentsRequest(proto.Message):
 
             Supported data sources:
 
-            -  [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource].
-               [GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema]
-               must be ``custom`` or ``csv``. Otherwise, an
-               INVALID_ARGUMENT error is thrown.
-            -  [BigQuerySource][google.cloud.discoveryengine.v1beta.BigQuerySource].
-               [BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema]
-               must be ``custom`` or ``csv``. Otherwise, an
-               INVALID_ARGUMENT error is thrown.
-            -  [SpannerSource][google.cloud.discoveryengine.v1beta.SpannerSource].
-            -  [CloudSqlSource][google.cloud.discoveryengine.v1beta.CloudSqlSource].
-            -  [FirestoreSource][google.cloud.discoveryengine.v1beta.FirestoreSource].
-            -  [BigtableSource][google.cloud.discoveryengine.v1beta.BigtableSource].
+            - [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource].
+              [GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema]
+              must be ``custom`` or ``csv``. Otherwise, an
+              INVALID_ARGUMENT error is thrown.
+            - [BigQuerySource][google.cloud.discoveryengine.v1beta.BigQuerySource].
+              [BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema]
+              must be ``custom`` or ``csv``. Otherwise, an
+              INVALID_ARGUMENT error is thrown.
+            - [SpannerSource][google.cloud.discoveryengine.v1beta.SpannerSource].
+            - [CloudSqlSource][google.cloud.discoveryengine.v1beta.CloudSqlSource].
+            - [FirestoreSource][google.cloud.discoveryengine.v1beta.FirestoreSource].
+            - [BigtableSource][google.cloud.discoveryengine.v1beta.BigtableSource].
     """
 
     class ReconciliationMode(proto.Enum):
@@ -1201,14 +1201,14 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
             import. Supported values ``gcs_source.schema`` for
             autocomplete suggestion deny list entry imports:
 
-            -  ``suggestion_deny_list`` (default): One JSON
-               [SuggestionDenyListEntry] per line.
+            - ``suggestion_deny_list`` (default): One JSON
+              [SuggestionDenyListEntry] per line.
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. The parent data store resource name for which to
             import denylist entries. Follows pattern
-            projects/\ */locations/*/collections/*/dataStores/*.
+            projects/*/locations/*/collections/*/dataStores/*.
     """
 
     class InlineSource(proto.Message):

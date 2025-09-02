@@ -82,19 +82,18 @@ class DataprocMetastoreAsyncClient:
 
     The Dataproc Metastore API defines the following resource model:
 
-    -  The service works with a collection of Google Cloud projects,
-       named: ``/projects/*``
+    - The service works with a collection of Google Cloud projects,
+      named: ``/projects/*``
 
-    -  Each project has a collection of available locations, named:
-       ``/locations/*`` (a location must refer to a Google Cloud
-       ``region``)
+    - Each project has a collection of available locations, named:
+      ``/locations/*`` (a location must refer to a Google Cloud
+      ``region``)
 
-    -  Each location has a collection of services, named:
-       ``/services/*``
+    - Each location has a collection of services, named: ``/services/*``
 
-    -  Dataproc Metastore services are resources with names of the form:
+    - Dataproc Metastore services are resources with names of the form:
 
-       ``/projects/{project_number}/locations/{location_id}/services/{service_id}``.
+      ``/projects/{project_number}/locations/{location_id}/services/{service_id}``.
     """
 
     _client: DataprocMetastoreClient

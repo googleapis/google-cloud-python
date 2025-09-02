@@ -413,8 +413,8 @@ class ProjectServiceGrpcTransport(ProjectServiceTransport):
 
         Terms available for update:
 
-        -  `Terms for data
-           use <https://cloud.google.com/retail/data-use-terms>`__
+        - `Terms for data
+          use <https://cloud.google.com/retail/data-use-terms>`__
 
         Returns:
             Callable[[~.ReportConsentChangeRequest],

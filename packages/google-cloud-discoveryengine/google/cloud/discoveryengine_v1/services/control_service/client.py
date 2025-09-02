@@ -848,7 +848,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 name.
 
                 This value must be within 1-63 characters. Valid
-                characters are /[a-z][0-9]-_/.
+                characters are /[a-z][0-9]-\_/.
 
                 This corresponds to the ``control_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1082,8 +1082,8 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 [Control][google.cloud.discoveryengine.v1.Control] to
                 update. The following are NOT supported:
 
-                -  [Control.name][google.cloud.discoveryengine.v1.Control.name]
-                -  [Control.solution_type][google.cloud.discoveryengine.v1.Control.solution_type]
+                - [Control.name][google.cloud.discoveryengine.v1.Control.name]
+                - [Control.solution_type][google.cloud.discoveryengine.v1.Control.solution_type]
 
                 If not set or empty, all supported fields are updated.
 
