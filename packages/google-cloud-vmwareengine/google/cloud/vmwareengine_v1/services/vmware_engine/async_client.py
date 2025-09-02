@@ -682,14 +682,13 @@ class VmwareEngineAsyncClient:
                 becomes the final token in the name URI. The identifier
                 must meet the following requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``private_cloud_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1524,14 +1523,13 @@ class VmwareEngineAsyncClient:
                 in the name URI. The identifier must meet the following
                 requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2604,14 +2602,13 @@ class VmwareEngineAsyncClient:
                 parent and becomes the final token in the name URI. The
                 identifier must meet the following requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``external_address_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3703,14 +3700,13 @@ class VmwareEngineAsyncClient:
                 name URI. The identifier must meet the following
                 requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``external_access_rule_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4404,14 +4400,13 @@ class VmwareEngineAsyncClient:
                 parent and becomes the final token in the name URI. The
                 identifier must meet the following requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``logging_server_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6118,14 +6113,13 @@ class VmwareEngineAsyncClient:
                 becomes the final token in the name URI. The identifier
                 must meet the following requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``network_peering_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6709,14 +6703,13 @@ class VmwareEngineAsyncClient:
                 the parent and becomes the final token in the name URI.
                 The identifier must meet the following requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``hcx_activation_key_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7391,14 +7384,13 @@ class VmwareEngineAsyncClient:
                 and becomes the final token in the name URI. The
                 identifier must meet the following requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``network_policy_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -8133,14 +8125,13 @@ class VmwareEngineAsyncClient:
                 and becomes the final token in the name URI. The
                 identifier must meet the following requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``management_dns_zone_binding_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -8754,18 +8745,17 @@ class VmwareEngineAsyncClient:
                 becomes the final token in the name URI. The identifier
                 must meet the following requirements:
 
-                -  For networks of type LEGACY, adheres to the format:
-                   ``{region-id}-default``. Replace ``{region-id}`` with
-                   the region where you want to create the VMware Engine
-                   network. For example, "us-central1-default".
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - For networks of type LEGACY, adheres to the format:
+                  ``{region-id}-default``. Replace ``{region-id}`` with
+                  the region where you want to create the VMware Engine
+                  network. For example, "us-central1-default".
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``vmware_engine_network_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -9477,14 +9467,13 @@ class VmwareEngineAsyncClient:
                 becomes the final token in the name URI. The identifier
                 must meet the following requirements:
 
-                -  Only contains 1-63 alphanumeric characters and
-                   hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
 
                 This corresponds to the ``private_connection_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

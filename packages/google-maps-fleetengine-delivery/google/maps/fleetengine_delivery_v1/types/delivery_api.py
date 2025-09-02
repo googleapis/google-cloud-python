@@ -64,20 +64,20 @@ class CreateDeliveryVehicleRequest(proto.Message):
             Required. The Delivery Vehicle ID must be unique and subject
             to the following restrictions:
 
-            -  Must be a valid Unicode string.
-            -  Limited to a maximum length of 64 characters.
-            -  Normalized according to [Unicode Normalization Form C]
-               (http://www.unicode.org/reports/tr15/).
-            -  May not contain any of the following ASCII characters:
-               '/', ':', '?', ',', or '#'.
+            - Must be a valid Unicode string.
+            - Limited to a maximum length of 64 characters.
+            - Normalized according to [Unicode Normalization Form C]
+              (http://www.unicode.org/reports/tr15/).
+            - May not contain any of the following ASCII characters:
+              '/', ':', '?', ',', or '#'.
         delivery_vehicle (google.maps.fleetengine_delivery_v1.types.DeliveryVehicle):
             Required. The ``DeliveryVehicle`` entity to create. When
             creating a new delivery vehicle, you may set the following
             optional fields:
 
-            -  type
-            -  last_location
-            -  attributes
+            - type
+            - last_location
+            - attributes
 
             Note: The DeliveryVehicle's ``name`` field is ignored. All
             other DeliveryVehicle fields must not be set; otherwise, an
@@ -385,29 +385,29 @@ class CreateTaskRequest(proto.Message):
             the same ``tracking_id``. Task IDs are subject to the
             following restrictions:
 
-            -  Must be a valid Unicode string.
-            -  Limited to a maximum length of 64 characters.
-            -  Normalized according to [Unicode Normalization Form C]
-               (http://www.unicode.org/reports/tr15/).
-            -  May not contain any of the following ASCII characters:
-               '/', ':', '?', ',', or '#'.
+            - Must be a valid Unicode string.
+            - Limited to a maximum length of 64 characters.
+            - Normalized according to [Unicode Normalization Form C]
+              (http://www.unicode.org/reports/tr15/).
+            - May not contain any of the following ASCII characters:
+              '/', ':', '?', ',', or '#'.
         task (google.maps.fleetengine_delivery_v1.types.Task):
             Required. The Task entity to create. When creating a Task,
             the following fields are required:
 
-            -  ``type``
-            -  ``state`` (must be set to ``OPEN``)
-            -  ``tracking_id`` (must not be set for ``UNAVAILABLE`` or
-               ``SCHEDULED_STOP`` tasks, but required for all other task
-               types)
-            -  ``planned_location`` (optional for ``UNAVAILABLE`` tasks)
-            -  ``task_duration``
+            - ``type``
+            - ``state`` (must be set to ``OPEN``)
+            - ``tracking_id`` (must not be set for ``UNAVAILABLE`` or
+              ``SCHEDULED_STOP`` tasks, but required for all other task
+              types)
+            - ``planned_location`` (optional for ``UNAVAILABLE`` tasks)
+            - ``task_duration``
 
             The following fields can be optionally set:
 
-            -  ``target_time_window``
-            -  ``task_tracking_view_config``
-            -  ``attributes``
+            - ``target_time_window``
+            - ``task_tracking_view_config``
+            - ``attributes``
 
             Note: The Task's ``name`` field is ignored. All other Task
             fields must not be set; otherwise, an error is returned.
@@ -495,11 +495,11 @@ class UpdateTaskRequest(proto.Message):
             fields are maintained by Fleet Engine. Do not update them
             using ``Task.update``.
 
-            -  ``last_location``.
-            -  ``last_location_snappable``.
-            -  ``name``.
-            -  ``remaining_vehicle_journey_segments``.
-            -  ``task_outcome_location_source``.
+            - ``last_location``.
+            - ``last_location_snappable``.
+            - ``name``.
+            - ``remaining_vehicle_journey_segments``.
+            - ``task_outcome_location_source``.
 
             Note: You cannot change the value of ``task_outcome`` once
             you set it.

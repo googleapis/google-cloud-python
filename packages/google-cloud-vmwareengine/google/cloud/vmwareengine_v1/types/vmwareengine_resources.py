@@ -78,14 +78,13 @@ class NetworkConfig(proto.Message):
             Output only. The IP address layout version of the management
             IP address range. Possible versions include:
 
-            -  ``managementIpAddressLayoutVersion=1``: Indicates the
-               legacy IP address layout used by some existing private
-               clouds. This is no longer supported for new private
-               clouds as it does not support all features.
-            -  ``managementIpAddressLayoutVersion=2``: Indicates the
-               latest IP address layout used by all newly created
-               private clouds. This version supports all current
-               features.
+            - ``managementIpAddressLayoutVersion=1``: Indicates the
+              legacy IP address layout used by some existing private
+              clouds. This is no longer supported for new private clouds
+              as it does not support all features.
+            - ``managementIpAddressLayoutVersion=2``: Indicates the
+              latest IP address layout used by all newly created private
+              clouds. This version supports all current features.
         dns_server_ip (str):
             Output only. DNS Server IP of the Private
             Cloud. All DNS queries can be forwarded to this
@@ -290,13 +289,13 @@ class PrivateCloud(proto.Message):
                 ``Cluster``. The identifier must meet the following
                 requirements:
 
-                -  Only contains 1-63 alphanumeric characters and hyphens
-                -  Begins with an alphabetical character
-                -  Ends with a non-hyphen character
-                -  Not formatted as a UUID
-                -  Complies with `RFC
-                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-                   (section 3.5)
+                - Only contains 1-63 alphanumeric characters and hyphens
+                - Begins with an alphabetical character
+                - Ends with a non-hyphen character
+                - Not formatted as a UUID
+                - Complies with `RFC
+                  1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                  (section 3.5)
             node_type_configs (MutableMapping[str, google.cloud.vmwareengine_v1.types.NodeTypeConfig]):
                 Required. The map of cluster node types in this cluster,
                 where the key is canonical identifier of the node type
@@ -1469,13 +1468,13 @@ class AutoscalingSettings(proto.Message):
             cluster. The key is the identifier of the policy. It must
             meet the following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
 
             Currently there map must contain only one element that
             describes the autoscaling policy for compute nodes.
@@ -1937,10 +1936,10 @@ class PeeringRoute(proto.Message):
             Output only. Direction of the routes exchanged with the peer
             network, from the VMware Engine network perspective:
 
-            -  Routes of direction ``INCOMING`` are imported from the
-               peer network.
-            -  Routes of direction ``OUTGOING`` are exported from the
-               intranet VPC network of the VMware Engine network.
+            - Routes of direction ``INCOMING`` are imported from the
+              peer network.
+            - Routes of direction ``OUTGOING`` are exported from the
+              intranet VPC network of the VMware Engine network.
     """
 
     class Type(proto.Enum):

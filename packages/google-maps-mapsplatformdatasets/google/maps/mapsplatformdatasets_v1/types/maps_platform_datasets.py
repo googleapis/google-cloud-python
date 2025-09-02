@@ -70,7 +70,7 @@ class UpdateDatasetMetadataRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated.
 
-            The value "*" is used for full replacement (default).
+            The value "\*" is used for full replacement (default).
     """
 
     dataset: gmm_dataset.Dataset = proto.Field(

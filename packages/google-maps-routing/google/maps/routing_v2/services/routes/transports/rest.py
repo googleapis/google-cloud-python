@@ -419,6 +419,22 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             resp, _ = self._interceptor.post_compute_route_matrix_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.routing_v2.RoutesClient.compute_route_matrix",
+                    extra={
+                        "serviceName": "google.maps.routing.v2.Routes",
+                        "rpcName": "ComputeRouteMatrix",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ComputeRoutes(_BaseRoutesRestTransport._BaseComputeRoutes, RoutesRestStub):

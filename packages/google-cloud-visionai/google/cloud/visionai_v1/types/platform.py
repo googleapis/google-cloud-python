@@ -3307,14 +3307,14 @@ class BigQueryConfig(proto.Message):
             transform the annotation output from Vision AI Application
             to arbitrary BigQuery table schema with CloudFunction.
 
-            -  The cloud function will receive
-               AppPlatformCloudFunctionRequest where the annotations
-               field will be the json format of Vision AI annotation.
-            -  The cloud function should return
-               AppPlatformCloudFunctionResponse with AppendRowsRequest
-               stored in the annotations field.
-            -  To drop the annotation, simply clear the annotations
-               field in the returned AppPlatformCloudFunctionResponse.
+            - The cloud function will receive
+              AppPlatformCloudFunctionRequest where the annotations
+              field will be the json format of Vision AI annotation.
+            - The cloud function should return
+              AppPlatformCloudFunctionResponse with AppendRowsRequest
+              stored in the annotations field.
+            - To drop the annotation, simply clear the annotations field
+              in the returned AppPlatformCloudFunctionResponse.
         create_default_table_if_not_exists (bool):
             If true, App Platform will create the
             BigQuery DataSet and the BigQuery Table with
@@ -3426,14 +3426,14 @@ class VertexCustomConfig(proto.Message):
             If not empty, the prediction result will be sent to the
             specified cloud function for post processing.
 
-            -  The cloud function will receive
-               AppPlatformCloudFunctionRequest where the annotations
-               field will be the json format of proto PredictResponse.
-            -  The cloud function should return
-               AppPlatformCloudFunctionResponse with PredictResponse
-               stored in the annotations field.
-            -  To drop the prediction output, simply clear the payload
-               field in the returned AppPlatformCloudFunctionResponse.
+            - The cloud function will receive
+              AppPlatformCloudFunctionRequest where the annotations
+              field will be the json format of proto PredictResponse.
+            - The cloud function should return
+              AppPlatformCloudFunctionResponse with PredictResponse
+              stored in the annotations field.
+            - To drop the prediction output, simply clear the payload
+              field in the returned AppPlatformCloudFunctionResponse.
         attach_application_metadata (bool):
             If true, the prediction request received by
             custom model will also contain metadata with the
@@ -3557,9 +3557,9 @@ class AutoscalingMetricSpec(proto.Message):
         metric_name (str):
             Required. The resource metric name. Supported metrics:
 
-            -  For Online Prediction:
-            -  ``aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle``
-            -  ``aiplatform.googleapis.com/prediction/online/cpu/utilization``
+            - For Online Prediction:
+            - ``aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle``
+            - ``aiplatform.googleapis.com/prediction/online/cpu/utilization``
         target (int):
             The target resource utilization in percentage
             (1% - 100%) for the given metric; once the real

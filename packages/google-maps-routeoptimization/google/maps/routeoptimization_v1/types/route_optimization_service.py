@@ -87,8 +87,8 @@ class BatchOptimizeToursRequest(proto.Message):
 
             Format:
 
-            -  ``projects/{project-id}``
-            -  ``projects/{project-id}/locations/{location-id}``
+            - ``projects/{project-id}``
+            - ``projects/{project-id}/locations/{location-id}``
 
             If no location is specified, a region will be chosen
             automatically.
@@ -164,8 +164,8 @@ class OptimizeToursRequest(proto.Message):
 
             Format:
 
-            -  ``projects/{project-id}``
-            -  ``projects/{project-id}/locations/{location-id}``
+            - ``projects/{project-id}``
+            - ``projects/{project-id}/locations/{location-id}``
 
             If no location is specified, a region will be chosen
             automatically.
@@ -195,22 +195,22 @@ class OptimizeToursRequest(proto.Message):
 
             The solution must satisfy some basic validity assumptions:
 
-            -  for all routes, ``vehicle_index`` must be in range and
-               not be duplicated.
-            -  for all visits, ``shipment_index`` and
-               ``visit_request_index`` must be in range.
-            -  a shipment may only be referenced on one route.
-            -  the pickup of a pickup-delivery shipment must be
-               performed before the delivery.
-            -  no more than one pickup alternative or delivery
-               alternative of a shipment may be performed.
-            -  for all routes, times are increasing (i.e.,
-               ``vehicle_start_time <= visits[0].start_time <= visits[1].start_time ... <= vehicle_end_time``).
-            -  a shipment may only be performed on a vehicle that is
-               allowed. A vehicle is allowed if
-               [Shipment.allowed_vehicle_indices][google.maps.routeoptimization.v1.Shipment.allowed_vehicle_indices]
-               is empty or its ``vehicle_index`` is included in
-               [Shipment.allowed_vehicle_indices][google.maps.routeoptimization.v1.Shipment.allowed_vehicle_indices].
+            - for all routes, ``vehicle_index`` must be in range and not
+              be duplicated.
+            - for all visits, ``shipment_index`` and
+              ``visit_request_index`` must be in range.
+            - a shipment may only be referenced on one route.
+            - the pickup of a pickup-delivery shipment must be performed
+              before the delivery.
+            - no more than one pickup alternative or delivery
+              alternative of a shipment may be performed.
+            - for all routes, times are increasing (i.e.,
+              ``vehicle_start_time <= visits[0].start_time <= visits[1].start_time ... <= vehicle_end_time``).
+            - a shipment may only be performed on a vehicle that is
+              allowed. A vehicle is allowed if
+              [Shipment.allowed_vehicle_indices][google.maps.routeoptimization.v1.Shipment.allowed_vehicle_indices]
+              is empty or its ``vehicle_index`` is included in
+              [Shipment.allowed_vehicle_indices][google.maps.routeoptimization.v1.Shipment.allowed_vehicle_indices].
 
             If the injected solution is not feasible, a validation error
             is not necessarily returned and an error indicating
@@ -251,29 +251,29 @@ class OptimizeToursRequest(proto.Message):
         interpret_injected_solutions_using_labels (bool):
             If true:
 
-            -  uses
-               [ShipmentRoute.vehicle_label][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_label]
-               instead of ``vehicle_index`` to match routes in an
-               injected solution with vehicles in the request; reuses
-               the mapping of original
-               [ShipmentRoute.vehicle_index][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_index]
-               to new
-               [ShipmentRoute.vehicle_index][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_index]
-               to update
-               [ConstraintRelaxation.vehicle_indices][google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.vehicle_indices]
-               if non-empty, but the mapping must be unambiguous (i.e.,
-               multiple ``ShipmentRoute``\ s must not share the same
-               original ``vehicle_index``).
-            -  uses
-               [ShipmentRoute.Visit.shipment_label][google.maps.routeoptimization.v1.ShipmentRoute.Visit.shipment_label]
-               instead of ``shipment_index`` to match visits in an
-               injected solution with shipments in the request;
-            -  uses
-               [SkippedShipment.label][google.maps.routeoptimization.v1.SkippedShipment.label]
-               instead of
-               [SkippedShipment.index][google.maps.routeoptimization.v1.SkippedShipment.index]
-               to match skipped shipments in the injected solution with
-               request shipments.
+            - uses
+              [ShipmentRoute.vehicle_label][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_label]
+              instead of ``vehicle_index`` to match routes in an
+              injected solution with vehicles in the request; reuses the
+              mapping of original
+              [ShipmentRoute.vehicle_index][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_index]
+              to new
+              [ShipmentRoute.vehicle_index][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_index]
+              to update
+              [ConstraintRelaxation.vehicle_indices][google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.vehicle_indices]
+              if non-empty, but the mapping must be unambiguous (i.e.,
+              multiple ``ShipmentRoute``\ s must not share the same
+              original ``vehicle_index``).
+            - uses
+              [ShipmentRoute.Visit.shipment_label][google.maps.routeoptimization.v1.ShipmentRoute.Visit.shipment_label]
+              instead of ``shipment_index`` to match visits in an
+              injected solution with shipments in the request;
+            - uses
+              [SkippedShipment.label][google.maps.routeoptimization.v1.SkippedShipment.label]
+              instead of
+              [SkippedShipment.index][google.maps.routeoptimization.v1.SkippedShipment.index]
+              to match skipped shipments in the injected solution with
+              request shipments.
 
             This interpretation applies to the
             ``injected_first_solution_routes``,
@@ -286,17 +286,17 @@ class OptimizeToursRequest(proto.Message):
             If true, labels in the following categories must appear at
             most once in their category:
 
-            -  [Vehicle.label][google.maps.routeoptimization.v1.Vehicle.label]
-               in the request;
-            -  [Shipment.label][google.maps.routeoptimization.v1.Shipment.label]
-               in the request;
-            -  [ShipmentRoute.vehicle_label][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_label]
-               in the injected solution;
-            -  [SkippedShipment.label][google.maps.routeoptimization.v1.SkippedShipment.label]
-               and
-               [ShipmentRoute.Visit.shipment_label][google.maps.routeoptimization.v1.ShipmentRoute.Visit.shipment_label]
-               in the injected solution (except pickup/delivery visit
-               pairs, whose ``shipment_label`` must appear twice).
+            - [Vehicle.label][google.maps.routeoptimization.v1.Vehicle.label]
+              in the request;
+            - [Shipment.label][google.maps.routeoptimization.v1.Shipment.label]
+              in the request;
+            - [ShipmentRoute.vehicle_label][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_label]
+              in the injected solution;
+            - [SkippedShipment.label][google.maps.routeoptimization.v1.SkippedShipment.label]
+              and
+              [ShipmentRoute.Visit.shipment_label][google.maps.routeoptimization.v1.ShipmentRoute.Visit.shipment_label]
+              in the injected solution (except pickup/delivery visit
+              pairs, whose ``shipment_label`` must appear twice).
 
             If a ``vehicle_label`` in the injected solution does not
             correspond to a request vehicle, the corresponding route is
@@ -648,10 +648,10 @@ class ShipmentModel(proto.Message):
     by a set of vehicles, while minimizing the overall cost, which is
     the sum of:
 
-    -  the cost of routing the vehicles (sum of cost per total time,
-       cost per travel time, and fixed cost over all vehicles).
-    -  the unperformed shipment penalties.
-    -  the cost of the global duration of the shipments
+    - the cost of routing the vehicles (sum of cost per total time, cost
+      per travel time, and fixed cost over all vehicles).
+    - the unperformed shipment penalties.
+    - the cost of the global duration of the shipments
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -709,10 +709,10 @@ class ShipmentModel(proto.Message):
 
             Usage examples:
 
-            -  There are two locations: locA and locB.
-            -  1 vehicle starting its route at locA and ending it at
-               locA.
-            -  1 pickup visit request at locB.
+            - There are two locations: locA and locB.
+            - 1 vehicle starting its route at locA and ending it at
+              locA.
+            - 1 pickup visit request at locB.
 
             ::
 
@@ -735,14 +735,14 @@ class ShipmentModel(proto.Message):
                  }
                }
 
-            -  There are three locations: locA, locB and locC.
-            -  1 vehicle starting its route at locA and ending it at
-               locB, using matrix "fast".
-            -  1 vehicle starting its route at locB and ending it at
-               locB, using matrix "slow".
-            -  1 vehicle starting its route at locB and ending it at
-               locB, using matrix "fast".
-            -  1 pickup visit request at locC.
+            - There are three locations: locA, locB and locC.
+            - 1 vehicle starting its route at locA and ending it at
+              locB, using matrix "fast".
+            - 1 vehicle starting its route at locB and ending it at
+              locB, using matrix "slow".
+            - 1 vehicle starting its route at locB and ending it at
+              locB, using matrix "fast".
+            - 1 pickup visit request at locC.
 
             ::
 
@@ -1083,13 +1083,13 @@ class Shipment(proto.Message):
             delivered by each vehicle. If specified, it must have
             EITHER:
 
-            -  the same number of elements as
-               ``costs_per_vehicle_indices``. ``costs_per_vehicle[i]``
-               corresponds to vehicle ``costs_per_vehicle_indices[i]``
-               of the model.
-            -  the same number of elements as there are vehicles in the
-               model. The i-th element corresponds to vehicle #i of the
-               model.
+            - the same number of elements as
+              ``costs_per_vehicle_indices``. ``costs_per_vehicle[i]``
+              corresponds to vehicle ``costs_per_vehicle_indices[i]`` of
+              the model.
+            - the same number of elements as there are vehicles in the
+              model. The i-th element corresponds to vehicle #i of the
+              model.
 
             These costs must be in the same unit as ``penalty_cost`` and
             must not be negative. Leave this field empty, if there are
@@ -1434,13 +1434,13 @@ class ShipmentTypeIncompatibility(proto.Message):
                 For two shipments with incompatible types with the
                 ``NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY`` incompatibility mode:
 
-                -  If both are pickups only (no deliveries) or deliveries
-                   only (no pickups), they cannot share the same vehicle at
-                   all.
-                -  If one of the shipments has a delivery and the other a
-                   pickup, the two shipments can share the same vehicle iff
-                   the former shipment is delivered before the latter is
-                   picked up.
+                - If both are pickups only (no deliveries) or deliveries
+                  only (no pickups), they cannot share the same vehicle at
+                  all.
+                - If one of the shipments has a delivery and the other a
+                  pickup, the two shipments can share the same vehicle iff
+                  the former shipment is delivered before the latter is
+                  picked up.
         """
         INCOMPATIBILITY_MODE_UNSPECIFIED = 0
         NOT_PERFORMED_BY_SAME_VEHICLE = 1
@@ -1497,12 +1497,12 @@ class ShipmentTypeRequirement(proto.Message):
 
                 A "dependent" shipment pickup must therefore have either:
 
-                -  A delivery-only "required" shipment delivered on the
-                   route after, or
-                -  A "required" shipment picked up on the route before it,
-                   and if the "required" shipment has a delivery, this
-                   delivery must be performed after the "dependent"
-                   shipment's pickup.
+                - A delivery-only "required" shipment delivered on the route
+                  after, or
+                - A "required" shipment picked up on the route before it,
+                  and if the "required" shipment has a delivery, this
+                  delivery must be performed after the "dependent"
+                  shipment's pickup.
             IN_SAME_VEHICLE_AT_DELIVERY_TIME (3):
                 Same as before, except the "dependent" shipments need to
                 have a "required" shipment on their vehicle at the time of
@@ -1636,7 +1636,7 @@ class Vehicle(proto.Message):
         start_time_windows (MutableSequence[google.maps.routeoptimization_v1.types.TimeWindow]):
             Time windows during which the vehicle may depart its start
             location. They must be within the global time limits (see
-            [ShipmentModel.global_*][google.maps.routeoptimization.v1.ShipmentModel.global_start_time]
+            [ShipmentModel.global\_\*][google.maps.routeoptimization.v1.ShipmentModel.global_start_time]
             fields). If unspecified, there is no limitation besides
             those global time limits.
 
@@ -1650,7 +1650,7 @@ class Vehicle(proto.Message):
         end_time_windows (MutableSequence[google.maps.routeoptimization_v1.types.TimeWindow]):
             Time windows during which the vehicle may arrive at its end
             location. They must be within the global time limits (see
-            [ShipmentModel.global_*][google.maps.routeoptimization.v1.ShipmentModel.global_start_time]
+            [ShipmentModel.global\_\*][google.maps.routeoptimization.v1.ShipmentModel.global_start_time]
             fields). If unspecified, there is no limitation besides
             those global time limits.
 
@@ -1848,9 +1848,9 @@ class Vehicle(proto.Message):
                 applies (only once per vehicle): (load -
                 [soft_max_load][google.maps.routeoptimization.v1.Vehicle.LoadLimit.soft_max_load])
 
-                -  [cost_per_unit_above_soft_max][google.maps.routeoptimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max].
-                   All costs add up and must be in the same unit as
-                   [Shipment.penalty_cost][google.maps.routeoptimization.v1.Shipment.penalty_cost].
+                - [cost_per_unit_above_soft_max][google.maps.routeoptimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max].
+                  All costs add up and must be in the same unit as
+                  [Shipment.penalty_cost][google.maps.routeoptimization.v1.Shipment.penalty_cost].
             start_load_interval (google.maps.routeoptimization_v1.types.Vehicle.LoadLimit.Interval):
                 The acceptable load interval of the vehicle
                 at the start of the route.
@@ -2496,14 +2496,14 @@ class BreakRule(proto.Message):
     remains idle at its current position and cannot perform any visit. A
     break may occur:
 
-    -  during the travel between two visits (which includes the time
-       right before or right after a visit, but not in the middle of a
-       visit), in which case it extends the corresponding transit time
-       between the visits,
-    -  or before the vehicle start (the vehicle may not start in the
-       middle of a break), in which case it does not affect the vehicle
-       start time.
-    -  or after the vehicle end (ditto, with the vehicle end time).
+    - during the travel between two visits (which includes the time
+      right before or right after a visit, but not in the middle of a
+      visit), in which case it extends the corresponding transit time
+      between the visits,
+    - or before the vehicle start (the vehicle may not start in the
+      middle of a break), in which case it does not affect the vehicle
+      start time.
+    - or after the vehicle end (ditto, with the vehicle end time).
 
     Attributes:
         break_requests (MutableSequence[google.maps.routeoptimization_v1.types.BreakRule.BreakRequest]):
@@ -2638,21 +2638,21 @@ class ShipmentRoute(proto.Message):
 
     Note that we make a difference between:
 
-    -  "punctual events", such as the vehicle start and end and each
-       visit's start and end (aka arrival and departure). They happen at
-       a given second.
-    -  "time intervals", such as the visits themselves, and the
-       transition between visits. Though time intervals can sometimes
-       have zero duration, i.e. start and end at the same second, they
-       often have a positive duration.
+    - "punctual events", such as the vehicle start and end and each
+      visit's start and end (aka arrival and departure). They happen at
+      a given second.
+    - "time intervals", such as the visits themselves, and the
+      transition between visits. Though time intervals can sometimes
+      have zero duration, i.e. start and end at the same second, they
+      often have a positive duration.
 
     Invariants:
 
-    -  If there are n visits, there are n+1 transitions.
-    -  A visit is always surrounded by a transition before it (same
-       index) and a transition after it (index + 1).
-    -  The vehicle start is always followed by transition #0.
-    -  The vehicle end is always preceded by transition #n.
+    - If there are n visits, there are n+1 transitions.
+    - A visit is always surrounded by a transition before it (same
+      index) and a transition after it (index + 1).
+    - The vehicle start is always followed by transition #0.
+    - The vehicle end is always preceded by transition #n.
 
     Zooming in, here is what happens during a ``Transition`` and a
     ``Visit``:
@@ -2689,16 +2689,16 @@ class ShipmentRoute(proto.Message):
     Lastly, here is how the TRAVEL, BREAKS, DELAY and WAIT can be
     arranged during a transition.
 
-    -  They don't overlap.
-    -  The DELAY is unique and *must* be a contiguous period of time
-       right before the next visit (or vehicle end). Thus, it suffice to
-       know the delay duration to know its start and end time.
-    -  The BREAKS are contiguous, non-overlapping periods of time. The
-       response specifies the start time and duration of each break.
-    -  TRAVEL and WAIT are "preemptable": they can be interrupted
-       several times during this transition. Clients can assume that
-       travel happens "as soon as possible" and that "wait" fills the
-       remaining time.
+    - They don't overlap.
+    - The DELAY is unique and *must* be a contiguous period of time
+      right before the next visit (or vehicle end). Thus, it suffice to
+      know the delay duration to know its start and end time.
+    - The BREAKS are contiguous, non-overlapping periods of time. The
+      response specifies the start time and duration of each break.
+    - TRAVEL and WAIT are "preemptable": they can be interrupted several
+      times during this transition. Clients can assume that travel
+      happens "as soon as possible" and that "wait" fills the remaining
+      time.
 
     A (complex) example:
 
@@ -2922,14 +2922,14 @@ class ShipmentRoute(proto.Message):
                 Total duration of the transition, provided for convenience.
                 It is equal to:
 
-                -  next visit ``start_time`` (or ``vehicle_end_time`` if
-                   this is the last transition) - this transition's
-                   ``start_time``;
-                -  if ``ShipmentRoute.has_traffic_infeasibilities`` is
-                   false, the following additionally holds: \`total_duration
-                   = travel_duration + delay_duration
+                - next visit ``start_time`` (or ``vehicle_end_time`` if this
+                  is the last transition) - this transition's
+                  ``start_time``;
+                - if ``ShipmentRoute.has_traffic_infeasibilities`` is false,
+                  the following additionally holds: \`total_duration =
+                  travel_duration + delay_duration
 
-                -  break_duration + wait_duration`.
+                - break_duration + wait_duration\`.
             start_time (google.protobuf.timestamp_pb2.Timestamp):
                 Start time of this transition.
             route_polyline (google.maps.routeoptimization_v1.types.ShipmentRoute.EncodedPolyline):
@@ -3443,18 +3443,18 @@ class InjectedSolutionConstraint(proto.Message):
             ``relaxations(i).level`` specifies the constraint relaxation level
             applied to a visit #j that satisfies:
 
-            -  ``route.visits(j).start_time >= relaxations(i).threshold_time``
-               AND
-            -  ``j + 1 >= relaxations(i).threshold_visit_count``
+            - ``route.visits(j).start_time >= relaxations(i).threshold_time``
+              AND
+            - ``j + 1 >= relaxations(i).threshold_visit_count``
 
             Similarly, the vehicle start is relaxed to ``relaxations(i).level``
             if it satisfies:
 
-            -  ``vehicle_start_time >= relaxations(i).threshold_time`` AND
-            -  ``relaxations(i).threshold_visit_count == 0`` and the vehicle end
-               is relaxed to ``relaxations(i).level`` if it satisfies:
-            -  ``vehicle_end_time >= relaxations(i).threshold_time`` AND
-            -  ``route.visits_size() + 1 >= relaxations(i).threshold_visit_count``
+            - ``vehicle_start_time >= relaxations(i).threshold_time`` AND
+            - ``relaxations(i).threshold_visit_count == 0`` and the vehicle end
+              is relaxed to ``relaxations(i).level`` if it satisfies:
+            - ``vehicle_end_time >= relaxations(i).threshold_time`` AND
+            - ``route.visits_size() + 1 >= relaxations(i).threshold_visit_count``
 
             To apply a relaxation level if a visit meets the
             ``threshold_visit_count`` OR the ``threshold_time`` add two

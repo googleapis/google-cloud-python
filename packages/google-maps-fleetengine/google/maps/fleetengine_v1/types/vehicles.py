@@ -493,9 +493,9 @@ class LicensePlate(proto.Message):
             The last digit of the license plate or "-1" to denote no
             numeric value is present in the license plate.
 
-            -  "ABC 1234" -> "4"
-            -  "AB 123 CD" -> "3"
-            -  "ABCDEF" -> "-1".
+            - "ABC 1234" -> "4"
+            - "AB 123 CD" -> "3"
+            - "ABCDEF" -> "-1".
     """
 
     country_code: str = proto.Field(
