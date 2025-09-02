@@ -41,6 +41,8 @@ class confidentialcomputingCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_challenge': ('parent', 'challenge', ),
         'verify_attestation': ('challenge', 'tpm_attestation', 'td_ccel', 'sev_snp_attestation', 'gcp_credentials', 'confidential_space_info', 'token_options', 'attester', ),
+        'verify_confidential_gke': ('challenge', 'tpm_attestation', ),
+        'verify_confidential_space': ('challenge', 'td_ccel', 'tpm_attestation', 'gcp_credentials', 'signed_entities', 'gce_shielded_identity', 'options', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -511,11 +511,11 @@ class AutoMlGrpcAsyncIOTransport(AutoMlTransport):
 
         For Tables:
 
-        -  A
-           [schema_inference_version][google.cloud.automl.v1.InputConfig.params]
-           parameter must be explicitly set. Returns an empty response
-           in the [response][google.longrunning.Operation.response]
-           field when it completes.
+        - A
+          [schema_inference_version][google.cloud.automl.v1.InputConfig.params]
+          parameter must be explicitly set. Returns an empty response in
+          the [response][google.longrunning.Operation.response] field
+          when it completes.
 
         Returns:
             Callable[[~.ImportDataRequest],

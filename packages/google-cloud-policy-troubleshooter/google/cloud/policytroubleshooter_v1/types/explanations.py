@@ -241,8 +241,8 @@ class BindingExplanation(proto.Message):
             For example, suppose that a binding includes the following
             principals:
 
-            -  ``user:alice@example.com``
-            -  ``group:product-eng@example.com``
+            - ``user:alice@example.com``
+            - ``group:product-eng@example.com``
 
             You want to troubleshoot access for
             ``user:bob@example.com``. This user is a principal of the
@@ -295,11 +295,11 @@ class BindingExplanation(proto.Message):
                 The binding includes the principal. The principal can be
                 included directly or indirectly. For example:
 
-                -  A principal is included directly if that principal is
-                   listed in the binding.
-                -  A principal is included indirectly if that principal is
-                   in a Google group or Google Workspace domain that is
-                   listed in the binding.
+                - A principal is included directly if that principal is
+                  listed in the binding.
+                - A principal is included indirectly if that principal is in
+                  a Google group or Google Workspace domain that is listed
+                  in the binding.
             MEMBERSHIP_NOT_INCLUDED (2):
                 The binding does not include the principal.
             MEMBERSHIP_UNKNOWN_INFO_DENIED (3):

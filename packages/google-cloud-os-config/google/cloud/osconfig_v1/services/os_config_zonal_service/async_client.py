@@ -422,12 +422,12 @@ class OsConfigZonalServiceAsyncClient:
                 Required. The logical name of the OS policy assignment
                 in the project with the following restrictions:
 
-                -  Must contain only lowercase letters, numbers, and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-63 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the project.
+                - Must contain only lowercase letters, numbers, and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-63 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the project.
 
                 This corresponds to the ``os_policy_assignment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -455,7 +455,7 @@ class OsConfigZonalServiceAsyncClient:
                    packages, or executing a script.
 
                    For more information, see [OS policy and OS policy
-                   assignment](\ https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+                   assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
 
         """
         # Create or coerce a protobuf request object.
@@ -624,7 +624,7 @@ class OsConfigZonalServiceAsyncClient:
                    packages, or executing a script.
 
                    For more information, see [OS policy and OS policy
-                   assignment](\ https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+                   assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
 
         """
         # Create or coerce a protobuf request object.
@@ -767,7 +767,7 @@ class OsConfigZonalServiceAsyncClient:
                    packages, or executing a script.
 
                    For more information, see [OS policy and OS policy
-                   assignment](\ https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+                   assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
 
         """
         # Create or coerce a protobuf request object.
@@ -1596,7 +1596,7 @@ class OsConfigZonalServiceAsyncClient:
 
                    For more information, see [Information provided by OS
                    inventory
-                   management](\ https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).
+                   management](https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).
 
         """
         # Create or coerce a protobuf request object.
@@ -1858,7 +1858,7 @@ class OsConfigZonalServiceAsyncClient:
                    given point in time.
 
                    For more information, see [Vulnerability
-                   reports](\ https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports).
+                   reports](https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports).
 
         """
         # Create or coerce a protobuf request object.

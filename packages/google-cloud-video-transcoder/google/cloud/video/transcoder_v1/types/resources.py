@@ -586,15 +586,15 @@ class MuxStream(proto.Message):
 
             Supported streaming formats:
 
-            -  ``ts``
-            -  ``fmp4``- the corresponding file extension is ``.m4s``
+            - ``ts``
+            - ``fmp4``- the corresponding file extension is ``.m4s``
 
             Supported standalone file formats:
 
-            -  ``mp4``
-            -  ``mp3``
-            -  ``ogg``
-            -  ``vtt``
+            - ``mp4``
+            - ``mp3``
+            - ``ogg``
+            - ``vtt``
 
             See also: `Supported input and output
             formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__
@@ -624,8 +624,8 @@ class MuxStream(proto.Message):
 
                 Supported H265 codec tags:
 
-                -  ``hvc1`` (default)
-                -  ``hev1``
+                - ``hvc1`` (default)
+                - ``hev1``
         """
 
         codec_tag: str = proto.Field(
@@ -823,7 +823,7 @@ class SpriteSheet(proto.Message):
 
             Supported formats:
 
-            -  ``jpeg``
+            - ``jpeg``
         file_prefix (str):
             Required. File name prefix for the generated sprite sheets.
 
@@ -1240,8 +1240,8 @@ class PreprocessingConfig(proto.Message):
 
                 Supported denoiser modes:
 
-                -  ``standard``
-                -  ``grain``
+                - ``standard``
+                - ``grain``
         """
 
         strength: float = proto.Field(
@@ -1286,15 +1286,15 @@ class PreprocessingConfig(proto.Message):
                 relative to full scale (LUFS). Enter a value between -24 and
                 0 (the default), where:
 
-                -  -24 is the Advanced Television Systems Committee (ATSC
-                   A/85) standard
-                -  -23 is the EU R128 broadcast standard
-                -  -19 is the prior standard for online mono audio
-                -  -18 is the ReplayGain standard
-                -  -16 is the prior standard for stereo audio
-                -  -14 is the new online audio standard recommended by
-                   Spotify, as well as Amazon Echo
-                -  0 disables normalization
+                - -24 is the Advanced Television Systems Committee (ATSC
+                  A/85) standard
+                - -23 is the EU R128 broadcast standard
+                - -19 is the prior standard for online mono audio
+                - -18 is the ReplayGain standard
+                - -16 is the prior standard for stereo audio
+                - -14 is the new online audio standard recommended by
+                  Spotify, as well as Amazon Echo
+                - 0 disables normalization
             high_boost (bool):
                 Enable boosting high frequency components. The default is
                 ``false``.
@@ -1424,17 +1424,17 @@ class PreprocessingConfig(proto.Message):
                     Specifies the deinterlacing mode to adopt. The default is
                     ``send_frame``. Supported values:
 
-                    -  ``send_frame``: Output one frame for each frame
-                    -  ``send_field``: Output one frame for each field
+                    - ``send_frame``: Output one frame for each frame
+                    - ``send_field``: Output one frame for each field
                 disable_spatial_interlacing (bool):
                     Disable spacial interlacing. The default is ``false``.
                 parity (str):
                     The picture field parity assumed for the input interlaced
                     video. The default is ``auto``. Supported values:
 
-                    -  ``tff``: Assume the top field is first
-                    -  ``bff``: Assume the bottom field is first
-                    -  ``auto``: Enable automatic detection of field parity
+                    - ``tff``: Assume the top field is first
+                    - ``bff``: Assume the bottom field is first
+                    - ``auto``: Enable automatic detection of field parity
                 deinterlace_all_frames (bool):
                     Deinterlace all frames rather than just the frames
                     identified as interlaced. The default is ``false``.
@@ -1465,15 +1465,15 @@ class PreprocessingConfig(proto.Message):
                     Specifies the deinterlacing mode to adopt. The default is
                     ``send_frame``. Supported values:
 
-                    -  ``send_frame``: Output one frame for each frame
-                    -  ``send_field``: Output one frame for each field
+                    - ``send_frame``: Output one frame for each frame
+                    - ``send_field``: Output one frame for each field
                 parity (str):
                     The picture field parity assumed for the input interlaced
                     video. The default is ``auto``. Supported values:
 
-                    -  ``tff``: Assume the top field is first
-                    -  ``bff``: Assume the bottom field is first
-                    -  ``auto``: Enable automatic detection of field parity
+                    - ``tff``: Assume the top field is first
+                    - ``bff``: Assume the bottom field is first
+                    - ``auto``: Enable automatic detection of field parity
                 deinterlace_all_frames (bool):
                     Deinterlace all frames rather than just the frames
                     identified as interlaced. The default is ``false``.
@@ -1719,22 +1719,22 @@ class VideoStream(proto.Message):
 
                 Supported pixel formats:
 
-                -  ``yuv420p`` pixel format
-                -  ``yuv422p`` pixel format
-                -  ``yuv444p`` pixel format
-                -  ``yuv420p10`` 10-bit HDR pixel format
-                -  ``yuv422p10`` 10-bit HDR pixel format
-                -  ``yuv444p10`` 10-bit HDR pixel format
-                -  ``yuv420p12`` 12-bit HDR pixel format
-                -  ``yuv422p12`` 12-bit HDR pixel format
-                -  ``yuv444p12`` 12-bit HDR pixel format
+                - ``yuv420p`` pixel format
+                - ``yuv422p`` pixel format
+                - ``yuv444p`` pixel format
+                - ``yuv420p10`` 10-bit HDR pixel format
+                - ``yuv422p10`` 10-bit HDR pixel format
+                - ``yuv444p10`` 10-bit HDR pixel format
+                - ``yuv420p12`` 12-bit HDR pixel format
+                - ``yuv422p12`` 12-bit HDR pixel format
+                - ``yuv444p12`` 12-bit HDR pixel format
             rate_control_mode (str):
                 Specify the mode. The default is ``vbr``.
 
                 Supported rate control modes:
 
-                -  ``vbr`` - variable bitrate
-                -  ``crf`` - constant rate factor
+                - ``vbr`` - variable bitrate
+                - ``crf`` - constant rate factor
             crf_level (int):
                 Target CRF level. Must be between 10 and 36,
                 where 10 is the highest quality and 36 is the
@@ -1774,8 +1774,8 @@ class VideoStream(proto.Message):
 
                 Supported entropy coders:
 
-                -  ``cavlc``
-                -  ``cabac``
+                - ``cavlc``
+                - ``cabac``
             b_pyramid (bool):
                 Allow B-pyramid for reference frame selection. This may not
                 be supported on all decoders. The default is ``false``.
@@ -1794,9 +1794,9 @@ class VideoStream(proto.Message):
                 Enforces the specified codec profile. The following profiles
                 are supported:
 
-                -  ``baseline``
-                -  ``main``
-                -  ``high`` (default)
+                - ``baseline``
+                - ``main``
+                - ``high`` (default)
 
                 The available options are
                 `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>`__.
@@ -1997,22 +1997,22 @@ class VideoStream(proto.Message):
 
                 Supported pixel formats:
 
-                -  ``yuv420p`` pixel format
-                -  ``yuv422p`` pixel format
-                -  ``yuv444p`` pixel format
-                -  ``yuv420p10`` 10-bit HDR pixel format
-                -  ``yuv422p10`` 10-bit HDR pixel format
-                -  ``yuv444p10`` 10-bit HDR pixel format
-                -  ``yuv420p12`` 12-bit HDR pixel format
-                -  ``yuv422p12`` 12-bit HDR pixel format
-                -  ``yuv444p12`` 12-bit HDR pixel format
+                - ``yuv420p`` pixel format
+                - ``yuv422p`` pixel format
+                - ``yuv444p`` pixel format
+                - ``yuv420p10`` 10-bit HDR pixel format
+                - ``yuv422p10`` 10-bit HDR pixel format
+                - ``yuv444p10`` 10-bit HDR pixel format
+                - ``yuv420p12`` 12-bit HDR pixel format
+                - ``yuv422p12`` 12-bit HDR pixel format
+                - ``yuv444p12`` 12-bit HDR pixel format
             rate_control_mode (str):
                 Specify the mode. The default is ``vbr``.
 
                 Supported rate control modes:
 
-                -  ``vbr`` - variable bitrate
-                -  ``crf`` - constant rate factor
+                - ``vbr`` - variable bitrate
+                - ``crf`` - constant rate factor
             crf_level (int):
                 Target CRF level. Must be between 10 and 36,
                 where 10 is the highest quality and 36 is the
@@ -2065,29 +2065,29 @@ class VideoStream(proto.Message):
                 Enforces the specified codec profile. The following profiles
                 are supported:
 
-                -  8-bit profiles
+                - 8-bit profiles
 
-                   -  ``main`` (default)
-                   -  ``main-intra``
-                   -  ``mainstillpicture``
+                  - ``main`` (default)
+                  - ``main-intra``
+                  - ``mainstillpicture``
 
-                -  10-bit profiles
+                - 10-bit profiles
 
-                   -  ``main10`` (default)
-                   -  ``main10-intra``
-                   -  ``main422-10``
-                   -  ``main422-10-intra``
-                   -  ``main444-10``
-                   -  ``main444-10-intra``
+                  - ``main10`` (default)
+                  - ``main10-intra``
+                  - ``main422-10``
+                  - ``main422-10-intra``
+                  - ``main444-10``
+                  - ``main444-10-intra``
 
-                -  12-bit profiles
+                - 12-bit profiles
 
-                   -  ``main12`` (default)
-                   -  ``main12-intra``
-                   -  ``main422-12``
-                   -  ``main422-12-intra``
-                   -  ``main444-12``
-                   -  ``main444-12-intra``
+                  - ``main12`` (default)
+                  - ``main12-intra``
+                  - ``main422-12``
+                  - ``main422-12-intra``
+                  - ``main444-12``
+                  - ``main444-12-intra``
 
                 The available options are
                 `FFmpeg-compatible <https://x265.readthedocs.io/>`__. Note
@@ -2289,21 +2289,21 @@ class VideoStream(proto.Message):
 
                 Supported pixel formats:
 
-                -  ``yuv420p`` pixel format
-                -  ``yuv422p`` pixel format
-                -  ``yuv444p`` pixel format
-                -  ``yuv420p10`` 10-bit HDR pixel format
-                -  ``yuv422p10`` 10-bit HDR pixel format
-                -  ``yuv444p10`` 10-bit HDR pixel format
-                -  ``yuv420p12`` 12-bit HDR pixel format
-                -  ``yuv422p12`` 12-bit HDR pixel format
-                -  ``yuv444p12`` 12-bit HDR pixel format
+                - ``yuv420p`` pixel format
+                - ``yuv422p`` pixel format
+                - ``yuv444p`` pixel format
+                - ``yuv420p10`` 10-bit HDR pixel format
+                - ``yuv422p10`` 10-bit HDR pixel format
+                - ``yuv444p10`` 10-bit HDR pixel format
+                - ``yuv420p12`` 12-bit HDR pixel format
+                - ``yuv422p12`` 12-bit HDR pixel format
+                - ``yuv444p12`` 12-bit HDR pixel format
             rate_control_mode (str):
                 Specify the mode. The default is ``vbr``.
 
                 Supported rate control modes:
 
-                -  ``vbr`` - variable bitrate
+                - ``vbr`` - variable bitrate
             crf_level (int):
                 Target CRF level. Must be between 10 and 36, where 10 is the
                 highest quality and 36 is the most efficient compression.
@@ -2327,10 +2327,10 @@ class VideoStream(proto.Message):
                 Enforces the specified codec profile. The following profiles
                 are supported:
 
-                -  ``profile0`` (default)
-                -  ``profile1``
-                -  ``profile2``
-                -  ``profile3``
+                - ``profile0`` (default)
+                - ``profile1``
+                - ``profile2``
+                - ``profile3``
 
                 The available options are
                 `WebM-compatible <https://www.webmproject.org/vp9/profiles/>`__.
@@ -2439,13 +2439,13 @@ class AudioStream(proto.Message):
 
             Supported audio codecs:
 
-            -  ``aac``
-            -  ``aac-he``
-            -  ``aac-he-v2``
-            -  ``mp3``
-            -  ``ac3``
-            -  ``eac3``
-            -  ``vorbis``
+            - ``aac``
+            - ``aac-he``
+            - ``aac-he-v2``
+            - ``mp3``
+            - ``ac3``
+            - ``eac3``
+            - ``vorbis``
         bitrate_bps (int):
             Required. Audio bitrate in bits per second.
             Must be between 1 and 10,000,000.
@@ -2460,12 +2460,12 @@ class AudioStream(proto.Message):
 
             Supported channel names:
 
-            -  ``fl`` - Front left channel
-            -  ``fr`` - Front right channel
-            -  ``sl`` - Side left channel
-            -  ``sr`` - Side right channel
-            -  ``fc`` - Front center channel
-            -  ``lfe`` - Low frequency
+            - ``fl`` - Front left channel
+            - ``fr`` - Front right channel
+            - ``sl`` - Side left channel
+            - ``sr`` - Side right channel
+            - ``fc`` - Front center channel
+            - ``lfe`` - Low frequency
         mapping_ (MutableSequence[google.cloud.video.transcoder_v1.types.AudioStream.AudioMapping]):
             The mapping for the
             [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list]
@@ -2586,11 +2586,11 @@ class TextStream(proto.Message):
 
             Supported text codecs:
 
-            -  ``srt``
-            -  ``ttml``
-            -  ``cea608``
-            -  ``cea708``
-            -  ``webvtt``
+            - ``srt``
+            - ``ttml``
+            - ``cea608``
+            - ``cea708``
+            - ``webvtt``
         language_code (str):
             The BCP-47 language code, such as ``en-US`` or ``sr-Latn``.
             For more information, see
@@ -2738,8 +2738,8 @@ class Encryption(proto.Message):
 
                 Supported encryption schemes:
 
-                -  ``cenc``
-                -  ``cbcs``
+                - ``cenc``
+                - ``cbcs``
         """
 
         scheme: str = proto.Field(

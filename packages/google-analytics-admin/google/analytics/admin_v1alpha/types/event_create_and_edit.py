@@ -38,21 +38,21 @@ class ParameterMutation(proto.Message):
             Required. The name of the parameter to mutate. This value
             must:
 
-            -  be less than 40 characters.
-            -  be unique across across all mutations within the rule
-            -  consist only of letters, digits or \_ (underscores) For
-               event edit rules, the name may also be set to
-               'event_name' to modify the event_name in place.
+            - be less than 40 characters.
+            - be unique across across all mutations within the rule
+            - consist only of letters, digits or \_ (underscores) For
+              event edit rules, the name may also be set to 'event_name'
+              to modify the event_name in place.
         parameter_value (str):
             Required. The value mutation to perform.
 
-            -  Must be less than 100 characters.
-            -  To specify a constant value for the param, use the
-               value's string.
-            -  To copy value from another parameter, use syntax like
-               "[[other_parameter]]" For more details, see this `help
-               center
-               article <https://support.google.com/analytics/answer/10085872#modify-an-event&zippy=%2Cin-this-article%2Cmodify-parameters>`__.
+            - Must be less than 100 characters.
+            - To specify a constant value for the param, use the value's
+              string.
+            - To copy value from another parameter, use syntax like
+              "[[other_parameter]]" For more details, see this `help
+              center
+              article <https://support.google.com/analytics/answer/10085872#modify-an-event&zippy=%2Cin-this-article%2Cmodify-parameters>`__.
     """
 
     parameter: str = proto.Field(
@@ -87,9 +87,9 @@ class EventCreateRule(proto.Message):
 
             This value must:
 
-            -  be less than 40 characters
-            -  consist only of letters, digits or \_ (underscores)
-            -  start with a letter
+            - be less than 40 characters
+            - consist only of letters, digits or \_ (underscores)
+            - start with a letter
         event_conditions (MutableSequence[google.analytics.admin_v1alpha.types.MatchingCondition]):
             Required. Must have at least one condition,
             and can have up to 10 max. Conditions on the

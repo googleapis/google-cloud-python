@@ -162,11 +162,11 @@ class MembershipMatchingState(proto.Enum):
             policy. The principal can be included directly or
             indirectly:
 
-            -  A principal is included directly if that principal is
-               listed in the role binding.
-            -  A principal is included indirectly if that principal is
-               in a Google group, Google Workspace account, or Cloud
-               Identity domain that is listed in the policy.
+            - A principal is included directly if that principal is
+              listed in the role binding.
+            - A principal is included indirectly if that principal is in
+              a Google group, Google Workspace account, or Cloud
+              Identity domain that is listed in the policy.
         MEMBERSHIP_NOT_MATCHED (2):
             The principal in the request doesn't match
             the principal in the policy.
@@ -723,8 +723,8 @@ class AllowBindingExplanation(proto.Message):
             For example, suppose that a role binding includes the
             following principals:
 
-            -  ``user:alice@example.com``
-            -  ``group:product-eng@example.com``
+            - ``user:alice@example.com``
+            - ``group:product-eng@example.com``
 
             You want to troubleshoot access for
             ``user:bob@example.com``. This user is a member of the group

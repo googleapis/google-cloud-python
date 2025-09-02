@@ -1010,11 +1010,11 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
 
         An ad break's state is complete when the following occurs:
 
-        -  Full service DAI: after a matching ad break shows in the
-           ``LiveStreamEvent`` manifest only when the ad break has
-           started decisioning.
-        -  Pod Serving: after the ad break is requested using the ad
-           break ID or break sequence.
+        - Full service DAI: after a matching ad break shows in the
+          ``LiveStreamEvent`` manifest only when the ad break has
+          started decisioning.
+        - Pod Serving: after the ad break is requested using the ad
+          break ID or break sequence.
 
         .. code-block:: python
 

@@ -172,7 +172,7 @@ class Job(proto.Message):
             Language codes must be in BCP-47 format, such as "en-US" or
             "sr-Latn". For more information, see `Tags for Identifying
             Languages <https://tools.ietf.org/html/bcp47>`__\ {:
-            class="external" target="_blank" }.
+            class="external" target="\_blank" }.
 
             If this field is unspecified and
             [Job.description][google.cloud.talent.v4beta1.Job.description]
@@ -409,11 +409,11 @@ class Job(proto.Message):
                 Option for job HTML content sanitization. Applied fields
                 are:
 
-                -  description
-                -  applicationInfo.instruction
-                -  incentives
-                -  qualifications
-                -  responsibilities
+                - description
+                - applicationInfo.instruction
+                - incentives
+                - qualifications
+                - responsibilities
 
                 HTML tags in these fields may be stripped if sanitiazation
                 isn't disabled.

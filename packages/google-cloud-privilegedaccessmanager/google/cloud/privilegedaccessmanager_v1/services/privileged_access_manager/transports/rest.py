@@ -1033,24 +1033,23 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
     It defines the following resource model:
 
-    -  A collection of ``Entitlement`` resources. An entitlement allows
-       configuring (among other things):
+    - A collection of ``Entitlement`` resources. An entitlement allows
+      configuring (among other things):
 
-       -  Some kind of privileged access that users can request.
-       -  A set of users called *requesters* who can request this
-          access.
-       -  A maximum duration for which the access can be requested.
-       -  An optional approval workflow which must be satisfied before
-          access is granted.
+      - Some kind of privileged access that users can request.
+      - A set of users called *requesters* who can request this access.
+      - A maximum duration for which the access can be requested.
+      - An optional approval workflow which must be satisfied before
+        access is granted.
 
-    -  A collection of ``Grant`` resources. A grant is a request by a
-       requester to get the privileged access specified in an
-       entitlement for some duration.
+    - A collection of ``Grant`` resources. A grant is a request by a
+      requester to get the privileged access specified in an entitlement
+      for some duration.
 
-       After the approval workflow as specified in the entitlement is
-       satisfied, the specified access is given to the requester. The
-       access is automatically taken back after the requested duration
-       is over.
+      After the approval workflow as specified in the entitlement is
+      satisfied, the specified access is given to the requester. The
+      access is automatically taken back after the requested duration is
+      over.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

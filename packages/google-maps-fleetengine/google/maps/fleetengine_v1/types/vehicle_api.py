@@ -64,37 +64,37 @@ class CreateVehicleRequest(proto.Message):
             Required. Unique Vehicle ID. Subject to the following
             restrictions:
 
-            -  Must be a valid Unicode string.
-            -  Limited to a maximum length of 64 characters.
-            -  Normalized according to [Unicode Normalization Form C]
-               (http://www.unicode.org/reports/tr15/).
-            -  May not contain any of the following ASCII characters:
-               '/', ':', '?', ',', or '#'.
+            - Must be a valid Unicode string.
+            - Limited to a maximum length of 64 characters.
+            - Normalized according to [Unicode Normalization Form C]
+              (http://www.unicode.org/reports/tr15/).
+            - May not contain any of the following ASCII characters:
+              '/', ':', '?', ',', or '#'.
         vehicle (google.maps.fleetengine_v1.types.Vehicle):
             Required. The Vehicle entity to create. When creating a
             Vehicle, the following fields are required:
 
-            -  ``vehicleState``
-            -  ``supportedTripTypes``
-            -  ``maximumCapacity``
-            -  ``vehicleType``
+            - ``vehicleState``
+            - ``supportedTripTypes``
+            - ``maximumCapacity``
+            - ``vehicleType``
 
             When creating a Vehicle, the following fields are ignored:
 
-            -  ``name``
-            -  ``currentTrips``
-            -  ``availableCapacity``
-            -  ``current_route_segment``
-            -  ``current_route_segment_end_point``
-            -  ``current_route_segment_version``
-            -  ``current_route_segment_traffic``
-            -  ``route``
-            -  ``waypoints``
-            -  ``waypoints_version``
-            -  ``remaining_distance_meters``
-            -  ``remaining_time_seconds``
-            -  ``eta_to_next_waypoint``
-            -  ``navigation_status``
+            - ``name``
+            - ``currentTrips``
+            - ``availableCapacity``
+            - ``current_route_segment``
+            - ``current_route_segment_end_point``
+            - ``current_route_segment_version``
+            - ``current_route_segment_traffic``
+            - ``route``
+            - ``waypoints``
+            - ``waypoints_version``
+            - ``remaining_distance_meters``
+            - ``remaining_time_seconds``
+            - ``eta_to_next_waypoint``
+            - ``navigation_status``
 
             All other fields are optional and used if provided.
     """
@@ -211,11 +211,11 @@ class UpdateVehicleRequest(proto.Message):
             updating a ``Vehicle``, the following fields may not be
             updated as they are managed by the server.
 
-            -  ``available_capacity``
-            -  ``current_route_segment_version``
-            -  ``current_trips``
-            -  ``name``
-            -  ``waypoints_version``
+            - ``available_capacity``
+            - ``current_route_segment_version``
+            - ``current_trips``
+            - ``name``
+            - ``waypoints_version``
 
             If the ``attributes`` field is updated, **all** the
             vehicle's attributes are replaced with the attributes

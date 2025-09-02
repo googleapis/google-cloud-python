@@ -81,19 +81,19 @@ class DeliveryVehicle(proto.Message):
             ``Task.journeySharingInfo.remainingVehicleJourneySegments[0].path``
             (REST):
 
-            -  The endpoint of the ``current_route_segment`` does not
-               match
-               ``DeliveryVehicle.remaining_vehicle_journey_segments[0].stop``
-               (gRPC) or
-               ``DeliveryVehicle.remainingVehicleJourneySegments[0].stop``
-               (REST).
+            - The endpoint of the ``current_route_segment`` does not
+              match
+              ``DeliveryVehicle.remaining_vehicle_journey_segments[0].stop``
+              (gRPC) or
+              ``DeliveryVehicle.remainingVehicleJourneySegments[0].stop``
+              (REST).
 
-            -  The driver app has not updated its location recently, so
-               the last updated value for this field might be stale.
+            - The driver app has not updated its location recently, so
+              the last updated value for this field might be stale.
 
-            -  The driver app has recently updated its location, but the
-               ``current_route_segment`` is stale, and points to a
-               previous vehicle stop.
+            - The driver app has recently updated its location, but the
+              ``current_route_segment`` is stale, and points to a
+              previous vehicle stop.
 
             In these cases, Fleet Engine populates this field with a
             route from the most recently passed VehicleStop to the
@@ -381,12 +381,12 @@ class VehicleStop(proto.Message):
                 of a ``GetTask`` call. Task IDs are subject to the following
                 restrictions:
 
-                -  Must be a valid Unicode string.
-                -  Limited to a maximum length of 64 characters.
-                -  Normalized according to [Unicode Normalization Form C]
-                   (http://www.unicode.org/reports/tr15/).
-                -  May not contain any of the following ASCII characters:
-                   '/', ':', '?', ',', or '#'.
+                - Must be a valid Unicode string.
+                - Limited to a maximum length of 64 characters.
+                - Normalized according to [Unicode Normalization Form C]
+                  (http://www.unicode.org/reports/tr15/).
+                - May not contain any of the following ASCII characters:
+                  '/', ':', '?', ',', or '#'.
             task_duration (google.protobuf.duration_pb2.Duration):
                 Output only. The time required to perform the
                 Task.

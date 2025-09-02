@@ -45,7 +45,7 @@ class bigquery_reservationCallTransformer(cst.CSTTransformer):
         'delete_assignment': ('name', ),
         'delete_capacity_commitment': ('name', 'force', ),
         'delete_reservation': ('name', ),
-        'failover_reservation': ('name', ),
+        'failover_reservation': ('name', 'failover_mode', ),
         'get_bi_reservation': ('name', ),
         'get_capacity_commitment': ('name', ),
         'get_reservation': ('name', ),

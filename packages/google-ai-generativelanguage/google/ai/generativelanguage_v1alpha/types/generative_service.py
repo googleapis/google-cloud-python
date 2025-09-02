@@ -612,11 +612,11 @@ class GenerateContentResponse(proto.Message):
     ``GenerateContentResponse.prompt_feedback`` and for each candidate
     in ``finish_reason`` and in ``safety_ratings``. The API:
 
-    -  Returns either all requested candidates or none of them
-    -  Returns no candidates at all only if there was something wrong
-       with the prompt (check ``prompt_feedback``)
-    -  Reports feedback on each candidate in ``finish_reason`` and
-       ``safety_ratings``.
+    - Returns either all requested candidates or none of them
+    - Returns no candidates at all only if there was something wrong
+      with the prompt (check ``prompt_feedback``)
+    - Reports feedback on each candidate in ``finish_reason`` and
+      ``safety_ratings``.
 
     Attributes:
         candidates (MutableSequence[google.ai.generativelanguage_v1alpha.types.Candidate]):
@@ -1451,12 +1451,12 @@ class GenerateAnswerResponse(proto.Message):
 
             When ``answerable_probability`` is low, you may want to:
 
-            -  Display a message to the effect of "We couldn’t answer
-               that question" to the user.
-            -  Fall back to a general-purpose LLM that answers the
-               question from world knowledge. The threshold and nature
-               of such fallbacks will depend on individual use cases.
-               ``0.5`` is a good starting threshold.
+            - Display a message to the effect of "We couldn’t answer
+              that question" to the user.
+            - Fall back to a general-purpose LLM that answers the
+              question from world knowledge. The threshold and nature of
+              such fallbacks will depend on individual use cases.
+              ``0.5`` is a good starting threshold.
 
             This field is a member of `oneof`_ ``_answerable_probability``.
         input_feedback (google.ai.generativelanguage_v1alpha.types.GenerateAnswerResponse.InputFeedback):
@@ -1466,13 +1466,13 @@ class GenerateAnswerResponse(proto.Message):
 
             The input data can be one or more of the following:
 
-            -  Question specified by the last entry in
-               ``GenerateAnswerRequest.content``
-            -  Conversation history specified by the other entries in
-               ``GenerateAnswerRequest.content``
-            -  Grounding sources
-               (``GenerateAnswerRequest.semantic_retriever`` or
-               ``GenerateAnswerRequest.inline_passages``)
+            - Question specified by the last entry in
+              ``GenerateAnswerRequest.content``
+            - Conversation history specified by the other entries in
+              ``GenerateAnswerRequest.content``
+            - Grounding sources
+              (``GenerateAnswerRequest.semantic_retriever`` or
+              ``GenerateAnswerRequest.inline_passages``)
 
             This field is a member of `oneof`_ ``_input_feedback``.
     """
@@ -1712,7 +1712,7 @@ class CountTokensRequest(proto.Message):
             instructions <https://ai.google.dev/gemini-api/docs/system-instructions>`__,
             and/or function declarations for `function
             calling <https://ai.google.dev/gemini-api/docs/function-calling>`__.
-            ``Model``\ s/\ ``Content``\ s and
+            ``Model``\ s/``Content``\ s and
             ``generate_content_request``\ s are mutually exclusive. You
             can either send ``Model`` + ``Content``\ s or a
             ``generate_content_request``, but never both.
@@ -1777,13 +1777,13 @@ class BidiGenerateContentSetup(proto.Message):
 
             The following fields are not supported:
 
-            -  ``response_logprobs``
-            -  ``response_mime_type``
-            -  ``logprobs``
-            -  ``response_schema``
-            -  ``stop_sequence``
-            -  ``routing_config``
-            -  ``audio_timestamp``
+            - ``response_logprobs``
+            - ``response_mime_type``
+            - ``logprobs``
+            - ``response_schema``
+            - ``stop_sequence``
+            - ``routing_config``
+            - ``audio_timestamp``
         system_instruction (google.ai.generativelanguage_v1alpha.types.Content):
             Optional. The user provided system
             instructions for the model.
@@ -1862,23 +1862,22 @@ class BidiGenerateContentRealtimeInput(proto.Message):
     [BidiGenerateContentClientContent][google.ai.generativelanguage.v1alpha.BidiGenerateContentClientContent]
     in a few ways:
 
-    -  Can be sent continuously without interruption to model
-       generation.
-    -  If there is a need to mix data interleaved across the
-       [BidiGenerateContentClientContent][google.ai.generativelanguage.v1alpha.BidiGenerateContentClientContent]
-       and the
-       [BidiGenerateContentRealtimeInput][google.ai.generativelanguage.v1alpha.BidiGenerateContentRealtimeInput],
-       the server attempts to optimize for best response, but there are
-       no guarantees.
-    -  End of turn is not explicitly specified, but is rather derived
-       from user activity (for example, end of speech).
-    -  Even before the end of turn, the data is processed incrementally
-       to optimize for a fast start of the response from the model.
-    -  Is always direct user input that is sent in real time. Can be
-       sent continuously without interruptions. The model automatically
-       detects the beginning and the end of user speech and starts or
-       terminates streaming the response accordingly. Data is processed
-       incrementally as it arrives, minimizing latency.
+    - Can be sent continuously without interruption to model generation.
+    - If there is a need to mix data interleaved across the
+      [BidiGenerateContentClientContent][google.ai.generativelanguage.v1alpha.BidiGenerateContentClientContent]
+      and the
+      [BidiGenerateContentRealtimeInput][google.ai.generativelanguage.v1alpha.BidiGenerateContentRealtimeInput],
+      the server attempts to optimize for best response, but there are
+      no guarantees.
+    - End of turn is not explicitly specified, but is rather derived
+      from user activity (for example, end of speech).
+    - Even before the end of turn, the data is processed incrementally
+      to optimize for a fast start of the response from the model.
+    - Is always direct user input that is sent in real time. Can be sent
+      continuously without interruptions. The model automatically
+      detects the beginning and the end of user speech and starts or
+      terminates streaming the response accordingly. Data is processed
+      incrementally as it arrives, minimizing latency.
 
     Attributes:
         media_chunks (MutableSequence[google.ai.generativelanguage_v1alpha.types.Blob]):

@@ -1296,26 +1296,23 @@ class JobServiceAsyncClient:
 
                 The fields eligible for filtering are:
 
-                -  ``companyName``
-                -  ``requisitionId``
-                -  ``status`` Available values: OPEN, EXPIRED, ALL.
-                   Defaults to OPEN if no value is specified.
+                - ``companyName``
+                - ``requisitionId``
+                - ``status`` Available values: OPEN, EXPIRED, ALL.
+                  Defaults to OPEN if no value is specified.
 
                 At least one of ``companyName`` and ``requisitionId``
                 must present or an INVALID_ARGUMENT error is thrown.
 
                 Sample Query:
 
-                -  companyName =
-                   "projects/foo/tenants/bar/companies/baz"
-                -  companyName =
-                   "projects/foo/tenants/bar/companies/baz" AND
-                   requisitionId = "req-1"
-                -  companyName =
-                   "projects/foo/tenants/bar/companies/baz" AND status =
-                   "EXPIRED"
-                -  requisitionId = "req-1"
-                -  requisitionId = "req-1" AND status = "EXPIRED"
+                - companyName = "projects/foo/tenants/bar/companies/baz"
+                - companyName = "projects/foo/tenants/bar/companies/baz"
+                  AND requisitionId = "req-1"
+                - companyName = "projects/foo/tenants/bar/companies/baz"
+                  AND status = "EXPIRED"
+                - requisitionId = "req-1"
+                - requisitionId = "req-1" AND status = "EXPIRED"
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -120,15 +120,15 @@ class AdBreak(proto.Message):
 
             **Examples**
 
-            -  ``time_signal()``
-               ::
+            - ``time_signal()``
+              ::
 
-                  /DA0AAAAAAAA///wBQb+cr0AUAAeAhxDVUVJSAAAjn/PAAGlmbAICAAAAAAsoKGKNAIAmsnRfg==
+                 /DA0AAAAAAAA///wBQb+cr0AUAAeAhxDVUVJSAAAjn/PAAGlmbAICAAAAAAsoKGKNAIAmsnRfg==
 
-            -  ``splice_insert()``
-               ::
+            - ``splice_insert()``
+              ::
 
-                  /DAvAAAAAAAA///wFAVIAACPf+/+c2nALv4AUsz1AAAAAAAKAAhDVUVJAAABNWLbowo=
+                 /DAvAAAAAAAA///wFAVIAACPf+/+c2nALv4AUsz1AAAAAAAKAAhDVUVJAAABNWLbowo=
 
             This field is a member of `oneof`_ ``_scte_35_cue_out``.
     """

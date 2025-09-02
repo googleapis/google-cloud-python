@@ -665,11 +665,11 @@ class LeaseTasksRequest(proto.Message):
 
             Grammar Syntax:
 
-            -  ``filter = "tag=" tag | "tag_function=" function``
+            - ``filter = "tag=" tag | "tag_function=" function``
 
-            -  ``tag = string``
+            - ``tag = string``
 
-            -  ``function = "oldest_tag()"``
+            - ``function = "oldest_tag()"``
 
             The ``oldest_tag()`` function returns tasks which have the
             same tag as the oldest task (ordered by schedule time).

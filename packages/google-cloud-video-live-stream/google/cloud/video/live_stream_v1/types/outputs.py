@@ -111,17 +111,17 @@ class MuxStream(proto.Message):
 
             Supported container formats:
 
-            -  ``fmp4`` - the corresponding file extension is ``.m4s``
-            -  ``ts`` - the corresponding file extension is ``.ts``
+            - ``fmp4`` - the corresponding file extension is ``.m4s``
+            - ``ts`` - the corresponding file extension is ``.ts``
         elementary_streams (MutableSequence[str]):
             List of ``ElementaryStream``
             [key][google.cloud.video.livestream.v1.ElementaryStream.key]s
             multiplexed in this stream.
 
-            -  For ``fmp4`` container, must contain either one video or
-               one audio stream.
-            -  For ``ts`` container, must contain exactly one audio
-               stream and up to one video stream.
+            - For ``fmp4`` container, must contain either one video or
+              one audio stream.
+            - For ``ts`` container, must contain exactly one audio
+              stream and up to one video stream.
         segment_settings (google.cloud.video.live_stream_v1.types.SegmentSettings):
             Segment settings for ``fmp4`` and ``ts``.
         encryption_id (str):
@@ -169,9 +169,9 @@ class Manifest(proto.Message):
             [key][google.cloud.video.livestream.v1.MuxStream.key]s that
             should appear in this manifest.
 
-            -  For HLS, either ``fmp4`` or ``ts`` mux streams can be
-               specified but not mixed.
-            -  For DASH, only ``fmp4`` mux streams can be specified.
+            - For HLS, either ``fmp4`` or ``ts`` mux streams can be
+              specified but not mixed.
+            - For DASH, only ``fmp4`` mux streams can be specified.
         max_segment_count (int):
             Maximum number of segments that this manifest
             holds. Once the manifest reaches this maximum
@@ -198,8 +198,8 @@ class Manifest(proto.Message):
             Whether to use the timecode, as specified in timecode
             config, when setting:
 
-            -  ``availabilityStartTime`` attribute in DASH manifests.
-            -  ``#EXT-X-PROGRAM-DATE-TIME`` tag in HLS manifests.
+            - ``availabilityStartTime`` attribute in DASH manifests.
+            - ``#EXT-X-PROGRAM-DATE-TIME`` tag in HLS manifests.
 
             If false, ignore the input timecode and use the time from
             system clock when the manifest is first generated. This is
@@ -266,7 +266,7 @@ class SpriteSheet(proto.Message):
 
             Supported formats:
 
-            -  ``jpeg``
+            - ``jpeg``
         file_prefix (str):
             Required. File name prefix for the generated sprite sheets.
             If multiple sprite sheets are added to the channel, each
@@ -548,8 +548,8 @@ class VideoStream(proto.Message):
 
                 Supported entropy coders:
 
-                -  ``cavlc``
-                -  ``cabac``
+                - ``cavlc``
+                - ``cabac``
             b_pyramid (bool):
                 Allow B-pyramid for reference frame selection. This may not
                 be supported on all decoders. The default is ``false``.
@@ -568,9 +568,9 @@ class VideoStream(proto.Message):
                 Enforces the specified codec profile. The following profiles
                 are supported:
 
-                -  ``baseline``
-                -  ``main`` (default)
-                -  ``high``
+                - ``baseline``
+                - ``main`` (default)
+                - ``high``
 
                 The available options are `FFmpeg-compatible Profile
                 Options <https://trac.ffmpeg.org/wiki/Encode/H.264#Profile>`__.
@@ -673,7 +673,7 @@ class AudioStream(proto.Message):
 
             Supported audio codecs:
 
-            -  ``aac``
+            - ``aac``
         bitrate_bps (int):
             Required. Audio bitrate in bits per second.
             Must be between 1 and 10,000,000.
@@ -688,12 +688,12 @@ class AudioStream(proto.Message):
 
             Supported channel names:
 
-            -  ``fl`` - Front left channel
-            -  ``fr`` - Front right channel
-            -  ``sl`` - Side left channel
-            -  ``sr`` - Side right channel
-            -  ``fc`` - Front center channel
-            -  ``lfe`` - Low frequency
+            - ``fl`` - Front left channel
+            - ``fr`` - Front right channel
+            - ``sl`` - Side left channel
+            - ``sr`` - Side right channel
+            - ``fc`` - Front center channel
+            - ``lfe`` - Low frequency
         mapping_ (MutableSequence[google.cloud.video.live_stream_v1.types.AudioStream.AudioMapping]):
             The mapping for the input streams and audio
             channels.
@@ -794,8 +794,8 @@ class TextStream(proto.Message):
 
             Supported text codecs:
 
-            -  ``cea608``
-            -  ``cea708``
+            - ``cea608``
+            - ``cea708``
     """
 
     codec: str = proto.Field(

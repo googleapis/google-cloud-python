@@ -57,20 +57,20 @@ class ResourceInfo(proto.Message):
     r"""ResourceInfo represents the information/status of an app connector
     resource. Such as:
 
-    -  remote_agent
+    - remote_agent
 
-       -  container
+      - container
 
-          -  runtime
-          -  appgateway
+        - runtime
+        - appgateway
 
-             -  appconnector
+          - appconnector
 
-                -  appconnection
+            - appconnection
 
-                   -  tunnel
+              - tunnel
 
-             -  logagent
+          - logagent
 
     Attributes:
         id (str):

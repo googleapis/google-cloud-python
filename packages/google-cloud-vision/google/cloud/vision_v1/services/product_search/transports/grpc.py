@@ -115,21 +115,20 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
     Manages Products and ProductSets of reference images for use in
     product search. It uses the following resource model:
 
-    -  The API has a collection of
-       [ProductSet][google.cloud.vision.v1.ProductSet] resources, named
-       ``projects/*/locations/*/productSets/*``, which acts as a way to
-       put different products into groups to limit identification.
+    - The API has a collection of
+      [ProductSet][google.cloud.vision.v1.ProductSet] resources, named
+      ``projects/*/locations/*/productSets/*``, which acts as a way to
+      put different products into groups to limit identification.
 
     In parallel,
 
-    -  The API has a collection of
-       [Product][google.cloud.vision.v1.Product] resources, named
-       ``projects/*/locations/*/products/*``
+    - The API has a collection of
+      [Product][google.cloud.vision.v1.Product] resources, named
+      ``projects/*/locations/*/products/*``
 
-    -  Each [Product][google.cloud.vision.v1.Product] has a collection
-       of [ReferenceImage][google.cloud.vision.v1.ReferenceImage]
-       resources, named
-       ``projects/*/locations/*/products/*/referenceImages/*``
+    - Each [Product][google.cloud.vision.v1.Product] has a collection of
+      [ReferenceImage][google.cloud.vision.v1.ReferenceImage] resources,
+      named ``projects/*/locations/*/products/*/referenceImages/*``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -368,8 +367,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns INVALID_ARGUMENT if display_name is missing, or is
-           longer than 4096 characters.
+        - Returns INVALID_ARGUMENT if display_name is missing, or is
+          longer than 4096 characters.
 
         Returns:
             Callable[[~.CreateProductSetRequest],
@@ -402,8 +401,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns INVALID_ARGUMENT if page_size is greater than 100, or
-           less than 1.
+        - Returns INVALID_ARGUMENT if page_size is greater than 100, or
+          less than 1.
 
         Returns:
             Callable[[~.ListProductSetsRequest],
@@ -435,7 +434,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns NOT_FOUND if the ProductSet does not exist.
+        - Returns NOT_FOUND if the ProductSet does not exist.
 
         Returns:
             Callable[[~.GetProductSetRequest],
@@ -469,10 +468,10 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns NOT_FOUND if the ProductSet does not exist.
-        -  Returns INVALID_ARGUMENT if display_name is present in
-           update_mask but missing from the request or longer than 4096
-           characters.
+        - Returns NOT_FOUND if the ProductSet does not exist.
+        - Returns INVALID_ARGUMENT if display_name is present in
+          update_mask but missing from the request or longer than 4096
+          characters.
 
         Returns:
             Callable[[~.UpdateProductSetRequest],
@@ -534,12 +533,12 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns INVALID_ARGUMENT if display_name is missing or longer
-           than 4096 characters.
-        -  Returns INVALID_ARGUMENT if description is longer than 4096
-           characters.
-        -  Returns INVALID_ARGUMENT if product_category is missing or
-           invalid.
+        - Returns INVALID_ARGUMENT if display_name is missing or longer
+          than 4096 characters.
+        - Returns INVALID_ARGUMENT if description is longer than 4096
+          characters.
+        - Returns INVALID_ARGUMENT if product_category is missing or
+          invalid.
 
         Returns:
             Callable[[~.CreateProductRequest],
@@ -572,8 +571,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
-           less than 1.
+        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
+          less than 1.
 
         Returns:
             Callable[[~.ListProductsRequest],
@@ -605,7 +604,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns NOT_FOUND if the Product does not exist.
+        - Returns NOT_FOUND if the Product does not exist.
 
         Returns:
             Callable[[~.GetProductRequest],
@@ -641,14 +640,14 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns NOT_FOUND if the Product does not exist.
-        -  Returns INVALID_ARGUMENT if display_name is present in
-           update_mask but is missing from the request or longer than
-           4096 characters.
-        -  Returns INVALID_ARGUMENT if description is present in
-           update_mask but is longer than 4096 characters.
-        -  Returns INVALID_ARGUMENT if product_category is present in
-           update_mask.
+        - Returns NOT_FOUND if the Product does not exist.
+        - Returns INVALID_ARGUMENT if display_name is present in
+          update_mask but is missing from the request or longer than
+          4096 characters.
+        - Returns INVALID_ARGUMENT if description is present in
+          update_mask but is longer than 4096 characters.
+        - Returns INVALID_ARGUMENT if product_category is present in
+          update_mask.
 
         Returns:
             Callable[[~.UpdateProductRequest],
@@ -722,14 +721,14 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns INVALID_ARGUMENT if the image_uri is missing or
-           longer than 4096 characters.
-        -  Returns INVALID_ARGUMENT if the product does not exist.
-        -  Returns INVALID_ARGUMENT if bounding_poly is not provided,
-           and nothing compatible with the parent product's
-           product_category is detected.
-        -  Returns INVALID_ARGUMENT if bounding_poly contains more than
-           10 polygons.
+        - Returns INVALID_ARGUMENT if the image_uri is missing or longer
+          than 4096 characters.
+        - Returns INVALID_ARGUMENT if the product does not exist.
+        - Returns INVALID_ARGUMENT if bounding_poly is not provided, and
+          nothing compatible with the parent product's product_category
+          is detected.
+        - Returns INVALID_ARGUMENT if bounding_poly contains more than
+          10 polygons.
 
         Returns:
             Callable[[~.CreateReferenceImageRequest],
@@ -797,9 +796,9 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns NOT_FOUND if the parent product does not exist.
-        -  Returns INVALID_ARGUMENT if the page_size is greater than
-           100, or less than 1.
+        - Returns NOT_FOUND if the parent product does not exist.
+        - Returns INVALID_ARGUMENT if the page_size is greater than 100,
+          or less than 1.
 
         Returns:
             Callable[[~.ListReferenceImagesRequest],
@@ -832,7 +831,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns NOT_FOUND if the specified image does not exist.
+        - Returns NOT_FOUND if the specified image does not exist.
 
         Returns:
             Callable[[~.GetReferenceImageRequest],
@@ -867,8 +866,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns NOT_FOUND if the Product or the ProductSet doesn't
-           exist.
+        - Returns NOT_FOUND if the Product or the ProductSet doesn't
+          exist.
 
         Returns:
             Callable[[~.AddProductToProductSetRequest],
@@ -936,8 +935,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
-           less than 1.
+        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
+          less than 1.
 
         Returns:
             Callable[[~.ListProductsInProductSetRequest],

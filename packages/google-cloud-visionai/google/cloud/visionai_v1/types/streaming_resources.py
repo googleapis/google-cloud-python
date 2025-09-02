@@ -256,16 +256,16 @@ class PacketHeader(proto.Message):
 
             The input format is a lowercase hex string:
 
-            -  version_id: 1 byte, currently must be zero - hex encoded
-               (2 characters)
-            -  trace_id: 16 bytes (opaque blob) - hex encoded (32
-               characters)
-            -  span_id: 8 bytes (opaque blob) - hex encoded (16
-               characters)
-            -  trace_options: 1 byte (LSB means tracing enabled) - hex
-               encoded (2 characters) Example:
-               "00-404142434445464748494a4b4c4d4e4f-6162636465666768-01"
-               v trace_id span_id options
+            - version_id: 1 byte, currently must be zero - hex encoded
+              (2 characters)
+            - trace_id: 16 bytes (opaque blob) - hex encoded (32
+              characters)
+            - span_id: 8 bytes (opaque blob) - hex encoded (16
+              characters)
+            - trace_options: 1 byte (LSB means tracing enabled) - hex
+              encoded (2 characters) Example:
+              "00-404142434445464748494a4b4c4d4e4f-6162636465666768-01"
+              v trace_id span_id options
     """
 
     capture_time: timestamp_pb2.Timestamp = proto.Field(

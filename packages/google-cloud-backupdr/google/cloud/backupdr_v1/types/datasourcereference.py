@@ -215,15 +215,15 @@ class FetchDataSourceReferencesForResourceTypeRequest(proto.Message):
             field name, a comparison operator, and the value that you
             want to use for filtering. Supported fields:
 
-            -  data_source
-            -  data_source_gcp_resource_info.gcp_resourcename
-            -  data_source_backup_config_state
-            -  data_source_backup_count
-            -  data_source_backup_config_info.last_backup_state
-            -  data_source_gcp_resource_info.gcp_resourcename
-            -  data_source_gcp_resource_info.type
-            -  data_source_gcp_resource_info.location
-            -  data_source_gcp_resource_info.cloud_sql_instance_properties.instance_create_time
+            - data_source
+            - data_source_gcp_resource_info.gcp_resourcename
+            - data_source_backup_config_state
+            - data_source_backup_count
+            - data_source_backup_config_info.last_backup_state
+            - data_source_gcp_resource_info.gcp_resourcename
+            - data_source_gcp_resource_info.type
+            - data_source_gcp_resource_info.location
+            - data_source_gcp_resource_info.cloud_sql_instance_properties.instance_create_time
         order_by (str):
             Optional. A comma-separated list of fields to order by,
             sorted in ascending order. Use "desc" after a field name for
@@ -231,7 +231,7 @@ class FetchDataSourceReferencesForResourceTypeRequest(proto.Message):
 
             Supported fields:
 
-            -  name
+            - name
     """
 
     parent: str = proto.Field(

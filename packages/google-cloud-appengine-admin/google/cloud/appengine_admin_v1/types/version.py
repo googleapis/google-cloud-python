@@ -162,9 +162,9 @@ class Version(proto.Message):
             Instance class that is used to run this version. Valid
             values are:
 
-            -  AutomaticScaling: ``F1``, ``F2``, ``F4``, ``F4_1G``
-            -  ManualScaling or BasicScaling: ``B1``, ``B2``, ``B4``,
-               ``B8``, ``B4_1G``
+            - AutomaticScaling: ``F1``, ``F2``, ``F4``, ``F4_1G``
+            - ManualScaling or BasicScaling: ``B1``, ``B2``, ``B4``,
+              ``B8``, ``B4_1G``
 
             Defaults to ``F1`` for AutomaticScaling and ``B1`` for
             ManualScaling or BasicScaling.
@@ -911,18 +911,18 @@ class Network(proto.Message):
             If a subnetwork name is specified, a network name will also
             be required unless it is for the default network.
 
-            -  If the network that the instance is being created in is a
-               Legacy network, then the IP address is allocated from the
-               IPv4Range.
-            -  If the network that the instance is being created in is
-               an auto Subnet Mode Network, then only network name
-               should be specified (not the subnetwork_name) and the IP
-               address is created from the IPCidrRange of the subnetwork
-               that exists in that zone for that network.
-            -  If the network that the instance is being created in is a
-               custom Subnet Mode Network, then the subnetwork_name must
-               be specified and the IP address is created from the
-               IPCidrRange of the subnetwork.
+            - If the network that the instance is being created in is a
+              Legacy network, then the IP address is allocated from the
+              IPv4Range.
+            - If the network that the instance is being created in is an
+              auto Subnet Mode Network, then only network name should be
+              specified (not the subnetwork_name) and the IP address is
+              created from the IPCidrRange of the subnetwork that exists
+              in that zone for that network.
+            - If the network that the instance is being created in is a
+              custom Subnet Mode Network, then the subnetwork_name must
+              be specified and the IP address is created from the
+              IPCidrRange of the subnetwork.
 
             If specified, the subnetwork must exist in the same region
             as the App Engine flexible environment application.

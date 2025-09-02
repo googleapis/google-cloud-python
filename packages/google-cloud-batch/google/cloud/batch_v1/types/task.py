@@ -167,13 +167,13 @@ class TaskExecution(proto.Message):
 
             Otherwise, it can be from different sources:
 
-            -  Batch known failures:
-               https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
-            -  Batch runnable execution failures; you can rely on Batch
-               logs to further diagnose:
-               https://cloud.google.com/batch/docs/analyze-job-using-logs.
-               If there are multiple runnables failures, Batch only
-               exposes the first error.
+            - Batch known failures:
+              https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
+            - Batch runnable execution failures; you can rely on Batch
+              logs to further diagnose:
+              https://cloud.google.com/batch/docs/analyze-job-using-logs.
+              If there are multiple runnables failures, Batch only
+              exposes the first error.
     """
 
     exit_code: int = proto.Field(
@@ -465,7 +465,7 @@ class Runnable(proto.Message):
                 Unless the script file supports the default ``#!/bin/sh``
                 shell interpreter, you must specify an interpreter by
                 including a [shebang
-                line](https://en.wikipedia.org/wiki/Shebang_(Unix) as the
+                line](https://en.wikipedia.org/wiki/Shebang\_(Unix) as the
                 first line of the file. For example, to execute the script
                 using bash, include ``#!/bin/bash`` as the first line of the
                 file. Alternatively, to execute the script using Python3,
@@ -479,7 +479,7 @@ class Runnable(proto.Message):
                 Unless the script text supports the default ``#!/bin/sh``
                 shell interpreter, you must specify an interpreter by
                 including a [shebang
-                line](https://en.wikipedia.org/wiki/Shebang_(Unix) at the
+                line](https://en.wikipedia.org/wiki/Shebang\_(Unix) at the
                 beginning of the text. For example, to execute the script
                 using bash, include ``#!/bin/bash\n`` at the beginning of
                 the text. Alternatively, to execute the script using
@@ -580,11 +580,11 @@ class TaskSpec(proto.Message):
             and container runnables each must meet at least one of the
             following conditions:
 
-            -  The runnable exited with a zero status.
-            -  The runnable didn't finish, but you enabled its
-               ``background`` subfield.
-            -  The runnable exited with a non-zero status, but you
-               enabled its ``ignore_exit_status`` subfield.
+            - The runnable exited with a zero status.
+            - The runnable didn't finish, but you enabled its
+              ``background`` subfield.
+            - The runnable exited with a non-zero status, but you
+              enabled its ``ignore_exit_status`` subfield.
         compute_resource (google.cloud.batch_v1.types.ComputeResource):
             ComputeResource requirements.
         max_run_duration (google.protobuf.duration_pb2.Duration):

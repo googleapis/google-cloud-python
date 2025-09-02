@@ -282,103 +282,101 @@ class UpdateEnvironmentRequest(proto.Message):
 
             **Note:** Only the following fields can be updated:
 
-            -  ``config.softwareConfig.pypiPackages``
+            - ``config.softwareConfig.pypiPackages``
 
-               -  Replace all custom custom PyPI packages. If a
-                  replacement package map is not included in
-                  ``environment``, all custom PyPI packages are cleared.
-                  It is an error to provide both this mask and a mask
-                  specifying an individual package.
+              - Replace all custom custom PyPI packages. If a
+                replacement package map is not included in
+                ``environment``, all custom PyPI packages are cleared.
+                It is an error to provide both this mask and a mask
+                specifying an individual package.
 
-            -  ``config.softwareConfig.pypiPackages.``\ packagename
+            - ``config.softwareConfig.pypiPackages.``\ packagename
 
-               -  Update the custom PyPI package *packagename*,
-                  preserving other packages. To delete the package,
-                  include it in ``updateMask``, and omit the mapping for
-                  it in
-                  ``environment.config.softwareConfig.pypiPackages``. It
-                  is an error to provide both a mask of this form and
-                  the ``config.softwareConfig.pypiPackages`` mask.
+              - Update the custom PyPI package *packagename*, preserving
+                other packages. To delete the package, include it in
+                ``updateMask``, and omit the mapping for it in
+                ``environment.config.softwareConfig.pypiPackages``. It
+                is an error to provide both a mask of this form and the
+                ``config.softwareConfig.pypiPackages`` mask.
 
-            -  ``labels``
+            - ``labels``
 
-               -  Replace all environment labels. If a replacement
-                  labels map is not included in ``environment``, all
-                  labels are cleared. It is an error to provide both
-                  this mask and a mask specifying one or more individual
-                  labels.
+              - Replace all environment labels. If a replacement labels
+                map is not included in ``environment``, all labels are
+                cleared. It is an error to provide both this mask and a
+                mask specifying one or more individual labels.
 
-            -  ``labels.``\ labelName
+            - ``labels.``\ labelName
 
-               -  Set the label named *labelName*, while preserving
-                  other labels. To delete the label, include it in
-                  ``updateMask`` and omit its mapping in
-                  ``environment.labels``. It is an error to provide both
-                  a mask of this form and the ``labels`` mask.
+              - Set the label named *labelName*, while preserving other
+                labels. To delete the label, include it in
+                ``updateMask`` and omit its mapping in
+                ``environment.labels``. It is an error to provide both a
+                mask of this form and the ``labels`` mask.
 
-            -  ``config.nodeCount``
+            - ``config.nodeCount``
 
-               -  Horizontally scale the number of nodes in the
-                  environment. An integer greater than or equal to 3
-                  must be provided in the ``config.nodeCount`` field.
-                  Supported for Cloud Composer environments in versions
-                  composer-1.\ *.*-airflow-*.*.*.
+              - Horizontally scale the number of nodes in the
+                environment. An integer greater than or equal to 3 must
+                be provided in the ``config.nodeCount`` field. Supported
+                for Cloud Composer environments in versions
+                composer-1.\ *.*-airflow-*.*.\*.
 
-            -  ``config.webServerNetworkAccessControl``
+            - ``config.webServerNetworkAccessControl``
 
-               -  Replace the environment's current
-                  ``WebServerNetworkAccessControl``.
+              - Replace the environment's current
+                ``WebServerNetworkAccessControl``.
 
-            -  ``config.softwareConfig.airflowConfigOverrides``
+            - ``config.softwareConfig.airflowConfigOverrides``
 
-               -  Replace all Apache Airflow config overrides. If a
-                  replacement config overrides map is not included in
-                  ``environment``, all config overrides are cleared. It
-                  is an error to provide both this mask and a mask
-                  specifying one or more individual config overrides.
+              - Replace all Apache Airflow config overrides. If a
+                replacement config overrides map is not included in
+                ``environment``, all config overrides are cleared. It is
+                an error to provide both this mask and a mask specifying
+                one or more individual config overrides.
 
-            -  ``config.softwareConfig.airflowConfigOverrides.``\ section-name
+            - ``config.softwareConfig.airflowConfigOverrides.``\ section-name
 
-               -  Override the Apache Airflow config property *name* in
-                  the section named *section*, preserving other
-                  properties. To delete the property override, include
-                  it in ``updateMask`` and omit its mapping in
-                  ``environment.config.softwareConfig.airflowConfigOverrides``.
-                  It is an error to provide both a mask of this form and
-                  the ``config.softwareConfig.airflowConfigOverrides``
-                  mask.
+              - Override the Apache Airflow config property *name* in
+                the section named *section*, preserving other
+                properties. To delete the property override, include it
+                in ``updateMask`` and omit its mapping in
+                ``environment.config.softwareConfig.airflowConfigOverrides``.
+                It is an error to provide both a mask of this form and
+                the ``config.softwareConfig.airflowConfigOverrides``
+                mask.
 
-            -  ``config.softwareConfig.envVariables``
+            - ``config.softwareConfig.envVariables``
 
-               -  Replace all environment variables. If a replacement
-                  environment variable map is not included in
-                  ``environment``, all custom environment variables are
-                  cleared.
+              - Replace all environment variables. If a replacement
+                environment variable map is not included in
+                ``environment``, all custom environment variables are
+                cleared.
 
-            -  ``config.softwareConfig.schedulerCount``
+            - ``config.softwareConfig.schedulerCount``
 
-               -  Horizontally scale the number of schedulers in
-                  Airflow. A positive integer not greater than the
-                  number of nodes must be provided in the
-                  ``config.softwareConfig.schedulerCount`` field.
-                  Supported for Cloud Composer environments in versions
-                  composer-1.\ *.*-airflow-2.*.*.
+              - Horizontally scale the number of schedulers in Airflow.
+                A positive integer not greater than the number of nodes
+                must be provided in the
+                ``config.softwareConfig.schedulerCount`` field.
+                Supported for Cloud Composer environments in versions
+                composer-1.\ *.*-airflow-2.\ *.*.
 
-            -  ``config.databaseConfig.machineType``
+            - ``config.databaseConfig.machineType``
 
-               -  Cloud SQL machine type used by Airflow database. It
-                  has to be one of: db-n1-standard-2, db-n1-standard-4,
-                  db-n1-standard-8 or db-n1-standard-16. Supported for
-                  Cloud Composer environments in versions
-                  composer-1.\ *.*-airflow-*.*.*.
+              - Cloud SQL machine type used by Airflow database. It has
+                to be one of: db-n1-standard-2, db-n1-standard-4,
+                db-n1-standard-8 or db-n1-standard-16. Supported for
+                Cloud Composer environments in versions
+                composer-1.\ *.*-airflow-*.*.\*.
 
-            -  ``config.webServerConfig.machineType``
+            - ``config.webServerConfig.machineType``
 
-               -  Machine type on which Airflow web server is running.
-                  It has to be one of: composer-n1-webserver-2,
-                  composer-n1-webserver-4 or composer-n1-webserver-8.
-                  Supported for Cloud Composer environments in versions
-                  composer-1.\ *.*-airflow-*.*.*.
+              - Machine type on which Airflow web server is running. It
+                has to be one of: composer-n1-webserver-2,
+                composer-n1-webserver-4 or composer-n1-webserver-8.
+                Supported for Cloud Composer environments in versions
+                composer-1.\ *.*-airflow-*.*.\*.
     """
 
     name: str = proto.Field(
@@ -1363,7 +1361,7 @@ class EnvironmentConfig(proto.Message):
             will be used to run this environment.
 
             This field is supported for Cloud Composer environments in
-            versions composer-1.\ *.*-airflow-*.*.*.
+            versions composer-1.\ *.*-airflow-*.*.\*.
         software_config (google.cloud.orchestration.airflow.service_v1.types.SoftwareConfig):
             Optional. The configuration settings for
             software inside the environment.
@@ -1453,7 +1451,7 @@ class EnvironmentConfig(proto.Message):
             Optional. Resilience mode of the Cloud Composer Environment.
 
             This field is supported for Cloud Composer environments in
-            versions composer-2.2.0-airflow-\ *.*.\* and newer.
+            versions composer-2.2.0-airflow-*.*.\* and newer.
         data_retention_config (google.cloud.orchestration.airflow.service_v1.types.DataRetentionConfig):
             Optional. The configuration setting for
             Airflow database data retention mechanism.
@@ -1638,14 +1636,14 @@ class DatabaseConfig(proto.Message):
             It has to be one of: db-n1-standard-2, db-n1-standard-4,
             db-n1-standard-8 or db-n1-standard-16. If not specified,
             db-n1-standard-2 will be used. Supported for Cloud Composer
-            environments in versions composer-1.\ *.*-airflow-*.*.*.
+            environments in versions composer-1.\ *.*-airflow-*.*.\*.
         zone (str):
             Optional. The Compute Engine zone where the Airflow database
             is created. If zone is provided, it must be in the region
             selected for the environment. If zone is not provided, a
             zone is automatically selected. The zone can only be set
             during environment creation. Supported for Cloud Composer
-            environments in versions composer-2.\ *.*-airflow-*.*.*.
+            environments in versions composer-2.\ *.*-airflow-*.*.\*.
     """
 
     machine_type: str = proto.Field(
@@ -1684,7 +1682,7 @@ class WebServerConfig(proto.Message):
 class EncryptionConfig(proto.Message):
     r"""The encryption options for the Cloud Composer environment and its
     dependencies.Supported for Cloud Composer environments in versions
-    composer-1.\ *.*-airflow-*.*.*.
+    composer-1.\ *.*-airflow-*.*.\*.
 
     Attributes:
         kms_key_name (str):
@@ -1823,19 +1821,19 @@ class SoftwareConfig(proto.Message):
             the regular expression ``AIRFLOW__[A-Z0-9_]+__[A-Z0-9_]+``),
             and they cannot match any of the following reserved names:
 
-            -  ``AIRFLOW_HOME``
-            -  ``C_FORCE_ROOT``
-            -  ``CONTAINER_NAME``
-            -  ``DAGS_FOLDER``
-            -  ``GCP_PROJECT``
-            -  ``GCS_BUCKET``
-            -  ``GKE_CLUSTER_NAME``
-            -  ``SQL_DATABASE``
-            -  ``SQL_INSTANCE``
-            -  ``SQL_PASSWORD``
-            -  ``SQL_PROJECT``
-            -  ``SQL_REGION``
-            -  ``SQL_USER``
+            - ``AIRFLOW_HOME``
+            - ``C_FORCE_ROOT``
+            - ``CONTAINER_NAME``
+            - ``DAGS_FOLDER``
+            - ``GCP_PROJECT``
+            - ``GCS_BUCKET``
+            - ``GKE_CLUSTER_NAME``
+            - ``SQL_DATABASE``
+            - ``SQL_INSTANCE``
+            - ``SQL_PASSWORD``
+            - ``SQL_PROJECT``
+            - ``SQL_REGION``
+            - ``SQL_USER``
         python_version (str):
             Optional. The major version of Python used to run the Apache
             Airflow scheduler, worker, and webserver processes.
@@ -1844,13 +1842,13 @@ class SoftwareConfig(proto.Message):
             '3'. Cannot be updated.
 
             This field is only supported for Cloud Composer environments
-            in versions composer-1.\ *.*-airflow-*.*.*. Environments in
+            in versions composer-1.\ *.*-airflow-*.*.\*. Environments in
             newer versions always use Python major version 3.
         scheduler_count (int):
             Optional. The number of schedulers for Airflow.
 
             This field is supported for Cloud Composer environments in
-            versions composer-1.\ *.*-airflow-2.*.*.
+            versions composer-1.\ *.*-airflow-2.\ *.*.
         cloud_data_lineage_integration (google.cloud.orchestration.airflow.service_v1.types.CloudDataLineageIntegration):
             Optional. The configuration for Cloud Data
             Lineage integration.
@@ -1859,7 +1857,7 @@ class SoftwareConfig(proto.Message):
             If unspecified, the field defaults to ``PLUGINS_ENABLED``.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+            versions composer-3-airflow-*.*.\ *-build.* and newer.
     """
 
     class WebServerPluginsMode(proto.Enum):
@@ -1933,14 +1931,14 @@ class IPAllocationPolicy(proto.Message):
             cluster. If ``true``, a VPC-native cluster is created.
 
             This field is only supported for Cloud Composer environments
-            in versions composer-1.\ *.*-airflow-*.*.*. Environments in
+            in versions composer-1.\ *.*-airflow-*.*.\*. Environments in
             newer versions always use VPC-native GKE clusters.
         cluster_secondary_range_name (str):
             Optional. The name of the GKE cluster's secondary range used
             to allocate IP addresses to pods.
 
             For Cloud Composer environments in versions
-            composer-1.\ *.*-airflow-*.*.*, this field is applicable
+            composer-1.\ *.*-airflow-*.*.\*, this field is applicable
             only when ``use_ip_aliases`` is true.
 
             This field is a member of `oneof`_ ``cluster_ip_allocation``.
@@ -1949,7 +1947,7 @@ class IPAllocationPolicy(proto.Message):
             to pods in the GKE cluster.
 
             For Cloud Composer environments in versions
-            composer-1.\ *.*-airflow-*.*.*, this field is applicable
+            composer-1.\ *.*-airflow-*.*.\*, this field is applicable
             only when ``use_ip_aliases`` is true.
 
             Set to blank to have GKE choose a range with the default
@@ -1970,7 +1968,7 @@ class IPAllocationPolicy(proto.Message):
             allocate IP addresses to the GKE cluster.
 
             For Cloud Composer environments in versions
-            composer-1.\ *.*-airflow-*.*.*, this field is applicable
+            composer-1.\ *.*-airflow-*.*.\*, this field is applicable
             only when ``use_ip_aliases`` is true.
 
             This field is a member of `oneof`_ ``services_ip_allocation``.
@@ -1979,7 +1977,7 @@ class IPAllocationPolicy(proto.Message):
             in this GKE cluster.
 
             For Cloud Composer environments in versions
-            composer-1.\ *.*-airflow-*.*.*, this field is applicable
+            composer-1.\ *.*-airflow-*.*.\*, this field is applicable
             only when ``use_ip_aliases`` is true.
 
             Set to blank to have GKE choose a range with the default
@@ -2048,7 +2046,7 @@ class NodeConfig(proto.Message):
             will be propagated to the unspecified field.
 
             This field is supported for Cloud Composer environments in
-            versions composer-1.\ *.*-airflow-*.*.*.
+            versions composer-1.\ *.*-airflow-*.*.\*.
         machine_type (str):
             Optional. The Compute Engine `machine
             type </compute/docs/machine-types>`__ used for cluster
@@ -2075,7 +2073,7 @@ class NodeConfig(proto.Message):
             to "n1-standard-1".
 
             This field is supported for Cloud Composer environments in
-            versions composer-1.\ *.*-airflow-*.*.*.
+            versions composer-1.\ *.*-airflow-*.*.\*.
         network (str):
             Optional. The Compute Engine network to be used for machine
             communications, specified as a `relative resource
@@ -2105,7 +2103,7 @@ class NodeConfig(proto.Message):
             updated.
 
             This field is supported for Cloud Composer environments in
-            versions composer-1.\ *.*-airflow-*.*.*.
+            versions composer-1.\ *.*-airflow-*.*.\*.
         oauth_scopes (MutableSequence[str]):
             Optional. The set of Google API scopes to be made available
             on all node VMs. If ``oauth_scopes`` is empty, defaults to
@@ -2113,7 +2111,7 @@ class NodeConfig(proto.Message):
             be updated.
 
             This field is supported for Cloud Composer environments in
-            versions composer-1.\ *.*-airflow-*.*.*.
+            versions composer-1.\ *.*-airflow-*.*.\*.
         service_account (str):
             Optional. The Google Cloud Platform Service
             Account to be used by the node VMs. If a service
@@ -2151,7 +2149,7 @@ class NodeConfig(proto.Message):
             projects/{project}/regions/{region}/networkAttachments/{networkAttachment}.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+            versions composer-3-airflow-*.*.\ *-build.* and newer.
         composer_internal_ipv4_cidr_block (str):
             Optional. The IP range in CIDR notation to use internally by
             Cloud Composer. IP addresses are not reserved - and the same
@@ -2162,7 +2160,7 @@ class NodeConfig(proto.Message):
             used.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+            versions composer-3-airflow-*.*.\ *-build.* and newer.
     """
 
     location: str = proto.Field(
@@ -2303,7 +2301,7 @@ class PrivateEnvironmentConfig(proto.Message):
             environment is created. If this field is set to true,
             ``IPAllocationPolicy.use_ip_aliases`` must be set to true
             for Cloud Composer environments in versions
-            composer-1.\ *.*-airflow-*.*.*.
+            composer-1.\ *.*-airflow-*.*.\*.
         enable_private_builds_only (bool):
             Optional. If ``true``, builds performed during operations
             that install Python packages have only private connectivity
@@ -2315,7 +2313,7 @@ class PrivateEnvironmentConfig(proto.Message):
             internet.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+            versions composer-3-airflow-*.*.\ *-build.* and newer.
         private_cluster_config (google.cloud.orchestration.airflow.service_v1.types.PrivateClusterConfig):
             Optional. Configuration for the private GKE
             cluster for a Private IP Cloud Composer
@@ -2327,7 +2325,7 @@ class PrivateEnvironmentConfig(proto.Message):
             ``cloud_sql_ipv4_cidr_block``.
 
             This field is supported for Cloud Composer environments in
-            versions composer-1.\ *.*-airflow-*.*.*.
+            versions composer-1.\ *.*-airflow-*.*.\*.
         cloud_sql_ipv4_cidr_block (str):
             Optional. The CIDR block from which IP range in tenant
             project will be reserved for Cloud SQL. Needs to be disjoint
@@ -2337,7 +2335,7 @@ class PrivateEnvironmentConfig(proto.Message):
             App Engine VMs.
 
             This field is supported for Cloud Composer environments in
-            versions composer-1.\ *.*-airflow-*.*.*.
+            versions composer-1.\ *.*-airflow-*.*.\*.
         cloud_composer_network_ipv4_cidr_block (str):
             Optional. The CIDR block from which IP range for Cloud
             Composer Network in tenant project will be reserved. Needs
@@ -2439,7 +2437,7 @@ class WorkloadsConfig(proto.Message):
             Optional. Resources used by Airflow DAG processors.
 
             This field is supported for Cloud Composer environments in
-            versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+            versions composer-3-airflow-*.*.\ *-build.* and newer.
     """
 
     class SchedulerResource(proto.Message):
@@ -2577,7 +2575,7 @@ class WorkloadsConfig(proto.Message):
         r"""Configuration for resources used by Airflow DAG processors.
 
         This field is supported for Cloud Composer environments in versions
-        composer-3-airflow-\ *.*.\ *-build.* and newer.
+        composer-3-airflow-*.*.\ *-build.* and newer.
 
         Attributes:
             cpu (float):
@@ -2790,12 +2788,12 @@ class Environment(proto.Message):
             the labels map are UTF8 strings that comply with the
             following restrictions:
 
-            -  Keys must conform to regexp:
-               [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
-            -  Values must conform to regexp:
-               [\p{Ll}\p{Lo}\p{N}_-]{0,63}
-            -  Both keys and values are additionally constrained to be
-               <= 128 bytes in size.
+            - Keys must conform to regexp:
+              [\\p{Ll}\\p{Lo}][\\p{Ll}\\p{Lo}\\p{N}\_-]{0,62}
+            - Values must conform to regexp:
+              [\\p{Ll}\\p{Lo}\\p{N}\_-]{0,63}
+            - Both keys and values are additionally constrained to be <=
+              128 bytes in size.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
         satisfies_pzi (bool):

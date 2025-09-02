@@ -123,7 +123,7 @@ class DataExchange(proto.Message):
         display_name (str):
             Required. Human-readable display name of the data exchange.
             The display name must contain only Unicode letters, numbers
-            (0-9), underscores (_), dashes (-), spaces ( ), ampersands
+            (0-9), underscores (\_), dashes (-), spaces ( ), ampersands
             (&) and must not start or end with spaces. Default value is
             an empty string. Max length: 63 bytes.
         description (str):
@@ -356,7 +356,7 @@ class DestinationDatasetReference(proto.Message):
         dataset_id (str):
             Required. A unique ID for this dataset, without the project
             name. The ID must contain only letters (a-z, A-Z), numbers
-            (0-9), or underscores (_). The maximum length is 1,024
+            (0-9), or underscores (\_). The maximum length is 1,024
             characters.
         project_id (str):
             Required. The ID of the project containing
@@ -469,7 +469,7 @@ class Listing(proto.Message):
         display_name (str):
             Required. Human-readable display name of the listing. The
             display name must contain only Unicode letters, numbers
-            (0-9), underscores (_), dashes (-), spaces ( ), ampersands
+            (0-9), underscores (\_), dashes (-), spaces ( ), ampersands
             (&) and can't start or end with spaces. Default value is an
             empty string. Max length: 63 bytes.
         description (str):
@@ -1334,8 +1334,8 @@ class CreateDataExchangeRequest(proto.Message):
             e.g. ``projects/myproject/locations/us``.
         data_exchange_id (str):
             Required. The ID of the data exchange. Must contain only
-            Unicode letters, numbers (0-9), underscores (_). Max length:
-            100 bytes.
+            Unicode letters, numbers (0-9), underscores (\_). Max
+            length: 100 bytes.
         data_exchange (google.cloud.bigquery_analyticshub_v1.types.DataExchange):
             Required. The data exchange to create.
     """
@@ -1475,8 +1475,8 @@ class CreateListingRequest(proto.Message):
             ``projects/myproject/locations/us/dataExchanges/123``.
         listing_id (str):
             Required. The ID of the listing to create. Must contain only
-            Unicode letters, numbers (0-9), underscores (_). Max length:
-            100 bytes.
+            Unicode letters, numbers (0-9), underscores (\_). Max
+            length: 100 bytes.
         listing (google.cloud.bigquery_analyticshub_v1.types.Listing):
             Required. The listing to create.
     """
@@ -1722,8 +1722,8 @@ class ListSubscriptionsRequest(proto.Message):
             An expression for filtering the results of the request.
             Eligible fields for filtering are:
 
-            -  ``listing``
-            -  ``data_exchange``
+            - ``listing``
+            - ``data_exchange``
 
             Alternatively, a literal wrapped in double quotes may be
             provided. This will be checked for an exact match against
@@ -1732,9 +1732,9 @@ class ListSubscriptionsRequest(proto.Message):
             In all cases, the full Data Exchange or Listing resource
             name must be provided. Some example of using filters:
 
-            -  data_exchange="projects/myproject/locations/us/dataExchanges/123"
-            -  listing="projects/123/locations/us/dataExchanges/456/listings/789"
-            -  "projects/myproject/locations/us/dataExchanges/123".
+            - data_exchange="projects/myproject/locations/us/dataExchanges/123"
+            - listing="projects/123/locations/us/dataExchanges/456/listings/789"
+            - "projects/myproject/locations/us/dataExchanges/123".
         page_size (int):
             The maximum number of results to return in a
             single response page.

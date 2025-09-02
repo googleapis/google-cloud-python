@@ -58,7 +58,7 @@ class AdaptiveMtDataset(proto.Message):
         display_name (str):
             The name of the dataset to show in the interface. The name
             can be up to 32 characters long and can consist only of
-            ASCII Latin letters A-Z and a-z, underscores (_), and ASCII
+            ASCII Latin letters A-Z and a-z, underscores (\_), and ASCII
             digits 0-9.
         source_language_code (str):
             The BCP-47 language code of the source
@@ -347,8 +347,8 @@ class AdaptiveMtTranslateRequest(proto.Message):
 
                 The format depends on the glossary:
 
-                -  User-provided custom glossary:
-                   ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``
+                - User-provided custom glossary:
+                  ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``
             ignore_case (bool):
                 Optional. Indicates match is case insensitive. The default
                 value is ``false`` if missing.

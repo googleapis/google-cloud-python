@@ -777,14 +777,14 @@ class CaseServiceClient(metaclass=CaseServiceClientMeta):
                    of a case parented by an organization would look like
                    this:
 
-                   :literal:`\` organizations/123/cases/456`\ \`
+                   :literal:`` organizations/123/cases/456`\ \`
 
                    Projects have two unique identifiers, an ID and a
                    number, and they look like this:
 
-                   :literal:`\` projects/abc/cases/456`\ \`
+                   :literal:`` projects/abc/cases/456`\ \`
 
-                   :literal:`\` projects/123/cases/456`\ \`
+                   :literal:`` projects/123/cases/456`\ \`
 
                    You can use either of them when calling the API. To
                    learn more about project identifiers, see
@@ -1145,14 +1145,14 @@ class CaseServiceClient(metaclass=CaseServiceClientMeta):
                    of a case parented by an organization would look like
                    this:
 
-                   :literal:`\` organizations/123/cases/456`\ \`
+                   :literal:`` organizations/123/cases/456`\ \`
 
                    Projects have two unique identifiers, an ID and a
                    number, and they look like this:
 
-                   :literal:`\` projects/abc/cases/456`\ \`
+                   :literal:`` projects/abc/cases/456`\ \`
 
-                   :literal:`\` projects/123/cases/456`\ \`
+                   :literal:`` projects/123/cases/456`\ \`
 
                    You can use either of them when calling the API. To
                    learn more about project identifiers, see
@@ -1291,14 +1291,14 @@ class CaseServiceClient(metaclass=CaseServiceClientMeta):
                    of a case parented by an organization would look like
                    this:
 
-                   :literal:`\` organizations/123/cases/456`\ \`
+                   :literal:`` organizations/123/cases/456`\ \`
 
                    Projects have two unique identifiers, an ID and a
                    number, and they look like this:
 
-                   :literal:`\` projects/abc/cases/456`\ \`
+                   :literal:`` projects/abc/cases/456`\ \`
 
-                   :literal:`\` projects/123/cases/456`\ \`
+                   :literal:`` projects/123/cases/456`\ \`
 
                    You can use either of them when calling the API. To
                    learn more about project identifiers, see
@@ -1424,14 +1424,14 @@ class CaseServiceClient(metaclass=CaseServiceClientMeta):
                    of a case parented by an organization would look like
                    this:
 
-                   :literal:`\` organizations/123/cases/456`\ \`
+                   :literal:`` organizations/123/cases/456`\ \`
 
                    Projects have two unique identifiers, an ID and a
                    number, and they look like this:
 
-                   :literal:`\` projects/abc/cases/456`\ \`
+                   :literal:`` projects/abc/cases/456`\ \`
 
-                   :literal:`\` projects/123/cases/456`\ \`
+                   :literal:`` projects/123/cases/456`\ \`
 
                    You can use either of them when calling the API. To
                    learn more about project identifiers, see
@@ -1531,14 +1531,14 @@ class CaseServiceClient(metaclass=CaseServiceClientMeta):
                    of a case parented by an organization would look like
                    this:
 
-                   :literal:`\` organizations/123/cases/456`\ \`
+                   :literal:`` organizations/123/cases/456`\ \`
 
                    Projects have two unique identifiers, an ID and a
                    number, and they look like this:
 
-                   :literal:`\` projects/abc/cases/456`\ \`
+                   :literal:`` projects/abc/cases/456`\ \`
 
-                   :literal:`\` projects/123/cases/456`\ \`
+                   :literal:`` projects/123/cases/456`\ \`
 
                    You can use either of them when calling the API. To
                    learn more about project identifiers, see

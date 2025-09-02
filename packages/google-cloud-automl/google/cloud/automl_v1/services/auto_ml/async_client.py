@@ -976,11 +976,11 @@ class AutoMlAsyncClient:
 
         For Tables:
 
-        -  A
-           [schema_inference_version][google.cloud.automl.v1.InputConfig.params]
-           parameter must be explicitly set. Returns an empty response
-           in the [response][google.longrunning.Operation.response]
-           field when it completes.
+        - A
+          [schema_inference_version][google.cloud.automl.v1.InputConfig.params]
+          parameter must be explicitly set. Returns an empty response in
+          the [response][google.longrunning.Operation.response] field
+          when it completes.
 
         .. code-block:: python
 
@@ -2620,16 +2620,15 @@ class AutoMlAsyncClient:
                 Required. An expression for filtering the results of the
                 request.
 
-                -  ``annotation_spec_id`` - for =, != or existence. See
-                   example below for the last.
+                - ``annotation_spec_id`` - for =, != or existence. See
+                  example below for the last.
 
                 Some examples of using the filter are:
 
-                -  ``annotation_spec_id!=4`` --> The model evaluation
-                   was done for annotation spec with ID different than
-                   4.
-                -  ``NOT annotation_spec_id:*`` --> The model evaluation
-                   was done for aggregate of all annotation specs.
+                - ``annotation_spec_id!=4`` --> The model evaluation was
+                  done for annotation spec with ID different than 4.
+                - ``NOT annotation_spec_id:*`` --> The model evaluation
+                  was done for aggregate of all annotation specs.
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
