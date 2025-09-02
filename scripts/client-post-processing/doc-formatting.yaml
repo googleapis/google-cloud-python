@@ -39,22 +39,9 @@ replacements:
     after: "`NS_`"
     count: 2
   - paths: [
-      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1alpha/types/retriever.py,
-      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
-    ]
-    before: \"corpora/\*/documents/\"
-    after: "`corpora/*/documents/`"
-    count: 2
-  - paths: [
-      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
-    ]
-    before: \"corpora/\*/documents/\*/chunks/\"
-    after: "`corpora/*/documents/*/chunks/`"
-    count: 1    
-  - paths: [
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/services/permission_service/async_client.py,
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/services/permission_service/client.py
-      ]
+    ]
     before: |
       \                role's permitted operations:
       \
@@ -67,8 +54,8 @@ replacements:
     after: "                role's permitted operations:\n\n                - reader can use the resource (e.g.\n                  tuned model) for inference\n                - writer has reader's permissions and\n                  additionally can edit and share\n                - owner has writer's permissions and\n                  additionally can delete\n"
     count: 6
   - paths: [
-    packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/types/permission.py,
-      ]
+      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/types/permission.py,
+    ]
     before: |
       \    previous role's permitted operations:
       \
@@ -144,38 +131,6 @@ replacements:
       \            -  ``LabelingState=DOCUMENT_LABELED\|DOCUMENT_UNLABELED\|DOCUMENT_AUTO_LABELED``
     after:  "\n            Currently support query strings are:\n\n            - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``\n            -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``\n"
     count: 1
-  - paths: [
-      packages/google-ads-admanager/google/ads/admanager_v1/types/report_messages.py,
-    ]
-    before: CUSTOM_DIMENSION_\\\*
-    after: "`CUSTOM_DIMENSION_*`"
-    count: 1
-  - paths: [
-      packages/google-ads-admanager/google/ads/admanager_v1/types/report_messages.py,
-    ]
-    before: ORDER_CUSTOM_FIELD_\\\*
-    after: "`ORDER_CUSTOM_FIELD_*`"
-    count: 1
-  - paths: [
-      packages/google-ads-admanager/google/ads/admanager_v1/types/report_messages.py,
-    ]
-    before: LINE_ITEM_CUSTOM_FIELD_\\\*
-    after: "`LINE_ITEM_CUSTOM_FIELD_*`"
-    count: 1
-  - paths: [
-      packages/google-ads-admanager/google/ads/admanager_v1/types/report_messages.py,
-    ]
-    before: CREATIVE_CUSTOM_FIELD_\\\*
-    after: "`CREATIVE_CUSTOM_FIELD_*`"
-    count: 1
-  - paths: [
-      packages/google-analytics-admin/google/analytics/admin_v1alpha/services/analytics_admin_service/async_client.py,
-      packages/google-analytics-admin/google/analytics/admin_v1alpha/services/analytics_admin_service/client.py,
-      packages/google-analytics-admin/google/analytics/admin_v1alpha/types/analytics_admin.py,
-    ]
-    before: \/\[a-zA-Z0-9_\]\/
-    after: "`[a-zA-Z0-9_]`"
-    count: 3
   - paths: [
       packages/google-apps-chat/google/apps/chat_v1/services/chat_service/async_client.py,
     ]
