@@ -15350,6 +15350,7 @@ def test_create_reservation_rest_call_success(request_type):
             },
             "last_error_time": {},
             "last_replication_time": {},
+            "soft_failover_start_time": {},
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -15997,6 +15998,7 @@ def test_update_reservation_rest_call_success(request_type):
             },
             "last_error_time": {},
             "last_replication_time": {},
+            "soft_failover_start_time": {},
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
