@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.15.0...v1.16.0) (2025-09-02)
+
+
+### Features
+
+* Support NULL FILTERED indexes ([#750](https://github.com/googleapis/python-spanner-sqlalchemy/issues/750)) ([4bc0589](https://github.com/googleapis/python-spanner-sqlalchemy/commit/4bc05898995a586816e116e0a3205966a52d1ef8))
+
+
+### Documentation
+
+* Add sample for parse_json ([#752](https://github.com/googleapis/python-spanner-sqlalchemy/issues/752)) ([b2f0e89](https://github.com/googleapis/python-spanner-sqlalchemy/commit/b2f0e89b8f01481fa6f29da055300eeb533591cc)), closes [#735](https://github.com/googleapis/python-spanner-sqlalchemy/issues/735)
+
 ## [1.15.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.14.0...v1.15.0) (2025-08-19)
 
 
