@@ -1825,7 +1825,7 @@ class BareMetalSolutionAsyncClient:
                 Required. The ID to use for the key, which will become
                 the final component of the key's resource name.
 
-                This value must match the regex: [a-zA-Z0-9@.-_]{1,64}
+                This value must match the regex: [a-zA-Z0-9@.-\_]{1,64}
 
                 This corresponds to the ``ssh_key_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -169,7 +169,7 @@ class ListDataPoliciesRequest(proto.Message):
             Sample filter can be "policy\_tag:
             projects/1/locations/us/taxonomies/2/policyTags/3". You may
             also use wildcard such as "policy\_tag:
-            projects/1/locations/us/taxonomies/2*". Please note that OR
+            projects/1/locations/us/taxonomies/2\*". Please note that OR
             predicates cannot be used with wildcard filters.
     """
 
@@ -334,43 +334,43 @@ class DataMaskingPolicy(proto.Message):
                 masking values. The default masking values for each type
                 listed as below:
 
-                -  STRING: ""
-                -  BYTES: b''
-                -  INTEGER: 0
-                -  FLOAT: 0.0
-                -  NUMERIC: 0
-                -  BOOLEAN: FALSE
-                -  TIMESTAMP: 1970-01-01 00:00:00 UTC
-                -  DATE: 1970-01-01
-                -  TIME: 00:00:00
-                -  DATETIME: 1970-01-01T00:00:00
-                -  GEOGRAPHY: POINT(0 0)
-                -  BIGNUMERIC: 0
-                -  ARRAY: []
-                -  STRUCT: NOT_APPLICABLE
-                -  JSON: NULL
+                - STRING: ""
+                - BYTES: b''
+                - INTEGER: 0
+                - FLOAT: 0.0
+                - NUMERIC: 0
+                - BOOLEAN: FALSE
+                - TIMESTAMP: 1970-01-01 00:00:00 UTC
+                - DATE: 1970-01-01
+                - TIME: 00:00:00
+                - DATETIME: 1970-01-01T00:00:00
+                - GEOGRAPHY: POINT(0 0)
+                - BIGNUMERIC: 0
+                - ARRAY: []
+                - STRUCT: NOT_APPLICABLE
+                - JSON: NULL
             LAST_FOUR_CHARACTERS (9):
                 Masking expression shows the last four characters of text.
                 The masking behavior is as follows:
 
-                -  If text length > 4 characters: Replace text with XXXXX,
-                   append last four characters of original text.
-                -  If text length <= 4 characters: Apply SHA-256 hash.
+                - If text length > 4 characters: Replace text with XXXXX,
+                  append last four characters of original text.
+                - If text length <= 4 characters: Apply SHA-256 hash.
             FIRST_FOUR_CHARACTERS (10):
                 Masking expression shows the first four characters of text.
                 The masking behavior is as follows:
 
-                -  If text length > 4 characters: Replace text with XXXXX,
-                   prepend first four characters of original text.
-                -  If text length <= 4 characters: Apply SHA-256 hash.
+                - If text length > 4 characters: Replace text with XXXXX,
+                  prepend first four characters of original text.
+                - If text length <= 4 characters: Apply SHA-256 hash.
             EMAIL_MASK (12):
                 Masking expression for email addresses. The masking behavior
                 is as follows:
 
-                -  Syntax-valid email address: Replace username with XXXXX.
-                   For example, cloudysanfrancisco@gmail.com becomes
-                   XXXXX@gmail.com.
-                -  Syntax-invalid email address: Apply SHA-256 hash.
+                - Syntax-valid email address: Replace username with XXXXX.
+                  For example, cloudysanfrancisco@gmail.com becomes
+                  XXXXX@gmail.com.
+                - Syntax-invalid email address: Apply SHA-256 hash.
 
                 For more information, see `Email
                 mask <https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options>`__.
@@ -379,9 +379,9 @@ class DataMaskingPolicy(proto.Message):
                 ``DateTime`` and ``TimeStamp``. For example, with the year
                 2076:
 
-                -  DATE : 2076-01-01
-                -  DATETIME : 2076-01-01T00:00:00
-                -  TIMESTAMP : 2076-01-01 00:00:00 UTC
+                - DATE : 2076-01-01
+                - DATETIME : 2076-01-01T00:00:00
+                - TIMESTAMP : 2076-01-01 00:00:00 UTC
 
                 Truncation occurs according to the UTC time zone. To change
                 this, adjust the default time zone using the ``time_zone``

@@ -144,10 +144,10 @@ class CreateAppGatewayRequest(proto.Message):
         app_gateway_id (str):
             Optional. User-settable AppGateway resource ID.
 
-            -  Must start with a letter.
-            -  Must contain between 4-63 characters from
-               ``/[a-z][0-9]-/``.
-            -  Must end with a number or a letter.
+            - Must start with a letter.
+            - Must contain between 4-63 characters from
+              ``/[a-z][0-9]-/``.
+            - Must end with a number or a letter.
         app_gateway (google.cloud.beyondcorp_appgateways_v1.types.AppGateway):
             Required. A BeyondCorp AppGateway resource.
         request_id (str):

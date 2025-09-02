@@ -129,8 +129,8 @@ class AppConnectionsServiceClient(metaclass=AppConnectionsServiceClientMeta):
 
     The AppConnectionsService exposes the following resources:
 
-    -  AppConnections, named as follows:
-       ``projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}``.
+    - AppConnections, named as follows:
+      ``projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}``.
 
     The AppConnectionsService service provides methods to manage
     (create/read/update/delete) BeyondCorp AppConnections.
@@ -1106,10 +1106,10 @@ class AppConnectionsServiceClient(metaclass=AppConnectionsServiceClientMeta):
             app_connection_id (str):
                 Optional. User-settable AppConnection resource ID.
 
-                -  Must start with a letter.
-                -  Must contain between 4-63 characters from
-                   ``/[a-z][0-9]-/``.
-                -  Must end with a number or a letter.
+                - Must start with a letter.
+                - Must contain between 4-63 characters from
+                  ``/[a-z][0-9]-/``.
+                - Must end with a number or a letter.
 
                 This corresponds to the ``app_connection_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1260,10 +1260,10 @@ class AppConnectionsServiceClient(metaclass=AppConnectionsServiceClientMeta):
                 repeated paths field may only include these fields from
                 [BeyondCorp.AppConnection]:
 
-                -  ``labels``
-                -  ``display_name``
-                -  ``application_endpoint``
-                -  ``connectors``
+                - ``labels``
+                - ``display_name``
+                - ``application_endpoint``
+                - ``connectors``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

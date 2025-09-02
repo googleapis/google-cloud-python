@@ -44,7 +44,7 @@ class Tag(proto.Message):
             "projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/tags/tag1".
             If the package part contains slashes, the slashes are
             escaped. The tag part can only have characters in
-            [a-zA-Z0-9-._~:@], anything else must be URL encoded.
+            [a-zA-Z0-9-.\_~:@], anything else must be URL encoded.
         version (str):
             The name of the version the tag refers to,
             for example:
@@ -75,13 +75,13 @@ class ListTagsRequest(proto.Message):
             Filter rules are case insensitive. The fields eligible for
             filtering are:
 
-            -  ``version``
+            - ``version``
 
             An example of using a filter:
 
-            -  ``version="projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/1.0"``
-               --> Tags that are applied to the version ``1.0`` in
-               package ``pkg1``.
+            - ``version="projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/1.0"``
+              --> Tags that are applied to the version ``1.0`` in
+              package ``pkg1``.
         page_size (int):
             The maximum number of tags to return. Maximum
             page size is 10,000.

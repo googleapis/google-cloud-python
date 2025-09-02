@@ -672,7 +672,7 @@ class MetastoreServiceConfig(proto.Message):
 
             Example:
 
-            -  ``projects/[project_id]/locations/[region]/services/[service_id]``
+            - ``projects/[project_id]/locations/[region]/services/[service_id]``
     """
 
     metastore_service: str = proto.Field(
@@ -691,7 +691,7 @@ class SparkHistoryServerConfig(proto.Message):
 
             Example:
 
-            -  ``projects/[project_id]/regions/[region]/clusters/[cluster_name]``
+            - ``projects/[project_id]/regions/[region]/clusters/[cluster_name]``
     """
 
     dataproc_cluster: str = proto.Field(

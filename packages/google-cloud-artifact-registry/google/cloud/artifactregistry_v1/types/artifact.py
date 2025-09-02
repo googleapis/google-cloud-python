@@ -48,15 +48,15 @@ class DockerImage(proto.Message):
     returned as untyped metadata in the Version resource, using
     camelcase keys (i.e. metadata.imageSizeBytes):
 
-    -  imageSizeBytes
-    -  mediaType
-    -  buildTime
+    - imageSizeBytes
+    - mediaType
+    - buildTime
 
     Attributes:
         name (str):
             Required. registry_location, project_id, repository_name and
             image id forms a unique image
-            name:\ ``projects/<project_id>/locations/<location>/repository/<repository_name>/dockerImages/<docker_image>``.
+            name:``projects/<project_id>/locations/<location>/repository/<repository_name>/dockerImages/<docker_image>``.
             For example,
             "projects/test-project/locations/us-west4/repositories/test-repo/dockerImages/
             nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf",
@@ -472,7 +472,7 @@ class PythonPackage(proto.Message):
         name (str):
             Required. registry_location, project_id, repository_name and
             python_package forms a unique package
-            name:\ ``projects/<project_id>/locations/<location>/repository/<repository_name>/pythonPackages/<python_package>``.
+            name:``projects/<project_id>/locations/<location>/repository/<repository_name>/pythonPackages/<python_package>``.
             For example,
             "projects/test-project/locations/us-west4/repositories/test-repo/pythonPackages/
             python_package:1.0.0", where "us-west4" is the

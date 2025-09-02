@@ -320,37 +320,37 @@ class PredictionServiceAsyncClient:
 
         AutoML Vision Classification
 
-        -  An image in .JPEG, .GIF or .PNG format, image_bytes up to
-           30MB.
+        - An image in .JPEG, .GIF or .PNG format, image_bytes up to
+          30MB.
 
         AutoML Vision Object Detection
 
-        -  An image in .JPEG, .GIF or .PNG format, image_bytes up to
-           30MB.
+        - An image in .JPEG, .GIF or .PNG format, image_bytes up to
+          30MB.
 
         AutoML Natural Language Classification
 
-        -  A TextSnippet up to 60,000 characters, UTF-8 encoded or a
-           document in .PDF, .TIF or .TIFF format with size upto 2MB.
+        - A TextSnippet up to 60,000 characters, UTF-8 encoded or a
+          document in .PDF, .TIF or .TIFF format with size upto 2MB.
 
         AutoML Natural Language Entity Extraction
 
-        -  A TextSnippet up to 10,000 characters, UTF-8 NFC encoded or a
-           document in .PDF, .TIF or .TIFF format with size upto 20MB.
+        - A TextSnippet up to 10,000 characters, UTF-8 NFC encoded or a
+          document in .PDF, .TIF or .TIFF format with size upto 20MB.
 
         AutoML Natural Language Sentiment Analysis
 
-        -  A TextSnippet up to 60,000 characters, UTF-8 encoded or a
-           document in .PDF, .TIF or .TIFF format with size upto 2MB.
+        - A TextSnippet up to 60,000 characters, UTF-8 encoded or a
+          document in .PDF, .TIF or .TIFF format with size upto 2MB.
 
         AutoML Translation
 
-        -  A TextSnippet up to 25,000 characters, UTF-8 encoded.
+        - A TextSnippet up to 25,000 characters, UTF-8 encoded.
 
         AutoML Tables
 
-        -  A row with column values matching the columns of the model,
-           up to 5MB. Not available for FORECASTING ``prediction_type``.
+        - A row with column values matching the columns of the model, up
+          to 5MB. Not available for FORECASTING ``prediction_type``.
 
         .. code-block:: python
 
@@ -526,14 +526,14 @@ class PredictionServiceAsyncClient:
         [response][google.longrunning.Operation.response] field.
         Available for following ML scenarios:
 
-        -  AutoML Vision Classification
-        -  AutoML Vision Object Detection
-        -  AutoML Video Intelligence Classification
-        -  AutoML Video Intelligence Object Tracking \* AutoML Natural
-           Language Classification
-        -  AutoML Natural Language Entity Extraction
-        -  AutoML Natural Language Sentiment Analysis
-        -  AutoML Tables
+        - AutoML Vision Classification
+        - AutoML Vision Object Detection
+        - AutoML Video Intelligence Classification
+        - AutoML Video Intelligence Object Tracking \* AutoML Natural
+          Language Classification
+        - AutoML Natural Language Entity Extraction
+        - AutoML Natural Language Sentiment Analysis
+        - AutoML Tables
 
         .. code-block:: python
 
