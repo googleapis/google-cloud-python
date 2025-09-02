@@ -187,6 +187,7 @@ def read_gbq(  # type: ignore[overload-overlap]
     use_cache: Optional[bool] = ...,
     col_order: Iterable[str] = ...,
     dry_run: Literal[False] = ...,
+    allow_large_results: Optional[bool] = ...,
 ) -> bigframes.dataframe.DataFrame:
     ...
 
@@ -203,6 +204,7 @@ def read_gbq(
     use_cache: Optional[bool] = ...,
     col_order: Iterable[str] = ...,
     dry_run: Literal[True] = ...,
+    allow_large_results: Optional[bool] = ...,
 ) -> pandas.Series:
     ...
 
@@ -218,6 +220,7 @@ def read_gbq(
     use_cache: Optional[bool] = None,
     col_order: Iterable[str] = (),
     dry_run: bool = False,
+    allow_large_results: Optional[bool] = None,
 ) -> bigframes.dataframe.DataFrame | pandas.Series:
     _set_default_session_location_if_possible(query_or_table)
     return global_session.with_default_session(
@@ -231,6 +234,7 @@ def read_gbq(
         use_cache=use_cache,
         col_order=col_order,
         dry_run=dry_run,
+        allow_large_results=allow_large_results,
     )
 
 
@@ -400,6 +404,7 @@ def read_gbq_query(  # type: ignore[overload-overlap]
     col_order: Iterable[str] = ...,
     filters: vendored_pandas_gbq.FiltersType = ...,
     dry_run: Literal[False] = ...,
+    allow_large_results: Optional[bool] = ...,
 ) -> bigframes.dataframe.DataFrame:
     ...
 
@@ -416,6 +421,7 @@ def read_gbq_query(
     col_order: Iterable[str] = ...,
     filters: vendored_pandas_gbq.FiltersType = ...,
     dry_run: Literal[True] = ...,
+    allow_large_results: Optional[bool] = ...,
 ) -> pandas.Series:
     ...
 
@@ -431,6 +437,7 @@ def read_gbq_query(
     col_order: Iterable[str] = (),
     filters: vendored_pandas_gbq.FiltersType = (),
     dry_run: bool = False,
+    allow_large_results: Optional[bool] = None,
 ) -> bigframes.dataframe.DataFrame | pandas.Series:
     _set_default_session_location_if_possible(query)
     return global_session.with_default_session(
@@ -444,6 +451,7 @@ def read_gbq_query(
         col_order=col_order,
         filters=filters,
         dry_run=dry_run,
+        allow_large_results=allow_large_results,
     )
 
 
@@ -617,7 +625,11 @@ _default_location_lock = threading.Lock()
 
 
 def _get_bqclient() -> bigquery.Client:
-    clients_provider = bigframes.session.clients.ClientsProvider(
+    # Address circular imports in doctest due to bigframes/session/__init__.py
+    # containing a lot of logic and samples.
+    from bigframes.session import clients
+
+    clients_provider = clients.ClientsProvider(
         project=config.options.bigquery.project,
         location=config.options.bigquery.location,
         use_regional_endpoints=config.options.bigquery.use_regional_endpoints,
@@ -631,11 +643,15 @@ def _get_bqclient() -> bigquery.Client:
 
 
 def _dry_run(query, bqclient) -> bigquery.QueryJob:
+    # Address circular imports in doctest due to bigframes/session/__init__.py
+    # containing a lot of logic and samples.
+    from bigframes.session import metrics as bf_metrics
+
     job = bqclient.query(query, bigquery.QueryJobConfig(dry_run=True))
 
     # Fix for b/435183833. Log metrics even if a Session isn't available.
-    if bigframes.session.metrics.LOGGING_NAME_ENV_VAR in os.environ:
-        metrics = bigframes.session.metrics.ExecutionMetrics()
+    if bf_metrics.LOGGING_NAME_ENV_VAR in os.environ:
+        metrics = bf_metrics.ExecutionMetrics()
         metrics.count_job_stats(job)
     return job
 
@@ -645,6 +661,10 @@ def _set_default_session_location_if_possible(query):
 
 
 def _set_default_session_location_if_possible_deferred_query(create_query):
+    # Address circular imports in doctest due to bigframes/session/__init__.py
+    # containing a lot of logic and samples.
+    from bigframes.session._io import bigquery
+
     # Set the location as per the query if this is the first query the user is
     # running and:
     # (1) Default session has not started yet, and
@@ -666,7 +686,7 @@ def _set_default_session_location_if_possible_deferred_query(create_query):
         query = create_query()
         bqclient = _get_bqclient()
 
-        if bigframes.session._io.bigquery.is_query(query):
+        if bigquery.is_query(query):
             # Intentionally run outside of the session so that we can detect the
             # location before creating the session. Since it's a dry_run, labels
             # aren't necessary.

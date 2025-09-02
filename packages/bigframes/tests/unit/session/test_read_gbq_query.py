@@ -25,7 +25,7 @@ def test_read_gbq_query_sets_destination_table():
     # Use partial ordering mode to skip column uniqueness checks.
     session = mocks.create_bigquery_session(ordering_mode="partial")
 
-    _ = session.read_gbq_query("SELECT 'my-test-query';")
+    _ = session.read_gbq_query("SELECT 'my-test-query';", allow_large_results=True)
     queries = session._queries  # type: ignore
     configs = session._job_configs  # type: ignore
 

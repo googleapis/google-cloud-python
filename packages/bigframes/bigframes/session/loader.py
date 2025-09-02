@@ -721,6 +721,9 @@ class GbqDataLoader:
                 columns=columns,
                 use_cache=use_cache,
                 dry_run=dry_run,
+                # If max_results has been set, we almost certainly have < 10 GB
+                # of results.
+                allow_large_results=False,
             )
             return df
 
@@ -895,7 +898,7 @@ class GbqDataLoader:
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[False] = ...,
         force_total_order: Optional[bool] = ...,
-        allow_large_results: bool = ...,
+        allow_large_results: bool,
     ) -> dataframe.DataFrame:
         ...
 
@@ -912,7 +915,7 @@ class GbqDataLoader:
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[True] = ...,
         force_total_order: Optional[bool] = ...,
-        allow_large_results: bool = ...,
+        allow_large_results: bool,
     ) -> pandas.Series:
         ...
 
@@ -928,7 +931,7 @@ class GbqDataLoader:
         filters: third_party_pandas_gbq.FiltersType = (),
         dry_run: bool = False,
         force_total_order: Optional[bool] = None,
-        allow_large_results: bool = True,
+        allow_large_results: bool,
     ) -> dataframe.DataFrame | pandas.Series:
         configuration = _transform_read_gbq_configuration(configuration)
 
@@ -953,6 +956,7 @@ class GbqDataLoader:
                 True if use_cache is None else use_cache
             )
 
+        _check_duplicates("columns", columns)
         index_cols = _to_index_cols(index_col)
         _check_index_col_param(index_cols, columns)
 
@@ -1040,10 +1044,19 @@ class GbqDataLoader:
         # local node. Likely there are a wide range of sizes in which it
         # makes sense to download the results beyond the first page, even if
         # there is a job and destination table available.
-        if rows is not None and destination is None:
+        if (
+            rows is not None
+            and destination is None
+            and (
+                query_job_for_metrics is None
+                or query_job_for_metrics.statement_type == "SELECT"
+            )
+        ):
             return bf_read_gbq_query.create_dataframe_from_row_iterator(
                 rows,
                 session=self._session,
+                index_col=index_col,
+                columns=columns,
             )
 
         # If there was no destination table and we've made it this far, that

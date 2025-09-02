@@ -45,7 +45,11 @@ class BaseBqml:
         result_sql = self._sql_generator.ai_forecast(
             source_sql=input_data.sql, options=options
         )
-        return self._session.read_gbq(result_sql)
+
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(result_sql, allow_large_results=True)
 
 
 class BqmlModel(BaseBqml):
@@ -95,7 +99,17 @@ class BqmlModel(BaseBqml):
         )
 
         result_sql = apply_sql_tvf(input_sql)
-        df = self._session.read_gbq(result_sql, index_col=index_col_ids)
+        df = self._session.read_gbq_query(
+            result_sql,
+            index_col=index_col_ids,
+            # Many ML methods use nested JSON, which isn't yet compatible with
+            # joining local results. Also, there is a chance that the results
+            # are greater than 10 GB.
+            # TODO(b/395912450): Once the limitations with local data are
+            # resolved, consider setting allow_large_results only when expected
+            # data size is large.
+            allow_large_results=True,
+        )
         if df._has_index:
             df.index.names = index_labels
         # Restore column labels
@@ -159,7 +173,10 @@ class BqmlModel(BaseBqml):
     def global_explain(self, options: Mapping[str, bool]) -> bpd.DataFrame:
         sql = self._sql_generator.ml_global_explain(struct_options=options)
         return (
-            self._session.read_gbq(sql)
+            # TODO(b/395912450): Once the limitations with local data are
+            # resolved, consider setting allow_large_results only when expected
+            # data size is large.
+            self._session.read_gbq_query(sql, allow_large_results=True)
             .sort_values(by="attribution", ascending=False)
             .set_index("feature")
         )
@@ -234,26 +251,49 @@ class BqmlModel(BaseBqml):
         sql = self._sql_generator.ml_forecast(struct_options=options)
         timestamp_col_name = "forecast_timestamp"
         index_cols = [timestamp_col_name]
-        first_col_name = self._session.read_gbq(sql).columns.values[0]
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        first_col_name = self._session.read_gbq_query(
+            sql, allow_large_results=True
+        ).columns.values[0]
         if timestamp_col_name != first_col_name:
             index_cols.append(first_col_name)
-        return self._session.read_gbq(sql, index_col=index_cols).reset_index()
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(
+            sql, index_col=index_cols, allow_large_results=True
+        ).reset_index()
 
     def explain_forecast(self, options: Mapping[str, int | float]) -> bpd.DataFrame:
         sql = self._sql_generator.ml_explain_forecast(struct_options=options)
         timestamp_col_name = "time_series_timestamp"
         index_cols = [timestamp_col_name]
-        first_col_name = self._session.read_gbq(sql).columns.values[0]
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        first_col_name = self._session.read_gbq_query(
+            sql, allow_large_results=True
+        ).columns.values[0]
         if timestamp_col_name != first_col_name:
             index_cols.append(first_col_name)
-        return self._session.read_gbq(sql, index_col=index_cols).reset_index()
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(
+            sql, index_col=index_cols, allow_large_results=True
+        ).reset_index()
 
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):
         sql = self._sql_generator.ml_evaluate(
             input_data.sql if (input_data is not None) else None
         )
 
-        return self._session.read_gbq(sql)
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(sql, allow_large_results=True)
 
     def llm_evaluate(
         self,
@@ -262,25 +302,37 @@ class BqmlModel(BaseBqml):
     ):
         sql = self._sql_generator.ml_llm_evaluate(input_data.sql, task_type)
 
-        return self._session.read_gbq(sql)
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(sql, allow_large_results=True)
 
     def arima_evaluate(self, show_all_candidate_models: bool = False):
         sql = self._sql_generator.ml_arima_evaluate(show_all_candidate_models)
 
-        return self._session.read_gbq(sql)
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(sql, allow_large_results=True)
 
     def arima_coefficients(self) -> bpd.DataFrame:
         sql = self._sql_generator.ml_arima_coefficients()
 
-        return self._session.read_gbq(sql)
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(sql, allow_large_results=True)
 
     def centroids(self) -> bpd.DataFrame:
         assert self._model.model_type == "KMEANS"
 
         sql = self._sql_generator.ml_centroids()
 
-        return self._session.read_gbq(
-            sql, index_col=["centroid_id", "feature"]
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(
+            sql, index_col=["centroid_id", "feature"], allow_large_results=True
         ).reset_index()
 
     def principal_components(self) -> bpd.DataFrame:
@@ -288,8 +340,13 @@ class BqmlModel(BaseBqml):
 
         sql = self._sql_generator.ml_principal_components()
 
-        return self._session.read_gbq(
-            sql, index_col=["principal_component_id", "feature"]
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(
+            sql,
+            index_col=["principal_component_id", "feature"],
+            allow_large_results=True,
         ).reset_index()
 
     def principal_component_info(self) -> bpd.DataFrame:
@@ -297,7 +354,10 @@ class BqmlModel(BaseBqml):
 
         sql = self._sql_generator.ml_principal_component_info()
 
-        return self._session.read_gbq(sql)
+        # TODO(b/395912450): Once the limitations with local data are
+        # resolved, consider setting allow_large_results only when expected
+        # data size is large.
+        return self._session.read_gbq_query(sql, allow_large_results=True)
 
     def copy(self, new_model_name: str, replace: bool = False) -> BqmlModel:
         job_config = self._session._prepare_copy_job_config()

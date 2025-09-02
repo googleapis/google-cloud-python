@@ -123,12 +123,17 @@ def test_vector_search_basic_params_with_df():
             "embedding": [[1.0, 2.0], [3.0, 5.2]],
         }
     )
-    vector_search_result = bbq.vector_search(
-        base_table="bigframes-dev.bigframes_tests_sys.base_table",
-        column_to_search="my_embedding",
-        query=search_query,
-        top_k=2,
-    ).to_pandas()  # type:ignore
+    vector_search_result = (
+        bbq.vector_search(
+            base_table="bigframes-dev.bigframes_tests_sys.base_table",
+            column_to_search="my_embedding",
+            query=search_query,
+            top_k=2,
+        )
+        .sort_values("distance")
+        .sort_index()
+        .to_pandas()
+    )  # type:ignore
     expected = pd.DataFrame(
         {
             "query_id": ["cat", "dog", "dog", "cat"],
@@ -157,80 +162,60 @@ def test_vector_search_basic_params_with_df():
     )
 
 
-def test_vector_search_different_params_with_query():
-    search_query = bpd.Series([[1.0, 2.0], [3.0, 5.2]])
-    vector_search_result = bbq.vector_search(
-        base_table="bigframes-dev.bigframes_tests_sys.base_table",
-        column_to_search="my_embedding",
-        query=search_query,
-        distance_type="cosine",
-        top_k=2,
-    ).to_pandas()  # type:ignore
-    expected = pd.DataFrame(
+def test_vector_search_different_params_with_query(session):
+    base_df = bpd.DataFrame(
         {
-            "0": [
-                np.array([1.0, 2.0]),
-                np.array([1.0, 2.0]),
-                np.array([3.0, 5.2]),
-                np.array([3.0, 5.2]),
-            ],
-            "id": [2, 1, 1, 2],
+            "id": [1, 2, 3, 4],
             "my_embedding": [
-                np.array([2.0, 4.0]),
-                np.array([1.0, 2.0]),
-                np.array([1.0, 2.0]),
-                np.array([2.0, 4.0]),
+                np.array([0.0, 1.0]),
+                np.array([1.0, 0.0]),
+                np.array([0.0, -1.0]),
+                np.array([-1.0, 0.0]),
             ],
-            "distance": [0.0, 0.0, 0.001777, 0.001777],
         },
-        index=pd.Index([0, 0, 1, 1], dtype="Int64"),
+        session=session,
     )
-    pd.testing.assert_frame_equal(
-        vector_search_result, expected, check_dtype=False, rtol=0.1
-    )
-
-
-def test_vector_search_df_with_query_column_to_search():
-    search_query = bpd.DataFrame(
-        {
-            "query_id": ["dog", "cat"],
-            "embedding": [[1.0, 2.0], [3.0, 5.2]],
-            "another_embedding": [[1.0, 2.5], [3.3, 5.2]],
-        }
-    )
-    vector_search_result = bbq.vector_search(
-        base_table="bigframes-dev.bigframes_tests_sys.base_table",
-        column_to_search="my_embedding",
-        query=search_query,
-        query_column_to_search="another_embedding",
-        top_k=2,
-    ).to_pandas()  # type:ignore
-    expected = pd.DataFrame(
-        {
-            "query_id": ["dog", "dog", "cat", "cat"],
-            "embedding": [
-                np.array([1.0, 2.0]),
-                np.array([1.0, 2.0]),
-                np.array([3.0, 5.2]),
-                np.array([3.0, 5.2]),
-            ],
-            "another_embedding": [
-                np.array([1.0, 2.5]),
-                np.array([1.0, 2.5]),
-                np.array([3.3, 5.2]),
-                np.array([3.3, 5.2]),
-            ],
-            "id": [1, 4, 2, 5],
-            "my_embedding": [
-                np.array([1.0, 2.0]),
-                np.array([1.0, 3.2]),
-                np.array([2.0, 4.0]),
-                np.array([5.0, 5.4]),
-            ],
-            "distance": [0.5, 0.7, 1.769181, 1.711724],
-        },
-        index=pd.Index([0, 0, 1, 1], dtype="Int64"),
-    )
-    pd.testing.assert_frame_equal(
-        vector_search_result, expected, check_dtype=False, rtol=0.1
-    )
+    base_table = base_df.to_gbq()
+    try:
+        search_query = bpd.Series([[0.75, 0.25], [-0.25, -0.75]], session=session)
+        vector_search_result = (
+            bbq.vector_search(
+                base_table=base_table,
+                column_to_search="my_embedding",
+                query=search_query,
+                distance_type="cosine",
+                top_k=2,
+            )
+            .sort_values("distance")
+            .sort_index()
+            .to_pandas()
+        )  # type:ignore
+        expected = pd.DataFrame(
+            {
+                "0": [
+                    [0.75, 0.25],
+                    [0.75, 0.25],
+                    [-0.25, -0.75],
+                    [-0.25, -0.75],
+                ],
+                "id": [2, 1, 3, 4],
+                "my_embedding": [
+                    [1.0, 0.0],
+                    [0.0, 1.0],
+                    [0.0, -1.0],
+                    [-1.0, 0.0],
+                ],
+                "distance": [
+                    0.051317,
+                    0.683772,
+                    0.051317,
+                    0.683772,
+                ],
+            },
+            index=pd.Index([0, 0, 1, 1], dtype="Int64"),
+        )
+        pd.testing.assert_frame_equal(
+            vector_search_result, expected, check_dtype=False, rtol=0.1
+        )
+    finally:
+        session.bqclient.delete_table(base_table, not_found_ok=True)

@@ -245,7 +245,7 @@ def test_max_abs_scaler_save_load(new_penguins_df, dataset_id):
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
 
-    pd.testing.assert_frame_equal(result, expected, rtol=0.1)
+    pd.testing.assert_frame_equal(result.sort_index(), expected.sort_index(), rtol=0.1)
 
 
 def test_min_max_scaler_normalized_fit_transform(new_penguins_df):

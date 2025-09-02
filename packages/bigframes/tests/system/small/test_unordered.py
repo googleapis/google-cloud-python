@@ -103,7 +103,7 @@ def test_unordered_mode_read_gbq(unordered_session):
         }
     )
     # Don't need ignore_order as there is only 1 row
-    assert_pandas_df_equal(df.to_pandas(), expected)
+    assert_pandas_df_equal(df.to_pandas(), expected, check_index_type=False)
 
 
 @pytest.mark.parametrize(

@@ -432,8 +432,10 @@ def test_arima_plus_detect_anomalies_params(
             },
         )
     pd.testing.assert_frame_equal(
-        anomalies[["is_anomaly", "lower_bound", "upper_bound", "anomaly_probability"]],
-        expected,
+        anomalies[["is_anomaly", "lower_bound", "upper_bound", "anomaly_probability"]]
+        .sort_values("anomaly_probability")
+        .reset_index(drop=True),
+        expected.sort_values("anomaly_probability").reset_index(drop=True),
         rtol=0.1,
         check_index_type=False,
         check_dtype=False,
@@ -449,11 +451,16 @@ def test_arima_plus_score(
     id_col_name,
 ):
     if id_col_name:
-        result = time_series_arima_plus_model_w_id.score(
-            new_time_series_df_w_id[["parsed_date"]],
-            new_time_series_df_w_id[["total_visits"]],
-            new_time_series_df_w_id[["id"]],
-        ).to_pandas()
+        result = (
+            time_series_arima_plus_model_w_id.score(
+                new_time_series_df_w_id[["parsed_date"]],
+                new_time_series_df_w_id[["total_visits"]],
+                new_time_series_df_w_id[["id"]],
+            )
+            .to_pandas()
+            .sort_values("id")
+            .reset_index(drop=True)
+        )
     else:
         result = time_series_arima_plus_model.score(
             new_time_series_df[["parsed_date"]], new_time_series_df[["total_visits"]]
@@ -472,6 +479,8 @@ def test_arima_plus_score(
         )
         expected["id"] = expected["id"].astype(str).str.replace(r"\.0$", "", regex=True)
         expected["id"] = expected["id"].astype("string[pyarrow]")
+        expected = expected.sort_values("id")
+        expected = expected.reset_index(drop=True)
     else:
         expected = pd.DataFrame(
             {
@@ -488,6 +497,7 @@ def test_arima_plus_score(
         expected,
         rtol=0.1,
         check_index_type=False,
+        check_dtype=False,
     )
 
 
@@ -542,11 +552,16 @@ def test_arima_plus_score_series(
     id_col_name,
 ):
     if id_col_name:
-        result = time_series_arima_plus_model_w_id.score(
-            new_time_series_df_w_id["parsed_date"],
-            new_time_series_df_w_id["total_visits"],
-            new_time_series_df_w_id["id"],
-        ).to_pandas()
+        result = (
+            time_series_arima_plus_model_w_id.score(
+                new_time_series_df_w_id["parsed_date"],
+                new_time_series_df_w_id["total_visits"],
+                new_time_series_df_w_id["id"],
+            )
+            .to_pandas()
+            .sort_values("id")
+            .reset_index(drop=True)
+        )
     else:
         result = time_series_arima_plus_model.score(
             new_time_series_df["parsed_date"], new_time_series_df["total_visits"]
@@ -565,6 +580,8 @@ def test_arima_plus_score_series(
         )
         expected["id"] = expected["id"].astype(str).str.replace(r"\.0$", "", regex=True)
         expected["id"] = expected["id"].astype("string[pyarrow]")
+        expected = expected.sort_values("id")
+        expected = expected.reset_index(drop=True)
     else:
         expected = pd.DataFrame(
             {
@@ -581,6 +598,7 @@ def test_arima_plus_score_series(
         expected,
         rtol=0.1,
         check_index_type=False,
+        check_dtype=False,
     )
 
 

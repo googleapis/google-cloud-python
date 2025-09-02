@@ -16,7 +16,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import cast, Iterable, Optional, Tuple
 
 from google.cloud import bigquery
 import google.cloud.bigquery.table
@@ -28,6 +28,7 @@ import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.guid
 import bigframes.core.schema as schemata
+import bigframes.enums
 import bigframes.session
 
 
@@ -53,7 +54,11 @@ def create_dataframe_from_query_job_stats(
 
 
 def create_dataframe_from_row_iterator(
-    rows: google.cloud.bigquery.table.RowIterator, *, session: bigframes.session.Session
+    rows: google.cloud.bigquery.table.RowIterator,
+    *,
+    session: bigframes.session.Session,
+    index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind,
+    columns: Iterable[str],
 ) -> dataframe.DataFrame:
     """Convert a RowIterator into a DataFrame wrapping a LocalNode.
 
@@ -61,11 +66,27 @@ def create_dataframe_from_row_iterator(
     'jobless' case where there's no destination table.
     """
     pa_table = rows.to_arrow()
+    bq_schema = list(rows.schema)
+    is_default_index = not index_col or isinstance(
+        index_col, bigframes.enums.DefaultIndexKind
+    )
 
-    # TODO(tswast): Use array_value.promote_offsets() instead once that node is
-    # supported by the local engine.
-    offsets_col = bigframes.core.guid.generate_guid()
-    pa_table = pyarrow_utils.append_offsets(pa_table, offsets_col=offsets_col)
+    if is_default_index:
+        # We get a sequential index for free, so use that if no index is specified.
+        # TODO(tswast): Use array_value.promote_offsets() instead once that node is
+        # supported by the local engine.
+        offsets_col = bigframes.core.guid.generate_guid()
+        pa_table = pyarrow_utils.append_offsets(pa_table, offsets_col=offsets_col)
+        bq_schema += [bigquery.SchemaField(offsets_col, "INTEGER")]
+        index_columns: Tuple[str, ...] = (offsets_col,)
+        index_labels: Tuple[Optional[str], ...] = (None,)
+    elif isinstance(index_col, str):
+        index_columns = (index_col,)
+        index_labels = (index_col,)
+    else:
+        index_col = cast(Iterable[str], index_col)
+        index_columns = tuple(index_col)
+        index_labels = cast(Tuple[Optional[str], ...], tuple(index_col))
 
     # We use the ManagedArrowTable constructor directly, because the
     # results of to_arrow() should be the source of truth with regards
@@ -74,17 +95,27 @@ def create_dataframe_from_row_iterator(
     # like the output of the BQ Storage Read API.
     mat = local_data.ManagedArrowTable(
         pa_table,
-        schemata.ArraySchema.from_bq_schema(
-            list(rows.schema) + [bigquery.SchemaField(offsets_col, "INTEGER")]
-        ),
+        schemata.ArraySchema.from_bq_schema(bq_schema),
     )
     mat.validate()
+
+    column_labels = [
+        field.name for field in rows.schema if field.name not in index_columns
+    ]
 
     array_value = core.ArrayValue.from_managed(mat, session)
     block = blocks.Block(
         array_value,
-        (offsets_col,),
-        [field.name for field in rows.schema],
-        (None,),
+        index_columns=index_columns,
+        column_labels=column_labels,
+        index_labels=index_labels,
     )
-    return dataframe.DataFrame(block)
+    df = dataframe.DataFrame(block)
+
+    if columns:
+        df = df[list(columns)]
+
+    if not is_default_index:
+        df = df.sort_index()
+
+    return df

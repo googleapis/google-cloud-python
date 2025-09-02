@@ -4496,7 +4496,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> dict | list[dict]:
-        return self.to_pandas(allow_large_results=allow_large_results).to_dict(orient, into, **kwargs)  # type: ignore
+        return self.to_pandas(allow_large_results=allow_large_results).to_dict(orient=orient, into=into, **kwargs)  # type: ignore
 
     def to_excel(
         self,

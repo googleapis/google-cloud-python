@@ -280,6 +280,17 @@ def test_credentials_need_reauthentication(
     session = bpd.get_global_session()
     assert session.bqclient._http.credentials.valid
 
+    # We look at the thread-local session because of the
+    # reset_default_session_and_location fixture and that this test mutates
+    # state that might otherwise be used by tests running in parallel.
+    current_session = (
+        bigframes.core.global_session._global_session_state.thread_local_session
+    )
+    assert current_session is not None
+
+    # Force a temp table to be created, so there is something to cleanup.
+    current_session._anon_dataset_manager.create_temp_table(schema=())
+
     with monkeypatch.context() as m:
         # Simulate expired credentials to trigger the credential refresh flow
         m.setattr(
@@ -302,15 +313,6 @@ def test_credentials_need_reauthentication(
         # Confirm that as a result bigframes.pandas interface is unusable
         with pytest.raises(google.auth.exceptions.RefreshError):
             bpd.read_gbq(test_query)
-
-        # Now verify that closing the session works We look at the
-        # thread-local session because of the
-        # reset_default_session_and_location fixture and that this test mutates
-        # state that might otherwise be used by tests running in parallel.
-        assert (
-            bigframes.core.global_session._global_session_state.thread_local_session
-            is not None
-        )
 
         with warnings.catch_warnings(record=True) as warned:
             bpd.close_session()  # CleanupFailedWarning: can't clean up

@@ -619,7 +619,7 @@ def test_read_gbq_wildcard(
         pytest.param(
             {"query": {"useQueryCache": False, "maximumBytesBilled": "100"}},
             marks=pytest.mark.xfail(
-                raises=google.api_core.exceptions.InternalServerError,
+                raises=google.api_core.exceptions.BadRequest,
                 reason="Expected failure when the query exceeds the maximum bytes billed limit.",
             ),
         ),

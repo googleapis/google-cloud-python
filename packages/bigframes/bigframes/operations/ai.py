@@ -566,6 +566,10 @@ class AIAccessor:
                 column_to_search=embedding_result_column,
                 query=query_df,
                 top_k=top_k,
+                # TODO(tswast): set allow_large_results based on Series size.
+                # If we expect small results, it could be faster to set
+                # allow_large_results to False.
+                allow_large_results=True,
             )
             .rename(columns={"content": search_column})
             .set_index("index")
