@@ -1,0 +1,336 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.geminidataanalytics_v1alpha",
+  "protoPackage": "google.cloud.geminidataanalytics.v1alpha",
+  "schema": "1.0",
+  "services": {
+    "ContextRetrievalService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ContextRetrievalServiceClient",
+          "rpcs": {
+            "RetrieveBigQueryRecentRelevantTables": {
+              "methods": [
+                "retrieve_big_query_recent_relevant_tables"
+              ]
+            },
+            "RetrieveBigQueryTableContexts": {
+              "methods": [
+                "retrieve_big_query_table_contexts"
+              ]
+            },
+            "RetrieveBigQueryTableContextsFromRecentTables": {
+              "methods": [
+                "retrieve_big_query_table_contexts_from_recent_tables"
+              ]
+            },
+            "RetrieveBigQueryTableSuggestedDescriptions": {
+              "methods": [
+                "retrieve_big_query_table_suggested_descriptions"
+              ]
+            },
+            "RetrieveBigQueryTableSuggestedExamples": {
+              "methods": [
+                "retrieve_big_query_table_suggested_examples"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ContextRetrievalServiceAsyncClient",
+          "rpcs": {
+            "RetrieveBigQueryRecentRelevantTables": {
+              "methods": [
+                "retrieve_big_query_recent_relevant_tables"
+              ]
+            },
+            "RetrieveBigQueryTableContexts": {
+              "methods": [
+                "retrieve_big_query_table_contexts"
+              ]
+            },
+            "RetrieveBigQueryTableContextsFromRecentTables": {
+              "methods": [
+                "retrieve_big_query_table_contexts_from_recent_tables"
+              ]
+            },
+            "RetrieveBigQueryTableSuggestedDescriptions": {
+              "methods": [
+                "retrieve_big_query_table_suggested_descriptions"
+              ]
+            },
+            "RetrieveBigQueryTableSuggestedExamples": {
+              "methods": [
+                "retrieve_big_query_table_suggested_examples"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ContextRetrievalServiceClient",
+          "rpcs": {
+            "RetrieveBigQueryRecentRelevantTables": {
+              "methods": [
+                "retrieve_big_query_recent_relevant_tables"
+              ]
+            },
+            "RetrieveBigQueryTableContexts": {
+              "methods": [
+                "retrieve_big_query_table_contexts"
+              ]
+            },
+            "RetrieveBigQueryTableContextsFromRecentTables": {
+              "methods": [
+                "retrieve_big_query_table_contexts_from_recent_tables"
+              ]
+            },
+            "RetrieveBigQueryTableSuggestedDescriptions": {
+              "methods": [
+                "retrieve_big_query_table_suggested_descriptions"
+              ]
+            },
+            "RetrieveBigQueryTableSuggestedExamples": {
+              "methods": [
+                "retrieve_big_query_table_suggested_examples"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DataAgentService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataAgentServiceClient",
+          "rpcs": {
+            "CreateDataAgent": {
+              "methods": [
+                "create_data_agent"
+              ]
+            },
+            "DeleteDataAgent": {
+              "methods": [
+                "delete_data_agent"
+              ]
+            },
+            "GetDataAgent": {
+              "methods": [
+                "get_data_agent"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "ListAccessibleDataAgents": {
+              "methods": [
+                "list_accessible_data_agents"
+              ]
+            },
+            "ListDataAgents": {
+              "methods": [
+                "list_data_agents"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "UpdateDataAgent": {
+              "methods": [
+                "update_data_agent"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DataAgentServiceAsyncClient",
+          "rpcs": {
+            "CreateDataAgent": {
+              "methods": [
+                "create_data_agent"
+              ]
+            },
+            "DeleteDataAgent": {
+              "methods": [
+                "delete_data_agent"
+              ]
+            },
+            "GetDataAgent": {
+              "methods": [
+                "get_data_agent"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "ListAccessibleDataAgents": {
+              "methods": [
+                "list_accessible_data_agents"
+              ]
+            },
+            "ListDataAgents": {
+              "methods": [
+                "list_data_agents"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "UpdateDataAgent": {
+              "methods": [
+                "update_data_agent"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DataAgentServiceClient",
+          "rpcs": {
+            "CreateDataAgent": {
+              "methods": [
+                "create_data_agent"
+              ]
+            },
+            "DeleteDataAgent": {
+              "methods": [
+                "delete_data_agent"
+              ]
+            },
+            "GetDataAgent": {
+              "methods": [
+                "get_data_agent"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "ListAccessibleDataAgents": {
+              "methods": [
+                "list_accessible_data_agents"
+              ]
+            },
+            "ListDataAgents": {
+              "methods": [
+                "list_data_agents"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "UpdateDataAgent": {
+              "methods": [
+                "update_data_agent"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DataChatService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataChatServiceClient",
+          "rpcs": {
+            "Chat": {
+              "methods": [
+                "chat"
+              ]
+            },
+            "CreateConversation": {
+              "methods": [
+                "create_conversation"
+              ]
+            },
+            "GetConversation": {
+              "methods": [
+                "get_conversation"
+              ]
+            },
+            "ListConversations": {
+              "methods": [
+                "list_conversations"
+              ]
+            },
+            "ListMessages": {
+              "methods": [
+                "list_messages"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DataChatServiceAsyncClient",
+          "rpcs": {
+            "Chat": {
+              "methods": [
+                "chat"
+              ]
+            },
+            "CreateConversation": {
+              "methods": [
+                "create_conversation"
+              ]
+            },
+            "GetConversation": {
+              "methods": [
+                "get_conversation"
+              ]
+            },
+            "ListConversations": {
+              "methods": [
+                "list_conversations"
+              ]
+            },
+            "ListMessages": {
+              "methods": [
+                "list_messages"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DataChatServiceClient",
+          "rpcs": {
+            "Chat": {
+              "methods": [
+                "chat"
+              ]
+            },
+            "CreateConversation": {
+              "methods": [
+                "create_conversation"
+              ]
+            },
+            "GetConversation": {
+              "methods": [
+                "get_conversation"
+              ]
+            },
+            "ListConversations": {
+              "methods": [
+                "list_conversations"
+              ]
+            },
+            "ListMessages": {
+              "methods": [
+                "list_messages"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
