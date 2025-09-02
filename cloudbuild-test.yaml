@@ -59,6 +59,24 @@ steps:
       - 'generate'
     waitFor: ['build-generator', 'clone-googleapis']
 
+  # Step 4: Run the generator to test the library code.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-library'
+    waitFor: ['generate-library']
+    args:
+      - 'run'
+      - '--rm'
+      # Mount the test-resources/librarian from this repo's workspace as the librarian dir.
+      - '-v'
+      - '/workspace/.generator/test-resources/librarian:/app/librarian'
+      # We run the `build` command against the checked in google-cloud-language package.
+      - '-v'
+      - '/workspace:/app/repo'
+      # The image that was built in the first step.
+      - 'gcr.io/$PROJECT_ID/python-librarian-generator:latest'
+      # The command to execute inside the container.
+      - 'build'
+
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
   machineType: E2_HIGHCPU_32

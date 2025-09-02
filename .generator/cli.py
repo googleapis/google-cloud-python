@@ -481,7 +481,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             "--repo",
             type=str,
             help="Path to the directory in the container which contains google-cloud-python repository",
-            default=SOURCE_DIR,
+            default=REPO_DIR,
         )
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
