@@ -52,7 +52,7 @@ class TableFieldSchema(proto.Message):
     Attributes:
         name (str):
             Required. The field name. The name must contain only letters
-            (a-z, A-Z), numbers (0-9), or underscores (_), and must
+            (a-z, A-Z), numbers (0-9), or underscores (\_), and must
             start with a letter or underscore. The maximum length is 128
             characters.
         type_ (google.cloud.bigquery_storage_v1.types.TableFieldSchema.Type):
@@ -97,26 +97,26 @@ class TableFieldSchema(proto.Message):
             Values of this NUMERIC or BIGNUMERIC field must be in this
             range when:
 
-            -  Precision (P) and scale (S) are specified: [-10^(P-S) +
-               10^(-S), 10^(P-S) - 10^(-S)]
-            -  Precision (P) is specified but not scale (and thus scale
-               is interpreted to be equal to zero): [-10^P + 1, 10^P -
-               1].
+            - Precision (P) and scale (S) are specified: [-10^(P-S) +
+              10^(-S), 10^(P-S) - 10^(-S)]
+            - Precision (P) is specified but not scale (and thus scale
+              is interpreted to be equal to zero): [-10^P + 1, 10^P -
+              1].
 
             Acceptable values for precision and scale if both are
             specified:
 
-            -  If type = "NUMERIC": 1 <= precision - scale <= 29 and 0
-               <= scale <= 9.
-            -  If type = "BIGNUMERIC": 1 <= precision - scale <= 38 and
-               0 <= scale <= 38.
+            - If type = "NUMERIC": 1 <= precision - scale <= 29 and 0 <=
+              scale <= 9.
+            - If type = "BIGNUMERIC": 1 <= precision - scale <= 38 and 0
+              <= scale <= 38.
 
             Acceptable values for precision if only precision is
             specified but not scale (and thus scale is interpreted to be
             equal to zero):
 
-            -  If type = "NUMERIC": 1 <= precision <= 29.
-            -  If type = "BIGNUMERIC": 1 <= precision <= 38.
+            - If type = "NUMERIC": 1 <= precision <= 29.
+            - If type = "BIGNUMERIC": 1 <= precision <= 38.
 
             If scale is specified but not precision, then it is invalid.
         scale (int):
@@ -131,9 +131,9 @@ class TableFieldSchema(proto.Message):
             required. Possible values for the field element type of a
             RANGE include:
 
-            -  DATE
-            -  DATETIME
-            -  TIMESTAMP
+            - DATE
+            - DATETIME
+            - TIMESTAMP
     """
 
     class Type(proto.Enum):

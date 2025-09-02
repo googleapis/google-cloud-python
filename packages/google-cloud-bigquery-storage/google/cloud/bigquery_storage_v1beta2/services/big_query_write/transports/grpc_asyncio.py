@@ -341,7 +341,7 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
         r"""Return a callable for the create write stream method over gRPC.
 
         Creates a write stream to the given table. Additionally, every
-        table has a special COMMITTED stream named '_default' to which
+        table has a special COMMITTED stream named '\_default' to which
         data can be written. This stream doesn't need to be created
         using CreateWriteStream. It is a stream that can be used
         simultaneously by any number of clients. Data written to this
@@ -448,7 +448,7 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
         r"""Return a callable for the finalize write stream method over gRPC.
 
         Finalize a write stream so that no new data can be appended to
-        the stream. Finalize is not supported on the '_default' stream.
+        the stream. Finalize is not supported on the '\_default' stream.
 
         Returns:
             Callable[[~.FinalizeWriteStreamRequest],

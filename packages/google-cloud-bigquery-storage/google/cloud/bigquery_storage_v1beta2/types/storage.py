@@ -295,11 +295,11 @@ class SplitReadStreamResponse(proto.Message):
     Attributes:
         primary_stream (google.cloud.bigquery_storage_v1beta2.types.ReadStream):
             Primary stream, which contains the beginning portion of
-            \|original_stream|. An empty value indicates that the
+            \|original_stream\|. An empty value indicates that the
             original stream can no longer be split.
         remainder_stream (google.cloud.bigquery_storage_v1beta2.types.ReadStream):
             Remainder stream, which contains the tail of
-            \|original_stream|. An empty value indicates that the
+            \|original_stream\|. An empty value indicates that the
             original stream can no longer be split.
     """
 
@@ -357,7 +357,7 @@ class AppendRowsRequest(proto.Message):
             offset is same as the provided value. If not present, the
             write is performed at the current end of stream. Specifying
             a value for this field is not allowed when calling
-            AppendRows for the '_default' stream.
+            AppendRows for the '\_default' stream.
         proto_rows (google.cloud.bigquery_storage_v1beta2.types.AppendRowsRequest.ProtoData):
             Rows in proto format.
 

@@ -752,8 +752,8 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> stream.WriteStream:
         r"""Creates a write stream to the given table. Additionally, every
-        table has a special stream named '_default' to which data can be
-        written. This stream doesn't need to be created using
+        table has a special stream named '\_default' to which data can
+        be written. This stream doesn't need to be created using
         CreateWriteStream. It is a stream that can be used
         simultaneously by any number of clients. Data written to this
         stream is considered committed as soon as an acknowledgement is
@@ -895,17 +895,17 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         The specifics of when successfully appended data is made visible
         to the table are governed by the type of stream:
 
-        -  For COMMITTED streams (which includes the default stream),
-           data is visible immediately upon successful append.
+        - For COMMITTED streams (which includes the default stream),
+          data is visible immediately upon successful append.
 
-        -  For BUFFERED streams, data is made visible via a subsequent
-           ``FlushRows`` rpc which advances a cursor to a newer offset
-           in the stream.
+        - For BUFFERED streams, data is made visible via a subsequent
+          ``FlushRows`` rpc which advances a cursor to a newer offset in
+          the stream.
 
-        -  For PENDING streams, data is not made visible until the
-           stream itself is finalized (via the ``FinalizeWriteStream``
-           rpc), and the stream is explicitly committed via the
-           ``BatchCommitWriteStreams`` rpc.
+        - For PENDING streams, data is not made visible until the stream
+          itself is finalized (via the ``FinalizeWriteStream`` rpc), and
+          the stream is explicitly committed via the
+          ``BatchCommitWriteStreams`` rpc.
 
         .. code-block:: python
 
@@ -1110,7 +1110,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> storage.FinalizeWriteStreamResponse:
         r"""Finalize a write stream so that no new data can be appended to
-        the stream. Finalize is not supported on the '_default' stream.
+        the stream. Finalize is not supported on the '\_default' stream.
 
         .. code-block:: python
 

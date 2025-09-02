@@ -314,7 +314,7 @@ class BigQueryWriteAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> stream.WriteStream:
         r"""Creates a write stream to the given table. Additionally, every
-        table has a special COMMITTED stream named '_default' to which
+        table has a special COMMITTED stream named '\_default' to which
         data can be written. This stream doesn't need to be created
         using CreateWriteStream. It is a stream that can be used
         simultaneously by any number of clients. Data written to this
@@ -670,7 +670,7 @@ class BigQueryWriteAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> storage.FinalizeWriteStreamResponse:
         r"""Finalize a write stream so that no new data can be appended to
-        the stream. Finalize is not supported on the '_default' stream.
+        the stream. Finalize is not supported on the '\_default' stream.
 
         .. code-block:: python
 

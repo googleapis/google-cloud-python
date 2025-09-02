@@ -49,7 +49,7 @@ class TableFieldSchema(proto.Message):
     Attributes:
         name (str):
             Required. The field name. The name must contain only letters
-            (a-z, A-Z), numbers (0-9), or underscores (_), and must
+            (a-z, A-Z), numbers (0-9), or underscores (\_), and must
             start with a letter or underscore. The maximum length is 128
             characters.
         type_ (google.cloud.bigquery_storage_v1beta2.types.TableFieldSchema.Type):

@@ -333,11 +333,11 @@ class SplitReadStreamResponse(proto.Message):
     Attributes:
         primary_stream (google.cloud.bigquery_storage_v1.types.ReadStream):
             Primary stream, which contains the beginning portion of
-            \|original_stream|. An empty value indicates that the
+            \|original_stream\|. An empty value indicates that the
             original stream can no longer be split.
         remainder_stream (google.cloud.bigquery_storage_v1.types.ReadStream):
             Remainder stream, which contains the tail of
-            \|original_stream|. An empty value indicates that the
+            \|original_stream\|. An empty value indicates that the
             original stream can no longer be split.
     """
 
@@ -401,32 +401,32 @@ class AppendRowsRequest(proto.Message):
             Required. The write_stream identifies the append operation.
             It must be provided in the following scenarios:
 
-            -  In the first request to an AppendRows connection.
+            - In the first request to an AppendRows connection.
 
-            -  In all subsequent requests to an AppendRows connection,
-               if you use the same connection to write to multiple
-               tables or change the input schema for default streams.
+            - In all subsequent requests to an AppendRows connection, if
+              you use the same connection to write to multiple tables or
+              change the input schema for default streams.
 
             For explicitly created write streams, the format is:
 
-            -  ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{id}``
+            - ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{id}``
 
             For the special default stream, the format is:
 
-            -  ``projects/{project}/datasets/{dataset}/tables/{table}/streams/_default``.
+            - ``projects/{project}/datasets/{dataset}/tables/{table}/streams/_default``.
 
             An example of a possible sequence of requests with
             write_stream fields within a single connection:
 
-            -  r1: {write_stream: stream_name_1}
+            - r1: {write_stream: stream_name_1}
 
-            -  r2: {write_stream: /*omit*/}
+            - r2: {write_stream: /*omit*/}
 
-            -  r3: {write_stream: /*omit*/}
+            - r3: {write_stream: /*omit*/}
 
-            -  r4: {write_stream: stream_name_2}
+            - r4: {write_stream: stream_name_2}
 
-            -  r5: {write_stream: stream_name_2}
+            - r5: {write_stream: stream_name_2}
 
             The destination changed in request_4, so the write_stream
             field must be populated in all subsequent requests in this
@@ -436,7 +436,7 @@ class AppendRowsRequest(proto.Message):
             offset is same as the provided value. If not present, the
             write is performed at the current end of stream. Specifying
             a value for this field is not allowed when calling
-            AppendRows for the '_default' stream.
+            AppendRows for the '\_default' stream.
         proto_rows (google.cloud.bigquery_storage_v1.types.AppendRowsRequest.ProtoData):
             Rows in proto format.
 
@@ -539,11 +539,11 @@ class AppendRowsRequest(proto.Message):
                 The protocol buffer schema used to serialize the data.
                 Provide this value whenever:
 
-                -  You send the first request of an RPC connection.
+                - You send the first request of an RPC connection.
 
-                -  You change the input schema.
+                - You change the input schema.
 
-                -  You specify a new destination table.
+                - You specify a new destination table.
             rows (google.cloud.bigquery_storage_v1.types.ProtoRows):
                 Serialized row data in protobuf message
                 format. Currently, the backend expects the
