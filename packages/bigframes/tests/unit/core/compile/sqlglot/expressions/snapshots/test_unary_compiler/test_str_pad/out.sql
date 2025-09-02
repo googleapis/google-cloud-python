@@ -5,6 +5,8 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
+    LPAD(`bfcol_0`, GREATEST(LENGTH(`bfcol_0`), 10), '-') AS `bfcol_1`,
+    RPAD(`bfcol_0`, GREATEST(LENGTH(`bfcol_0`), 10), '-') AS `bfcol_2`,
     RPAD(
       LPAD(
         `bfcol_0`,
@@ -13,9 +15,11 @@ WITH `bfcte_0` AS (
       ),
       GREATEST(LENGTH(`bfcol_0`), 10),
       '-'
-    ) AS `bfcol_1`
+    ) AS `bfcol_3`
   FROM `bfcte_0`
 )
 SELECT
-  `bfcol_1` AS `string_col`
+  `bfcol_1` AS `left`,
+  `bfcol_2` AS `right`,
+  `bfcol_3` AS `both`
 FROM `bfcte_1`

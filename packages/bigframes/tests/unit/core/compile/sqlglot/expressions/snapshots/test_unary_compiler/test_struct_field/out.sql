@@ -5,9 +5,11 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    `bfcol_0`.`name` AS `bfcol_1`
+    `bfcol_0`.`name` AS `bfcol_1`,
+    `bfcol_0`.`name` AS `bfcol_2`
   FROM `bfcte_0`
 )
 SELECT
-  `bfcol_1` AS `people`
+  `bfcol_1` AS `string`,
+  `bfcol_2` AS `int`
 FROM `bfcte_1`
