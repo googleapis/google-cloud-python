@@ -54,10 +54,18 @@ for library in s.get_staging_dirs(default_version):
 
     if renamed_path.exists():
         s.replace(
-            renamed_path / "__init__.py",
-            "from google.cloud.storage_v2 import gapic_version as package_version",
-            "from google.cloud._storage_v2 import gapic_version as package_version",
-        )
+        renamed_path / "**/*.py",
+        "google.cloud.storage_v2",
+        "google.cloud._storage_v2",
+    )
+
+    # Fix imports in the unit tests
+    s.replace(
+    "tests/unit/gapic/storage_v2/**/*.py",
+    "google.cloud.storage_v2",
+    "google.cloud._storage_v2",
+    )
+
 
 s.remove_staging_dirs()
 
