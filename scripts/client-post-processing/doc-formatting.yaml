@@ -15,30 +15,6 @@ description: Fix formatting issues in docs
 url: https://github.com/googleapis/gapic-generator-python/issues/1829
 replacements:
   - paths: [
-      packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
-    ]
-    before: \"IT_\"
-    after: "`IT_`"
-    count: 2
-  - paths: [
-      packages/google-cloud-compute-v1beta/google/cloud/compute_v1beta/types/compute.py,
-    ]
-    before: \"IT_\"
-    after: "`IT_`"
-    count: 2
-  - paths: [
-      packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
-    ]
-    before: \"NS_\"
-    after: "`NS_`"
-    count: 2
-  - paths: [
-      packages/google-cloud-compute-v1beta/google/cloud/compute_v1beta/types/compute.py,
-    ]
-    before: \"NS_\"
-    after: "`NS_`"
-    count: 2
-  - paths: [
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1alpha/types/retriever.py,
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
     ]
