@@ -99,7 +99,7 @@ class ListClustersRequest(proto.Message):
             Additionally, you can perform an aggregated list operation
             by specifying a value with the following format:
 
-            -  projects/{project}/locations/-
+            - projects/{project}/locations/-
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -1264,8 +1264,8 @@ class ListInstancesRequest(proto.Message):
             Additionally, you can perform an aggregated list operation
             by specifying a value with one of the following formats:
 
-            -  projects/{project}/locations/-/clusters/-
-            -  projects/{project}/locations/{region}/clusters/-
+            - projects/{project}/locations/-/clusters/-
+            - projects/{project}/locations/{region}/clusters/-
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -2424,7 +2424,7 @@ class ListSupportedDatabaseFlagsRequest(proto.Message):
             Required. The name of the parent resource. The required
             format is:
 
-            -  projects/{project}/locations/{location}
+            - projects/{project}/locations/{location}
 
             Regardless of the parent specified here, as long it is
             contains a valid project and location, the service will
@@ -2499,7 +2499,7 @@ class GenerateClientCertificateRequest(proto.Message):
             Required. The name of the parent resource. The required
             format is:
 
-            -  projects/{project}/locations/{location}/clusters/{cluster}
+            - projects/{project}/locations/{location}/clusters/{cluster}
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

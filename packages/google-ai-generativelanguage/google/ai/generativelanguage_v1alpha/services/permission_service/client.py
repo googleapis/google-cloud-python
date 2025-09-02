@@ -1169,7 +1169,7 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. The list of fields to update. Accepted ones:
 
-                -  role (``Permission.role`` field)
+                - role (``Permission.role`` field)
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

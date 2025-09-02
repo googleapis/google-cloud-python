@@ -158,7 +158,7 @@ class UpdatePermissionRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to update. Accepted ones:
 
-            -  role (``Permission.role`` field)
+            - role (``Permission.role`` field)
     """
 
     permission: gag_permission.Permission = proto.Field(

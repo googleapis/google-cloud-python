@@ -302,7 +302,7 @@ class ApiTarget(proto.Message):
         methods (MutableSequence[str]):
             Optional. List of one or more methods that can be called. If
             empty, all methods for the service are allowed. A wildcard
-            (*) can be used as the last symbol. Valid examples:
+            (\*) can be used as the last symbol. Valid examples:
             ``google.cloud.translate.v2.TranslateService.GetSupportedLanguage``
             ``TranslateText`` ``Get*`` ``translate.googleapis.com.Get*``
     """

@@ -62,10 +62,10 @@ class Card(proto.Message):
 
     To learn how to build cards, see the following documentation:
 
-    -  For Google Chat apps, see `Design the components of a card or
-       dialog <https://developers.google.com/workspace/chat/design-components-card-dialog>`__.
-    -  For Google Workspace Add-ons, see `Card-based
-       interfaces <https://developers.google.com/apps-script/add-ons/concepts/cards>`__.
+    - For Google Chat apps, see `Design the components of a card or
+      dialog <https://developers.google.com/workspace/chat/design-components-card-dialog>`__.
+    - For Google Workspace Add-ons, see `Card-based
+      interfaces <https://developers.google.com/apps-script/add-ons/concepts/cards>`__.
 
     **Example: Card message for a Google Chat app**
 
@@ -1557,13 +1557,13 @@ class SelectionInput(proto.Message):
                 To populate items for a multiselect menu, you can use one of
                 the following types of data sources:
 
-                -  Static data: Items are specified as ``SelectionItem``
-                   objects in the widget. Up to 100 items.
-                -  Google Workspace data: Items are populated using data
-                   from Google Workspace, such as Google Workspace users or
-                   Google Chat spaces.
-                -  External data: Items are populated from an external data
-                   source outside of Google Workspace.
+                - Static data: Items are specified as ``SelectionItem``
+                  objects in the widget. Up to 100 items.
+                - Google Workspace data: Items are populated using data from
+                  Google Workspace, such as Google Workspace users or Google
+                  Chat spaces.
+                - External data: Items are populated from an external data
+                  source outside of Google Workspace.
 
                 For examples of how to implement multiselect menus, see `Add
                 a multiselect
@@ -1760,14 +1760,14 @@ class DateTimePicker(proto.Message):
             Specify the value based on the type of picker
             (``DateTimePickerType``):
 
-            -  ``DATE_AND_TIME``: a calendar date and time in UTC. For
-               example, to represent January 1, 2023 at 12:00 PM UTC,
-               use ``1672574400000``.
-            -  ``DATE_ONLY``: a calendar date at 00:00:00 UTC. For
-               example, to represent January 1, 2023, use
-               ``1672531200000``.
-            -  ``TIME_ONLY``: a time in UTC. For example, to represent
-               12:00 PM, use ``43200000`` (or ``12 * 60 * 60 * 1000``).
+            - ``DATE_AND_TIME``: a calendar date and time in UTC. For
+              example, to represent January 1, 2023 at 12:00 PM UTC, use
+              ``1672574400000``.
+            - ``DATE_ONLY``: a calendar date at 00:00:00 UTC. For
+              example, to represent January 1, 2023, use
+              ``1672531200000``.
+            - ``TIME_ONLY``: a time in UTC. For example, to represent
+              12:00 PM, use ``43200000`` (or ``12 * 60 * 60 * 1000``).
         timezone_offset_date (int):
             The number representing the time zone offset from UTC, in
             minutes. If set, the ``value_ms_epoch`` is displayed in the
@@ -2441,12 +2441,12 @@ class Columns(proto.Message):
     each column using the ``HorizontalSizeStyle`` field. If the user's
     screen width is too narrow, the second column wraps below the first:
 
-    -  On web, the second column wraps if the screen width is less than
-       or equal to 480 pixels.
-    -  On iOS devices, the second column wraps if the screen width is
-       less than or equal to 300 pt.
-    -  On Android devices, the second column wraps if the screen width
-       is less than or equal to 320 dp.
+    - On web, the second column wraps if the screen width is less than
+      or equal to 480 pixels.
+    - On iOS devices, the second column wraps if the screen width is
+      less than or equal to 300 pt.
+    - On Android devices, the second column wraps if the screen width is
+      less than or equal to 320 dp.
 
     To include more than 2 columns, or to use rows, use the
     [``Grid``][google.apps.card.v1.Grid] widget.

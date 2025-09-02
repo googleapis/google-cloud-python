@@ -1320,8 +1320,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Required. The list of fields to be updated. Field names
                 must be in snake case (for example, "field_to_update").
                 Omitted fields will not be updated. To replace the
-                entire entity, use one path with the string "*" to match
-                all fields.
+                entire entity, use one path with the string "\*" to
+                match all fields.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2056,7 +2056,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Required. The list of fields to be updated. Field names
                 must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
+                entity, use one path with the string "\*" to match all
                 fields.
 
                 This corresponds to the ``update_mask`` field
@@ -2646,7 +2646,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Required. The list of fields to be updated. Field names
                 must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
+                entity, use one path with the string "\*" to match all
                 fields.
 
                 This corresponds to the ``update_mask`` field
@@ -4059,7 +4059,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Required. The list of fields to be updated. Field names
                 must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
+                entity, use one path with the string "\*" to match all
                 fields.
 
                 This corresponds to the ``update_mask`` field
@@ -4669,7 +4669,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Required. The list of fields to be updated. Field names
                 must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
+                entity, use one path with the string "\*" to match all
                 fields.
 
                 This corresponds to the ``update_mask`` field
@@ -5245,7 +5245,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. The list of fields to be updated. Omitted
                 fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
+                entity, use one path with the string "\*" to match all
                 fields.
 
                 This corresponds to the ``update_mask`` field
@@ -5821,7 +5821,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. The list of fields to be updated. Omitted
                 fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
+                entity, use one path with the string "\*" to match all
                 fields.
 
                 This corresponds to the ``update_mask`` field
@@ -6395,7 +6395,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Required. The list of fields to be updated. Field names
                 must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
+                entity, use one path with the string "\*" to match all
                 fields.
 
                 This corresponds to the ``update_mask`` field
@@ -6738,7 +6738,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. The list of fields to be updated. Omitted
                 fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
+                entity, use one path with the string "\*" to match all
                 fields.
 
                 This corresponds to the ``update_mask`` field

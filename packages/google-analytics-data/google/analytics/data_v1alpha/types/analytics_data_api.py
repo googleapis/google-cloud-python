@@ -1275,7 +1275,7 @@ class ReportTask(proto.Message):
             metric_aggregations (MutableSequence[google.analytics.data_v1alpha.types.MetricAggregation]):
                 Optional. Aggregation of metrics. Aggregated metric values
                 will be shown in rows where the dimension_values are set to
-                "RESERVED_(MetricAggregation)".
+                "RESERVED\_(MetricAggregation)".
             order_bys (MutableSequence[google.analytics.data_v1alpha.types.OrderBy]):
                 Optional. Specifies how rows are ordered in
                 the response.

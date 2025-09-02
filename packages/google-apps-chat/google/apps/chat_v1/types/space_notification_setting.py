@@ -124,12 +124,12 @@ class GetSpaceNotificationSettingRequest(proto.Message):
             Required. Format:
             users/{user}/spaces/{space}/spaceNotificationSetting
 
-            -  ``users/me/spaces/{space}/spaceNotificationSetting``, OR
-            -  ``users/user@example.com/spaces/{space}/spaceNotificationSetting``,
-               OR
-            -  ``users/123456789/spaces/{space}/spaceNotificationSetting``.
-               Note: Only the caller's user id or email is allowed in
-               the path.
+            - ``users/me/spaces/{space}/spaceNotificationSetting``, OR
+            - ``users/user@example.com/spaces/{space}/spaceNotificationSetting``,
+              OR
+            - ``users/123456789/spaces/{space}/spaceNotificationSetting``.
+              Note: Only the caller's user id or email is allowed in the
+              path.
     """
 
     name: str = proto.Field(
@@ -152,9 +152,9 @@ class UpdateSpaceNotificationSettingRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Supported field paths:
 
-            -  ``notification_setting``
+            - ``notification_setting``
 
-            -  ``mute_setting``
+            - ``mute_setting``
     """
 
     space_notification_setting: "SpaceNotificationSetting" = proto.Field(
