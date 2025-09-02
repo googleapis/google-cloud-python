@@ -14,11 +14,9 @@
 
 from __future__ import annotations
 
-import dataclasses
 import math
-import os
 import threading
-from typing import cast, Literal, Mapping, Optional, Sequence, Tuple, Union
+from typing import Literal, Mapping, Optional, Sequence, Tuple
 import warnings
 import weakref
 
@@ -35,12 +33,12 @@ import bigframes.core
 from bigframes.core import compile, local_data, rewrite
 import bigframes.core.compile.sqlglot.sqlglot_ir as sqlglot_ir
 import bigframes.core.guid
+import bigframes.core.identifiers
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as order
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
-import bigframes.features
 from bigframes.session import (
     executor,
     loader,
@@ -49,6 +47,7 @@ from bigframes.session import (
     semi_executor,
 )
 import bigframes.session._io.bigquery as bq_io
+import bigframes.session.execution_spec as ex_spec
 import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temporary_storage
@@ -59,21 +58,6 @@ QUERY_COMPLEXITY_LIMIT = 1e7
 MAX_SUBTREE_FACTORINGS = 5
 _MAX_CLUSTER_COLUMNS = 4
 MAX_SMALL_RESULT_BYTES = 10 * 1024 * 1024 * 1024  # 10G
-
-
-@dataclasses.dataclass
-class OutputSpec:
-    require_bq_table: bool
-    cluster_cols: tuple[str, ...]
-
-    def with_require_table(self, value: bool) -> OutputSpec:
-        return dataclasses.replace(self, require_bq_table=value)
-
-
-def _get_default_output_spec() -> OutputSpec:
-    return OutputSpec(
-        require_bq_table=bigframes.options._allow_large_results, cluster_cols=()
-    )
 
 
 SourceIdMapping = Mapping[str, str]
@@ -189,7 +173,11 @@ class BigQueryCachingExecutor(executor.Executor):
     ) -> str:
         if offset_column:
             array_value, _ = array_value.promote_offsets()
-        node = self.logical_plan(array_value.node) if enable_cache else array_value.node
+        node = (
+            self.prepare_plan(array_value.node, target="simplify")
+            if enable_cache
+            else array_value.node
+        )
         node = self._substitute_large_local_sources(node)
         compiled = compile.compile_sql(compile.CompileRequest(node, sort_rows=ordered))
         return compiled.sql
@@ -197,140 +185,54 @@ class BigQueryCachingExecutor(executor.Executor):
     def execute(
         self,
         array_value: bigframes.core.ArrayValue,
-        *,
-        ordered: bool = True,
-        use_explicit_destination: Optional[bool] = None,
+        execution_spec: ex_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
-        if bigframes.options.compute.enable_multi_query_execution:
-            self._simplify_with_caching(array_value)
-
-        output_spec = _get_default_output_spec()
-        if use_explicit_destination is not None:
-            output_spec = output_spec.with_require_table(use_explicit_destination)
-
-        plan = self.logical_plan(array_value.node)
-        return self._execute_plan(
-            plan,
-            ordered=ordered,
-            output_spec=output_spec,
-        )
-
-    def peek(
-        self,
-        array_value: bigframes.core.ArrayValue,
-        n_rows: int,
-        use_explicit_destination: Optional[bool] = None,
-    ) -> executor.ExecuteResult:
-        """
-        A 'peek' efficiently accesses a small number of rows in the dataframe.
-        """
-        plan = self.logical_plan(array_value.node)
-        if not tree_properties.can_fast_peek(plan):
-            msg = bfe.format_message("Peeking this value cannot be done efficiently.")
-            warnings.warn(msg)
-
-        output_spec = _get_default_output_spec()
-        if use_explicit_destination is not None:
-            output_spec = output_spec.with_require_table(use_explicit_destination)
-
-        return self._execute_plan(
-            plan, ordered=False, output_spec=output_spec, peek=n_rows
-        )
-
-    def export_gbq(
-        self,
-        array_value: bigframes.core.ArrayValue,
-        destination: bigquery.TableReference,
-        if_exists: Literal["fail", "replace", "append"] = "fail",
-        cluster_cols: Sequence[str] = [],
-    ):
-        """
-        Export the ArrayValue to an existing BigQuery table.
-        """
-        if bigframes.options.compute.enable_multi_query_execution:
-            self._simplify_with_caching(array_value)
-
-        table_exists = True
-        try:
-            table = self.bqclient.get_table(destination)
-            if if_exists == "fail":
-                raise ValueError(f"Table already exists: {destination.__str__()}")
-        except google.api_core.exceptions.NotFound:
-            table_exists = False
-
-        if len(cluster_cols) != 0:
-            if table_exists and table.clustering_fields != cluster_cols:
-                raise ValueError(
-                    "Table clustering fields cannot be changed after the table has "
-                    f"been created. Existing clustering fields: {table.clustering_fields}"
+        # TODO: Support export jobs in combination with semi executors
+        if execution_spec.destination_spec is None:
+            plan = self.prepare_plan(array_value.node, target="simplify")
+            for exec in self._semi_executors:
+                maybe_result = exec.execute(
+                    plan, ordered=execution_spec.ordered, peek=execution_spec.peek
                 )
+                if maybe_result:
+                    return maybe_result
 
-        sql = self.to_sql(array_value, ordered=False)
-        if table_exists and _if_schema_match(table.schema, array_value.schema):
-            # b/409086472: Uses DML for table appends and replacements to avoid
-            # BigQuery `RATE_LIMIT_EXCEEDED` errors, as per quota limits:
-            # https://cloud.google.com/bigquery/quotas#standard_tables
-            job_config = bigquery.QueryJobConfig()
-            ir = sqlglot_ir.SQLGlotIR.from_query_string(sql)
-            if if_exists == "append":
-                sql = ir.insert(destination)
-            else:  # for "replace"
-                assert if_exists == "replace"
-                sql = ir.replace(destination)
-        else:
-            dispositions = {
-                "fail": bigquery.WriteDisposition.WRITE_EMPTY,
-                "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
-                "append": bigquery.WriteDisposition.WRITE_APPEND,
-            }
-            job_config = bigquery.QueryJobConfig(
-                write_disposition=dispositions[if_exists],
-                destination=destination,
-                clustering_fields=cluster_cols if cluster_cols else None,
-            )
+        if isinstance(execution_spec.destination_spec, ex_spec.TableOutputSpec):
+            if execution_spec.peek or execution_spec.ordered:
+                raise NotImplementedError(
+                    "Ordering and peeking not supported for gbq export"
+                )
+            # separate path for export_gbq, as it has all sorts of annoying logic, such as possibly running as dml
+            return self._export_gbq(array_value, execution_spec.destination_spec)
 
-        # TODO(swast): plumb through the api_name of the user-facing api that
-        # caused this query.
-        _, query_job = self._run_execute_query(
-            sql=sql,
-            job_config=job_config,
+        result = self._execute_plan_gbq(
+            array_value.node,
+            ordered=execution_spec.ordered,
+            peek=execution_spec.peek,
+            cache_spec=execution_spec.destination_spec
+            if isinstance(execution_spec.destination_spec, ex_spec.CacheSpec)
+            else None,
+            must_create_table=not execution_spec.promise_under_10gb,
         )
+        # post steps: export
+        if isinstance(execution_spec.destination_spec, ex_spec.GcsOutputSpec):
+            self._export_result_gcs(result, execution_spec.destination_spec)
 
-        has_timedelta_col = any(
-            t == bigframes.dtypes.TIMEDELTA_DTYPE for t in array_value.schema.dtypes
-        )
+        return result
 
-        if if_exists != "append" and has_timedelta_col:
-            # Only update schema if this is not modifying an existing table, and the
-            # new table contains timedelta columns.
-            table = self.bqclient.get_table(destination)
-            table.schema = array_value.schema.to_bigquery()
-            self.bqclient.update_table(table, ["schema"])
-
-        return query_job
-
-    def export_gcs(
-        self,
-        array_value: bigframes.core.ArrayValue,
-        uri: str,
-        format: Literal["json", "csv", "parquet"],
-        export_options: Mapping[str, Union[bool, str]],
+    def _export_result_gcs(
+        self, result: executor.ExecuteResult, gcs_export_spec: ex_spec.GcsOutputSpec
     ):
-        query_job = self.execute(
-            array_value,
-            ordered=False,
-            use_explicit_destination=True,
-        ).query_job
+        query_job = result.query_job
         assert query_job is not None
         result_table = query_job.destination
         assert result_table is not None
         export_data_statement = bq_io.create_export_data_statement(
             f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
-            uri=uri,
-            format=format,
-            export_options=dict(export_options),
+            uri=gcs_export_spec.uri,
+            format=gcs_export_spec.format,
+            export_options=dict(gcs_export_spec.export_options),
         )
-
         bq_io.start_query_with_client(
             self.bqclient,
             export_data_statement,
@@ -341,7 +243,88 @@ class BigQueryCachingExecutor(executor.Executor):
             timeout=None,
             query_with_job=True,
         )
-        return query_job
+
+    def _maybe_find_existing_table(
+        self, spec: ex_spec.TableOutputSpec
+    ) -> Optional[bigquery.Table]:
+        # validate destination table
+        try:
+            table = self.bqclient.get_table(spec.table)
+            if spec.if_exists == "fail":
+                raise ValueError(f"Table already exists: {spec.table.__str__()}")
+
+            if len(spec.cluster_cols) != 0:
+                if (table.clustering_fields is None) or (
+                    tuple(table.clustering_fields) != spec.cluster_cols
+                ):
+                    raise ValueError(
+                        "Table clustering fields cannot be changed after the table has "
+                        f"been created. Requested clustering fields: {spec.cluster_cols}, existing clustering fields: {table.clustering_fields}"
+                    )
+            return table
+        except google.api_core.exceptions.NotFound:
+            return None
+
+    def _export_gbq(
+        self, array_value: bigframes.core.ArrayValue, spec: ex_spec.TableOutputSpec
+    ) -> executor.ExecuteResult:
+        """
+        Export the ArrayValue to an existing BigQuery table.
+        """
+        plan = self.prepare_plan(array_value.node, target="bq_execution")
+
+        # validate destination table
+        existing_table = self._maybe_find_existing_table(spec)
+
+        compiled = compile.compile_sql(compile.CompileRequest(plan, sort_rows=False))
+        sql = compiled.sql
+
+        if (existing_table is not None) and _if_schema_match(
+            existing_table.schema, array_value.schema
+        ):
+            # b/409086472: Uses DML for table appends and replacements to avoid
+            # BigQuery `RATE_LIMIT_EXCEEDED` errors, as per quota limits:
+            # https://cloud.google.com/bigquery/quotas#standard_tables
+            job_config = bigquery.QueryJobConfig()
+            ir = sqlglot_ir.SQLGlotIR.from_query_string(sql)
+            if spec.if_exists == "append":
+                sql = ir.insert(spec.table)
+            else:  # for "replace"
+                assert spec.if_exists == "replace"
+                sql = ir.replace(spec.table)
+        else:
+            dispositions = {
+                "fail": bigquery.WriteDisposition.WRITE_EMPTY,
+                "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
+                "append": bigquery.WriteDisposition.WRITE_APPEND,
+            }
+            job_config = bigquery.QueryJobConfig(
+                write_disposition=dispositions[spec.if_exists],
+                destination=spec.table,
+                clustering_fields=spec.cluster_cols if spec.cluster_cols else None,
+            )
+
+        # TODO(swast): plumb through the api_name of the user-facing api that
+        # caused this query.
+        row_iter, query_job = self._run_execute_query(
+            sql=sql,
+            job_config=job_config,
+        )
+
+        has_timedelta_col = any(
+            t == bigframes.dtypes.TIMEDELTA_DTYPE for t in array_value.schema.dtypes
+        )
+
+        if spec.if_exists != "append" and has_timedelta_col:
+            # Only update schema if this is not modifying an existing table, and the
+            # new table contains timedelta columns.
+            table = self.bqclient.get_table(spec.table)
+            table.schema = array_value.schema.to_bigquery()
+            self.bqclient.update_table(table, ["schema"])
+
+        return executor.ExecuteResult(
+            row_iter.to_arrow_iterable(), array_value.schema, query_job
+        )
 
     def dry_run(
         self, array_value: bigframes.core.ArrayValue, ordered: bool = True
@@ -446,59 +429,56 @@ class BigQueryCachingExecutor(executor.Executor):
         # Once rewriting is available, will want to rewrite before
         # evaluating execution cost.
         return tree_properties.is_trivially_executable(
-            self.logical_plan(array_value.node)
+            self.prepare_plan(array_value.node)
         )
 
-    def logical_plan(self, root: nodes.BigFrameNode) -> nodes.BigFrameNode:
+    def prepare_plan(
+        self,
+        plan: nodes.BigFrameNode,
+        target: Literal["simplify", "bq_execution"] = "simplify",
+    ) -> nodes.BigFrameNode:
         """
-        Apply universal logical simplifications that are helpful regardless of engine.
+        Prepare the plan by simplifying it with caches, removing unused operators. Has modes for different contexts.
+
+        "simplify" removes unused operations and subsitutes subtrees with their previously cached equivalents
+        "bq_execution" is the most heavy option, preparing the plan for bq execution by also caching subtrees, uploading large local sources
         """
-        plan = self.replace_cached_subtrees(root)
+        # TODO: We should model plan decomposition and data uploading as work steps rather than as plan preparation.
+        if (
+            target == "bq_execution"
+            and bigframes.options.compute.enable_multi_query_execution
+        ):
+            self._simplify_with_caching(plan)
+
+        plan = self.replace_cached_subtrees(plan)
         plan = rewrite.column_pruning(plan)
         plan = plan.top_down(rewrite.fold_row_counts)
+
+        if target == "bq_execution":
+            plan = self._substitute_large_local_sources(plan)
+
         return plan
 
     def _cache_with_cluster_cols(
         self, array_value: bigframes.core.ArrayValue, cluster_cols: Sequence[str]
     ):
         """Executes the query and uses the resulting table to rewrite future executions."""
-        plan = self.logical_plan(array_value.node)
-        plan = self._substitute_large_local_sources(plan)
-        compiled = compile.compile_sql(
-            compile.CompileRequest(
-                plan, sort_rows=False, materialize_all_order_keys=True
-            )
+        execution_spec = ex_spec.ExecutionSpec(
+            destination_spec=ex_spec.CacheSpec(cluster_cols=tuple(cluster_cols))
         )
-        tmp_table_ref, num_rows = self._sql_as_cached_temp_table(
-            compiled.sql,
-            compiled.sql_schema,
-            cluster_cols=bq_io.select_cluster_cols(compiled.sql_schema, cluster_cols),
-        )
-        tmp_table = self.bqclient.get_table(tmp_table_ref)
-        assert compiled.row_order is not None
-        self.cache.cache_results_table(
-            array_value.node, tmp_table, compiled.row_order, num_rows=num_rows
+        self.execute(
+            array_value,
+            execution_spec=execution_spec,
         )
 
     def _cache_with_offsets(self, array_value: bigframes.core.ArrayValue):
         """Executes the query and uses the resulting table to rewrite future executions."""
-        offset_column = bigframes.core.guid.generate_guid("bigframes_offsets")
-        w_offsets, offset_column = array_value.promote_offsets()
-        compiled = compile.compile_sql(
-            compile.CompileRequest(
-                self.logical_plan(self._substitute_large_local_sources(w_offsets.node)),
-                sort_rows=False,
-            )
+        execution_spec = ex_spec.ExecutionSpec(
+            destination_spec=ex_spec.CacheSpec(cluster_cols=tuple())
         )
-        tmp_table_ref, num_rows = self._sql_as_cached_temp_table(
-            compiled.sql,
-            compiled.sql_schema,
-            cluster_cols=[offset_column],
-        )
-        tmp_table = self.bqclient.get_table(tmp_table_ref)
-        assert compiled.row_order is not None
-        self.cache.cache_results_table(
-            array_value.node, tmp_table, compiled.row_order, num_rows=num_rows
+        self.execute(
+            array_value,
+            execution_spec=execution_spec,
         )
 
     def _cache_with_session_awareness(
@@ -520,17 +500,17 @@ class BigQueryCachingExecutor(executor.Executor):
         else:
             self._cache_with_cluster_cols(bigframes.core.ArrayValue(target), [])
 
-    def _simplify_with_caching(self, array_value: bigframes.core.ArrayValue):
+    def _simplify_with_caching(self, plan: nodes.BigFrameNode):
         """Attempts to handle the complexity by caching duplicated subtrees and breaking the query into pieces."""
         # Apply existing caching first
         for _ in range(MAX_SUBTREE_FACTORINGS):
             if (
-                self.logical_plan(array_value.node).planning_complexity
+                self.prepare_plan(plan, "simplify").planning_complexity
                 < QUERY_COMPLEXITY_LIMIT
             ):
                 return
 
-            did_cache = self._cache_most_complex_subtree(array_value.node)
+            did_cache = self._cache_most_complex_subtree(plan)
             if not did_cache:
                 return
 
@@ -551,52 +531,6 @@ class BigQueryCachingExecutor(executor.Executor):
 
         self._cache_with_cluster_cols(bigframes.core.ArrayValue(selection), [])
         return True
-
-    def _sql_as_cached_temp_table(
-        self,
-        sql: str,
-        schema: Sequence[bigquery.SchemaField],
-        cluster_cols: Sequence[str],
-    ) -> tuple[bigquery.TableReference, Optional[int]]:
-        assert len(cluster_cols) <= _MAX_CLUSTER_COLUMNS
-        temp_table = self.storage_manager.create_temp_table(schema, cluster_cols)
-
-        # TODO: Get default job config settings
-        job_config = cast(
-            bigquery.QueryJobConfig,
-            bigquery.QueryJobConfig.from_api_repr({}),
-        )
-        job_config.destination = temp_table
-        _, query_job = self._run_execute_query(
-            sql,
-            job_config=job_config,
-        )
-        assert query_job is not None
-        iter = query_job.result()
-        return query_job.destination, iter.total_rows
-
-    def _validate_result_schema(
-        self,
-        array_value: bigframes.core.ArrayValue,
-        bq_schema: list[bigquery.SchemaField],
-    ):
-        actual_schema = _sanitize(tuple(bq_schema))
-        ibis_schema = compile.test_only_ibis_inferred_schema(
-            self.logical_plan(array_value.node)
-        ).to_bigquery()
-        internal_schema = _sanitize(array_value.schema.to_bigquery())
-        if not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
-            return
-
-        if internal_schema != actual_schema:
-            raise ValueError(
-                f"This error should only occur while testing. BigFrames internal schema: {internal_schema} does not match actual schema: {actual_schema}"
-            )
-
-        if ibis_schema != actual_schema:
-            raise ValueError(
-                f"This error should only occur while testing. Ibis schema: {ibis_schema} does not match actual schema: {actual_schema}"
-            )
 
     def _substitute_large_local_sources(self, original_root: nodes.BigFrameNode):
         """
@@ -646,51 +580,79 @@ class BigQueryCachingExecutor(executor.Executor):
                 )
                 self.cache.cache_remote_replacement(local_table, uploaded)
 
-    def _execute_plan(
+    def _execute_plan_gbq(
         self,
         plan: nodes.BigFrameNode,
         ordered: bool,
-        output_spec: OutputSpec,
         peek: Optional[int] = None,
+        cache_spec: Optional[ex_spec.CacheSpec] = None,
+        must_create_table: bool = True,
     ) -> executor.ExecuteResult:
         """Just execute whatever plan as is, without further caching or decomposition."""
-        # First try to execute fast-paths
-        if not output_spec.require_bq_table:
-            for exec in self._semi_executors:
-                maybe_result = exec.execute(plan, ordered=ordered, peek=peek)
-                if maybe_result:
-                    return maybe_result
-
-        # Use explicit destination to avoid 10GB limit of temporary table
-        destination_table = (
-            self.storage_manager.create_temp_table(
-                plan.schema.to_bigquery(), cluster_cols=output_spec.cluster_cols
-            )
-            if output_spec.require_bq_table
-            else None
-        )
-
         # TODO(swast): plumb through the api_name of the user-facing api that
         # caused this query.
+
+        og_plan = plan
+        og_schema = plan.schema
+
+        plan = self.prepare_plan(plan, target="bq_execution")
+        create_table = must_create_table
+        cluster_cols: Sequence[str] = []
+        if cache_spec is not None:
+            if peek is not None:
+                raise ValueError("peek is not compatible with caching.")
+
+            create_table = True
+            if not cache_spec.cluster_cols:
+                assert len(cache_spec.cluster_cols) <= _MAX_CLUSTER_COLUMNS
+                offsets_id = bigframes.core.identifiers.ColumnId(
+                    bigframes.core.guid.generate_guid()
+                )
+                plan = nodes.PromoteOffsetsNode(plan, offsets_id)
+                cluster_cols = [offsets_id.sql]
+            else:
+                cluster_cols = cache_spec.cluster_cols
+
+        compiled = compile.compile_sql(
+            compile.CompileRequest(
+                plan,
+                sort_rows=ordered,
+                peek_count=peek,
+                materialize_all_order_keys=(cache_spec is not None),
+            )
+        )
+        # might have more columns than og schema, for hidden ordering columns
+        compiled_schema = compiled.sql_schema
+
+        destination_table: Optional[bigquery.TableReference] = None
+
         job_config = bigquery.QueryJobConfig()
-        # Use explicit destination to avoid 10GB limit of temporary table
-        if destination_table is not None:
+        if create_table:
+            destination_table = self.storage_manager.create_temp_table(
+                compiled_schema, cluster_cols
+            )
             job_config.destination = destination_table
 
-        plan = self._substitute_large_local_sources(plan)
-        compiled = compile.compile_sql(
-            compile.CompileRequest(plan, sort_rows=ordered, peek_count=peek)
-        )
         iterator, query_job = self._run_execute_query(
             sql=compiled.sql,
             job_config=job_config,
             query_with_job=(destination_table is not None),
         )
 
-        if query_job:
-            size_bytes = self.bqclient.get_table(query_job.destination).num_bytes
+        table_info: Optional[bigquery.Table] = None
+        if query_job and query_job.destination:
+            table_info = self.bqclient.get_table(query_job.destination)
+            size_bytes = table_info.num_bytes
         else:
             size_bytes = None
+
+        # we could actually cache even when caching is not explicitly requested, but being conservative for now
+        if cache_spec is not None:
+            assert table_info is not None
+            assert compiled.row_order is not None
+            self.cache.cache_results_table(
+                og_plan, table_info, compiled.row_order, num_rows=table_info.num_rows
+            )
 
         if size_bytes is not None and size_bytes >= MAX_SMALL_RESULT_BYTES:
             msg = bfe.format_message(
@@ -700,18 +662,12 @@ class BigQueryCachingExecutor(executor.Executor):
                 "`bigframes.options.compute.allow_large_results=True`."
             )
             warnings.warn(msg, FutureWarning)
-        # Runs strict validations to ensure internal type predictions and ibis are completely in sync
-        # Do not execute these validations outside of testing suite.
-        if "PYTEST_CURRENT_TEST" in os.environ:
-            self._validate_result_schema(
-                bigframes.core.ArrayValue(plan), iterator.schema
-            )
 
         return executor.ExecuteResult(
             _arrow_batches=iterator.to_arrow_iterable(
                 bqstorage_client=self.bqstoragereadclient
             ),
-            schema=plan.schema,
+            schema=og_schema,
             query_job=query_job,
             total_bytes=size_bytes,
             total_rows=iterator.total_rows,
@@ -731,19 +687,3 @@ def _if_schema_match(
         ):
             return False
     return True
-
-
-def _sanitize(
-    schema: Tuple[bigquery.SchemaField, ...]
-) -> Tuple[bigquery.SchemaField, ...]:
-    # Schema inferred from SQL strings and Ibis expressions contain only names, types and modes,
-    # so we disregard other fields (e.g timedelta description for timedelta columns) for validations.
-    return tuple(
-        bigquery.SchemaField(
-            f.name,
-            f.field_type,
-            f.mode,  # type:ignore
-            fields=_sanitize(f.fields),
-        )
-        for f in schema
-    )

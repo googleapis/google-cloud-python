@@ -41,3 +41,10 @@ class SQLCompilerExecutor(bigframes.session.executor.Executor):
         return self.compiler.SQLGlotCompiler().compile(
             array_value.node, ordered=ordered
         )
+
+    def execute(
+        self,
+        array_value,
+        execution_spec,
+    ):
+        raise NotImplementedError("SQLCompilerExecutor.execute not implemented")

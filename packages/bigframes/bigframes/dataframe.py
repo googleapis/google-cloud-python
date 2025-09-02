@@ -86,6 +86,7 @@ import bigframes.operations.semantics
 import bigframes.operations.structs
 import bigframes.series
 import bigframes.session._io.bigquery
+import bigframes.session.execution_spec as ex_spec
 
 if typing.TYPE_CHECKING:
     from _typeshed import SupportsRichComparison
@@ -4268,17 +4269,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             index=index and self._has_index,
             ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID,
         )
-        options = {
+        options: dict[str, Union[bool, str]] = {
             "field_delimiter": sep,
             "header": header,
         }
-        query_job = self._session._executor.export_gcs(
+        result = self._session._executor.execute(
             export_array.rename_columns(id_overrides),
-            path_or_buf,
-            format="csv",
-            export_options=options,
+            ex_spec.ExecutionSpec(
+                ex_spec.GcsOutputSpec(
+                    uri=path_or_buf, format="csv", export_options=tuple(options.items())
+                )
+            ),
         )
-        self._set_internal_query_job(query_job)
+        self._set_internal_query_job(result.query_job)
         return None
 
     def to_json(
@@ -4321,13 +4324,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             index=index and self._has_index,
             ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID,
         )
-        query_job = self._session._executor.export_gcs(
+        result = self._session._executor.execute(
             export_array.rename_columns(id_overrides),
-            path_or_buf,
-            format="json",
-            export_options={},
+            ex_spec.ExecutionSpec(
+                ex_spec.GcsOutputSpec(uri=path_or_buf, format="json", export_options=())
+            ),
         )
-        self._set_internal_query_job(query_job)
+        self._set_internal_query_job(result.query_job)
         return None
 
     def to_gbq(
@@ -4400,16 +4403,21 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )
         )
 
-        query_job = self._session._executor.export_gbq(
+        result = self._session._executor.execute(
             export_array.rename_columns(id_overrides),
-            destination=destination,
-            cluster_cols=clustering_fields,
-            if_exists=if_exists,
+            ex_spec.ExecutionSpec(
+                ex_spec.TableOutputSpec(
+                    destination,
+                    cluster_cols=tuple(clustering_fields),
+                    if_exists=if_exists,
+                )
+            ),
         )
-        self._set_internal_query_job(query_job)
+        assert result.query_job is not None
+        self._set_internal_query_job(result.query_job)
 
         # The query job should have finished, so there should be always be a result table.
-        result_table = query_job.destination
+        result_table = result.query_job.destination
         assert result_table is not None
 
         if temp_table_ref:
@@ -4477,13 +4485,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             index=index and self._has_index,
             ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID,
         )
-        query_job = self._session._executor.export_gcs(
+        result = self._session._executor.execute(
             export_array.rename_columns(id_overrides),
-            path,
-            format="parquet",
-            export_options=export_options,
+            ex_spec.ExecutionSpec(
+                ex_spec.GcsOutputSpec(
+                    uri=path,
+                    format="parquet",
+                    export_options=tuple(export_options.items()),
+                )
+            ),
         )
-        self._set_internal_query_job(query_job)
+        self._set_internal_query_job(result.query_job)
         return None
 
     def to_dict(

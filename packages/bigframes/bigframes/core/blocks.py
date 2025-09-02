@@ -69,7 +69,7 @@ import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-from bigframes.session import dry_runs
+from bigframes.session import dry_runs, execution_spec
 from bigframes.session import executor as executors
 
 # Type constraint for wherever column labels are used
@@ -257,7 +257,10 @@ class Block:
             except Exception:
                 pass
 
-        row_count = self.session._executor.execute(self.expr.row_count()).to_py_scalar()
+        row_count = self.session._executor.execute(
+            self.expr.row_count(),
+            execution_spec.ExecutionSpec(promise_under_10gb=True, ordered=False),
+        ).to_py_scalar()
         return (row_count, len(self.value_columns))
 
     @property
@@ -557,8 +560,17 @@ class Block:
         allow_large_results: Optional[bool] = None,
     ) -> Tuple[pa.Table, Optional[bigquery.QueryJob]]:
         """Run query and download results as a pyarrow Table."""
+        under_10gb = (
+            (not allow_large_results)
+            if (allow_large_results is not None)
+            else not bigframes.options._allow_large_results
+        )
         execute_result = self.session._executor.execute(
-            self.expr, ordered=ordered, use_explicit_destination=allow_large_results
+            self.expr,
+            execution_spec.ExecutionSpec(
+                promise_under_10gb=under_10gb,
+                ordered=ordered,
+            ),
         )
         pa_table = execute_result.to_arrow_table()
 
@@ -647,8 +659,15 @@ class Block:
         self, n: int = 20, force: bool = False, allow_large_results=None
     ) -> typing.Optional[pd.DataFrame]:
         if force or self.expr.supports_fast_peek:
-            result = self.session._executor.peek(
-                self.expr, n, use_explicit_destination=allow_large_results
+            # really, we should just block insane peek values and always assume <10gb
+            under_10gb = (
+                (not allow_large_results)
+                if (allow_large_results is not None)
+                else not bigframes.options._allow_large_results
+            )
+            result = self.session._executor.execute(
+                self.expr,
+                execution_spec.ExecutionSpec(promise_under_10gb=under_10gb, peek=n),
             )
             df = result.to_pandas()
             return self._copy_index_to_pandas(df)
@@ -665,10 +684,18 @@ class Block:
 
         page_size and max_results determine the size and number of batches,
         see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob#google_cloud_bigquery_job_QueryJob_result"""
+
+        under_10gb = (
+            (not allow_large_results)
+            if (allow_large_results is not None)
+            else not bigframes.options._allow_large_results
+        )
         execute_result = self.session._executor.execute(
             self.expr,
-            ordered=True,
-            use_explicit_destination=allow_large_results,
+            execution_spec.ExecutionSpec(
+                promise_under_10gb=under_10gb,
+                ordered=True,
+            ),
         )
 
         # To reduce the number of edge cases to consider when working with the
@@ -714,10 +741,17 @@ class Block:
     ) -> Tuple[pd.DataFrame, Optional[bigquery.QueryJob]]:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
+        under_10gb = (
+            (not materialize_options.allow_large_results)
+            if (materialize_options.allow_large_results is not None)
+            else (not bigframes.options._allow_large_results)
+        )
         execute_result = self.session._executor.execute(
             self.expr,
-            ordered=materialize_options.ordered,
-            use_explicit_destination=materialize_options.allow_large_results,
+            execution_spec.ExecutionSpec(
+                promise_under_10gb=under_10gb,
+                ordered=materialize_options.ordered,
+            ),
         )
         sample_config = materialize_options.downsampling
         if execute_result.total_bytes is not None:
@@ -1598,9 +1632,19 @@ class Block:
             config=executors.CacheConfig(optimize_for="head", if_cached="reuse-strict"),
         )
         head_result = self.session._executor.execute(
-            self.expr.slice(start=None, stop=max_results, step=None)
+            self.expr.slice(start=None, stop=max_results, step=None),
+            execution_spec.ExecutionSpec(
+                promise_under_10gb=True,
+                ordered=True,
+            ),
         )
-        row_count = self.session._executor.execute(self.expr.row_count()).to_py_scalar()
+        row_count = self.session._executor.execute(
+            self.expr.row_count(),
+            execution_spec.ExecutionSpec(
+                promise_under_10gb=True,
+                ordered=False,
+            ),
+        ).to_py_scalar()
 
         head_df = head_result.to_pandas()
         return self._copy_index_to_pandas(head_df), row_count, head_result.query_job

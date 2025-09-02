@@ -38,6 +38,7 @@ import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series
+import bigframes.session.execution_spec as ex_spec
 
 if typing.TYPE_CHECKING:
     import bigframes.dataframe
@@ -283,8 +284,9 @@ class Index(vendored_pandas_index.Index):
         # Check if key exists at all by counting
         count_agg = ex.UnaryAggregation(agg_ops.count_op, ex.deref(offsets_id))
         count_result = filtered_block._expr.aggregate([(count_agg, "count")])
+
         count_scalar = self._block.session._executor.execute(
-            count_result
+            count_result, ex_spec.ExecutionSpec(promise_under_10gb=True)
         ).to_py_scalar()
 
         if count_scalar == 0:
@@ -295,7 +297,7 @@ class Index(vendored_pandas_index.Index):
             min_agg = ex.UnaryAggregation(agg_ops.min_op, ex.deref(offsets_id))
             position_result = filtered_block._expr.aggregate([(min_agg, "position")])
             position_scalar = self._block.session._executor.execute(
-                position_result
+                position_result, ex_spec.ExecutionSpec(promise_under_10gb=True)
             ).to_py_scalar()
             return int(position_scalar)
 
@@ -326,7 +328,10 @@ class Index(vendored_pandas_index.Index):
         combined_result = filtered_block._expr.aggregate(min_max_aggs)
 
         # Execute query and extract positions
-        result_df = self._block.session._executor.execute(combined_result).to_pandas()
+        result_df = self._block.session._executor.execute(
+            combined_result,
+            execution_spec=ex_spec.ExecutionSpec(promise_under_10gb=True),
+        ).to_pandas()
         min_pos = int(result_df["min_pos"].iloc[0])
         max_pos = int(result_df["max_pos"].iloc[0])
 

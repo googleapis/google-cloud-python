@@ -36,6 +36,7 @@ import bigframes
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.ml.linear_model
+import bigframes.session.execution_spec
 from bigframes.testing import utils
 
 all_write_engines = pytest.mark.parametrize(
@@ -113,7 +114,10 @@ def test_read_gbq_tokyo(
 
     # use_explicit_destination=True, otherwise might use path with no query_job
     exec_result = session_tokyo._executor.execute(
-        df._block.expr, use_explicit_destination=True
+        df._block.expr,
+        bigframes.session.execution_spec.ExecutionSpec(
+            bigframes.session.execution_spec.CacheSpec(()), promise_under_10gb=False
+        ),
     )
     assert exec_result.query_job is not None
     assert exec_result.query_job.location == tokyo_location
@@ -896,7 +900,10 @@ def test_read_pandas_tokyo(
     expected = scalars_pandas_df_index
 
     result = session_tokyo._executor.execute(
-        df._block.expr, use_explicit_destination=True
+        df._block.expr,
+        bigframes.session.execution_spec.ExecutionSpec(
+            bigframes.session.execution_spec.CacheSpec(()), promise_under_10gb=False
+        ),
     )
     assert result.query_job is not None
     assert result.query_job.location == tokyo_location

@@ -18,7 +18,7 @@ import abc
 import dataclasses
 import functools
 import itertools
-from typing import Iterator, Literal, Mapping, Optional, Sequence, Union
+from typing import Iterator, Literal, Optional, Union
 
 from google.cloud import bigquery
 import pandas as pd
@@ -29,6 +29,7 @@ import bigframes.core
 from bigframes.core import pyarrow_utils
 import bigframes.core.schema
 import bigframes.session._io.pandas as io_pandas
+import bigframes.session.execution_spec as ex_spec
 
 _ROW_LIMIT_EXCEEDED_TEMPLATE = (
     "Execution has downloaded {result_rows} rows so far, which exceeds the "
@@ -147,41 +148,16 @@ class Executor(abc.ABC):
         """
         raise NotImplementedError("to_sql not implemented for this executor")
 
+    @abc.abstractmethod
     def execute(
         self,
         array_value: bigframes.core.ArrayValue,
-        *,
-        ordered: bool = True,
-        use_explicit_destination: Optional[bool] = False,
+        execution_spec: ex_spec.ExecutionSpec,
     ) -> ExecuteResult:
         """
-        Execute the ArrayValue, storing the result to a temporary session-owned table.
+        Execute the ArrayValue.
         """
-        raise NotImplementedError("execute not implemented for this executor")
-
-    def export_gbq(
-        self,
-        array_value: bigframes.core.ArrayValue,
-        destination: bigquery.TableReference,
-        if_exists: Literal["fail", "replace", "append"] = "fail",
-        cluster_cols: Sequence[str] = [],
-    ) -> bigquery.QueryJob:
-        """
-        Export the ArrayValue to an existing BigQuery table.
-        """
-        raise NotImplementedError("export_gbq not implemented for this executor")
-
-    def export_gcs(
-        self,
-        array_value: bigframes.core.ArrayValue,
-        uri: str,
-        format: Literal["json", "csv", "parquet"],
-        export_options: Mapping[str, Union[bool, str]],
-    ) -> bigquery.QueryJob:
-        """
-        Export the ArrayValue to gcs.
-        """
-        raise NotImplementedError("export_gcs not implemented for this executor")
+        ...
 
     def dry_run(
         self, array_value: bigframes.core.ArrayValue, ordered: bool = True
@@ -192,17 +168,6 @@ class Executor(abc.ABC):
         Does not actually execute the data but will get stats and indicate any invalid query errors.
         """
         raise NotImplementedError("dry_run not implemented for this executor")
-
-    def peek(
-        self,
-        array_value: bigframes.core.ArrayValue,
-        n_rows: int,
-        use_explicit_destination: Optional[bool] = False,
-    ) -> ExecuteResult:
-        """
-        A 'peek' efficiently accesses a small number of rows in the dataframe.
-        """
-        raise NotImplementedError("peek not implemented for this executor")
 
     def cached(
         self,
