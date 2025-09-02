@@ -604,10 +604,10 @@ class Generator(proto.Message):
         published_model (str):
             Optional. The published Large Language Model name.
 
-            -  To use the latest model version, specify the model name
-               without version number. Example: ``text-bison``
-            -  To use a stable model version, specify the version number
-               as well. Example: ``text-bison@002``.
+            - To use the latest model version, specify the model name
+              without version number. Example: ``text-bison``
+            - To use a stable model version, specify the version number
+              as well. Example: ``text-bison@002``.
 
             This field is a member of `oneof`_ ``foundation_model``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):

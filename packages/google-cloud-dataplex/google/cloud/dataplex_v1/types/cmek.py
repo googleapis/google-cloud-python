@@ -283,17 +283,16 @@ class ListEncryptionConfigsRequest(proto.Message):
             bare literals: (These values will be matched anywhere it may
             appear in the object's field values)
 
-            -  filter=some_value Using fields: (These values will be
-               matched only in the specified field)
-            -  filter=some_field=some_value Supported fields:
-            -  name, key, create_time, update_time, encryption_state
-               Example:
-            -  filter=name=organizations/123/locations/us-central1/encryptionConfigs/test-config
-               conjunctions: (AND, OR, NOT)
-            -  filter=name=organizations/123/locations/us-central1/encryptionConfigs/test-config
-               AND mode=CMEK logical operators: (>, <, >=, <=, !=, =,
-               :),
-            -  filter=create_time>2024-05-01T00:00:00.000Z
+            - filter=some_value Using fields: (These values will be
+              matched only in the specified field)
+            - filter=some_field=some_value Supported fields:
+            - name, key, create_time, update_time, encryption_state
+              Example:
+            - filter=name=organizations/123/locations/us-central1/encryptionConfigs/test-config
+              conjunctions: (AND, OR, NOT)
+            - filter=name=organizations/123/locations/us-central1/encryptionConfigs/test-config
+              AND mode=CMEK logical operators: (>, <, >=, <=, !=, =, :),
+            - filter=create_time>2024-05-01T00:00:00.000Z
         order_by (str):
             Optional. Order by fields for the result.
     """

@@ -1809,7 +1809,7 @@ class CreateGitRepositoryLinkRequest(proto.Message):
             Required. The ID to use for the repository, which will
             become the final component of the repository's resource
             name. This ID should be unique in the connection. Allows
-            alphanumeric characters and any of -._~%!$&'()*+,;=@.
+            alphanumeric characters and any of -.\_~%!$&'()*+,;=@.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

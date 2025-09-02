@@ -920,7 +920,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
                    currently active contexts.
 
                    For more information about context, see the [Contexts
-                   guide](\ https://cloud.google.com/dialogflow/docs/contexts-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/contexts-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -1062,7 +1062,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
                    currently active contexts.
 
                    For more information about context, see the [Contexts
-                   guide](\ https://cloud.google.com/dialogflow/docs/contexts-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/contexts-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -1198,7 +1198,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
                    currently active contexts.
 
                    For more information about context, see the [Contexts
-                   guide](\ https://cloud.google.com/dialogflow/docs/contexts-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/contexts-overview).
 
         """
         # Create or coerce a protobuf request object.

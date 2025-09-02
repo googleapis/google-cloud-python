@@ -894,7 +894,7 @@ class IdentityMappingStoreServiceClient(
                 create.
 
                 The ID must contain only letters (a-z, A-Z), numbers
-                (0-9), underscores (_), and hyphens (-). The maximum
+                (0-9), underscores (\_), and hyphens (-). The maximum
                 length is 63 characters.
 
                 This corresponds to the ``identity_mapping_store_id`` field

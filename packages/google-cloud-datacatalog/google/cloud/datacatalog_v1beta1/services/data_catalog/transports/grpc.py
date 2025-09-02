@@ -1086,20 +1086,20 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         Sets the access control policy for a resource. Replaces any
         existing policy. Supported resources are:
 
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage
-           policies for BigQuery, Pub/Sub and any external Google Cloud
-           Platform resources synced to Data Catalog.
+        - Tag templates.
+        - Entries.
+        - Entry groups. Note, this method cannot be used to manage
+          policies for BigQuery, Pub/Sub and any external Google Cloud
+          Platform resources synced to Data Catalog.
 
         Callers must have following Google IAM permission
 
-        -  ``datacatalog.tagTemplates.setIamPolicy`` to set policies on
-           tag templates.
-        -  ``datacatalog.entries.setIamPolicy`` to set policies on
-           entries.
-        -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on
-           entry groups.
+        - ``datacatalog.tagTemplates.setIamPolicy`` to set policies on
+          tag templates.
+        - ``datacatalog.entries.setIamPolicy`` to set policies on
+          entries.
+        - ``datacatalog.entryGroups.setIamPolicy`` to set policies on
+          entry groups.
 
         Returns:
             Callable[[~.SetIamPolicyRequest],
@@ -1132,20 +1132,20 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
 
         Supported resources are:
 
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage
-           policies for BigQuery, Pub/Sub and any external Google Cloud
-           Platform resources synced to Data Catalog.
+        - Tag templates.
+        - Entries.
+        - Entry groups. Note, this method cannot be used to manage
+          policies for BigQuery, Pub/Sub and any external Google Cloud
+          Platform resources synced to Data Catalog.
 
         Callers must have following Google IAM permission
 
-        -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on
-           tag templates.
-        -  ``datacatalog.entries.getIamPolicy`` to get policies on
-           entries.
-        -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on
-           entry groups.
+        - ``datacatalog.tagTemplates.getIamPolicy`` to get policies on
+          tag templates.
+        - ``datacatalog.entries.getIamPolicy`` to get policies on
+          entries.
+        - ``datacatalog.entryGroups.getIamPolicy`` to get policies on
+          entry groups.
 
         Returns:
             Callable[[~.GetIamPolicyRequest],
@@ -1180,11 +1180,11 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
 
         Supported resources are:
 
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage
-           policies for BigQuery, Pub/Sub and any external Google Cloud
-           Platform resources synced to Data Catalog.
+        - Tag templates.
+        - Entries.
+        - Entry groups. Note, this method cannot be used to manage
+          policies for BigQuery, Pub/Sub and any external Google Cloud
+          Platform resources synced to Data Catalog.
 
         A caller is not required to have Google IAM permission to make
         this request.

@@ -96,24 +96,24 @@ class ListKnowledgeBasesRequest(proto.Message):
             returned by the list method. The expression has the
             following syntax:
 
-             [AND ] ...
+            [AND ] ...
 
             The following fields and operators are supported:
 
-            -  display_name with has(:) operator
-            -  language_code with equals(=) operator
+            - display_name with has(:) operator
+            - language_code with equals(=) operator
 
             Examples:
 
-            -  'language_code=en-us' matches knowledge bases with en-us
-               language code.
-            -  'display_name:articles' matches knowledge bases whose
-               display name contains "articles".
-            -  'display_name:"Best Articles"' matches knowledge bases
-               whose display name contains "Best Articles".
-            -  'language_code=en-gb AND display_name=articles' matches
-               all knowledge bases whose display name contains
-               "articles" and whose language code is "en-gb".
+            - 'language_code=en-us' matches knowledge bases with en-us
+              language code.
+            - 'display_name:articles' matches knowledge bases whose
+              display name contains "articles".
+            - 'display_name:"Best Articles"' matches knowledge bases
+              whose display name contains "Best Articles".
+            - 'language_code=en-gb AND display_name=articles' matches
+              all knowledge bases whose display name contains "articles"
+              and whose language code is "en-gb".
 
             Note: An empty filter string (i.e. "") is a no-op and will
             result in no filtering.

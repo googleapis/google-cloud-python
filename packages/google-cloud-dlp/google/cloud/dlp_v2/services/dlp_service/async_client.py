@@ -868,14 +868,14 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
-                -  Organizations scope, location specified:
-                   ``organizations/{org_id}/locations/{location_id}``
-                -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/{org_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
+                - Organizations scope, location specified:
+                  ``organizations/{org_id}/locations/{location_id}``
+                - Organizations scope, no location specified (defaults
+                  to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -1279,14 +1279,14 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
-                -  Organizations scope, location specified:
-                   ``organizations/{org_id}/locations/{location_id}``
-                -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/{org_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
+                - Organizations scope, location specified:
+                  ``organizations/{org_id}/locations/{location_id}``
+                - Organizations scope, no location specified (defaults
+                  to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -1535,14 +1535,14 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
-                -  Organizations scope, location specified:
-                   ``organizations/{org_id}/locations/{location_id}``
-                -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/{org_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
+                - Organizations scope, location specified:
+                  ``organizations/{org_id}/locations/{location_id}``
+                - Organizations scope, no location specified (defaults
+                  to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -1940,14 +1940,14 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
-                -  Organizations scope, location specified:
-                   ``organizations/{org_id}/locations/{location_id}``
-                -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/{org_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
+                - Organizations scope, location specified:
+                  ``organizations/{org_id}/locations/{location_id}``
+                - Organizations scope, no location specified (defaults
+                  to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -2198,10 +2198,10 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -2703,10 +2703,10 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -3040,10 +3040,10 @@ class DlpServiceAsyncClient:
                 The format of this value varies depending on the scope
                 of the request (project or organization):
 
-                -  Projects scope:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Organizations scope:
-                   ``organizations/{org_id}/locations/{location_id}``
+                - Projects scope:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Organizations scope:
+                  ``organizations/{org_id}/locations/{location_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -3690,10 +3690,10 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -3843,10 +3843,10 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -4293,14 +4293,14 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
-                -  Organizations scope, location specified:
-                   ``organizations/{org_id}/locations/{location_id}``
-                -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/{org_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
+                - Organizations scope, location specified:
+                  ``organizations/{org_id}/locations/{location_id}``
+                - Organizations scope, no location specified (defaults
+                  to global): ``organizations/{org_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -4697,10 +4697,10 @@ class DlpServiceAsyncClient:
                 have `specified a processing
                 location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
-                -  Projects scope, location specified:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Projects scope, no location specified (defaults to
-                   global): ``projects/{project_id}``
+                - Projects scope, location specified:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Projects scope, no location specified (defaults to
+                  global): ``projects/{project_id}``
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,
@@ -5578,8 +5578,8 @@ class DlpServiceAsyncClient:
             google.cloud.dlp_v2.types.FileStoreDataProfile:
                 The profile for a file store.
 
-                   -  Cloud Storage: maps 1:1 with a bucket.
-                   -  Amazon S3: maps 1:1 with a bucket.
+                   - Cloud Storage: maps 1:1 with a bucket.
+                   - Amazon S3: maps 1:1 with a bucket.
 
         """
         # Create or coerce a protobuf request object.
@@ -6296,10 +6296,10 @@ class DlpServiceAsyncClient:
                 The format of this value varies depending on the scope
                 of the request (project or organization):
 
-                -  Projects scope:
-                   ``projects/{project_id}/locations/{location_id}``
-                -  Organizations scope:
-                   ``organizations/{org_id}/locations/{location_id}``
+                - Projects scope:
+                  ``projects/{project_id}/locations/{location_id}``
+                - Organizations scope:
+                  ``organizations/{org_id}/locations/{location_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

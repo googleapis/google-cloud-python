@@ -403,9 +403,9 @@ class DataCatalogAsyncClient:
                 A query string can be a simple ``xyz`` or qualified by
                 predicates:
 
-                -  ``name:x``
-                -  ``column:y``
-                -  ``description:z``
+                - ``name:x``
+                - ``column:y``
+                - ``description:z``
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -509,10 +509,10 @@ class DataCatalogAsyncClient:
         Data Catalog automatically creates entry groups with names that
         start with the ``@`` symbol for the following resources:
 
-        -  BigQuery entries (``@bigquery``)
-        -  Pub/Sub topics (``@pubsub``)
-        -  Dataproc Metastore services
-           (``@dataproc_metastore_{SERVICE_NAME_HASH}``)
+        - BigQuery entries (``@bigquery``)
+        - Pub/Sub topics (``@pubsub``)
+        - Dataproc Metastore services
+          (``@dataproc_metastore_{SERVICE_NAME_HASH}``)
 
         You can create your own entry groups for Cloud Storage fileset
         entries and custom entries together with the corresponding IAM
@@ -576,7 +576,7 @@ class DataCatalogAsyncClient:
                 Required. The ID of the entry group to create.
 
                 The ID must contain only letters (a-z, A-Z), numbers
-                (0-9), underscores (_), and must start with a letter or
+                (0-9), underscores (\_), and must start with a letter or
                 underscore. The maximum size is 64 bytes when encoded in
                 UTF-8.
 
@@ -1249,8 +1249,8 @@ class DataCatalogAsyncClient:
                 Required. The ID of the entry to create.
 
                 The ID must contain only letters (a-z, A-Z), numbers
-                (0-9), and underscores (_). The maximum size is 64 bytes
-                when encoded in UTF-8.
+                (0-9), and underscores (\_). The maximum size is 64
+                bytes when encoded in UTF-8.
 
                 This corresponds to the ``entry_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1411,25 +1411,25 @@ class DataCatalogAsyncClient:
 
                 For entries with type ``DATA_STREAM``:
 
-                -  ``schema``
+                - ``schema``
 
                 For entries with type ``FILESET``:
 
-                -  ``schema``
-                -  ``display_name``
-                -  ``description``
-                -  ``gcs_fileset_spec``
-                -  ``gcs_fileset_spec.file_patterns``
+                - ``schema``
+                - ``display_name``
+                - ``description``
+                - ``gcs_fileset_spec``
+                - ``gcs_fileset_spec.file_patterns``
 
                 For entries with ``user_specified_type``:
 
-                -  ``schema``
-                -  ``display_name``
-                -  ``description``
-                -  ``user_specified_type``
-                -  ``user_specified_system``
-                -  ``linked_resource``
-                -  ``source_system_timestamps``
+                - ``schema``
+                - ``display_name``
+                - ``description``
+                - ``user_specified_type``
+                - ``user_specified_system``
+                - ``linked_resource``
+                - ``source_system_timestamps``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2232,9 +2232,9 @@ class DataCatalogAsyncClient:
                 Required. The ID of the tag template to create.
 
                 The ID must contain only lowercase letters (a-z),
-                numbers (0-9), or underscores (_), and must start with a
-                letter or underscore. The maximum size is 64 bytes when
-                encoded in UTF-8.
+                numbers (0-9), or underscores (\_), and must start with
+                a letter or underscore. The maximum size is 64 bytes
+                when encoded in UTF-8.
 
                 This corresponds to the ``tag_template_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2798,7 +2798,7 @@ class DataCatalogAsyncClient:
                 *not* allowed.
 
                 Field IDs can contain letters (both uppercase and
-                lowercase), numbers (0-9), underscores (_) and dashes
+                lowercase), numbers (0-9), underscores (\_) and dashes
                 (-). Field IDs must be at least 1 character long and at
                 most 128 characters long. Field IDs must also be unique
                 within their template.
@@ -2958,9 +2958,9 @@ class DataCatalogAsyncClient:
                 an individual field of a tag template. The following
                 fields are modifiable:
 
-                -  ``display_name``
-                -  ``type.enum_type``
-                -  ``is_required``
+                - ``display_name``
+                - ``type.enum_type``
+                - ``is_required``
 
                 If this parameter is absent or empty, all modifiable
                 fields are overwritten. If such fields are non-required
@@ -3450,12 +3450,11 @@ class DataCatalogAsyncClient:
     ) -> tags.Tag:
         r"""Creates a tag and assigns it to:
 
-        -  An [Entry][google.cloud.datacatalog.v1.Entry] if the method
-           name is
-           ``projects.locations.entryGroups.entries.tags.create``.
-        -  Or [EntryGroup][google.cloud.datacatalog.v1.EntryGroup]if the
-           method name is
-           ``projects.locations.entryGroups.tags.create``.
+        - An [Entry][google.cloud.datacatalog.v1.Entry] if the method
+          name is
+          ``projects.locations.entryGroups.entries.tags.create``.
+        - Or [EntryGroup][google.cloud.datacatalog.v1.EntryGroup]if the
+          method name is ``projects.locations.entryGroups.tags.create``.
 
         Note: The project identified by the ``parent`` parameter for the
         [tag]
@@ -3532,7 +3531,7 @@ class DataCatalogAsyncClient:
                    conform with the specification of their tag template.
 
                    See [Data Catalog
-                   IAM](\ https://cloud.google.com/data-catalog/docs/concepts/iam)
+                   IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
                    for information on the permissions needed to create
                    or view tags.
 
@@ -3672,7 +3671,7 @@ class DataCatalogAsyncClient:
                    conform with the specification of their tag template.
 
                    See [Data Catalog
-                   IAM](\ https://cloud.google.com/data-catalog/docs/concepts/iam)
+                   IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
                    for information on the permissions needed to create
                    or view tags.
 
@@ -4341,8 +4340,8 @@ class DataCatalogAsyncClient:
 
         Supported resources are:
 
-        -  Tag templates
-        -  Entry groups
+        - Tag templates
+        - Entry groups
 
         Note: This method sets policies only within Data Catalog and
         can't be used to manage policies in BigQuery, Pub/Sub, Dataproc
@@ -4352,10 +4351,10 @@ class DataCatalogAsyncClient:
         To call this method, you must have the following Google IAM
         permissions:
 
-        -  ``datacatalog.tagTemplates.setIamPolicy`` to set policies on
-           tag templates.
-        -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on
-           entry groups.
+        - ``datacatalog.tagTemplates.setIamPolicy`` to set policies on
+          tag templates.
+        - ``datacatalog.entryGroups.setIamPolicy`` to set policies on
+          entry groups.
 
         .. code-block:: python
 
@@ -4423,19 +4422,19 @@ class DataCatalogAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         warnings.warn(
@@ -4501,15 +4500,15 @@ class DataCatalogAsyncClient:
 
         May return:
 
-        -  A\ ``NOT_FOUND`` error if the resource doesn't exist or you
-           don't have the permission to view it.
-        -  An empty policy if the resource exists but doesn't have a set
-           policy.
+        - A\ ``NOT_FOUND`` error if the resource doesn't exist or you
+          don't have the permission to view it.
+        - An empty policy if the resource exists but doesn't have a set
+          policy.
 
         Supported resources are:
 
-        -  Tag templates
-        -  Entry groups
+        - Tag templates
+        - Entry groups
 
         Note: This method doesn't get policies from Google Cloud
         Platform resources ingested into Data Catalog.
@@ -4517,10 +4516,10 @@ class DataCatalogAsyncClient:
         To call this method, you must have the following Google IAM
         permissions:
 
-        -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on
-           tag templates.
-        -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on
-           entry groups.
+        - ``datacatalog.tagTemplates.getIamPolicy`` to get policies on
+          tag templates.
+        - ``datacatalog.entryGroups.getIamPolicy`` to get policies on
+          entry groups.
 
         .. code-block:: python
 
@@ -4588,19 +4587,19 @@ class DataCatalogAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         warnings.warn(

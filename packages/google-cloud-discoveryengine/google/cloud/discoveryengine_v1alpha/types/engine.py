@@ -95,7 +95,7 @@ class Engine(proto.Message):
             Format:
             ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}``
             engine should be 1-63 characters, and valid characters are
-            /[a-z0-9][a-z0-9-_]*/. Otherwise, an INVALID_ARGUMENT error
+            /[a-z0-9][a-z0-9-\_]*/. Otherwise, an INVALID_ARGUMENT error
             is returned.
         display_name (str):
             Required. The display name of the engine.

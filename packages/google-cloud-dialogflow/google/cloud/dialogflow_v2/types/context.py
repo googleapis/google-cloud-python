@@ -73,9 +73,9 @@ class Context(proto.Message):
             Dialogflow. You should not use these contexts or create
             contexts with these names:
 
-            -  ``__system_counters__``
-            -  ``*_id_dialog_context``
-            -  ``*_dialog_params_size``
+            - ``__system_counters__``
+            - ``*_id_dialog_context``
+            - ``*_dialog_params_size``
         lifespan_count (int):
             Optional. The number of conversational query requests after
             which the context expires. The default is ``0``. If set to
@@ -91,15 +91,15 @@ class Context(proto.Message):
             JSON object composed of a collection of (MapKey, MapValue)
             pairs:
 
-            -  MapKey type: string
-            -  MapKey value: parameter name
-            -  MapValue type: If parameter's entity type is a composite
-               entity then use map, otherwise, depending on the
-               parameter value type, it could be one of string, number,
-               boolean, null, list or map.
-            -  MapValue value: If parameter's entity type is a composite
-               entity then use map from composite entity property names
-               to property values, otherwise, use parameter value.
+            - MapKey type: string
+            - MapKey value: parameter name
+            - MapValue type: If parameter's entity type is a composite
+              entity then use map, otherwise, depending on the parameter
+              value type, it could be one of string, number, boolean,
+              null, list or map.
+            - MapValue value: If parameter's entity type is a composite
+              entity then use map from composite entity property names
+              to property values, otherwise, use parameter value.
     """
 
     name: str = proto.Field(

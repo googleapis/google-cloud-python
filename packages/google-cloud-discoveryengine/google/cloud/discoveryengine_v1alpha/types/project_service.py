@@ -105,11 +105,11 @@ class ReportConsentChangeRequest(proto.Message):
             Required. The unique identifier of the terms of service to
             update. Available term ids:
 
-            -  ``GA_DATA_USE_TERMS``: `Terms for data
-               use <https://cloud.google.com/retail/data-use-terms>`__.
-               When using this service term id, the acceptable
-               [service_term_version][google.cloud.discoveryengine.v1alpha.ReportConsentChangeRequest.service_term_version]
-               to provide is ``2022-11-23``.
+            - ``GA_DATA_USE_TERMS``: `Terms for data
+              use <https://cloud.google.com/retail/data-use-terms>`__.
+              When using this service term id, the acceptable
+              [service_term_version][google.cloud.discoveryengine.v1alpha.ReportConsentChangeRequest.service_term_version]
+              to provide is ``2022-11-23``.
         service_term_version (str):
             Required. The version string of the terms of
             service to update.

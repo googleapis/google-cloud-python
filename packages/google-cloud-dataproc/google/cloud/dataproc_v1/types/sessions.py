@@ -65,7 +65,7 @@ class CreateSessionRequest(proto.Message):
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
             The value must contain only letters (a-z, A-Z), numbers
-            (0-9), underscores (_), and hyphens (-). The maximum length
+            (0-9), underscores (\_), and hyphens (-). The maximum length
             is 40 characters.
     """
 
@@ -205,7 +205,7 @@ class TerminateSessionRequest(proto.Message):
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
             The value must contain only letters (a-z, A-Z), numbers
-            (0-9), underscores (_), and hyphens (-). The maximum length
+            (0-9), underscores (\_), and hyphens (-). The maximum length
             is 40 characters.
     """
 
@@ -236,7 +236,7 @@ class DeleteSessionRequest(proto.Message):
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
             The value must contain only letters (a-z, A-Z), numbers
-            (0-9), underscores (_), and hyphens (-). The maximum length
+            (0-9), underscores (\_), and hyphens (-). The maximum length
             is 40 characters.
     """
 
@@ -320,8 +320,8 @@ class Session(proto.Message):
 
             Example:
 
-            -  ``https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/sessionTemplates/[template_id]``
-            -  ``projects/[project_id]/locations/[dataproc_region]/sessionTemplates/[template_id]``
+            - ``https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/sessionTemplates/[template_id]``
+            - ``projects/[project_id]/locations/[dataproc_region]/sessionTemplates/[template_id]``
 
             The template must be in the same project and Dataproc region
             as the session.

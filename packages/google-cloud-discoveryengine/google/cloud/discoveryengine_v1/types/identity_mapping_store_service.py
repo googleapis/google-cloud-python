@@ -75,7 +75,7 @@ class CreateIdentityMappingStoreRequest(proto.Message):
             Required. The ID of the Identity Mapping Store to create.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and hyphens (-). The maximum length is 63
+            underscores (\_), and hyphens (-). The maximum length is 63
             characters.
         identity_mapping_store (google.cloud.discoveryengine_v1.types.IdentityMappingStore):
             Required. The Identity Mapping Store to
@@ -229,17 +229,17 @@ class PurgeIdentityMappingsRequest(proto.Message):
             Filter matching identity mappings to purge. The eligible
             field for filtering is:
 
-            -  ``update_time``: in ISO 8601 "zulu" format.
-            -  ``external_id``
+            - ``update_time``: in ISO 8601 "zulu" format.
+            - ``external_id``
 
             Examples:
 
-            -  Deleting all identity mappings updated in a time range:
-               ``update_time > "2012-04-23T18:25:43.511Z" AND update_time < "2012-04-23T18:30:43.511Z"``
-            -  Deleting all identity mappings for a given external_id:
-               ``external_id = "id1"``
-            -  Deleting all identity mappings inside an identity mapping
-               store: ``*``
+            - Deleting all identity mappings updated in a time range:
+              ``update_time > "2012-04-23T18:25:43.511Z" AND update_time < "2012-04-23T18:30:43.511Z"``
+            - Deleting all identity mappings for a given external_id:
+              ``external_id = "id1"``
+            - Deleting all identity mappings inside an identity mapping
+              store: ``*``
 
             The filtering fields are assumed to have an implicit AND.
             Should not be used with source. An error will be thrown, if

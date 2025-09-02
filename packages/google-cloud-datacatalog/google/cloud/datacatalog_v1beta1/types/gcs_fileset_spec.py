@@ -43,30 +43,30 @@ class GcsFilesetSpec(proto.Message):
 
             Examples of valid file_patterns:
 
-            -  ``gs://bucket_name/dir/*``: matches all files within
-               ``bucket_name/dir`` directory.
-            -  ``gs://bucket_name/dir/**``: matches all files in
-               ``bucket_name/dir`` spanning all subdirectories.
-            -  ``gs://bucket_name/file*``: matches files prefixed by
-               ``file`` in ``bucket_name``
-            -  ``gs://bucket_name/??.txt``: matches files with two
-               characters followed by ``.txt`` in ``bucket_name``
-            -  ``gs://bucket_name/[aeiou].txt``: matches files that
-               contain a single vowel character followed by ``.txt`` in
-               ``bucket_name``
-            -  ``gs://bucket_name/[a-m].txt``: matches files that
-               contain ``a``, ``b``, ... or ``m`` followed by ``.txt``
-               in ``bucket_name``
-            -  ``gs://bucket_name/a/*/b``: matches all files in
-               ``bucket_name`` that match ``a/*/b`` pattern, such as
-               ``a/c/b``, ``a/d/b``
-            -  ``gs://another_bucket/a.txt``: matches
-               ``gs://another_bucket/a.txt``
+            - ``gs://bucket_name/dir/*``: matches all files within
+              ``bucket_name/dir`` directory.
+            - ``gs://bucket_name/dir/**``: matches all files in
+              ``bucket_name/dir`` spanning all subdirectories.
+            - ``gs://bucket_name/file*``: matches files prefixed by
+              ``file`` in ``bucket_name``
+            - ``gs://bucket_name/??.txt``: matches files with two
+              characters followed by ``.txt`` in ``bucket_name``
+            - ``gs://bucket_name/[aeiou].txt``: matches files that
+              contain a single vowel character followed by ``.txt`` in
+              ``bucket_name``
+            - ``gs://bucket_name/[a-m].txt``: matches files that contain
+              ``a``, ``b``, ... or ``m`` followed by ``.txt`` in
+              ``bucket_name``
+            - ``gs://bucket_name/a/*/b``: matches all files in
+              ``bucket_name`` that match ``a/*/b`` pattern, such as
+              ``a/c/b``, ``a/d/b``
+            - ``gs://another_bucket/a.txt``: matches
+              ``gs://another_bucket/a.txt``
 
             You can combine wildcards to provide more powerful matches,
             for example:
 
-            -  ``gs://bucket_name/[a-m]??.j*g``
+            - ``gs://bucket_name/[a-m]??.j*g``
         sample_gcs_file_specs (MutableSequence[google.cloud.datacatalog_v1beta1.types.GcsFileSpec]):
             Output only. Sample files contained in this
             fileset, not all files contained in this fileset

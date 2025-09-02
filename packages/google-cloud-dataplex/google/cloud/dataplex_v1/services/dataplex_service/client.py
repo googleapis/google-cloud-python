@@ -971,13 +971,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 generate names such as database and dataset names when
                 publishing metadata to Hive Metastore and BigQuery.
 
-                -  Must contain only lowercase letters, numbers and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must end with a number or a letter.
-                -  Must be between 1-63 characters.
-                -  Must be unique within the customer project /
-                   location.
+                - Must contain only lowercase letters, numbers and
+                  hyphens.
+                - Must start with a letter.
+                - Must end with a number or a letter.
+                - Must be between 1-63 characters.
+                - Must be unique within the customer project / location.
 
                 This corresponds to the ``lake_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1772,15 +1771,15 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 generate names such as database and dataset names when
                 publishing metadata to Hive Metastore and BigQuery.
 
-                -  Must contain only lowercase letters, numbers and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must end with a number or a letter.
-                -  Must be between 1-63 characters.
-                -  Must be unique across all lakes from all locations in
-                   a project.
-                -  Must not be one of the reserved IDs (i.e. "default",
-                   "global-temp")
+                - Must contain only lowercase letters, numbers and
+                  hyphens.
+                - Must start with a letter.
+                - Must end with a number or a letter.
+                - Must be between 1-63 characters.
+                - Must be unique across all lakes from all locations in
+                  a project.
+                - Must not be one of the reserved IDs (i.e. "default",
+                  "global-temp")
 
                 This corresponds to the ``zone_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2555,12 +2554,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 generate names such as table names when publishing
                 metadata to Hive Metastore and BigQuery.
 
-                -  Must contain only lowercase letters, numbers and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must end with a number or a letter.
-                -  Must be between 1-63 characters.
-                -  Must be unique within the zone.
+                - Must contain only lowercase letters, numbers and
+                  hyphens.
+                - Must start with a letter.
+                - Must end with a number or a letter.
+                - Must be between 1-63 characters.
+                - Must be unique within the zone.
 
                 This corresponds to the ``asset_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4391,12 +4390,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
             environment_id (str):
                 Required. Environment identifier.
 
-                -  Must contain only lowercase letters, numbers and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-63 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the lake.
+                - Must contain only lowercase letters, numbers and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-63 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the lake.
 
                 This corresponds to the ``environment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

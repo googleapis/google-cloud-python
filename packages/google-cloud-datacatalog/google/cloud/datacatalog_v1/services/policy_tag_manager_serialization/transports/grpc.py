@@ -348,11 +348,11 @@ class PolicyTagManagerSerializationGrpcTransport(
 
         This operation automatically does the following:
 
-        -  Deletes the existing policy tags that are missing from the
-           ``SerializedPolicyTag``.
-        -  Creates policy tags that don't have resource names. They are
-           considered new.
-        -  Updates policy tags with valid resources names accordingly.
+        - Deletes the existing policy tags that are missing from the
+          ``SerializedPolicyTag``.
+        - Creates policy tags that don't have resource names. They are
+          considered new.
+        - Updates policy tags with valid resources names accordingly.
 
         Returns:
             Callable[[~.ReplaceTaxonomyRequest],
