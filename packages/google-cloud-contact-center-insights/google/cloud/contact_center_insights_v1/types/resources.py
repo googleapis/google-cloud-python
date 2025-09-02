@@ -1185,37 +1185,37 @@ class Entity(proto.Message):
                 local convention), plus whichever additional elements appear
                 in the text:
 
-                -  ``number`` - The actual number, broken down into sections
-                   according to local convention.
-                -  ``national_prefix`` - Country code, if detected.
-                -  ``area_code`` - Region or area code, if detected.
-                -  ``extension`` - Phone extension (to be dialed after
-                   connection), if detected.
+                - ``number`` - The actual number, broken down into sections
+                  according to local convention.
+                - ``national_prefix`` - Country code, if detected.
+                - ``area_code`` - Region or area code, if detected.
+                - ``extension`` - Phone extension (to be dialed after
+                  connection), if detected.
             ADDRESS (10):
                 Address.
 
                 The metadata identifies the street number and locality plus
                 whichever additional elements appear in the text:
 
-                -  ``street_number`` - Street number.
-                -  ``locality`` - City or town.
-                -  ``street_name`` - Street/route name, if detected.
-                -  ``postal_code`` - Postal code, if detected.
-                -  ``country`` - Country, if detected.
-                -  ``broad_region`` - Administrative area, such as the
-                   state, if detected.
-                -  ``narrow_region`` - Smaller administrative area, such as
-                   county, if detected.
-                -  ``sublocality`` - Used in Asian addresses to demark a
-                   district within a city, if detected.
+                - ``street_number`` - Street number.
+                - ``locality`` - City or town.
+                - ``street_name`` - Street/route name, if detected.
+                - ``postal_code`` - Postal code, if detected.
+                - ``country`` - Country, if detected.
+                - ``broad_region`` - Administrative area, such as the state,
+                  if detected.
+                - ``narrow_region`` - Smaller administrative area, such as
+                  county, if detected.
+                - ``sublocality`` - Used in Asian addresses to demark a
+                  district within a city, if detected.
             DATE (11):
                 Date.
 
                 The metadata identifies the components of the date:
 
-                -  ``year`` - Four digit year, if detected.
-                -  ``month`` - Two digit month number, if detected.
-                -  ``day`` - Two digit day number, if detected.
+                - ``year`` - Four digit year, if detected.
+                - ``month`` - Two digit month number, if detected.
+                - ``day`` - Two digit day number, if detected.
             NUMBER (12):
                 Number.
 
@@ -1964,20 +1964,20 @@ class Settings(proto.Message):
 
             Keys are notification triggers. Supported keys are:
 
-            -  "all-triggers": Notify each time any of the supported
-               triggers occurs.
-            -  "create-analysis": Notify each time an analysis is
-               created.
-            -  "create-conversation": Notify each time a conversation is
-               created.
-            -  "export-insights-data": Notify each time an export is
-               complete.
-            -  "ingest-conversations": Notify each time an
-               IngestConversations LRO is complete.
-            -  "update-conversation": Notify each time a conversation is
-               updated via UpdateConversation.
-            -  "upload-conversation": Notify when an UploadConversation
-               LRO is complete.
+            - "all-triggers": Notify each time any of the supported
+              triggers occurs.
+            - "create-analysis": Notify each time an analysis is
+              created.
+            - "create-conversation": Notify each time a conversation is
+              created.
+            - "export-insights-data": Notify each time an export is
+              complete.
+            - "ingest-conversations": Notify each time an
+              IngestConversations LRO is complete.
+            - "update-conversation": Notify each time a conversation is
+              updated via UpdateConversation.
+            - "upload-conversation": Notify when an UploadConversation
+              LRO is complete.
 
             Values are Pub/Sub topics. The format of each Pub/Sub topic
             is: projects/{project}/topics/{topic}

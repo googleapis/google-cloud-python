@@ -1030,9 +1030,9 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
             google.cloud.compute_v1.types.Address:
                 Represents an IP Address resource. Google Compute Engine
                 has two IP Address resources: \* [Global (external and
-                internal)](\ https://cloud.google.com/compute/docs/reference/rest/v1/globalAddresses)
+                internal)](https://cloud.google.com/compute/docs/reference/rest/v1/globalAddresses)
                 \* [Regional (external and
-                internal)](\ https://cloud.google.com/compute/docs/reference/rest/v1/addresses)
+                internal)](https://cloud.google.com/compute/docs/reference/rest/v1/addresses)
                 For more information, see Reserving a static external IP
                 address.
 
