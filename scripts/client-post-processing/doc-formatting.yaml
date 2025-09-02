@@ -141,8 +141,8 @@ replacements:
       \
       \            ``SplitType=DATASET_SPLIT_TEST\|DATASET_SPLIT_TRAIN\|DATASET_SPLIT_UNASSIGNED``
       \
-      \            -  ``LabelingState=DOCUMENT_LABELED\|DOCUMENT_UNLABELED\|DOCUMENT_AUTO_LABELED``
-    after:  "\n            Currently support query strings are:\n\n            - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``\n            -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``\n"
+      \            - ``LabelingState=DOCUMENT_LABELED\|DOCUMENT_UNLABELED\|DOCUMENT_AUTO_LABELED``
+    after:  "\n            Currently support query strings are:\n\n            - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``\n            - ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``\n"
     count: 1
   - paths: [
       packages/google-ads-admanager/google/ads/admanager_v1/types/report_messages.py,
@@ -246,12 +246,6 @@ replacements:
 
                   - used only for timestamp based datatypes
                   - if not specified and relevant uses the source
-    count: 1
-  - paths: [
-      packages/google-cloud-edgecontainer/google/cloud/edgecontainer_v1/types/resources.py,
-    ]
-    before: projects\/\\ \*\/locations\/\*\/operations\/\*.
-    after: "`projects/*/locations/*/operations/*.`"
     count: 1
   - paths: [
       packages/google-cloud-enterpriseknowledgegraph/google/cloud/enterpriseknowledgegraph_v1/types/service.py,
@@ -490,12 +484,6 @@ replacements:
                         "another-example": "YW5vdGhlcl9leGFtcGxlX3ZhbHVl"
                       }\n
     count: 2
-  - paths: [
-      packages/google-cloud-financialservices/google/cloud/financialservices_v1/types/engine_version.py,
-    ]
-    before: \"state:\*\"
-    after: "`state:*`"
-    count: 1
   - paths: [
       packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
     ]
