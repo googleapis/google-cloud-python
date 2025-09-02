@@ -73,9 +73,9 @@ steps:
       - 'gcr.io/$PROJECT_ID/python-librarian-generator:latest'
       # The command to execute inside the container.
       - 'build'
-      # We run build against output instead of repo.
+      # We run build against the checked in google-cloud-language package.
       - '--repo'
-      - '/app/output'
+      - '/workspace/packages/google-cloud-language'
 
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
