@@ -117,7 +117,7 @@ class AccountTaxServiceGrpcTransport(AccountTaxServiceTransport):
 
     This API defines the following resource model:
 
-    -  [AccountTax][google.shopping.merchant.accounts.v1main.AccountTax]
+    - [AccountTax][google.shopping.merchant.accounts.v1main.AccountTax]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

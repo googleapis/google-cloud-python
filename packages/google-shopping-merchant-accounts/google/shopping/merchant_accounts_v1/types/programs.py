@@ -44,9 +44,9 @@ class Program(proto.Message):
     The following list is the available set of program resource IDs
     accessible through the API:
 
-    -  ``free-listings``
-    -  ``shopping-ads``
-    -  ``youtube-shopping-checkout``
+    - ``free-listings``
+    - ``shopping-ads``
+    - ``youtube-shopping-checkout``
 
     Attributes:
         name (str):

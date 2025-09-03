@@ -173,7 +173,7 @@ class UpdateUserRequest(proto.Message):
             The following fields are supported (in both ``snake_case``
             and ``lowerCamelCase``):
 
-            -  ``access_rights``
+            - ``access_rights``
     """
 
     user: "User" = proto.Field(

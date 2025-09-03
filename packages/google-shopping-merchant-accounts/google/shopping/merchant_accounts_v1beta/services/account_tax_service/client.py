@@ -118,7 +118,7 @@ class AccountTaxServiceClient(metaclass=AccountTaxServiceClientMeta):
 
     This API defines the following resource model:
 
-    -  [AccountTax][google.shopping.merchant.accounts.v1main.AccountTax]
+    - [AccountTax][google.shopping.merchant.accounts.v1main.AccountTax]
     """
 
     @staticmethod

@@ -71,8 +71,8 @@ class ConversionSource(proto.Message):
             the same across different types. The following type prefixes
             are supported:
 
-            -  ``galk``: For GoogleAnalyticsLink sources.
-            -  ``mcdn``: For MerchantCenterDestination sources.
+            - ``galk``: For GoogleAnalyticsLink sources.
+            - ``mcdn``: For MerchantCenterDestination sources.
         state (google.shopping.merchant_conversions_v1.types.ConversionSource.State):
             Output only. Current state of this conversion
             source. Can't be edited through the API.
