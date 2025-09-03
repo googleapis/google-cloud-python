@@ -500,7 +500,7 @@ def handle_release_init(
     logger.info("'release-init' command executed.")
 
 
-def main():
+if __name__ == "__main__":  # pragma: NO COVER
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
     subparsers = parser.add_subparsers(
         dest="command", required=True, help="Available commands"
@@ -570,10 +570,6 @@ def main():
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
     elif args.command == "release-init":
-        args.func(librarian=args.librarian, repo=args.repo, output=OUTPUT_DIR)
+        args.func(librarian=args.librarian, repo=args.repo, output=args.output)
     else:
         args.func()
-
-
-if __name__ == "__main__":  # pragma: NO COVER
-    main()
