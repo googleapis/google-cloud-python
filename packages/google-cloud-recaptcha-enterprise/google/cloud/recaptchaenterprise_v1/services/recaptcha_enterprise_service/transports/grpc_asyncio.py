@@ -609,9 +609,9 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
 
         Adds an IP override to a key. The following restrictions hold:
 
-        -  The maximum number of IP overrides per key is 100.
-        -  For any conflict (such as IP already exists or IP part of an
-           existing IP range), an error is returned.
+        - The maximum number of IP overrides per key is 100.
+        - For any conflict (such as IP already exists or IP part of an
+          existing IP range), an error is returned.
 
         Returns:
             Callable[[~.AddIpOverrideRequest],
@@ -643,11 +643,11 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         Removes an IP override from a key. The following restrictions
         hold:
 
-        -  If the IP isn't found in an existing IP override, a
-           ``NOT_FOUND`` error is returned.
-        -  If the IP is found in an existing IP override, but the
-           override type does not match, a ``NOT_FOUND`` error is
-           returned.
+        - If the IP isn't found in an existing IP override, a
+          ``NOT_FOUND`` error is returned.
+        - If the IP is found in an existing IP override, but the
+          override type does not match, a ``NOT_FOUND`` error is
+          returned.
 
         Returns:
             Callable[[~.RemoveIpOverrideRequest],

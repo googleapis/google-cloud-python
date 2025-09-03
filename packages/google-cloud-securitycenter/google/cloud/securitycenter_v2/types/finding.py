@@ -106,12 +106,12 @@ class Finding(proto.Message):
             +
             ``organizations/{organization_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
 
-            -  ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``
+            - ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``
             -
 
             ``folders/{folder_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
 
-            -  ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``
+            - ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``
             -
 
             ``projects/{project_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
@@ -125,12 +125,12 @@ class Finding(proto.Message):
             +
             ``organizations/{organization_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
 
-            -  ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``
+            - ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``
             -
 
             ``folders/{folder_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
 
-            -  ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``
+            - ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``
             -
 
             ``projects/{project_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
@@ -144,15 +144,15 @@ class Finding(proto.Message):
             This field is immutable after creation time. The following
             list shows some examples:
 
-            -  ``organizations/{organization_id}/sources/{source_id}``
-            -  ``folders/{folders_id}/sources/{source_id}``
-            -  ``projects/{projects_id}/sources/{source_id}``
+            - ``organizations/{organization_id}/sources/{source_id}``
+            - ``folders/{folders_id}/sources/{source_id}``
+            - ``projects/{projects_id}/sources/{source_id}``
             -
 
             ``organizations/{organization_id}/sources/{source_id}/locations/{location_id}``
 
-            -  ``folders/{folders_id}/sources/{source_id}/locations/{location_id}``
-            -  ``projects/{projects_id}/sources/{source_id}/locations/{location_id}``
+            - ``folders/{folders_id}/sources/{source_id}/locations/{location_id}``
+            - ``projects/{projects_id}/sources/{source_id}/locations/{location_id}``
         resource_name (str):
             Immutable. For findings on Google Cloud resources, the full
             resource name of the Google Cloud resource this finding is

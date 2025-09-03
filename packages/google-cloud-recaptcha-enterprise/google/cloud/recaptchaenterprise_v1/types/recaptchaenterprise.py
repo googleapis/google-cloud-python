@@ -945,13 +945,13 @@ class TransactionData(proto.Message):
             Optional. The payment method for the transaction. The
             allowed values are:
 
-            -  credit-card
-            -  debit-card
-            -  gift-card
-            -  processor-{name} (If a third-party is used, for example,
-               processor-paypal)
-            -  custom-{name} (If an alternative method is used, for
-               example, custom-crypto)
+            - credit-card
+            - debit-card
+            - gift-card
+            - processor-{name} (If a third-party is used, for example,
+              processor-paypal)
+            - custom-{name} (If an alternative method is used, for
+              example, custom-crypto)
         card_bin (str):
             Optional. The Bank Identification Number -
             generally the first 6 or 8 digits of the card.

@@ -52,7 +52,7 @@ class CreateServingConfigRequest(proto.Message):
             name.
 
             This value should be 4-63 characters, and valid characters
-            are /[a-z][0-9]-_/.
+            are /[a-z][0-9]-\_/.
     """
 
     parent: str = proto.Field(
@@ -81,7 +81,7 @@ class UpdateServingConfigRequest(proto.Message):
             [ServingConfig][google.cloud.retail.v2alpha.ServingConfig]
             to update. The following are NOT supported:
 
-            -  [ServingConfig.name][google.cloud.retail.v2alpha.ServingConfig.name]
+            - [ServingConfig.name][google.cloud.retail.v2alpha.ServingConfig.name]
 
             If not set, all supported fields are updated.
     """

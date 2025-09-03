@@ -58,7 +58,7 @@ class Purpose(proto.Enum):
 
             ``https://www.googleapis.com/compute/{compute_version}/projects/{project_id}/global/networks/{network_id}``
 
-            -  ``{project_id}/{network_name}``
+            - ``{project_id}/{network_name}``
 
             Examples:
 
@@ -66,7 +66,7 @@ class Purpose(proto.Enum):
 
             ``https://www.googleapis.com/compute/staging_v1/projects/fail-closed-load-testing/global/networks/6992953698831725600``
 
-            -  ``fail-closed-load-testing/load-testing-network``
+            - ``fail-closed-load-testing/load-testing-network``
     """
     PURPOSE_UNSPECIFIED = 0
     GCE_FIREWALL = 1
@@ -94,7 +94,7 @@ class TagKey(proto.Message):
 
             The short name must be 1-63 characters, beginning and ending
             with an alphanumeric character ([a-z0-9A-Z]) with dashes
-            (-), underscores (_), dots (.), and alphanumerics between.
+            (-), underscores (\_), dots (.), and alphanumerics between.
         namespaced_name (str):
             Output only. Immutable. Namespaced name of
             the TagKey.

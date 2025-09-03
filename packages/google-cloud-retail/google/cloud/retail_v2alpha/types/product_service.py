@@ -275,24 +275,24 @@ class ListProductsRequest(proto.Message):
         filter (str):
             A filter to apply on the list results. Supported features:
 
-            -  List all the products under the parent branch if
-               [filter][google.cloud.retail.v2alpha.ListProductsRequest.filter]
-               is unset.
-            -  List
-               [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-               [Product][google.cloud.retail.v2alpha.Product]s sharing
-               the same
-               [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
-               [Product][google.cloud.retail.v2alpha.Product]. For
-               example: ``primary_product_id = "some_product_id"``
-            -  List [Product][google.cloud.retail.v2alpha.Product]s
-               bundled in a
-               [Product.Type.COLLECTION][google.cloud.retail.v2alpha.Product.Type.COLLECTION]
-               [Product][google.cloud.retail.v2alpha.Product]. For
-               example: ``collection_product_id = "some_product_id"``
-            -  List [Product][google.cloud.retail.v2alpha.Product]s with
-               a partibular type. For example: ``type = "PRIMARY"``
-               ``type = "VARIANT"`` ``type = "COLLECTION"``
+            - List all the products under the parent branch if
+              [filter][google.cloud.retail.v2alpha.ListProductsRequest.filter]
+              is unset.
+            - List
+              [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+              [Product][google.cloud.retail.v2alpha.Product]s sharing
+              the same
+              [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+              [Product][google.cloud.retail.v2alpha.Product]. For
+              example: ``primary_product_id = "some_product_id"``
+            - List [Product][google.cloud.retail.v2alpha.Product]s
+              bundled in a
+              [Product.Type.COLLECTION][google.cloud.retail.v2alpha.Product.Type.COLLECTION]
+              [Product][google.cloud.retail.v2alpha.Product]. For
+              example: ``collection_product_id = "some_product_id"``
+            - List [Product][google.cloud.retail.v2alpha.Product]s with
+              a partibular type. For example: ``type = "PRIMARY"``
+              ``type = "VARIANT"`` ``type = "COLLECTION"``
 
             If the field is unrecognizable, an INVALID_ARGUMENT error is
             returned.
@@ -308,15 +308,15 @@ class ListProductsRequest(proto.Message):
             to return in the responses. If not set or empty, the
             following fields are returned:
 
-            -  [Product.name][google.cloud.retail.v2alpha.Product.name]
-            -  [Product.id][google.cloud.retail.v2alpha.Product.id]
-            -  [Product.title][google.cloud.retail.v2alpha.Product.title]
-            -  [Product.uri][google.cloud.retail.v2alpha.Product.uri]
-            -  [Product.images][google.cloud.retail.v2alpha.Product.images]
-            -  [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
-            -  [Product.brands][google.cloud.retail.v2alpha.Product.brands]
+            - [Product.name][google.cloud.retail.v2alpha.Product.name]
+            - [Product.id][google.cloud.retail.v2alpha.Product.id]
+            - [Product.title][google.cloud.retail.v2alpha.Product.title]
+            - [Product.uri][google.cloud.retail.v2alpha.Product.uri]
+            - [Product.images][google.cloud.retail.v2alpha.Product.images]
+            - [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
+            - [Product.brands][google.cloud.retail.v2alpha.Product.brands]
 
-            If "*" is provided, all fields are returned.
+            If "\*" is provided, all fields are returned.
             [Product.name][google.cloud.retail.v2alpha.Product.name] is
             always returned no matter what mask is set.
 
@@ -419,12 +419,12 @@ class SetInventoryRequest(proto.Message):
             Required. The inventory information to update. The allowable
             fields to update are:
 
-            -  [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
-            -  [Product.availability][google.cloud.retail.v2alpha.Product.availability]
-            -  [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
-            -  [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
-               The updated inventory fields must be specified in
-               [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask].
+            - [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
+            - [Product.availability][google.cloud.retail.v2alpha.Product.availability]
+            - [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
+            - [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+              The updated inventory fields must be specified in
+              [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask].
 
             If
             [SetInventoryRequest.inventory.name][google.cloud.retail.v2alpha.Product.name]
@@ -450,30 +450,30 @@ class SetInventoryRequest(proto.Message):
             The caller can replace place IDs for a subset of fulfillment
             types in the following ways:
 
-            -  Adds "fulfillment_info" in
-               [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
-            -  Specifies only the desired fulfillment types and
-               corresponding place IDs to update in
-               [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+            - Adds "fulfillment_info" in
+              [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
+            - Specifies only the desired fulfillment types and
+              corresponding place IDs to update in
+              [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
 
             The caller can clear all place IDs from a subset of
             fulfillment types in the following ways:
 
-            -  Adds "fulfillment_info" in
-               [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
-            -  Specifies only the desired fulfillment types to clear in
-               [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
-            -  Checks that only the desired fulfillment info types have
-               empty
-               [SetInventoryRequest.inventory.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+            - Adds "fulfillment_info" in
+              [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
+            - Specifies only the desired fulfillment types to clear in
+              [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+            - Checks that only the desired fulfillment info types have
+              empty
+              [SetInventoryRequest.inventory.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
 
             The last update time is recorded for the following inventory
             fields:
 
-            -  [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
-            -  [Product.availability][google.cloud.retail.v2alpha.Product.availability]
-            -  [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
-            -  [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+            - [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
+            - [Product.availability][google.cloud.retail.v2alpha.Product.availability]
+            - [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
+            - [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
 
             If a full overwrite of inventory information while ignoring
             timestamps is needed,
@@ -566,15 +566,15 @@ class AddFulfillmentPlacesRequest(proto.Message):
 
             Supported values:
 
-            -  "pickup-in-store"
-            -  "ship-to-store"
-            -  "same-day-delivery"
-            -  "next-day-delivery"
-            -  "custom-type-1"
-            -  "custom-type-2"
-            -  "custom-type-3"
-            -  "custom-type-4"
-            -  "custom-type-5"
+            - "pickup-in-store"
+            - "ship-to-store"
+            - "same-day-delivery"
+            - "next-day-delivery"
+            - "custom-type-1"
+            - "custom-type-2"
+            - "custom-type-3"
+            - "custom-type-4"
+            - "custom-type-5"
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
@@ -851,15 +851,15 @@ class RemoveFulfillmentPlacesRequest(proto.Message):
 
             Supported values:
 
-            -  "pickup-in-store"
-            -  "ship-to-store"
-            -  "same-day-delivery"
-            -  "next-day-delivery"
-            -  "custom-type-1"
-            -  "custom-type-2"
-            -  "custom-type-3"
-            -  "custom-type-4"
-            -  "custom-type-5"
+            - "pickup-in-store"
+            - "ship-to-store"
+            - "same-day-delivery"
+            - "next-day-delivery"
+            - "custom-type-1"
+            - "custom-type-2"
+            - "custom-type-3"
+            - "custom-type-4"
+            - "custom-type-5"
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
