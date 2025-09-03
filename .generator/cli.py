@@ -456,7 +456,7 @@ def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
 def handle_release_init(
     librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR
 ):
-    """The main coordinator for the release process.
+    """The main coordinator for the release preparation process.
 
     This function prepares for the release of client libraries by reading a
     `librarian/release-init-request.json` file. The primary responsibility is
