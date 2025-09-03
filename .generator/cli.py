@@ -461,7 +461,7 @@ def handle_release_init(
     This function prepares for the release of client libraries by reading a
     `librarian/release-init-request.json` file. The primary responsibility is
     to update all required files with the new version and commit information
-    for libraries that have the `release_triggered` field set to `true`.
+    for libraries that have the `release_triggered` field set to `True`.
 
     See https://github.com/googleapis/librarian/blob/main/doc/container-contract.md#generate-container-command
 
