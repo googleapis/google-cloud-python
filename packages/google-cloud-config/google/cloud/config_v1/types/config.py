@@ -88,6 +88,7 @@ __protobuf__ = proto.module(
         "ListResourceDriftsRequest",
         "ListResourceDriftsResponse",
         "GetResourceDriftRequest",
+        "ProviderConfig",
     },
 )
 
@@ -238,6 +239,9 @@ class Deployment(proto.Message):
             deployments during automation. See
             https://google.aip.dev/148#annotations for
             details on format and size limitations.
+        provider_config (google.cloud.config_v1.types.ProviderConfig):
+            Optional. This field specifies the provider
+            configurations.
     """
 
     class State(proto.Enum):
@@ -442,6 +446,11 @@ class Deployment(proto.Message):
         proto.STRING,
         proto.STRING,
         number=24,
+    )
+    provider_config: "ProviderConfig" = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message="ProviderConfig",
     )
 
 
@@ -1161,6 +1170,9 @@ class Revision(proto.Message):
             resources in terraform configuration files.
             There are limited resources on which quota
             validation applies.
+        provider_config (google.cloud.config_v1.types.ProviderConfig):
+            Output only. This field specifies the
+            provider configurations.
     """
 
     class Action(proto.Enum):
@@ -1318,6 +1330,11 @@ class Revision(proto.Message):
         proto.ENUM,
         number=20,
         enum="QuotaValidation",
+    )
+    provider_config: "ProviderConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="ProviderConfig",
     )
 
 
@@ -2054,6 +2071,9 @@ class Preview(proto.Message):
             preview during automation. See
             https://google.aip.dev/148#annotations for
             details on format and size limitations.
+        provider_config (google.cloud.config_v1.types.ProviderConfig):
+            Optional. This field specifies the provider
+            configurations.
     """
 
     class State(proto.Enum):
@@ -2236,6 +2256,11 @@ class Preview(proto.Message):
         proto.STRING,
         proto.STRING,
         number=20,
+    )
+    provider_config: "ProviderConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="ProviderConfig",
     )
 
 
@@ -3252,6 +3277,40 @@ class GetResourceDriftRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class ProviderConfig(proto.Message):
+    r"""ProviderConfig contains the provider configurations.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        source_type (google.cloud.config_v1.types.ProviderConfig.ProviderSource):
+            Optional. ProviderSource specifies the source
+            type of the provider.
+
+            This field is a member of `oneof`_ ``_source_type``.
+    """
+
+    class ProviderSource(proto.Enum):
+        r"""ProviderSource represents the source type of the provider.
+
+        Values:
+            PROVIDER_SOURCE_UNSPECIFIED (0):
+                Unspecified source type, default to public
+                sources.
+            SERVICE_MAINTAINED (1):
+                Service maintained provider source type.
+        """
+        PROVIDER_SOURCE_UNSPECIFIED = 0
+        SERVICE_MAINTAINED = 1
+
+    source_type: ProviderSource = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=ProviderSource,
     )
 
 
