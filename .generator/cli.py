@@ -47,6 +47,43 @@ REPO_DIR = "repo"
 SOURCE_DIR = "source"
 
 
+def _read_text_file(path: str) -> str:
+    """Helper function that reads a text file path and returns the content.
+
+    Args:
+        path(str): The file path to read.
+
+    Returns:
+        str: The contents of the file.
+
+    Raises:
+        FileNotFoundError: If the file is not found at the specified path.
+        IOError: If there is an issue reading the file.
+    """
+
+    with open(path, "r") as f:
+        return f.read()
+
+
+def _write_text_file(path: str, updated_content: str) -> str:
+    """Helper function that reads a text file path and returns the content.
+
+    Args:
+        path(str): The file path to read.
+        updated_content(str): The contents to write to the file.
+
+    Returns:
+        None
+
+    Raises:
+        FileNotFoundError: If the file is not found at the specified path.
+        IOError: If there is an issue writing the file.
+    """
+
+    with open(path, "w") as f:
+        f.write(updated_content)
+
+
 def _read_json_file(path: str) -> Dict:
     """Helper function that reads a json file path and returns the loaded json content.
 
@@ -453,6 +490,34 @@ def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     ]
 
 
+def _update_global_changelog(source_path: str, output_path: str, libraries: List[dict]):
+    """Updates the versions of libraries in the main CHANGELOG.md.
+
+    Args:
+        source_path(str): Path to the changelog file to read.
+        output_path(str): Path to the changelog file to write.
+        libraries(Dict): Dictionary containing all of the library versions to
+        modify.
+
+    Returns: None
+    """
+
+    def replace_version_in_changelog(content):
+        new_content = content
+        for individual_library in libraries:
+            package_name = individual_library["id"]
+            version = individual_library["version"]
+            # Find the entry for the given package in the format`<package name>==<version>`
+            # Replace the `<version>` part of the string.
+            pattern = re.compile(f"(\\[{re.escape(package_name)})(==)([\\d\\.]+)(\\])")
+            replacement = f"\\g<1>=={version}\\g<4>"
+            new_content = pattern.sub(replacement, new_content)
+        return new_content
+
+    updated_content = replace_version_in_changelog(_read_text_file(source_path))
+    _write_text_file(output_path, updated_content)
+
+
 def handle_release_init(
     librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR
 ):
@@ -482,8 +547,11 @@ def handle_release_init(
             request_data
         )
 
-        # TODO(https://github.com/googleapis/google-cloud-python/pull/14349):
-        # Update library global changelog file.
+        _update_global_changelog(
+            f"{repo}/CHANGELOG.md",
+            f"{output}/CHANGELOG.md",
+            libraries_to_prep_for_release,
+        )
 
         # Prepare the release for each library by updating the
         # library specific version files and library specific changelog.
