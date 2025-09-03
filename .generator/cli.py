@@ -434,27 +434,6 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     logger.info("'build' command executed.")
 
 
-def _read_and_process_file(input_path: str, output_path: str, process_func) -> None:
-    """Helper function to read, process, and write a file.
-
-    Args:
-        input_path (str): The path to the file to read.
-        output_path (str): The path to the file to write.
-        process_func (callable): A function that takes the file content as a string
-                                  and returns the modified string.
-    """
-    os.makedirs(Path(output_path).parent, exist_ok=True)
-    shutil.copy(input_path, output_path)
-
-    with open(output_path, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    updated_content = process_func(content)
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(updated_content)
-
-
 def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     """Note the request data may have multiple libraries in it. Locate all
     libraries which should be prepared for release. This can be done by
