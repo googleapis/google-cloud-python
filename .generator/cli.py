@@ -102,6 +102,26 @@ def _read_json_file(path: str) -> Dict:
         return json.load(f)
 
 
+def _write_json_file(path: str, updated_content: Dict):
+    """Helper function that writes a json file with the given dictionary.
+
+    Args:
+        path(str): The file path to write.
+        updated_content(Dict): The dictionary to write
+
+    Returns:
+        None
+
+    Raises:
+        FileNotFoundError: If the file is not found at the specified path.
+        IOError: If there is an issue writing the file.
+    """
+
+    with open(path, "w") as f:
+        json.dump(updated_content, f, indent=2)
+        f.write("\n")
+
+
 def handle_configure():
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
     logger.info("'configure' command executed.")
@@ -518,6 +538,57 @@ def _update_global_changelog(source_path: str, output_path: str, libraries: List
     _write_text_file(output_path, updated_content)
 
 
+def _update_version_for_library(
+    repo: str, output: str, path_to_library: str, version: str
+):
+    """Updates the version string in various files for a library, such as
+    gapic_version.py and snippet_metadata.json files.
+
+    Args:
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+        output(str): Path to the directory in the container where modified
+            code should be placed.
+        path_to_library(str): Relative path to the library to update
+        version(str): The new version of the library
+    """
+
+    # Find and update gapic_version.py files
+    gapic_version_files = Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py")
+    for version_file in gapic_version_files:
+
+        def process_version_file(content):
+            pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+            replacement_string = f"\\g<1>{version}\\g<3>"
+            new_content, num_replacements = re.subn(
+                pattern, replacement_string, content
+            )
+            print(content)
+            if num_replacements == 0:
+                raise ValueError(
+                    f"Could not find version string in {version_file}. File was not modified."
+                )
+            return new_content
+
+        updated_content = process_version_file(_read_text_file(version_file))
+        output_path = f"{output}/{version_file.relative_to(repo)}"
+        _write_text_file(output_path, updated_content)
+
+    # Find and update snippet_metadata.json files
+    snippet_metadata_files = Path(f"{repo}/{path_to_library}").rglob(
+        "samples/**/*.json"
+    )
+    for metadata_file in snippet_metadata_files:
+        output_path = f"{output}/{metadata_file.relative_to(repo)}"
+        os.makedirs(Path(output_path).parent, exist_ok=True)
+        shutil.copy(metadata_file, output_path)
+
+        metadata_contents = _read_json_file(metadata_file)
+        metadata_contents["clientLibrary"]["version"] = version
+        _write_json_file(output_path, metadata_contents)
+
+
 def handle_release_init(
     librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR
 ):
@@ -556,8 +627,11 @@ def handle_release_init(
         # Prepare the release for each library by updating the
         # library specific version files and library specific changelog.
         for library_release_data in libraries_to_prep_for_release:
-            # TODO(https://github.com/googleapis/google-cloud-python/pull/14350):
-            # Update library specific version files.
+            version = library_release_data["version"]
+            package_name = library_release_data["id"]
+            path_to_library = f"packages/{package_name}"
+            _update_version_for_library(repo, output, path_to_library, version)
+
             # TODO(https://github.com/googleapis/google-cloud-python/pull/14351):
             # Conditionally update the library specific CHANGELOG if there is a change.
             pass

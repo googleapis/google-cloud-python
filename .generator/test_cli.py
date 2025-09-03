@@ -15,12 +15,12 @@
 import json
 import logging
 import os
+import pathlib
 import subprocess
 import unittest.mock
 from unittest.mock import MagicMock, mock_open
 
 import pytest
-
 from cli import (
     GENERATE_REQUEST_FILE,
     BUILD_REQUEST_FILE,
@@ -40,6 +40,8 @@ from cli import (
     _run_nox_sessions,
     _run_post_processor,
     _update_global_changelog,
+    _update_version_for_library,
+    _write_json_file,
     _write_text_file,
     handle_build,
     handle_configure,
@@ -514,6 +516,7 @@ def test_handle_release_init_success(mocker, mock_release_init_request_file):
     Simply tests that `handle_release_init` runs without errors.
     """
     mocker.patch("cli._update_global_changelog", return_value=None)
+    mocker.patch("cli._update_version_for_library", return_value=None)
     handle_release_init()
 
 
@@ -541,7 +544,7 @@ def test_text_file_not_found(mocker):
         _read_text_file("non/existent/path.text")
 
 
-def test_write_file():
+def test_write_text_file():
     """Tests writing a text file.
     See https://docs.python.org/3/library/unittest.mock.html#mock-open
     """
@@ -552,6 +555,31 @@ def test_write_file():
 
         handle = m()
         handle.write.assert_called_once_with("modified content")
+
+
+def test_write_json_file():
+    """Tests writing a json file.
+    See https://docs.python.org/3/library/unittest.mock.html#mock-open
+    """
+    m = mock_open()
+
+    expected_dict = {"name": "call me json"}
+
+    with unittest.mock.patch("cli.open", m):
+        _write_json_file("fake_path.json", expected_dict)
+
+        handle = m()
+        # Get all the arguments passed to the mock's write method
+        # and join them into a single string.
+        written_content = "".join(
+            [call.args[0] for call in handle.write.call_args_list]
+        )
+
+        # Create the expected output string with the correct formatting.
+        expected_output = json.dumps(expected_dict, indent=2) + "\n"
+
+        # Assert that the content written to the mock file matches the expected output.
+        assert written_content == expected_output
 
 
 def test_update_global_changelog(mocker, mock_release_init_request_file):
@@ -571,3 +599,50 @@ def test_update_global_changelog(mocker, mock_release_init_request_file):
 
         handle = m()
         handle.write.assert_called_once_with("[google-cloud-language==1.2.3]")
+
+
+def test_update_version_for_library_success(mocker):
+    m = mock_open()
+
+    mock_rglob = mocker.patch(
+        "pathlib.Path.rglob", return_value=[pathlib.Path("repo/gapic_version.py")]
+    )
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_content = '__version__ = "1.2.2"'
+    mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
+
+    with unittest.mock.patch("cli.open", m):
+        mocker.patch("cli._read_text_file", return_value=mock_content)
+        mocker.patch("cli._read_json_file", return_value=mock_json_metadata)
+        _update_version_for_library(
+            "repo", "output", "packages/google-cloud-language", "1.2.3"
+        )
+
+        handle = m()
+        assert handle.write.call_args_list[0].args[0] == '__version__ = "1.2.3"'
+
+        # Get all the arguments passed to the mock's write method
+        # and join them into a single string.
+        written_content = "".join(
+            [call.args[0] for call in handle.write.call_args_list[1:]]
+        )
+        # Create the expected output string with the correct formatting.
+        assert (
+            written_content
+            == '{\n  "clientLibrary": {\n    "version": "1.2.3"\n  }\n}\n'
+        )
+
+
+def test_update_version_for_library_failure(mocker):
+    m = mock_open()
+
+    mock_rglob = mocker.patch(
+        "pathlib.Path.rglob", return_value=[pathlib.Path("repo/gapic_version.py")]
+    )
+    mock_content = "not found"
+    with pytest.raises(ValueError):
+        with unittest.mock.patch("cli.open", m):
+            mocker.patch("cli._read_text_file", return_value=mock_content)
+            _update_version_for_library(
+                "repo", "output", "packages/google-cloud-language", "1.2.3"
+            )
