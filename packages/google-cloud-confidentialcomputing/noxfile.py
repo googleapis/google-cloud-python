@@ -365,10 +365,9 @@ def docs(session):
         "-T",  # show full traceback on exception
         "-N",  # no colors
         "-b",
-        "html",  # builder
+        "html",
         "-d",
-        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
-        # paths to build:
+        os.path.join("docs", "_build", "doctrees", ""),
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
