@@ -63,6 +63,17 @@ def gcs_bucket(storage_client: storage.Client) -> Generator[str, None, None]:
         blob.delete()
 
 
+@pytest.fixture(scope="session")
+def gcs_bucket_snippets(storage_client: storage.Client) -> Generator[str, None, None]:
+    bucket_name = "bigframes_blob_test_snippet_with_data_wipeout"
+
+    yield bucket_name
+
+    bucket = storage_client.get_bucket(bucket_name)
+    for blob in bucket.list_blobs():
+        blob.delete()
+
+
 @pytest.fixture(autouse=True)
 def reset_session() -> None:
     """An autouse fixture ensuring each sample runs in a fresh session.
