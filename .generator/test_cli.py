@@ -502,7 +502,7 @@ def test_get_libraries_to_prepare_for_release(mock_release_init_request_file):
     libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(request_data)
     assert len(libraries_to_prep_for_release) == 1
     assert "google-cloud-language" in libraries_to_prep_for_release[0]["id"]
-    assert libraries_to_prep_for_release[0]["id"]["release_triggered"]
+    assert libraries_to_prep_for_release[0]["release_triggered"]
 
 
 def test_handle_release_init_success(mock_release_init_request_file):
