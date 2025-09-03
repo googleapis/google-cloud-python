@@ -499,6 +499,7 @@ def handle_release_init(
 
     logger.info("'release-init' command executed.")
 
+
 def main():
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
     subparsers = parser.add_subparsers(

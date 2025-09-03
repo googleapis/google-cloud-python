@@ -23,6 +23,7 @@ import pytest
 from cli import (
     GENERATE_REQUEST_FILE,
     BUILD_REQUEST_FILE,
+    RELEASE_INIT_REQUEST_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
     _build_bazel_target,
@@ -30,6 +31,7 @@ from cli import (
     _copy_files_needed_for_post_processing,
     _determine_bazel_rule,
     _get_library_id,
+    _get_libraries_to_prepare_for_release,
     _locate_and_extract_artifact,
     _read_json_file,
     _run_individual_session,
@@ -90,6 +92,34 @@ def mock_generate_request_data_for_nox():
             {"path": "google/mock/v1"},
         ],
     }
+
+
+@pytest.fixture
+def mock_release_init_request_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/release-request.json
+    request_path = f"{LIBRARIAN_DIR}/{RELEASE_INIT_REQUEST_FILE}"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir()
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_content = {
+        "libraries": [
+            {
+                "id": "google-cloud-language",
+                "apis": [{"path": "google/cloud/language/v1"}],
+                "release_triggered": True,
+                "version": "1.2.3",
+                "changes": [],
+            },
+            {},
+        ]
+    }
+    request_file.write_text(json.dumps(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
 
 
 def test_get_library_id_success():
@@ -454,3 +484,9 @@ def test_clean_up_files_after_post_processing_success(mocker):
     mock_shutil_rmtree = mocker.patch("shutil.rmtree")
     mock_os_remove = mocker.patch("os.remove")
     _clean_up_files_after_post_processing("output", "library_id")
+
+
+def test_get_libraries_to_prepare_for_release(mock_release_init_request_file):
+    request_data = _read_json_file(f"{LIBRARIAN_DIR}/{RELEASE_INIT_REQUEST_FILE}")
+    libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(request_data)
+    assert "google-cloud-language" in libraries_to_prep_for_release[0]["id"]
