@@ -467,7 +467,7 @@ def handle_release_init(
 
     Args:
         librarian(str): Path to the directory in the container which contains
-            the `release-init-request.json` file
+            the `release-init-request.json` file.
         repo(str): This directory will contain all directories that make up a
             library, the .librarian folder, and any global file declared in
             the config.yaml.
