@@ -36,13 +36,15 @@ except ImportError as e:  # pragma: NO COVER
 
 logger = logging.getLogger()
 
-LIBRARIAN_DIR = "librarian"
-GENERATE_REQUEST_FILE = "generate-request.json"
-INPUT_DIR = "input"
 BUILD_REQUEST_FILE = "build-request.json"
-SOURCE_DIR = "source"
+GENERATE_REQUEST_FILE = "generate-request.json"
+RELEASE_INIT_REQUEST_FILE = "release-init-request.json"
+
+INPUT_DIR = "input"
+LIBRARIAN_DIR = "librarian"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
+SOURCE_DIR = "source"
 
 
 def _read_json_file(path: str) -> Dict:
@@ -371,7 +373,6 @@ def handle_generate(
     except Exception as e:
         raise ValueError("Generation failed.") from e
 
-    # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command and update docstring.
     logger.info("'generate' command executed.")
 
 
@@ -433,23 +434,91 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     logger.info("'build' command executed.")
 
 
+def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
+    """Get libraries which should be prepared for release. Only libraries
+    which have the `release_triggered` field set to `True` will be returned.
+
+    Args:
+        library_entries(Dict): Dictionary containing all of the libraries to
+        evaluate.
+
+    Returns:
+        List[dict]: List of all libraries which should be prepared for release,
+        along with the corresponding information for the release.
+    """
+    return [
+        library
+        for library in library_entries["libraries"]
+        if library.get("release_triggered")
+    ]
+
+
+def handle_release_init(
+    librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR
+):
+    """The main coordinator for the release preparation process.
+
+    This function prepares for the release of client libraries by reading a
+    `librarian/release-init-request.json` file. The primary responsibility is
+    to update all required files with the new version and commit information
+    for libraries that have the `release_triggered` field set to `True`.
+
+    See https://github.com/googleapis/librarian/blob/main/doc/container-contract.md#generate-container-command
+
+    Args:
+        librarian(str): Path to the directory in the container which contains
+            the `release-init-request.json` file.
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+        output(str): Path to the directory in the container where modified
+            code should be placed.
+    """
+
+    try:
+        # Read a release-init-request.json file
+        request_data = _read_json_file(f"{librarian}/{RELEASE_INIT_REQUEST_FILE}")
+        libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(
+            request_data
+        )
+
+        # TODO(https://github.com/googleapis/google-cloud-python/pull/14349):
+        # Update library global changelog file.
+
+        # Prepare the release for each library by updating the
+        # library specific version files and library specific changelog.
+        for library_release_data in libraries_to_prep_for_release:
+            # TODO(https://github.com/googleapis/google-cloud-python/pull/14350):
+            # Update library specific version files.
+            # TODO(https://github.com/googleapis/google-cloud-python/pull/14351):
+            # Conditionally update the library specific CHANGELOG if there is a change.
+            pass
+
+    except Exception as e:
+        raise ValueError(f"Release init failed: {e}") from e
+
+    logger.info("'release-init' command executed.")
+
+
 if __name__ == "__main__":  # pragma: NO COVER
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
     subparsers = parser.add_subparsers(
         dest="command", required=True, help="Available commands"
     )
 
-    # Define commands
+    # Define commands and their corresponding handler functions
     handler_map = {
         "configure": handle_configure,
         "generate": handle_generate,
         "build": handle_build,
+        "release-init": handle_release_init,
     }
 
     for command_name, help_text in [
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
         ("build", "Run unit tests via nox for the generated library."),
+        ("release-init", "Prepare to release a given set of libraries"),
     ]:
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
@@ -483,6 +552,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             help="Path to the directory in the container which contains google-cloud-python repository",
             default=REPO_DIR,
         )
+
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -499,5 +569,7 @@ if __name__ == "__main__":  # pragma: NO COVER
         )
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
+    elif args.command == "release-init":
+        args.func(librarian=args.librarian, repo=args.repo, output=args.output)
     else:
         args.func()
