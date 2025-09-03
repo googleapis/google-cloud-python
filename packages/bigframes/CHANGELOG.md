@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.18.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.17.0...v2.18.0) (2025-09-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* add `allow_large_results` option to `read_gbq_query`, aligning with `bpd.options.compute.allow_large_results` option ([#1935](https://github.com/googleapis/python-bigquery-dataframes/issues/1935))
+
+### Features
+
+* Add `allow_large_results` option to `read_gbq_query`, aligning with `bpd.options.compute.allow_large_results` option ([#1935](https://github.com/googleapis/python-bigquery-dataframes/issues/1935)) ([a7963fe](https://github.com/googleapis/python-bigquery-dataframes/commit/a7963fe57a0e141debf726f0bc7b0e953ebe9634))
+* Add parameter shuffle for ml.model_selection.train_test_split ([#2030](https://github.com/googleapis/python-bigquery-dataframes/issues/2030)) ([2c72c56](https://github.com/googleapis/python-bigquery-dataframes/commit/2c72c56fb5893eb01d5aec6273d11945c9c532c5))
+* Can pivot unordered, unindexed dataframe ([#2040](https://github.com/googleapis/python-bigquery-dataframes/issues/2040)) ([1a0f710](https://github.com/googleapis/python-bigquery-dataframes/commit/1a0f710ac11418fd71ab3373f3f6002fa581b180))
+* Local date accessor execution support ([#2034](https://github.com/googleapis/python-bigquery-dataframes/issues/2034)) ([7ac6fe1](https://github.com/googleapis/python-bigquery-dataframes/commit/7ac6fe16f7f2c09d2efac6ab813ec841c21baef8))
+* Support args in dataframe apply method ([#2026](https://github.com/googleapis/python-bigquery-dataframes/issues/2026)) ([164c481](https://github.com/googleapis/python-bigquery-dataframes/commit/164c4818bc4ff2990dca16b9f22a798f47e0a60b))
+* Support args in series apply method ([#2013](https://github.com/googleapis/python-bigquery-dataframes/issues/2013)) ([d9d725c](https://github.com/googleapis/python-bigquery-dataframes/commit/d9d725cfbc3dca9e66b460cae4084e25162f2acf))
+* Support callable for dataframe mask method ([#2020](https://github.com/googleapis/python-bigquery-dataframes/issues/2020)) ([9d4504b](https://github.com/googleapis/python-bigquery-dataframes/commit/9d4504be310d38b63515d67c0f60d2e48e68c7b5))
+* Support multi-column assignment for DataFrame ([#2028](https://github.com/googleapis/python-bigquery-dataframes/issues/2028)) ([ba0d23b](https://github.com/googleapis/python-bigquery-dataframes/commit/ba0d23b59c44ba5a46ace8182ad0e0cfc703b3ab))
+* Support string matching in local executor ([#2032](https://github.com/googleapis/python-bigquery-dataframes/issues/2032)) ([c0b54f0](https://github.com/googleapis/python-bigquery-dataframes/commit/c0b54f03849ee3115413670e690e68f3ef10f2ec))
+
+
+### Bug Fixes
+
+* Fix scalar op lowering tree walk ([#2029](https://github.com/googleapis/python-bigquery-dataframes/issues/2029)) ([935af10](https://github.com/googleapis/python-bigquery-dataframes/commit/935af107ef98837fb2b81d72185d0b6a9e09fbcf))
+* Read_csv fails when check file size for wildcard gcs files ([#2019](https://github.com/googleapis/python-bigquery-dataframes/issues/2019)) ([b0d620b](https://github.com/googleapis/python-bigquery-dataframes/commit/b0d620bbe8227189bbdc2ba5a913b03c70575296))
+* Resolve the validation issue for other arg in dataframe where method ([#2042](https://github.com/googleapis/python-bigquery-dataframes/issues/2042)) ([8689199](https://github.com/googleapis/python-bigquery-dataframes/commit/8689199aa82212ed300fff592097093812e0290e))
+
+
+### Performance Improvements
+
+* Improve axis=1 aggregation performance ([#2036](https://github.com/googleapis/python-bigquery-dataframes/issues/2036)) ([fbb2094](https://github.com/googleapis/python-bigquery-dataframes/commit/fbb209468297a8057d9d49c40e425c3bfdeb92bd))
+* Improve iter_nodes_topo performance using Kahn's algorithm ([#2038](https://github.com/googleapis/python-bigquery-dataframes/issues/2038)) ([3961637](https://github.com/googleapis/python-bigquery-dataframes/commit/39616374bba424996ebeb9a12096bfaf22660b44))
+
 ## [2.17.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.16.0...v2.17.0) (2025-08-22)
 
 
