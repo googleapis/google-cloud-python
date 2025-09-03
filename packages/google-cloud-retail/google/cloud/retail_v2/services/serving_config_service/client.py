@@ -822,7 +822,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 resource name.
 
                 This value should be 4-63 characters, and valid
-                characters are /[a-z][0-9]-_/.
+                characters are /[a-z][0-9]-\_/.
 
                 This corresponds to the ``serving_config_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1055,7 +1055,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 [ServingConfig][google.cloud.retail.v2.ServingConfig] to
                 update. The following are NOT supported:
 
-                -  [ServingConfig.name][google.cloud.retail.v2.ServingConfig.name]
+                - [ServingConfig.name][google.cloud.retail.v2.ServingConfig.name]
 
                 If not set, all supported fields are updated.
 

@@ -390,9 +390,9 @@ class SecurityCenterManagementAsyncClient:
                 Required. Name of parent to list effective custom
                 modules, in one of the following formats:
 
-                -  ``organizations/{organization}/locations/{location}``
-                -  ``folders/{folder}/locations/{location}``
-                -  ``projects/{project}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -530,9 +530,9 @@ class SecurityCenterManagementAsyncClient:
                 Required. The full resource name of the custom module,
                 specified in one of the following formats:
 
-                -  ``organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
-                -  ``folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
-                -  ``projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
+                - ``organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
+                - ``folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
+                - ``projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -670,9 +670,9 @@ class SecurityCenterManagementAsyncClient:
                 project in which to list custom modules, in one of the
                 following formats:
 
-                -  ``organizations/{organization}/locations/{location}``
-                -  ``folders/{folder}/locations/{location}``
-                -  ``projects/{project}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -814,9 +814,9 @@ class SecurityCenterManagementAsyncClient:
                 project in which to list custom modules, in one of the
                 following formats:
 
-                -  ``organizations/{organization}/locations/{location}``
-                -  ``folders/{folder}/locations/{location}``
-                -  ``projects/{project}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1091,9 +1091,9 @@ class SecurityCenterManagementAsyncClient:
                 Required. Name of the parent organization, folder, or
                 project of the module, in one of the following formats:
 
-                -  ``organizations/{organization}/locations/{location}``
-                -  ``folders/{folder}/locations/{location}``
-                -  ``projects/{project}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1246,8 +1246,8 @@ class SecurityCenterManagementAsyncClient:
                 Required. The fields to update. The following values are
                 valid:
 
-                -  ``custom_config``
-                -  ``enablement_state``
+                - ``custom_config``
+                - ``enablement_state``
 
                 If you omit this field or set it to the wildcard value
                 ``*``, then all eligible fields are updated.
@@ -1392,9 +1392,9 @@ class SecurityCenterManagementAsyncClient:
                 Required. The resource name of the SHA custom module, in
                 one of the following formats:
 
-                -  ``organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
-                -  ``folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
-                -  ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
+                - ``organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
+                - ``folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
+                - ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1665,9 +1665,9 @@ class SecurityCenterManagementAsyncClient:
                 Required. Name of parent to list effective custom
                 modules, in one of the following formats:
 
-                -  ``organizations/{organization}/locations/{location}``
-                -  ``folders/{folder}/locations/{location}``
-                -  ``projects/{project}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1818,9 +1818,9 @@ class SecurityCenterManagementAsyncClient:
                 Detection custom module, in one of the following
                 formats:
 
-                -  ``organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
-                -  ``folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
-                -  ``projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
+                - ``organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
+                - ``folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
+                - ``projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1955,9 +1955,9 @@ class SecurityCenterManagementAsyncClient:
                 Required. Name of parent to list custom modules, in one
                 of the following formats:
 
-                -  ``organizations/{organization}/locations/{location}``
-                -  ``folders/{folder}/locations/{location}``
-                -  ``projects/{project}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2099,9 +2099,9 @@ class SecurityCenterManagementAsyncClient:
                 Required. Name of parent to list custom modules, in one
                 of the following formats:
 
-                -  ``organizations/{organization}/locations/{location}``
-                -  ``folders/{folder}/locations/{location}``
-                -  ``projects/{project}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2239,9 +2239,9 @@ class SecurityCenterManagementAsyncClient:
                 Detection custom module, in one of the following
                 formats:
 
-                -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
-                -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
-                -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+                - ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+                - ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+                - ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2377,9 +2377,9 @@ class SecurityCenterManagementAsyncClient:
                 Required. Name of parent for the module, in one of the
                 following formats:
 
-                -  ``organizations/{organization}/locations/{location}``
-                -  ``folders/{folder}/locations/{location}``
-                -  ``projects/{project}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2670,9 +2670,9 @@ class SecurityCenterManagementAsyncClient:
                 Detection custom module, in one of the following
                 formats:
 
-                -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
-                -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
-                -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+                - ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+                - ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+                - ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2883,17 +2883,17 @@ class SecurityCenterManagementAsyncClient:
                 Required. The Security Command Center service to
                 retrieve, in one of the following formats:
 
-                -  organizations/{organization}/locations/{location}/securityCenterServices/{service}
-                -  folders/{folder}/locations/{location}/securityCenterServices/{service}
-                -  projects/{project}/locations/{location}/securityCenterServices/{service}
+                - organizations/{organization}/locations/{location}/securityCenterServices/{service}
+                - folders/{folder}/locations/{location}/securityCenterServices/{service}
+                - projects/{project}/locations/{location}/securityCenterServices/{service}
 
                 The following values are valid for ``{service}``:
 
-                -  ``container-threat-detection``
-                -  ``event-threat-detection``
-                -  ``security-health-analytics``
-                -  ``vm-threat-detection``
-                -  ``web-security-scanner``
+                - ``container-threat-detection``
+                - ``event-threat-detection``
+                - ``security-health-analytics``
+                - ``vm-threat-detection``
+                - ``web-security-scanner``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3023,9 +3023,9 @@ class SecurityCenterManagementAsyncClient:
                 Command Center services, in one of the following
                 formats:
 
-                -  ``organizations/{organization}/locations/{location}``
-                -  ``folders/{folder}/locations/{location}``
-                -  ``projects/{project}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3166,8 +3166,8 @@ class SecurityCenterManagementAsyncClient:
                 Required. The fields to update. Accepts the following
                 values:
 
-                -  ``intended_enablement_state``
-                -  ``modules``
+                - ``intended_enablement_state``
+                - ``modules``
 
                 If omitted, then all eligible fields are updated.
 

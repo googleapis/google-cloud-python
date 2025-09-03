@@ -48,9 +48,9 @@ class EffectiveEventThreatDetectionCustomModule(proto.Message):
 
             Its format is:
 
-            -  ``organizations/{organization}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
-            -  ``folders/{folder}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
-            -  ``projects/{project}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+            - ``organizations/{organization}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+            - ``folders/{folder}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
+            - ``projects/{project}/eventThreatDetectionSettings/effectiveCustomModules/{module}``.
         config (google.protobuf.struct_pb2.Struct):
             Output only. Config for the effective module.
         enablement_state (google.cloud.securitycenter_v1.types.EffectiveEventThreatDetectionCustomModule.EnablementState):

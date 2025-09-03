@@ -45,29 +45,29 @@ class PredictRequest(proto.Message):
             We currently support three placements with the following IDs
             by default:
 
-            -  ``shopping_cart``: Predicts items frequently bought
-               together with one or more catalog items in the same
-               shopping session. Commonly displayed after
-               ``add-to-cart`` events, on product detail pages, or on
-               the shopping cart page.
+            - ``shopping_cart``: Predicts items frequently bought
+              together with one or more catalog items in the same
+              shopping session. Commonly displayed after ``add-to-cart``
+              events, on product detail pages, or on the shopping cart
+              page.
 
-            -  ``home_page``: Predicts the next product that a user will
-               most likely engage with or purchase based on the shopping
-               or viewing history of the specified ``userId`` or
-               ``visitorId``. For example - Recommendations for you.
+            - ``home_page``: Predicts the next product that a user will
+              most likely engage with or purchase based on the shopping
+              or viewing history of the specified ``userId`` or
+              ``visitorId``. For example - Recommendations for you.
 
-            -  ``product_detail``: Predicts the next product that a user
-               will most likely engage with or purchase. The prediction
-               is based on the shopping or viewing history of the
-               specified ``userId`` or ``visitorId`` and its relevance
-               to a specified ``CatalogItem``. Typically used on product
-               detail pages. For example - More items like this.
+            - ``product_detail``: Predicts the next product that a user
+              will most likely engage with or purchase. The prediction
+              is based on the shopping or viewing history of the
+              specified ``userId`` or ``visitorId`` and its relevance to
+              a specified ``CatalogItem``. Typically used on product
+              detail pages. For example - More items like this.
 
-            -  ``recently_viewed_default``: Returns up to 75 items
-               recently viewed by the specified ``userId`` or
-               ``visitorId``, most recent ones first. Returns nothing if
-               neither of them has viewed any items yet. For example -
-               Recently viewed.
+            - ``recently_viewed_default``: Returns up to 75 items
+              recently viewed by the specified ``userId`` or
+              ``visitorId``, most recent ones first. Returns nothing if
+              neither of them has viewed any items yet. For example -
+              Recently viewed.
 
             The full list of available placements can be seen at
             https://console.cloud.google.com/recommendation/datafeeds/default_catalog/dashboard
@@ -89,23 +89,23 @@ class PredictRequest(proto.Message):
             Optional. Filter for restricting prediction results. Accepts
             values for tags and the ``filterOutOfStockItems`` flag.
 
-            -  Tag expressions. Restricts predictions to items that
-               match all of the specified tags. Boolean operators ``OR``
-               and ``NOT`` are supported if the expression is enclosed
-               in parentheses, and must be separated from the tag values
-               by a space. ``-"tagA"`` is also supported and is
-               equivalent to ``NOT "tagA"``. Tag values must be double
-               quoted UTF-8 encoded strings with a size limit of 1 KiB.
+            - Tag expressions. Restricts predictions to items that match
+              all of the specified tags. Boolean operators ``OR`` and
+              ``NOT`` are supported if the expression is enclosed in
+              parentheses, and must be separated from the tag values by
+              a space. ``-"tagA"`` is also supported and is equivalent
+              to ``NOT "tagA"``. Tag values must be double quoted UTF-8
+              encoded strings with a size limit of 1 KiB.
 
-            -  filterOutOfStockItems. Restricts predictions to items
-               that do not have a stockState value of OUT_OF_STOCK.
+            - filterOutOfStockItems. Restricts predictions to items that
+              do not have a stockState value of OUT_OF_STOCK.
 
             Examples:
 
-            -  tag=("Red" OR "Blue") tag="New-Arrival" tag=(NOT
-               "promotional")
-            -  filterOutOfStockItems tag=(-"promotional")
-            -  filterOutOfStockItems
+            - tag=("Red" OR "Blue") tag="New-Arrival" tag=(NOT
+              "promotional")
+            - filterOutOfStockItems tag=(-"promotional")
+            - filterOutOfStockItems
         dry_run (bool):
             Optional. Use dryRun mode for this prediction
             query. If set to true, a dummy model will be
@@ -118,27 +118,27 @@ class PredictRequest(proto.Message):
 
             Allowed values:
 
-            -  ``returnCatalogItem``: Boolean. If set to true, the
-               associated catalogItem object will be returned in the
-               ``PredictResponse.PredictionResult.itemMetadata`` object
-               in the method response.
-            -  ``returnItemScore``: Boolean. If set to true, the
-               prediction 'score' corresponding to each returned item
-               will be set in the ``metadata`` field in the prediction
-               response. The given 'score' indicates the probability of
-               an item being clicked/purchased given the user's context
-               and history.
+            - ``returnCatalogItem``: Boolean. If set to true, the
+              associated catalogItem object will be returned in the
+              ``PredictResponse.PredictionResult.itemMetadata`` object
+              in the method response.
+            - ``returnItemScore``: Boolean. If set to true, the
+              prediction 'score' corresponding to each returned item
+              will be set in the ``metadata`` field in the prediction
+              response. The given 'score' indicates the probability of
+              an item being clicked/purchased given the user's context
+              and history.
         labels (MutableMapping[str, str]):
             Optional. The labels for the predict request.
 
-            -  Label keys can contain lowercase letters, digits and
-               hyphens, must start with a letter, and must end with a
-               letter or digit.
-            -  Non-zero label values can contain lowercase letters,
-               digits and hyphens, must start with a letter, and must
-               end with a letter or digit.
-            -  No more than 64 labels can be associated with a given
-               request.
+            - Label keys can contain lowercase letters, digits and
+              hyphens, must start with a letter, and must end with a
+              letter or digit.
+            - Non-zero label values can contain lowercase letters,
+              digits and hyphens, must start with a letter, and must end
+              with a letter or digit.
+            - No more than 64 labels can be associated with a given
+              request.
 
             See https://goo.gl/xmQnxf for more information on and
             examples of labels.
@@ -221,12 +221,12 @@ class PredictResponse(proto.Message):
 
                 Possible values:
 
-                -  ``catalogItem``: JSON representation of the catalogItem.
-                   Will be set if ``returnCatalogItem`` is set to true in
-                   ``PredictRequest.params``.
-                -  ``score``: Prediction score in double value. Will be set
-                   if ``returnItemScore`` is set to true in
-                   ``PredictRequest.params``.
+                - ``catalogItem``: JSON representation of the catalogItem.
+                  Will be set if ``returnCatalogItem`` is set to true in
+                  ``PredictRequest.params``.
+                - ``score``: Prediction score in double value. Will be set
+                  if ``returnItemScore`` is set to true in
+                  ``PredictRequest.params``.
         """
 
         id: str = proto.Field(

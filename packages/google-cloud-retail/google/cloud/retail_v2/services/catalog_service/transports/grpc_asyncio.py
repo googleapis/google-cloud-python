@@ -427,12 +427,12 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
 
         More specifically:
 
-        -  PredictionService will only return product IDs from branch
-           {newBranch}.
-        -  SearchService will only return product IDs from branch
-           {newBranch} (if branch is not explicitly set).
-        -  UserEventService will only join events with products from
-           branch {newBranch}.
+        - PredictionService will only return product IDs from branch
+          {newBranch}.
+        - SearchService will only return product IDs from branch
+          {newBranch} (if branch is not explicitly set).
+        - UserEventService will only join events with products from
+          branch {newBranch}.
 
         Returns:
             Callable[[~.SetDefaultBranchRequest],

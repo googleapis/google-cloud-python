@@ -1050,18 +1050,18 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
     Memorystore for Redis API and defines the following resource model
     for managing Redis clusters:
 
-    -  The service works with a collection of cloud projects, named:
-       ``/projects/*``
-    -  Each project has a collection of available locations, named:
-       ``/locations/*``
-    -  Each location has a collection of Redis clusters, named:
-       ``/clusters/*``
-    -  As such, Redis clusters are resources of the form:
-       ``/projects/{project_id}/locations/{location_id}/clusters/{instance_id}``
+    - The service works with a collection of cloud projects, named:
+      ``/projects/*``
+    - Each project has a collection of available locations, named:
+      ``/locations/*``
+    - Each location has a collection of Redis clusters, named:
+      ``/clusters/*``
+    - As such, Redis clusters are resources of the form:
+      ``/projects/{project_id}/locations/{location_id}/clusters/{instance_id}``
 
     Note that location_id must be a GCP ``region``; for example:
 
-    -  ``projects/redpepper-1290/locations/us-central1/clusters/my-redis``
+    - ``projects/redpepper-1290/locations/us-central1/clusters/my-redis``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

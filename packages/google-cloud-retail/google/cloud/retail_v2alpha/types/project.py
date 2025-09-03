@@ -38,7 +38,7 @@ class LoggingConfig(proto.Message):
     Attributes:
         name (str):
             Required. Immutable. The name of the LoggingConfig singleton
-            resource. Format: `projects/*/loggingConfig`
+            resource. Format: projects/\*/loggingConfig
         default_log_generation_rule (google.cloud.retail_v2alpha.types.LoggingConfig.LogGenerationRule):
             The log generation rule that applies by default to all
             services supporting log generation. It can be overridden by
@@ -198,7 +198,7 @@ class AlertConfig(proto.Message):
     Attributes:
         name (str):
             Required. Immutable. The name of the AlertConfig singleton
-            resource. Format: `projects/*/alertConfig`
+            resource. Format: projects/\*/alertConfig
         alert_policies (MutableSequence[google.cloud.retail_v2alpha.types.AlertConfig.AlertPolicy]):
             Alert policies for a customer. They must be unique by
             [AlertPolicy.alert_group]
@@ -212,8 +212,8 @@ class AlertConfig(proto.Message):
                 The feature that provides alerting capability. Supported
                 value:
 
-                -  ``search-data-quality`` for retail search customers.
-                -  ``conv-data-quality`` for retail conversation customers.
+                - ``search-data-quality`` for retail search customers.
+                - ``conv-data-quality`` for retail conversation customers.
             enroll_status (google.cloud.retail_v2alpha.types.AlertConfig.AlertPolicy.EnrollStatus):
                 The enrollment status of a customer.
             recipients (MutableSequence[google.cloud.retail_v2alpha.types.AlertConfig.AlertPolicy.Recipient]):

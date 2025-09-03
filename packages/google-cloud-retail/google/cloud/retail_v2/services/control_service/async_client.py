@@ -365,7 +365,7 @@ class ControlServiceAsyncClient:
                 name.
 
                 This value should be 4-63 characters, and valid
-                characters are /[a-z][0-9]-_/.
+                characters are /[a-z][0-9]-\_/.
 
                 This corresponds to the ``control_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -601,7 +601,7 @@ class ControlServiceAsyncClient:
                 [Control][google.cloud.retail.v2.Control] to update. The
                 following are NOT supported:
 
-                -  [Control.name][google.cloud.retail.v2.Control.name]
+                - [Control.name][google.cloud.retail.v2.Control.name]
 
                 If not set or empty, all supported fields are updated.
 

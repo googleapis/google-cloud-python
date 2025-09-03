@@ -244,13 +244,13 @@ class Operation(proto.Message):
     r"""Contains an operation for a resource loosely based on the JSON-PATCH
     format with support for:
 
-    -  Custom filters for describing partial array patch.
-    -  Extended path values for describing nested arrays.
-    -  Custom fields for describing the resource for which the operation
-       is being described.
-    -  Allows extension to custom operations not natively supported by
-       RFC6902. See https://tools.ietf.org/html/rfc6902 for details on
-       the original RFC.
+    - Custom filters for describing partial array patch.
+    - Extended path values for describing nested arrays.
+    - Custom fields for describing the resource for which the operation
+      is being described.
+    - Allows extension to custom operations not natively supported by
+      RFC6902. See https://tools.ietf.org/html/rfc6902 for details on
+      the original RFC.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -309,7 +309,7 @@ class Operation(proto.Message):
             intended to be an exact match per filter. To perform
             advanced matching, use path_value_matchers.
 
-            -  Example:
+            - Example:
 
             ::
 
@@ -318,7 +318,7 @@ class Operation(proto.Message):
                  "/versions/*/targetSize/percent": 20
                }
 
-            -  Example:
+            - Example:
 
             ::
 
@@ -327,7 +327,7 @@ class Operation(proto.Message):
                  "/bindings/*/condition" : null
                }
 
-            -  Example:
+            - Example:
 
             ::
 

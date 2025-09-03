@@ -82,27 +82,26 @@ class PredictRequest(proto.Message):
             limit of 5,000 characters. Accepts values for tags and the
             ``filterOutOfStockItems`` flag.
 
-            -  Tag expressions. Restricts predictions to products that
-               match all of the specified tags. Boolean operators ``OR``
-               and ``NOT`` are supported if the expression is enclosed
-               in parentheses, and must be separated from the tag values
-               by a space. ``-"tagA"`` is also supported and is
-               equivalent to ``NOT "tagA"``. Tag values must be double
-               quoted UTF-8 encoded strings with a size limit of 1,000
-               characters.
+            - Tag expressions. Restricts predictions to products that
+              match all of the specified tags. Boolean operators ``OR``
+              and ``NOT`` are supported if the expression is enclosed in
+              parentheses, and must be separated from the tag values by
+              a space. ``-"tagA"`` is also supported and is equivalent
+              to ``NOT "tagA"``. Tag values must be double quoted UTF-8
+              encoded strings with a size limit of 1,000 characters.
 
-               Note: "Recently viewed" models don't support tag
-               filtering at the moment.
+              Note: "Recently viewed" models don't support tag filtering
+              at the moment.
 
-            -  filterOutOfStockItems. Restricts predictions to products
-               that do not have a stockState value of OUT_OF_STOCK.
+            - filterOutOfStockItems. Restricts predictions to products
+              that do not have a stockState value of OUT_OF_STOCK.
 
             Examples:
 
-            -  tag=("Red" OR "Blue") tag="New-Arrival" tag=(NOT
-               "promotional")
-            -  filterOutOfStockItems tag=(-"promotional")
-            -  filterOutOfStockItems
+            - tag=("Red" OR "Blue") tag="New-Arrival" tag=(NOT
+              "promotional")
+            - filterOutOfStockItems tag=(-"promotional")
+            - filterOutOfStockItems
 
             If your filter blocks all prediction results, the API will
             return *no* results. If instead you want empty result sets
@@ -115,10 +114,10 @@ class PredictRequest(proto.Message):
             field, then attribute-based expressions are expected instead
             of the above described tag-based syntax. Examples:
 
-            -  (colors: ANY("Red", "Blue")) AND NOT (categories:
-               ANY("Phones"))
-            -  (availability: ANY("IN_STOCK")) AND (colors: ANY("Red")
-               OR categories: ANY("Phones"))
+            - (colors: ANY("Red", "Blue")) AND NOT (categories:
+              ANY("Phones"))
+            - (availability: ANY("IN_STOCK")) AND (colors: ANY("Red") OR
+              categories: ANY("Phones"))
 
             For more information, see `Filter
             recommendations <https://cloud.google.com/retail/docs/filter-recs>`__.
@@ -133,51 +132,51 @@ class PredictRequest(proto.Message):
 
             Allowed values:
 
-            -  ``returnProduct``: Boolean. If set to true, the
-               associated product object will be returned in the
-               ``results.metadata`` field in the prediction response.
-            -  ``returnScore``: Boolean. If set to true, the prediction
-               'score' corresponding to each returned product will be
-               set in the ``results.metadata`` field in the prediction
-               response. The given 'score' indicates the probability of
-               a product being clicked/purchased given the user's
-               context and history.
-            -  ``strictFiltering``: Boolean. True by default. If set to
-               false, the service will return generic (unfiltered)
-               popular products instead of empty if your filter blocks
-               all prediction results.
-            -  ``priceRerankLevel``: String. Default empty. If set to be
-               non-empty, then it needs to be one of
-               {'no-price-reranking', 'low-price-reranking',
-               'medium-price-reranking', 'high-price-reranking'}. This
-               gives request-level control and adjusts prediction
-               results based on product price.
-            -  ``diversityLevel``: String. Default empty. If set to be
-               non-empty, then it needs to be one of {'no-diversity',
-               'low-diversity', 'medium-diversity', 'high-diversity',
-               'auto-diversity'}. This gives request-level control and
-               adjusts prediction results based on product category.
-            -  ``filterSyntaxV2``: Boolean. False by default. If set to
-               true, the ``filter`` field is interpreteted according to
-               the new, attribute-based syntax.
+            - ``returnProduct``: Boolean. If set to true, the associated
+              product object will be returned in the
+              ``results.metadata`` field in the prediction response.
+            - ``returnScore``: Boolean. If set to true, the prediction
+              'score' corresponding to each returned product will be set
+              in the ``results.metadata`` field in the prediction
+              response. The given 'score' indicates the probability of a
+              product being clicked/purchased given the user's context
+              and history.
+            - ``strictFiltering``: Boolean. True by default. If set to
+              false, the service will return generic (unfiltered)
+              popular products instead of empty if your filter blocks
+              all prediction results.
+            - ``priceRerankLevel``: String. Default empty. If set to be
+              non-empty, then it needs to be one of
+              {'no-price-reranking', 'low-price-reranking',
+              'medium-price-reranking', 'high-price-reranking'}. This
+              gives request-level control and adjusts prediction results
+              based on product price.
+            - ``diversityLevel``: String. Default empty. If set to be
+              non-empty, then it needs to be one of {'no-diversity',
+              'low-diversity', 'medium-diversity', 'high-diversity',
+              'auto-diversity'}. This gives request-level control and
+              adjusts prediction results based on product category.
+            - ``filterSyntaxV2``: Boolean. False by default. If set to
+              true, the ``filter`` field is interpreteted according to
+              the new, attribute-based syntax.
         labels (MutableMapping[str, str]):
             The labels applied to a resource must meet the following
             requirements:
 
-            -  Each resource can have multiple labels, up to a maximum
-               of 64.
-            -  Each label must be a key-value pair.
-            -  Keys have a minimum length of 1 character and a maximum
-               length of 63 characters and cannot be empty. Values can
-               be empty and have a maximum length of 63 characters.
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes. All
-               characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  The key portion of a label must be unique. However, you
-               can use the same key with multiple resources.
-            -  Keys must start with a lowercase letter or international
-               character.
+            - Each resource can have multiple labels, up to a maximum of
+              64.
+            - Each label must be a key-value pair.
+            - Keys have a minimum length of 1 character and a maximum
+              length of 63 characters and cannot be empty. Values can be
+              empty and have a maximum length of 63 characters.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes. All
+              characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - The key portion of a label must be unique. However, you
+              can use the same key with multiple resources.
+            - Keys must start with a lowercase letter or international
+              character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -255,12 +254,12 @@ class PredictResponse(proto.Message):
 
                 Possible values:
 
-                -  ``product``: JSON representation of the product. Is set
-                   if ``returnProduct`` is set to true in
-                   ``PredictRequest.params``.
-                -  ``score``: Prediction score in double value. Is set if
-                   ``returnScore`` is set to true in
-                   ``PredictRequest.params``.
+                - ``product``: JSON representation of the product. Is set if
+                  ``returnProduct`` is set to true in
+                  ``PredictRequest.params``.
+                - ``score``: Prediction score in double value. Is set if
+                  ``returnScore`` is set to true in
+                  ``PredictRequest.params``.
         """
 
         id: str = proto.Field(

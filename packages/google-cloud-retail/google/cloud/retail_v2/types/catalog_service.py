@@ -295,10 +295,10 @@ class UpdateCompletionConfigRequest(proto.Message):
             [CompletionConfig][google.cloud.retail.v2.CompletionConfig]
             to update. The following are the only supported fields:
 
-            -  [CompletionConfig.matching_order][google.cloud.retail.v2.CompletionConfig.matching_order]
-            -  [CompletionConfig.max_suggestions][google.cloud.retail.v2.CompletionConfig.max_suggestions]
-            -  [CompletionConfig.min_prefix_length][google.cloud.retail.v2.CompletionConfig.min_prefix_length]
-            -  [CompletionConfig.auto_learning][google.cloud.retail.v2.CompletionConfig.auto_learning]
+            - [CompletionConfig.matching_order][google.cloud.retail.v2.CompletionConfig.matching_order]
+            - [CompletionConfig.max_suggestions][google.cloud.retail.v2.CompletionConfig.max_suggestions]
+            - [CompletionConfig.min_prefix_length][google.cloud.retail.v2.CompletionConfig.min_prefix_length]
+            - [CompletionConfig.auto_learning][google.cloud.retail.v2.CompletionConfig.auto_learning]
 
             If not set, all supported fields are updated.
     """
@@ -347,7 +347,7 @@ class UpdateAttributesConfigRequest(proto.Message):
             [AttributesConfig][google.cloud.retail.v2.AttributesConfig]
             to update. The following is the only supported field:
 
-            -  [AttributesConfig.catalog_attributes][google.cloud.retail.v2.AttributesConfig.catalog_attributes]
+            - [AttributesConfig.catalog_attributes][google.cloud.retail.v2.AttributesConfig.catalog_attributes]
 
             If not set, all supported fields are updated.
     """
@@ -432,7 +432,7 @@ class ReplaceCatalogAttributeRequest(proto.Message):
             [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute]
             to update. The following are NOT supported:
 
-            -  [CatalogAttribute.key][google.cloud.retail.v2.CatalogAttribute.key]
+            - [CatalogAttribute.key][google.cloud.retail.v2.CatalogAttribute.key]
 
             If not set, all supported fields are updated.
     """

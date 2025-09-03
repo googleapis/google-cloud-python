@@ -272,18 +272,18 @@ class SearchFoldersRequest(proto.Message):
 
             Some example queries are:
 
-            -  Query ``displayName=Test*`` returns Folder resources
-               whose display name starts with "Test".
-            -  Query ``state=ACTIVE`` returns Folder resources with
-               ``state`` set to ``ACTIVE``.
-            -  Query ``parent=folders/123`` returns Folder resources
-               that have ``folders/123`` as a parent resource.
-            -  Query ``parent=folders/123 AND state=ACTIVE`` returns
-               active Folder resources that have ``folders/123`` as a
-               parent resource.
-            -  Query ``displayName=\\"Test String\\"`` returns Folder
-               resources with display names that include both "Test" and
-               "String".
+            - Query ``displayName=Test*`` returns Folder resources whose
+              display name starts with "Test".
+            - Query ``state=ACTIVE`` returns Folder resources with
+              ``state`` set to ``ACTIVE``.
+            - Query ``parent=folders/123`` returns Folder resources that
+              have ``folders/123`` as a parent resource.
+            - Query ``parent=folders/123 AND state=ACTIVE`` returns
+              active Folder resources that have ``folders/123`` as a
+              parent resource.
+            - Query ``displayName=\\"Test String\\"`` returns Folder
+              resources with display names that include both "Test" and
+              "String".
     """
 
     page_size: int = proto.Field(
