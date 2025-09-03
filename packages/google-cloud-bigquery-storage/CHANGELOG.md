@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.33.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.32.0...v2.33.0) (2025-09-02)
+
+
+### Features
+
+* Add support for CMEK, runtime controls, and PSC-I to Reasoning Engine protos ([#968](https://github.com/googleapis/python-bigquery-storage/issues/968)) ([e2082ff](https://github.com/googleapis/python-bigquery-storage/commit/e2082ffc69f8753d858ac1c12b6e017fc3362fab))
+* Add support for Python 3.13 ([#964](https://github.com/googleapis/python-bigquery-storage/issues/964)) ([6e2c94f](https://github.com/googleapis/python-bigquery-storage/commit/6e2c94fa863bd135f29407bee4ced491742b37ed))
+
 ## [2.32.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.31.0...v2.32.0) (2025-05-27)
 
 
