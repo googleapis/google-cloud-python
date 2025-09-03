@@ -304,10 +304,6 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     Path(f"{output}/{path_to_library}/docs/CHANGELOG.md").unlink(missing_ok=True)
     Path(f"{output}/{path_to_library}/docs/README.rst").unlink(missing_ok=True)
 
-    # Remove  `.repo-metadata.json` file to avoid ownership issues between
-    # the container and librarian. Instead, preserve this file in the destination.
-    Path(f"{output}/{path_to_library}/.repo-metadata.json").unlink(missing_ok=True)
-
     # The glob loops are already safe, as they do nothing if no files match.
     for post_processing_file in glob.glob(
         f"{output}/{path_to_library}/scripts/client-post-processing/*.yaml"
