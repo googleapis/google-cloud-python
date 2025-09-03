@@ -14,6 +14,7 @@
 
 import argparse
 import glob
+import itertools
 import json
 import logging
 import os
@@ -21,6 +22,8 @@ import re
 import shutil
 import subprocess
 import sys
+import yaml
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
 
@@ -39,6 +42,7 @@ logger = logging.getLogger()
 BUILD_REQUEST_FILE = "build-request.json"
 GENERATE_REQUEST_FILE = "generate-request.json"
 RELEASE_INIT_REQUEST_FILE = "release-init-request.json"
+STATE_YAML_FILE = "state.yaml"
 
 INPUT_DIR = "input"
 LIBRARIAN_DIR = "librarian"
@@ -589,6 +593,100 @@ def _update_version_for_library(
         _write_json_file(output_path, metadata_contents)
 
 
+def _get_previous_version(package_name: str, librarian: str) -> str:
+    """Gets the previous version of the library from state.yaml.
+
+    Args:
+        package_name(str): name of the package.
+        librarian(str): Path to the directory in the container which contains
+            the `state.yaml` file.
+
+    Returns:
+        str: The version for a given library in state.yaml
+    """
+    state_yaml_path = f"{librarian}/{STATE_YAML_FILE}"
+
+    with open(state_yaml_path, "r") as state_yaml_file:
+        state_yaml = yaml.safe_load(state_yaml_file)
+        for library in state_yaml.get("libraries", []):
+            if library.get("id") == package_name:
+                return library.get("version")
+
+    raise ValueError(
+        f"Could not determine previous version for {package_name} from state.yaml"
+    )
+
+
+def _update_changelog_for_library(
+    repo: str,
+    output: str,
+    library_changes: List[Dict],
+    version: str,
+    previous_version: str,
+    package_name: str,
+):
+    """Prepends a new release entry with multiple, grouped changes to a changelog.
+
+    Args:
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+        output(str): Path to the directory in the container where modified
+            code should be placed.
+        library_changes(List[Dict]): List of dictionaries containing the changes
+            for a given library
+        version(str): The desired version
+        previous_version(str): The version in state.yaml for a given package
+        package_name(str): The name of the package where the changelog should
+            be updated.
+    """
+
+    def process_changelog(content):
+        repo_url = "https://github.com/googleapis/google-cloud-python"
+        current_date = datetime.now().strftime("%Y-%m-%d")
+
+        # Create the main version header
+        version_header = (
+            f"## [{version}]({repo_url}/compare/{package_name}-v{previous_version}"
+            f"...{package_name}-v{version}) ({current_date})"
+        )
+        entry_parts = [version_header]
+
+        # Group changes by type (e.g., feat, fix, docs)
+        library_changes.sort(key=lambda x: x["type"])
+        grouped_changes = itertools.groupby(library_changes, key=lambda x: x["type"])
+
+        for change_type, changes in grouped_changes:
+            # We only care about feat, fix, docs
+            if change_type.replace("!", "") in ["feat", "fix", "docs"]:
+                entry_parts.append(
+                    f"\n\n### {change_type.capitalize().replace('!', '')}\n"
+                )
+                for change in changes:
+                    commit_link = f"([{change['source_commit_hash']}]({repo_url}/commit/{change['source_commit_hash']}))"
+                    entry_parts.append(f"* {change['subject']} {commit_link}")
+
+        new_entry_text = "\n".join(entry_parts)
+        anchor_pattern = re.compile(
+            r"(\[1\]: https://pypi\.org/project/google-cloud-language/#history)",
+            re.MULTILINE,
+        )
+        replacement_text = f"\\g<1>\n\n{new_entry_text}"
+        updated_content, num_subs = anchor_pattern.subn(
+            replacement_text, content, count=1
+        )
+
+        if num_subs == 0:
+            raise ValueError("Changelog anchor '[1]: ...#history' not found.")
+
+        return updated_content
+
+    source_path = f"{repo}/packages/{package_name}/CHANGELOG.md"
+    output_path = f"{output}/packages/{package_name}/CHANGELOG.md"
+    updated_content = process_changelog(_read_text_file(source_path))
+    _write_text_file(output_path, updated_content)
+
+
 def handle_release_init(
     librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR
 ):
@@ -629,12 +727,21 @@ def handle_release_init(
         for library_release_data in libraries_to_prep_for_release:
             version = library_release_data["version"]
             package_name = library_release_data["id"]
+            library_changes = library_release_data["changes"]
             path_to_library = f"packages/{package_name}"
             _update_version_for_library(repo, output, path_to_library, version)
 
-            # TODO(https://github.com/googleapis/google-cloud-python/pull/14351):
-            # Conditionally update the library specific CHANGELOG if there is a change.
-            pass
+            # Get previous version from state.yaml
+            previous_version = _get_previous_version(package_name, librarian)
+            if previous_version != version:
+                _update_changelog_for_library(
+                    repo,
+                    output,
+                    library_changes,
+                    version,
+                    previous_version,
+                    package_name,
+                )
 
     except Exception as e:
         raise ValueError(f"Release init failed: {e}") from e

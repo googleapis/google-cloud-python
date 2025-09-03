@@ -17,6 +17,7 @@ import logging
 import os
 import pathlib
 import subprocess
+import yaml
 import unittest.mock
 from unittest.mock import MagicMock, mock_open
 
@@ -25,6 +26,7 @@ from cli import (
     GENERATE_REQUEST_FILE,
     BUILD_REQUEST_FILE,
     RELEASE_INIT_REQUEST_FILE,
+    STATE_YAML_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
     _build_bazel_target,
@@ -33,12 +35,14 @@ from cli import (
     _determine_bazel_rule,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
+    _get_previous_version,
     _locate_and_extract_artifact,
     _read_json_file,
     _read_text_file,
     _run_individual_session,
     _run_nox_sessions,
     _run_post_processor,
+    _update_changelog_for_library,
     _update_global_changelog,
     _update_version_for_library,
     _write_json_file,
@@ -129,6 +133,25 @@ def mock_release_init_request_file(tmp_path, monkeypatch):
         ]
     }
     request_file.write_text(json.dumps(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
+
+
+@pytest.fixture
+def mock_state_file(tmp_path, monkeypatch):
+    """Creates the state file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/state.yaml
+    request_path = f"{LIBRARIAN_DIR}/{STATE_YAML_FILE}"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir()
+    request_file = request_dir / os.path.basename(request_path)
+
+    state_yaml_contents = {
+        "libraries": [{"id": "google-cloud-language", "version": "1.2.3"}]
+    }
+    request_file.write_text(yaml.dump(state_yaml_contents))
 
     # Change the current working directory to the temp path for the test.
     monkeypatch.chdir(tmp_path)
@@ -517,6 +540,8 @@ def test_handle_release_init_success(mocker, mock_release_init_request_file):
     """
     mocker.patch("cli._update_global_changelog", return_value=None)
     mocker.patch("cli._update_version_for_library", return_value=None)
+    mocker.patch("cli._get_previous_version", return_value=None)
+    mocker.patch("cli._update_changelog_for_library", return_value=None)
     handle_release_init()
 
 
@@ -645,4 +670,88 @@ def test_update_version_for_library_failure(mocker):
             mocker.patch("cli._read_text_file", return_value=mock_content)
             _update_version_for_library(
                 "repo", "output", "packages/google-cloud-language", "1.2.3"
+            )
+
+
+def test_get_previous_version_success(mock_state_file):
+    """Test that the version can be retrieved from the state.yaml for a given library"""
+    previous_version = _get_previous_version("google-cloud-language", LIBRARIAN_DIR)
+    assert previous_version == "1.2.3"
+
+
+def test_get_previous_version_failure(mock_state_file):
+    """Test that ValueError is raised when a library does not exist in state.yaml"""
+    with pytest.raises(ValueError):
+        _get_previous_version("google-cloud-does-not-exist", LIBRARIAN_DIR)
+
+
+def test_update_changelog_for_library_success(mocker):
+    m = mock_open()
+
+    mock_content = """# Changelog
+
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-language/#history
+
+## [2.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.17.1...google-cloud-language-v2.17.2) (2025-06-11)
+
+"""
+
+    mock_changes = [
+        {
+            "type": "feat",
+            "subject": "add new UpdateRepository API",
+            "body": "This adds the ability to update a repository's properties.",
+            "piper_cl_number": "786353207",
+            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
+        },
+        {
+            "type": "docs",
+            "subject": "fix typo in BranchRule comment",
+            "body": "",
+            "piper_cl_number": "786353207",
+            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
+        },
+    ]
+
+    with unittest.mock.patch("cli.open", m):
+        mocker.patch("cli._read_text_file", return_value=mock_content)
+        _update_changelog_for_library(
+            "repo", "output", mock_changes, "1.2.3", "1.2.2", "google-cloud-language"
+        )
+
+
+def test_update_changelog_for_library_failure(mocker):
+    m = mock_open()
+
+    mock_content = """# Changelog"""
+
+    mock_changes = [
+        {
+            "type": "feat",
+            "subject": "add new UpdateRepository API",
+            "body": "This adds the ability to update a repository's properties.",
+            "piper_cl_number": "786353207",
+            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
+        },
+        {
+            "type": "docs",
+            "subject": "fix typo in BranchRule comment",
+            "body": "",
+            "piper_cl_number": "786353207",
+            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
+        },
+    ]
+
+    with pytest.raises(ValueError):
+        with unittest.mock.patch("cli.open", m):
+            mocker.patch("cli._read_text_file", return_value=mock_content)
+            _update_changelog_for_library(
+                "repo",
+                "output",
+                mock_changes,
+                "1.2.3",
+                "1.2.2",
+                "google-cloud-language",
             )
