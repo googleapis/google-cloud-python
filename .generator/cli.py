@@ -65,7 +65,7 @@ def _read_text_file(path: str) -> str:
         return f.read()
 
 
-def _write_text_file(path: str, updated_content: str) -> str:
+def _write_text_file(path: str, updated_content: str):
     """Helper function that reads a text file path and returns the content.
 
     Args:
