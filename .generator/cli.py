@@ -482,15 +482,15 @@ def handle_release_init(
             request_data
         )
 
-        # TODO(https://github.com/googleapis/google-cloud-python/pull/14350):
+        # TODO(https://github.com/googleapis/google-cloud-python/pull/14349):
         # Update library global changelog file.
 
         # Prepare the release for each library by updating the
         # library specific version files and library specific changelog.
         for library_release_data in libraries_to_prep_for_release:
-            # TODO(https://github.com/googleapis/google-cloud-python/pull/14351):
+            # TODO(https://github.com/googleapis/google-cloud-python/pull/14350):
             # Update library specific version files.
-            # TODO(https://github.com/googleapis/google-cloud-python/pull/14352):
+            # TODO(https://github.com/googleapis/google-cloud-python/pull/14351):
             # Conditionally update the library specific CHANGELOG if there is a change.
             pass
 
