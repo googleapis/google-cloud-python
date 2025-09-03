@@ -558,7 +558,7 @@ def handle_release_init(
         for library_release_data in libraries_to_prep_for_release:
             # TODO(https://github.com/googleapis/google-cloud-python/pull/14350):
             # Update library specific version files.
-            # TODO(https://github.com/googleapis/google-cloud-python/pull/14351):
+            # TODO(https://github.com/googleapis/google-cloud-python/pull/14353):
             # Conditionally update the library specific CHANGELOG if there is a change.
             pass
 
