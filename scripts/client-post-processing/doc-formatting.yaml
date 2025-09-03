@@ -350,7 +350,7 @@ replacements:
                   - Bank Mandiri
     count: 1
   - paths: [
-      packages/google-shopping-merchant-q/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/async_client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/async_client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc_asyncio.py,
