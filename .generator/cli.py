@@ -436,7 +436,7 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
 
 def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     """Get libraries which should be prepared for release. Only libraries
-    which have the `release_triggered` field set to `true` will be returned.
+    which have the `release_triggered` field set to `True` will be returned.
 
     Args:
         library_entries(Dict): Dictionary containing all of the libraries to
