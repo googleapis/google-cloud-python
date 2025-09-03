@@ -3997,6 +3997,16 @@
             "component": "grpc-google-iam-v1",
             "extra-files": [],
             "release-type": "python"
+        },
+        "packages/google-cloud-cloudsecuritycompliance": {
+            "extra-files": [
+                "google/cloud/cloudsecuritycompliance_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.cloudsecuritycompliance.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
         }
     }
 }

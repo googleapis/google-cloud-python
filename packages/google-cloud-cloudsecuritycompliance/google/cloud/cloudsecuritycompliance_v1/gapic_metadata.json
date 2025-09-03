@@ -1,0 +1,287 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.cloudsecuritycompliance_v1",
+  "protoPackage": "google.cloud.cloudsecuritycompliance.v1",
+  "schema": "1.0",
+  "services": {
+    "Config": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ConfigClient",
+          "rpcs": {
+            "CreateCloudControl": {
+              "methods": [
+                "create_cloud_control"
+              ]
+            },
+            "CreateFramework": {
+              "methods": [
+                "create_framework"
+              ]
+            },
+            "DeleteCloudControl": {
+              "methods": [
+                "delete_cloud_control"
+              ]
+            },
+            "DeleteFramework": {
+              "methods": [
+                "delete_framework"
+              ]
+            },
+            "GetCloudControl": {
+              "methods": [
+                "get_cloud_control"
+              ]
+            },
+            "GetFramework": {
+              "methods": [
+                "get_framework"
+              ]
+            },
+            "ListCloudControls": {
+              "methods": [
+                "list_cloud_controls"
+              ]
+            },
+            "ListFrameworks": {
+              "methods": [
+                "list_frameworks"
+              ]
+            },
+            "UpdateCloudControl": {
+              "methods": [
+                "update_cloud_control"
+              ]
+            },
+            "UpdateFramework": {
+              "methods": [
+                "update_framework"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ConfigAsyncClient",
+          "rpcs": {
+            "CreateCloudControl": {
+              "methods": [
+                "create_cloud_control"
+              ]
+            },
+            "CreateFramework": {
+              "methods": [
+                "create_framework"
+              ]
+            },
+            "DeleteCloudControl": {
+              "methods": [
+                "delete_cloud_control"
+              ]
+            },
+            "DeleteFramework": {
+              "methods": [
+                "delete_framework"
+              ]
+            },
+            "GetCloudControl": {
+              "methods": [
+                "get_cloud_control"
+              ]
+            },
+            "GetFramework": {
+              "methods": [
+                "get_framework"
+              ]
+            },
+            "ListCloudControls": {
+              "methods": [
+                "list_cloud_controls"
+              ]
+            },
+            "ListFrameworks": {
+              "methods": [
+                "list_frameworks"
+              ]
+            },
+            "UpdateCloudControl": {
+              "methods": [
+                "update_cloud_control"
+              ]
+            },
+            "UpdateFramework": {
+              "methods": [
+                "update_framework"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ConfigClient",
+          "rpcs": {
+            "CreateCloudControl": {
+              "methods": [
+                "create_cloud_control"
+              ]
+            },
+            "CreateFramework": {
+              "methods": [
+                "create_framework"
+              ]
+            },
+            "DeleteCloudControl": {
+              "methods": [
+                "delete_cloud_control"
+              ]
+            },
+            "DeleteFramework": {
+              "methods": [
+                "delete_framework"
+              ]
+            },
+            "GetCloudControl": {
+              "methods": [
+                "get_cloud_control"
+              ]
+            },
+            "GetFramework": {
+              "methods": [
+                "get_framework"
+              ]
+            },
+            "ListCloudControls": {
+              "methods": [
+                "list_cloud_controls"
+              ]
+            },
+            "ListFrameworks": {
+              "methods": [
+                "list_frameworks"
+              ]
+            },
+            "UpdateCloudControl": {
+              "methods": [
+                "update_cloud_control"
+              ]
+            },
+            "UpdateFramework": {
+              "methods": [
+                "update_framework"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Deployment": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DeploymentClient",
+          "rpcs": {
+            "CreateFrameworkDeployment": {
+              "methods": [
+                "create_framework_deployment"
+              ]
+            },
+            "DeleteFrameworkDeployment": {
+              "methods": [
+                "delete_framework_deployment"
+              ]
+            },
+            "GetCloudControlDeployment": {
+              "methods": [
+                "get_cloud_control_deployment"
+              ]
+            },
+            "GetFrameworkDeployment": {
+              "methods": [
+                "get_framework_deployment"
+              ]
+            },
+            "ListCloudControlDeployments": {
+              "methods": [
+                "list_cloud_control_deployments"
+              ]
+            },
+            "ListFrameworkDeployments": {
+              "methods": [
+                "list_framework_deployments"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DeploymentAsyncClient",
+          "rpcs": {
+            "CreateFrameworkDeployment": {
+              "methods": [
+                "create_framework_deployment"
+              ]
+            },
+            "DeleteFrameworkDeployment": {
+              "methods": [
+                "delete_framework_deployment"
+              ]
+            },
+            "GetCloudControlDeployment": {
+              "methods": [
+                "get_cloud_control_deployment"
+              ]
+            },
+            "GetFrameworkDeployment": {
+              "methods": [
+                "get_framework_deployment"
+              ]
+            },
+            "ListCloudControlDeployments": {
+              "methods": [
+                "list_cloud_control_deployments"
+              ]
+            },
+            "ListFrameworkDeployments": {
+              "methods": [
+                "list_framework_deployments"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DeploymentClient",
+          "rpcs": {
+            "CreateFrameworkDeployment": {
+              "methods": [
+                "create_framework_deployment"
+              ]
+            },
+            "DeleteFrameworkDeployment": {
+              "methods": [
+                "delete_framework_deployment"
+              ]
+            },
+            "GetCloudControlDeployment": {
+              "methods": [
+                "get_cloud_control_deployment"
+              ]
+            },
+            "GetFrameworkDeployment": {
+              "methods": [
+                "get_framework_deployment"
+              ]
+            },
+            "ListCloudControlDeployments": {
+              "methods": [
+                "list_cloud_control_deployments"
+              ]
+            },
+            "ListFrameworkDeployments": {
+              "methods": [
+                "list_framework_deployments"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
