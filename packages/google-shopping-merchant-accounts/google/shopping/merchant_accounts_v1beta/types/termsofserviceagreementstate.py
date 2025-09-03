@@ -38,12 +38,12 @@ class TermsOfServiceAgreementState(proto.Message):
     r"""This resource represents the agreement state for a given account and
     terms of service kind. The state is as follows:
 
-    -  If the merchant has accepted a terms of service:
-       `accepted <TermsOfServiceAggrementState.accepted>`__ will be
-       populated, otherwise it will be empty
-    -  If the merchant must sign a terms of service:
-       `required <TermsOfServiceAggrementState.required>`__ will be
-       populated, otherwise it will be empty.
+    - If the merchant has accepted a terms of service:
+      `accepted <TermsOfServiceAggrementState.accepted>`__ will be
+      populated, otherwise it will be empty
+    - If the merchant must sign a terms of service:
+      `required <TermsOfServiceAggrementState.required>`__ will be
+      populated, otherwise it will be empty.
 
     Note that both `required <TermsOfServiceAggrementState.required>`__
     and `accepted <TermsOfServiceAggrementState.accepted>`__ can be

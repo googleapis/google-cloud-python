@@ -932,7 +932,7 @@ class RegionalInventoryServiceClient(metaclass=RegionalInventoryServiceClientMet
                    [region][google.shopping.merchant.inventories.v1beta.RegionalInventory.region].
                    For a list of all accepted attribute values, see the
                    [regional product inventory data
-                   specification](\ https://support.google.com/merchants/answer/9698880).
+                   specification](https://support.google.com/merchants/answer/9698880).
 
         """
         # Create or coerce a protobuf request object.

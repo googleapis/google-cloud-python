@@ -1140,7 +1140,7 @@ class DataSourcesServiceClient(metaclass=DataSourcesServiceClientMeta):
                 specified in the body will be deleted from the data
                 source.
 
-                Providing special "*" value for full data source
+                Providing special "\*" value for full data source
                 replacement is not supported.
 
                 For example, If you insert ``updateMask=displayName`` in

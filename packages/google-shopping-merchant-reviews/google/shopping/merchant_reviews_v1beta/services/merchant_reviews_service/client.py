@@ -779,7 +779,7 @@ class MerchantReviewsServiceClient(metaclass=MerchantReviewsServiceClientMeta):
             google.shopping.merchant_reviews_v1beta.types.MerchantReview:
                 A review for a merchant. For more information, see
                    [Introduction to Merchant Review
-                   Feeds](\ https://developers.google.com/merchant-review-feeds)
+                   Feeds](https://developers.google.com/merchant-review-feeds)
 
         """
         # Create or coerce a protobuf request object.
@@ -1012,7 +1012,7 @@ class MerchantReviewsServiceClient(metaclass=MerchantReviewsServiceClientMeta):
             google.shopping.merchant_reviews_v1beta.types.MerchantReview:
                 A review for a merchant. For more information, see
                    [Introduction to Merchant Review
-                   Feeds](\ https://developers.google.com/merchant-review-feeds)
+                   Feeds](https://developers.google.com/merchant-review-feeds)
 
         """
         # Create or coerce a protobuf request object.

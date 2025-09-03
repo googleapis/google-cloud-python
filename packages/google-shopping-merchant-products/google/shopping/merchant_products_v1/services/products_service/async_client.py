@@ -376,7 +376,7 @@ class ProductsServiceAsyncClient:
                    All fields in the processed product and its
                    sub-messages match the name of their corresponding
                    attribute in the [Product data
-                   specification](\ https://support.google.com/merchants/answer/7052112)
+                   specification](https://support.google.com/merchants/answer/7052112)
                    with some exceptions.
 
         """

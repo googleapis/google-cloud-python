@@ -382,7 +382,7 @@ class ProductInputsServiceAsyncClient:
                    Required product input attributes to pass data
                    validation checks are primarily defined in the
                    [Products Data
-                   Specification](\ https://support.google.com/merchants/answer/188494).
+                   Specification](https://support.google.com/merchants/answer/188494).
 
                    The following attributes are required:
                    [feedLabel][google.shopping.merchant.products.v1beta.Product.feed_label],
@@ -397,9 +397,9 @@ class ProductInputsServiceAsyncClient:
                    All fields in the product input and its sub-messages
                    match the English name of their corresponding
                    attribute in the [Products Data
-                   Specification](\ https://support.google.com/merchants/answer/188494)
+                   Specification](https://support.google.com/merchants/answer/188494)
                    with [some
-                   exceptions](\ https://support.google.com/merchants/answer/7052112).
+                   exceptions](https://support.google.com/merchants/answer/7052112).
                    The following reference documentation lists the field
                    names in the **camelCase** casing style while the
                    Products Data Specification lists the names in the
@@ -520,8 +520,8 @@ class ProductInputsServiceAsyncClient:
                 To specify the update mask for custom attributes you
                 need to add the ``custom_attribute.`` prefix.
 
-                Providing special "*" value for full product replacement
-                is not supported.
+                Providing special "\*" value for full product
+                replacement is not supported.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -548,7 +548,7 @@ class ProductInputsServiceAsyncClient:
                    Required product input attributes to pass data
                    validation checks are primarily defined in the
                    [Products Data
-                   Specification](\ https://support.google.com/merchants/answer/188494).
+                   Specification](https://support.google.com/merchants/answer/188494).
 
                    The following attributes are required:
                    [feedLabel][google.shopping.merchant.products.v1beta.Product.feed_label],
@@ -563,9 +563,9 @@ class ProductInputsServiceAsyncClient:
                    All fields in the product input and its sub-messages
                    match the English name of their corresponding
                    attribute in the [Products Data
-                   Specification](\ https://support.google.com/merchants/answer/188494)
+                   Specification](https://support.google.com/merchants/answer/188494)
                    with [some
-                   exceptions](\ https://support.google.com/merchants/answer/7052112).
+                   exceptions](https://support.google.com/merchants/answer/7052112).
                    The following reference documentation lists the field
                    names in the **camelCase** casing style while the
                    Products Data Specification lists the names in the
