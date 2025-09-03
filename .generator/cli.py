@@ -66,10 +66,10 @@ def _read_text_file(path: str) -> str:
 
 
 def _write_text_file(path: str, updated_content: str):
-    """Helper function that reads a text file path and returns the content.
+    """Helper function that writes a text file path with the given content.
 
     Args:
-        path(str): The file path to read.
+        path(str): The file path to write.
         updated_content(str): The contents to write to the file.
 
     Returns:
