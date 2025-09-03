@@ -48,20 +48,20 @@ class ProductLevelConfig(proto.Message):
             allowed to be ingested into the catalog. Acceptable values
             are:
 
-            -  ``primary`` (default): You can ingest
-               [Product][google.cloud.retail.v2alpha.Product]s of all
-               types. When ingesting a
-               [Product][google.cloud.retail.v2alpha.Product], its type
-               will default to
-               [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
-               if unset.
-            -  ``variant`` (incompatible with Retail Search): You can
-               only ingest
-               [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-               [Product][google.cloud.retail.v2alpha.Product]s. This
-               means
-               [Product.primary_product_id][google.cloud.retail.v2alpha.Product.primary_product_id]
-               cannot be empty.
+            - ``primary`` (default): You can ingest
+              [Product][google.cloud.retail.v2alpha.Product]s of all
+              types. When ingesting a
+              [Product][google.cloud.retail.v2alpha.Product], its type
+              will default to
+              [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+              if unset.
+            - ``variant`` (incompatible with Retail Search): You can
+              only ingest
+              [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+              [Product][google.cloud.retail.v2alpha.Product]s. This
+              means
+              [Product.primary_product_id][google.cloud.retail.v2alpha.Product.primary_product_id]
+              cannot be empty.
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
@@ -80,12 +80,12 @@ class ProductLevelConfig(proto.Message):
             [Product.id][google.cloud.retail.v2alpha.Product.id].
             Acceptable values are:
 
-            -  ``offerId`` (default): Import ``offerId`` as the product
-               ID.
-            -  ``itemGroupId``: Import ``itemGroupId`` as the product
-               ID. Notice that Retail API will choose one item from the
-               ones with the same ``itemGroupId``, and use it to
-               represent the item group.
+            - ``offerId`` (default): Import ``offerId`` as the product
+              ID.
+            - ``itemGroupId``: Import ``itemGroupId`` as the product ID.
+              Notice that Retail API will choose one item from the ones
+              with the same ``itemGroupId``, and use it to represent the
+              item group.
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
@@ -637,8 +637,8 @@ class CompletionConfig(proto.Message):
             'red s' with 'exact-prefix' specified would suggest "red
             shoes". Currently supported values:
 
-            -  'out-of-order'
-            -  'exact-prefix'
+            - 'out-of-order'
+            - 'exact-prefix'
 
             Default value: 'exact-prefix'.
         max_suggestions (int):

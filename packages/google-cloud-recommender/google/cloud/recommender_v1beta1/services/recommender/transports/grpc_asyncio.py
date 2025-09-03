@@ -351,7 +351,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         r"""Return a callable for the list insights method over gRPC.
 
         Lists insights for the specified Cloud Resource. Requires the
-        recommender.*.list IAM permission for the specified insight
+        recommender.\*.list IAM permission for the specified insight
         type.
 
         Returns:
@@ -378,7 +378,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
     ) -> Callable[[recommender_service.GetInsightRequest], Awaitable[insight.Insight]]:
         r"""Return a callable for the get insight method over gRPC.
 
-        Gets the requested insight. Requires the recommender.*.get IAM
+        Gets the requested insight. Requires the recommender.\*.get IAM
         permission for the specified insight type.
 
         Returns:
@@ -413,7 +413,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         being updated.
 
         MarkInsightAccepted can be applied to insights in ACTIVE state.
-        Requires the recommender.*.update IAM permission for the
+        Requires the recommender.\*.update IAM permission for the
         specified insight.
 
         Returns:
@@ -444,7 +444,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         r"""Return a callable for the list recommendations method over gRPC.
 
         Lists recommendations for the specified Cloud Resource. Requires
-        the recommender.*.list IAM permission for the specified
+        the recommender.\*.list IAM permission for the specified
         recommender.
 
         Returns:
@@ -475,7 +475,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         r"""Return a callable for the get recommendation method over gRPC.
 
         Gets the requested recommendation. Requires the
-        recommender.*.get IAM permission for the specified recommender.
+        recommender.\*.get IAM permission for the specified recommender.
 
         Returns:
             Callable[[~.GetRecommendationRequest],
@@ -513,7 +513,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         MarkRecommendationClaimed can be applied to recommendations in
         CLAIMED or ACTIVE state.
 
-        Requires the recommender.*.update IAM permission for the
+        Requires the recommender.\*.update IAM permission for the
         specified recommender.
 
         Returns:
@@ -554,7 +554,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         MarkRecommendationSucceeded can be applied to recommendations in
         ACTIVE, CLAIMED, SUCCEEDED, or FAILED state.
 
-        Requires the recommender.*.update IAM permission for the
+        Requires the recommender.\*.update IAM permission for the
         specified recommender.
 
         Returns:
@@ -595,7 +595,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         MarkRecommendationFailed can be applied to recommendations in
         ACTIVE, CLAIMED, SUCCEEDED, or FAILED state.
 
-        Requires the recommender.*.update IAM permission for the
+        Requires the recommender.\*.update IAM permission for the
         specified recommender.
 
         Returns:

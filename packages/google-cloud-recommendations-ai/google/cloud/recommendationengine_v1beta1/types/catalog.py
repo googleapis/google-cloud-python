@@ -191,10 +191,10 @@ class ProductCatalogItem(proto.Message):
             For example: {"manufacturing": 45.5} The profit of selling
             this item is computed like so:
 
-            -  If 'exactPrice' is provided, profit = displayPrice -
-               sum(costs)
-            -  If 'priceRange' is provided, profit = minPrice -
-               sum(costs)
+            - If 'exactPrice' is provided, profit = displayPrice -
+              sum(costs)
+            - If 'priceRange' is provided, profit = minPrice -
+              sum(costs)
         currency_code (str):
             Optional. Only required if the price is set.
             Currency code for price/costs. Use

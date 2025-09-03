@@ -41,7 +41,7 @@ class BigQueryExport(proto.Message):
 
             ``organizations/{organization_id}/locations/{location_id}/bigQueryExports/{export_id}``
 
-            -  ``folders/{folder_id}/locations/{location_id}/bigQueryExports/{export_id}``
+            - ``folders/{folder_id}/locations/{location_id}/bigQueryExports/{export_id}``
             -
 
             ``projects/{project_id}/locations/{location_id}/bigQueryExports/{export_id}``
@@ -65,20 +65,20 @@ class BigQueryExport(proto.Message):
 
             The supported operators are:
 
-            -  ``=`` for all value types.
-            -  ``>``, ``<``, ``>=``, ``<=`` for integer values.
-            -  ``:``, meaning substring matching, for strings.
+            - ``=`` for all value types.
+            - ``>``, ``<``, ``>=``, ``<=`` for integer values.
+            - ``:``, meaning substring matching, for strings.
 
             The supported value types are:
 
-            -  string literals in quotes.
-            -  integer literals without quotes.
-            -  boolean literals ``true`` and ``false`` without quotes.
+            - string literals in quotes.
+            - integer literals without quotes.
+            - boolean literals ``true`` and ``false`` without quotes.
         dataset (str):
             The dataset to write findings' updates to. Its format is
             "projects/[project_id]/datasets/[bigquery_dataset_id]".
             BigQuery dataset unique ID must contain only letters (a-z,
-            A-Z), numbers (0-9), or underscores (_).
+            A-Z), numbers (0-9), or underscores (\_).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the BigQuery
             export was created. This field is set by the

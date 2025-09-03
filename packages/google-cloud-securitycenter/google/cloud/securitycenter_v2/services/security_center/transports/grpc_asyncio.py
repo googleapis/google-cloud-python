@@ -941,15 +941,15 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         To group across all sources provide a ``-`` as the source id.
         The following list shows some examples:
 
-        -  ``/v2/organizations/{organization_id}/sources/-/findings``
+        - ``/v2/organizations/{organization_id}/sources/-/findings``
         -
 
         ``/v2/organizations/{organization_id}/sources/-/locations/{location_id}/findings``
 
-        -  ``/v2/folders/{folder_id}/sources/-/findings``
-        -  ``/v2/folders/{folder_id}/sources/-/locations/{location_id}/findings``
-        -  ``/v2/projects/{project_id}/sources/-/findings``
-        -  ``/v2/projects/{project_id}/sources/-/locations/{location_id}/findings``
+        - ``/v2/folders/{folder_id}/sources/-/findings``
+        - ``/v2/folders/{folder_id}/sources/-/locations/{location_id}/findings``
+        - ``/v2/projects/{project_id}/sources/-/findings``
+        - ``/v2/projects/{project_id}/sources/-/locations/{location_id}/findings``
 
         Returns:
             Callable[[~.GroupFindingsRequest],
@@ -1048,7 +1048,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         as the source id. If no location is specified, finding are
         assumed to be in global. The following list shows some examples:
 
-        -  ``/v2/organizations/{organization_id}/sources/-/findings``
+        - ``/v2/organizations/{organization_id}/sources/-/findings``
         -
 
         ``/v2/organizations/{organization_id}/sources/-/locations/{location_id}/findings``

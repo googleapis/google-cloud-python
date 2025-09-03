@@ -103,23 +103,22 @@ class HttpTarget(proto.Message):
             partial list of headers that will be ignored or replaced is
             below:
 
-            -  Host: This will be computed by Cloud Scheduler and
-               derived from
-               [uri][google.cloud.scheduler.v1beta1.HttpTarget.uri].
+            - Host: This will be computed by Cloud Scheduler and derived
+              from [uri][google.cloud.scheduler.v1beta1.HttpTarget.uri].
 
-            -  ``Content-Length``: This will be computed by Cloud
-               Scheduler.
-            -  ``User-Agent``: This will be set to
-               ``"Google-Cloud-Scheduler"``.
-            -  ``X-Google-*``: Google internal use only.
-            -  ``X-AppEngine-*``: Google internal use only.
-            -  ``X-CloudScheduler``: This header will be set to true.
-            -  ``X-CloudScheduler-JobName``: This header will contain
-               the job name.
-            -  ``X-CloudScheduler-ScheduleTime``: For Cloud Scheduler
-               jobs specified in the unix-cron format, this header will
-               contain the job schedule as an offset of UTC parsed
-               according to RFC3339.
+            - ``Content-Length``: This will be computed by Cloud
+              Scheduler.
+            - ``User-Agent``: This will be set to
+              ``"Google-Cloud-Scheduler"``.
+            - ``X-Google-*``: Google internal use only.
+            - ``X-AppEngine-*``: Google internal use only.
+            - ``X-CloudScheduler``: This header will be set to true.
+            - ``X-CloudScheduler-JobName``: This header will contain the
+              job name.
+            - ``X-CloudScheduler-ScheduleTime``: For Cloud Scheduler
+              jobs specified in the unix-cron format, this header will
+              contain the job schedule as an offset of UTC parsed
+              according to RFC3339.
 
             The total size of headers must be less than 80KB.
         body (bytes):
@@ -216,38 +215,38 @@ class AppEngineHttpTarget(proto.Message):
 
             Cloud Scheduler sets some headers to default values:
 
-            -  ``User-Agent``: By default, this header is
-               ``"AppEngine-Google; (+http://code.google.com/appengine)"``.
-               This header can be modified, but Cloud Scheduler will
-               append
-               ``"AppEngine-Google; (+http://code.google.com/appengine)"``
-               to the modified ``User-Agent``.
-            -  ``X-CloudScheduler``: This header will be set to true.
-            -  ``X-CloudScheduler-JobName``: This header will contain
-               the job name.
-            -  ``X-CloudScheduler-ScheduleTime``: For Cloud Scheduler
-               jobs specified in the unix-cron format, this header will
-               contain the job schedule as an offset of UTC parsed
-               according to RFC3339.
+            - ``User-Agent``: By default, this header is
+              ``"AppEngine-Google; (+http://code.google.com/appengine)"``.
+              This header can be modified, but Cloud Scheduler will
+              append
+              ``"AppEngine-Google; (+http://code.google.com/appengine)"``
+              to the modified ``User-Agent``.
+            - ``X-CloudScheduler``: This header will be set to true.
+            - ``X-CloudScheduler-JobName``: This header will contain the
+              job name.
+            - ``X-CloudScheduler-ScheduleTime``: For Cloud Scheduler
+              jobs specified in the unix-cron format, this header will
+              contain the job schedule as an offset of UTC parsed
+              according to RFC3339.
 
             If the job has an
             [body][google.cloud.scheduler.v1beta1.AppEngineHttpTarget.body],
             Cloud Scheduler sets the following headers:
 
-            -  ``Content-Type``: By default, the ``Content-Type`` header
-               is set to ``"application/octet-stream"``. The default can
-               be overridden by explictly setting ``Content-Type`` to a
-               particular media type when the job is created. For
-               example, ``Content-Type`` can be set to
-               ``"application/json"``.
-            -  ``Content-Length``: This is computed by Cloud Scheduler.
-               This value is output only. It cannot be changed.
+            - ``Content-Type``: By default, the ``Content-Type`` header
+              is set to ``"application/octet-stream"``. The default can
+              be overridden by explictly setting ``Content-Type`` to a
+              particular media type when the job is created. For
+              example, ``Content-Type`` can be set to
+              ``"application/json"``.
+            - ``Content-Length``: This is computed by Cloud Scheduler.
+              This value is output only. It cannot be changed.
 
             The headers below are output only. They cannot be set or
             overridden:
 
-            -  ``X-Google-*``: For Google internal use only.
-            -  ``X-AppEngine-*``: For Google internal use only.
+            - ``X-Google-*``: For Google internal use only.
+            - ``X-AppEngine-*``: For Google internal use only.
 
             In addition, some App Engine headers, which contain
             job-specific information, are also be sent to the job
@@ -377,49 +376,49 @@ class AppEngineRouting(proto.Message):
 
             The host is constructed as:
 
-            -  ``host = [application_domain_name]``\
-               ``| [service] + '.' + [application_domain_name]``\
-               ``| [version] + '.' + [application_domain_name]``\
-               ``| [version_dot_service]+ '.' + [application_domain_name]``\
-               ``| [instance] + '.' + [application_domain_name]``\
-               ``| [instance_dot_service] + '.' + [application_domain_name]``\
-               ``| [instance_dot_version] + '.' + [application_domain_name]``\
-               ``| [instance_dot_version_dot_service] + '.' + [application_domain_name]``
+            - ``host = [application_domain_name]``\
+              ``| [service] + '.' + [application_domain_name]``\
+              ``| [version] + '.' + [application_domain_name]``\
+              ``| [version_dot_service]+ '.' + [application_domain_name]``\
+              ``| [instance] + '.' + [application_domain_name]``\
+              ``| [instance_dot_service] + '.' + [application_domain_name]``\
+              ``| [instance_dot_version] + '.' + [application_domain_name]``\
+              ``| [instance_dot_version_dot_service] + '.' + [application_domain_name]``
 
-            -  ``application_domain_name`` = The domain name of the app,
-               for example .appspot.com, which is associated with the
-               job's project ID.
+            - ``application_domain_name`` = The domain name of the app,
+              for example .appspot.com, which is associated with the
+              job's project ID.
 
-            -  ``service =``
-               [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
+            - ``service =``
+              [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
 
-            -  ``version =``
-               [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
+            - ``version =``
+              [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
 
-            -  ``version_dot_service =``
-               [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
-               ``+ '.' +``
-               [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
+            - ``version_dot_service =``
+              [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
+              ``+ '.' +``
+              [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
 
-            -  ``instance =``
-               [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
+            - ``instance =``
+              [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
 
-            -  ``instance_dot_service =``
-               [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
-               ``+ '.' +``
-               [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
+            - ``instance_dot_service =``
+              [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
+              ``+ '.' +``
+              [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
 
-            -  ``instance_dot_version =``
-               [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
-               ``+ '.' +``
-               [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
+            - ``instance_dot_version =``
+              [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
+              ``+ '.' +``
+              [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
 
-            -  ``instance_dot_version_dot_service =``
-               [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
-               ``+ '.' +``
-               [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
-               ``+ '.' +``
-               [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
+            - ``instance_dot_version_dot_service =``
+              [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
+              ``+ '.' +``
+              [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
+              ``+ '.' +``
+              [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
 
             If
             [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]

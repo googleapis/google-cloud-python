@@ -48,18 +48,18 @@ class Product(proto.Message):
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Note that this field is applied in the following ways:
 
-            -  If the [Product][google.cloud.retail.v2.Product] is
-               already expired when it is uploaded, this product is not
-               indexed for search.
+            - If the [Product][google.cloud.retail.v2.Product] is
+              already expired when it is uploaded, this product is not
+              indexed for search.
 
-            -  If the [Product][google.cloud.retail.v2.Product] is not
-               expired when it is uploaded, only the
-               [Type.PRIMARY][google.cloud.retail.v2.Product.Type.PRIMARY]'s
-               and
-               [Type.COLLECTION][google.cloud.retail.v2.Product.Type.COLLECTION]'s
-               expireTime is respected, and
-               [Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT]'s
-               expireTime is not used.
+            - If the [Product][google.cloud.retail.v2.Product] is not
+              expired when it is uploaded, only the
+              [Type.PRIMARY][google.cloud.retail.v2.Product.Type.PRIMARY]'s
+              and
+              [Type.COLLECTION][google.cloud.retail.v2.Product.Type.COLLECTION]'s
+              expireTime is respected, and
+              [Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT]'s
+              expireTime is not used.
 
             In general, we suggest the users to delete the stale
             products explicitly, instead of using this field to
@@ -296,17 +296,17 @@ class Product(proto.Message):
             This field needs to pass all below criteria, otherwise an
             INVALID_ARGUMENT error is returned:
 
-            -  Max entries count: 200.
-            -  The key must be a UTF-8 encoded string with a length
-               limit of 128 characters.
-            -  For indexable attribute, the key must match the pattern:
-               ``[a-zA-Z0-9][a-zA-Z0-9_]*``. For example,
-               ``key0LikeThis`` or ``KEY_1_LIKE_THIS``.
-            -  For text attributes, at most 400 values are allowed.
-               Empty values are not allowed. Each value must be a
-               non-empty UTF-8 encoded string with a length limit of 256
-               characters.
-            -  For number attributes, at most 400 values are allowed.
+            - Max entries count: 200.
+            - The key must be a UTF-8 encoded string with a length limit
+              of 128 characters.
+            - For indexable attribute, the key must match the pattern:
+              ``[a-zA-Z0-9][a-zA-Z0-9_]*``. For example,
+              ``key0LikeThis`` or ``KEY_1_LIKE_THIS``.
+            - For text attributes, at most 400 values are allowed. Empty
+              values are not allowed. Each value must be a non-empty
+              UTF-8 encoded string with a length limit of 256
+              characters.
+            - For number attributes, at most 400 values are allowed.
         tags (MutableSequence[str]):
             Custom tags associated with the product.
 
@@ -489,35 +489,35 @@ class Product(proto.Message):
             Supported fields for all
             [type][google.cloud.retail.v2.Product.type]s:
 
-            -  [audience][google.cloud.retail.v2.Product.audience]
-            -  [availability][google.cloud.retail.v2.Product.availability]
-            -  [brands][google.cloud.retail.v2.Product.brands]
-            -  [color_info][google.cloud.retail.v2.Product.color_info]
-            -  [conditions][google.cloud.retail.v2.Product.conditions]
-            -  [gtin][google.cloud.retail.v2.Product.gtin]
-            -  [materials][google.cloud.retail.v2.Product.materials]
-            -  [name][google.cloud.retail.v2.Product.name]
-            -  [patterns][google.cloud.retail.v2.Product.patterns]
-            -  [price_info][google.cloud.retail.v2.Product.price_info]
-            -  [rating][google.cloud.retail.v2.Product.rating]
-            -  [sizes][google.cloud.retail.v2.Product.sizes]
-            -  [title][google.cloud.retail.v2.Product.title]
-            -  [uri][google.cloud.retail.v2.Product.uri]
+            - [audience][google.cloud.retail.v2.Product.audience]
+            - [availability][google.cloud.retail.v2.Product.availability]
+            - [brands][google.cloud.retail.v2.Product.brands]
+            - [color_info][google.cloud.retail.v2.Product.color_info]
+            - [conditions][google.cloud.retail.v2.Product.conditions]
+            - [gtin][google.cloud.retail.v2.Product.gtin]
+            - [materials][google.cloud.retail.v2.Product.materials]
+            - [name][google.cloud.retail.v2.Product.name]
+            - [patterns][google.cloud.retail.v2.Product.patterns]
+            - [price_info][google.cloud.retail.v2.Product.price_info]
+            - [rating][google.cloud.retail.v2.Product.rating]
+            - [sizes][google.cloud.retail.v2.Product.sizes]
+            - [title][google.cloud.retail.v2.Product.title]
+            - [uri][google.cloud.retail.v2.Product.uri]
 
             Supported fields only for
             [Type.PRIMARY][google.cloud.retail.v2.Product.Type.PRIMARY]
             and
             [Type.COLLECTION][google.cloud.retail.v2.Product.Type.COLLECTION]:
 
-            -  [categories][google.cloud.retail.v2.Product.categories]
-            -  [description][google.cloud.retail.v2.Product.description]
-            -  [images][google.cloud.retail.v2.Product.images]
+            - [categories][google.cloud.retail.v2.Product.categories]
+            - [description][google.cloud.retail.v2.Product.description]
+            - [images][google.cloud.retail.v2.Product.images]
 
             Supported fields only for
             [Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT]:
 
-            -  Only the first image in
-               [images][google.cloud.retail.v2.Product.images]
+            - Only the first image in
+              [images][google.cloud.retail.v2.Product.images]
 
             To mark
             [attributes][google.cloud.retail.v2.Product.attributes] as
@@ -533,14 +533,14 @@ class Product(proto.Message):
             [SearchResponse][google.cloud.retail.v2.SearchResponse] by
             default:
 
-            -  [name][google.cloud.retail.v2.Product.name]
+            - [name][google.cloud.retail.v2.Product.name]
 
             For
             [Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT],
             the following fields are always returned in by default:
 
-            -  [name][google.cloud.retail.v2.Product.name]
-            -  [color_info][google.cloud.retail.v2.Product.color_info]
+            - [name][google.cloud.retail.v2.Product.name]
+            - [color_info][google.cloud.retail.v2.Product.color_info]
 
             Note: Returning more fields in
             [SearchResponse][google.cloud.retail.v2.SearchResponse] can

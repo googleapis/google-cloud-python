@@ -335,7 +335,7 @@ class Rollout(proto.Message):
         rollout_id (str):
             Optional. Unique identifier of this Rollout. Must be no
             longer than 63 characters and only lower case letters,
-            digits, '.', '_' and '-' are allowed.
+            digits, '.', '\_' and '-' are allowed.
 
             If not specified by client, the server will generate one.
             The generated id will have the form of , where "date" is the

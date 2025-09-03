@@ -70,7 +70,7 @@ class ListServicesRequest(proto.Message):
             The Google Service Management implementation accepts the
             following forms:
 
-            -  project:<project_id>
+            - project:<project_id>
     """
 
     producer_project_id: str = proto.Field(
