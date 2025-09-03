@@ -2,3 +2,6 @@
 # This file controls who is tagged for review for any given pull request.
 
 *                         @googleapis/python-core-client-libraries
+
+/.generator/ @googleapis/cloud-sdk-librarian-team
+/.librarian/ @googleapis/cloud-sdk-librarian-team
