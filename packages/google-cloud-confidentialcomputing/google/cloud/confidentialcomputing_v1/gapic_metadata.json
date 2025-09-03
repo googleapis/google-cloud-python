@@ -19,16 +19,6 @@
               "methods": [
                 "verify_attestation"
               ]
-            },
-            "VerifyConfidentialGke": {
-              "methods": [
-                "verify_confidential_gke"
-              ]
-            },
-            "VerifyConfidentialSpace": {
-              "methods": [
-                "verify_confidential_space"
-              ]
             }
           }
         },
@@ -44,16 +34,6 @@
               "methods": [
                 "verify_attestation"
               ]
-            },
-            "VerifyConfidentialGke": {
-              "methods": [
-                "verify_confidential_gke"
-              ]
-            },
-            "VerifyConfidentialSpace": {
-              "methods": [
-                "verify_confidential_space"
-              ]
             }
           }
         },
@@ -68,16 +48,6 @@
             "VerifyAttestation": {
               "methods": [
                 "verify_attestation"
-              ]
-            },
-            "VerifyConfidentialGke": {
-              "methods": [
-                "verify_confidential_gke"
-              ]
-            },
-            "VerifyConfidentialSpace": {
-              "methods": [
-                "verify_confidential_space"
               ]
             }
           }
