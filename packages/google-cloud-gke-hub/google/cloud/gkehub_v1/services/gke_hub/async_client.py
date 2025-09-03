@@ -74,8 +74,8 @@ class GkeHubAsyncClient:
 
     The GKE Hub service operates on the following resources:
 
-    -  [Membership][google.cloud.gkehub.v1.Membership]
-    -  [Feature][google.cloud.gkehub.v1.Feature]
+    - [Membership][google.cloud.gkehub.v1.Membership]
+    - [Feature][google.cloud.gkehub.v1.Feature]
 
     GKE Hub is currently available in the global region and all regions
     in https://cloud.google.com/compute/docs/regions-zones. Feature is
@@ -1401,7 +1401,7 @@ class GkeHubAsyncClient:
                 to null or empty string to delete the key from the map.
                 It's not possible to update a key's value to the empty
                 string. If you specify the update_mask to be a special
-                path "*", fully replaces all user-modifiable fields to
+                path "\*", fully replaces all user-modifiable fields to
                 match ``resource``.
 
                 This corresponds to the ``resource`` field
@@ -1549,7 +1549,7 @@ class GkeHubAsyncClient:
                 updating a map field, set the value of a key to null or
                 empty string to delete the key from the map. It's not
                 possible to update a key's value to the empty string. If
-                you specify the update_mask to be a special path "*",
+                you specify the update_mask to be a special path "\*",
                 fully replaces all user-modifiable fields to match
                 ``resource``.
 

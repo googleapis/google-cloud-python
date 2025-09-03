@@ -420,10 +420,10 @@ class Spoke(proto.Message):
     When you create a spoke, you associate it with a hub. You must also
     identify a value for exactly one of the following fields:
 
-    -  linked_vpn_tunnels
-    -  linked_interconnect_attachments
-    -  linked_router_appliance_instances
-    -  linked_vpc_network
+    - linked_vpn_tunnels
+    - linked_interconnect_attachments
+    - linked_router_appliance_instances
+    - linked_vpc_network
 
     Attributes:
         name (str):
@@ -1323,36 +1323,36 @@ class QueryHubStatusRequest(proto.Message):
             The filter can be used to filter the results by the
             following fields:
 
-            -  ``psc_propagation_status.source_spoke``
-            -  ``psc_propagation_status.source_group``
-            -  ``psc_propagation_status.source_forwarding_rule``
-            -  ``psc_propagation_status.target_spoke``
-            -  ``psc_propagation_status.target_group``
-            -  ``psc_propagation_status.code``
-            -  ``psc_propagation_status.message``
+            - ``psc_propagation_status.source_spoke``
+            - ``psc_propagation_status.source_group``
+            - ``psc_propagation_status.source_forwarding_rule``
+            - ``psc_propagation_status.target_spoke``
+            - ``psc_propagation_status.target_group``
+            - ``psc_propagation_status.code``
+            - ``psc_propagation_status.message``
         order_by (str):
             Optional. Sort the results in ascending order by the
             specified fields. A comma-separated list of any of these
             fields:
 
-            -  ``psc_propagation_status.source_spoke``
-            -  ``psc_propagation_status.source_group``
-            -  ``psc_propagation_status.source_forwarding_rule``
-            -  ``psc_propagation_status.target_spoke``
-            -  ``psc_propagation_status.target_group``
-            -  ``psc_propagation_status.code`` If ``group_by`` is set,
-               the value of the ``order_by`` field must be the same as
-               or a subset of the ``group_by`` field.
+            - ``psc_propagation_status.source_spoke``
+            - ``psc_propagation_status.source_group``
+            - ``psc_propagation_status.source_forwarding_rule``
+            - ``psc_propagation_status.target_spoke``
+            - ``psc_propagation_status.target_group``
+            - ``psc_propagation_status.code`` If ``group_by`` is set,
+              the value of the ``order_by`` field must be the same as or
+              a subset of the ``group_by`` field.
         group_by (str):
             Optional. Aggregate the results by the specified fields. A
             comma-separated list of any of these fields:
 
-            -  ``psc_propagation_status.source_spoke``
-            -  ``psc_propagation_status.source_group``
-            -  ``psc_propagation_status.source_forwarding_rule``
-            -  ``psc_propagation_status.target_spoke``
-            -  ``psc_propagation_status.target_group``
-            -  ``psc_propagation_status.code``
+            - ``psc_propagation_status.source_spoke``
+            - ``psc_propagation_status.source_group``
+            - ``psc_propagation_status.source_forwarding_rule``
+            - ``psc_propagation_status.target_spoke``
+            - ``psc_propagation_status.target_group``
+            - ``psc_propagation_status.code``
     """
 
     name: str = proto.Field(

@@ -30,6 +30,16 @@ __protobuf__ = proto.module(
         "DiscoveryType",
         "SharedResourceType",
         "DataExchange",
+        "QueryTemplate",
+        "Routine",
+        "CreateQueryTemplateRequest",
+        "GetQueryTemplateRequest",
+        "ListQueryTemplatesRequest",
+        "ListQueryTemplatesResponse",
+        "UpdateQueryTemplateRequest",
+        "DeleteQueryTemplateRequest",
+        "SubmitQueryTemplateRequest",
+        "ApproveQueryTemplateRequest",
         "SharingEnvironmentConfig",
         "DataProvider",
         "Publisher",
@@ -123,7 +133,7 @@ class DataExchange(proto.Message):
         display_name (str):
             Required. Human-readable display name of the data exchange.
             The display name must contain only Unicode letters, numbers
-            (0-9), underscores (_), dashes (-), spaces ( ), ampersands
+            (0-9), underscores (\_), dashes (-), spaces ( ), ampersands
             (&) and must not start or end with spaces. Default value is
             an empty string. Max length: 63 bytes.
         description (str):
@@ -214,6 +224,326 @@ class DataExchange(proto.Message):
         proto.BOOL,
         number=10,
         optional=True,
+    )
+
+
+class QueryTemplate(proto.Message):
+    r"""A query template is a container for sharing table-valued
+    functions defined by contributors in a data clean room.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of the QueryTemplate. e.g.
+            ``projects/myproject/locations/us/dataExchanges/123/queryTemplates/456``
+        display_name (str):
+            Required. Human-readable display name of the QueryTemplate.
+            The display name must contain only Unicode letters, numbers
+            (0-9), underscores (\_), dashes (-), spaces ( ), ampersands
+            (&) and can't start or end with spaces. Default value is an
+            empty string. Max length: 63 bytes.
+        description (str):
+            Optional. Short description of the
+            QueryTemplate. The description must not contain
+            Unicode non-characters and C0 and C1 control
+            codes except tabs (HT), new lines (LF), carriage
+            returns (CR), and page breaks (FF). Default
+            value is an empty string. Max length: 2000
+            bytes.
+        proposer (str):
+            Optional. Will be deprecated.
+            Email or URL of the primary point of contact of
+            the QueryTemplate. Max Length: 1000 bytes.
+        primary_contact (str):
+            Optional. Email or URL of the primary point
+            of contact of the QueryTemplate. Max Length:
+            1000 bytes.
+        documentation (str):
+            Optional. Documentation describing the
+            QueryTemplate.
+        state (google.cloud.bigquery_analyticshub_v1.types.QueryTemplate.State):
+            Output only. The QueryTemplate lifecycle
+            state.
+        routine (google.cloud.bigquery_analyticshub_v1.types.Routine):
+            Optional. The routine associated with the
+            QueryTemplate.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp when the QueryTemplate
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp when the QueryTemplate
+            was last modified.
+    """
+
+    class State(proto.Enum):
+        r"""The QueryTemplate lifecycle state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            DRAFTED (1):
+                The QueryTemplate is in draft state.
+            PENDING (2):
+                The QueryTemplate is in pending state.
+            DELETED (3):
+                The QueryTemplate is in deleted state.
+            APPROVED (4):
+                The QueryTemplate is in approved state.
+        """
+        STATE_UNSPECIFIED = 0
+        DRAFTED = 1
+        PENDING = 2
+        DELETED = 3
+        APPROVED = 4
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    proposer: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    primary_contact: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    documentation: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    routine: "Routine" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="Routine",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class Routine(proto.Message):
+    r"""Represents a bigquery routine.
+
+    Attributes:
+        routine_type (google.cloud.bigquery_analyticshub_v1.types.Routine.RoutineType):
+            Required. The type of routine.
+        definition_body (str):
+            Optional. The definition body of the routine.
+    """
+
+    class RoutineType(proto.Enum):
+        r"""Represents the type of a given routine.
+
+        Values:
+            ROUTINE_TYPE_UNSPECIFIED (0):
+                Default value.
+            TABLE_VALUED_FUNCTION (1):
+                Non-built-in persistent TVF.
+        """
+        ROUTINE_TYPE_UNSPECIFIED = 0
+        TABLE_VALUED_FUNCTION = 1
+
+    routine_type: RoutineType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=RoutineType,
+    )
+    definition_body: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateQueryTemplateRequest(proto.Message):
+    r"""Message for creating a QueryTemplate.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource path of the QueryTemplate.
+            e.g.
+            ``projects/myproject/locations/us/dataExchanges/123/queryTemplates/myQueryTemplate``.
+        query_template_id (str):
+            Required. The ID of the QueryTemplate to create. Must
+            contain only Unicode letters, numbers (0-9), underscores
+            (\_). Max length: 100 bytes.
+        query_template (google.cloud.bigquery_analyticshub_v1.types.QueryTemplate):
+            Required. The QueryTemplate to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query_template_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    query_template: "QueryTemplate" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="QueryTemplate",
+    )
+
+
+class GetQueryTemplateRequest(proto.Message):
+    r"""Message for creating a QueryTemplate.
+
+    Attributes:
+        name (str):
+            Required. The parent resource path of the QueryTemplate.
+            e.g.
+            ``projects/myproject/locations/us/dataExchanges/123/queryTemplates/myqueryTemplate``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListQueryTemplatesRequest(proto.Message):
+    r"""Message for requesting the list of QueryTemplates.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource path of the QueryTemplates.
+            e.g. ``projects/myproject/locations/us/dataExchanges/123``.
+        page_size (int):
+            Optional. The maximum number of results to
+            return in a single response page. Leverage the
+            page tokens to iterate through the entire
+            collection.
+        page_token (str):
+            Optional. Page token, returned by a previous
+            call, to request the next page of results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListQueryTemplatesResponse(proto.Message):
+    r"""Message for response to the list of QueryTemplates.
+
+    Attributes:
+        query_templates (MutableSequence[google.cloud.bigquery_analyticshub_v1.types.QueryTemplate]):
+            The list of QueryTemplates.
+        next_page_token (str):
+            A token to request the next page of results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    query_templates: MutableSequence["QueryTemplate"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="QueryTemplate",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateQueryTemplateRequest(proto.Message):
+    r"""Message for updating a QueryTemplate.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask specifies the fields to update in the
+            query template resource. The fields specified in the
+            ``updateMask`` are relative to the resource and are not a
+            full request.
+        query_template (google.cloud.bigquery_analyticshub_v1.types.QueryTemplate):
+            Required. The QueryTemplate to update.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    query_template: "QueryTemplate" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="QueryTemplate",
+    )
+
+
+class DeleteQueryTemplateRequest(proto.Message):
+    r"""Message for deleting a QueryTemplate.
+
+    Attributes:
+        name (str):
+            Required. The resource path of the QueryTemplate. e.g.
+            ``projects/myproject/locations/us/dataExchanges/123/queryTemplates/myqueryTemplate``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class SubmitQueryTemplateRequest(proto.Message):
+    r"""Message for submitting a QueryTemplate.
+
+    Attributes:
+        name (str):
+            Required. The resource path of the QueryTemplate. e.g.
+            ``projects/myproject/locations/us/dataExchanges/123/queryTemplates/myqueryTemplate``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ApproveQueryTemplateRequest(proto.Message):
+    r"""Message for approving a QueryTemplate.
+
+    Attributes:
+        name (str):
+            Required. The resource path of the QueryTemplate. e.g.
+            ``projects/myproject/locations/us/dataExchanges/123/queryTemplates/myqueryTemplate``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -356,7 +686,7 @@ class DestinationDatasetReference(proto.Message):
         dataset_id (str):
             Required. A unique ID for this dataset, without the project
             name. The ID must contain only letters (a-z, A-Z), numbers
-            (0-9), or underscores (_). The maximum length is 1,024
+            (0-9), or underscores (\_). The maximum length is 1,024
             characters.
         project_id (str):
             Required. The ID of the project containing
@@ -397,6 +727,11 @@ class DestinationDataset(proto.Message):
             dataset should reside. See
             https://cloud.google.com/bigquery/docs/locations
             for supported locations.
+        replica_locations (MutableSequence[str]):
+            Optional. The geographic locations where the dataset should
+            be replicated. See `BigQuery
+            locations <https://cloud.google.com/bigquery/docs/locations>`__
+            for supported locations.
     """
 
     dataset_reference: "DestinationDatasetReference" = proto.Field(
@@ -422,6 +757,10 @@ class DestinationDataset(proto.Message):
     location: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    replica_locations: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -469,7 +808,7 @@ class Listing(proto.Message):
         display_name (str):
             Required. Human-readable display name of the listing. The
             display name must contain only Unicode letters, numbers
-            (0-9), underscores (_), dashes (-), spaces ( ), ampersands
+            (0-9), underscores (\_), dashes (-), spaces ( ), ampersands
             (&) and can't start or end with spaces. Default value is an
             empty string. Max length: 63 bytes.
         description (str):
@@ -503,7 +842,7 @@ class Listing(proto.Message):
             owns the source data.
         categories (MutableSequence[google.cloud.bigquery_analyticshub_v1.types.Listing.Category]):
             Optional. Categories of the listing. Up to
-            two categories are allowed.
+            five categories are allowed.
         publisher (google.cloud.bigquery_analyticshub_v1.types.Publisher):
             Optional. Details of the publisher who owns
             the listing and who can share the source data.
@@ -601,6 +940,8 @@ class Listing(proto.Message):
                 No description available.
             CATEGORY_TRAVEL_AND_TOURISM (19):
                 No description available.
+            CATEGORY_GOOGLE_EARTH_ENGINE (20):
+                No description available.
         """
         CATEGORY_UNSPECIFIED = 0
         CATEGORY_OTHERS = 1
@@ -622,6 +963,7 @@ class Listing(proto.Message):
         CATEGORY_SCIENCE_AND_RESEARCH = 17
         CATEGORY_TRANSPORTATION_AND_LOGISTICS = 18
         CATEGORY_TRAVEL_AND_TOURISM = 19
+        CATEGORY_GOOGLE_EARTH_ENGINE = 20
 
     class BigQueryDatasetSource(proto.Message):
         r"""A reference to a shared dataset. It is an existing BigQuery dataset
@@ -643,6 +985,15 @@ class Listing(proto.Message):
                 Optional. If set, restricted export policy
                 will be propagated and enforced on the linked
                 dataset.
+            replica_locations (MutableSequence[str]):
+                Optional. A list of regions where the
+                publisher has created shared dataset replicas.
+            effective_replicas (MutableSequence[google.cloud.bigquery_analyticshub_v1.types.Listing.BigQueryDatasetSource.Replica]):
+                Output only. Server-owned effective state of
+                replicas. Contains both primary and secondary
+                replicas. Each replica includes a
+                system-computed (output-only) state and primary
+                designation.
         """
 
         class SelectedResource(proto.Message):
@@ -714,6 +1065,80 @@ class Listing(proto.Message):
                 message=wrappers_pb2.BoolValue,
             )
 
+        class Replica(proto.Message):
+            r"""Represents the state of a replica of a shared dataset.
+            It includes the geographic location of the replica and
+            system-computed, output-only fields indicating its replication
+            state and whether it is the primary replica.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                location (str):
+                    Output only. The geographic location where the replica
+                    resides. See `BigQuery
+                    locations <https://cloud.google.com/bigquery/docs/locations>`__
+                    for supported locations. Eg. "us-central1".
+                replica_state (google.cloud.bigquery_analyticshub_v1.types.Listing.BigQueryDatasetSource.Replica.ReplicaState):
+                    Output only. Assigned by Analytics Hub based
+                    on real BigQuery replication state.
+                primary_state (google.cloud.bigquery_analyticshub_v1.types.Listing.BigQueryDatasetSource.Replica.PrimaryState):
+                    Output only. Indicates that this replica is
+                    the primary replica.
+
+                    This field is a member of `oneof`_ ``_primary_state``.
+            """
+
+            class ReplicaState(proto.Enum):
+                r"""Replica state of the shared dataset.
+
+                Values:
+                    REPLICA_STATE_UNSPECIFIED (0):
+                        Default value. This value is unused.
+                    READY_TO_USE (1):
+                        The replica is backfilled and ready to use.
+                    UNAVAILABLE (2):
+                        The replica is unavailable, does not exist,
+                        or has not been backfilled yet.
+                """
+                REPLICA_STATE_UNSPECIFIED = 0
+                READY_TO_USE = 1
+                UNAVAILABLE = 2
+
+            class PrimaryState(proto.Enum):
+                r"""Primary state of the replica. Set only for the primary
+                replica.
+
+                Values:
+                    PRIMARY_STATE_UNSPECIFIED (0):
+                        Default value. This value is unused.
+                    PRIMARY_REPLICA (1):
+                        The replica is the primary replica.
+                """
+                PRIMARY_STATE_UNSPECIFIED = 0
+                PRIMARY_REPLICA = 1
+
+            location: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            replica_state: "Listing.BigQueryDatasetSource.Replica.ReplicaState" = (
+                proto.Field(
+                    proto.ENUM,
+                    number=2,
+                    enum="Listing.BigQueryDatasetSource.Replica.ReplicaState",
+                )
+            )
+            primary_state: "Listing.BigQueryDatasetSource.Replica.PrimaryState" = (
+                proto.Field(
+                    proto.ENUM,
+                    number=3,
+                    optional=True,
+                    enum="Listing.BigQueryDatasetSource.Replica.PrimaryState",
+                )
+            )
+
         dataset: str = proto.Field(
             proto.STRING,
             number=1,
@@ -729,6 +1154,17 @@ class Listing(proto.Message):
             proto.MESSAGE,
             number=3,
             message="Listing.BigQueryDatasetSource.RestrictedExportPolicy",
+        )
+        replica_locations: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=5,
+        )
+        effective_replicas: MutableSequence[
+            "Listing.BigQueryDatasetSource.Replica"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message="Listing.BigQueryDatasetSource.Replica",
         )
 
     class PubSubTopicSource(proto.Message):
@@ -1334,8 +1770,8 @@ class CreateDataExchangeRequest(proto.Message):
             e.g. ``projects/myproject/locations/us``.
         data_exchange_id (str):
             Required. The ID of the data exchange. Must contain only
-            Unicode letters, numbers (0-9), underscores (_). Max length:
-            100 bytes.
+            Unicode letters, numbers (0-9), underscores (\_). Max
+            length: 100 bytes.
         data_exchange (google.cloud.bigquery_analyticshub_v1.types.DataExchange):
             Required. The data exchange to create.
     """
@@ -1475,8 +1911,8 @@ class CreateListingRequest(proto.Message):
             ``projects/myproject/locations/us/dataExchanges/123``.
         listing_id (str):
             Required. The ID of the listing to create. Must contain only
-            Unicode letters, numbers (0-9), underscores (_). Max length:
-            100 bytes.
+            Unicode letters, numbers (0-9), underscores (\_). Max
+            length: 100 bytes.
         listing (google.cloud.bigquery_analyticshub_v1.types.Listing):
             Required. The listing to create.
     """
@@ -1722,8 +2158,8 @@ class ListSubscriptionsRequest(proto.Message):
             An expression for filtering the results of the request.
             Eligible fields for filtering are:
 
-            -  ``listing``
-            -  ``data_exchange``
+            - ``listing``
+            - ``data_exchange``
 
             Alternatively, a literal wrapped in double quotes may be
             provided. This will be checked for an exact match against
@@ -1732,9 +2168,9 @@ class ListSubscriptionsRequest(proto.Message):
             In all cases, the full Data Exchange or Listing resource
             name must be provided. Some example of using filters:
 
-            -  data_exchange="projects/myproject/locations/us/dataExchanges/123"
-            -  listing="projects/123/locations/us/dataExchanges/456/listings/789"
-            -  "projects/myproject/locations/us/dataExchanges/123".
+            - data_exchange="projects/myproject/locations/us/dataExchanges/123"
+            - listing="projects/123/locations/us/dataExchanges/456/listings/789"
+            - "projects/myproject/locations/us/dataExchanges/123".
         page_size (int):
             The maximum number of results to return in a
             single response page.

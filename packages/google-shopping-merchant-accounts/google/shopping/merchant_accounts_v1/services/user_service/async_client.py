@@ -705,7 +705,7 @@ class UserServiceAsyncClient:
                 The following fields are supported (in both
                 ``snake_case`` and ``lowerCamelCase``):
 
-                -  ``access_rights``
+                - ``access_rights``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

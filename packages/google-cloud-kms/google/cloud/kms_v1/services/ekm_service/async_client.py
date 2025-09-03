@@ -74,7 +74,7 @@ class EkmServiceAsyncClient:
     Manages external cryptographic keys and operations using those keys.
     Implements a REST model with the following objects:
 
-    -  [EkmConnection][google.cloud.kms.v1.EkmConnection]
+    - [EkmConnection][google.cloud.kms.v1.EkmConnection]
     """
 
     _client: EkmServiceClient

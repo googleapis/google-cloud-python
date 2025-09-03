@@ -57,14 +57,14 @@ class Operation(proto.Message):
             consumer, but not for service-initiated operations that are
             not related to a specific consumer.
 
-            -  This can be in one of the following formats:
+            - This can be in one of the following formats:
 
-               -  project:PROJECT_ID,
-               -  project\ ``_``\ number:PROJECT_NUMBER,
-               -  projects/PROJECT_ID or PROJECT_NUMBER,
-               -  folders/FOLDER_NUMBER,
-               -  organizations/ORGANIZATION_NUMBER,
-               -  api\ ``_``\ key:API_KEY.
+              - project:PROJECT_ID,
+              - project\ ``_``\ number:PROJECT_NUMBER,
+              - projects/PROJECT_ID or PROJECT_NUMBER,
+              - folders/FOLDER_NUMBER,
+              - organizations/ORGANIZATION_NUMBER,
+              - api\ ``_``\ key:API_KEY.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. Start time of the operation.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -77,22 +77,22 @@ class Operation(proto.Message):
             Labels describing the operation. Only the following labels
             are allowed:
 
-            -  Labels describing monitored resources as defined in the
-               service configuration.
-            -  Default labels of metric values. When specified, labels
-               defined in the metric value override these default.
-            -  The following labels defined by Google Cloud Platform:
+            - Labels describing monitored resources as defined in the
+              service configuration.
+            - Default labels of metric values. When specified, labels
+              defined in the metric value override these default.
+            - The following labels defined by Google Cloud Platform:
 
-               -  ``cloud.googleapis.com/location`` describing the
-                  location where the operation happened,
-               -  ``servicecontrol.googleapis.com/user_agent``
-                  describing the user agent of the API request,
-               -  ``servicecontrol.googleapis.com/service_agent``
-                  describing the service used to handle the API request
-                  (e.g. ESP),
-               -  ``servicecontrol.googleapis.com/platform`` describing
-                  the platform where the API is served, such as App
-                  Engine, Compute Engine, or Kubernetes Engine.
+              - ``cloud.googleapis.com/location`` describing the
+                location where the operation happened,
+              - ``servicecontrol.googleapis.com/user_agent`` describing
+                the user agent of the API request,
+              - ``servicecontrol.googleapis.com/service_agent``
+                describing the service used to handle the API request
+                (e.g. ESP),
+              - ``servicecontrol.googleapis.com/platform`` describing
+                the platform where the API is served, such as App
+                Engine, Compute Engine, or Kubernetes Engine.
         metric_value_sets (MutableSequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
             Represents information about this operation.
             Each MetricValueSet corresponds to a metric

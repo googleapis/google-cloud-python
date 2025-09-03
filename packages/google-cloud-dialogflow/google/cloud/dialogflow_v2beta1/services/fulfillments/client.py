@@ -749,8 +749,8 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
                 Required. The name of the fulfillment. Supported
                 formats:
 
-                -  ``projects/<Project ID>/agent/fulfillment``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/fulfillment``
+                - ``projects/<Project ID>/agent/fulfillment``
+                - ``projects/<Project ID>/locations/<Location ID>/agent/fulfillment``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -776,7 +776,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
                    for Friday.
 
                    For more information, see the [fulfillment
-                   guide](\ https://cloud.google.com/dialogflow/docs/fulfillment-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/fulfillment-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -905,7 +905,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
                    for Friday.
 
                    For more information, see the [fulfillment
-                   guide](\ https://cloud.google.com/dialogflow/docs/fulfillment-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/fulfillment-overview).
 
         """
         # Create or coerce a protobuf request object.

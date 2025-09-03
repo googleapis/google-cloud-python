@@ -469,9 +469,9 @@ class BusinessInfoServiceAsyncClient:
                 The following fields are supported (in both
                 ``snake_case`` and ``lowerCamelCase``):
 
-                -  ``address``
-                -  ``customer_service``
-                -  ``korean_business_registration_number``
+                - ``address``
+                - ``customer_service``
+                - ``korean_business_registration_number``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

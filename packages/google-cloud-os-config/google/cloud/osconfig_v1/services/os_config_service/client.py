@@ -819,7 +819,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
                    For more information about patch jobs, see [Creating
                    patch
-                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
+                   jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
         """
         # Create or coerce a protobuf request object.
@@ -921,7 +921,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
                    For more information about patch jobs, see [Creating
                    patch
-                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
+                   jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
         """
         # Create or coerce a protobuf request object.
@@ -1029,7 +1029,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
                    For more information about patch jobs, see [Creating
                    patch
-                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
+                   jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
         """
         # Create or coerce a protobuf request object.
@@ -1374,12 +1374,12 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 Required. A name for the patch deployment in the
                 project. When creating a name the following rules apply:
 
-                -  Must contain only lowercase letters, numbers, and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-63 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the project.
+                - Must contain only lowercase letters, numbers, and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-63 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the project.
 
                 This corresponds to the ``patch_deployment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1399,7 +1399,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                    instance filter, package repository settings, and a
                    schedule. For more information about creating and
                    managing patch deployments, see [Scheduling patch
-                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1517,7 +1517,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                    instance filter, package repository settings, and a
                    schedule. For more information about creating and
                    managing patch deployments, see [Scheduling patch
-                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1862,7 +1862,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                    instance filter, package repository settings, and a
                    schedule. For more information about creating and
                    managing patch deployments, see [Scheduling patch
-                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1982,7 +1982,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                    instance filter, package repository settings, and a
                    schedule. For more information about creating and
                    managing patch deployments, see [Scheduling patch
-                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -2098,7 +2098,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                    instance filter, package repository settings, and a
                    schedule. For more information about creating and
                    managing patch deployments, see [Scheduling patch
-                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.

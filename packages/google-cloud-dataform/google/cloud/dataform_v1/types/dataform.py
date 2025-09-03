@@ -1975,9 +1975,9 @@ class ReleaseConfig(proto.Message):
             should be compiled. Must exist in the remote repository.
             Examples:
 
-            -  a commit SHA: ``12ade345``
-            -  a tag: ``tag1``
-            -  a branch name: ``branch1``
+            - a commit SHA: ``12ade345``
+            - a tag: ``tag1``
+            - a branch name: ``branch1``
         code_compilation_config (google.cloud.dataform_v1.types.CodeCompilationConfig):
             Optional. If set, fields of ``code_compilation_config``
             override the default compilation settings that are specified
@@ -2275,9 +2275,9 @@ class CompilationResult(proto.Message):
             repository should be compiled. Must exist in the remote
             repository. Examples:
 
-            -  a commit SHA: ``12ade345``
-            -  a tag: ``tag1``
-            -  a branch name: ``branch1``
+            - a commit SHA: ``12ade345``
+            - a tag: ``tag1``
+            - a branch name: ``branch1``
 
             This field is a member of `oneof`_ ``source``.
         workspace (str):

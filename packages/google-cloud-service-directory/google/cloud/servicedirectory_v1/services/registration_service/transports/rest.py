@@ -1058,18 +1058,18 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
     Service Directory API for registering services. It defines the
     following resource model:
 
-    -  The API has a collection of
-       [Namespace][google.cloud.servicedirectory.v1.Namespace]
-       resources, named ``projects/*/locations/*/namespaces/*``.
+    - The API has a collection of
+      [Namespace][google.cloud.servicedirectory.v1.Namespace] resources,
+      named ``projects/*/locations/*/namespaces/*``.
 
-    -  Each Namespace has a collection of
-       [Service][google.cloud.servicedirectory.v1.Service] resources,
-       named ``projects/*/locations/*/namespaces/*/services/*``.
+    - Each Namespace has a collection of
+      [Service][google.cloud.servicedirectory.v1.Service] resources,
+      named ``projects/*/locations/*/namespaces/*/services/*``.
 
-    -  Each Service has a collection of
-       [Endpoint][google.cloud.servicedirectory.v1.Endpoint] resources,
-       named
-       ``projects/*/locations/*/namespaces/*/services/*/endpoints/*``.
+    - Each Service has a collection of
+      [Endpoint][google.cloud.servicedirectory.v1.Endpoint] resources,
+      named
+      ``projects/*/locations/*/namespaces/*/services/*/endpoints/*``.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

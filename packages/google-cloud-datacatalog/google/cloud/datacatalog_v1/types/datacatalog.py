@@ -262,9 +262,9 @@ class SearchCatalogRequest(proto.Message):
             A query string can be a simple ``xyz`` or qualified by
             predicates:
 
-            -  ``name:x``
-            -  ``column:y``
-            -  ``description:z``
+            - ``name:x``
+            - ``column:y``
+            - ``description:z``
         page_size (int):
             Upper bound on the number of results you can
             get in a single response.
@@ -286,10 +286,10 @@ class SearchCatalogRequest(proto.Message):
 
             Currently supported case-sensitive values are:
 
-            -  ``relevance`` that can only be descending
-            -  ``last_modified_timestamp [asc|desc]`` with descending
-               (``desc``) as default
-            -  ``default`` that can only be descending
+            - ``relevance`` that can only be descending
+            - ``last_modified_timestamp [asc|desc]`` with descending
+              (``desc``) as default
+            - ``default`` that can only be descending
 
             Search queries don't guarantee full recall. Results that
             match your query might not be returned, even in subsequent
@@ -472,8 +472,9 @@ class CreateEntryGroupRequest(proto.Message):
             Required. The ID of the entry group to create.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            underscores (_), and must start with a letter or underscore.
-            The maximum size is 64 bytes when encoded in UTF-8.
+            underscores (\_), and must start with a letter or
+            underscore. The maximum size is 64 bytes when encoded in
+            UTF-8.
         entry_group (google.cloud.datacatalog_v1.types.EntryGroup):
             The entry group to create. Defaults to empty.
     """
@@ -645,7 +646,7 @@ class CreateEntryRequest(proto.Message):
             Required. The ID of the entry to create.
 
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
-            and underscores (_). The maximum size is 64 bytes when
+            and underscores (\_). The maximum size is 64 bytes when
             encoded in UTF-8.
         entry (google.cloud.datacatalog_v1.types.Entry):
             Required. The entry to create.
@@ -685,25 +686,25 @@ class UpdateEntryRequest(proto.Message):
 
             For entries with type ``DATA_STREAM``:
 
-            -  ``schema``
+            - ``schema``
 
             For entries with type ``FILESET``:
 
-            -  ``schema``
-            -  ``display_name``
-            -  ``description``
-            -  ``gcs_fileset_spec``
-            -  ``gcs_fileset_spec.file_patterns``
+            - ``schema``
+            - ``display_name``
+            - ``description``
+            - ``gcs_fileset_spec``
+            - ``gcs_fileset_spec.file_patterns``
 
             For entries with ``user_specified_type``:
 
-            -  ``schema``
-            -  ``display_name``
-            -  ``description``
-            -  ``user_specified_type``
-            -  ``user_specified_system``
-            -  ``linked_resource``
-            -  ``source_system_timestamps``
+            - ``schema``
+            - ``display_name``
+            - ``description``
+            - ``user_specified_type``
+            - ``user_specified_system``
+            - ``linked_resource``
+            - ``source_system_timestamps``
     """
 
     entry: "Entry" = proto.Field(
@@ -768,8 +769,8 @@ class LookupEntryRequest(proto.Message):
 
             Full names are case-sensitive. For example:
 
-            -  ``//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/{DATASET_ID}/tables/{TABLE_ID}``
-            -  ``//pubsub.googleapis.com/projects/{PROJECT_ID}/topics/{TOPIC_ID}``
+            - ``//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/{DATASET_ID}/tables/{TABLE_ID}``
+            - ``//pubsub.googleapis.com/projects/{PROJECT_ID}/topics/{TOPIC_ID}``
 
             This field is a member of `oneof`_ ``target_name``.
         sql_resource (str):
@@ -777,11 +778,11 @@ class LookupEntryRequest(proto.Message):
 
             Examples:
 
-            -  ``pubsub.topic.{PROJECT_ID}.{TOPIC_ID}``
-            -  ``pubsub.topic.{PROJECT_ID}.``\ \`\ ``{TOPIC.ID.SEPARATED.WITH.DOTS}``\ \`
-            -  ``bigquery.table.{PROJECT_ID}.{DATASET_ID}.{TABLE_ID}``
-            -  ``bigquery.dataset.{PROJECT_ID}.{DATASET_ID}``
-            -  ``datacatalog.entry.{PROJECT_ID}.{LOCATION_ID}.{ENTRY_GROUP_ID}.{ENTRY_ID}``
+            - ``pubsub.topic.{PROJECT_ID}.{TOPIC_ID}``
+            - ``pubsub.topic.{PROJECT_ID}.``\ \`\ ``{TOPIC.ID.SEPARATED.WITH.DOTS}``\ \`
+            - ``bigquery.table.{PROJECT_ID}.{DATASET_ID}.{TABLE_ID}``
+            - ``bigquery.dataset.{PROJECT_ID}.{DATASET_ID}``
+            - ``datacatalog.entry.{PROJECT_ID}.{LOCATION_ID}.{ENTRY_GROUP_ID}.{ENTRY_ID}``
 
             Identifiers (``*_ID``) should comply with the [Lexical
             structure in GoogleSQL]
@@ -795,13 +796,13 @@ class LookupEntryRequest(proto.Message):
 
             FQNs take two forms:
 
-            -  For non-regionalized resources:
+            - For non-regionalized resources:
 
-               ``{SYSTEM}:{PROJECT}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
+              ``{SYSTEM}:{PROJECT}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
 
-            -  For regionalized resources:
+            - For regionalized resources:
 
-               ``{SYSTEM}:{PROJECT}.{LOCATION_ID}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
+              ``{SYSTEM}:{PROJECT}.{LOCATION_ID}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
 
             Example for a DPMS table:
 
@@ -888,7 +889,7 @@ class Entry(proto.Message):
             optional and defaults to an empty string.
 
             The resource string must contain only letters (a-z, A-Z),
-            numbers (0-9), underscores (_), periods (.), colons (:),
+            numbers (0-9), underscores (\_), periods (.), colons (:),
             slashes (/), dashes (-), and hashes (#). The maximum size is
             200 bytes when encoded in UTF-8.
         fully_qualified_name (str):
@@ -915,11 +916,11 @@ class Entry(proto.Message):
             The ``user_specified_type`` string has the following
             limitations:
 
-            -  Is case insensitive.
-            -  Must begin with a letter or underscore.
-            -  Can only contain letters, numbers, and underscores.
-            -  Must be at least 1 character and at most 64 characters
-               long.
+            - Is case insensitive.
+            - Must begin with a letter or underscore.
+            - Can only contain letters, numbers, and underscores.
+            - Must be at least 1 character and at most 64 characters
+              long.
 
             This field is a member of `oneof`_ ``entry_type``.
         integrated_system (google.cloud.datacatalog_v1.types.IntegratedSystem):
@@ -935,11 +936,11 @@ class Entry(proto.Message):
             The ``user_specified_system`` string has the following
             limitations:
 
-            -  Is case insensitive.
-            -  Must begin with a letter or underscore.
-            -  Can only contain letters, numbers, and underscores.
-            -  Must be at least 1 character and at most 64 characters
-               long.
+            - Is case insensitive.
+            - Must begin with a letter or underscore.
+            - Can only contain letters, numbers, and underscores.
+            - Must be at least 1 character and at most 64 characters
+              long.
 
             This field is a member of `oneof`_ ``system``.
         sql_database_system_spec (google.cloud.datacatalog_v1.types.SqlDatabaseSystemSpec):
@@ -1379,8 +1380,8 @@ class RoutineSpec(proto.Message):
             depends on the source system. For BigQuery routines,
             possible values are:
 
-            -  ``SQL``
-            -  ``JAVASCRIPT``
+            - ``SQL``
+            - ``JAVASCRIPT``
         routine_arguments (MutableSequence[google.cloud.datacatalog_v1.types.RoutineSpec.Argument]):
             Arguments of the routine.
         return_type (str):
@@ -2067,7 +2068,7 @@ class CreateTagTemplateRequest(proto.Message):
             Required. The ID of the tag template to create.
 
             The ID must contain only lowercase letters (a-z), numbers
-            (0-9), or underscores (_), and must start with a letter or
+            (0-9), or underscores (\_), and must start with a letter or
             underscore. The maximum size is 64 bytes when encoded in
             UTF-8.
         tag_template (google.cloud.datacatalog_v1.types.TagTemplate):
@@ -2251,7 +2252,7 @@ class CreateTagTemplateFieldRequest(proto.Message):
             *not* allowed.
 
             Field IDs can contain letters (both uppercase and
-            lowercase), numbers (0-9), underscores (_) and dashes (-).
+            lowercase), numbers (0-9), underscores (\_) and dashes (-).
             Field IDs must be at least 1 character long and at most 128
             characters long. Field IDs must also be unique within their
             template.
@@ -2288,9 +2289,9 @@ class UpdateTagTemplateFieldRequest(proto.Message):
             individual field of a tag template. The following fields are
             modifiable:
 
-            -  ``display_name``
-            -  ``type.enum_type``
-            -  ``is_required``
+            - ``display_name``
+            - ``type.enum_type``
+            - ``is_required``
 
             If this parameter is absent or empty, all modifiable fields
             are overwritten. If such fields are non-required and omitted

@@ -1473,12 +1473,12 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
     The resources managed by this API are:
 
-    -  Repositories, which group packages and their data.
-    -  Packages, which group versions and their tags.
-    -  Versions, which are specific forms of a package.
-    -  Tags, which represent alternative names for versions.
-    -  Files, which contain content and are optionally associated with a
-       Package or Version.
+    - Repositories, which group packages and their data.
+    - Packages, which group versions and their tags.
+    - Versions, which are specific forms of a package.
+    - Tags, which represent alternative names for versions.
+    - Files, which contain content and are optionally associated with a
+      Package or Version.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

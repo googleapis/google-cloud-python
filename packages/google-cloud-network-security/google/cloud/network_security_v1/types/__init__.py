@@ -13,6 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .address_group import (
+    AddAddressGroupItemsRequest,
+    AddressGroup,
+    CloneAddressGroupItemsRequest,
+    CreateAddressGroupRequest,
+    DeleteAddressGroupRequest,
+    GetAddressGroupRequest,
+    ListAddressGroupReferencesRequest,
+    ListAddressGroupReferencesResponse,
+    ListAddressGroupsRequest,
+    ListAddressGroupsResponse,
+    RemoveAddressGroupItemsRequest,
+    UpdateAddressGroupRequest,
+)
 from .authorization_policy import (
     AuthorizationPolicy,
     CreateAuthorizationPolicyRequest,
@@ -49,6 +63,18 @@ from .tls import (
 )
 
 __all__ = (
+    "AddAddressGroupItemsRequest",
+    "AddressGroup",
+    "CloneAddressGroupItemsRequest",
+    "CreateAddressGroupRequest",
+    "DeleteAddressGroupRequest",
+    "GetAddressGroupRequest",
+    "ListAddressGroupReferencesRequest",
+    "ListAddressGroupReferencesResponse",
+    "ListAddressGroupsRequest",
+    "ListAddressGroupsResponse",
+    "RemoveAddressGroupItemsRequest",
+    "UpdateAddressGroupRequest",
     "AuthorizationPolicy",
     "CreateAuthorizationPolicyRequest",
     "DeleteAuthorizationPolicyRequest",

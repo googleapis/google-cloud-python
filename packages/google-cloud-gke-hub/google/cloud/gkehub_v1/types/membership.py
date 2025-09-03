@@ -198,12 +198,12 @@ class MembershipEndpoint(proto.Message):
             applied for a correctly registered cluster, in the steady
             state. These resources:
 
-            -  Ensure that the cluster is exclusively registered to one
-               and only one Hub Membership.
-            -  Propagate Workload Pool Information available in the
-               Membership Authority field.
-            -  Ensure proper initial configuration of default Hub
-               Features.
+            - Ensure that the cluster is exclusively registered to one
+              and only one Hub Membership.
+            - Propagate Workload Pool Information available in the
+              Membership Authority field.
+            - Ensure proper initial configuration of default Hub
+              Features.
         google_managed (bool):
             Output only. Whether the lifecycle of this
             membership is managed by a google cluster

@@ -445,16 +445,16 @@ class UpdateChannelRequest(proto.Message):
             in the Channel resource by the update. You can only update
             the following fields:
 
-            -  ```inputAttachments`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#inputattachment>`__
-            -  ```inputConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#inputconfig>`__
-            -  ```output`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#output>`__
-            -  ```elementaryStreams`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#elementarystream>`__
-            -  ```muxStreams`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#muxstream>`__
-            -  ```manifests`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#manifest>`__
-            -  ```spriteSheets`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#spritesheet>`__
-            -  ```logConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#logconfig>`__
-            -  ```timecodeConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#timecodeconfig>`__
-            -  ```encryptions`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#encryption>`__
+            - ```inputAttachments`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#inputattachment>`__
+            - ```inputConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#inputconfig>`__
+            - ```output`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#output>`__
+            - ```elementaryStreams`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#elementarystream>`__
+            - ```muxStreams`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#muxstream>`__
+            - ```manifests`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#manifest>`__
+            - ```spriteSheets`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#spritesheet>`__
+            - ```logConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#logconfig>`__
+            - ```timecodeConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#timecodeconfig>`__
+            - ```encryptions`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels#encryption>`__
 
             The fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
@@ -764,9 +764,9 @@ class UpdateInputRequest(proto.Message):
             in the Input resource by the update. You can only update the
             following fields:
 
-            -  ```tier`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#Tier>`__
-            -  ```preprocessingConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#PreprocessingConfig>`__
-            -  ```securityRules`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#SecurityRule>`__
+            - ```tier`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#Tier>`__
+            - ```preprocessingConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#PreprocessingConfig>`__
+            - ```securityRules`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#SecurityRule>`__
 
             The fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
@@ -1376,7 +1376,7 @@ class UpdateDvrSessionRequest(proto.Message):
             overwritten in the DvrSession resource by the update. You
             can only update the following fields:
 
-            -  ``dvrWindows``
+            - ``dvrWindows``
 
             The fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
@@ -1500,7 +1500,7 @@ class UpdatePoolRequest(proto.Message):
             in the Pool resource by the update. You can only update the
             following fields:
 
-            -  ``networkConfig``
+            - ``networkConfig``
 
             The fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten

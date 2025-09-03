@@ -274,11 +274,10 @@ class CreateInstanceRequest(proto.Message):
         instance_id (str):
             Required. The name of the Managed Lustre instance.
 
-            -  Must contain only lowercase letters, numbers, and
-               hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-63 characters.
-            -  Must end with a number or a letter.
+            - Must contain only lowercase letters, numbers, and hyphens.
+            - Must start with a letter.
+            - Must be between 1-63 characters.
+            - Must end with a number or a letter.
         instance (google.cloud.lustre_v1.types.Instance):
             Required. The resource being created
         request_id (str):

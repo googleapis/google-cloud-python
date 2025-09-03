@@ -53,22 +53,22 @@ class Task(proto.Message):
             The task name must have the following format:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
 
-            -  ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
-               ([0-9]), hyphens (-), colons (:), or periods (.). For
-               more information, see `Identifying
-               projects <https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects>`__
-            -  ``LOCATION_ID`` is the canonical ID for the task's
-               location. The list of available locations can be obtained
-               by calling
-               [ListLocations][google.cloud.location.Locations.ListLocations].
-               For more information, see
-               https://cloud.google.com/about/locations/.
-            -  ``QUEUE_ID`` can contain letters ([A-Za-z]), numbers
-               ([0-9]), or hyphens (-). The maximum length is 100
-               characters.
-            -  ``TASK_ID`` can contain only letters ([A-Za-z]), numbers
-               ([0-9]), hyphens (-), or underscores (_). The maximum
-               length is 500 characters.
+            - ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
+              ([0-9]), hyphens (-), colons (:), or periods (.). For more
+              information, see `Identifying
+              projects <https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects>`__
+            - ``LOCATION_ID`` is the canonical ID for the task's
+              location. The list of available locations can be obtained
+              by calling
+              [ListLocations][google.cloud.location.Locations.ListLocations].
+              For more information, see
+              https://cloud.google.com/about/locations/.
+            - ``QUEUE_ID`` can contain letters ([A-Za-z]), numbers
+              ([0-9]), or hyphens (-). The maximum length is 100
+              characters.
+            - ``TASK_ID`` can contain only letters ([A-Za-z]), numbers
+              ([0-9]), hyphens (-), or underscores (\_). The maximum
+              length is 500 characters.
         app_engine_http_request (google.cloud.tasks_v2beta2.types.AppEngineHttpRequest):
             App Engine HTTP request that is sent to the task's target.
             Can be set only if

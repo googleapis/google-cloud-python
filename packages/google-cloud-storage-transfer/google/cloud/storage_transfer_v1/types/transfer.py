@@ -200,21 +200,21 @@ class ListTransferJobsRequest(proto.Message):
             The JSON formatting in the example is for display only;
             provide the query parameters without spaces or line breaks.
 
-            -  ``projectId`` is required.
-            -  Since ``jobNames`` and ``jobStatuses`` support multiple
-               values, their values must be specified with array
-               notation. ``jobNames`` and ``jobStatuses`` are optional.
-               Valid values are case-insensitive:
+            - ``projectId`` is required.
+            - Since ``jobNames`` and ``jobStatuses`` support multiple
+              values, their values must be specified with array
+              notation. ``jobNames`` and ``jobStatuses`` are optional.
+              Valid values are case-insensitive:
 
-               -  [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]
-               -  [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED]
-               -  [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED]
+              - [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]
+              - [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED]
+              - [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED]
 
-            -  Specify ``"dataBackend":"QUERY_REPLICATION_CONFIGS"`` to
-               return a list of cross-bucket replication jobs.
-            -  Limit the results to jobs from a particular bucket with
-               ``sourceBucket`` and/or to a particular bucket with
-               ``sinkBucket``.
+            - Specify ``"dataBackend":"QUERY_REPLICATION_CONFIGS"`` to
+              return a list of cross-bucket replication jobs.
+            - Limit the results to jobs from a particular bucket with
+              ``sourceBucket`` and/or to a particular bucket with
+              ``sinkBucket``.
         page_size (int):
             The list page size. The max allowed value is
             256.
@@ -324,14 +324,14 @@ class CreateAgentPoolRequest(proto.Message):
 
             The ``agent_pool_id`` must meet the following requirements:
 
-            -  Length of 128 characters or less.
-            -  Not start with the string ``goog``.
-            -  Start with a lowercase ASCII character, followed by:
+            - Length of 128 characters or less.
+            - Not start with the string ``goog``.
+            - Start with a lowercase ASCII character, followed by:
 
-               -  Zero or more: lowercase Latin alphabet characters,
-                  numerals, hyphens (``-``), periods (``.``),
-                  underscores (``_``), or tildes (``~``).
-               -  One or more numerals or lowercase ASCII characters.
+              - Zero or more: lowercase Latin alphabet characters,
+                numerals, hyphens (``-``), periods (``.``), underscores
+                (``_``), or tildes (``~``).
+              - One or more numerals or lowercase ASCII characters.
 
             As expressed by the regular expression:
             ``^(?!goog)[a-z]([a-z0-9-._~]*[a-z0-9])?$``.
@@ -360,23 +360,23 @@ class UpdateAgentPoolRequest(proto.Message):
             Required. The agent pool to update. ``agent_pool`` is
             expected to specify following fields:
 
-            -  [name][google.storagetransfer.v1.AgentPool.name]
+            - [name][google.storagetransfer.v1.AgentPool.name]
 
-            -  [display_name][google.storagetransfer.v1.AgentPool.display_name]
+            - [display_name][google.storagetransfer.v1.AgentPool.display_name]
 
-            -  [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
-               An ``UpdateAgentPoolRequest`` with any other fields is
-               rejected with the error
-               [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
+            - [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
+              An ``UpdateAgentPoolRequest`` with any other fields is
+              rejected with the error
+              [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The [field mask]
             (https://developers.google.com/protocol-buffers/docs/reference/google.protobuf)
             of the fields in ``agentPool`` to update in this request.
             The following ``agentPool`` fields can be updated:
 
-            -  [display_name][google.storagetransfer.v1.AgentPool.display_name]
+            - [display_name][google.storagetransfer.v1.AgentPool.display_name]
 
-            -  [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
+            - [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
     """
 
     agent_pool: transfer_types.AgentPool = proto.Field(

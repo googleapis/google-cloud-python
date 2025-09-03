@@ -454,7 +454,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
     This API defines the following resource model:
 
-    -  [Region][google.shopping.merchant.accounts.v1.Region]
+    - [Region][google.shopping.merchant.accounts.v1.Region]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

@@ -94,9 +94,9 @@ class ConversationProfile(proto.Message):
             [ConversationEvent][google.cloud.dialogflow.v2beta1.ConversationEvent]
             Pub/Sub message attributes:
 
-            -  "participant_id"
-            -  "participant_role"
-            -  "message_id".
+            - "participant_id"
+            - "participant_role"
+            - "message_id".
         stt_config (google.cloud.dialogflow_v2beta1.types.SpeechToTextConfig):
             Settings for speech transcription.
         language_code (str):
@@ -213,17 +213,17 @@ class AutomatedAgentConfig(proto.Message):
             ``service-<Conversation Project Number>@gcp-sa-dialogflow.iam.gserviceaccount.com``
             the ``Dialogflow API Service Agent`` role in this project.
 
-            -  For ES agents, use format:
-               ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID or '-'>``.
-               If environment is not specified, the default ``draft``
-               environment is used. Refer to
-               `DetectIntentRequest </dialogflow/docs/reference/rpc/google.cloud.dialogflow.v2beta1#google.cloud.dialogflow.v2beta1.DetectIntentRequest>`__
-               for more details.
+            - For ES agents, use format:
+              ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID or '-'>``.
+              If environment is not specified, the default ``draft``
+              environment is used. Refer to
+              `DetectIntentRequest </dialogflow/docs/reference/rpc/google.cloud.dialogflow.v2beta1#google.cloud.dialogflow.v2beta1.DetectIntentRequest>`__
+              for more details.
 
-            -  For CX agents, use format
-               ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID or '-'>``.
-               If environment is not specified, the default ``draft``
-               environment is used.
+            - For CX agents, use format
+              ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID or '-'>``.
+              If environment is not specified, the default ``draft``
+              environment is used.
         session_ttl (google.protobuf.duration_pb2.Duration):
             Optional. Configure lifetime of the
             Dialogflow session. By default, a Dialogflow CX

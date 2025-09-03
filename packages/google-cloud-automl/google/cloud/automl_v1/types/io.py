@@ -69,21 +69,21 @@ class InputConfig(proto.Message):
 
         ML_USE,GCS_FILE_PATH,LABEL,LABEL,...
 
-    -  ``ML_USE`` - Identifies the data set that the current row (file)
-       applies to. This value can be one of the following:
+    - ``ML_USE`` - Identifies the data set that the current row (file)
+      applies to. This value can be one of the following:
 
-       -  ``TRAIN`` - Rows in this file are used to train the model.
-       -  ``TEST`` - Rows in this file are used to test the model during
-          training.
-       -  ``UNASSIGNED`` - Rows in this file are not categorized. They
-          are Automatically divided into train and test data. 80% for
-          training and 20% for testing.
+      - ``TRAIN`` - Rows in this file are used to train the model.
+      - ``TEST`` - Rows in this file are used to test the model during
+        training.
+      - ``UNASSIGNED`` - Rows in this file are not categorized. They are
+        Automatically divided into train and test data. 80% for training
+        and 20% for testing.
 
-    -  ``GCS_FILE_PATH`` - The Google Cloud Storage location of an image
-       of up to 30MB in size. Supported extensions: .JPEG, .GIF, .PNG,
-       .WEBP, .BMP, .TIFF, .ICO.
+    - ``GCS_FILE_PATH`` - The Google Cloud Storage location of an image
+      of up to 30MB in size. Supported extensions: .JPEG, .GIF, .PNG,
+      .WEBP, .BMP, .TIFF, .ICO.
 
-    -  ``LABEL`` - A label that identifies the object in the image.
+    - ``LABEL`` - A label that identifies the object in the image.
 
     For the ``MULTICLASS`` classification type, at most one ``LABEL`` is
     allowed per image. If an image has not yet been labeled, then it
@@ -110,29 +110,29 @@ class InputConfig(proto.Message):
 
         ML_USE,GCS_FILE_PATH,[LABEL],(BOUNDING_BOX | ,,,,,,,)
 
-    -  ``ML_USE`` - Identifies the data set that the current row (file)
-       applies to. This value can be one of the following:
+    - ``ML_USE`` - Identifies the data set that the current row (file)
+      applies to. This value can be one of the following:
 
-       -  ``TRAIN`` - Rows in this file are used to train the model.
-       -  ``TEST`` - Rows in this file are used to test the model during
-          training.
-       -  ``UNASSIGNED`` - Rows in this file are not categorized. They
-          are Automatically divided into train and test data. 80% for
-          training and 20% for testing.
+      - ``TRAIN`` - Rows in this file are used to train the model.
+      - ``TEST`` - Rows in this file are used to test the model during
+        training.
+      - ``UNASSIGNED`` - Rows in this file are not categorized. They are
+        Automatically divided into train and test data. 80% for training
+        and 20% for testing.
 
-    -  ``GCS_FILE_PATH`` - The Google Cloud Storage location of an image
-       of up to 30MB in size. Supported extensions: .JPEG, .GIF, .PNG.
-       Each image is assumed to be exhaustively labeled.
+    - ``GCS_FILE_PATH`` - The Google Cloud Storage location of an image
+      of up to 30MB in size. Supported extensions: .JPEG, .GIF, .PNG.
+      Each image is assumed to be exhaustively labeled.
 
-    -  ``LABEL`` - A label that identifies the object in the image
-       specified by the ``BOUNDING_BOX``.
+    - ``LABEL`` - A label that identifies the object in the image
+      specified by the ``BOUNDING_BOX``.
 
-    -  ``BOUNDING BOX`` - The vertices of an object in the example
-       image. The minimum allowed ``BOUNDING_BOX`` edge length is 0.01,
-       and no more than 500 ``BOUNDING_BOX`` instances per image are
-       allowed (one ``BOUNDING_BOX`` per line). If an image has no
-       looked for objects then it should be mentioned just once with no
-       LABEL and the ",,,,,,," in place of the ``BOUNDING_BOX``.
+    - ``BOUNDING BOX`` - The vertices of an object in the example image.
+      The minimum allowed ``BOUNDING_BOX`` edge length is 0.01, and no
+      more than 500 ``BOUNDING_BOX`` instances per image are allowed
+      (one ``BOUNDING_BOX`` per line). If an image has no looked for
+      objects then it should be mentioned just once with no LABEL and
+      the ",,,,,,," in place of the ``BOUNDING_BOX``.
 
     **Four sample rows:**
 
@@ -277,19 +277,19 @@ class InputConfig(proto.Message):
 
         ML_USE,GCS_FILE_PATH
 
-    -  ``ML_USE`` - Identifies the data set that the current row (file)
-       applies to. This value can be one of the following:
+    - ``ML_USE`` - Identifies the data set that the current row (file)
+      applies to. This value can be one of the following:
 
-       -  ``TRAIN`` - Rows in this file are used to train the model.
-       -  ``TEST`` - Rows in this file are used to test the model during
-          training.
-       -  ``UNASSIGNED`` - Rows in this file are not categorized. They
-          are Automatically divided into train and test data. 80% for
-          training and 20% for testing..
+      - ``TRAIN`` - Rows in this file are used to train the model.
+      - ``TEST`` - Rows in this file are used to test the model during
+        training.
+      - ``UNASSIGNED`` - Rows in this file are not categorized. They are
+        Automatically divided into train and test data. 80% for training
+        and 20% for testing..
 
-    -  ``GCS_FILE_PATH`` - a Identifies JSON Lines (.JSONL) file stored
-       in Google Cloud Storage that contains in-line text in-line as
-       documents for model training.
+    - ``GCS_FILE_PATH`` - a Identifies JSON Lines (.JSONL) file stored
+      in Google Cloud Storage that contains in-line text in-line as
+      documents for model training.
 
     After the training data set has been determined from the ``TRAIN``
     and ``UNASSIGNED`` CSV files, the training data is divided into
@@ -312,7 +312,7 @@ class InputConfig(proto.Message):
     [``annotations``][google.cloud.automl.v1.AnnotationPayload] fields,
     which have ``display_name`` and ``text_extraction`` fields to
     describe the entity from the text snippet. Multiple JSON documents
-    can be separated using line breaks (\n).
+    can be separated using line breaks (\\n).
 
     The supplied text must be annotated exhaustively. For example, if
     you include the text "horse", but do not label it as "animal", then
@@ -369,7 +369,7 @@ class InputConfig(proto.Message):
 
     .JSONL files contain, per line, a JSON document that wraps a
     ``input_config`` that contains the path to a source document.
-    Multiple JSON documents can be separated using line breaks (\n).
+    Multiple JSON documents can be separated using line breaks (\\n).
 
     Supported document extensions: .PDF, .TIF, .TIFF
 
@@ -471,34 +471,34 @@ class InputConfig(proto.Message):
 
         ML_USE,(TEXT_SNIPPET | GCS_FILE_PATH),LABEL,LABEL,...
 
-    -  ``ML_USE`` - Identifies the data set that the current row (file)
-       applies to. This value can be one of the following:
+    - ``ML_USE`` - Identifies the data set that the current row (file)
+      applies to. This value can be one of the following:
 
-       -  ``TRAIN`` - Rows in this file are used to train the model.
-       -  ``TEST`` - Rows in this file are used to test the model during
-          training.
-       -  ``UNASSIGNED`` - Rows in this file are not categorized. They
-          are Automatically divided into train and test data. 80% for
-          training and 20% for testing.
+      - ``TRAIN`` - Rows in this file are used to train the model.
+      - ``TEST`` - Rows in this file are used to test the model during
+        training.
+      - ``UNASSIGNED`` - Rows in this file are not categorized. They are
+        Automatically divided into train and test data. 80% for training
+        and 20% for testing.
 
-    -  ``TEXT_SNIPPET`` and ``GCS_FILE_PATH`` are distinguished by a
-       pattern. If the column content is a valid Google Cloud Storage
-       file path, that is, prefixed by "gs://", it is treated as a
-       ``GCS_FILE_PATH``. Otherwise, if the content is enclosed in
-       double quotes (""), it is treated as a ``TEXT_SNIPPET``. For
-       ``GCS_FILE_PATH``, the path must lead to a file with supported
-       extension and UTF-8 encoding, for example,
-       "gs://folder/content.txt" AutoML imports the file content as a
-       text snippet. For ``TEXT_SNIPPET``, AutoML imports the column
-       content excluding quotes. In both cases, size of the content must
-       be 10MB or less in size. For zip files, the size of each file
-       inside the zip must be 10MB or less in size.
+    - ``TEXT_SNIPPET`` and ``GCS_FILE_PATH`` are distinguished by a
+      pattern. If the column content is a valid Google Cloud Storage
+      file path, that is, prefixed by "gs://", it is treated as a
+      ``GCS_FILE_PATH``. Otherwise, if the content is enclosed in double
+      quotes (""), it is treated as a ``TEXT_SNIPPET``. For
+      ``GCS_FILE_PATH``, the path must lead to a file with supported
+      extension and UTF-8 encoding, for example,
+      "gs://folder/content.txt" AutoML imports the file content as a
+      text snippet. For ``TEXT_SNIPPET``, AutoML imports the column
+      content excluding quotes. In both cases, size of the content must
+      be 10MB or less in size. For zip files, the size of each file
+      inside the zip must be 10MB or less in size.
 
-       For the ``MULTICLASS`` classification type, at most one ``LABEL``
-       is allowed.
+      For the ``MULTICLASS`` classification type, at most one ``LABEL``
+      is allowed.
 
-       The ``ML_USE`` and ``LABEL`` columns are optional. Supported file
-       extensions: .TXT, .PDF, .TIF, .TIFF, .ZIP
+      The ``ML_USE`` and ``LABEL`` columns are optional. Supported file
+      extensions: .TXT, .PDF, .TIF, .TIFF, .ZIP
 
     A maximum of 100 unique labels are allowed per CSV row.
 
@@ -523,47 +523,47 @@ class InputConfig(proto.Message):
 
         ML_USE,(TEXT_SNIPPET | GCS_FILE_PATH),SENTIMENT
 
-    -  ``ML_USE`` - Identifies the data set that the current row (file)
-       applies to. This value can be one of the following:
+    - ``ML_USE`` - Identifies the data set that the current row (file)
+      applies to. This value can be one of the following:
 
-       -  ``TRAIN`` - Rows in this file are used to train the model.
-       -  ``TEST`` - Rows in this file are used to test the model during
-          training.
-       -  ``UNASSIGNED`` - Rows in this file are not categorized. They
-          are Automatically divided into train and test data. 80% for
-          training and 20% for testing.
+      - ``TRAIN`` - Rows in this file are used to train the model.
+      - ``TEST`` - Rows in this file are used to test the model during
+        training.
+      - ``UNASSIGNED`` - Rows in this file are not categorized. They are
+        Automatically divided into train and test data. 80% for training
+        and 20% for testing.
 
-    -  ``TEXT_SNIPPET`` and ``GCS_FILE_PATH`` are distinguished by a
-       pattern. If the column content is a valid Google Cloud Storage
-       file path, that is, prefixed by "gs://", it is treated as a
-       ``GCS_FILE_PATH``. Otherwise, if the content is enclosed in
-       double quotes (""), it is treated as a ``TEXT_SNIPPET``. For
-       ``GCS_FILE_PATH``, the path must lead to a file with supported
-       extension and UTF-8 encoding, for example,
-       "gs://folder/content.txt" AutoML imports the file content as a
-       text snippet. For ``TEXT_SNIPPET``, AutoML imports the column
-       content excluding quotes. In both cases, size of the content must
-       be 128kB or less in size. For zip files, the size of each file
-       inside the zip must be 128kB or less in size.
+    - ``TEXT_SNIPPET`` and ``GCS_FILE_PATH`` are distinguished by a
+      pattern. If the column content is a valid Google Cloud Storage
+      file path, that is, prefixed by "gs://", it is treated as a
+      ``GCS_FILE_PATH``. Otherwise, if the content is enclosed in double
+      quotes (""), it is treated as a ``TEXT_SNIPPET``. For
+      ``GCS_FILE_PATH``, the path must lead to a file with supported
+      extension and UTF-8 encoding, for example,
+      "gs://folder/content.txt" AutoML imports the file content as a
+      text snippet. For ``TEXT_SNIPPET``, AutoML imports the column
+      content excluding quotes. In both cases, size of the content must
+      be 128kB or less in size. For zip files, the size of each file
+      inside the zip must be 128kB or less in size.
 
-       The ``ML_USE`` and ``SENTIMENT`` columns are optional. Supported
-       file extensions: .TXT, .PDF, .TIF, .TIFF, .ZIP
+      The ``ML_USE`` and ``SENTIMENT`` columns are optional. Supported
+      file extensions: .TXT, .PDF, .TIF, .TIFF, .ZIP
 
-    -  ``SENTIMENT`` - An integer between 0 and
-       Dataset.text_sentiment_dataset_metadata.sentiment_max
-       (inclusive). Describes the ordinal of the sentiment - higher
-       value means a more positive sentiment. All the values are
-       completely relative, i.e. neither 0 needs to mean a negative or
-       neutral sentiment nor sentiment_max needs to mean a positive one
-       - it is just required that 0 is the least positive sentiment in
-       the data, and sentiment_max is the most positive one. The
-       SENTIMENT shouldn't be confused with "score" or "magnitude" from
-       the previous Natural Language Sentiment Analysis API. All
-       SENTIMENT values between 0 and sentiment_max must be represented
-       in the imported data. On prediction the same 0 to sentiment_max
-       range will be used. The difference between neighboring sentiment
-       values needs not to be uniform, e.g. 1 and 2 may be similar
-       whereas the difference between 2 and 3 may be large.
+    - ``SENTIMENT`` - An integer between 0 and
+      Dataset.text_sentiment_dataset_metadata.sentiment_max (inclusive).
+      Describes the ordinal of the sentiment - higher value means a more
+      positive sentiment. All the values are completely relative, i.e.
+      neither 0 needs to mean a negative or neutral sentiment nor
+      sentiment_max needs to mean a positive one - it is just required
+      that 0 is the least positive sentiment in the data, and
+      sentiment_max is the most positive one. The SENTIMENT shouldn't be
+      confused with "score" or "magnitude" from the previous Natural
+      Language Sentiment Analysis API. All SENTIMENT values between 0
+      and sentiment_max must be represented in the imported data. On
+      prediction the same 0 to sentiment_max range will be used. The
+      difference between neighboring sentiment values needs not to be
+      uniform, e.g. 1 and 2 may be similar whereas the difference
+      between 2 and 3 may be large.
 
     Sample rows:
 
@@ -626,7 +626,7 @@ class InputConfig(proto.Message):
 
     ``LABEL`` : A display name of an object on an image, video etc.,
     e.g. "dog". Must be up to 32 characters long and can consist only of
-    ASCII Latin letters A-Z and a-z, underscores(_), and ASCII digits
+    ASCII Latin letters A-Z and a-z, underscores(\_), and ASCII digits
     0-9. For each label an AnnotationSpec is created which display_name
     becomes the label; AnnotationSpecs are given back in predictions.
 
@@ -881,7 +881,7 @@ class BatchPredictInputConfig(proto.Message):
     JSONL files may be passed.
 
     Sample inline JSONL file (Shown with artificial line breaks. Actual
-    line breaks are denoted by "\n".):
+    line breaks are denoted by "\\n".):
 
     ::
 
@@ -912,7 +912,7 @@ class BatchPredictInputConfig(proto.Message):
          }
 
     Sample document JSONL file (Shown with artificial line breaks.
-    Actual line breaks are denoted by "\n".):
+    Actual line breaks are denoted by "\\n".):
 
     ::
 
@@ -1049,30 +1049,30 @@ class DocumentInputConfig(proto.Message):
 
 
 class OutputConfig(proto.Message):
-    r"""-  For Translation: CSV file ``translation.csv``, with each line in
-       format: ML_USE,GCS_FILE_PATH GCS_FILE_PATH leads to a .TSV file
-       which describes examples that have given ML_USE, using the
-       following row format per line: TEXT_SNIPPET (in source language)
-       \\t TEXT_SNIPPET (in target language)
+    r"""- For Translation: CSV file ``translation.csv``, with each line in
+      format: ML_USE,GCS_FILE_PATH GCS_FILE_PATH leads to a .TSV file
+      which describes examples that have given ML_USE, using the
+      following row format per line: TEXT_SNIPPET (in source language)
+      \\t TEXT_SNIPPET (in target language)
 
-       -  For Tables: Output depends on whether the dataset was imported
-          from Google Cloud Storage or BigQuery. Google Cloud Storage
-          case:
-          [gcs_destination][google.cloud.automl.v1p1beta.OutputConfig.gcs_destination]
-          must be set. Exported are CSV file(s) ``tables_1.csv``,
-          ``tables_2.csv``,...,\ ``tables_N.csv`` with each having as
-          header line the table's column names, and all other lines
-          contain values for the header columns. BigQuery case:
-          [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
-          pointing to a BigQuery project must be set. In the given
-          project a new dataset will be created with name
-          ``export_data_<automl-dataset-display-name>_<timestamp-of-export-call>``
-          where will be made BigQuery-dataset-name compatible (e.g. most
-          special characters will become underscores), and timestamp
-          will be in YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601"
-          format. In that dataset a new table called ``primary_table``
-          will be created, and filled with precisely the same data as
-          this obtained on import.
+      - For Tables: Output depends on whether the dataset was imported
+        from Google Cloud Storage or BigQuery. Google Cloud Storage
+        case:
+        [gcs_destination][google.cloud.automl.v1p1beta.OutputConfig.gcs_destination]
+        must be set. Exported are CSV file(s) ``tables_1.csv``,
+        ``tables_2.csv``,...,\ ``tables_N.csv`` with each having as
+        header line the table's column names, and all other lines
+        contain values for the header columns. BigQuery case:
+        [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
+        pointing to a BigQuery project must be set. In the given project
+        a new dataset will be created with name
+        ``export_data_<automl-dataset-display-name>_<timestamp-of-export-call>``
+        where will be made BigQuery-dataset-name compatible (e.g. most
+        special characters will become underscores), and timestamp will
+        be in YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601" format. In
+        that dataset a new table called ``primary_table`` will be
+        created, and filled with precisely the same data as this
+        obtained on import.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1109,250 +1109,248 @@ class BatchPredictOutputConfig(proto.Message):
     YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. The contents of it depends
     on the ML problem the predictions are made for.
 
-    -  For Image Classification: In the created directory files
-       ``image_classification_1.jsonl``,
-       ``image_classification_2.jsonl``,...,\ ``image_classification_N.jsonl``
-       will be created, where N may be 1, and depends on the total
-       number of the successfully predicted images and annotations. A
-       single image will be listed only once with all its annotations,
-       and its annotations will never be split across files. Each .JSONL
-       file will contain, per line, a JSON representation of a proto
-       that wraps image's "ID" : "<id_value>" followed by a list of zero
-       or more AnnotationPayload protos (called annotations), which have
-       classification detail populated. If prediction for any image
-       failed (partially or completely), then an additional
-       ``errors_1.jsonl``, ``errors_2.jsonl``,..., ``errors_N.jsonl``
-       files will be created (N depends on total number of failed
-       predictions). These files will have a JSON representation of a
-       proto that wraps the same "ID" : "<id_value>" but here followed
-       by exactly one
-       ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
-       containing only ``code`` and ``message``\ fields.
+    - For Image Classification: In the created directory files
+      ``image_classification_1.jsonl``,
+      ``image_classification_2.jsonl``,...,\ ``image_classification_N.jsonl``
+      will be created, where N may be 1, and depends on the total number
+      of the successfully predicted images and annotations. A single
+      image will be listed only once with all its annotations, and its
+      annotations will never be split across files. Each .JSONL file
+      will contain, per line, a JSON representation of a proto that
+      wraps image's "ID" : "<id_value>" followed by a list of zero or
+      more AnnotationPayload protos (called annotations), which have
+      classification detail populated. If prediction for any image
+      failed (partially or completely), then an additional
+      ``errors_1.jsonl``, ``errors_2.jsonl``,..., ``errors_N.jsonl``
+      files will be created (N depends on total number of failed
+      predictions). These files will have a JSON representation of a
+      proto that wraps the same "ID" : "<id_value>" but here followed by
+      exactly one
+      ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+      containing only ``code`` and ``message``\ fields.
 
-    -  For Image Object Detection: In the created directory files
-       ``image_object_detection_1.jsonl``,
-       ``image_object_detection_2.jsonl``,...,\ ``image_object_detection_N.jsonl``
-       will be created, where N may be 1, and depends on the total
-       number of the successfully predicted images and annotations. Each
-       .JSONL file will contain, per line, a JSON representation of a
-       proto that wraps image's "ID" : "<id_value>" followed by a list
-       of zero or more AnnotationPayload protos (called annotations),
-       which have image_object_detection detail populated. A single
-       image will be listed only once with all its annotations, and its
-       annotations will never be split across files. If prediction for
-       any image failed (partially or completely), then additional
-       ``errors_1.jsonl``, ``errors_2.jsonl``,..., ``errors_N.jsonl``
-       files will be created (N depends on total number of failed
-       predictions). These files will have a JSON representation of a
-       proto that wraps the same "ID" : "<id_value>" but here followed
-       by exactly one
-       ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
-       containing only ``code`` and ``message``\ fields.
+    - For Image Object Detection: In the created directory files
+      ``image_object_detection_1.jsonl``,
+      ``image_object_detection_2.jsonl``,...,\ ``image_object_detection_N.jsonl``
+      will be created, where N may be 1, and depends on the total number
+      of the successfully predicted images and annotations. Each .JSONL
+      file will contain, per line, a JSON representation of a proto that
+      wraps image's "ID" : "<id_value>" followed by a list of zero or
+      more AnnotationPayload protos (called annotations), which have
+      image_object_detection detail populated. A single image will be
+      listed only once with all its annotations, and its annotations
+      will never be split across files. If prediction for any image
+      failed (partially or completely), then additional
+      ``errors_1.jsonl``, ``errors_2.jsonl``,..., ``errors_N.jsonl``
+      files will be created (N depends on total number of failed
+      predictions). These files will have a JSON representation of a
+      proto that wraps the same "ID" : "<id_value>" but here followed by
+      exactly one
+      ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+      containing only ``code`` and ``message``\ fields.
 
-    -  For Video Classification: In the created directory a
-       video_classification.csv file, and a .JSON file per each video
-       classification requested in the input (i.e. each line in given
-       CSV(s)), will be created.
+    - For Video Classification: In the created directory a
+      video_classification.csv file, and a .JSON file per each video
+      classification requested in the input (i.e. each line in given
+      CSV(s)), will be created.
 
-       ::
+      ::
 
-          The format of video_classification.csv is:
-          GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
-          where:
-          GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches 1 to 1
-              the prediction input lines (i.e. video_classification.csv has
-              precisely the same number of lines as the prediction input had.)
-          JSON_FILE_NAME = Name of .JSON file in the output directory, which
-              contains prediction responses for the video time segment.
-          STATUS = "OK" if prediction completed successfully, or an error code
-              with message otherwise. If STATUS is not "OK" then the .JSON file
-              for that line may not exist or be empty.
+         The format of video_classification.csv is:
+         GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
+         where:
+         GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches 1 to 1
+             the prediction input lines (i.e. video_classification.csv has
+             precisely the same number of lines as the prediction input had.)
+         JSON_FILE_NAME = Name of .JSON file in the output directory, which
+             contains prediction responses for the video time segment.
+         STATUS = "OK" if prediction completed successfully, or an error code
+             with message otherwise. If STATUS is not "OK" then the .JSON file
+             for that line may not exist or be empty.
 
-          Each .JSON file, assuming STATUS is "OK", will contain a list of
-          AnnotationPayload protos in JSON format, which are the predictions
-          for the video time segment the file is assigned to in the
-          video_classification.csv. All AnnotationPayload protos will have
-          video_classification field set, and will be sorted by
-          video_classification.type field (note that the returned types are
-          governed by `classifaction_types` parameter in
-          [PredictService.BatchPredictRequest.params][]).
+         Each .JSON file, assuming STATUS is "OK", will contain a list of
+         AnnotationPayload protos in JSON format, which are the predictions
+         for the video time segment the file is assigned to in the
+         video_classification.csv. All AnnotationPayload protos will have
+         video_classification field set, and will be sorted by
+         video_classification.type field (note that the returned types are
+         governed by `classifaction_types` parameter in
+         [PredictService.BatchPredictRequest.params][]).
 
-    -  For Video Object Tracking: In the created directory a
-       video_object_tracking.csv file will be created, and multiple
-       files video_object_trackinng_1.json,
-       video_object_trackinng_2.json,..., video_object_trackinng_N.json,
-       where N is the number of requests in the input (i.e. the number
-       of lines in given CSV(s)).
+    - For Video Object Tracking: In the created directory a
+      video_object_tracking.csv file will be created, and multiple files
+      video_object_trackinng_1.json, video_object_trackinng_2.json,...,
+      video_object_trackinng_N.json, where N is the number of requests
+      in the input (i.e. the number of lines in given CSV(s)).
 
-       ::
+      ::
 
-          The format of video_object_tracking.csv is:
-          GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
-          where:
-          GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches 1 to 1
-              the prediction input lines (i.e. video_object_tracking.csv has
-              precisely the same number of lines as the prediction input had.)
-          JSON_FILE_NAME = Name of .JSON file in the output directory, which
-              contains prediction responses for the video time segment.
-          STATUS = "OK" if prediction completed successfully, or an error
-              code with message otherwise. If STATUS is not "OK" then the .JSON
-              file for that line may not exist or be empty.
+         The format of video_object_tracking.csv is:
+         GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
+         where:
+         GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches 1 to 1
+             the prediction input lines (i.e. video_object_tracking.csv has
+             precisely the same number of lines as the prediction input had.)
+         JSON_FILE_NAME = Name of .JSON file in the output directory, which
+             contains prediction responses for the video time segment.
+         STATUS = "OK" if prediction completed successfully, or an error
+             code with message otherwise. If STATUS is not "OK" then the .JSON
+             file for that line may not exist or be empty.
 
-          Each .JSON file, assuming STATUS is "OK", will contain a list of
-          AnnotationPayload protos in JSON format, which are the predictions
-          for each frame of the video time segment the file is assigned to in
-          video_object_tracking.csv. All AnnotationPayload protos will have
-          video_object_tracking field set.
+         Each .JSON file, assuming STATUS is "OK", will contain a list of
+         AnnotationPayload protos in JSON format, which are the predictions
+         for each frame of the video time segment the file is assigned to in
+         video_object_tracking.csv. All AnnotationPayload protos will have
+         video_object_tracking field set.
 
-    -  For Text Classification: In the created directory files
-       ``text_classification_1.jsonl``,
-       ``text_classification_2.jsonl``,...,\ ``text_classification_N.jsonl``
-       will be created, where N may be 1, and depends on the total
-       number of inputs and annotations found.
+    - For Text Classification: In the created directory files
+      ``text_classification_1.jsonl``,
+      ``text_classification_2.jsonl``,...,\ ``text_classification_N.jsonl``
+      will be created, where N may be 1, and depends on the total number
+      of inputs and annotations found.
 
-       ::
+      ::
 
-          Each .JSONL file will contain, per line, a JSON representation of a
-          proto that wraps input text file (or document) in
-          the text snippet (or document) proto and a list of
-          zero or more AnnotationPayload protos (called annotations), which
-          have classification detail populated. A single text file (or
-          document) will be listed only once with all its annotations, and its
-          annotations will never be split across files.
+         Each .JSONL file will contain, per line, a JSON representation of a
+         proto that wraps input text file (or document) in
+         the text snippet (or document) proto and a list of
+         zero or more AnnotationPayload protos (called annotations), which
+         have classification detail populated. A single text file (or
+         document) will be listed only once with all its annotations, and its
+         annotations will never be split across files.
 
-          If prediction for any input file (or document) failed (partially or
-          completely), then additional `errors_1.jsonl`, `errors_2.jsonl`,...,
-          `errors_N.jsonl` files will be created (N depends on total number of
-          failed predictions). These files will have a JSON representation of a
-          proto that wraps input file followed by exactly one
-          [`google.rpc.Status`](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
-          containing only `code` and `message`.
+         If prediction for any input file (or document) failed (partially or
+         completely), then additional `errors_1.jsonl`, `errors_2.jsonl`,...,
+         `errors_N.jsonl` files will be created (N depends on total number of
+         failed predictions). These files will have a JSON representation of a
+         proto that wraps input file followed by exactly one
+         [`google.rpc.Status`](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
+         containing only `code` and `message`.
 
-    -  For Text Sentiment: In the created directory files
-       ``text_sentiment_1.jsonl``,
-       ``text_sentiment_2.jsonl``,...,\ ``text_sentiment_N.jsonl`` will
-       be created, where N may be 1, and depends on the total number of
-       inputs and annotations found.
+    - For Text Sentiment: In the created directory files
+      ``text_sentiment_1.jsonl``,
+      ``text_sentiment_2.jsonl``,...,\ ``text_sentiment_N.jsonl`` will
+      be created, where N may be 1, and depends on the total number of
+      inputs and annotations found.
 
-       ::
+      ::
 
-          Each .JSONL file will contain, per line, a JSON representation of a
-          proto that wraps input text file (or document) in
-          the text snippet (or document) proto and a list of
-          zero or more AnnotationPayload protos (called annotations), which
-          have text_sentiment detail populated. A single text file (or
-          document) will be listed only once with all its annotations, and its
-          annotations will never be split across files.
+         Each .JSONL file will contain, per line, a JSON representation of a
+         proto that wraps input text file (or document) in
+         the text snippet (or document) proto and a list of
+         zero or more AnnotationPayload protos (called annotations), which
+         have text_sentiment detail populated. A single text file (or
+         document) will be listed only once with all its annotations, and its
+         annotations will never be split across files.
 
-          If prediction for any input file (or document) failed (partially or
-          completely), then additional `errors_1.jsonl`, `errors_2.jsonl`,...,
-          `errors_N.jsonl` files will be created (N depends on total number of
-          failed predictions). These files will have a JSON representation of a
-          proto that wraps input file followed by exactly one
-          [`google.rpc.Status`](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
-          containing only `code` and `message`.
+         If prediction for any input file (or document) failed (partially or
+         completely), then additional `errors_1.jsonl`, `errors_2.jsonl`,...,
+         `errors_N.jsonl` files will be created (N depends on total number of
+         failed predictions). These files will have a JSON representation of a
+         proto that wraps input file followed by exactly one
+         [`google.rpc.Status`](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
+         containing only `code` and `message`.
 
-    -  For Text Extraction: In the created directory files
-       ``text_extraction_1.jsonl``,
-       ``text_extraction_2.jsonl``,...,\ ``text_extraction_N.jsonl``
-       will be created, where N may be 1, and depends on the total
-       number of inputs and annotations found. The contents of these
-       .JSONL file(s) depend on whether the input used inline text, or
-       documents. If input was inline, then each .JSONL file will
-       contain, per line, a JSON representation of a proto that wraps
-       given in request text snippet's "id" (if specified), followed by
-       input text snippet, and a list of zero or more AnnotationPayload
-       protos (called annotations), which have text_extraction detail
-       populated. A single text snippet will be listed only once with
-       all its annotations, and its annotations will never be split
-       across files. If input used documents, then each .JSONL file will
-       contain, per line, a JSON representation of a proto that wraps
-       given in request document proto, followed by its OCR-ed
-       representation in the form of a text snippet, finally followed by
-       a list of zero or more AnnotationPayload protos (called
-       annotations), which have text_extraction detail populated and
-       refer, via their indices, to the OCR-ed text snippet. A single
-       document (and its text snippet) will be listed only once with all
-       its annotations, and its annotations will never be split across
-       files. If prediction for any text snippet failed (partially or
-       completely), then additional ``errors_1.jsonl``,
-       ``errors_2.jsonl``,..., ``errors_N.jsonl`` files will be created
-       (N depends on total number of failed predictions). These files
-       will have a JSON representation of a proto that wraps either the
-       "id" : "<id_value>" (in case of inline) or the document proto (in
-       case of document) but here followed by exactly one
-       ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
-       containing only ``code`` and ``message``.
+    - For Text Extraction: In the created directory files
+      ``text_extraction_1.jsonl``,
+      ``text_extraction_2.jsonl``,...,\ ``text_extraction_N.jsonl`` will
+      be created, where N may be 1, and depends on the total number of
+      inputs and annotations found. The contents of these .JSONL file(s)
+      depend on whether the input used inline text, or documents. If
+      input was inline, then each .JSONL file will contain, per line, a
+      JSON representation of a proto that wraps given in request text
+      snippet's "id" (if specified), followed by input text snippet, and
+      a list of zero or more AnnotationPayload protos (called
+      annotations), which have text_extraction detail populated. A
+      single text snippet will be listed only once with all its
+      annotations, and its annotations will never be split across files.
+      If input used documents, then each .JSONL file will contain, per
+      line, a JSON representation of a proto that wraps given in request
+      document proto, followed by its OCR-ed representation in the form
+      of a text snippet, finally followed by a list of zero or more
+      AnnotationPayload protos (called annotations), which have
+      text_extraction detail populated and refer, via their indices, to
+      the OCR-ed text snippet. A single document (and its text snippet)
+      will be listed only once with all its annotations, and its
+      annotations will never be split across files. If prediction for
+      any text snippet failed (partially or completely), then additional
+      ``errors_1.jsonl``, ``errors_2.jsonl``,..., ``errors_N.jsonl``
+      files will be created (N depends on total number of failed
+      predictions). These files will have a JSON representation of a
+      proto that wraps either the "id" : "<id_value>" (in case of
+      inline) or the document proto (in case of document) but here
+      followed by exactly one
+      ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+      containing only ``code`` and ``message``.
 
-    -  For Tables: Output depends on whether
-       [gcs_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.gcs_destination]
-       or
-       [bigquery_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.bigquery_destination]
-       is set (either is allowed). Google Cloud Storage case: In the
-       created directory files ``tables_1.csv``, ``tables_2.csv``,...,
-       ``tables_N.csv`` will be created, where N may be 1, and depends
-       on the total number of the successfully predicted rows. For all
-       CLASSIFICATION
-       [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
-       Each .csv file will contain a header, listing all columns'
-       [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
-       given on input followed by M target column names in the format of
-       "<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
-       [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>*\ score"
-       where M is the number of distinct target values, i.e. number of
-       distinct values in the target column of the table used to train
-       the model. Subsequent lines will contain the respective values of
-       successfully predicted rows, with the last, i.e. the target,
-       columns having the corresponding prediction
-       [scores][google.cloud.automl.v1p1beta.TablesAnnotation.score].
-       For REGRESSION and FORECASTING
-       [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
-       Each .csv file will contain a header, listing all columns'
-       [display_name-s][google.cloud.automl.v1p1beta.display_name] given
-       on input followed by the predicted target column with name in the
-       format of
-       "predicted\ <[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
-       [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
-       Subsequent lines will contain the respective values of
-       successfully predicted rows, with the last, i.e. the target,
-       column having the predicted target value. If prediction for any
-       rows failed, then an additional ``errors_1.csv``,
-       ``errors_2.csv``,..., ``errors_N.csv`` will be created (N depends
-       on total number of failed rows). These files will have analogous
-       format as ``tables_*.csv``, but always with a single target
-       column
-       having*\ ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__\ *represented
-       as a JSON string, and containing only ``code`` and ``message``.
-       BigQuery case:
-       [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
-       pointing to a BigQuery project must be set. In the given project
-       a new dataset will be created with name
-       ``prediction_<model-display-name>_<timestamp-of-prediction-call>``
-       where will be made BigQuery-dataset-name compatible (e.g. most
-       special characters will become underscores), and timestamp will
-       be in YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601" format. In the
-       dataset two tables will be created, ``predictions``, and
-       ``errors``. The ``predictions`` table's column names will be the
-       input columns'
-       [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
-       followed by the target column with name in the format of
-       "predicted*\ <[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
-       [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
-       The input feature columns will contain the respective values of
-       successfully predicted rows, with the target column having an
-       ARRAY of
-       [AnnotationPayloads][google.cloud.automl.v1p1beta.AnnotationPayload],
-       represented as STRUCT-s, containing
-       [TablesAnnotation][google.cloud.automl.v1p1beta.TablesAnnotation].
-       The ``errors`` table contains rows for which the prediction has
-       failed, it has analogous input columns while the target column
-       name is in the format of
-       "errors_<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
-       [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>",
-       and as a value has
-       ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
-       represented as a STRUCT, and containing only ``code`` and
-       ``message``.
+    - For Tables: Output depends on whether
+      [gcs_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.gcs_destination]
+      or
+      [bigquery_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.bigquery_destination]
+      is set (either is allowed). Google Cloud Storage case: In the
+      created directory files ``tables_1.csv``, ``tables_2.csv``,...,
+      ``tables_N.csv`` will be created, where N may be 1, and depends on
+      the total number of the successfully predicted rows. For all
+      CLASSIFICATION
+      [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
+      Each .csv file will contain a header, listing all columns'
+      [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
+      given on input followed by M target column names in the format of
+      "<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+      [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>\ *\ score"
+      where M is the number of distinct target values, i.e. number of
+      distinct values in the target column of the table used to train
+      the model. Subsequent lines will contain the respective values of
+      successfully predicted rows, with the last, i.e. the target,
+      columns having the corresponding prediction
+      [scores][google.cloud.automl.v1p1beta.TablesAnnotation.score]. For
+      REGRESSION and FORECASTING
+      [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
+      Each .csv file will contain a header, listing all columns'
+      [display_name-s][google.cloud.automl.v1p1beta.display_name] given
+      on input followed by the predicted target column with name in the
+      format of
+      "predicted\ <[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+      [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
+      Subsequent lines will contain the respective values of
+      successfully predicted rows, with the last, i.e. the target,
+      column having the predicted target value. If prediction for any
+      rows failed, then an additional ``errors_1.csv``,
+      ``errors_2.csv``,..., ``errors_N.csv`` will be created (N depends
+      on total number of failed rows). These files will have analogous
+      format as ``tables_*.csv``, but always with a single target column
+      having*\ ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__\ *represented
+      as a JSON string, and containing only ``code`` and ``message``.
+      BigQuery case:
+      [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
+      pointing to a BigQuery project must be set. In the given project a
+      new dataset will be created with name
+      ``prediction_<model-display-name>_<timestamp-of-prediction-call>``
+      where will be made BigQuery-dataset-name compatible (e.g. most
+      special characters will become underscores), and timestamp will be
+      in YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601" format. In the
+      dataset two tables will be created, ``predictions``, and
+      ``errors``. The ``predictions`` table's column names will be the
+      input columns'
+      [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
+      followed by the target column with name in the format of
+      "predicted*\ <[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+      [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
+      The input feature columns will contain the respective values of
+      successfully predicted rows, with the target column having an
+      ARRAY of
+      [AnnotationPayloads][google.cloud.automl.v1p1beta.AnnotationPayload],
+      represented as STRUCT-s, containing
+      [TablesAnnotation][google.cloud.automl.v1p1beta.TablesAnnotation].
+      The ``errors`` table contains rows for which the prediction has
+      failed, it has analogous input columns while the target column
+      name is in the format of
+      "errors\_<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+      [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>",
+      and as a value has
+      ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+      represented as a STRUCT, and containing only ``code`` and
+      ``message``.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1400,46 +1398,46 @@ class ModelExportOutputConfig(proto.Message):
             have a format listed, it means its models are not
             exportable):
 
-            -  For Image Classification mobile-low-latency-1,
-               mobile-versatile-1, mobile-high-accuracy-1: "tflite"
-               (default), "edgetpu_tflite", "tf_saved_model", "tf_js",
-               "docker".
+            - For Image Classification mobile-low-latency-1,
+              mobile-versatile-1, mobile-high-accuracy-1: "tflite"
+              (default), "edgetpu_tflite", "tf_saved_model", "tf_js",
+              "docker".
 
-            -  For Image Classification mobile-core-ml-low-latency-1,
-               mobile-core-ml-versatile-1,
-               mobile-core-ml-high-accuracy-1: "core_ml" (default).
+            - For Image Classification mobile-core-ml-low-latency-1,
+              mobile-core-ml-versatile-1,
+              mobile-core-ml-high-accuracy-1: "core_ml" (default).
 
-            -  For Image Object Detection mobile-low-latency-1,
-               mobile-versatile-1, mobile-high-accuracy-1: "tflite",
-               "tf_saved_model", "tf_js". Formats description:
+            - For Image Object Detection mobile-low-latency-1,
+              mobile-versatile-1, mobile-high-accuracy-1: "tflite",
+              "tf_saved_model", "tf_js". Formats description:
 
-            -  tflite - Used for Android mobile devices.
+            - tflite - Used for Android mobile devices.
 
-            -  edgetpu_tflite - Used for `Edge
-               TPU <https://cloud.google.com/edge-tpu/>`__ devices.
+            - edgetpu_tflite - Used for `Edge
+              TPU <https://cloud.google.com/edge-tpu/>`__ devices.
 
-            -  tf_saved_model - A tensorflow model in SavedModel format.
+            - tf_saved_model - A tensorflow model in SavedModel format.
 
-            -  tf_js - A
-               `TensorFlow.js <https://www.tensorflow.org/js>`__ model
-               that can be used in the browser and in Node.js using
-               JavaScript.
+            - tf_js - A
+              `TensorFlow.js <https://www.tensorflow.org/js>`__ model
+              that can be used in the browser and in Node.js using
+              JavaScript.
 
-            -  docker - Used for Docker containers. Use the params field
-               to customize the container. The container is verified to
-               work correctly on ubuntu 16.04 operating system. See more
-               at `containers
-               quickstart <https://cloud.google.com/vision/automl/docs/containers-gcs-quickstart>`__
+            - docker - Used for Docker containers. Use the params field
+              to customize the container. The container is verified to
+              work correctly on ubuntu 16.04 operating system. See more
+              at `containers
+              quickstart <https://cloud.google.com/vision/automl/docs/containers-gcs-quickstart>`__
 
-            -  core_ml - Used for iOS mobile devices.
+            - core_ml - Used for iOS mobile devices.
         params (MutableMapping[str, str]):
             Additional model-type and format specific parameters
             describing the requirements for the to be exported model
             files, any string must be up to 25000 characters long.
 
-            -  For ``docker`` format: ``cpu_architecture`` - (string)
-               "x86_64" (default). ``gpu_architecture`` - (string)
-               "none" (default), "nvidia".
+            - For ``docker`` format: ``cpu_architecture`` - (string)
+              "x86_64" (default). ``gpu_architecture`` - (string) "none"
+              (default), "nvidia".
     """
 
     gcs_destination: "GcsDestination" = proto.Field(
@@ -1467,7 +1465,7 @@ class GcsSource(proto.Message):
             Required. Google Cloud Storage URIs to input files, up to
             2000 characters long. Accepted forms:
 
-            -  Full object path, e.g. gs://bucket/directory/object.csv
+            - Full object path, e.g. gs://bucket/directory/object.csv
     """
 
     input_uris: MutableSequence[str] = proto.RepeatedField(
@@ -1485,9 +1483,9 @@ class GcsDestination(proto.Message):
             Required. Google Cloud Storage URI to output directory, up
             to 2000 characters long. Accepted forms:
 
-            -  Prefix path: gs://bucket/directory The requesting user
-               must have write permission to the bucket. The directory
-               is created if it doesn't exist.
+            - Prefix path: gs://bucket/directory The requesting user
+              must have write permission to the bucket. The directory is
+              created if it doesn't exist.
     """
 
     output_uri_prefix: str = proto.Field(

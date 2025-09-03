@@ -109,14 +109,14 @@ class DataType(proto.Message):
             then ``time_format`` provides the format in which that time
             field is expressed. The time_format must either be one of:
 
-            -  ``UNIX_SECONDS``
-            -  ``UNIX_MILLISECONDS``
-            -  ``UNIX_MICROSECONDS``
-            -  ``UNIX_NANOSECONDS`` (for respectively number of seconds,
-               milliseconds, microseconds and nanoseconds since start of
-               the Unix epoch); or be written in ``strftime`` syntax. If
-               time_format is not set, then the default format as
-               described on the type_code is used.
+            - ``UNIX_SECONDS``
+            - ``UNIX_MILLISECONDS``
+            - ``UNIX_MICROSECONDS``
+            - ``UNIX_NANOSECONDS`` (for respectively number of seconds,
+              milliseconds, microseconds and nanoseconds since start of
+              the Unix epoch); or be written in ``strftime`` syntax. If
+              time_format is not set, then the default format as
+              described on the type_code is used.
 
             This field is a member of `oneof`_ ``details``.
         type_code (google.cloud.automl_v1beta1.types.TypeCode):

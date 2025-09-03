@@ -80,8 +80,8 @@ class OSPolicyAssignment(proto.Message):
             2) OSPolicyAssignment is updated and the update contains
                changes to one of the following fields:
 
-               -  instance_filter
-               -  os_policies
+               - instance_filter
+               - os_policies
 
             3) OSPolicyAssignment is deleted.
         revision_id (str):
@@ -113,8 +113,8 @@ class OSPolicyAssignment(proto.Message):
             for the revision. This value is ``true`` when the
             ``rollout_state`` is one of:
 
-            -  IN_PROGRESS
-            -  CANCELLING
+            - IN_PROGRESS
+            - CANCELLING
         uid (str):
             Output only. Server generated unique id for
             the OS policy assignment resource.
@@ -144,14 +144,14 @@ class OSPolicyAssignment(proto.Message):
     class LabelSet(proto.Message):
         r"""Message representing label set.
 
-        -  A label is a key value pair set for a VM.
-        -  A LabelSet is a set of labels.
-        -  Labels within a LabelSet are ANDed. In other words, a LabelSet is
-           applicable for a VM only if it matches all the labels in the
-           LabelSet.
-        -  Example: A LabelSet with 2 labels: ``env=prod`` and
-           ``type=webserver`` will only be applicable for those VMs with
-           both labels present.
+        - A label is a key value pair set for a VM.
+        - A LabelSet is a set of labels.
+        - Labels within a LabelSet are ANDed. In other words, a LabelSet is
+          applicable for a VM only if it matches all the labels in the
+          LabelSet.
+        - Example: A LabelSet with 2 labels: ``env=prod`` and
+          ``type=webserver`` will only be applicable for those VMs with both
+          labels present.
 
         Attributes:
             labels (MutableMapping[str, str]):
@@ -203,7 +203,7 @@ class OSPolicyAssignment(proto.Message):
                 os_version (str):
                     The OS version
 
-                    Prefix matches are supported if asterisk(*) is provided as
+                    Prefix matches are supported if asterisk(\*) is provided as
                     the last character. For example, to match all versions with
                     a major version of ``7``, specify the following value for
                     this field ``7.*``
@@ -431,12 +431,11 @@ class CreateOSPolicyAssignmentRequest(proto.Message):
             Required. The logical name of the OS policy assignment in
             the project with the following restrictions:
 
-            -  Must contain only lowercase letters, numbers, and
-               hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-63 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the project.
+            - Must contain only lowercase letters, numbers, and hyphens.
+            - Must start with a letter.
+            - Must be between 1-63 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the project.
     """
 
     parent: str = proto.Field(

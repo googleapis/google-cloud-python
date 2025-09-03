@@ -2800,8 +2800,8 @@ class ListEntitlementChangesRequest(proto.Message):
             list entitlement changes. The ``-`` wildcard may be used to
             match entitlements across a customer. Formats:
 
-            -  accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
-            -  accounts/{account_id}/customers/{customer_id}/entitlements/-
+            - accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
+            - accounts/{account_id}/customers/{customer_id}/entitlements/-
         page_size (int):
             Optional. The maximum number of entitlement
             changes to return. The service may return fewer

@@ -942,13 +942,13 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
                 become the final component of the API's resource name.
                 This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another API resource in the API hub.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another API resource in the API hub.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``api_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1260,15 +1260,15 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         r"""Update an API resource in the API hub. The following fields in
         the [API][] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Api.display_name]
-        -  [description][google.cloud.apihub.v1.Api.description]
-        -  [owner][google.cloud.apihub.v1.Api.owner]
-        -  [documentation][google.cloud.apihub.v1.Api.documentation]
-        -  [target_user][google.cloud.apihub.v1.Api.target_user]
-        -  [team][google.cloud.apihub.v1.Api.team]
-        -  [business_unit][google.cloud.apihub.v1.Api.business_unit]
-        -  [maturity_level][google.cloud.apihub.v1.Api.maturity_level]
-        -  [attributes][google.cloud.apihub.v1.Api.attributes]
+        - [display_name][google.cloud.apihub.v1.Api.display_name]
+        - [description][google.cloud.apihub.v1.Api.description]
+        - [owner][google.cloud.apihub.v1.Api.owner]
+        - [documentation][google.cloud.apihub.v1.Api.documentation]
+        - [target_user][google.cloud.apihub.v1.Api.target_user]
+        - [team][google.cloud.apihub.v1.Api.team]
+        - [business_unit][google.cloud.apihub.v1.Api.business_unit]
+        - [maturity_level][google.cloud.apihub.v1.Api.maturity_level]
+        - [attributes][google.cloud.apihub.v1.Api.attributes]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateApiRequest.update_mask]
@@ -1551,13 +1551,13 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
                 become the final component of the version's resource
                 name. This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another version in the API resource.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another version in the API resource.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``version_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1880,14 +1880,14 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         [version][google.cloud.apihub.v1.Version] can be updated
         currently:
 
-        -  [display_name][google.cloud.apihub.v1.Version.display_name]
-        -  [description][google.cloud.apihub.v1.Version.description]
-        -  [documentation][google.cloud.apihub.v1.Version.documentation]
-        -  [deployments][google.cloud.apihub.v1.Version.deployments]
-        -  [lifecycle][google.cloud.apihub.v1.Version.lifecycle]
-        -  [compliance][google.cloud.apihub.v1.Version.compliance]
-        -  [accreditation][google.cloud.apihub.v1.Version.accreditation]
-        -  [attributes][google.cloud.apihub.v1.Version.attributes]
+        - [display_name][google.cloud.apihub.v1.Version.display_name]
+        - [description][google.cloud.apihub.v1.Version.description]
+        - [documentation][google.cloud.apihub.v1.Version.documentation]
+        - [deployments][google.cloud.apihub.v1.Version.deployments]
+        - [lifecycle][google.cloud.apihub.v1.Version.lifecycle]
+        - [compliance][google.cloud.apihub.v1.Version.compliance]
+        - [accreditation][google.cloud.apihub.v1.Version.accreditation]
+        - [attributes][google.cloud.apihub.v1.Version.attributes]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateVersionRequest.update_mask]
@@ -2197,13 +2197,13 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
                 the final component of the spec's resource name. This
                 field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another spec in the API resource.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another spec in the API resource.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``spec_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2634,12 +2634,12 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         r"""Update spec. The following fields in the
         [spec][google.cloud.apihub.v1.Spec] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Spec.display_name]
-        -  [source_uri][google.cloud.apihub.v1.Spec.source_uri]
-        -  [lint_response][google.cloud.apihub.v1.Spec.lint_response]
-        -  [attributes][google.cloud.apihub.v1.Spec.attributes]
-        -  [contents][google.cloud.apihub.v1.Spec.contents]
-        -  [spec_type][google.cloud.apihub.v1.Spec.spec_type]
+        - [display_name][google.cloud.apihub.v1.Spec.display_name]
+        - [source_uri][google.cloud.apihub.v1.Spec.source_uri]
+        - [lint_response][google.cloud.apihub.v1.Spec.lint_response]
+        - [attributes][google.cloud.apihub.v1.Spec.attributes]
+        - [contents][google.cloud.apihub.v1.Spec.contents]
+        - [spec_type][google.cloud.apihub.v1.Spec.spec_type]
 
         In case of an OAS spec, updating spec contents can lead to:
 
@@ -3306,13 +3306,13 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
                 which will become the final component of the
                 deployment's resource name. This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another deployment resource in the API hub.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another deployment resource in the API hub.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``deployment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3641,15 +3641,15 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         fields in the [deployment
         resource][google.cloud.apihub.v1.Deployment] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Deployment.display_name]
-        -  [description][google.cloud.apihub.v1.Deployment.description]
-        -  [documentation][google.cloud.apihub.v1.Deployment.documentation]
-        -  [deployment_type][google.cloud.apihub.v1.Deployment.deployment_type]
-        -  [resource_uri][google.cloud.apihub.v1.Deployment.resource_uri]
-        -  [endpoints][google.cloud.apihub.v1.Deployment.endpoints]
-        -  [slo][google.cloud.apihub.v1.Deployment.slo]
-        -  [environment][google.cloud.apihub.v1.Deployment.environment]
-        -  [attributes][google.cloud.apihub.v1.Deployment.attributes]
+        - [display_name][google.cloud.apihub.v1.Deployment.display_name]
+        - [description][google.cloud.apihub.v1.Deployment.description]
+        - [documentation][google.cloud.apihub.v1.Deployment.documentation]
+        - [deployment_type][google.cloud.apihub.v1.Deployment.deployment_type]
+        - [resource_uri][google.cloud.apihub.v1.Deployment.resource_uri]
+        - [endpoints][google.cloud.apihub.v1.Deployment.endpoints]
+        - [slo][google.cloud.apihub.v1.Deployment.slo]
+        - [environment][google.cloud.apihub.v1.Deployment.environment]
+        - [attributes][google.cloud.apihub.v1.Deployment.attributes]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateDeploymentRequest.update_mask]
@@ -3952,13 +3952,13 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
                 become the final component of the attribute's resource
                 name. This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another attribute resource in the API hub.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another attribute resource in the API hub.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``attribute_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4159,25 +4159,25 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         r"""Update the attribute. The following fields in the [Attribute
         resource][google.cloud.apihub.v1.Attribute] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Attribute.display_name]
-           The display name can be updated for user defined attributes
-           only.
-        -  [description][google.cloud.apihub.v1.Attribute.description]
-           The description can be updated for user defined attributes
-           only.
-        -  [allowed_values][google.cloud.apihub.v1.Attribute.allowed_values]
-           To update the list of allowed values, clients need to use the
-           fetched list of allowed values and add or remove values to or
-           from the same list. The mutable allowed values can be updated
-           for both user defined and System defined attributes. The
-           immutable allowed values cannot be updated or deleted. The
-           updated list of allowed values cannot be empty. If an allowed
-           value that is already used by some resource's attribute is
-           deleted, then the association between the resource and the
-           attribute value will also be deleted.
-        -  [cardinality][google.cloud.apihub.v1.Attribute.cardinality]
-           The cardinality can be updated for user defined attributes
-           only. Cardinality can only be increased during an update.
+        - [display_name][google.cloud.apihub.v1.Attribute.display_name]
+          The display name can be updated for user defined attributes
+          only.
+        - [description][google.cloud.apihub.v1.Attribute.description]
+          The description can be updated for user defined attributes
+          only.
+        - [allowed_values][google.cloud.apihub.v1.Attribute.allowed_values]
+          To update the list of allowed values, clients need to use the
+          fetched list of allowed values and add or remove values to or
+          from the same list. The mutable allowed values can be updated
+          for both user defined and System defined attributes. The
+          immutable allowed values cannot be updated or deleted. The
+          updated list of allowed values cannot be empty. If an allowed
+          value that is already used by some resource's attribute is
+          deleted, then the association between the resource and the
+          attribute value will also be deleted.
+        - [cardinality][google.cloud.apihub.v1.Attribute.cardinality]
+          The cardinality can be updated for user defined attributes
+          only. Cardinality can only be increased during an update.
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateAttributeRequest.update_mask]
@@ -4740,13 +4740,13 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
                 which will become the final component of the External
                 API's resource name. This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another External API resource in the API hub.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another External API resource in the API hub.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``external_api_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4943,11 +4943,11 @@ class ApiHubClient(metaclass=ApiHubClientMeta):
         r"""Update an External API resource in the API hub. The following
         fields can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.ExternalApi.display_name]
-        -  [description][google.cloud.apihub.v1.ExternalApi.description]
-        -  [documentation][google.cloud.apihub.v1.ExternalApi.documentation]
-        -  [endpoints][google.cloud.apihub.v1.ExternalApi.endpoints]
-        -  [paths][google.cloud.apihub.v1.ExternalApi.paths]
+        - [display_name][google.cloud.apihub.v1.ExternalApi.display_name]
+        - [description][google.cloud.apihub.v1.ExternalApi.description]
+        - [documentation][google.cloud.apihub.v1.ExternalApi.documentation]
+        - [endpoints][google.cloud.apihub.v1.ExternalApi.endpoints]
+        - [paths][google.cloud.apihub.v1.ExternalApi.paths]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateExternalApiRequest.update_mask]

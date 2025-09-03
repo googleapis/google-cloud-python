@@ -196,8 +196,8 @@ class UpdateCssProductInputRequest(proto.Message):
             To specify the update mask for custom attributes you need to
             add the ``custom_attribute.`` prefix.
 
-            Providing special "*" value for full CSS product replacement
-            is not supported.
+            Providing special "\*" value for full CSS product
+            replacement is not supported.
     """
 
     css_product_input: "CssProductInput" = proto.Field(

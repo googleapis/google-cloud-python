@@ -860,7 +860,7 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
                 CreateAssetRequest.
             parent (str):
                 Required. The parent resource where this asset will be
-                created. Format: projects/\ */locations/*/corpora/\*
+                created. Format: projects/*/locations/*/corpora/\*
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2071,7 +2071,7 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             parent (str):
                 Required. The parent resource where this data schema
                 will be created. Format:
-                projects/\ */locations/*/corpora/\*
+                projects/*/locations/*/corpora/\*
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2638,7 +2638,7 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             parent (str):
                 Required. The parent resource where this annotation will
                 be created. Format:
-                projects/\ */locations/*/corpora/*/assets/*
+                projects/*/locations/*/corpora/*/assets/*
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3496,7 +3496,7 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             parent (str):
                 Required. The parent resource where this search
                 configuration will be created. Format:
-                projects/\ */locations/*/corpora/\*
+                projects/*/locations/*/corpora/\*
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3512,7 +3512,7 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
                 Required. ID to use for the new search config. Will
                 become the final component of the SearchConfig's
                 resource name. This value should be up to 63 characters,
-                and valid characters are /[a-z][0-9]-_/. The first
+                and valid characters are /[a-z][0-9]-\_/. The first
                 character must be a letter, the last could be a letter
                 or a number.
 

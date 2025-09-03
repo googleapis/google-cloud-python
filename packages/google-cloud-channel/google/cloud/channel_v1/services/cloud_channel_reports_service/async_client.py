@@ -330,15 +330,15 @@ class CloudChannelReportsServiceAsyncClient:
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The user doesn't have access to this
-           report.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: The report identifier was not found.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The user doesn't have access to this
+          report.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: The report identifier was not found.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 

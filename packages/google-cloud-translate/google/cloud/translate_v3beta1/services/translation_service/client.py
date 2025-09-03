@@ -1041,11 +1041,11 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
 
                 The format depends on model type:
 
-                -  AutoML Translation models:
-                   ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
+                - AutoML Translation models:
+                  ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
-                -  General (built-in) models:
-                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+                - General (built-in) models:
+                  ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
 
                 Returns languages supported by the specified model. If
                 missing, we get supported languages of Google general

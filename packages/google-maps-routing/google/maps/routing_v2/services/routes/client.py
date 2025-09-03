@@ -714,28 +714,28 @@ class RoutesClient(metaclass=RoutesClientMeta):
 
         For example, in this method:
 
-        -  Field mask of all available fields (for manual inspection):
-           ``X-Goog-FieldMask: *``
-        -  Field mask of Route-level duration, distance, and polyline
-           (an example production setup):
-           ``X-Goog-FieldMask: routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline``
+        - Field mask of all available fields (for manual inspection):
+          ``X-Goog-FieldMask: *``
+        - Field mask of Route-level duration, distance, and polyline (an
+          example production setup):
+          ``X-Goog-FieldMask: routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline``
 
         Google discourage the use of the wildcard (``*``) response field
         mask, or specifying the field mask at the top level
         (``routes``), because:
 
-        -  Selecting only the fields that you need helps our server save
-           computation cycles, allowing us to return the result to you
-           with a lower latency.
-        -  Selecting only the fields that you need in your production
-           job ensures stable latency performance. We might add more
-           response fields in the future, and those new fields might
-           require extra computation time. If you select all fields, or
-           if you select all fields at the top level, then you might
-           experience performance degradation because any new field we
-           add will be automatically included in the response.
-        -  Selecting only the fields that you need results in a smaller
-           response size, and thus higher network throughput.
+        - Selecting only the fields that you need helps our server save
+          computation cycles, allowing us to return the result to you
+          with a lower latency.
+        - Selecting only the fields that you need in your production job
+          ensures stable latency performance. We might add more response
+          fields in the future, and those new fields might require extra
+          computation time. If you select all fields, or if you select
+          all fields at the top level, then you might experience
+          performance degradation because any new field we add will be
+          automatically included in the response.
+        - Selecting only the fields that you need results in a smaller
+          response size, and thus higher network throughput.
 
         .. code-block:: python
 
@@ -825,28 +825,28 @@ class RoutesClient(metaclass=RoutesClientMeta):
 
         For example, in this method:
 
-        -  Field mask of all available fields (for manual inspection):
-           ``X-Goog-FieldMask: *``
-        -  Field mask of route durations, distances, element status,
-           condition, and element indices (an example production setup):
-           ``X-Goog-FieldMask: originIndex,destinationIndex,status,condition,distanceMeters,duration``
+        - Field mask of all available fields (for manual inspection):
+          ``X-Goog-FieldMask: *``
+        - Field mask of route durations, distances, element status,
+          condition, and element indices (an example production setup):
+          ``X-Goog-FieldMask: originIndex,destinationIndex,status,condition,distanceMeters,duration``
 
         It is critical that you include ``status`` in your field mask as
         otherwise all messages will appear to be OK. Google discourages
         the use of the wildcard (``*``) response field mask, because:
 
-        -  Selecting only the fields that you need helps our server save
-           computation cycles, allowing us to return the result to you
-           with a lower latency.
-        -  Selecting only the fields that you need in your production
-           job ensures stable latency performance. We might add more
-           response fields in the future, and those new fields might
-           require extra computation time. If you select all fields, or
-           if you select all fields at the top level, then you might
-           experience performance degradation because any new field we
-           add will be automatically included in the response.
-        -  Selecting only the fields that you need results in a smaller
-           response size, and thus higher network throughput.
+        - Selecting only the fields that you need helps our server save
+          computation cycles, allowing us to return the result to you
+          with a lower latency.
+        - Selecting only the fields that you need in your production job
+          ensures stable latency performance. We might add more response
+          fields in the future, and those new fields might require extra
+          computation time. If you select all fields, or if you select
+          all fields at the top level, then you might experience
+          performance degradation because any new field we add will be
+          automatically included in the response.
+        - Selecting only the fields that you need results in a smaller
+          response size, and thus higher network throughput.
 
         .. code-block:: python
 

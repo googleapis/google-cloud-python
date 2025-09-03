@@ -1381,58 +1381,63 @@ class SpeechAsyncClient:
                    to the client. If there is no recognizable audio then
                    no messages are streamed back to the client.
 
-                   Here are some examples of StreamingRecognizeResponses
-                   that might be returned while processing audio:
+                   Here are some examples of
+                   \`StreamingRecognizeResponse`s that might be returned
+                   while processing audio:
 
                    1. results { alternatives { transcript: "tube" }
                       stability: 0.01 }
+
                    2. results { alternatives { transcript: "to be a" }
                       stability: 0.01 }
+
                    3. results { alternatives { transcript: "to be" }
                       stability: 0.9 } results { alternatives {
                       transcript: " or not to be" } stability: 0.01 }
+
                    4.
 
                       results { alternatives { transcript: "to be or not to be"
-                         confidence: 0.92 }
-
-                      alternatives { transcript: "to bee or not to bee" }
-                         is_final: true }
+                         confidence: 0.92 } alternatives { transcript:
+                         "to bee or not to bee" } is_final: true }
 
                    5. results { alternatives { transcript: " that's" }
                       stability: 0.01 }
+
                    6. results { alternatives { transcript: " that is" }
                       stability: 0.9 } results { alternatives {
                       transcript: " the question" } stability: 0.01 }
+
                    7.
 
                       results { alternatives { transcript: " that is the question"
-                         confidence: 0.98 }
-
-                      alternatives { transcript: " that was the question" }
-                         is_final: true }
+                         confidence: 0.98 } alternatives { transcript: "
+                         that was the question" } is_final: true }
 
                    Notes:
 
-                   -  Only two of the above responses #4 and #7 contain
-                      final results; they are indicated by
-                      is_final: true. Concatenating these together
-                      generates the full transcript: "to be or not to be
-                      that is the question".
-                   -  The others contain interim results. #3 and #6
-                      contain two interim \`results`: the first portion
-                      has a high stability and is less likely to change;
-                      the second portion has a low stability and is very
-                      likely to change. A UI designer might choose to
-                      show only high stability results.
-                   -  The specific stability and confidence values shown
-                      above are only for illustrative purposes. Actual
-                      values may vary.
+                   - Only two of the above responses #4 and #7 contain
+                     final results; they are indicated by is_final:
+                     true. Concatenating these together generates the
+                     full transcript: "to be or not to be that is the
+                     question".
+
+                   - The others contain interim results. #3 and #6
+                     contain two interim \`results\`: the first portion
+                     has a high stability and is less likely to change;
+                     the second portion has a low stability and is very
+                     likely to change. A UI designer might choose to
+                     show only high stability results.
+
+                   - The specific stability and confidence values shown
+                     above are only for illustrative purposes. Actual
+                     values may vary.
+
                    -
 
-                      In each response, only one of these fields will be set:
-                         error, speech_event_type, or one or more
-                         (repeated) results.
+                     In each response, only one of these fields will be set:
+                        error, speech_event_type, or one or more
+                        (repeated) results.
 
         """
 
@@ -1705,7 +1710,7 @@ class SpeechAsyncClient:
             google.cloud.speech_v2.types.Config:
                 Message representing the config for the Speech-to-Text API. This includes an
                    optional [KMS
-                   key](\ https://cloud.google.com/kms/docs/resource-hierarchy#keys)
+                   key](https://cloud.google.com/kms/docs/resource-hierarchy#keys)
                    with which incoming data will be encrypted.
 
         """
@@ -1827,7 +1832,7 @@ class SpeechAsyncClient:
             google.cloud.speech_v2.types.Config:
                 Message representing the config for the Speech-to-Text API. This includes an
                    optional [KMS
-                   key](\ https://cloud.google.com/kms/docs/resource-hierarchy#keys)
+                   key](https://cloud.google.com/kms/docs/resource-hierarchy#keys)
                    with which incoming data will be encrypted.
 
         """

@@ -115,7 +115,7 @@ class LfpProvidersServiceClient(metaclass=LfpProvidersServiceClientMeta):
     """The service facilitates the management of a merchant's LFP provider
     settings. This API defines the following resource model:
 
-    -  [LfpProvider][google.shopping.merchant.accounts.v1.LfpProvider]
+    - [LfpProvider][google.shopping.merchant.accounts.v1.LfpProvider]
     """
 
     @staticmethod

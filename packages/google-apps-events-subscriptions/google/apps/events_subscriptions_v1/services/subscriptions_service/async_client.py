@@ -386,7 +386,7 @@ class SubscriptionsServiceAsyncClient:
                 The result type for the operation will be :class:`google.apps.events_subscriptions_v1.types.Subscription` A subscription to receive events about a Google Workspace resource. To learn
                    more about subscriptions, see the [Google Workspace
                    Events API
-                   overview](\ https://developers.google.com/workspace/events).
+                   overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.
@@ -644,7 +644,7 @@ class SubscriptionsServiceAsyncClient:
                 A subscription to receive events about a Google Workspace resource. To learn
                    more about subscriptions, see the [Google Workspace
                    Events API
-                   overview](\ https://developers.google.com/workspace/events).
+                   overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.
@@ -918,11 +918,11 @@ class SubscriptionsServiceAsyncClient:
                 You can update one of the following fields in a
                 subscription:
 
-                -  [``expire_time``][google.apps.events.subscriptions.v1.Subscription.expire_time]:
-                   The timestamp when the subscription expires.
-                -  [``ttl``][google.apps.events.subscriptions.v1.Subscription.ttl]:
-                   The time-to-live (TTL) or duration of the
-                   subscription.
+                - [``expire_time``][google.apps.events.subscriptions.v1.Subscription.expire_time]:
+                  The timestamp when the subscription expires.
+                - [``ttl``][google.apps.events.subscriptions.v1.Subscription.ttl]:
+                  The time-to-live (TTL) or duration of the
+                  subscription.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -942,7 +942,7 @@ class SubscriptionsServiceAsyncClient:
                 The result type for the operation will be :class:`google.apps.events_subscriptions_v1.types.Subscription` A subscription to receive events about a Google Workspace resource. To learn
                    more about subscriptions, see the [Google Workspace
                    Events API
-                   overview](\ https://developers.google.com/workspace/events).
+                   overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.
@@ -1082,7 +1082,7 @@ class SubscriptionsServiceAsyncClient:
                 The result type for the operation will be :class:`google.apps.events_subscriptions_v1.types.Subscription` A subscription to receive events about a Google Workspace resource. To learn
                    more about subscriptions, see the [Google Workspace
                    Events API
-                   overview](\ https://developers.google.com/workspace/events).
+                   overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.

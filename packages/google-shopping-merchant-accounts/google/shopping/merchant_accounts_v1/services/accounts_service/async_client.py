@@ -689,10 +689,10 @@ class AccountsServiceAsyncClient:
                 The following fields are supported (in both
                 ``snake_case`` and ``lowerCamelCase``):
 
-                -  ``account_name``
-                -  ``adult_content``
-                -  ``language_code``
-                -  ``time_zone``
+                - ``account_name``
+                - ``adult_content``
+                - ``language_code``
+                - ``time_zone``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

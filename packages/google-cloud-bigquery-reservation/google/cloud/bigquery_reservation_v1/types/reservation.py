@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
     package="google.cloud.bigquery.reservation.v1",
     manifest={
         "Edition",
+        "FailoverMode",
         "Reservation",
         "CapacityCommitment",
         "CreateReservationRequest",
@@ -84,6 +85,31 @@ class Edition(proto.Enum):
     STANDARD = 1
     ENTERPRISE = 2
     ENTERPRISE_PLUS = 3
+
+
+class FailoverMode(proto.Enum):
+    r"""The failover mode when a user initiates a failover on a
+    reservation determines how writes that arepending replication
+    are handled after the failover is initiated.
+
+    Values:
+        FAILOVER_MODE_UNSPECIFIED (0):
+            Invalid value.
+        SOFT (1):
+            When customers initiate a soft failover,
+            BigQuery will wait until all committed writes
+            are replicated to the secondary. This mode
+            requires both regions to be available for the
+            failover to succeed and prevents data loss.
+        HARD (2):
+            When customers initiate a hard failover,
+            BigQuery will not wait until all committed
+            writes are replicated to the secondary. There
+            can be data loss for hard failover.
+    """
+    FAILOVER_MODE_UNSPECIFIED = 0
+    SOFT = 1
+    HARD = 2
 
 
 class Reservation(proto.Message):
@@ -359,6 +385,14 @@ class Reservation(proto.Message):
                 Output only. A timestamp corresponding to the
                 last change on the primary that was successfully
                 replicated to the secondary.
+            soft_failover_start_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time at which a soft
+                failover for the reservation and its associated
+                datasets was initiated. After this field is set,
+                all subsequent changes to the reservation will
+                be rejected unless a hard failover overrides
+                this operation. This field will be cleared once
+                the failover is complete.
         """
 
         error: status_pb2.Status = proto.Field(
@@ -374,6 +408,11 @@ class Reservation(proto.Message):
         last_replication_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+        soft_failover_start_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
             message=timestamp_pb2.Timestamp,
         )
 
@@ -810,11 +849,21 @@ class FailoverReservationRequest(proto.Message):
             Required. Resource name of the reservation to failover.
             E.g.,
             ``projects/myproject/locations/US/reservations/team1-prod``
+        failover_mode (google.cloud.bigquery_reservation_v1.types.FailoverMode):
+            Optional. A parameter that determines how
+            writes that are pending replication are handled
+            after a failover is initiated. If not specified,
+            HARD failover mode is used by default.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    failover_mode: "FailoverMode" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="FailoverMode",
     )
 
 
@@ -1299,9 +1348,9 @@ class SearchAssignmentsRequest(proto.Message):
 
             Examples:
 
-            -  ``assignee=projects/myproject``
-            -  ``assignee=folders/123``
-            -  ``assignee=organizations/456``
+            - ``assignee=projects/myproject``
+            - ``assignee=folders/123``
+            - ``assignee=organizations/456``
         page_size (int):
             The maximum number of items to return per
             page.
@@ -1344,9 +1393,9 @@ class SearchAllAssignmentsRequest(proto.Message):
 
             Examples:
 
-            -  ``assignee=projects/myproject``
-            -  ``assignee=folders/123``
-            -  ``assignee=organizations/456``
+            - ``assignee=projects/myproject``
+            - ``assignee=folders/123``
+            - ``assignee=organizations/456``
         page_size (int):
             The maximum number of items to return per
             page.

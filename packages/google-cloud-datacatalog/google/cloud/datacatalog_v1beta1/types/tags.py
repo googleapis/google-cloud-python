@@ -48,7 +48,7 @@ class Tag(proto.Message):
             Identifier. The resource name of the tag in URL format.
             Example:
 
-            -  projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
+            - projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
 
             where ``tag_id`` is a system-generated identifier. Note that
             this Tag may not actually be stored in the location in this
@@ -57,7 +57,7 @@ class Tag(proto.Message):
             Required. The resource name of the tag template that this
             tag uses. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+            - projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
 
             This field cannot be modified after creation.
         template_display_name (str):
@@ -71,7 +71,7 @@ class Tag(proto.Message):
             For attaching a tag to a nested column, use ``.`` to
             separate the column names. Example:
 
-            -  ``outer_column.inner_column``
+            - ``outer_column.inner_column``
 
             This field is a member of `oneof`_ ``scope``.
         fields (MutableMapping[str, google.cloud.datacatalog_v1beta1.types.TagField]):
@@ -223,7 +223,7 @@ class TagTemplate(proto.Message):
             Identifier. The resource name of the tag template in URL
             format. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+            - projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
 
             Note that this TagTemplate and its child resources may not
             actually be stored in the location in this name.
@@ -238,7 +238,7 @@ class TagTemplate(proto.Message):
 
             The keys to this map are tag template field IDs. Field IDs
             can contain letters (both uppercase and lowercase), numbers
-            (0-9) and underscores (_). Field IDs must be at least 1
+            (0-9) and underscores (\_). Field IDs must be at least 1
             character long and at most 64 characters long. Field IDs
             must start with a letter or underscore.
         dataplex_transfer_status (google.cloud.datacatalog_v1beta1.types.TagTemplate.DataplexTransferStatus):
@@ -294,7 +294,7 @@ class TagTemplateField(proto.Message):
             Output only. Identifier. The resource name of the tag
             template field in URL format. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template}/fields/{field}
+            - projects/{project_id}/locations/{location}/tagTemplates/{tag_template}/fields/{field}
 
             Note that this TagTemplateField may not actually be stored
             in the location in this name.

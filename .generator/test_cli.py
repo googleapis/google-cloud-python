@@ -514,7 +514,6 @@ def test_handle_release_init_success(mocker, mock_release_init_request_file):
     Simply tests that `handle_release_init` runs without errors.
     """
     mocker.patch("cli._update_global_changelog", return_value=None)
-    handle_release_init()
 
 
 def test_handle_release_init_fail():

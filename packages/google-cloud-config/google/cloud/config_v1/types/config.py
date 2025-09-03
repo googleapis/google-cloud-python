@@ -88,6 +88,7 @@ __protobuf__ = proto.module(
         "ListResourceDriftsRequest",
         "ListResourceDriftsResponse",
         "GetResourceDriftRequest",
+        "ProviderConfig",
     },
 )
 
@@ -181,11 +182,11 @@ class Deployment(proto.Message):
             ``gs://<project number>-<region>-blueprint-config``
             Constraints:
 
-            -  The bucket needs to be in the same project as the
-               deployment
-            -  The path cannot be within the path of ``gcs_source``
-            -  The field cannot be updated, including changing its
-               presence
+            - The bucket needs to be in the same project as the
+              deployment
+            - The path cannot be within the path of ``gcs_source``
+            - The field cannot be updated, including changing its
+              presence
 
             This field is a member of `oneof`_ ``_artifacts_gcs_bucket``.
         service_account (str):
@@ -238,6 +239,9 @@ class Deployment(proto.Message):
             deployments during automation. See
             https://google.aip.dev/148#annotations for
             details on format and size limitations.
+        provider_config (google.cloud.config_v1.types.ProviderConfig):
+            Optional. This field specifies the provider
+            configurations.
     """
 
     class State(proto.Enum):
@@ -443,6 +447,11 @@ class Deployment(proto.Message):
         proto.STRING,
         number=24,
     )
+    provider_config: "ProviderConfig" = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message="ProviderConfig",
+    )
 
 
 class TerraformBlueprint(proto.Message):
@@ -589,18 +598,18 @@ class ListDeploymentsRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/deployments/bar
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/deployments/bar
 
-            -  Filter by labels:
+            - Filter by labels:
 
-               -  Resources that have a key called 'foo' labels.foo:\*
-               -  Resources that have a key called 'foo' whose value is
-                  'bar' labels.foo = bar
+              - Resources that have a key called 'foo' labels.foo:\*
+              - Resources that have a key called 'foo' whose value is
+                'bar' labels.foo = bar
 
-            -  Filter by state:
+            - Filter by state:
 
-               -  Deployments in CREATING state. state=CREATING
+              - Deployments in CREATING state. state=CREATING
         order_by (str):
             Field to use to sort the list.
     """
@@ -703,18 +712,18 @@ class ListRevisionsRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/deployments/dep/revisions/bar
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/deployments/dep/revisions/bar
 
-            -  Filter by labels:
+            - Filter by labels:
 
-               -  Resources that have a key called 'foo' labels.foo:\*
-               -  Resources that have a key called 'foo' whose value is
-                  'bar' labels.foo = bar
+              - Resources that have a key called 'foo' labels.foo:\*
+              - Resources that have a key called 'foo' whose value is
+                'bar' labels.foo = bar
 
-            -  Filter by state:
+            - Filter by state:
 
-               -  Revisions in CREATING state. state=CREATING
+              - Revisions in CREATING state. state=CREATING
         order_by (str):
             Field to use to sort the list.
     """
@@ -1161,6 +1170,9 @@ class Revision(proto.Message):
             resources in terraform configuration files.
             There are limited resources on which quota
             validation applies.
+        provider_config (google.cloud.config_v1.types.ProviderConfig):
+            Output only. This field specifies the
+            provider configurations.
     """
 
     class Action(proto.Enum):
@@ -1318,6 +1330,11 @@ class Revision(proto.Message):
         proto.ENUM,
         number=20,
         enum="QuotaValidation",
+    )
+    provider_config: "ProviderConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="ProviderConfig",
     )
 
 
@@ -1674,8 +1691,8 @@ class ListResourcesRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/deployments/dep/revisions/bar/resources/baz
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/deployments/dep/revisions/bar/resources/baz
         order_by (str):
             Field to use to sort the list.
     """
@@ -1999,12 +2016,12 @@ class Preview(proto.Message):
             Format: ``gs://<project number>-<region>-blueprint-config``
             Constraints:
 
-            -  The bucket needs to be in the same project as the
-               deployment
-            -  The path cannot be within the path of ``gcs_source`` If
-               omitted and deployment resource ref provided has
-               artifacts_gcs_bucket defined, that artifact bucket is
-               used.
+            - The bucket needs to be in the same project as the
+              deployment
+            - The path cannot be within the path of ``gcs_source`` If
+              omitted and deployment resource ref provided has
+              artifacts_gcs_bucket defined, that artifact bucket is
+              used.
 
             This field is a member of `oneof`_ ``_artifacts_gcs_bucket``.
         worker_pool (str):
@@ -2054,6 +2071,9 @@ class Preview(proto.Message):
             preview during automation. See
             https://google.aip.dev/148#annotations for
             details on format and size limitations.
+        provider_config (google.cloud.config_v1.types.ProviderConfig):
+            Optional. This field specifies the provider
+            configurations.
     """
 
     class State(proto.Enum):
@@ -2236,6 +2256,11 @@ class Preview(proto.Message):
         proto.STRING,
         proto.STRING,
         number=20,
+    )
+    provider_config: "ProviderConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="ProviderConfig",
     )
 
 
@@ -2440,18 +2465,18 @@ class ListPreviewsRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/deployments/bar
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/deployments/bar
 
-            -  Filter by labels:
+            - Filter by labels:
 
-               -  Resources that have a key called 'foo' labels.foo:\*
-               -  Resources that have a key called 'foo' whose value is
-                  'bar' labels.foo = bar
+              - Resources that have a key called 'foo' labels.foo:\*
+              - Resources that have a key called 'foo' whose value is
+                'bar' labels.foo = bar
 
-            -  Filter by state:
+            - Filter by state:
 
-               -  Deployments in CREATING state. state=CREATING
+              - Deployments in CREATING state. state=CREATING
         order_by (str):
             Optional. Field to use to sort the list.
     """
@@ -2955,8 +2980,8 @@ class ListResourceChangesRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/previews/dep/resourceChanges/baz
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/previews/dep/resourceChanges/baz
         order_by (str):
             Optional. Field to use to sort the list.
     """
@@ -3176,8 +3201,8 @@ class ListResourceDriftsRequest(proto.Message):
 
             Examples:
 
-            -  Filter by name: name =
-               "projects/foo/locations/us-central1/previews/dep/resourceDrifts/baz
+            - Filter by name: name =
+              "projects/foo/locations/us-central1/previews/dep/resourceDrifts/baz
         order_by (str):
             Optional. Field to use to sort the list.
     """
@@ -3252,6 +3277,40 @@ class GetResourceDriftRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class ProviderConfig(proto.Message):
+    r"""ProviderConfig contains the provider configurations.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        source_type (google.cloud.config_v1.types.ProviderConfig.ProviderSource):
+            Optional. ProviderSource specifies the source
+            type of the provider.
+
+            This field is a member of `oneof`_ ``_source_type``.
+    """
+
+    class ProviderSource(proto.Enum):
+        r"""ProviderSource represents the source type of the provider.
+
+        Values:
+            PROVIDER_SOURCE_UNSPECIFIED (0):
+                Unspecified source type, default to public
+                sources.
+            SERVICE_MAINTAINED (1):
+                Service maintained provider source type.
+        """
+        PROVIDER_SOURCE_UNSPECIFIED = 0
+        SERVICE_MAINTAINED = 1
+
+    source_type: ProviderSource = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=ProviderSource,
     )
 
 

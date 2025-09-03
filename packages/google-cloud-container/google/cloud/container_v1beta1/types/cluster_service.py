@@ -609,12 +609,12 @@ class NodeKubeletConfig(proto.Message):
 
             The following values are allowed.
 
-            -  "none": the default, which represents the existing
-               scheduling behavior.
-            -  "static": allows pods with certain resource
-               characteristics to be granted increased CPU affinity and
-               exclusivity on the node. The default value is 'none' if
-               unspecified.
+            - "none": the default, which represents the existing
+              scheduling behavior.
+            - "static": allows pods with certain resource
+              characteristics to be granted increased CPU affinity and
+              exclusivity on the node. The default value is 'none' if
+              unspecified.
         topology_manager (google.cloud.container_v1beta1.types.TopologyManager):
             Optional. Controls Topology Manager
             configuration on the node. For more information,
@@ -889,23 +889,23 @@ class TopologyManager(proto.Message):
             Configures the strategy for resource alignment. Allowed
             values are:
 
-            -  none: the default policy, and does not perform any
-               topology alignment.
-            -  restricted: the topology manager stores the preferred
-               NUMA node affinity for the container, and will reject the
-               pod if the affinity if not preferred.
-            -  best-effort: the topology manager stores the preferred
-               NUMA node affinity for the container. If the affinity is
-               not preferred, the topology manager will admit the pod to
-               the node anyway.
-            -  single-numa-node: the topology manager determines if the
-               single NUMA node affinity is possible. If it is, Topology
-               Manager will store this and the Hint Providers can then
-               use this information when making the resource allocation
-               decision. If, however, this is not possible then the
-               Topology Manager will reject the pod from the node. This
-               will result in a pod in a Terminated state with a pod
-               admission failure.
+            - none: the default policy, and does not perform any
+              topology alignment.
+            - restricted: the topology manager stores the preferred NUMA
+              node affinity for the container, and will reject the pod
+              if the affinity if not preferred.
+            - best-effort: the topology manager stores the preferred
+              NUMA node affinity for the container. If the affinity is
+              not preferred, the topology manager will admit the pod to
+              the node anyway.
+            - single-numa-node: the topology manager determines if the
+              single NUMA node affinity is possible. If it is, Topology
+              Manager will store this and the Hint Providers can then
+              use this information when making the resource allocation
+              decision. If, however, this is not possible then the
+              Topology Manager will reject the pod from the node. This
+              will result in a pod in a Terminated state with a pod
+              admission failure.
 
             The default policy value is 'none' if unspecified. Details
             about each strategy can be found
@@ -913,8 +913,8 @@ class TopologyManager(proto.Message):
         scope (str):
             The Topology Manager aligns resources in following scopes:
 
-            -  container
-            -  pod
+            - container
+            - pod
 
             The default scope is 'container' if unspecified. See
             https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/#topology-manager-scopes
@@ -942,8 +942,8 @@ class MemoryManager(proto.Message):
 
             The following values are allowed.
 
-            -  "none"
-            -  "static" The default value is 'none' if unspecified.
+            - "none"
+            - "static" The default value is 'none' if unspecified.
     """
 
     policy: str = proto.Field(
@@ -1205,12 +1205,12 @@ class NodeConfig(proto.Message):
             The following scopes are recommended, but not required, and
             by default are not included:
 
-            -  ``https://www.googleapis.com/auth/compute`` is required
-               for mounting persistent storage on your nodes.
-            -  ``https://www.googleapis.com/auth/devstorage.read_only``
-               is required for communicating with **gcr.io** (the
-               `Google Container
-               Registry <https://cloud.google.com/container-registry/>`__).
+            - ``https://www.googleapis.com/auth/compute`` is required
+              for mounting persistent storage on your nodes.
+            - ``https://www.googleapis.com/auth/devstorage.read_only``
+              is required for communicating with **gcr.io** (the `Google
+              Container
+              Registry <https://cloud.google.com/container-registry/>`__).
 
             If unspecified, no scopes are added, unless Cloud Logging or
             Cloud Monitoring are enabled, in which case their required
@@ -1231,25 +1231,25 @@ class NodeConfig(proto.Message):
             ambiguity, keys must not conflict with any other metadata
             keys for the project or be one of the reserved keys:
 
-            -  "cluster-location"
-            -  "cluster-name"
-            -  "cluster-uid"
-            -  "configure-sh"
-            -  "containerd-configure-sh"
-            -  "enable-oslogin"
-            -  "gci-ensure-gke-docker"
-            -  "gci-metrics-enabled"
-            -  "gci-update-strategy"
-            -  "instance-template"
-            -  "kube-env"
-            -  "startup-script"
-            -  "user-data"
-            -  "disable-address-manager"
-            -  "windows-startup-script-ps1"
-            -  "common-psm1"
-            -  "k8s-node-setup-psm1"
-            -  "install-ssh-psm1"
-            -  "user-profile-psm1"
+            - "cluster-location"
+            - "cluster-name"
+            - "cluster-uid"
+            - "configure-sh"
+            - "containerd-configure-sh"
+            - "enable-oslogin"
+            - "gci-ensure-gke-docker"
+            - "gci-metrics-enabled"
+            - "gci-update-strategy"
+            - "instance-template"
+            - "kube-env"
+            - "startup-script"
+            - "user-data"
+            - "disable-address-manager"
+            - "windows-startup-script-ps1"
+            - "common-psm1"
+            - "k8s-node-setup-psm1"
+            - "install-ssh-psm1"
+            - "user-profile-psm1"
 
             Values are free-form strings, and only have meaning as
             interpreted by the image running in the instance. The only
@@ -3272,7 +3272,7 @@ class PrivateClusterConfig(proto.Message):
         private_endpoint_subnetwork (str):
             Subnet to provision the master's private endpoint during
             cluster creation. Specified in
-            projects/\ */regions/*/subnetworks/\* format.
+            projects/*/regions/*/subnetworks/\* format.
 
             Deprecated: Use
             [ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint_subnetwork][google.container.v1beta1.ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint_subnetwork]
@@ -4019,9 +4019,9 @@ class Cluster(proto.Message):
             this project and location (e.g. zone or region), and can be
             up to 40 characters with the following restrictions:
 
-            -  Lowercase letters, numbers, and hyphens only.
-            -  Must start with a letter.
-            -  Must end with a number or a letter.
+            - Lowercase letters, numbers, and hyphens only.
+            - Must start with a letter.
+            - Must end with a number or a letter.
         description (str):
             An optional description of this cluster.
         initial_node_count (int):
@@ -4060,11 +4060,11 @@ class Cluster(proto.Message):
             The logging service the cluster should use to write logs.
             Currently available options:
 
-            -  ``logging.googleapis.com/kubernetes`` - The Cloud Logging
-               service with a Kubernetes-native resource model
-            -  ``logging.googleapis.com`` - The legacy Cloud Logging
-               service (no longer available as of GKE 1.15).
-            -  ``none`` - no logs will be exported from the cluster.
+            - ``logging.googleapis.com/kubernetes`` - The Cloud Logging
+              service with a Kubernetes-native resource model
+            - ``logging.googleapis.com`` - The legacy Cloud Logging
+              service (no longer available as of GKE 1.15).
+            - ``none`` - no logs will be exported from the cluster.
 
             If left as an empty
             string,\ ``logging.googleapis.com/kubernetes`` will be used
@@ -4074,12 +4074,11 @@ class Cluster(proto.Message):
             The monitoring service the cluster should use to write
             metrics. Currently available options:
 
-            -  ``monitoring.googleapis.com/kubernetes`` - The Cloud
-               Monitoring service with a Kubernetes-native resource
-               model
-            -  ``monitoring.googleapis.com`` - The legacy Cloud
-               Monitoring service (no longer available as of GKE 1.15).
-            -  ``none`` - No metrics will be exported from the cluster.
+            - ``monitoring.googleapis.com/kubernetes`` - The Cloud
+              Monitoring service with a Kubernetes-native resource model
+            - ``monitoring.googleapis.com`` - The legacy Cloud
+              Monitoring service (no longer available as of GKE 1.15).
+            - ``none`` - No metrics will be exported from the cluster.
 
             If left as an empty
             string,\ ``monitoring.googleapis.com/kubernetes`` will be
@@ -5418,12 +5417,11 @@ class ClusterUpdate(proto.Message):
             The monitoring service the cluster should use to write
             metrics. Currently available options:
 
-            -  ``monitoring.googleapis.com/kubernetes`` - The Cloud
-               Monitoring service with a Kubernetes-native resource
-               model
-            -  ``monitoring.googleapis.com`` - The legacy Cloud
-               Monitoring service (no longer available as of GKE 1.15).
-            -  ``none`` - No metrics will be exported from the cluster.
+            - ``monitoring.googleapis.com/kubernetes`` - The Cloud
+              Monitoring service with a Kubernetes-native resource model
+            - ``monitoring.googleapis.com`` - The legacy Cloud
+              Monitoring service (no longer available as of GKE 1.15).
+            - ``none`` - No metrics will be exported from the cluster.
 
             If left as an empty
             string,\ ``monitoring.googleapis.com/kubernetes`` will be
@@ -5475,11 +5473,11 @@ class ClusterUpdate(proto.Message):
             The logging service the cluster should use to write logs.
             Currently available options:
 
-            -  ``logging.googleapis.com/kubernetes`` - The Cloud Logging
-               service with a Kubernetes-native resource model
-            -  ``logging.googleapis.com`` - The legacy Cloud Logging
-               service (no longer available as of GKE 1.15).
-            -  ``none`` - no logs will be exported from the cluster.
+            - ``logging.googleapis.com/kubernetes`` - The Cloud Logging
+              service with a Kubernetes-native resource model
+            - ``logging.googleapis.com`` - The legacy Cloud Logging
+              service (no longer available as of GKE 1.15).
+            - ``none`` - no logs will be exported from the cluster.
 
             If left as an empty
             string,\ ``logging.googleapis.com/kubernetes`` will be used
@@ -7216,11 +7214,11 @@ class SetLoggingServiceRequest(proto.Message):
             Required. The logging service the cluster should use to
             write logs. Currently available options:
 
-            -  ``logging.googleapis.com/kubernetes`` - The Cloud Logging
-               service with a Kubernetes-native resource model
-            -  ``logging.googleapis.com`` - The legacy Cloud Logging
-               service (no longer available as of GKE 1.15).
-            -  ``none`` - no logs will be exported from the cluster.
+            - ``logging.googleapis.com/kubernetes`` - The Cloud Logging
+              service with a Kubernetes-native resource model
+            - ``logging.googleapis.com`` - The legacy Cloud Logging
+              service (no longer available as of GKE 1.15).
+            - ``none`` - no logs will be exported from the cluster.
 
             If left as an empty
             string,\ ``logging.googleapis.com/kubernetes`` will be used
@@ -7278,12 +7276,11 @@ class SetMonitoringServiceRequest(proto.Message):
             Required. The monitoring service the cluster should use to
             write metrics. Currently available options:
 
-            -  ``monitoring.googleapis.com/kubernetes`` - The Cloud
-               Monitoring service with a Kubernetes-native resource
-               model
-            -  ``monitoring.googleapis.com`` - The legacy Cloud
-               Monitoring service (no longer available as of GKE 1.15).
-            -  ``none`` - No metrics will be exported from the cluster.
+            - ``monitoring.googleapis.com/kubernetes`` - The Cloud
+              Monitoring service with a Kubernetes-native resource model
+            - ``monitoring.googleapis.com`` - The legacy Cloud
+              Monitoring service (no longer available as of GKE 1.15).
+            - ``none`` - No metrics will be exported from the cluster.
 
             If left as an empty
             string,\ ``monitoring.googleapis.com/kubernetes`` will be
@@ -9410,12 +9407,12 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             The following scopes are recommended, but not required, and
             by default are not included:
 
-            -  ``https://www.googleapis.com/auth/compute`` is required
-               for mounting persistent storage on your nodes.
-            -  ``https://www.googleapis.com/auth/devstorage.read_only``
-               is required for communicating with **gcr.io** (the
-               `Google Container
-               Registry <https://cloud.google.com/container-registry/>`__).
+            - ``https://www.googleapis.com/auth/compute`` is required
+              for mounting persistent storage on your nodes.
+            - ``https://www.googleapis.com/auth/devstorage.read_only``
+              is required for communicating with **gcr.io** (the `Google
+              Container
+              Registry <https://cloud.google.com/container-registry/>`__).
 
             If unspecified, no scopes are added, unless Cloud Logging or
             Cloud Monitoring are enabled, in which case their required
@@ -9598,13 +9595,14 @@ class NodePoolAutoscaling(proto.Message):
         total_min_node_count (int):
             Minimum number of nodes in the node pool. Must be greater
             than or equal to 0 and less than or equal to
-            total_max_node_count. The total_*_node_count fields are
+            total_max_node_count. The total\_*_node_count fields are
             mutually exclusive with the \*_node_count fields.
         total_max_node_count (int):
             Maximum number of nodes in the node pool. Must be greater
             than or equal to total_min_node_count. There has to be
-            enough quota to scale up the cluster. The total_*_node_count
-            fields are mutually exclusive with the \*_node_count fields.
+            enough quota to scale up the cluster. The
+            total\_*_node_count fields are mutually exclusive with the
+            \*_node_count fields.
     """
 
     class LocationPolicy(proto.Enum):
@@ -12772,8 +12770,8 @@ class ControlPlaneEndpointsConfig(proto.Message):
             private_endpoint_subnetwork (str):
                 Subnet to provision the master's private endpoint during
                 cluster creation. Specified in
-                projects/\ */regions/*/subnetworks/\* format. It is invalid
-                to specify both
+                projects/*/regions/*/subnetworks/\* format. It is invalid to
+                specify both
                 [PrivateClusterConfig.privateEndpointSubnetwork][] and this
                 field at the same time.
         """

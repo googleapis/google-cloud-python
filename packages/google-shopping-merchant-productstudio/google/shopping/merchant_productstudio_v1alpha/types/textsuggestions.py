@@ -326,7 +326,7 @@ class OutputSpec(proto.Message):
             size information after that.
         attribute_separator (str):
             Optional. Character used to separate attributes in the
-            generated title. For example, '|', '-', ','.
+            generated title. For example, '\|', '-', ','.
 
             This field is a member of `oneof`_ ``_attribute_separator``.
     """

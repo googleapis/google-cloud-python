@@ -107,7 +107,7 @@ class UpdateEmailPreferencesRequest(proto.Message):
             The following fields are supported (in both ``snake_case``
             and ``lowerCamelCase``):
 
-            -  ``news_and_tips``
+            - ``news_and_tips``
     """
 
     email_preferences: "EmailPreferences" = proto.Field(

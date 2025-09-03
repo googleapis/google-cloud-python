@@ -1520,10 +1520,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.SetSuggestionFeatureConfigOperationMetadata]
-        -  ``response``:
-           [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
+        - ``metadata``:
+          [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.SetSuggestionFeatureConfigOperationMetadata]
+        - ``response``:
+          [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
 
         If a long running operation to add or update suggestion feature
         config for the same conversation profile, participant role and
@@ -1700,10 +1700,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.ClearSuggestionFeatureConfigOperationMetadata]
-        -  ``response``:
-           [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
+        - ``metadata``:
+          [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.ClearSuggestionFeatureConfigOperationMetadata]
+        - ``response``:
+          [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
 
         .. code-block:: python
 

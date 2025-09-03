@@ -86,8 +86,8 @@ class UpdateCheckoutSettingsRequest(proto.Message):
             are supported (in both ``snake_case`` and
             ``lowerCamelCase``):
 
-            -  ``eligible_destinations``
-            -  ``uri_settings``
+            - ``eligible_destinations``
+            - ``uri_settings``
     """
 
     checkout_settings: "CheckoutSettings" = proto.Field(

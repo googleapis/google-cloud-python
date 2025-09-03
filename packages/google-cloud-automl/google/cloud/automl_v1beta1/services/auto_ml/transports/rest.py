@@ -2970,7 +2970,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 listing them, column specs are returned in the same
                 order in which they were given on import . Used by:
 
-                -  Tables
+                - Tables
 
             """
 
@@ -3575,7 +3575,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 consistency validation is done upon creation of a model.
                 Used by:
 
-                -  Tables
+                - Tables
 
             """
 
@@ -4787,7 +4787,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 listing them, column specs are returned in the same
                 order in which they were given on import . Used by:
 
-                -  Tables
+                - Tables
 
             """
 
@@ -5114,7 +5114,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 consistency validation is done upon creation of a model.
                 Used by:
 
-                -  Tables
+                - Tables
 
             """
 

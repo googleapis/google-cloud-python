@@ -238,7 +238,7 @@ class UpdateTriggerRequest(proto.Message):
             The fields to be updated; only fields explicitly provided
             are updated. If no field mask is provided, all provided
             fields in the request are updated. To update all fields,
-            provide a field mask of "*".
+            provide a field mask of "\*".
         allow_missing (bool):
             If set to true, and the trigger is not found, a new trigger
             will be created. In this situation, ``update_mask`` is
@@ -445,7 +445,7 @@ class UpdateChannelRequest(proto.Message):
             The fields to be updated; only fields explicitly provided
             are updated. If no field mask is provided, all provided
             fields in the request are updated. To update all fields,
-            provide a field mask of "*".
+            provide a field mask of "\*".
         validate_only (bool):
             Optional. If set, validate the request and
             preview the review, but do not post it.
@@ -727,7 +727,7 @@ class UpdateGoogleChannelConfigRequest(proto.Message):
             The fields to be updated; only fields explicitly provided
             are updated. If no field mask is provided, all provided
             fields in the request are updated. To update all fields,
-            provide a field mask of "*".
+            provide a field mask of "\*".
     """
 
     google_channel_config: gce_google_channel_config.GoogleChannelConfig = proto.Field(
@@ -935,7 +935,7 @@ class CreateMessageBusRequest(proto.Message):
         message_bus_id (str):
             Required. The user-provided ID to be assigned to the
             MessageBus. It should match the format
-            (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$)
+            (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$)
         validate_only (bool):
             Optional. If set, validate the request and
             preview the review, but do not post it.
@@ -970,7 +970,7 @@ class UpdateMessageBusRequest(proto.Message):
             Optional. The fields to be updated; only fields explicitly
             provided are updated. If no field mask is provided, all
             provided fields in the request are updated. To update all
-            fields, provide a field mask of "*".
+            fields, provide a field mask of "\*".
         allow_missing (bool):
             Optional. If set to true, and the MessageBus is not found, a
             new MessageBus will be created. In this situation,
@@ -1150,7 +1150,7 @@ class CreateEnrollmentRequest(proto.Message):
         enrollment_id (str):
             Required. The user-provided ID to be assigned to the
             Enrollment. It should match the format
-            (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+            (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
         validate_only (bool):
             Optional. If set, validate the request and
             preview the review, but do not post it.
@@ -1185,7 +1185,7 @@ class UpdateEnrollmentRequest(proto.Message):
             Optional. The fields to be updated; only fields explicitly
             provided are updated. If no field mask is provided, all
             provided fields in the request are updated. To update all
-            fields, provide a field mask of "*".
+            fields, provide a field mask of "\*".
         allow_missing (bool):
             Optional. If set to true, and the Enrollment is not found, a
             new Enrollment will be created. In this situation,
@@ -1399,7 +1399,7 @@ class UpdatePipelineRequest(proto.Message):
             Optional. The fields to be updated; only fields explicitly
             provided are updated. If no field mask is provided, all
             provided fields in the request are updated. To update all
-            fields, provide a field mask of "*".
+            fields, provide a field mask of "\*".
         allow_missing (bool):
             Optional. If set to true, and the Pipeline is not found, a
             new Pipeline will be created. In this situation,
@@ -1582,7 +1582,7 @@ class CreateGoogleApiSourceRequest(proto.Message):
         google_api_source_id (str):
             Required. The user-provided ID to be assigned to the
             GoogleApiSource. It should match the format
-            (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+            (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
         validate_only (bool):
             Optional. If set, validate the request and
             preview the review, but do not post it.
@@ -1617,7 +1617,7 @@ class UpdateGoogleApiSourceRequest(proto.Message):
             Optional. The fields to be updated; only fields explicitly
             provided are updated. If no field mask is provided, all
             provided fields in the request are updated. To update all
-            fields, provide a field mask of "*".
+            fields, provide a field mask of "\*".
         allow_missing (bool):
             Optional. If set to true, and the GoogleApiSource is not
             found, a new GoogleApiSource will be created. In this

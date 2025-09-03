@@ -1550,10 +1550,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
@@ -1892,10 +1892,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``:
-           [ImportFlowResponse][google.cloud.dialogflow.cx.v3beta1.ImportFlowResponse]
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``:
+          [ImportFlowResponse][google.cloud.dialogflow.cx.v3beta1.ImportFlowResponse]
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
@@ -2005,10 +2005,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``:
-           [ExportFlowResponse][google.cloud.dialogflow.cx.v3beta1.ExportFlowResponse]
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``:
+          [ExportFlowResponse][google.cloud.dialogflow.cx.v3beta1.ExportFlowResponse]
 
         Note that resources (e.g. intents, entities, webhooks) that the
         flow references will also be exported.

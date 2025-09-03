@@ -112,7 +112,7 @@ class Secret(proto.Message):
 
             A version alias is a string with a maximum length of 63
             characters and can contain uppercase and lowercase letters,
-            numerals, and the hyphen (``-``) and underscore ('_')
+            numerals, and the hyphen (``-``) and underscore ('\_')
             characters. An alias string must start with a letter and
             cannot be the string 'latest' or 'NEW'. No more than 50
             aliases can be assigned to a given secret.
@@ -130,7 +130,7 @@ class Secret(proto.Message):
             Annotation keys must be between 1 and 63 characters long,
             have a UTF-8 encoding of maximum 128 bytes, begin and end
             with an alphanumeric character ([a-z0-9A-Z]), and may have
-            dashes (-), underscores (_), dots (.), and alphanumerics in
+            dashes (-), underscores (\_), dots (.), and alphanumerics in
             between these symbols.
 
             The total size of annotation keys and values must be less

@@ -505,6 +505,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-notifications>`_
+     - stable
+     - |PyPI-google-shopping-merchant-notifications|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-ordertracking>`_
      - stable
      - |PyPI-google-shopping-merchant-ordertracking|
@@ -1309,12 +1315,6 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1288776>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1288776&template=1161103>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-notifications>`_
-     - preview
-     - |PyPI-google-shopping-merchant-notifications|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Merchant ProductStudio API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-productstudio>`_
      - preview
      - |PyPI-google-shopping-merchant-productstudio|
@@ -1700,6 +1700,8 @@ Libraries
      :target: https://pypi.org/project/google-shopping-merchant-issueresolution
 .. |PyPI-google-shopping-merchant-lfp| image:: https://img.shields.io/pypi/v/google-shopping-merchant-lfp.svg
      :target: https://pypi.org/project/google-shopping-merchant-lfp
+.. |PyPI-google-shopping-merchant-notifications| image:: https://img.shields.io/pypi/v/google-shopping-merchant-notifications.svg
+     :target: https://pypi.org/project/google-shopping-merchant-notifications
 .. |PyPI-google-shopping-merchant-ordertracking| image:: https://img.shields.io/pypi/v/google-shopping-merchant-ordertracking.svg
      :target: https://pypi.org/project/google-shopping-merchant-ordertracking
 .. |PyPI-google-shopping-merchant-products| image:: https://img.shields.io/pypi/v/google-shopping-merchant-products.svg
@@ -1968,8 +1970,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-memorystore
 .. |PyPI-google-cloud-redis-cluster| image:: https://img.shields.io/pypi/v/google-cloud-redis-cluster.svg
      :target: https://pypi.org/project/google-cloud-redis-cluster
-.. |PyPI-google-shopping-merchant-notifications| image:: https://img.shields.io/pypi/v/google-shopping-merchant-notifications.svg
-     :target: https://pypi.org/project/google-shopping-merchant-notifications
 .. |PyPI-google-shopping-merchant-productstudio| image:: https://img.shields.io/pypi/v/google-shopping-merchant-productstudio.svg
      :target: https://pypi.org/project/google-shopping-merchant-productstudio
 .. |PyPI-google-shopping-merchant-reviews| image:: https://img.shields.io/pypi/v/google-shopping-merchant-reviews.svg

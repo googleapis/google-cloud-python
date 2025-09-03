@@ -286,16 +286,16 @@ class SearchDocumentsRequest(proto.Message):
 
             Supported options are:
 
-            -  ``"relevance desc"``: By relevance descending, as
-               determined by the API algorithms.
-            -  ``"upload_date desc"``: By upload date descending.
-            -  ``"upload_date"``: By upload date ascending.
-            -  ``"update_date desc"``: By last updated date descending.
-            -  ``"update_date"``: By last updated date ascending.
-            -  ``"retrieval_importance desc"``: By retrieval importance
-               of properties descending. This feature is still under
-               development, please do not use unless otherwise
-               instructed to do so.
+            - ``"relevance desc"``: By relevance descending, as
+              determined by the API algorithms.
+            - ``"upload_date desc"``: By upload date descending.
+            - ``"upload_date"``: By upload date ascending.
+            - ``"update_date desc"``: By last updated date descending.
+            - ``"update_date"``: By last updated date ascending.
+            - ``"retrieval_importance desc"``: By retrieval importance
+              of properties descending. This feature is still under
+              development, please do not use unless otherwise instructed
+              to do so.
         histogram_queries (MutableSequence[google.cloud.contentwarehouse_v1.types.HistogramQuery]):
             An expression specifying a histogram request against
             matching documents. Expression syntax is an aggregation
@@ -303,31 +303,30 @@ class SearchDocumentsRequest(proto.Message):
 
             The following aggregation functions are supported:
 
-            -  ``count(string_histogram_facet)``: Count the number of
-               matching entities for each distinct attribute value.
+            - ``count(string_histogram_facet)``: Count the number of
+              matching entities for each distinct attribute value.
 
             Data types:
 
-            -  Histogram facet (aka filterable properties): Facet names
-               with format <schema id>.<facet>. Facets will have the
-               format of: ``[a-zA-Z][a-zA-Z0-9_:/-.]``. If the facet is
-               a child facet, then the parent hierarchy needs to be
-               specified separated by dots in the prefix after the
-               schema id. Thus, the format for a multi- level facet is:
-               <schema id>.<parent facet name>. <child facet name>.
-               Example:
-               schema123.root_parent_facet.middle_facet.child_facet
-            -  DocumentSchemaId: (with no schema id prefix) to get
-               histograms for each document type (returns the schema id
-               path, e.g.
-               projects/12345/locations/us-west/documentSchemas/abc123).
+            - Histogram facet (aka filterable properties): Facet names
+              with format <schema id>.<facet>. Facets will have the
+              format of: ``[a-zA-Z][a-zA-Z0-9_:/-.]``. If the facet is a
+              child facet, then the parent hierarchy needs to be
+              specified separated by dots in the prefix after the schema
+              id. Thus, the format for a multi- level facet is: <schema
+              id>.<parent facet name>. <child facet name>. Example:
+              schema123.root_parent_facet.middle_facet.child_facet
+            - DocumentSchemaId: (with no schema id prefix) to get
+              histograms for each document type (returns the schema id
+              path, e.g.
+              projects/12345/locations/us-west/documentSchemas/abc123).
 
             Example expression:
 
-            -  Document type counts: count('DocumentSchemaId')
+            - Document type counts: count('DocumentSchemaId')
 
-            -  For schema id, abc123, get the counts for MORTGAGE_TYPE:
-               count('abc123.MORTGAGE_TYPE')
+            - For schema id, abc123, get the counts for MORTGAGE_TYPE:
+              count('abc123.MORTGAGE_TYPE')
         require_total_size (bool):
             Controls if the search document request requires the return
             of a total size of matched documents. See
@@ -504,7 +503,7 @@ class SetAclRequest(proto.Message):
             ``>``, and ``>=`` where the left of the operator is
             ``DocumentSchemaId`` or property name and the right of the
             operator is a number or a quoted string. You must escape
-            backslash (\) and quote (") characters.
+            backslash (\\) and quote (") characters.
 
             Boolean expressions (AND/OR) are supported up to 3 levels of
             nesting (for example, "((A AND B AND C) OR D) AND E"), a

@@ -353,7 +353,7 @@ class RetrieverServiceAsyncClient:
 
         Returns:
             google.ai.generativelanguage_v1alpha.types.Corpus:
-                A Corpus is a collection of Documents.
+                A Corpus is a collection of \`Document`s.
                    A project can create up to 5 corpora.
 
         """
@@ -458,7 +458,7 @@ class RetrieverServiceAsyncClient:
 
         Returns:
             google.ai.generativelanguage_v1alpha.types.Corpus:
-                A Corpus is a collection of Documents.
+                A Corpus is a collection of \`Document`s.
                    A project can create up to 5 corpora.
 
         """
@@ -573,7 +573,7 @@ class RetrieverServiceAsyncClient:
 
         Returns:
             google.ai.generativelanguage_v1alpha.types.Corpus:
-                A Corpus is a collection of Documents.
+                A Corpus is a collection of \`Document`s.
                    A project can create up to 5 corpora.
 
         """
@@ -972,8 +972,8 @@ class RetrieverServiceAsyncClient:
 
         Returns:
             google.ai.generativelanguage_v1alpha.types.Document:
-                A Document is a collection of Chunks.
-                   A Corpus can have a maximum of 10,000 Documents.
+                A Document is a collection of Chunk`s. A \`Corpus can
+                have a maximum of 10,000 \`Document`s.
 
         """
         # Create or coerce a protobuf request object.
@@ -1085,8 +1085,8 @@ class RetrieverServiceAsyncClient:
 
         Returns:
             google.ai.generativelanguage_v1alpha.types.Document:
-                A Document is a collection of Chunks.
-                   A Corpus can have a maximum of 10,000 Documents.
+                A Document is a collection of Chunk`s. A \`Corpus can
+                have a maximum of 10,000 \`Document`s.
 
         """
         # Create or coerce a protobuf request object.
@@ -1201,8 +1201,8 @@ class RetrieverServiceAsyncClient:
 
         Returns:
             google.ai.generativelanguage_v1alpha.types.Document:
-                A Document is a collection of Chunks.
-                   A Corpus can have a maximum of 10,000 Documents.
+                A Document is a collection of Chunk`s. A \`Corpus can
+                have a maximum of 10,000 \`Document`s.
 
         """
         # Create or coerce a protobuf request object.
@@ -1415,9 +1415,9 @@ class RetrieverServiceAsyncClient:
 
         Returns:
             google.ai.generativelanguage_v1alpha.services.retriever_service.pagers.ListDocumentsAsyncPager:
-                Response from ListDocuments containing a paginated list of Documents.
-                   The Documents are sorted by ascending
-                   document.create_time.
+                Response from ListDocuments containing a paginated list
+                of Document`s. The \`Document`s are sorted by ascending
+                \`document.create_time.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1640,7 +1640,7 @@ class RetrieverServiceAsyncClient:
                 A Chunk is a subpart of a Document that is treated as an independent unit
                    for the purposes of vector representation and
                    storage. A Corpus can have a maximum of 1 million
-                   Chunks.
+                   \`Chunk`s.
 
         """
         # Create or coerce a protobuf request object.
@@ -1750,7 +1750,7 @@ class RetrieverServiceAsyncClient:
         Returns:
             google.ai.generativelanguage_v1alpha.types.BatchCreateChunksResponse:
                 Response from BatchCreateChunks containing a list of
-                created Chunks.
+                created \`Chunk`s.
 
         """
         # Create or coerce a protobuf request object.
@@ -1847,7 +1847,7 @@ class RetrieverServiceAsyncClient:
                 A Chunk is a subpart of a Document that is treated as an independent unit
                    for the purposes of vector representation and
                    storage. A Corpus can have a maximum of 1 million
-                   Chunks.
+                   \`Chunk`s.
 
         """
         # Create or coerce a protobuf request object.
@@ -1968,7 +1968,7 @@ class RetrieverServiceAsyncClient:
                 A Chunk is a subpart of a Document that is treated as an independent unit
                    for the purposes of vector representation and
                    storage. A Corpus can have a maximum of 1 million
-                   Chunks.
+                   \`Chunk`s.
 
         """
         # Create or coerce a protobuf request object.
@@ -2079,7 +2079,7 @@ class RetrieverServiceAsyncClient:
         Returns:
             google.ai.generativelanguage_v1alpha.types.BatchUpdateChunksResponse:
                 Response from BatchUpdateChunks containing a list of
-                updated Chunks.
+                updated \`Chunk`s.
 
         """
         # Create or coerce a protobuf request object.
@@ -2350,8 +2350,9 @@ class RetrieverServiceAsyncClient:
 
         Returns:
             google.ai.generativelanguage_v1alpha.services.retriever_service.pagers.ListChunksAsyncPager:
-                Response from ListChunks containing a paginated list of Chunks.
-                   The Chunks are sorted by ascending chunk.create_time.
+                Response from ListChunks containing a paginated list of
+                Chunk`s. The \`Chunk`s are sorted by ascending
+                \`chunk.create_time.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

@@ -64,10 +64,10 @@ class HttpRoute(proto.Message):
             name of a network host, as defined by RFC 1123 with the
             exception that:
 
-            -  IPs are not allowed.
-            -  A hostname may be prefixed with a wildcard label
-               (``*.``). The wildcard label must appear by itself as the
-               first label.
+            - IPs are not allowed.
+            - A hostname may be prefixed with a wildcard label (``*.``).
+              The wildcard label must appear by itself as the first
+              label.
 
             Hostname can be "precise" which is a domain name without the
             terminating dot of a network host (e.g. ``foo.example.com``)

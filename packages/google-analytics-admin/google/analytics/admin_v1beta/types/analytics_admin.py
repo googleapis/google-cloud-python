@@ -434,7 +434,7 @@ class UpdateAccountRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (for example, "field_to_update"). Omitted
             fields will not be updated. To replace the entire entity,
-            use one path with the string "*" to match all fields.
+            use one path with the string "\*" to match all fields.
     """
 
     account: resources.Account = proto.Field(
@@ -600,7 +600,7 @@ class UpdatePropertyRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     property: resources.Property = proto.Field(
@@ -784,7 +784,7 @@ class UpdateGoogleAdsLinkRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     google_ads_link: resources.GoogleAdsLink = proto.Field(
@@ -1293,7 +1293,7 @@ class UpdateConversionEventRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     conversion_event: resources.ConversionEvent = proto.Field(
@@ -1437,7 +1437,7 @@ class UpdateKeyEventRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     key_event: resources.KeyEvent = proto.Field(
@@ -1575,7 +1575,7 @@ class UpdateCustomDimensionRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     custom_dimension: resources.CustomDimension = proto.Field(
@@ -1714,7 +1714,7 @@ class UpdateCustomMetricRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     custom_metric: resources.CustomMetric = proto.Field(
@@ -1851,7 +1851,7 @@ class UpdateDataRetentionSettingsRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     data_retention_settings: resources.DataRetentionSettings = proto.Field(
@@ -1912,7 +1912,7 @@ class UpdateDataStreamRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     data_stream: resources.DataStream = proto.Field(

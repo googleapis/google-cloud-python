@@ -487,7 +487,7 @@ class DocumentsAsyncClient:
                    [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
 
                    For more information, see the [knowledge base
-                   guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
+                   guide](https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
 
                    Note: The projects.agent.knowledgeBases.documents
                    resource is deprecated; only use
@@ -560,10 +560,10 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``:
-           [Document][google.cloud.dialogflow.v2beta1.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``:
+          [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -638,7 +638,7 @@ class DocumentsAsyncClient:
                    [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
 
                    For more information, see the [knowledge base
-                   guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
+                   guide](https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
 
                    Note: The projects.agent.knowledgeBases.documents
                    resource is deprecated; only use
@@ -721,10 +721,10 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``:
-           [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``:
+          [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
 
         .. code-block:: python
 
@@ -841,10 +841,10 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -988,10 +988,10 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``:
-           [Document][google.cloud.dialogflow.v2beta1.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``:
+          [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -1065,7 +1065,7 @@ class DocumentsAsyncClient:
                    [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
 
                    For more information, see the [knowledge base
-                   guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
+                   guide](https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
 
                    Note: The projects.agent.knowledgeBases.documents
                    resource is deprecated; only use
@@ -1158,10 +1158,10 @@ class DocumentsAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
-        -  ``response``:
-           [Document][google.cloud.dialogflow.v2beta1.Document]
+        - ``metadata``:
+          [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        - ``response``:
+          [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -1232,7 +1232,7 @@ class DocumentsAsyncClient:
                    [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
 
                    For more information, see the [knowledge base
-                   guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
+                   guide](https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
 
                    Note: The projects.agent.knowledgeBases.documents
                    resource is deprecated; only use

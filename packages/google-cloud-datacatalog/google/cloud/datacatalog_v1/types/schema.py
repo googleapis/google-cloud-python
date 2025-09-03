@@ -97,9 +97,9 @@ class ColumnSchema(proto.Message):
             required. Possible values for the field element type of a
             RANGE include:
 
-            -  DATE
-            -  DATETIME
-            -  TIMESTAMP
+            - DATE
+            - DATETIME
+            - TIMESTAMP
         gc_rule (str):
             Optional. Garbage collection policy for the
             column or column family. Applies to systems like

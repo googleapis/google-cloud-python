@@ -520,7 +520,7 @@ class SessionEntityTypesAsyncClient:
                    stored by Dialogflow for 20 minutes.
 
                    For more information, see the [session entity
-                   guide](\ https://cloud.google.com/dialogflow/docs/entities-session).
+                   guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -668,7 +668,7 @@ class SessionEntityTypesAsyncClient:
                    stored by Dialogflow for 20 minutes.
 
                    For more information, see the [session entity
-                   guide](\ https://cloud.google.com/dialogflow/docs/entities-session).
+                   guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -811,7 +811,7 @@ class SessionEntityTypesAsyncClient:
                    stored by Dialogflow for 20 minutes.
 
                    For more information, see the [session entity
-                   guide](\ https://cloud.google.com/dialogflow/docs/entities-session).
+                   guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.

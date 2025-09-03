@@ -381,12 +381,12 @@ class DataTaxonomyServiceAsyncClient:
             data_taxonomy_id (:class:`str`):
                 Required. DataTaxonomy identifier.
 
-                -  Must contain only lowercase letters, numbers and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-63 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the Project.
+                - Must contain only lowercase letters, numbers and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-63 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the Project.
 
                 This corresponds to the ``data_taxonomy_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1076,12 +1076,12 @@ class DataTaxonomyServiceAsyncClient:
             data_attribute_binding_id (:class:`str`):
                 Required. DataAttributeBinding identifier.
 
-                -  Must contain only lowercase letters, numbers and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-63 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the Location.
+                - Must contain only lowercase letters, numbers and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-63 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the Location.
 
                 This corresponds to the ``data_attribute_binding_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1768,12 +1768,12 @@ class DataTaxonomyServiceAsyncClient:
             data_attribute_id (:class:`str`):
                 Required. DataAttribute identifier.
 
-                -  Must contain only lowercase letters, numbers and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-63 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the DataTaxonomy.
+                - Must contain only lowercase letters, numbers and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-63 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the DataTaxonomy.
 
                 This corresponds to the ``data_attribute_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1795,7 +1795,7 @@ class DataTaxonomyServiceAsyncClient:
                    hierarchy. A single dataAttribute resource can
                    contain specs of multiple types
 
-                   :literal:`\` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
+                   :literal:`` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
 
         """
         warnings.warn(
@@ -1937,7 +1937,7 @@ class DataTaxonomyServiceAsyncClient:
                    hierarchy. A single dataAttribute resource can
                    contain specs of multiple types
 
-                   :literal:`\` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
+                   :literal:`` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
 
         """
         warnings.warn(
@@ -2335,7 +2335,7 @@ class DataTaxonomyServiceAsyncClient:
                    hierarchy. A single dataAttribute resource can
                    contain specs of multiple types
 
-                   :literal:`\` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
+                   :literal:`` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
 
         """
         warnings.warn(

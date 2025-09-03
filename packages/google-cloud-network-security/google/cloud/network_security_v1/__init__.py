@@ -18,7 +18,29 @@ from google.cloud.network_security_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from .services.address_group_service import (
+    AddressGroupServiceAsyncClient,
+    AddressGroupServiceClient,
+)
 from .services.network_security import NetworkSecurityAsyncClient, NetworkSecurityClient
+from .services.organization_address_group_service import (
+    OrganizationAddressGroupServiceAsyncClient,
+    OrganizationAddressGroupServiceClient,
+)
+from .types.address_group import (
+    AddAddressGroupItemsRequest,
+    AddressGroup,
+    CloneAddressGroupItemsRequest,
+    CreateAddressGroupRequest,
+    DeleteAddressGroupRequest,
+    GetAddressGroupRequest,
+    ListAddressGroupReferencesRequest,
+    ListAddressGroupReferencesResponse,
+    ListAddressGroupsRequest,
+    ListAddressGroupsResponse,
+    RemoveAddressGroupItemsRequest,
+    UpdateAddressGroupRequest,
+)
 from .types.authorization_policy import (
     AuthorizationPolicy,
     CreateAuthorizationPolicyRequest,
@@ -55,21 +77,34 @@ from .types.tls import (
 )
 
 __all__ = (
+    "AddressGroupServiceAsyncClient",
     "NetworkSecurityAsyncClient",
+    "OrganizationAddressGroupServiceAsyncClient",
+    "AddAddressGroupItemsRequest",
+    "AddressGroup",
+    "AddressGroupServiceClient",
     "AuthorizationPolicy",
     "CertificateProvider",
     "CertificateProviderInstance",
     "ClientTlsPolicy",
+    "CloneAddressGroupItemsRequest",
+    "CreateAddressGroupRequest",
     "CreateAuthorizationPolicyRequest",
     "CreateClientTlsPolicyRequest",
     "CreateServerTlsPolicyRequest",
+    "DeleteAddressGroupRequest",
     "DeleteAuthorizationPolicyRequest",
     "DeleteClientTlsPolicyRequest",
     "DeleteServerTlsPolicyRequest",
+    "GetAddressGroupRequest",
     "GetAuthorizationPolicyRequest",
     "GetClientTlsPolicyRequest",
     "GetServerTlsPolicyRequest",
     "GrpcEndpoint",
+    "ListAddressGroupReferencesRequest",
+    "ListAddressGroupReferencesResponse",
+    "ListAddressGroupsRequest",
+    "ListAddressGroupsResponse",
     "ListAuthorizationPoliciesRequest",
     "ListAuthorizationPoliciesResponse",
     "ListClientTlsPoliciesRequest",
@@ -78,7 +113,10 @@ __all__ = (
     "ListServerTlsPoliciesResponse",
     "NetworkSecurityClient",
     "OperationMetadata",
+    "OrganizationAddressGroupServiceClient",
+    "RemoveAddressGroupItemsRequest",
     "ServerTlsPolicy",
+    "UpdateAddressGroupRequest",
     "UpdateAuthorizationPolicyRequest",
     "UpdateClientTlsPolicyRequest",
     "UpdateServerTlsPolicyRequest",

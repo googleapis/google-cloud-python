@@ -184,29 +184,29 @@ class Instance(proto.Message):
             Optional. Immutable. Stripe level for files. Allowed values
             are:
 
-            -  ``FILE_STRIPE_LEVEL_MIN``: offers the best performance
-               for small size files.
-            -  ``FILE_STRIPE_LEVEL_BALANCED``: balances performance for
-               workloads involving a mix of small and large files.
-            -  ``FILE_STRIPE_LEVEL_MAX``: higher throughput performance
-               for larger files.
+            - ``FILE_STRIPE_LEVEL_MIN``: offers the best performance for
+              small size files.
+            - ``FILE_STRIPE_LEVEL_BALANCED``: balances performance for
+              workloads involving a mix of small and large files.
+            - ``FILE_STRIPE_LEVEL_MAX``: higher throughput performance
+              for larger files.
         directory_stripe_level (google.cloud.parallelstore_v1.types.DirectoryStripeLevel):
             Optional. Immutable. Stripe level for directories. Allowed
             values are:
 
-            -  ``DIRECTORY_STRIPE_LEVEL_MIN``: recommended when
-               directories contain a small number of files.
-            -  ``DIRECTORY_STRIPE_LEVEL_BALANCED``: balances performance
-               for workloads involving a mix of small and large
-               directories.
-            -  ``DIRECTORY_STRIPE_LEVEL_MAX``: recommended for
-               directories with a large number of files.
+            - ``DIRECTORY_STRIPE_LEVEL_MIN``: recommended when
+              directories contain a small number of files.
+            - ``DIRECTORY_STRIPE_LEVEL_BALANCED``: balances performance
+              for workloads involving a mix of small and large
+              directories.
+            - ``DIRECTORY_STRIPE_LEVEL_MAX``: recommended for
+              directories with a large number of files.
         deployment_type (google.cloud.parallelstore_v1.types.DeploymentType):
             Optional. Immutable. The deployment type of the instance.
             Allowed values are:
 
-            -  ``SCRATCH``: the instance is a scratch instance.
-            -  ``PERSISTENT``: the instance is a persistent instance.
+            - ``SCRATCH``: the instance is a scratch instance.
+            - ``PERSISTENT``: the instance is a persistent instance.
     """
 
     class State(proto.Enum):
@@ -412,12 +412,11 @@ class CreateInstanceRequest(proto.Message):
         instance_id (str):
             Required. The name of the Parallelstore instance.
 
-            -  Must contain only lowercase letters, numbers, and
-               hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-63 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the customer project / location
+            - Must contain only lowercase letters, numbers, and hyphens.
+            - Must start with a letter.
+            - Must be between 1-63 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the customer project / location
         instance (google.cloud.parallelstore_v1.types.Instance):
             Required. The instance to create.
         request_id (str):
@@ -717,9 +716,9 @@ class ImportDataRequest(proto.Message):
 
             Use one of the following formats:
 
-            -  ``{EMAIL_ADDRESS_OR_UNIQUE_ID}``
-            -  ``projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
-            -  ``projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
+            - ``{EMAIL_ADDRESS_OR_UNIQUE_ID}``
+            - ``projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
+            - ``projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
 
             If unspecified, the Parallelstore service agent is used:
             ``service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com``
@@ -792,9 +791,9 @@ class ExportDataRequest(proto.Message):
             be used when performing the transfer. Use one of the
             following formats:
 
-            -  ``{EMAIL_ADDRESS_OR_UNIQUE_ID}``
-            -  ``projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
-            -  ``projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
+            - ``{EMAIL_ADDRESS_OR_UNIQUE_ID}``
+            - ``projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
+            - ``projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}``
 
             If unspecified, the Parallelstore service agent is used:
             ``service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com``

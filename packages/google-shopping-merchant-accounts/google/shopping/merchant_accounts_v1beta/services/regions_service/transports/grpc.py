@@ -115,7 +115,7 @@ class RegionsServiceGrpcTransport(RegionsServiceTransport):
 
     This API defines the following resource model:
 
-    -  [Region][google.shopping.merchant.accounts.v1main.Region]
+    - [Region][google.shopping.merchant.accounts.v1main.Region]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

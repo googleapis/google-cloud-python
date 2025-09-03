@@ -112,9 +112,9 @@ class SearchCatalogRequest(proto.Message):
             specified scope) that the user has access to. Query strings
             can be simple as "x" or more qualified as:
 
-            -  name:x
-            -  column:x
-            -  description:y
+            - name:x
+            - column:x
+            - description:y
 
             Note: Query tokens need to have a minimum of 3 characters
             for substring matching to work correctly. See `Data Catalog
@@ -136,10 +136,10 @@ class SearchCatalogRequest(proto.Message):
             Specifies the ordering of results, currently supported
             case-sensitive choices are:
 
-            -  ``relevance``, only supports descending
-            -  ``last_modified_timestamp [asc|desc]``, defaults to
-               descending if not specified
-            -  ``default`` that can only be descending
+            - ``relevance``, only supports descending
+            - ``last_modified_timestamp [asc|desc]``, defaults to
+              descending if not specified
+            - ``default`` that can only be descending
 
             If not specified, defaults to ``relevance`` descending.
     """
@@ -179,30 +179,30 @@ class SearchCatalogRequest(proto.Message):
 
                 Valid locations:
 
-                -  asia-east1
-                -  asia-east2
-                -  asia-northeast1
-                -  asia-northeast2
-                -  asia-northeast3
-                -  asia-south1
-                -  asia-southeast1
-                -  australia-southeast1
-                -  eu
-                -  europe-north1
-                -  europe-west1
-                -  europe-west2
-                -  europe-west3
-                -  europe-west4
-                -  europe-west6
-                -  global
-                -  northamerica-northeast1
-                -  southamerica-east1
-                -  us
-                -  us-central1
-                -  us-east1
-                -  us-east4
-                -  us-west1
-                -  us-west2
+                - asia-east1
+                - asia-east2
+                - asia-northeast1
+                - asia-northeast2
+                - asia-northeast3
+                - asia-south1
+                - asia-southeast1
+                - australia-southeast1
+                - eu
+                - europe-north1
+                - europe-west1
+                - europe-west2
+                - europe-west3
+                - europe-west4
+                - europe-west6
+                - global
+                - northamerica-northeast1
+                - southamerica-east1
+                - us
+                - us-central1
+                - us-east1
+                - us-east4
+                - us-west1
+                - us-west2
         """
 
         include_org_ids: MutableSequence[str] = proto.RepeatedField(
@@ -298,7 +298,7 @@ class CreateEntryGroupRequest(proto.Message):
             Required. The name of the project this entry group is in.
             Example:
 
-            -  projects/{project_id}/locations/{location}
+            - projects/{project_id}/locations/{location}
 
             Note that this EntryGroup and its child resources may not
             actually be stored in the location in this name.
@@ -413,7 +413,7 @@ class ListEntryGroupsRequest(proto.Message):
             Required. The name of the location that contains the entry
             groups, which can be provided in URL format. Example:
 
-            -  projects/{project_id}/locations/{location}
+            - projects/{project_id}/locations/{location}
         page_size (int):
             Optional. The maximum number of items to return. Default is
             10. Max limit is 1000. Throws an invalid argument for
@@ -474,7 +474,7 @@ class CreateEntryRequest(proto.Message):
             Required. The name of the entry group this entry is in.
             Example:
 
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
 
             Note that this Entry and its child resources may not
             actually be stored in the location in this name.
@@ -516,27 +516,27 @@ class UpdateEntryRequest(proto.Message):
 
             The following fields are modifiable:
 
-            -  For entries with type ``DATA_STREAM``:
+            - For entries with type ``DATA_STREAM``:
 
-               -  ``schema``
+              - ``schema``
 
-            -  For entries with type ``FILESET``:
+            - For entries with type ``FILESET``:
 
-               -  ``schema``
-               -  ``display_name``
-               -  ``description``
-               -  ``gcs_fileset_spec``
-               -  ``gcs_fileset_spec.file_patterns``
+              - ``schema``
+              - ``display_name``
+              - ``description``
+              - ``gcs_fileset_spec``
+              - ``gcs_fileset_spec.file_patterns``
 
-            -  For entries with ``user_specified_type``:
+            - For entries with ``user_specified_type``:
 
-               -  ``schema``
-               -  ``display_name``
-               -  ``description``
-               -  ``user_specified_type``
-               -  ``user_specified_system``
-               -  ``linked_resource``
-               -  ``source_system_timestamps``
+              - ``schema``
+              - ``display_name``
+              - ``description``
+              - ``user_specified_type``
+              - ``user_specified_system``
+              - ``linked_resource``
+              - ``source_system_timestamps``
     """
 
     entry: "Entry" = proto.Field(
@@ -559,7 +559,7 @@ class DeleteEntryRequest(proto.Message):
         name (str):
             Required. The name of the entry. Example:
 
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
     """
 
     name: str = proto.Field(
@@ -576,7 +576,7 @@ class GetEntryRequest(proto.Message):
         name (str):
             Required. The name of the entry. Example:
 
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
     """
 
     name: str = proto.Field(
@@ -605,8 +605,8 @@ class LookupEntryRequest(proto.Message):
 
             Examples:
 
-            -  //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId
-            -  //pubsub.googleapis.com/projects/projectId/topics/topicId
+            - //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId
+            - //pubsub.googleapis.com/projects/projectId/topics/topicId
 
             This field is a member of `oneof`_ ``target_name``.
         sql_resource (str):
@@ -614,11 +614,11 @@ class LookupEntryRequest(proto.Message):
 
             Examples:
 
-            -  ``pubsub.project_id.topic_id``
-            -  :literal:`pubsub.project_id.`topic.id.with.dots\``
-            -  ``bigquery.table.project_id.dataset_id.table_id``
-            -  ``bigquery.dataset.project_id.dataset_id``
-            -  ``datacatalog.entry.project_id.location_id.entry_group_id.entry_id``
+            - ``pubsub.project_id.topic_id``
+            - :literal:`pubsub.project_id.`topic.id.with.dots\``
+            - ``bigquery.table.project_id.dataset_id.table_id``
+            - ``bigquery.dataset.project_id.dataset_id``
+            - ``datacatalog.entry.project_id.location_id.entry_group_id.entry_id``
 
             ``*_id``\ s should satisfy the GoogleSQL rules for
             identifiers.
@@ -662,7 +662,7 @@ class Entry(proto.Message):
             Output only. Identifier. The Data Catalog resource name of
             the entry in URL format. Example:
 
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
 
             Note that this Entry and its child resources may not
             actually be stored in the location in this name.
@@ -675,7 +675,7 @@ class Entry(proto.Message):
             For example, the ``linked_resource`` for a table resource
             from BigQuery is:
 
-            -  //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId
+            - //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId
 
             Output only when Entry is of type in the EntryType enum. For
             entries with user_specified_type, this field is optional and
@@ -841,7 +841,7 @@ class EntryGroup(proto.Message):
             Identifier. The resource name of the entry group in URL
             format. Example:
 
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
 
             Note that this EntryGroup and its child resources may not
             actually be stored in the location in this name.
@@ -889,7 +889,7 @@ class CreateTagTemplateRequest(proto.Message):
 
             Example:
 
-            -  projects/{project_id}/locations/us-central1
+            - projects/{project_id}/locations/us-central1
         tag_template_id (str):
             Required. The id of the tag template to
             create.
@@ -920,7 +920,7 @@ class GetTagTemplateRequest(proto.Message):
         name (str):
             Required. The name of the tag template. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+            - projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
     """
 
     name: str = proto.Field(
@@ -967,7 +967,7 @@ class DeleteTagTemplateRequest(proto.Message):
         name (str):
             Required. The name of the tag template to delete. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+            - projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
         force (bool):
             Required. Currently, this field must always be set to
             ``true``. This confirms the deletion of any possible tags
@@ -994,7 +994,7 @@ class CreateTagRequest(proto.Message):
             Required. The name of the resource to attach this tag to.
             Tags can be attached to Entries. Example:
 
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
 
             Note that this Tag and its child resources may not actually
             be stored in the location in this name.
@@ -1055,7 +1055,7 @@ class DeleteTagRequest(proto.Message):
         name (str):
             Required. The name of the tag to delete. Example:
 
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
     """
 
     name: str = proto.Field(
@@ -1075,11 +1075,11 @@ class CreateTagTemplateFieldRequest(proto.Message):
 
             Example:
 
-            -  projects/{project_id}/locations/us-central1/tagTemplates/{tag_template_id}
+            - projects/{project_id}/locations/us-central1/tagTemplates/{tag_template_id}
         tag_template_field_id (str):
             Required. The ID of the tag template field to create. Field
             ids can contain letters (both uppercase and lowercase),
-            numbers (0-9), underscores (_) and dashes (-). Field IDs
+            numbers (0-9), underscores (\_) and dashes (-). Field IDs
             must be at least 1 character long and at most 128 characters
             long. Field IDs must also be unique within their template.
         tag_template_field (google.cloud.datacatalog_v1beta1.types.TagTemplateField):
@@ -1109,7 +1109,7 @@ class UpdateTagTemplateFieldRequest(proto.Message):
         name (str):
             Required. The name of the tag template field. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+            - projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
         tag_template_field (google.cloud.datacatalog_v1beta1.types.TagTemplateField):
             Required. The template to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -1117,9 +1117,9 @@ class UpdateTagTemplateFieldRequest(proto.Message):
             individual field of a tag template. The following fields are
             modifiable:
 
-            -  ``display_name``
-            -  ``type.enum_type``
-            -  ``is_required``
+            - ``display_name``
+            - ``type.enum_type``
+            - ``is_required``
 
             If this parameter is absent or empty, all modifiable fields
             are overwritten. If such fields are non-required and omitted
@@ -1157,7 +1157,7 @@ class RenameTagTemplateFieldRequest(proto.Message):
         name (str):
             Required. The name of the tag template. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+            - projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
         new_tag_template_field_id (str):
             Required. The new ID of this tag template field. For
             example, ``my_new_field``.
@@ -1181,7 +1181,7 @@ class RenameTagTemplateFieldEnumValueRequest(proto.Message):
         name (str):
             Required. The name of the enum field value. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}/enumValues/{enum_value_display_name}
+            - projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}/enumValues/{enum_value_display_name}
         new_enum_value_display_name (str):
             Required. The new display name of the enum value. For
             example, ``my_new_enum_value``.
@@ -1206,7 +1206,7 @@ class DeleteTagTemplateFieldRequest(proto.Message):
             Required. The name of the tag template field to delete.
             Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+            - projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
         force (bool):
             Required. Currently, this field must always be set to
             ``true``. This confirms the deletion of this field from any
@@ -1237,8 +1237,8 @@ class ListTagsRequest(proto.Message):
 
             Examples:
 
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
         page_size (int):
             The maximum number of tags to return. Default
             is 10. Max limit is 1000.
@@ -1298,7 +1298,7 @@ class ListEntriesRequest(proto.Message):
             Required. The name of the entry group that contains the
             entries, which can be provided in URL format. Example:
 
-            -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
+            - projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
         page_size (int):
             The maximum number of items to return. Default is 10. Max
             limit is 1000. Throws an invalid argument for

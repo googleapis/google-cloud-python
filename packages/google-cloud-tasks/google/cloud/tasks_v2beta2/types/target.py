@@ -193,17 +193,17 @@ class AppEngineHttpRequest(proto.Message):
     used to construct the URL that the task is delivered to can be set
     at the queue-level or task-level:
 
-    -  If set,
-       [app_engine_routing_override][google.cloud.tasks.v2beta2.AppEngineHttpTarget.app_engine_routing_override]
-       is used for all tasks in the queue, no matter what the setting is
-       for the [task-level
-       app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
+    - If set,
+      [app_engine_routing_override][google.cloud.tasks.v2beta2.AppEngineHttpTarget.app_engine_routing_override]
+      is used for all tasks in the queue, no matter what the setting is
+      for the [task-level
+      app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
 
     The ``url`` that the task will be sent to is:
 
-    -  ``url =``
-       [host][google.cloud.tasks.v2beta2.AppEngineRouting.host] ``+``
-       [relative_url][google.cloud.tasks.v2beta2.AppEngineHttpRequest.relative_url]
+    - ``url =`` [host][google.cloud.tasks.v2beta2.AppEngineRouting.host]
+      ``+``
+      [relative_url][google.cloud.tasks.v2beta2.AppEngineHttpRequest.relative_url]
 
     Tasks can be dispatched to secure app handlers, unsecure app
     handlers, and URIs restricted with
@@ -267,31 +267,31 @@ class AppEngineHttpRequest(proto.Message):
 
             Cloud Tasks sets some headers to default values:
 
-            -  ``User-Agent``: By default, this header is
-               ``"AppEngine-Google; (+http://code.google.com/appengine)"``.
-               This header can be modified, but Cloud Tasks will append
-               ``"AppEngine-Google; (+http://code.google.com/appengine)"``
-               to the modified ``User-Agent``.
+            - ``User-Agent``: By default, this header is
+              ``"AppEngine-Google; (+http://code.google.com/appengine)"``.
+              This header can be modified, but Cloud Tasks will append
+              ``"AppEngine-Google; (+http://code.google.com/appengine)"``
+              to the modified ``User-Agent``.
 
             If the task has a
             [payload][google.cloud.tasks.v2beta2.AppEngineHttpRequest.payload],
             Cloud Tasks sets the following headers:
 
-            -  ``Content-Type``: By default, the ``Content-Type`` header
-               is set to ``"application/octet-stream"``. The default can
-               be overridden by explicitly setting ``Content-Type`` to a
-               particular media type when the [task is
-               created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
-               For example, ``Content-Type`` can be set to
-               ``"application/json"``.
-            -  ``Content-Length``: This is computed by Cloud Tasks. This
-               value is output only. It cannot be changed.
+            - ``Content-Type``: By default, the ``Content-Type`` header
+              is set to ``"application/octet-stream"``. The default can
+              be overridden by explicitly setting ``Content-Type`` to a
+              particular media type when the [task is
+              created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
+              For example, ``Content-Type`` can be set to
+              ``"application/json"``.
+            - ``Content-Length``: This is computed by Cloud Tasks. This
+              value is output only. It cannot be changed.
 
             The headers below cannot be set or overridden:
 
-            -  ``Host``
-            -  ``X-Google-*``
-            -  ``X-AppEngine-*``
+            - ``Host``
+            - ``X-Google-*``
+            - ``X-AppEngine-*``
 
             In addition, Cloud Tasks sets some headers when the task is
             dispatched, such as headers containing information about the
@@ -429,50 +429,50 @@ class AppEngineRouting(proto.Message):
 
             The host is constructed as:
 
-            -  ``host = [application_domain_name]``\
-               ``| [service] + '.' + [application_domain_name]``\
-               ``| [version] + '.' + [application_domain_name]``\
-               ``| [version_dot_service]+ '.' + [application_domain_name]``\
-               ``| [instance] + '.' + [application_domain_name]``\
-               ``| [instance_dot_service] + '.' + [application_domain_name]``\
-               ``| [instance_dot_version] + '.' + [application_domain_name]``\
-               ``| [instance_dot_version_dot_service] + '.' + [application_domain_name]``
+            - ``host = [application_domain_name]``\
+              ``| [service] + '.' + [application_domain_name]``\
+              ``| [version] + '.' + [application_domain_name]``\
+              ``| [version_dot_service]+ '.' + [application_domain_name]``\
+              ``| [instance] + '.' + [application_domain_name]``\
+              ``| [instance_dot_service] + '.' + [application_domain_name]``\
+              ``| [instance_dot_version] + '.' + [application_domain_name]``\
+              ``| [instance_dot_version_dot_service] + '.' + [application_domain_name]``
 
-            -  ``application_domain_name`` = The domain name of the app,
-               for example .appspot.com, which is associated with the
-               queue's project ID. Some tasks which were created using
-               the App Engine SDK use a custom domain name.
+            - ``application_domain_name`` = The domain name of the app,
+              for example .appspot.com, which is associated with the
+              queue's project ID. Some tasks which were created using
+              the App Engine SDK use a custom domain name.
 
-            -  ``service =``
-               [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
+            - ``service =``
+              [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
 
-            -  ``version =``
-               [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
+            - ``version =``
+              [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
 
-            -  ``version_dot_service =``
-               [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
-               ``+ '.' +``
-               [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
+            - ``version_dot_service =``
+              [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
+              ``+ '.' +``
+              [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
 
-            -  ``instance =``
-               [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
+            - ``instance =``
+              [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
 
-            -  ``instance_dot_service =``
-               [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
-               ``+ '.' +``
-               [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
+            - ``instance_dot_service =``
+              [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
+              ``+ '.' +``
+              [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
 
-            -  ``instance_dot_version =``
-               [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
-               ``+ '.' +``
-               [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
+            - ``instance_dot_version =``
+              [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
+              ``+ '.' +``
+              [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
 
-            -  ``instance_dot_version_dot_service =``
-               [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
-               ``+ '.' +``
-               [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
-               ``+ '.' +``
-               [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
+            - ``instance_dot_version_dot_service =``
+              [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance]
+              ``+ '.' +``
+              [version][google.cloud.tasks.v2beta2.AppEngineRouting.version]
+              ``+ '.' +``
+              [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
 
             If
             [service][google.cloud.tasks.v2beta2.AppEngineRouting.service]
@@ -563,16 +563,16 @@ class HttpRequest(proto.Message):
             A partial list of headers that will be ignored or replaced
             is:
 
-            -  Any header that is prefixed with "X-CloudTasks-" will be
-               treated as service header. Service headers define
-               properties of the task and are predefined in CloudTask.
-            -  Host: This will be computed by Cloud Tasks and derived
-               from
-               [HttpRequest.url][google.cloud.tasks.v2beta2.HttpRequest.url].
-            -  Content-Length: This will be computed by Cloud Tasks.
-            -  User-Agent: This will be set to ``"Google-Cloud-Tasks"``.
-            -  ``X-Google-*``: Google use only.
-            -  ``X-AppEngine-*``: Google use only.
+            - Any header that is prefixed with "X-CloudTasks-" will be
+              treated as service header. Service headers define
+              properties of the task and are predefined in CloudTask.
+            - Host: This will be computed by Cloud Tasks and derived
+              from
+              [HttpRequest.url][google.cloud.tasks.v2beta2.HttpRequest.url].
+            - Content-Length: This will be computed by Cloud Tasks.
+            - User-Agent: This will be set to ``"Google-Cloud-Tasks"``.
+            - ``X-Google-*``: Google use only.
+            - ``X-AppEngine-*``: Google use only.
 
             ``Content-Type`` won't be set by Cloud Tasks. You can
             explicitly set ``Content-Type`` to a media type when the
@@ -856,16 +856,16 @@ class HttpTarget(proto.Message):
             A partial list of headers that will be ignored or replaced
             is:
 
-            -  Any header that is prefixed with "X-CloudTasks-" will be
-               treated as service header. Service headers define
-               properties of the task and are predefined in CloudTask.
-            -  Host: This will be computed by Cloud Tasks and derived
-               from
-               [HttpRequest.url][google.cloud.tasks.v2beta2.HttpRequest.url].
-            -  Content-Length: This will be computed by Cloud Tasks.
-            -  User-Agent: This will be set to ``"Google-CloudTasks"``.
-            -  ``X-Google-*``: Google use only.
-            -  ``X-AppEngine-*``: Google use only.
+            - Any header that is prefixed with "X-CloudTasks-" will be
+              treated as service header. Service headers define
+              properties of the task and are predefined in CloudTask.
+            - Host: This will be computed by Cloud Tasks and derived
+              from
+              [HttpRequest.url][google.cloud.tasks.v2beta2.HttpRequest.url].
+            - Content-Length: This will be computed by Cloud Tasks.
+            - User-Agent: This will be set to ``"Google-CloudTasks"``.
+            - ``X-Google-*``: Google use only.
+            - ``X-AppEngine-*``: Google use only.
 
             ``Content-Type`` won't be set by Cloud Tasks. You can
             explicitly set ``Content-Type`` to a media type when the

@@ -137,17 +137,17 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
     CloudChannelService exposes the following resources:
 
-    -  [Customer][google.cloud.channel.v1.Customer]s: An entity-usually
-       an enterprise-managed by a reseller or distributor.
+    - [Customer][google.cloud.channel.v1.Customer]s: An entity-usually
+      an enterprise-managed by a reseller or distributor.
 
-    -  [Entitlement][google.cloud.channel.v1.Entitlement]s: An entity
-       that provides a customer with the means to use a service.
-       Entitlements are created or updated as a result of a successful
-       fulfillment.
+    - [Entitlement][google.cloud.channel.v1.Entitlement]s: An entity
+      that provides a customer with the means to use a service.
+      Entitlements are created or updated as a result of a successful
+      fulfillment.
 
-    -  [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]s:
-       An entity that identifies links between distributors and their
-       indirect resellers in a channel.
+    - [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]s:
+      An entity that identifies links between distributors and their
+      indirect resellers in a channel.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -387,10 +387,10 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Return value: List of
         [Customer][google.cloud.channel.v1.Customer]s, or an empty list
@@ -425,12 +425,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: The customer resource doesn't exist. Usually the
-           result of an invalid name parameter.
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: The customer resource doesn't exist. Usually the
+          result of an invalid name parameter.
 
         Return value: The [Customer][google.cloud.channel.v1.Customer]
         resource.
@@ -469,11 +469,11 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  INVALID_VALUE: Invalid domain value in the request.
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - INVALID_VALUE: Invalid domain value in the request.
 
         Return value: A list of
         [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount]
@@ -515,17 +515,17 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED:
+        - PERMISSION_DENIED:
 
-           -  The reseller account making the request is different from
-              the reseller account in the API request.
-           -  You are not authorized to create a customer. See
-              https://support.google.com/channelservices/answer/9759265
+          - The reseller account making the request is different from
+            the reseller account in the API request.
+          - You are not authorized to create a customer. See
+            https://support.google.com/channelservices/answer/9759265
 
-        -  INVALID_ARGUMENT:
+        - INVALID_ARGUMENT:
 
-           -  Required request parameters are missing or invalid.
-           -  Domain field value doesn't match the primary email domain.
+          - Required request parameters are missing or invalid.
+          - Domain field value doesn't match the primary email domain.
 
         Return value: The newly created
         [Customer][google.cloud.channel.v1.Customer] resource.
@@ -559,12 +559,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer]
-           resource found for the name in the request.
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer]
+          resource found for the name in the request.
 
         Return value: The updated
         [Customer][google.cloud.channel.v1.Customer] resource.
@@ -598,13 +598,13 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The account making the request does not
-           own this customer.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  FAILED_PRECONDITION: The customer has existing entitlements.
-        -  NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer]
-           resource found for the name in the request.
+        - PERMISSION_DENIED: The account making the request does not own
+          this customer.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - FAILED_PRECONDITION: The customer has existing entitlements.
+        - NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer]
+          resource found for the name in the request.
 
         Returns:
             Callable[[~.DeleteCustomerRequest],
@@ -638,18 +638,18 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED:
+        - PERMISSION_DENIED:
 
-           -  The reseller account making the request is different from
-              the reseller account in the API request.
-           -  You are not authorized to import the customer. See
-              https://support.google.com/channelservices/answer/9759265
+          - The reseller account making the request is different from
+            the reseller account in the API request.
+          - You are not authorized to import the customer. See
+            https://support.google.com/channelservices/answer/9759265
 
-        -  NOT_FOUND: Cloud Identity doesn't exist or was deleted.
-        -  INVALID_ARGUMENT: Required parameters are missing, or the
-           auth_token is expired or invalid.
-        -  ALREADY_EXISTS: A customer already exists and has conflicting
-           critical fields. Requires an overwrite.
+        - NOT_FOUND: Cloud Identity doesn't exist or was deleted.
+        - INVALID_ARGUMENT: Required parameters are missing, or the
+          auth_token is expired or invalid.
+        - ALREADY_EXISTS: A customer already exists and has conflicting
+          critical fields. Requires an overwrite.
 
         Return value: The [Customer][google.cloud.channel.v1.Customer].
 
@@ -684,21 +684,21 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED:
+        - PERMISSION_DENIED:
 
-           -  The customer doesn't belong to the reseller.
-           -  You are not authorized to provision cloud identity id. See
-              https://support.google.com/channelservices/answer/9759265
+          - The customer doesn't belong to the reseller.
+          - You are not authorized to provision cloud identity id. See
+            https://support.google.com/channelservices/answer/9759265
 
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: The customer was not found.
-        -  ALREADY_EXISTS: The customer's primary email already exists.
-           Retry after changing the customer's primary contact email.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: The customer was not found.
+        - ALREADY_EXISTS: The customer's primary email already exists.
+          Retry after changing the customer's primary contact email.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -738,10 +738,10 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Return value: A list of the customer's
         [Entitlement][google.cloud.channel.v1.Entitlement]s.
@@ -783,16 +783,16 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED:
+        - PERMISSION_DENIED:
 
-           -  The customer doesn't belong to the reseller and has no
-              auth token.
-           -  The supplied auth token is invalid.
-           -  The reseller account making the request is different from
-              the reseller account in the query.
+          - The customer doesn't belong to the reseller and has no auth
+            token.
+          - The supplied auth token is invalid.
+          - The reseller account making the request is different from
+            the reseller account in the query.
 
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Return value: A list of the customer's
         [TransferableSku][google.cloud.channel.v1.TransferableSku].
@@ -835,20 +835,20 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED:
+        - PERMISSION_DENIED:
 
-           -  The customer doesn't belong to the reseller and has no
-              auth token.
-           -  The customer provided incorrect reseller information when
-              generating auth token.
-           -  The reseller account making the request is different from
-              the reseller account in the query.
-           -  The reseller is not authorized to transact on this
-              Product. See
-              https://support.google.com/channelservices/answer/9759265
+          - The customer doesn't belong to the reseller and has no auth
+            token.
+          - The customer provided incorrect reseller information when
+            generating auth token.
+          - The reseller account making the request is different from
+            the reseller account in the query.
+          - The reseller is not authorized to transact on this Product.
+            See
+            https://support.google.com/channelservices/answer/9759265
 
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Return value: List of
         [TransferableOffer][google.cloud.channel.v1.TransferableOffer]
@@ -883,11 +883,11 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: The customer entitlement was not found.
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: The customer entitlement was not found.
 
         Return value: The requested
         [Entitlement][google.cloud.channel.v1.Entitlement] resource.
@@ -922,45 +922,45 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED:
+        - PERMISSION_DENIED:
 
-           -  The customer doesn't belong to the reseller.
-           -  The reseller is not authorized to transact on this
-              Product. See
-              https://support.google.com/channelservices/answer/9759265
+          - The customer doesn't belong to the reseller.
+          - The reseller is not authorized to transact on this Product.
+            See
+            https://support.google.com/channelservices/answer/9759265
 
-        -  INVALID_ARGUMENT:
+        - INVALID_ARGUMENT:
 
-           -  Required request parameters are missing or invalid.
-           -  There is already a customer entitlement for a SKU from the
-              same product family.
+          - Required request parameters are missing or invalid.
+          - There is already a customer entitlement for a SKU from the
+            same product family.
 
-        -  INVALID_VALUE: Make sure the OfferId is valid. If it is,
-           contact Google Channel support for further troubleshooting.
-        -  NOT_FOUND: The customer or offer resource was not found.
-        -  ALREADY_EXISTS:
+        - INVALID_VALUE: Make sure the OfferId is valid. If it is,
+          contact Google Channel support for further troubleshooting.
+        - NOT_FOUND: The customer or offer resource was not found.
+        - ALREADY_EXISTS:
 
-           -  The SKU was already purchased for the customer.
-           -  The customer's primary email already exists. Retry after
-              changing the customer's primary contact email.
+          - The SKU was already purchased for the customer.
+          - The customer's primary email already exists. Retry after
+            changing the customer's primary contact email.
 
-        -  CONDITION_NOT_MET or FAILED_PRECONDITION:
+        - CONDITION_NOT_MET or FAILED_PRECONDITION:
 
-           -  The domain required for purchasing a SKU has not been
-              verified.
-           -  A pre-requisite SKU required to purchase an Add-On SKU is
-              missing. For example, Google Workspace Business Starter is
-              required to purchase Vault or Drive.
-           -  (Developer accounts only) Reseller and resold domain must
-              meet the following naming requirements:
+          - The domain required for purchasing a SKU has not been
+            verified.
+          - A pre-requisite SKU required to purchase an Add-On SKU is
+            missing. For example, Google Workspace Business Starter is
+            required to purchase Vault or Drive.
+          - (Developer accounts only) Reseller and resold domain must
+            meet the following naming requirements:
 
-              -  Domain names must start with goog-test.
-              -  Domain names must include the reseller domain.
+            - Domain names must start with goog-test.
+            - Domain names must include the reseller domain.
 
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1002,17 +1002,17 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid. For example, the number of seats being changed is
-           greater than the allowed number of max seats, or decreasing
-           seats for a commitment based plan.
-        -  NOT_FOUND: Entitlement resource not found.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid. For example, the number of seats being changed is
+          greater than the allowed number of max seats, or decreasing
+          seats for a commitment based plan.
+        - NOT_FOUND: Entitlement resource not found.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1055,18 +1055,18 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: Entitlement resource not found.
-        -  NOT_COMMITMENT_PLAN: Renewal Settings are only applicable for
-           a commitment plan. Can't enable or disable renewals for
-           non-commitment plans.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: Entitlement resource not found.
+        - NOT_COMMITMENT_PLAN: Renewal Settings are only applicable for
+          a commitment plan. Can't enable or disable renewals for
+          non-commitment plans.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1106,15 +1106,15 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: Offer or Entitlement resource not found.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: Offer or Entitlement resource not found.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1157,17 +1157,17 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: Entitlement resource not found.
-        -  FAILED_PRECONDITION/NOT_IN_TRIAL: This method only works for
-           entitlement on trial plans.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: Entitlement resource not found.
+        - FAILED_PRECONDITION/NOT_IN_TRIAL: This method only works for
+          entitlement on trial plans.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1208,16 +1208,16 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: Entitlement resource not found.
-        -  NOT_ACTIVE: Entitlement is not active.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: Entitlement resource not found.
+        - NOT_ACTIVE: Entitlement is not active.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1258,20 +1258,20 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  FAILED_PRECONDITION: There are Google Cloud projects linked
-           to the Google Cloud entitlement's Cloud Billing subaccount.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: Entitlement resource not found.
-        -  DELETION_TYPE_NOT_ALLOWED: Cancel is only allowed for Google
-           Workspace add-ons, or entitlements for Google Cloud's
-           development platform.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - FAILED_PRECONDITION: There are Google Cloud projects linked to
+          the Google Cloud entitlement's Cloud Billing subaccount.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: Entitlement resource not found.
+        - DELETION_TYPE_NOT_ALLOWED: Cancel is only allowed for Google
+          Workspace add-ons, or entitlements for Google Cloud's
+          development platform.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1316,20 +1316,20 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: Entitlement resource not found.
-        -  SUSPENSION_NOT_RESELLER_INITIATED: Can only activate
-           reseller-initiated suspensions and entitlements that have
-           accepted the TOS.
-        -  NOT_SUSPENDED: Can only activate suspended entitlements not
-           in an ACTIVE state.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: Entitlement resource not found.
+        - SUSPENSION_NOT_RESELLER_INITIATED: Can only activate
+          reseller-initiated suspensions and entitlements that have
+          accepted the TOS.
+        - NOT_SUSPENDED: Can only activate suspended entitlements not in
+          an ACTIVE state.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1368,36 +1368,36 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED:
+        - PERMISSION_DENIED:
 
-           -  The customer doesn't belong to the reseller.
-           -  The reseller is not authorized to transact on this
-              Product. See
-              https://support.google.com/channelservices/answer/9759265
+          - The customer doesn't belong to the reseller.
+          - The reseller is not authorized to transact on this Product.
+            See
+            https://support.google.com/channelservices/answer/9759265
 
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: The customer or offer resource was not found.
-        -  ALREADY_EXISTS: The SKU was already transferred for the
-           customer.
-        -  CONDITION_NOT_MET or FAILED_PRECONDITION:
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: The customer or offer resource was not found.
+        - ALREADY_EXISTS: The SKU was already transferred for the
+          customer.
+        - CONDITION_NOT_MET or FAILED_PRECONDITION:
 
-           -  The SKU requires domain verification to transfer, but the
-              domain is not verified.
-           -  An Add-On SKU (example, Vault or Drive) is missing the
-              pre-requisite SKU (example, G Suite Basic).
-           -  (Developer accounts only) Reseller and resold domain must
-              meet the following naming requirements:
+          - The SKU requires domain verification to transfer, but the
+            domain is not verified.
+          - An Add-On SKU (example, Vault or Drive) is missing the
+            pre-requisite SKU (example, G Suite Basic).
+          - (Developer accounts only) Reseller and resold domain must
+            meet the following naming requirements:
 
-              -  Domain names must start with goog-test.
-              -  Domain names must include the reseller domain.
+            - Domain names must start with goog-test.
+            - Domain names must include the reseller domain.
 
-           -  Specify all transferring entitlements.
+          - Specify all transferring entitlements.
 
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1439,29 +1439,29 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: The customer or offer resource was not found.
-        -  ALREADY_EXISTS: The SKU was already transferred for the
-           customer.
-        -  CONDITION_NOT_MET or FAILED_PRECONDITION:
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: The customer or offer resource was not found.
+        - ALREADY_EXISTS: The SKU was already transferred for the
+          customer.
+        - CONDITION_NOT_MET or FAILED_PRECONDITION:
 
-           -  The SKU requires domain verification to transfer, but the
-              domain is not verified.
-           -  An Add-On SKU (example, Vault or Drive) is missing the
-              pre-requisite SKU (example, G Suite Basic).
-           -  (Developer accounts only) Reseller and resold domain must
-              meet the following naming requirements:
+          - The SKU requires domain verification to transfer, but the
+            domain is not verified.
+          - An Add-On SKU (example, Vault or Drive) is missing the
+            pre-requisite SKU (example, G Suite Basic).
+          - (Developer accounts only) Reseller and resold domain must
+            meet the following naming requirements:
 
-              -  Domain names must start with goog-test.
-              -  Domain names must include the reseller domain.
+            - Domain names must start with goog-test.
+            - Domain names must include the reseller domain.
 
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The ID of a long-running operation.
 
@@ -1507,10 +1507,10 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Return value: The list of the distributor account's
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
@@ -1551,12 +1551,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: ChannelPartnerLink resource not found because of
-           an invalid channel partner link name.
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: ChannelPartnerLink resource not found because of an
+          invalid channel partner link name.
 
         Return value: The
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
@@ -1598,18 +1598,18 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  ALREADY_EXISTS: The ChannelPartnerLink sent in the request
-           already exists.
-        -  NOT_FOUND: No Cloud Identity customer exists for provided
-           domain.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - ALREADY_EXISTS: The ChannelPartnerLink sent in the request
+          already exists.
+        - NOT_FOUND: No Cloud Identity customer exists for provided
+          domain.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The new
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
@@ -1650,21 +1650,21 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
-        -  INVALID_ARGUMENT:
+        - PERMISSION_DENIED: The reseller account making the request is
+          different from the reseller account in the API request.
+        - INVALID_ARGUMENT:
 
-           -  Required request parameters are missing or invalid.
-           -  Link state cannot change from invited to active or
-              suspended.
-           -  Cannot send reseller_cloud_identity_id, invite_url, or
-              name in update mask.
+          - Required request parameters are missing or invalid.
+          - Link state cannot change from invited to active or
+            suspended.
+          - Cannot send reseller_cloud_identity_id, invite_url, or name
+            in update mask.
 
-        -  NOT_FOUND: ChannelPartnerLink resource not found.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - NOT_FOUND: ChannelPartnerLink resource not found.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The updated
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
@@ -1704,13 +1704,13 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED: If the account making the request and the
-           account being queried are different.
-        -  NOT_FOUND: The
-           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
-           was not found.
-        -  INTERNAL: Any non-user error related to technical issues in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: If the account making the request and the
+          account being queried are different.
+        - NOT_FOUND: The
+          [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+          was not found.
+        - INTERNAL: Any non-user error related to technical issues in
+          the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the
         [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
@@ -1751,24 +1751,24 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED: If the account making the request and the
-           account being queried are different.
-        -  NOT_FOUND: The
-           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
-           specified does not exist or is not associated with the given
-           account.
-        -  INTERNAL: Any non-user error related to technical issues in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: If the account making the request and the
+          account being queried are different.
+        - NOT_FOUND: The
+          [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+          specified does not exist or is not associated with the given
+          account.
+        - INTERNAL: Any non-user error related to technical issues in
+          the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the
         [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
         resources. The data for each resource is displayed in the
         ascending order of:
 
-        -  Customer ID
-        -  [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement]
-        -  [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
-        -  [CustomerRepricingConfig.update_time][google.cloud.channel.v1.CustomerRepricingConfig.update_time]
+        - Customer ID
+        - [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement]
+        - [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        - [CustomerRepricingConfig.update_time][google.cloud.channel.v1.CustomerRepricingConfig.update_time]
 
         If unsuccessful, returns an error.
 
@@ -1816,35 +1816,35 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         The following restrictions are for creating configs in the
         current month.
 
-        -  This functionality is reserved for recovering from an
-           erroneous config, and should not be used for regular business
-           cases.
-        -  The new config will not modify exports used with other
-           configs. Changes to the config may be immediate, but may take
-           up to 24 hours.
-        -  There is a limit of ten configs for any
-           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement],
-           for any
-           [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
-        -  The contained
-           [CustomerRepricingConfig.repricing_config][google.cloud.channel.v1.CustomerRepricingConfig.repricing_config]
-           value must be different from the value used in the current
-           config for a
-           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement].
+        - This functionality is reserved for recovering from an
+          erroneous config, and should not be used for regular business
+          cases.
+        - The new config will not modify exports used with other
+          configs. Changes to the config may be immediate, but may take
+          up to 24 hours.
+        - There is a limit of ten configs for any
+          [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement],
+          for any
+          [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+        - The contained
+          [CustomerRepricingConfig.repricing_config][google.cloud.channel.v1.CustomerRepricingConfig.repricing_config]
+          value must be different from the value used in the current
+          config for a
+          [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement].
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED: If the account making the request and the
-           account being queried are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request. Also displays if the updated config is for the
-           current month or past months.
-        -  NOT_FOUND: The
-           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
-           specified does not exist or is not associated with the given
-           account.
-        -  INTERNAL: Any non-user error related to technical issues in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: If the account making the request and the
+          account being queried are different.
+        - INVALID_ARGUMENT: Missing or invalid required parameters in
+          the request. Also displays if the updated config is for the
+          current month or past months.
+        - NOT_FOUND: The
+          [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+          specified does not exist or is not associated with the given
+          account.
+        - INTERNAL: Any non-user error related to technical issues in
+          the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the updated
         [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
@@ -1894,21 +1894,21 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         When updating a config in the future:
 
-        -  This config must already exist.
+        - This config must already exist.
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED: If the account making the request and the
-           account being queried are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request. Also displays if the updated config is for the
-           current month or past months.
-        -  NOT_FOUND: The
-           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
-           specified does not exist or is not associated with the given
-           account.
-        -  INTERNAL: Any non-user error related to technical issues in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: If the account making the request and the
+          account being queried are different.
+        - INVALID_ARGUMENT: Missing or invalid required parameters in
+          the request. Also displays if the updated config is for the
+          current month or past months.
+        - NOT_FOUND: The
+          [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+          specified does not exist or is not associated with the given
+          account.
+        - INTERNAL: Any non-user error related to technical issues in
+          the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the updated
         [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
@@ -1951,16 +1951,16 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The account making the request does not
-           own this customer.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  FAILED_PRECONDITION: The
-           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
-           is active or in the past.
-        -  NOT_FOUND: No
-           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
-           found for the name in the request.
+        - PERMISSION_DENIED: The account making the request does not own
+          this customer.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - FAILED_PRECONDITION: The
+          [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+          is active or in the past.
+        - NOT_FOUND: No
+          [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+          found for the name in the request.
 
         Returns:
             Callable[[~.DeleteCustomerRepricingConfigRequest],
@@ -1997,13 +1997,13 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED: If the account making the request and the
-           account being queried are different.
-        -  NOT_FOUND: The
-           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
-           was not found.
-        -  INTERNAL: Any non-user error related to technical issues in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: If the account making the request and the
+          account being queried are different.
+        - NOT_FOUND: The
+          [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+          was not found.
+        - INTERNAL: Any non-user error related to technical issues in
+          the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the
         [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
@@ -2044,23 +2044,23 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED: If the account making the request and the
-           account being queried are different.
-        -  NOT_FOUND: The
-           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
-           specified does not exist or is not associated with the given
-           account.
-        -  INTERNAL: Any non-user error related to technical issues in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: If the account making the request and the
+          account being queried are different.
+        - NOT_FOUND: The
+          [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+          specified does not exist or is not associated with the given
+          account.
+        - INTERNAL: Any non-user error related to technical issues in
+          the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the
         [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
         resources. The data for each resource is displayed in the
         ascending order of:
 
-        -  Channel Partner ID
-        -  [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
-        -  [ChannelPartnerRepricingConfig.update_time][google.cloud.channel.v1.ChannelPartnerRepricingConfig.update_time]
+        - Channel Partner ID
+        - [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        - [ChannelPartnerRepricingConfig.update_time][google.cloud.channel.v1.ChannelPartnerRepricingConfig.update_time]
 
         If unsuccessful, returns an error.
 
@@ -2108,34 +2108,34 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         The following restrictions are for creating configs in the
         current month.
 
-        -  This functionality is reserved for recovering from an
-           erroneous config, and should not be used for regular business
-           cases.
-        -  The new config will not modify exports used with other
-           configs. Changes to the config may be immediate, but may take
-           up to 24 hours.
-        -  There is a limit of ten configs for any ChannelPartner or
-           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement],
-           for any
-           [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
-        -  The contained
-           [ChannelPartnerRepricingConfig.repricing_config][google.cloud.channel.v1.ChannelPartnerRepricingConfig.repricing_config]
-           value must be different from the value used in the current
-           config for a ChannelPartner.
+        - This functionality is reserved for recovering from an
+          erroneous config, and should not be used for regular business
+          cases.
+        - The new config will not modify exports used with other
+          configs. Changes to the config may be immediate, but may take
+          up to 24 hours.
+        - There is a limit of ten configs for any ChannelPartner or
+          [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement],
+          for any
+          [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+        - The contained
+          [ChannelPartnerRepricingConfig.repricing_config][google.cloud.channel.v1.ChannelPartnerRepricingConfig.repricing_config]
+          value must be different from the value used in the current
+          config for a ChannelPartner.
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED: If the account making the request and the
-           account being queried are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request. Also displays if the updated config is for the
-           current month or past months.
-        -  NOT_FOUND: The
-           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
-           specified does not exist or is not associated with the given
-           account.
-        -  INTERNAL: Any non-user error related to technical issues in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: If the account making the request and the
+          account being queried are different.
+        - INVALID_ARGUMENT: Missing or invalid required parameters in
+          the request. Also displays if the updated config is for the
+          current month or past months.
+        - NOT_FOUND: The
+          [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+          specified does not exist or is not associated with the given
+          account.
+        - INTERNAL: Any non-user error related to technical issues in
+          the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the updated
         [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
@@ -2185,21 +2185,21 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         When updating a config in the future:
 
-        -  This config must already exist.
+        - This config must already exist.
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED: If the account making the request and the
-           account being queried are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request. Also displays if the updated config is for the
-           current month or past months.
-        -  NOT_FOUND: The
-           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
-           specified does not exist or is not associated with the given
-           account.
-        -  INTERNAL: Any non-user error related to technical issues in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: If the account making the request and the
+          account being queried are different.
+        - INVALID_ARGUMENT: Missing or invalid required parameters in
+          the request. Also displays if the updated config is for the
+          current month or past months.
+        - NOT_FOUND: The
+          [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+          specified does not exist or is not associated with the given
+          account.
+        - INTERNAL: Any non-user error related to technical issues in
+          the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the updated
         [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
@@ -2242,16 +2242,16 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The account making the request does not
-           own this customer.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  FAILED_PRECONDITION: The
-           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
-           is active or in the past.
-        -  NOT_FOUND: No
-           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
-           found for the name in the request.
+        - PERMISSION_DENIED: The account making the request does not own
+          this customer.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - FAILED_PRECONDITION: The
+          [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+          is active or in the past.
+        - NOT_FOUND: No
+          [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+          found for the name in the request.
 
         Returns:
             Callable[[~.DeleteChannelPartnerRepricingConfigRequest],
@@ -2287,11 +2287,11 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED: If the account making the request and the
-           account being queried are different, or the account doesn't
-           exist.
-        -  INTERNAL: Any non-user error related to technical issues in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: If the account making the request and the
+          account being queried are different, or the account doesn't
+          exist.
+        - INTERNAL: Any non-user error related to technical issues in
+          the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the
         [SkuGroup][google.cloud.channel.v1.SkuGroup] resources. The data
@@ -2343,8 +2343,8 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         The data for each resource is displayed in the ascending order
         of:
 
-        -  [BillableSku.service_display_name][google.cloud.channel.v1.BillableSku.service_display_name]
-        -  [BillableSku.sku_display_name][google.cloud.channel.v1.BillableSku.sku_display_name]
+        - [BillableSku.service_display_name][google.cloud.channel.v1.BillableSku.service_display_name]
+        - [BillableSku.sku_display_name][google.cloud.channel.v1.BillableSku.sku_display_name]
 
         If unsuccessful, returns an error.
 
@@ -2379,11 +2379,11 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The entitlement doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: Entitlement or offer was not found.
+        - PERMISSION_DENIED: The entitlement doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: Entitlement or offer was not found.
 
         Return value: The [Offer][google.cloud.channel.v1.Offer]
         resource.
@@ -2418,8 +2418,8 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Returns:
             Callable[[~.ListProductsRequest],
@@ -2449,8 +2449,8 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Returns:
             Callable[[~.ListSkusRequest],
@@ -2480,8 +2480,8 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Returns:
             Callable[[~.ListOffersRequest],
@@ -2512,15 +2512,15 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Lists the following:
 
-        -  SKUs that you can purchase for a customer
-        -  SKUs that you can upgrade or downgrade for an entitlement.
+        - SKUs that you can purchase for a customer
+        - SKUs that you can upgrade or downgrade for an entitlement.
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Returns:
             Callable[[~.ListPurchasableSkusRequest],
@@ -2551,20 +2551,20 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Lists the following:
 
-        -  Offers that you can purchase for a customer.
-        -  Offers that you can change for an entitlement.
+        - Offers that you can purchase for a customer.
+        - Offers that you can change for an entitlement.
 
         Possible error codes:
 
-        -  PERMISSION_DENIED:
+        - PERMISSION_DENIED:
 
-           -  The customer doesn't belong to the reseller
-           -  The reseller is not authorized to transact on this
-              Product. See
-              https://support.google.com/channelservices/answer/9759265
+          - The customer doesn't belong to the reseller
+          - The reseller is not authorized to transact on this Product.
+            See
+            https://support.google.com/channelservices/answer/9759265
 
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Returns:
             Callable[[~.ListPurchasableOffersRequest],
@@ -2599,10 +2599,10 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
+        - PERMISSION_DENIED: The customer doesn't belong to the
+          reseller.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
 
         Return value: Based on the provided list of SKUs, returns a list
         of SKU groups that must be purchased using the same billing
@@ -2645,15 +2645,15 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request
-           and the provided reseller account are different, or the
-           impersonated user is not a super admin.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The reseller account making the request and
+          the provided reseller account are different, or the
+          impersonated user is not a super admin.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The topic name with the registered service email
         address.
@@ -2693,16 +2693,16 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request
-           and the provided reseller account are different, or the
-           impersonated user is not a super admin.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: The topic resource doesn't exist.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The reseller account making the request and
+          the provided reseller account are different, or the
+          impersonated user is not a super admin.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: The topic resource doesn't exist.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: The topic name that unregistered the service email
         address. Returns a success response if the service email address
@@ -2739,16 +2739,16 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request
-           and the provided reseller account are different, or the
-           impersonated user is not a super admin.
-        -  INVALID_ARGUMENT: Required request parameters are missing or
-           invalid.
-        -  NOT_FOUND: The topic resource doesn't exist.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support.
+        - PERMISSION_DENIED: The reseller account making the request and
+          the provided reseller account are different, or the
+          impersonated user is not a super admin.
+        - INVALID_ARGUMENT: Required request parameters are missing or
+          invalid.
+        - NOT_FOUND: The topic resource doesn't exist.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. Contact Cloud Channel support.
 
         Return value: A list of service email addresses.
 
@@ -2783,16 +2783,16 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request
-           and the provided reseller account are different.
-        -  INVALID_ARGUMENT: Missing or invalid required fields in the
-           request.
-        -  NOT_FOUND: The parent resource doesn't exist. Usually the
-           result of an invalid name parameter.
-        -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact CloudChannel support.
-        -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+        - PERMISSION_DENIED: The reseller account making the request and
+          the provided reseller account are different.
+        - INVALID_ARGUMENT: Missing or invalid required fields in the
+          request.
+        - NOT_FOUND: The parent resource doesn't exist. Usually the
+          result of an invalid name parameter.
+        - INTERNAL: Any non-user error related to a technical issue in
+          the backend. In this case, contact CloudChannel support.
+        - UNKNOWN: Any non-user error related to a technical issue in
+          the backend. In this case, contact Cloud Channel support.
 
         Return value: List of
         [EntitlementChange][google.cloud.channel.v1.EntitlementChange]s.

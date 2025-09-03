@@ -2659,12 +2659,12 @@ class CalculatedMetric(proto.Message):
             of unique referenced custom metrics is 5. Formulas supports
             the following operations:
 
-            -  (addition), - (subtraction), - (negative), \*
-               (multiplication), / (division), () (parenthesis). Any
-               valid real numbers are acceptable that fit in a Long
-               (64bit integer) or a Double (64 bit floating point
-               number). Example formula: "( customEvent:parameter_name +
-               cartPurchaseQuantity ) / 2.0".
+            - (addition), - (subtraction), - (negative), \*
+              (multiplication), / (division), () (parenthesis). Any
+              valid real numbers are acceptable that fit in a Long
+              (64bit integer) or a Double (64 bit floating point
+              number). Example formula: "( customEvent:parameter_name +
+              cartPurchaseQuantity ) / 2.0".
         invalid_metric_reference (bool):
             Output only. If true, this calculated metric has a invalid
             metric reference. Anything using a calculated metric with

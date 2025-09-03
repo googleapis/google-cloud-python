@@ -80,8 +80,8 @@ class AppGatewaysServiceAsyncClient:
 
     The AppGatewaysService exposes the following resources:
 
-    -  AppGateways, named as follows:
-       ``projects/{project_id}/locations/{location_id}/appGateways/{app_gateway_id}``.
+    - AppGateways, named as follows:
+      ``projects/{project_id}/locations/{location_id}/appGateways/{app_gateway_id}``.
 
     The AppGatewaysService service provides methods to manage
     (create/read/update/delete) BeyondCorp AppGateways.
@@ -638,10 +638,10 @@ class AppGatewaysServiceAsyncClient:
             app_gateway_id (:class:`str`):
                 Optional. User-settable AppGateway resource ID.
 
-                -  Must start with a letter.
-                -  Must contain between 4-63 characters from
-                   ``/[a-z][0-9]-/``.
-                -  Must end with a number or a letter.
+                - Must start with a letter.
+                - Must contain between 4-63 characters from
+                  ``/[a-z][0-9]-/``.
+                - Must end with a number or a letter.
 
                 This corresponds to the ``app_gateway_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -586,7 +586,7 @@ if __name__ == "__main__":  # pragma: NO COVER
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
         ("build", "Run unit tests via nox for the generated library."),
-        ("release-init", "Prepare to release a specific library"),
+        ("release-init", "Prepare to release a given set of libraries"),
     ]:
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
@@ -618,7 +618,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             "--repo",
             type=str,
             help="Path to the directory in the container which contains google-cloud-python repository",
-            default=SOURCE_DIR,
+            default=REPO_DIR,
         )
 
     if len(sys.argv) == 1:

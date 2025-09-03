@@ -90,9 +90,9 @@ class ExampleQuery(proto.Message):
     Attributes:
         sql_query (str):
             Optional. The SQL query that should be generated to answer
-            the natural language question. For example: "SELECT COUNT(*)
-            FROM orders WHERE order_date BETWEEN '2024-01-01' AND
-            '2024-01-31'".
+            the natural language question. For example: "SELECT
+            COUNT(\*) FROM orders WHERE order_date BETWEEN '2024-01-01'
+            AND '2024-01-31'".
 
             This field is a member of `oneof`_ ``query``.
         natural_language_question (str):

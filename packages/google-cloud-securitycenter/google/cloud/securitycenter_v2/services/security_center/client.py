@@ -1275,12 +1275,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 updated in global. The following list shows some
                 examples:
 
-                -  ``organizations/[organization_id]``
-                -  ``organizations/[organization_id]/locations/[location_id]``
-                -  ``folders/[folder_id]``
-                -  ``folders/[folder_id]/locations/[location_id]``
-                -  ``projects/[project_id]``
-                -  ``projects/[project_id]/locations/[location_id]``
+                - ``organizations/[organization_id]``
+                - ``organizations/[organization_id]/locations/[location_id]``
+                - ``folders/[folder_id]``
+                - ``folders/[folder_id]/locations/[location_id]``
+                - ``projects/[project_id]``
+                - ``projects/[project_id]/locations/[location_id]``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2133,8 +2133,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
                 ``organizations/{organization}/locations/{location}/bigQueryExports/{export_id}``
 
-                -  ``folders/{folder}/locations/{location}/bigQueryExports/{export_id}``
-                -  ``projects/{project}/locations/{location}/bigQueryExports/{export_id}``
+                - ``folders/{folder}/locations/{location}/bigQueryExports/{export_id}``
+                - ``projects/{project}/locations/{location}/bigQueryExports/{export_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2236,15 +2236,15 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 Required. Name of the mute config to delete. The
                 following list shows some examples of the format:
 
-                -  ``organizations/{organization}/muteConfigs/{config_id}``
+                - ``organizations/{organization}/muteConfigs/{config_id}``
                 -
 
                 ``organizations/{organization}/locations/{location}/muteConfigs/{config_id}``
 
-                -  ``folders/{folder}/muteConfigs/{config_id}``
-                -  ``folders/{folder}/locations/{location}/muteConfigs/{config_id}``
-                -  ``projects/{project}/muteConfigs/{config_id}``
-                -  ``projects/{project}/locations/{location}/muteConfigs/{config_id}``
+                - ``folders/{folder}/muteConfigs/{config_id}``
+                - ``folders/{folder}/locations/{location}/muteConfigs/{config_id}``
+                - ``projects/{project}/muteConfigs/{config_id}``
+                - ``projects/{project}/locations/{location}/muteConfigs/{config_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2585,8 +2585,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
                 ``organizations/{organization}/locations/{location}/bigQueryExports/{export_id}``
 
-                -  ``folders/{folder}/locations/{location}/bigQueryExports/{export_id}``
-                -  ``projects/{project}locations/{location}//bigQueryExports/{export_id}``
+                - ``folders/{folder}/locations/{location}/bigQueryExports/{export_id}``
+                - ``projects/{project}locations/{location}//bigQueryExports/{export_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2957,19 +2957,19 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -3068,15 +3068,15 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 Required. Name of the mute config to retrieve. The
                 following list shows some examples of the format:
 
-                -  ``organizations/{organization}/muteConfigs/{config_id}``
+                - ``organizations/{organization}/muteConfigs/{config_id}``
                 -
 
                 ``organizations/{organization}/locations/{location}/muteConfigs/{config_id}``
 
-                -  ``folders/{folder}/muteConfigs/{config_id}``
-                -  ``folders/{folder}/locations/{location}/muteConfigs/{config_id}``
-                -  ``projects/{project}/muteConfigs/{config_id}``
-                -  ``projects/{project}/locations/{location}/muteConfigs/{config_id}``
+                - ``folders/{folder}/muteConfigs/{config_id}``
+                - ``folders/{folder}/locations/{location}/muteConfigs/{config_id}``
+                - ``projects/{project}/muteConfigs/{config_id}``
+                - ``projects/{project}/locations/{location}/muteConfigs/{config_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3534,15 +3534,15 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         To group across all sources provide a ``-`` as the source id.
         The following list shows some examples:
 
-        -  ``/v2/organizations/{organization_id}/sources/-/findings``
+        - ``/v2/organizations/{organization_id}/sources/-/findings``
         -
 
         ``/v2/organizations/{organization_id}/sources/-/locations/{location_id}/findings``
 
-        -  ``/v2/folders/{folder_id}/sources/-/findings``
-        -  ``/v2/folders/{folder_id}/sources/-/locations/{location_id}/findings``
-        -  ``/v2/projects/{project_id}/sources/-/findings``
-        -  ``/v2/projects/{project_id}/sources/-/locations/{location_id}/findings``
+        - ``/v2/folders/{folder_id}/sources/-/findings``
+        - ``/v2/folders/{folder_id}/sources/-/locations/{location_id}/findings``
+        - ``/v2/projects/{project_id}/sources/-/findings``
+        - ``/v2/projects/{project_id}/sources/-/locations/{location_id}/findings``
 
         .. code-block:: python
 
@@ -3581,25 +3581,25 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 is specified, finding is assumed to be in global. The
                 following list shows some examples:
 
-                -  ``organizations/[organization_id]/sources/[source_id]``
+                - ``organizations/[organization_id]/sources/[source_id]``
                 -
 
                 ``organizations/[organization_id]/sources/[source_id]/locations/[location_id]``
 
-                -  ``folders/[folder_id]/sources/[source_id]``
-                -  ``folders/[folder_id]/sources/[source_id]/locations/[location_id]``
-                -  ``projects/[project_id]/sources/[source_id]``
-                -  ``projects/[project_id]/sources/[source_id]/locations/[location_id]``
+                - ``folders/[folder_id]/sources/[source_id]``
+                - ``folders/[folder_id]/sources/[source_id]/locations/[location_id]``
+                - ``projects/[project_id]/sources/[source_id]``
+                - ``projects/[project_id]/sources/[source_id]/locations/[location_id]``
 
                 To groupBy across all sources provide a source_id of
                 ``-``. The following list shows some examples:
 
-                -  ``organizations/{organization_id}/sources/-``
-                -  ``organizations/{organization_id}/sources/-/locations/[location_id]``
-                -  ``folders/{folder_id}/sources/-``
-                -  ``folders/{folder_id}/sources/-/locations/[location_id]``
-                -  ``projects/{project_id}/sources/-``
-                -  ``projects/{project_id}/sources/-/locations/[location_id]``
+                - ``organizations/{organization_id}/sources/-``
+                - ``organizations/{organization_id}/sources/-/locations/[location_id]``
+                - ``folders/{folder_id}/sources/-``
+                - ``folders/{folder_id}/sources/-/locations/[location_id]``
+                - ``projects/{project_id}/sources/-``
+                - ``projects/{project_id}/sources/-/locations/[location_id]``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3973,7 +3973,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         as the source id. If no location is specified, finding are
         assumed to be in global. The following list shows some examples:
 
-        -  ``/v2/organizations/{organization_id}/sources/-/findings``
+        - ``/v2/organizations/{organization_id}/sources/-/findings``
         -
 
         ``/v2/organizations/{organization_id}/sources/-/locations/{location_id}/findings``
@@ -4013,25 +4013,25 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 no location is specified, the default is global. The
                 following list shows some examples:
 
-                -  ``organizations/[organization_id]/sources/[source_id]``
+                - ``organizations/[organization_id]/sources/[source_id]``
                 -
 
                 ``organizations/[organization_id]/sources/[source_id]/locations/[location_id]``
 
-                -  ``folders/[folder_id]/sources/[source_id]``
-                -  ``folders/[folder_id]/sources/[source_id]/locations/[location_id]``
-                -  ``projects/[project_id]/sources/[source_id]``
-                -  ``projects/[project_id]/sources/[source_id]/locations/[location_id]``
+                - ``folders/[folder_id]/sources/[source_id]``
+                - ``folders/[folder_id]/sources/[source_id]/locations/[location_id]``
+                - ``projects/[project_id]/sources/[source_id]``
+                - ``projects/[project_id]/sources/[source_id]/locations/[location_id]``
 
                 To list across all sources provide a source_id of ``-``.
                 The following list shows some examples:
 
-                -  ``organizations/{organization_id}/sources/-``
-                -  ``organizations/{organization_id}/sources/-/locations/{location_id}``
-                -  ``folders/{folder_id}/sources/-``
-                -  ``folders/{folder_id}/sources/-locations/{location_id}``
-                -  ``projects/{projects_id}/sources/-``
-                -  ``projects/{projects_id}/sources/-/locations/{location_id}``
+                - ``organizations/{organization_id}/sources/-``
+                - ``organizations/{organization_id}/sources/-/locations/{location_id}``
+                - ``folders/{folder_id}/sources/-``
+                - ``folders/{folder_id}/sources/-locations/{location_id}``
+                - ``projects/{projects_id}/sources/-``
+                - ``projects/{projects_id}/sources/-/locations/{location_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4842,12 +4842,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 +
                 ``organizations/{organization_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
 
-                -  ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``
+                - ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``
                 -
 
                 ``folders/{folder_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
 
-                -  ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``
+                - ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``
                 -
 
                 ``projects/{project_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
@@ -5010,19 +5010,19 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -5129,12 +5129,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 +
                 ``organizations/{organization_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
 
-                -  ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``
+                - ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``
                 -
 
                 ``folders/{folder_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``
 
-                -  ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``
+                - ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``
                 -
 
                 ``projects/{project_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}``

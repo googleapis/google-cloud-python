@@ -287,8 +287,8 @@ class Inventory(proto.Message):
                 This field is a member of `oneof`_ ``details``.
             wua_package (google.cloud.osconfig_v1.types.Inventory.WindowsUpdatePackage):
                 Details of a Windows Update package. See
-                https://docs.microsoft.com/en-us/windows/win32/api/_wua/ for
-                information about Windows Update.
+                https://docs.microsoft.com/en-us/windows/win32/api/\_wua/
+                for information about Windows Update.
 
                 This field is a member of `oneof`_ ``details``.
             qfe_package (google.cloud.osconfig_v1.types.Inventory.WindowsQuickFixEngineeringPackage):
@@ -426,9 +426,9 @@ class Inventory(proto.Message):
     class WindowsUpdatePackage(proto.Message):
         r"""Details related to a Windows Update package. Field data and names
         are taken from Windows Update API IUpdate Interface:
-        https://docs.microsoft.com/en-us/windows/win32/api/_wua/ Descriptive
-        fields like title, and description are localized based on the locale
-        of the VM being updated.
+        https://docs.microsoft.com/en-us/windows/win32/api/\_wua/
+        Descriptive fields like title, and description are localized based
+        on the locale of the VM being updated.
 
         Attributes:
             title (str):

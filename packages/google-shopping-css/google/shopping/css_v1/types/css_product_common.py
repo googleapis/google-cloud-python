@@ -608,8 +608,8 @@ class ProductDimension(proto.Message):
         unit (str):
             Required. The dimension units. Acceptable values are:
 
-            -  "``in``"
-            -  "``cm``".
+            - "``in``"
+            - "``cm``".
     """
 
     value: float = proto.Field(
@@ -633,10 +633,10 @@ class ProductWeight(proto.Message):
         unit (str):
             Required. The weight unit. Acceptable values are:
 
-            -  "``g``"
-            -  "``kg``"
-            -  "``oz``"
-            -  "``lb``".
+            - "``g``"
+            - "``kg``"
+            - "``oz``"
+            - "``lb``".
     """
 
     value: float = proto.Field(
@@ -804,8 +804,8 @@ class HeadlineOfferSubscriptionCost(proto.Message):
         period (google.shopping.css_v1.types.SubscriptionPeriod):
             The type of subscription period. Supported values are:
 
-            -  "``month``"
-            -  "``year``".
+            - "``month``"
+            - "``year``".
         period_length (int):
             The number of subscription periods the buyer
             has to pay.

@@ -322,7 +322,7 @@ class WorkflowsServiceV2BetaAsyncClient:
         permissions. Authorization requires the following `Google
         IAM <https://cloud.google.com/iam/>`__ permission:
 
-        -  ``lifesciences.workflows.run``
+        - ``lifesciences.workflows.run``
 
         .. code-block:: python
 

@@ -413,10 +413,10 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         Data Catalog automatically creates entry groups with names that
         start with the ``@`` symbol for the following resources:
 
-        -  BigQuery entries (``@bigquery``)
-        -  Pub/Sub topics (``@pubsub``)
-        -  Dataproc Metastore services
-           (``@dataproc_metastore_{SERVICE_NAME_HASH}``)
+        - BigQuery entries (``@bigquery``)
+        - Pub/Sub topics (``@pubsub``)
+        - Dataproc Metastore services
+          (``@dataproc_metastore_{SERVICE_NAME_HASH}``)
 
         You can create your own entry groups for Cloud Storage fileset
         entries and custom entries together with the corresponding IAM
@@ -1129,12 +1129,11 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
 
         Creates a tag and assigns it to:
 
-        -  An [Entry][google.cloud.datacatalog.v1.Entry] if the method
-           name is
-           ``projects.locations.entryGroups.entries.tags.create``.
-        -  Or [EntryGroup][google.cloud.datacatalog.v1.EntryGroup]if the
-           method name is
-           ``projects.locations.entryGroups.tags.create``.
+        - An [Entry][google.cloud.datacatalog.v1.Entry] if the method
+          name is
+          ``projects.locations.entryGroups.entries.tags.create``.
+        - Or [EntryGroup][google.cloud.datacatalog.v1.EntryGroup]if the
+          method name is ``projects.locations.entryGroups.tags.create``.
 
         Note: The project identified by the ``parent`` parameter for the
         [tag]
@@ -1355,8 +1354,8 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
 
         Supported resources are:
 
-        -  Tag templates
-        -  Entry groups
+        - Tag templates
+        - Entry groups
 
         Note: This method sets policies only within Data Catalog and
         can't be used to manage policies in BigQuery, Pub/Sub, Dataproc
@@ -1366,10 +1365,10 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         To call this method, you must have the following Google IAM
         permissions:
 
-        -  ``datacatalog.tagTemplates.setIamPolicy`` to set policies on
-           tag templates.
-        -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on
-           entry groups.
+        - ``datacatalog.tagTemplates.setIamPolicy`` to set policies on
+          tag templates.
+        - ``datacatalog.entryGroups.setIamPolicy`` to set policies on
+          entry groups.
 
         Returns:
             Callable[[~.SetIamPolicyRequest],
@@ -1399,15 +1398,15 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
 
         May return:
 
-        -  A\ ``NOT_FOUND`` error if the resource doesn't exist or you
-           don't have the permission to view it.
-        -  An empty policy if the resource exists but doesn't have a set
-           policy.
+        - A\ ``NOT_FOUND`` error if the resource doesn't exist or you
+          don't have the permission to view it.
+        - An empty policy if the resource exists but doesn't have a set
+          policy.
 
         Supported resources are:
 
-        -  Tag templates
-        -  Entry groups
+        - Tag templates
+        - Entry groups
 
         Note: This method doesn't get policies from Google Cloud
         Platform resources ingested into Data Catalog.
@@ -1415,10 +1414,10 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         To call this method, you must have the following Google IAM
         permissions:
 
-        -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on
-           tag templates.
-        -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on
-           entry groups.
+        - ``datacatalog.tagTemplates.getIamPolicy`` to get policies on
+          tag templates.
+        - ``datacatalog.entryGroups.getIamPolicy`` to get policies on
+          entry groups.
 
         Returns:
             Callable[[~.GetIamPolicyRequest],

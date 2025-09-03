@@ -97,8 +97,8 @@ class TimeSeriesQuery(proto.Message):
             except for the cases where a series of data points are
             expected, like
 
-            -  XyChart
-            -  Scorecard's spark chart
+            - XyChart
+            - Scorecard's spark chart
     """
 
     time_series_filter: "TimeSeriesFilter" = proto.Field(

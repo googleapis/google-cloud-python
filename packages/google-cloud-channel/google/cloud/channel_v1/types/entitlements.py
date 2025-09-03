@@ -91,23 +91,23 @@ class Entitlement(proto.Message):
             For Google Workspace, the following Parameters may be
             accepted as input:
 
-            -  max_units: The maximum assignable units for a flexible
-               offer
+            - max_units: The maximum assignable units for a flexible
+              offer
 
             OR
 
-            -  num_units: The total commitment for commitment-based
-               offers
+            - num_units: The total commitment for commitment-based
+              offers
 
             The response may additionally include the following
             output-only Parameters:
 
-            -  assigned_units: The number of licenses assigned to users.
+            - assigned_units: The number of licenses assigned to users.
 
             For Google Cloud billing subaccounts, the following
             Parameter may be accepted as input:
 
-            -  display_name: The display name of the billing subaccount.
+            - display_name: The display name of the billing subaccount.
         billing_account (str):
             Optional. The billing account resource name
             that is used to pay for this entitlement.
@@ -373,8 +373,8 @@ class TrialSettings(proto.Message):
         trial (bool):
             Determines if the entitlement is in a trial or not:
 
-            -  ``true`` - The entitlement is in trial.
-            -  ``false`` - The entitlement is not in trial.
+            - ``true`` - The entitlement is in trial.
+            - ``false`` - The entitlement is not in trial.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Date when the trial ends. The value is in milliseconds using
             the UNIX Epoch format. See an example `Epoch

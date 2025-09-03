@@ -351,12 +351,12 @@ class TermsOfServiceAgreementStateServiceRestTransport(
                     account and terms of service kind. The state is as
                     follows:
 
-                    -  If the business has accepted a terms of service,
-                       [``accepted``][google.shopping.merchant.accounts.v1.Accepted]
-                       will be populated, otherwise it will be empty
-                    -  If the business must sign a terms of service,
-                       [``required``][google.shopping.merchant.accounts.v1.Required]
-                       will be populated, otherwise it will be empty.
+                    - If the business has accepted a terms of service,
+                      [``accepted``][google.shopping.merchant.accounts.v1.Accepted]
+                      will be populated, otherwise it will be empty
+                    - If the business must sign a terms of service,
+                      [``required``][google.shopping.merchant.accounts.v1.Required]
+                      will be populated, otherwise it will be empty.
 
                     Note that both ``required`` and ``accepted`` can be
                     present. In this case the ``accepted`` terms of services
@@ -538,12 +538,12 @@ class TermsOfServiceAgreementStateServiceRestTransport(
                     account and terms of service kind. The state is as
                     follows:
 
-                    -  If the business has accepted a terms of service,
-                       [``accepted``][google.shopping.merchant.accounts.v1.Accepted]
-                       will be populated, otherwise it will be empty
-                    -  If the business must sign a terms of service,
-                       [``required``][google.shopping.merchant.accounts.v1.Required]
-                       will be populated, otherwise it will be empty.
+                    - If the business has accepted a terms of service,
+                      [``accepted``][google.shopping.merchant.accounts.v1.Accepted]
+                      will be populated, otherwise it will be empty
+                    - If the business must sign a terms of service,
+                      [``required``][google.shopping.merchant.accounts.v1.Required]
+                      will be populated, otherwise it will be empty.
 
                     Note that both ``required`` and ``accepted`` can be
                     present. In this case the ``accepted`` terms of services

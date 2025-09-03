@@ -1226,7 +1226,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to be updated. If omitted, all fields
                 are updated that are set in the request message (fields
-                set to default values are ignored). If an asterisk "*"
+                set to default values are ignored). If an asterisk "\*"
                 is specified, all fields are updated, including fields
                 that are unspecified/default in the request.
 
@@ -1808,7 +1808,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to be updated. If omitted, all fields
                 are updated that are set in the request message (fields
-                set to default values are ignored). If an asterisk "*"
+                set to default values are ignored). If an asterisk "\*"
                 is specified, all fields are updated, including fields
                 that are unspecified/default in the request.
 
@@ -2573,7 +2573,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to be updated. If omitted, all fields
                 are updated that are set in the request message (fields
-                set to default values are ignored). If an asterisk "*"
+                set to default values are ignored). If an asterisk "\*"
                 is specified, all fields are updated, including fields
                 that are unspecified/default in the request.
 
@@ -3614,7 +3614,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to be updated. If omitted, all fields
                 are updated that are set in the request message (fields
-                set to default values are ignored). If an asterisk "*"
+                set to default values are ignored). If an asterisk "\*"
                 is specified, all fields are updated, including fields
                 that are unspecified/default in the request.
 

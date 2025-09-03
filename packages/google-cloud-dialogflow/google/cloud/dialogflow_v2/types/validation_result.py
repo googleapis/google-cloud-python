@@ -38,18 +38,17 @@ class ValidationError(proto.Message):
             The names of the entries that the error is associated with.
             Format:
 
-            -  ``projects/<Project ID>/agent``, if the error is
-               associated with the entire agent.
-            -  ``projects/<Project ID>/agent/intents/<Intent ID>``, if
-               the error is associated with certain intents.
-            -  ``projects/<Project ID>/agent/intents/<Intent Id>/trainingPhrases/<Training Phrase ID>``,
-               if the error is associated with certain intent training
-               phrases.
-            -  ``projects/<Project ID>/agent/intents/<Intent Id>/parameters/<Parameter ID>``,
-               if the error is associated with certain intent
-               parameters.
-            -  ``projects/<Project ID>/agent/entities/<Entity ID>``, if
-               the error is associated with certain entities.
+            - ``projects/<Project ID>/agent``, if the error is
+              associated with the entire agent.
+            - ``projects/<Project ID>/agent/intents/<Intent ID>``, if
+              the error is associated with certain intents.
+            - ``projects/<Project ID>/agent/intents/<Intent Id>/trainingPhrases/<Training Phrase ID>``,
+              if the error is associated with certain intent training
+              phrases.
+            - ``projects/<Project ID>/agent/intents/<Intent Id>/parameters/<Parameter ID>``,
+              if the error is associated with certain intent parameters.
+            - ``projects/<Project ID>/agent/entities/<Entity ID>``, if
+              the error is associated with certain entities.
         error_message (str):
             The detailed error message.
     """

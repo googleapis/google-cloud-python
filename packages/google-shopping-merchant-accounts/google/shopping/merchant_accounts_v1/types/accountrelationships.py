@@ -123,7 +123,7 @@ class UpdateAccountRelationshipRequest(proto.Message):
             The following fields are supported (in both ``snake_case``
             and ``lowerCamelCase``):
 
-            -  ``account_id_alias``
+            - ``account_id_alias``
     """
 
     account_relationship: "AccountRelationship" = proto.Field(

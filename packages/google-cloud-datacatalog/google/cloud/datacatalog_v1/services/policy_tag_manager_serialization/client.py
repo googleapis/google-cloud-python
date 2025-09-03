@@ -757,11 +757,11 @@ class PolicyTagManagerSerializationClient(
 
         This operation automatically does the following:
 
-        -  Deletes the existing policy tags that are missing from the
-           ``SerializedPolicyTag``.
-        -  Creates policy tags that don't have resource names. They are
-           considered new.
-        -  Updates policy tags with valid resources names accordingly.
+        - Deletes the existing policy tags that are missing from the
+          ``SerializedPolicyTag``.
+        - Creates policy tags that don't have resource names. They are
+          considered new.
+        - Updates policy tags with valid resources names accordingly.
 
         .. code-block:: python
 
@@ -813,12 +813,12 @@ class PolicyTagManagerSerializationClient(
                    For example, a "data sensitivity" taxonomy might
                    contain the following policy tags:
 
-                   :literal:`\` + PII   + Account number   + Age   + SSN   + Zipcode + Financials   + Revenue`\ \`
+                   :literal:`` + PII   + Account number   + Age   + SSN   + Zipcode + Financials   + Revenue`\ \`
 
                    A "data origin" taxonomy might contain the following
                    policy tags:
 
-                   :literal:`\` + User data + Employee data + Partner data + Public data`\ \`
+                   :literal:`` + User data + Employee data + Partner data + Public data`\ \`
 
         """
         # Create or coerce a protobuf request object.

@@ -366,7 +366,7 @@ class BusinessIdentityServiceAsyncClient:
         Returns:
             google.shopping.merchant_accounts_v1.types.BusinessIdentity:
                 Collection of information related to the [identity of a
-                   business](\ https://support.google.com/merchants/answer/12564247).
+                   business](https://support.google.com/merchants/answer/12564247).
 
         """
         # Create or coerce a protobuf request object.
@@ -479,12 +479,12 @@ class BusinessIdentityServiceAsyncClient:
                 The following fields are supported (in both
                 ``snake_case`` and ``lowerCamelCase``):
 
-                -  ``black_owned``
-                -  ``latino_owned``
-                -  ``promotions_consent``
-                -  ``small_business``
-                -  ``veteran_owned``
-                -  ``women_owned``
+                - ``black_owned``
+                - ``latino_owned``
+                - ``promotions_consent``
+                - ``small_business``
+                - ``veteran_owned``
+                - ``women_owned``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -500,7 +500,7 @@ class BusinessIdentityServiceAsyncClient:
         Returns:
             google.shopping.merchant_accounts_v1.types.BusinessIdentity:
                 Collection of information related to the [identity of a
-                   business](\ https://support.google.com/merchants/answer/12564247).
+                   business](https://support.google.com/merchants/answer/12564247).
 
         """
         # Create or coerce a protobuf request object.

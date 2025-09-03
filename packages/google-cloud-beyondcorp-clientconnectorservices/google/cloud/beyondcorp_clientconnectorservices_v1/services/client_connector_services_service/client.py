@@ -140,8 +140,8 @@ class ClientConnectorServicesServiceClient(
 
     The ClientConnectorServicesService exposes the following resources:
 
-    -  Client Connector Services, named as follows:
-       ``projects/{project_id}/locations/{location_id}/client_connector_services/{client_connector_service_id}``.
+    - Client Connector Services, named as follows:
+      ``projects/{project_id}/locations/{location_id}/client_connector_services/{client_connector_service_id}``.
     """
 
     @staticmethod
@@ -1092,10 +1092,10 @@ class ClientConnectorServicesServiceClient(
                 Optional. User-settable client connector service
                 resource ID.
 
-                -  Must start with a letter.
-                -  Must contain between 4-63 characters from
-                   ``/[a-z][0-9]-/``.
-                -  Must end with a number or a letter.
+                - Must start with a letter.
+                - Must contain between 4-63 characters from
+                  ``/[a-z][0-9]-/``.
+                - Must end with a number or a letter.
 
                 A random system generated name will be assigned if not
                 specified by the user.

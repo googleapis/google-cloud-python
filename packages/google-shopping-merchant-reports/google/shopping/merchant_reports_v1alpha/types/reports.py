@@ -732,7 +732,7 @@ class ProductView(proto.Message):
 
         ```
         Free listings \| Shopping ads \| Status
-        --------------|--------------|------------------------------
+        --------------\|--------------\|------------------------------
         Approved \| Approved \| ELIGIBLE Approved \| Pending \| ELIGIBLE
         Approved \| Disapproved \| ELIGIBLE_LIMITED Pending \| Pending \|
         PENDING Disapproved \| Disapproved \| NOT_ELIGIBLE_OR_DISAPPROVED
@@ -1559,8 +1559,8 @@ class BestSellersProductClusterView(proto.Message):
             Report date. The value of this field can only be one of the
             following:
 
-            -  The first day of the week (Monday) for weekly reports,
-            -  The first day of the month for monthly reports.
+            - The first day of the week (Monday) for weekly reports,
+            - The first day of the month for monthly reports.
 
             Required in the ``SELECT`` clause. If a ``WHERE`` condition
             on ``report_date`` is not specified in the query, the latest
@@ -1829,8 +1829,8 @@ class BestSellersBrandView(proto.Message):
             Report date. The value of this field can only be one of the
             following:
 
-            -  The first day of the week (Monday) for weekly reports,
-            -  The first day of the month for monthly reports.
+            - The first day of the week (Monday) for weekly reports,
+            - The first day of the month for monthly reports.
 
             Required in the ``SELECT`` clause. If a ``WHERE`` condition
             on ``report_date`` is not specified in the query, the latest

@@ -265,7 +265,7 @@ class UpdateReferenceListRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to update. When no field mask is
             supplied, all non-empty fields will be updated. A field mask
-            of "*" will update all fields, whether empty or not.
+            of "\*" will update all fields, whether empty or not.
     """
 
     reference_list: "ReferenceList" = proto.Field(

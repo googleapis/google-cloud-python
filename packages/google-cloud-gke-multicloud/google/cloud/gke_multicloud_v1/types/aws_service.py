@@ -121,33 +121,33 @@ class UpdateAwsClusterRequest(proto.Message):
             paths field can only include these fields from
             [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]:
 
-            -  ``description``.
-            -  ``annotations``.
-            -  ``control_plane.version``.
-            -  ``authorization.admin_users``.
-            -  ``authorization.admin_groups``.
-            -  ``binary_authorization.evaluation_mode``.
-            -  ``control_plane.aws_services_authentication.role_arn``.
-            -  ``control_plane.aws_services_authentication.role_session_name``.
-            -  ``control_plane.config_encryption.kms_key_arn``.
-            -  ``control_plane.instance_type``.
-            -  ``control_plane.security_group_ids``.
-            -  ``control_plane.proxy_config``.
-            -  ``control_plane.proxy_config.secret_arn``.
-            -  ``control_plane.proxy_config.secret_version``.
-            -  ``control_plane.root_volume.size_gib``.
-            -  ``control_plane.root_volume.volume_type``.
-            -  ``control_plane.root_volume.iops``.
-            -  ``control_plane.root_volume.throughput``.
-            -  ``control_plane.root_volume.kms_key_arn``.
-            -  ``control_plane.ssh_config``.
-            -  ``control_plane.ssh_config.ec2_key_pair``.
-            -  ``control_plane.instance_placement.tenancy``.
-            -  ``control_plane.iam_instance_profile``.
-            -  ``logging_config.component_config.enable_components``.
-            -  ``control_plane.tags``.
-            -  ``monitoring_config.managed_prometheus_config.enabled``.
-            -  ``networking.per_node_pool_sg_rules_disabled``.
+            - ``description``.
+            - ``annotations``.
+            - ``control_plane.version``.
+            - ``authorization.admin_users``.
+            - ``authorization.admin_groups``.
+            - ``binary_authorization.evaluation_mode``.
+            - ``control_plane.aws_services_authentication.role_arn``.
+            - ``control_plane.aws_services_authentication.role_session_name``.
+            - ``control_plane.config_encryption.kms_key_arn``.
+            - ``control_plane.instance_type``.
+            - ``control_plane.security_group_ids``.
+            - ``control_plane.proxy_config``.
+            - ``control_plane.proxy_config.secret_arn``.
+            - ``control_plane.proxy_config.secret_version``.
+            - ``control_plane.root_volume.size_gib``.
+            - ``control_plane.root_volume.volume_type``.
+            - ``control_plane.root_volume.iops``.
+            - ``control_plane.root_volume.throughput``.
+            - ``control_plane.root_volume.kms_key_arn``.
+            - ``control_plane.ssh_config``.
+            - ``control_plane.ssh_config.ec2_key_pair``.
+            - ``control_plane.instance_placement.tenancy``.
+            - ``control_plane.iam_instance_profile``.
+            - ``logging_config.component_config.enable_components``.
+            - ``control_plane.tags``.
+            - ``monitoring_config.managed_prometheus_config.enabled``.
+            - ``networking.per_node_pool_sg_rules_disabled``.
     """
 
     aws_cluster: aws_resources.AwsCluster = proto.Field(
@@ -400,36 +400,36 @@ class UpdateAwsNodePoolRequest(proto.Message):
             paths field can only include these fields from
             [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]:
 
-            -  ``annotations``.
-            -  ``version``.
-            -  ``autoscaling.min_node_count``.
-            -  ``autoscaling.max_node_count``.
-            -  ``config.config_encryption.kms_key_arn``.
-            -  ``config.security_group_ids``.
-            -  ``config.root_volume.iops``.
-            -  ``config.root_volume.throughput``.
-            -  ``config.root_volume.kms_key_arn``.
-            -  ``config.root_volume.volume_type``.
-            -  ``config.root_volume.size_gib``.
-            -  ``config.proxy_config``.
-            -  ``config.proxy_config.secret_arn``.
-            -  ``config.proxy_config.secret_version``.
-            -  ``config.ssh_config``.
-            -  ``config.ssh_config.ec2_key_pair``.
-            -  ``config.instance_placement.tenancy``.
-            -  ``config.iam_instance_profile``.
-            -  ``config.labels``.
-            -  ``config.tags``.
-            -  ``config.autoscaling_metrics_collection``.
-            -  ``config.autoscaling_metrics_collection.granularity``.
-            -  ``config.autoscaling_metrics_collection.metrics``.
-            -  ``config.instance_type``.
-            -  ``management.auto_repair``.
-            -  ``management``.
-            -  ``update_settings``.
-            -  ``update_settings.surge_settings``.
-            -  ``update_settings.surge_settings.max_surge``.
-            -  ``update_settings.surge_settings.max_unavailable``.
+            - ``annotations``.
+            - ``version``.
+            - ``autoscaling.min_node_count``.
+            - ``autoscaling.max_node_count``.
+            - ``config.config_encryption.kms_key_arn``.
+            - ``config.security_group_ids``.
+            - ``config.root_volume.iops``.
+            - ``config.root_volume.throughput``.
+            - ``config.root_volume.kms_key_arn``.
+            - ``config.root_volume.volume_type``.
+            - ``config.root_volume.size_gib``.
+            - ``config.proxy_config``.
+            - ``config.proxy_config.secret_arn``.
+            - ``config.proxy_config.secret_version``.
+            - ``config.ssh_config``.
+            - ``config.ssh_config.ec2_key_pair``.
+            - ``config.instance_placement.tenancy``.
+            - ``config.iam_instance_profile``.
+            - ``config.labels``.
+            - ``config.tags``.
+            - ``config.autoscaling_metrics_collection``.
+            - ``config.autoscaling_metrics_collection.granularity``.
+            - ``config.autoscaling_metrics_collection.metrics``.
+            - ``config.instance_type``.
+            - ``management.auto_repair``.
+            - ``management``.
+            - ``update_settings``.
+            - ``update_settings.surge_settings``.
+            - ``update_settings.surge_settings.max_surge``.
+            - ``update_settings.surge_settings.max_unavailable``.
     """
 
     aws_node_pool: aws_resources.AwsNodePool = proto.Field(

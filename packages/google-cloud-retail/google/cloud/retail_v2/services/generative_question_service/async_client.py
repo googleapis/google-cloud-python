@@ -763,7 +763,7 @@ class GenerativeQuestionServiceAsyncClient:
                 [GenerativeQuestionConfig][google.cloud.retail.v2.GenerativeQuestionConfig]
                 to update. The following are NOT supported:
 
-                -  [GenerativeQuestionConfig.frequency][google.cloud.retail.v2.GenerativeQuestionConfig.frequency]
+                - [GenerativeQuestionConfig.frequency][google.cloud.retail.v2.GenerativeQuestionConfig.frequency]
 
                 If not set or empty, all supported fields are updated.
 

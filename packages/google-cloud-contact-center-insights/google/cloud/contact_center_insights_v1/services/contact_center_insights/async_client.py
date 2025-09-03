@@ -672,16 +672,16 @@ class ContactCenterInsightsAsyncClient:
                 can be updated by passing ``*``, or a subset of the
                 following updateable fields can be provided:
 
-                -  ``agent_id``
-                -  ``language_code``
-                -  ``labels``
-                -  ``metadata``
-                -  ``quality_metadata``
-                -  ``call_metadata``
-                -  ``start_time``
-                -  ``expire_time`` or ``ttl``
-                -  ``data_source.gcs_source.audio_uri`` or
-                   ``data_source.dialogflow_source.audio_uri``
+                - ``agent_id``
+                - ``language_code``
+                - ``labels``
+                - ``metadata``
+                - ``quality_metadata``
+                - ``call_metadata``
+                - ``start_time``
+                - ``expire_time`` or ``ttl``
+                - ``data_source.gcs_source.audio_uri`` or
+                  ``data_source.dialogflow_source.audio_uri``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6596,12 +6596,12 @@ class ContactCenterInsightsAsyncClient:
                 fields can be updated by passing ``*``, or a subset of
                 the following updateable fields can be provided:
 
-                -  ``abbreviation``
-                -  ``answer_choices``
-                -  ``answer_instructions``
-                -  ``order``
-                -  ``question_body``
-                -  ``tags``
+                - ``abbreviation``
+                - ``answer_choices``
+                - ``answer_instructions``
+                - ``order``
+                - ``question_body``
+                - ``tags``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7206,8 +7206,8 @@ class ContactCenterInsightsAsyncClient:
                 fields can be updated by passing ``*``, or a subset of
                 the following updateable fields can be provided:
 
-                -  ``description``
-                -  ``display_name``
+                - ``description``
+                - ``display_name``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

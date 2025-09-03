@@ -428,12 +428,11 @@ class CreatePatchDeploymentRequest(proto.Message):
             Required. A name for the patch deployment in the project.
             When creating a name the following rules apply:
 
-            -  Must contain only lowercase letters, numbers, and
-               hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-63 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the project.
+            - Must contain only lowercase letters, numbers, and hyphens.
+            - Must start with a letter.
+            - Must be between 1-63 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the project.
         patch_deployment (google.cloud.osconfig_v1.types.PatchDeployment):
             Required. The patch deployment to create.
     """
