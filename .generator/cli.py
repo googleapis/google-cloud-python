@@ -447,7 +447,7 @@ def _read_and_process_file(input_path: str, output_path: str, process_func) -> N
         input_path (str): The path to the file to read.
         output_path (str): The path to the file to write.
         process_func (callable): A function that takes the file content as a string
-                                  and returns the modified string.
+                                  and writes the modified string to the output path.
     """
     os.makedirs(Path(output_path).parent, exist_ok=True)
     shutil.copy(input_path, output_path)
@@ -525,7 +525,7 @@ def handle_release_init(
             path_to_library = f"packages/{package_name}"
 
             # Get previous version from state.yaml
-            previous_version = _get_previous_version(repo, package_name)
+            previous_version = _get_previous_version(repo, package_name, librarian)
 
             _update_version_for_library(repo, output, path_to_library, version)
             if previous_version != version:
@@ -542,9 +542,9 @@ def handle_release_init(
         raise ValueError(f"Release init failed: {e}") from e
 
 
-def _get_previous_version(repo: str, package_name: str) -> str:
+def _get_previous_version(repo: str, package_name: str, librarian: str) -> str:
     """Gets the previous version of the library from state.yaml."""
-    state_yaml_path = f"{repo}/.librarian/{STATE_YAML_FILE}"
+    state_yaml_path = f"{repo}/{LIBRARIAN_DIR}/{STATE_YAML_FILE}"
     if not os.path.exists(state_yaml_path):
         raise FileNotFoundError(f"State file not found at {state_yaml_path}")
 

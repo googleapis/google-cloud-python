@@ -17,12 +17,14 @@ import logging
 import os
 import subprocess
 from unittest.mock import MagicMock, mock_open
+import yaml
 
 import pytest
 
 from cli import (
     GENERATE_REQUEST_FILE,
     BUILD_REQUEST_FILE,
+    RELEASE_INIT_REQUEST_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
     _build_bazel_target,
@@ -30,14 +32,18 @@ from cli import (
     _copy_files_needed_for_post_processing,
     _determine_bazel_rule,
     _get_library_id,
+    _get_libraries_to_prepare_for_release,
+    _get_previous_version,
     _locate_and_extract_artifact,
     _read_json_file,
+    _read_and_process_file,
     _run_individual_session,
     _run_nox_sessions,
     _run_post_processor,
     handle_build,
     handle_configure,
     handle_generate,
+    handle_release_init,
 )
 
 
@@ -82,6 +88,63 @@ def mock_build_request_file(tmp_path, monkeypatch):
 
 
 @pytest.fixture
+def mock_release_init_request_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/release-request.json
+    request_path = f"{LIBRARIAN_DIR}/{RELEASE_INIT_REQUEST_FILE}"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir()
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_content = {"libraries":[{
+        "id": "google-cloud-language",
+        "apis": [{"path": "google/cloud/language/v1"}],
+        "release_triggered": True,
+        "version": "1.2.3",
+        "changes": []},{}]
+    }
+    request_file.write_text(json.dumps(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
+
+@pytest.fixture
+def mock_changelog_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/release-request.json
+    request_path = f"{REPO_DIR}/CHANGELOG.md"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir()
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_content = "CHANGELOG"
+    request_file.write_text(json.dumps(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
+
+@pytest.fixture
+def mock_state_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: repo/.librarian/state.yaml
+    request_path = f"{LIBRARIAN_DIR}/state.yaml"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir()
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_content = """libraries:
+- id: google-cloud-language
+  version: 2.17.2"""
+    request_file.write_text(yaml.dump(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
+
+
+@pytest.fixture
 def mock_generate_request_data_for_nox():
     """Returns mock data for generate-request.json for nox tests."""
     return {
@@ -116,7 +179,34 @@ def test_get_library_id_empty_id():
     ):
         _get_library_id(request_data)
 
+def test_get_libraries_to_prepare_for_release(mock_release_init_request_file):
+    request_data = _read_json_file(f"{LIBRARIAN_DIR}/{RELEASE_INIT_REQUEST_FILE}")
+    libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(
+        request_data
+    )
+    print(libraries_to_prep_for_release)
 
+
+def test_run_nox_sessions_success(
+    mocker, mock_generate_request_data_for_nox, mock_build_request_file
+):
+    """Tests that _run_nox_sessions successfully runs all specified sessions."""
+    mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
+    mocker.patch("cli._get_library_id", return_value="mock-library")
+    mock_run_individual_session = mocker.patch("cli._run_individual_session")
+
+    sessions_to_run = ["unit-3.9", "lint"]
+    _run_nox_sessions(sessions_to_run, "librarian", "repo")
+
+    assert mock_run_individual_session.call_count == len(sessions_to_run)
+    mock_run_individual_session.assert_has_calls(
+        [
+            mocker.call("unit-3.9", "mock-library", "repo"),
+            mocker.call("lint", "mock-library", "repo"),
+        ]
+    )
+
+    
 def test_handle_configure_success(caplog, mock_generate_request_file):
     """
     Tests the successful execution path of handle_configure.
@@ -454,3 +544,32 @@ def test_clean_up_files_after_post_processing_success(mocker):
     mock_shutil_rmtree = mocker.patch("shutil.rmtree")
     mock_os_remove = mocker.patch("os.remove")
     _clean_up_files_after_post_processing("output", "library_id")
+
+def test_read_and_process_file_success(mocker):
+    mock_makedirs = mocker.patch("cli.os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_content = '"some-text",\n'
+    mocker.patch("cli.open", mock_open(read_data=mock_content))
+
+    def test_func(content:str) -> str:
+        pass
+    _read_and_process_file("input", "output", test_func)
+    mock_makedirs.assert_called()
+    mock_shutil_copy.assert_called_once()
+
+def test_handle_release_init_success(mocker, mock_release_init_request_file):
+    mocker.patch("cli._get_previous_version", return_value=None)
+    mocker.patch("cli._update_global_changelog", return_value=None)
+    mocker.patch("cli._update_changelog_for_library", return_value=None)
+
+    handle_release_init()
+
+def test_handle_release_init_fail():
+    """
+    Tests the failed to read `librarian/release-init-request.json` file in handle_release_init.
+    """
+    with pytest.raises(ValueError):
+        handle_release_init()
+
+def test_get_previous_version(mock_state_file):
+    _get_previous_version(REPO_DIR, "google-cloud-language", "repo/librarian")
