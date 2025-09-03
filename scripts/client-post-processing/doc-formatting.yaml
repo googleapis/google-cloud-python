@@ -65,21 +65,6 @@ replacements:
     after: "            1000. The priority value must be from 1 to\n            65535, inclusive.\n"
     count: 1
   - paths: [
-      packages/google-cloud-retail/google/cloud/retail_v2alpha/types/project.py,
-    ]
-    before: |
-      \            resource. Format: projects/\*/loggingConfig
-    after:  "            resource. Format: `projects/*/loggingConfig`\n"
-    count: 1
-  - paths: [
-      packages/google-cloud-retail/google/cloud/retail_v2alpha/types/project.py,
-      packages/google-cloud-retail/google/cloud/retail_v2beta/types/project.py,
-    ]
-    before: |
-      \            resource. Format: projects/\*/alertConfig
-    after:  "            resource. Format: `projects/*/alertConfig`\n"
-    count: 2
-  - paths: [
       packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
       packages/google-cloud-visionai/google/cloud/visionai_v1alpha1/types/platform.py,
     ]

@@ -125,8 +125,8 @@ class SecretManagerServiceGrpcAsyncIOTransport(SecretManagerServiceTransport):
     Manages secrets and operations using those secrets. Implements a
     REST model with the following objects:
 
-    -  [Secret][google.cloud.secrets.v1beta1.Secret]
-    -  [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion]
+    - [Secret][google.cloud.secrets.v1beta1.Secret]
+    - [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

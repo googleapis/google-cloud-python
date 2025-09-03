@@ -1866,12 +1866,12 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 Required. The inventory information to update. The
                 allowable fields to update are:
 
-                -  [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
-                -  [Product.availability][google.cloud.retail.v2alpha.Product.availability]
-                -  [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
-                -  [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
-                   The updated inventory fields must be specified in
-                   [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask].
+                - [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
+                - [Product.availability][google.cloud.retail.v2alpha.Product.availability]
+                - [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
+                - [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+                  The updated inventory fields must be specified in
+                  [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask].
 
                 If
                 [SetInventoryRequest.inventory.name][google.cloud.retail.v2alpha.Product.name]
@@ -1898,31 +1898,31 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 The caller can replace place IDs for a subset of
                 fulfillment types in the following ways:
 
-                -  Adds "fulfillment_info" in
-                   [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
-                -  Specifies only the desired fulfillment types and
-                   corresponding place IDs to update in
-                   [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+                - Adds "fulfillment_info" in
+                  [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
+                - Specifies only the desired fulfillment types and
+                  corresponding place IDs to update in
+                  [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
 
                 The caller can clear all place IDs from a subset of
                 fulfillment types in the following ways:
 
-                -  Adds "fulfillment_info" in
-                   [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
-                -  Specifies only the desired fulfillment types to clear
-                   in
-                   [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
-                -  Checks that only the desired fulfillment info types
-                   have empty
-                   [SetInventoryRequest.inventory.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
+                - Adds "fulfillment_info" in
+                  [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
+                - Specifies only the desired fulfillment types to clear
+                  in
+                  [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+                - Checks that only the desired fulfillment info types
+                  have empty
+                  [SetInventoryRequest.inventory.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
 
                 The last update time is recorded for the following
                 inventory fields:
 
-                -  [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
-                -  [Product.availability][google.cloud.retail.v2alpha.Product.availability]
-                -  [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
-                -  [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
+                - [Product.price_info][google.cloud.retail.v2alpha.Product.price_info]
+                - [Product.availability][google.cloud.retail.v2alpha.Product.availability]
+                - [Product.available_quantity][google.cloud.retail.v2alpha.Product.available_quantity]
+                - [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
 
                 If a full overwrite of inventory information while
                 ignoring timestamps is needed,

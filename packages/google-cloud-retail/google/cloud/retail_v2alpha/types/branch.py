@@ -106,57 +106,57 @@ class Branch(proto.Message):
 
                 Possible keys:
 
-                -  "primary-in-stock", products have
-                   [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
-                   type and
-                   [Product.Availability.IN_STOCK][google.cloud.retail.v2alpha.Product.Availability.IN_STOCK]
-                   availability.
+                - "primary-in-stock", products have
+                  [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+                  type and
+                  [Product.Availability.IN_STOCK][google.cloud.retail.v2alpha.Product.Availability.IN_STOCK]
+                  availability.
 
-                -  "primary-out-of-stock", products have
-                   [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
-                   type and
-                   [Product.Availability.OUT_OF_STOCK][google.cloud.retail.v2alpha.Product.Availability.OUT_OF_STOCK]
-                   availability.
+                - "primary-out-of-stock", products have
+                  [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+                  type and
+                  [Product.Availability.OUT_OF_STOCK][google.cloud.retail.v2alpha.Product.Availability.OUT_OF_STOCK]
+                  availability.
 
-                -  "primary-preorder", products have
-                   [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
-                   type and
-                   [Product.Availability.PREORDER][google.cloud.retail.v2alpha.Product.Availability.PREORDER]
-                   availability.
+                - "primary-preorder", products have
+                  [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+                  type and
+                  [Product.Availability.PREORDER][google.cloud.retail.v2alpha.Product.Availability.PREORDER]
+                  availability.
 
-                -  "primary-backorder", products have
-                   [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
-                   type and
-                   [Product.Availability.BACKORDER][google.cloud.retail.v2alpha.Product.Availability.BACKORDER]
-                   availability.
+                - "primary-backorder", products have
+                  [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+                  type and
+                  [Product.Availability.BACKORDER][google.cloud.retail.v2alpha.Product.Availability.BACKORDER]
+                  availability.
 
-                -  "variant-in-stock", products have
-                   [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-                   type and
-                   [Product.Availability.IN_STOCK][google.cloud.retail.v2alpha.Product.Availability.IN_STOCK]
-                   availability.
+                - "variant-in-stock", products have
+                  [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+                  type and
+                  [Product.Availability.IN_STOCK][google.cloud.retail.v2alpha.Product.Availability.IN_STOCK]
+                  availability.
 
-                -  "variant-out-of-stock", products have
-                   [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-                   type and
-                   [Product.Availability.OUT_OF_STOCK][google.cloud.retail.v2alpha.Product.Availability.OUT_OF_STOCK]
-                   availability.
+                - "variant-out-of-stock", products have
+                  [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+                  type and
+                  [Product.Availability.OUT_OF_STOCK][google.cloud.retail.v2alpha.Product.Availability.OUT_OF_STOCK]
+                  availability.
 
-                -  "variant-preorder", products have
-                   [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-                   type and
-                   [Product.Availability.PREORDER][google.cloud.retail.v2alpha.Product.Availability.PREORDER]
-                   availability.
+                - "variant-preorder", products have
+                  [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+                  type and
+                  [Product.Availability.PREORDER][google.cloud.retail.v2alpha.Product.Availability.PREORDER]
+                  availability.
 
-                -  "variant-backorder", products have
-                   [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-                   type and
-                   [Product.Availability.BACKORDER][google.cloud.retail.v2alpha.Product.Availability.BACKORDER]
-                   availability.
+                - "variant-backorder", products have
+                  [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+                  type and
+                  [Product.Availability.BACKORDER][google.cloud.retail.v2alpha.Product.Availability.BACKORDER]
+                  availability.
 
-                -  "price-discounted", products have
-                   [Product.price_info.price] <
-                   [Product.price_info.original_price].
+                - "price-discounted", products have
+                  [Product.price_info.price] <
+                  [Product.price_info.original_price].
         """
 
         class ProductCountScope(proto.Enum):
@@ -201,46 +201,46 @@ class Branch(proto.Message):
 
                 Supported keys:
 
-                -  "has-valid-uri": product has a valid and accessible
-                   [uri][google.cloud.retail.v2alpha.Product.uri].
+                - "has-valid-uri": product has a valid and accessible
+                  [uri][google.cloud.retail.v2alpha.Product.uri].
 
-                -  "available-expire-time-conformance":
-                   [Product.available_time][google.cloud.retail.v2alpha.Product.available_time]
-                   is early than "now", and
-                   [Product.expire_time][google.cloud.retail.v2alpha.Product.expire_time]
-                   is greater than "now".
+                - "available-expire-time-conformance":
+                  [Product.available_time][google.cloud.retail.v2alpha.Product.available_time]
+                  is early than "now", and
+                  [Product.expire_time][google.cloud.retail.v2alpha.Product.expire_time]
+                  is greater than "now".
 
-                -  "has-searchable-attributes": product has at least one
-                   [attribute][google.cloud.retail.v2alpha.Product.attributes]
-                   set to searchable.
+                - "has-searchable-attributes": product has at least one
+                  [attribute][google.cloud.retail.v2alpha.Product.attributes]
+                  set to searchable.
 
-                -  "has-description": product has non-empty
-                   [description][google.cloud.retail.v2alpha.Product.description].
+                - "has-description": product has non-empty
+                  [description][google.cloud.retail.v2alpha.Product.description].
 
-                -  "has-at-least-bigram-title": Product
-                   [title][google.cloud.retail.v2alpha.Product.title] has at
-                   least two words. A comprehensive title helps to improve
-                   search quality.
+                - "has-at-least-bigram-title": Product
+                  [title][google.cloud.retail.v2alpha.Product.title] has at
+                  least two words. A comprehensive title helps to improve
+                  search quality.
 
-                -  "variant-has-image": the
-                   [variant][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-                   products has at least one
-                   [image][google.cloud.retail.v2alpha.Product.images]. You
-                   may ignore this metric if all your products are at
-                   [primary][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
-                   level.
+                - "variant-has-image": the
+                  [variant][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+                  products has at least one
+                  [image][google.cloud.retail.v2alpha.Product.images]. You
+                  may ignore this metric if all your products are at
+                  [primary][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+                  level.
 
-                -  "variant-has-price-info": the
-                   [variant][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-                   products has
-                   [price_info][google.cloud.retail.v2alpha.Product.price_info]
-                   set. You may ignore this metric if all your products are
-                   at
-                   [primary][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
-                   level.
+                - "variant-has-price-info": the
+                  [variant][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+                  products has
+                  [price_info][google.cloud.retail.v2alpha.Product.price_info]
+                  set. You may ignore this metric if all your products are
+                  at
+                  [primary][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+                  level.
 
-                -  "has-publish-time": product has non-empty
-                   [publish_time][google.cloud.retail.v2alpha.Product.publish_time].
+                - "has-publish-time": product has non-empty
+                  [publish_time][google.cloud.retail.v2alpha.Product.publish_time].
             qualified_product_count (int):
                 Number of products passing the quality
                 requirement check. We only check searchable
@@ -268,9 +268,9 @@ class Branch(proto.Message):
                 Only the following fields are set in the
                 [Product][google.cloud.retail.v2alpha.Product].
 
-                -  [Product.name][google.cloud.retail.v2alpha.Product.name]
-                -  [Product.id][google.cloud.retail.v2alpha.Product.id]
-                -  [Product.title][google.cloud.retail.v2alpha.Product.title]
+                - [Product.name][google.cloud.retail.v2alpha.Product.name]
+                - [Product.id][google.cloud.retail.v2alpha.Product.id]
+                - [Product.title][google.cloud.retail.v2alpha.Product.title]
         """
 
         requirement_key: str = proto.Field(

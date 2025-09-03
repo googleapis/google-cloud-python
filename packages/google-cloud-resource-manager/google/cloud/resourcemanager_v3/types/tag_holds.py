@@ -183,9 +183,9 @@ class ListTagHoldsRequest(proto.Message):
             fields are supported for filtering. Currently only ``AND``
             syntax is supported. Some example queries are:
 
-            -  ``holder = //compute.googleapis.com/compute/projects/myproject/regions/us-east-1/instanceGroupManagers/instance-group``
-            -  ``origin = 35678234``
-            -  ``holder = //compute.googleapis.com/compute/projects/myproject/regions/us-east-1/instanceGroupManagers/instance-group AND origin = 35678234``
+            - ``holder = //compute.googleapis.com/compute/projects/myproject/regions/us-east-1/instanceGroupManagers/instance-group``
+            - ``origin = 35678234``
+            - ``holder = //compute.googleapis.com/compute/projects/myproject/regions/us-east-1/instanceGroupManagers/instance-group AND origin = 35678234``
     """
 
     parent: str = proto.Field(

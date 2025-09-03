@@ -38,15 +38,15 @@ class MuteConfig(proto.Message):
             creation. The following list shows some examples of the
             format:
 
-            -  ``organizations/{organization}/muteConfigs/{mute_config}``
+            - ``organizations/{organization}/muteConfigs/{mute_config}``
             -
 
             ``organizations/{organization}locations/{location}//muteConfigs/{mute_config}``
 
-            -  ``folders/{folder}/muteConfigs/{mute_config}``
-            -  ``folders/{folder}/locations/{location}/muteConfigs/{mute_config}``
-            -  ``projects/{project}/muteConfigs/{mute_config}``
-            -  ``projects/{project}/locations/{location}/muteConfigs/{mute_config}``
+            - ``folders/{folder}/muteConfigs/{mute_config}``
+            - ``folders/{folder}/locations/{location}/muteConfigs/{mute_config}``
+            - ``projects/{project}/muteConfigs/{mute_config}``
+            - ``projects/{project}/locations/{location}/muteConfigs/{mute_config}``
         description (str):
             A description of the mute config.
         filter (str):
@@ -59,18 +59,18 @@ class MuteConfig(proto.Message):
 
             The following field and operator combinations are supported:
 
-            -  severity: ``=``, ``:``
-            -  category: ``=``, ``:``
-            -  resource.name: ``=``, ``:``
-            -  resource.project_name: ``=``, ``:``
-            -  resource.project_display_name: ``=``, ``:``
-            -  resource.folders.resource_folder: ``=``, ``:``
-            -  resource.parent_name: ``=``, ``:``
-            -  resource.parent_display_name: ``=``, ``:``
-            -  resource.type: ``=``, ``:``
-            -  finding_class: ``=``, ``:``
-            -  indicator.ip_addresses: ``=``, ``:``
-            -  indicator.domains: ``=``, ``:``
+            - severity: ``=``, ``:``
+            - category: ``=``, ``:``
+            - resource.name: ``=``, ``:``
+            - resource.project_name: ``=``, ``:``
+            - resource.project_display_name: ``=``, ``:``
+            - resource.folders.resource_folder: ``=``, ``:``
+            - resource.parent_name: ``=``, ``:``
+            - resource.parent_display_name: ``=``, ``:``
+            - resource.type: ``=``, ``:``
+            - finding_class: ``=``, ``:``
+            - indicator.ip_addresses: ``=``, ``:``
+            - indicator.domains: ``=``, ``:``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the mute
             config was created. This field is set by the
