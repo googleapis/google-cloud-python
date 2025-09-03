@@ -6322,82 +6322,6 @@ class TestTableConstraint(unittest.TestCase):
         self.assertIsNone(table_constraint.primary_key)
         self.assertIsNone(table_constraint.foreign_keys)
 
-    def test__eq__primary_key_mismatch(self):
-        from google.cloud.bigquery.table import (
-            PrimaryKey,
-            ForeignKey,
-            TableReference,
-            ColumnReference,
-        )
-
-        foriegn_keys = [
-            ForeignKey(
-                name="my_fk_id",
-                referenced_table=TableReference.from_string(
-                    "my-project.my-dataset.my-table"
-                ),
-                column_references=[
-                    ColumnReference(referencing_column="id", referenced_column="id"),
-                ],
-            ),
-        ]
-
-        table_constraint = self._make_one(
-            primary_key=PrimaryKey(columns=["my_pk_id"]),
-            foreign_keys=foriegn_keys,
-        )
-        other_table_constraint = self._make_one(
-            primary_key=PrimaryKey(columns=["my_other_pk_id"]),
-            foreign_keys=foriegn_keys,
-        )
-
-        self.assertNotEqual(table_constraint, other_table_constraint)
-
-    def test__eq__foreign_keys_mismatch(self):
-        from google.cloud.bigquery.table import (
-            PrimaryKey,
-            ForeignKey,
-            TableReference,
-            ColumnReference,
-        )
-
-        primary_key = PrimaryKey(columns=["my_pk_id"])
-
-        table_constraint = self._make_one(
-            primary_key=primary_key,
-            foreign_keys=[
-                ForeignKey(
-                    name="my_fk_id",
-                    referenced_table=TableReference.from_string(
-                        "my-project.my-dataset.my-table"
-                    ),
-                    column_references=[
-                        ColumnReference(
-                            referencing_column="id", referenced_column="id"
-                        ),
-                    ],
-                ),
-            ],
-        )
-        other_table_constraint = self._make_one(
-            primary_key=primary_key,
-            foreign_keys=[
-                ForeignKey(
-                    name="my_other_fk_id",
-                    referenced_table=TableReference.from_string(
-                        "my-project.my-dataset.my-other-table"
-                    ),
-                    column_references=[
-                        ColumnReference(
-                            referencing_column="other_id", referenced_column="other_id"
-                        ),
-                    ],
-                ),
-            ],
-        )
-
-        self.assertNotEqual(table_constraint, other_table_constraint)
-
     def test__eq__other_type(self):
         from google.cloud.bigquery.table import (
             PrimaryKey,
@@ -6613,6 +6537,74 @@ class TestTableConstraint(unittest.TestCase):
         instance = self._make_one(primary_key=None, foreign_keys=None)
         expected = {}
         self.assertEqual(instance.to_api_repr(), expected)
+
+
+@pytest.mark.parametrize(
+    "self_pk_name,self_fk_name,other_pk_name,other_fk_name,expected_equal",
+    [
+        (None, None, None, None, True),
+        ("pkey", None, "pkey", None, True),
+        ("pkey", "fkey", "pkey", "fkey", True),
+        (None, "fkey", None, "fkey", True),
+        ("pkey", None, "pkey_no_match", None, False),
+        ("pkey", "fkey", "pkey_no_match", "fkey_no_match", False),
+        (None, "fkey", None, "fkey_no_match", False),
+        ("pkey", "fkey", "pkey_no_match", "fkey", False),
+        ("pkey", "fkey", "pkey", "fkey_no_match", False),
+    ],
+)
+def test_table_constraint_eq_parametrized(
+    self_pk_name, self_fk_name, other_pk_name, other_fk_name, expected_equal
+):
+    # Imports are placed here to ensure they are self-contained for this example.
+    # In a real test file, they would likely be at the top of the file.
+    from google.cloud.bigquery.table import (
+        ColumnReference,
+        ForeignKey,
+        PrimaryKey,
+        TableReference,
+        TableConstraints,
+    )
+
+    # Helper function to create a PrimaryKey object or None
+    def _create_primary_key(name):
+        if name is None:
+            return None
+        return PrimaryKey(columns=[name])
+
+    # Helper function to create a list of ForeignKey objects or None
+    def _create_foreign_keys(name):
+        if name is None:
+            return None
+        # Using a generic referenced_table and column_references for simplicity
+        # The 'name' parameter ensures different ForeignKey objects for different names
+        return [
+            ForeignKey(
+                name=name,
+                referenced_table=TableReference.from_string(
+                    f"my-project.my-dataset.{name}_referenced_table"
+                ),
+                column_references=[
+                    ColumnReference(
+                        referencing_column=f"{name}_ref_col",
+                        referenced_column=f"{name}_pk_col",
+                    )
+                ],
+            )
+        ]
+
+    # Create the two TableConstraints instances for comparison
+    tc1 = TableConstraints(
+        primary_key=_create_primary_key(self_pk_name),
+        foreign_keys=_create_foreign_keys(self_fk_name),
+    )
+    tc2 = TableConstraints(
+        primary_key=_create_primary_key(other_pk_name),
+        foreign_keys=_create_foreign_keys(other_fk_name),
+    )
+
+    # Assert the equality based on the expected outcome
+    assert (tc1 == tc2) == expected_equal
 
 
 class TestExternalCatalogTableOptions:

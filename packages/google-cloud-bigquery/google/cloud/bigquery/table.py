@@ -3574,9 +3574,9 @@ class TableConstraints:
     def __eq__(self, other):
         if not isinstance(other, TableConstraints) and other is not None:
             raise TypeError("The value provided is not a BigQuery TableConstraints.")
-        return (
-            self.primary_key == other.primary_key if other.primary_key else None
-        ) and (self.foreign_keys == other.foreign_keys if other.foreign_keys else None)
+        return self.primary_key == (
+            other.primary_key if other.primary_key else None
+        ) and self.foreign_keys == (other.foreign_keys if other.foreign_keys else None)
 
     @classmethod
     def from_api_repr(cls, resource: Dict[str, Any]) -> "TableConstraints":
