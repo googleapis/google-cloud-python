@@ -53,6 +53,7 @@
     "packages/google-cloud-channel": "1.23.0",
     "packages/google-cloud-chronicle": "0.1.0",
     "packages/google-cloud-cloudcontrolspartner": "0.2.7",
+    "packages/google-cloud-cloudsecuritycompliance": "0.0.0",
     "packages/google-cloud-commerce-consumer-procurement": "0.2.0",
     "packages/google-cloud-common": "1.5.2",
     "packages/google-cloud-compute": "1.36.0",
