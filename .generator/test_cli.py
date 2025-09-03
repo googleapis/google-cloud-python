@@ -27,17 +27,15 @@ from cli import (
     GENERATE_REQUEST_FILE,
     BUILD_REQUEST_FILE,
     RELEASE_INIT_REQUEST_FILE,
+    SOURCE_DIR,
     STATE_YAML_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
-    _build_bazel_target,
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
-    _determine_bazel_rule,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
     _get_previous_version,
-    _locate_and_extract_artifact,
     _process_changelog,
     _process_version_file,
     _read_json_file,
@@ -127,6 +125,41 @@ def mock_build_request_file(tmp_path, monkeypatch):
     # Change the current working directory to the temp path for the test.
     monkeypatch.chdir(tmp_path)
     return request_file
+
+
+@pytest.fixture
+def mock_build_bazel_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/build-request.json
+    bazel_build_path = f"{SOURCE_DIR}/google/cloud/language/v1/BUILD.bazel"
+    from pathlib import Path
+
+    bazel_build_dir = tmp_path / Path(bazel_build_path).parent
+    os.makedirs(bazel_build_dir)
+    build_bazel_file = bazel_build_dir / os.path.basename(bazel_build_path)
+
+    build_bazel_content = """load(
+    "@com_google_googleapis_imports//:imports.bzl",
+    "py_gapic_assembly_pkg",
+    "py_gapic_library",
+    "py_test",
+)
+
+py_gapic_library(
+    name = "language_py_gapic",
+    srcs = [":language_proto"],
+    grpc_service_config = "language_grpc_service_config.json",
+    rest_numeric_enums = True,
+    service_yaml = "language_v1.yaml",
+    transport = "grpc+rest",
+    deps = [
+    ],
+)"""
+    build_bazel_file.write_text(build_bazel_content)
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return build_bazel_file
 
 
 @pytest.fixture
@@ -229,130 +262,6 @@ def test_handle_configure_success(caplog, mock_generate_request_file):
     assert "'configure' command executed." in caplog.text
 
 
-def test_determine_bazel_rule_success(mocker, caplog):
-    """
-    Tests the happy path of _determine_bazel_rule.
-    """
-    caplog.set_level(logging.INFO)
-    mock_content = 'name = "google-cloud-language-v1-py",\n'
-    mocker.patch("cli.open", mock_open(read_data=mock_content))
-
-    rule = _determine_bazel_rule("google/cloud/language/v1", "source")
-
-    assert rule == "//google/cloud/language/v1:google-cloud-language-v1-py"
-    assert "Found Bazel rule" in caplog.text
-
-
-def test_build_bazel_target_success(mocker, caplog):
-    """
-    Tests that the build helper logs success when the command runs correctly.
-    """
-    caplog.set_level(logging.INFO)
-    mocker.patch("cli.subprocess.run", return_value=MagicMock(returncode=0))
-    _build_bazel_target("mock/bazel:rule", "source")
-    assert "Bazel build for mock/bazel:rule rule completed successfully" in caplog.text
-
-
-def test_build_bazel_target_fails_to_find_rule_match(mocker, caplog):
-    """
-    Tests that ValueError is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.ERROR)
-    mock_content = '"google-cloud-language-v1-py",\n'
-    mocker.patch("cli.open", mock_open(read_data=mock_content))
-
-    with pytest.raises(ValueError):
-        _build_bazel_target("mock/bazel:rule", "source")
-
-
-def test_build_bazel_target_fails_to_determine_rule(caplog):
-    """
-    Tests that ValueError is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.ERROR)
-    with pytest.raises(ValueError):
-        _build_bazel_target("mock/bazel:rule", "source")
-
-
-def test_build_bazel_target_fails(mocker, caplog):
-    """
-    Tests that ValueError is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.ERROR)
-    mock_content = '"google-cloud-language-v1-py",\n'
-    mocker.patch("cli.open", mock_open(read_data=mock_content))
-
-    with pytest.raises(ValueError):
-        _build_bazel_target("mock/bazel:rule", "source")
-
-
-def test_determine_bazel_rule_command_fails(mocker, caplog):
-    """
-    Tests that an exception is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.INFO)
-    mocker.patch(
-        "cli.subprocess.run",
-        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Bazel error"),
-    )
-
-    with pytest.raises(ValueError):
-        _determine_bazel_rule("google/cloud/language/v1", "source")
-
-    assert "Found Bazel rule" not in caplog.text
-
-
-def test_locate_and_extract_artifact_success(mocker, caplog):
-    """
-    Tests that the artifact helper calls the correct sequence of commands.
-    """
-    caplog.set_level(logging.INFO)
-    mock_info_result = MagicMock(stdout="/path/to/bazel-bin\n")
-    mock_tar_result = MagicMock(returncode=0)
-    mocker.patch("cli.subprocess.run", side_effect=[mock_info_result, mock_tar_result])
-    mock_makedirs = mocker.patch("cli.os.makedirs")
-    _locate_and_extract_artifact(
-        "//google/cloud/language/v1:rule-py",
-        "google-cloud-language",
-        "source",
-        "output",
-        "google/cloud/language/v1",
-    )
-    assert (
-        "Found artifact at: /path/to/bazel-bin/google/cloud/language/v1/rule-py.tar.gz"
-        in caplog.text
-    )
-    assert (
-        "Preparing staging directory: output/owl-bot-staging/google-cloud-language"
-        in caplog.text
-    )
-    assert (
-        "Artifact /path/to/bazel-bin/google/cloud/language/v1/rule-py.tar.gz extracted successfully"
-        in caplog.text
-    )
-    mock_makedirs.assert_called_once()
-
-
-def test_locate_and_extract_artifact_fails(mocker, caplog):
-    """
-    Tests that an exception is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.INFO)
-    mocker.patch(
-        "cli.subprocess.run",
-        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Bazel error"),
-    )
-
-    with pytest.raises(ValueError):
-        _locate_and_extract_artifact(
-            "//google/cloud/language/v1:rule-py",
-            "google-cloud-language",
-            "source",
-            "output",
-            "google/cloud/language/v1",
-        )
-
-
 def test_run_post_processor_success(mocker, caplog):
     """
     Tests that the post-processor helper calls the correct command.
@@ -371,17 +280,14 @@ def test_run_post_processor_success(mocker, caplog):
     assert "Python post-processor ran successfully." in caplog.text
 
 
-def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
+def test_handle_generate_success(
+    caplog, mock_generate_request_file, mock_build_bazel_file, mocker
+):
     """
     Tests the successful execution path of handle_generate.
     """
     caplog.set_level(logging.INFO)
 
-    mock_determine_rule = mocker.patch(
-        "cli._determine_bazel_rule", return_value="mock-rule"
-    )
-    mock_build_target = mocker.patch("cli._build_bazel_target")
-    mock_locate_and_extract_artifact = mocker.patch("cli._locate_and_extract_artifact")
     mock_run_post_processor = mocker.patch("cli._run_post_processor")
     mock_copy_files_needed_for_post_processing = mocker.patch(
         "cli._copy_files_needed_for_post_processing"
@@ -392,7 +298,6 @@ def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
 
     handle_generate()
 
-    mock_determine_rule.assert_called_once_with("google/cloud/language/v1", "source")
     mock_run_post_processor.assert_called_once_with("output", "google-cloud-language")
     mock_copy_files_needed_for_post_processing.assert_called_once_with(
         "output", "input", "google-cloud-language"

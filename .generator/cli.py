@@ -18,12 +18,14 @@ import itertools
 import json
 import logging
 import os
+import parse_googleapis_content
 import re
 import shutil
 import subprocess
 import sys
 import yaml
 from datetime import datetime
+import tempfile
 from pathlib import Path
 from typing import Dict, List
 
@@ -73,6 +75,7 @@ def _write_text_file(path: str, updated_content: str):
         updated_content(str): The contents to write to the file.
     """
 
+    os.makedirs(Path(path).parent, exist_ok=True)
     with open(path, "w") as f:
         f.write(updated_content)
 
@@ -113,46 +116,6 @@ def handle_configure():
     logger.info("'configure' command executed.")
 
 
-def _determine_bazel_rule(api_path: str, source: str) -> str:
-    """Finds a Bazel rule by parsing the BUILD.bazel file directly.
-
-    Args:
-        api_path (str): The API path, e.g., 'google/cloud/language/v1'.
-        source(str): The path to the root of the Bazel workspace.
-
-    Returns:
-        str: The discovered Bazel rule, e.g., '//google/cloud/language/v1:language-v1-py'.
-
-    Raises:
-        ValueError: If the file can't be processed or no matching rule is found.
-    """
-    logger.info(f"Determining Bazel rule for api_path: '{api_path}' by parsing file.")
-    try:
-        build_file_path = os.path.join(source, api_path, "BUILD.bazel")
-
-        with open(build_file_path, "r") as f:
-            content = f.read()
-
-        match = re.search(r'name\s*=\s*"([^"]+-py)"', content)
-
-        # This check is for a logical failure (no match), not a runtime exception.
-        # It's good to keep it for clear error messaging.
-        if not match:  # pragma: NO COVER
-            raise ValueError(
-                f"No Bazel rule with a name ending in '-py' found in {build_file_path}"
-            )
-
-        rule_name = match.group(1)
-        bazel_rule = f"//{api_path}:{rule_name}"
-
-        logger.info(f"Found Bazel rule: {bazel_rule}")
-        return bazel_rule
-    except Exception as e:
-        raise ValueError(
-            f"Failed to determine Bazel rule for '{api_path}' by parsing."
-        ) from e
-
-
 def _get_library_id(request_data: Dict) -> str:
     """Retrieve the library id from the given request dictionary
 
@@ -169,107 +132,6 @@ def _get_library_id(request_data: Dict) -> str:
     if not library_id:
         raise ValueError("Request file is missing required 'id' field.")
     return library_id
-
-
-def _build_bazel_target(bazel_rule: str, source: str):
-    """Executes `bazelisk build` on a given Bazel rule.
-
-    Args:
-        bazel_rule(str): The Bazel rule to build.
-        source(str): The path to the root of the Bazel workspace.
-
-    Raises:
-        ValueError: If the subprocess call fails.
-    """
-    logger.info(f"Executing build for rule: {bazel_rule}")
-    try:
-        # We're using the prewarmed bazel cache from the docker image to speed up the bazelisk commands.
-        # Previously built artifacts are stored in `/bazel_cache/_bazel_ubuntu/output_base` and will be
-        # used to speed up the build. `disk_cache` is used as the 'remote cache' and is also prewarmed as part of
-        # the docker image.
-        # See https://bazel.build/remote/caching#disk-cache which explains using a file system as a 'remote cache'.
-        command = [
-            "bazelisk",
-            "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
-            "build",
-            "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos",
-            "--incompatible_strict_action_env",
-            bazel_rule,
-        ]
-        subprocess.run(
-            command,
-            cwd=source,
-            text=True,
-            check=True,
-        )
-        logger.info(f"Bazel build for {bazel_rule} rule completed successfully.")
-    except Exception as e:
-        raise ValueError(f"Bazel build for {bazel_rule} rule failed.") from e
-
-
-def _locate_and_extract_artifact(
-    bazel_rule: str,
-    library_id: str,
-    source: str,
-    output: str,
-    api_path: str,
-):
-    """Finds and extracts the tarball artifact from a Bazel build.
-
-    Args:
-        bazel_rule(str): The Bazel rule that was built.
-        library_id(str): The ID of the library being generated.
-        source(str): The path to the root of the Bazel workspace.
-        output(str): The path to the location where generated output
-            should be stored.
-        api_path(str): The API path for the artifact
-
-    Raises:
-        ValueError: If failed to locate or extract artifact.
-    """
-    try:
-        # 1. Find the bazel-bin output directory.
-        logger.info("Locating Bazel output directory...")
-        # Previously built artifacts are stored in `/bazel_cache/_bazel_ubuntu/output_base`.
-        # See `--output_base` in `_build_bazel_target`
-        info_command = [
-            "bazelisk",
-            "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
-            "info",
-            "bazel-bin",
-        ]
-        result = subprocess.run(
-            info_command,
-            cwd=source,
-            text=True,
-            check=True,
-            capture_output=True,
-        )
-        bazel_bin_path = result.stdout.strip()
-
-        # 2. Construct the path to the generated tarball.
-        rule_path, rule_name = bazel_rule.split(":")
-        tarball_name = f"{rule_name}.tar.gz"
-        tarball_path = os.path.join(bazel_bin_path, rule_path.strip("/"), tarball_name)
-        logger.info(f"Found artifact at: {tarball_path}")
-
-        # 3. Create a staging directory.
-        api_version = api_path.split("/")[-1]
-        staging_dir = os.path.join(output, "owl-bot-staging", library_id, api_version)
-        os.makedirs(staging_dir, exist_ok=True)
-        logger.info(f"Preparing staging directory: {staging_dir}")
-
-        # 4. Extract the artifact.
-        extract_command = ["tar", "-xvf", tarball_path, "--strip-components=1"]
-        subprocess.run(
-            extract_command, cwd=staging_dir, capture_output=True, text=True, check=True
-        )
-        logger.info(f"Artifact {tarball_path} extracted successfully.")
-
-    except Exception as e:
-        raise ValueError(
-            f"Failed to locate or extract artifact for {bazel_rule} rule"
-        ) from e
 
 
 def _run_post_processor(output: str, library_id: str):
@@ -399,11 +261,49 @@ def handle_generate(
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
-                bazel_rule = _determine_bazel_rule(api_path, source)
-                _build_bazel_target(bazel_rule, source)
-                _locate_and_extract_artifact(
-                    bazel_rule, library_id, source, output, api_path
-                )
+                generator_options = []
+                with open(f"{source}/{api_path}/BUILD.bazel", "r") as f:
+                    content = f.read()
+                    result = parse_googleapis_content.parse_content(content)
+                    py_gapic_entry = [
+                        key for key in result.keys() if key.endswith("_py_gapic")
+                    ][0]
+
+                    config_keys = [
+                        "grpc_service_config",
+                        "rest_numeric_enums",
+                        "service_yaml",
+                        "transport",
+                    ]
+
+                    for key in config_keys:
+                        config_value = result[py_gapic_entry].get(key, None)
+                        if config_value is not None:
+                            new_key = key.replace("_", "-")
+                            if key == "grpc_service_config":
+                                new_key = "retry-config"
+                            if new_key == "service-yaml" or new_key == "retry-config":
+                                generator_options.append(
+                                    f"{new_key}={api_path}/{config_value},"
+                                )
+                            else:
+                                generator_options.append(f"{new_key}={config_value},")
+                    with tempfile.TemporaryDirectory() as tmp_dir:
+                        generator_command = (
+                            f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
+                        )
+                        if len(generator_options):
+                            generator_command += f" --python_gapic_opt=metadata,"
+                            for generator_option in generator_options:
+                                generator_command += generator_option
+                        subprocess.run([generator_command], cwd=source, shell=True)
+                        api_version = api_path.split("/")[-1]
+                        staging_dir = os.path.join(
+                            output, "owl-bot-staging", library_id, api_version
+                        )
+                        os.makedirs(staging_dir, exist_ok=True)
+                        logger.info(f"Preparing staging directory: {staging_dir}")
+                        subprocess.run(f"cp -r {tmp_dir}/. {staging_dir}", shell=True)
 
         _copy_files_needed_for_post_processing(output, input, library_id)
         _run_post_processor(output, library_id)
