@@ -3519,7 +3519,8 @@ class Client(ClientWithProject):
                 specified here becomes the default ``job_retry`` for
                 ``result()``, where it can also be specified.
             api_method (Union[str, enums.QueryApiMethod]):
-                Method with which to start the query job.
+                Method with which to start the query job.  By default,
+                the jobs.insert API is used for starting a query.
 
                 See :class:`google.cloud.bigquery.enums.QueryApiMethod` for
                 details on the difference between the query start methods.
