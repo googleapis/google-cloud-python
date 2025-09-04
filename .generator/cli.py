@@ -97,13 +97,6 @@ def _write_json_file(path: str, updated_content: Dict):
     Args:
         path(str): The file path to write.
         updated_content(Dict): The dictionary to write
-
-    Returns:
-        None
-
-    Raises:
-        FileNotFoundError: If the file is not found at the specified path.
-        IOError: If there is an issue writing the file.
     """
 
     with open(path, "w") as f:
