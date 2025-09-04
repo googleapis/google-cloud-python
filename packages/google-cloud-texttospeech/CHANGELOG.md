@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.28.0...google-cloud-texttospeech-v2.29.0) (2025-09-04)
+
+
+### Features
+
+* Add prompt to SynthesisInput ([2c37fa1](https://github.com/googleapis/google-cloud-python/commit/2c37fa1808974239abe79bbf1d2df9fba74c1ac7))
+
 ## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.27.0...google-cloud-texttospeech-v2.28.0) (2025-08-29)
 
 
