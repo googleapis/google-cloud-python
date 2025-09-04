@@ -2,8 +2,15 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Google BigQuery Storage.
-By default, you will get version ``bigquery_storage_v1``.
+
+Example Usage
+-------------
+
+.. literalinclude:: samples/quickstart/quickstart.py
+  :language: python
+  :dedent: 4
+  :start-after: [START bigquerystorage_quickstart]
+  :end-before: [END bigquerystorage_quickstart]
 
 
 API Reference
@@ -11,33 +18,27 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
+    bigquery_storage_v1/library
     bigquery_storage_v1/services_
     bigquery_storage_v1/types_
-
-API Reference
--------------
-.. toctree::
-    :maxdepth: 2
-
+    bigquery_storage_v1beta/services_
+    bigquery_storage_v1beta/types_
+    bigquery_storage_v1beta2/library
+    bigquery_storage_v1beta2/services_
+    bigquery_storage_v1beta2/types_
     bigquery_storage_v1alpha/services_
     bigquery_storage_v1alpha/types_
 
-API Reference
--------------
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 2.x release of this library.
+
 .. toctree::
     :maxdepth: 2
 
-    bigquery_storage_v1beta/services_
-    bigquery_storage_v1beta/types_
-
-API Reference
--------------
-.. toctree::
-    :maxdepth: 2
-
-    bigquery_storage_v1beta2/services_
-    bigquery_storage_v1beta2/types_
-
+    UPGRADING
 
 Changelog
 ---------
