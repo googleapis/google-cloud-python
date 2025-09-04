@@ -144,6 +144,10 @@ RUN apt-get update && \
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.9 /usr/local/lib/python3.9
 
+# TODO(http://github.com/googleapis/gapic-generator-python/issues/2435): Remove `3.10` when the linked issue is resolved.
+COPY --from=builder /usr/local/bin/python3.10 /usr/local/bin/
+COPY --from=builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
+
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
