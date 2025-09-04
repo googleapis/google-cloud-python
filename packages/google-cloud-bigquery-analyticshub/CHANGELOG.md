@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.19...google-cloud-bigquery-analyticshub-v0.4.20) (2025-09-04)
+
+
+### Features
+
+* You can now configure listings for multiple regions for shared datasets and linked dataset replicas in BigQuery sharing ([92212a5](https://github.com/googleapis/google-cloud-python/commit/92212a516fe22966878a87b92e0180756506a4a3))
+
 ## [0.4.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.18...google-cloud-bigquery-analyticshub-v0.4.19) (2025-05-15)
 
 
