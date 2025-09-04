@@ -479,21 +479,21 @@ def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     ]
 
 
-def _update_global_changelog(changelog_src: str, changelog_dest: str, libraries: List[dict]):
+def _update_global_changelog(changelog_src: str, changelog_dest: str, all_libraries: List[dict]):
     """Updates the versions of libraries in the main CHANGELOG.md.
 
     Args:
         changelog_src(str): Path to the changelog file to read.
         changelog_dest(str): Path to the changelog file to write.
-        libraries(Dict): Dictionary containing all of the library versions to
+        all_libraries(Dict): Dictionary containing all of the library versions to
         modify.
     """
 
     def replace_version_in_changelog(content):
         new_content = content
-        for individual_library in libraries:
-            package_name = individual_library["id"]
-            version = individual_library["version"]
+        for library in all_libraries:
+            package_name = library["id"]
+            version = library["version"]
             # Find the entry for the given package in the format`<package name>==<version>`
             # Replace the `<version>` part of the string.
             pattern = re.compile(f"(\\[{re.escape(package_name)})(==)([\\d\\.]+)(\\])")
