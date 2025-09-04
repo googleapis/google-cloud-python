@@ -370,12 +370,25 @@ def test_invert(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_is_in(scalar_types_df: bpd.DataFrame, snapshot):
-    col_name = "int64_col"
-    bf_df = scalar_types_df[[col_name]]
-    sql = _apply_unary_ops(
-        bf_df, [ops.IsInOp(values=(1, 2, 3)).as_expr(col_name)], [col_name]
-    )
+    int_col = "int64_col"
+    float_col = "float64_col"
+    bf_df = scalar_types_df[[int_col, float_col]]
+    ops_map = {
+        "ints": ops.IsInOp(values=(1, 2, 3)).as_expr(int_col),
+        "ints_w_null": ops.IsInOp(values=(None, 123456)).as_expr(int_col),
+        "floats": ops.IsInOp(values=(1.0, 2.0, 3.0), match_nulls=False).as_expr(
+            int_col
+        ),
+        "strings": ops.IsInOp(values=("1.0", "2.0")).as_expr(int_col),
+        "mixed": ops.IsInOp(values=("1.0", 2.5, 3)).as_expr(int_col),
+        "empty": ops.IsInOp(values=()).as_expr(int_col),
+        "ints_wo_match_nulls": ops.IsInOp(
+            values=(None, 123456), match_nulls=False
+        ).as_expr(int_col),
+        "float_in_ints": ops.IsInOp(values=(1, 2, 3, None)).as_expr(float_col),
+    }
 
+    sql = _apply_unary_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
     snapshot.assert_match(sql, "out.sql")
 
 

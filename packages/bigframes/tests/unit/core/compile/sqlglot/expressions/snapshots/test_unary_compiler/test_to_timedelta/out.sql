@@ -8,7 +8,7 @@ WITH `bfcte_0` AS (
     *,
     `bfcol_1` AS `bfcol_4`,
     `bfcol_0` AS `bfcol_5`,
-    INTERVAL `bfcol_0` MICROSECOND AS `bfcol_6`
+    `bfcol_0` AS `bfcol_6`
   FROM `bfcte_0`
 ), `bfcte_2` AS (
   SELECT
@@ -16,7 +16,7 @@ WITH `bfcte_0` AS (
     `bfcol_4` AS `bfcol_10`,
     `bfcol_5` AS `bfcol_11`,
     `bfcol_6` AS `bfcol_12`,
-    INTERVAL (`bfcol_5` * 1000000) MICROSECOND AS `bfcol_13`
+    `bfcol_5` * 1000000 AS `bfcol_13`
   FROM `bfcte_1`
 ), `bfcte_3` AS (
   SELECT
@@ -25,7 +25,7 @@ WITH `bfcte_0` AS (
     `bfcol_11` AS `bfcol_19`,
     `bfcol_12` AS `bfcol_20`,
     `bfcol_13` AS `bfcol_21`,
-    INTERVAL (`bfcol_11` * 604800000000) MICROSECOND AS `bfcol_22`
+    `bfcol_11` * 604800000000 AS `bfcol_22`
   FROM `bfcte_2`
 )
 SELECT

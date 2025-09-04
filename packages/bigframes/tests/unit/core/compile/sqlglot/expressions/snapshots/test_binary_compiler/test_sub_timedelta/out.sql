@@ -11,7 +11,7 @@ WITH `bfcte_0` AS (
     `bfcol_1` AS `bfcol_8`,
     `bfcol_2` AS `bfcol_9`,
     `bfcol_0` AS `bfcol_10`,
-    INTERVAL `bfcol_3` MICROSECOND AS `bfcol_11`
+    `bfcol_3` AS `bfcol_11`
   FROM `bfcte_0`
 ), `bfcte_2` AS (
   SELECT
