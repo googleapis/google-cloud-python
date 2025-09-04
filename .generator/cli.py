@@ -67,9 +67,6 @@ def _write_text_file(path: str, updated_content: str):
     Args:
         path(str): The file path to write.
         updated_content(str): The contents to write to the file.
-
-    Returns:
-        None
     """
 
     with open(path, "w") as f:
