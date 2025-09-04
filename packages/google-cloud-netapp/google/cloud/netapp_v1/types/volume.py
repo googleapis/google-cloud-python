@@ -468,10 +468,16 @@ class Volume(proto.Message):
             regional volume.
         cold_tier_size_gib (int):
             Output only. Size of the volume cold tier
-            data in GiB.
+            data rounded down to the nearest GiB.
         hybrid_replication_parameters (google.cloud.netapp_v1.types.HybridReplicationParameters):
             Optional. The Hybrid Replication parameters
             for the volume.
+        throughput_mibps (float):
+            Optional. Throughput of the volume (in MiB/s)
+        hot_tier_size_used_gib (int):
+            Output only. Total hot tier data rounded down
+            to the nearest GiB used by the Volume. This
+            field is only used for flex Service Level
     """
 
     class State(proto.Enum):
@@ -683,6 +689,14 @@ class Volume(proto.Message):
         proto.MESSAGE,
         number=40,
         message="HybridReplicationParameters",
+    )
+    throughput_mibps: float = proto.Field(
+        proto.DOUBLE,
+        number=41,
+    )
+    hot_tier_size_used_gib: int = proto.Field(
+        proto.INT64,
+        number=44,
     )
 
 
@@ -1220,6 +1234,12 @@ class TieringPolicy(proto.Message):
             tiering, can be range from 2-183. Default is 31.
 
             This field is a member of `oneof`_ ``_cooling_threshold_days``.
+        hot_tier_bypass_mode_enabled (bool):
+            Optional. Flag indicating that the hot tier
+            bypass mode is enabled. Default is false. This
+            is only applicable to Flex service level.
+
+            This field is a member of `oneof`_ ``_hot_tier_bypass_mode_enabled``.
     """
 
     class TierAction(proto.Enum):
@@ -1249,6 +1269,11 @@ class TieringPolicy(proto.Message):
     cooling_threshold_days: int = proto.Field(
         proto.INT32,
         number=2,
+        optional=True,
+    )
+    hot_tier_bypass_mode_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
         optional=True,
     )
 
@@ -1283,7 +1308,39 @@ class HybridReplicationParameters(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. Labels to be added to the
             replication as the key value pairs.
+        replication_schedule (google.cloud.netapp_v1.types.HybridReplicationSchedule):
+            Optional. Replication Schedule for the
+            replication created.
+        hybrid_replication_type (google.cloud.netapp_v1.types.HybridReplicationParameters.VolumeHybridReplicationType):
+            Optional. Type of the hybrid replication.
+        large_volume_constituent_count (int):
+            Optional. Constituent volume count for large
+            volume.
     """
+
+    class VolumeHybridReplicationType(proto.Enum):
+        r"""Type of the volume's hybrid replication.
+
+        Values:
+            VOLUME_HYBRID_REPLICATION_TYPE_UNSPECIFIED (0):
+                Unspecified hybrid replication type.
+            MIGRATION (1):
+                Hybrid replication type for migration.
+            CONTINUOUS_REPLICATION (2):
+                Hybrid replication type for continuous
+                replication.
+            ONPREM_REPLICATION (3):
+                New field for reversible OnPrem replication,
+                to be used for data protection.
+            REVERSE_ONPREM_REPLICATION (4):
+                New field for reversible OnPrem replication,
+                to be used for data protection.
+        """
+        VOLUME_HYBRID_REPLICATION_TYPE_UNSPECIFIED = 0
+        MIGRATION = 1
+        CONTINUOUS_REPLICATION = 2
+        ONPREM_REPLICATION = 3
+        REVERSE_ONPREM_REPLICATION = 4
 
     replication: str = proto.Field(
         proto.STRING,
@@ -1317,6 +1374,20 @@ class HybridReplicationParameters(proto.Message):
         proto.STRING,
         proto.STRING,
         number=8,
+    )
+    replication_schedule: common.HybridReplicationSchedule = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=common.HybridReplicationSchedule,
+    )
+    hybrid_replication_type: VolumeHybridReplicationType = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=VolumeHybridReplicationType,
+    )
+    large_volume_constituent_count: int = proto.Field(
+        proto.INT32,
+        number=11,
     )
 
 
