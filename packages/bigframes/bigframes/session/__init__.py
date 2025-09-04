@@ -345,15 +345,6 @@ class Session(
     @property
     def slot_millis_sum(self):
         """The sum of all slot time used by bigquery jobs in this session."""
-        if not bigframes.options._allow_large_results:
-            msg = bfe.format_message(
-                "Queries executed with `allow_large_results=False` within the session will not "
-                "have their slot milliseconds counted in this sum.  If you need precise slot "
-                "milliseconds information, query the `INFORMATION_SCHEMA` tables "
-                "to get relevant metrics.",
-            )
-            warnings.warn(msg, UserWarning)
-
         return self._metrics.slot_millis
 
     @property
