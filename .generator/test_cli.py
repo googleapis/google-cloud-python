@@ -525,7 +525,7 @@ def test_handle_release_init_fail():
         handle_release_init()
 
 
-def test_read_valid_file(mocker):
+def test_read_valid_text_file(mocker):
     """Tests reading a valid text file."""
     mock_content = "some text"
     mocker.patch("builtins.open", mocker.mock_open(read_data=mock_content))
@@ -541,7 +541,7 @@ def test_text_file_not_found(mocker):
         _read_text_file("non/existent/path.text")
 
 
-def test_write_file():
+def test_write_text_file():
     """Tests writing a text file.
     See https://docs.python.org/3/library/unittest.mock.html#mock-open
     """
