@@ -517,8 +517,8 @@ def _update_global_changelog(changelog_src: str, changelog_dest: str, all_librar
 def _update_version_for_library(
     repo: str, output: str, path_to_library: str, version: str
 ):
-    """Updates the version string in various files for a library, such as
-    gapic_version.py and snippet_metadata.json files.
+    """Updates the version string in `**/gapic_version.py` and `samples/**/snippet_metadata.json`
+        for a given library.
 
     Args:
         repo(str): This directory will contain all directories that make up a
