@@ -48,7 +48,7 @@ ENV BAZELISK_VERSION=v1.26.0
 
 # Install multiple Python versions from source. `make altinstall` is used to
 # prevent replacing the system's default python binary.
-RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
+RUN for PYTHON_VERSION in 3.9.23 3.13.5; do \
     wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
     tar -xvf Python-${PYTHON_VERSION}.tgz && \
     cd Python-${PYTHON_VERSION} && \
@@ -61,7 +61,7 @@ RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
 
 # Install pip for each python version
 RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' && \
-    for PYTHON_VERSION in 3.9 3.10 3.11 3.12 3.13; do \
+    for PYTHON_VERSION in 3.9 3.13; do \
         python${PYTHON_VERSION} /tmp/get-pip.py; \
     done && \
     rm /tmp/get-pip.py
@@ -141,15 +141,6 @@ RUN apt-get update && \
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.9 /usr/local/lib/python3.9
-
-COPY --from=builder /usr/local/bin/python3.10 /usr/local/bin/
-COPY --from=builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
-
-COPY --from=builder /usr/local/bin/python3.11 /usr/local/bin/
-COPY --from=builder /usr/local/lib/python3.11 /usr/local/lib/python3.11
-
-COPY --from=builder /usr/local/bin/python3.12 /usr/local/bin/
-COPY --from=builder /usr/local/lib/python3.12 /usr/local/lib/python3.12
 
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13

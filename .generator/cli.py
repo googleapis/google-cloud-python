@@ -441,9 +441,6 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
     sessions = [
         "unit-3.9",
-        "unit-3.10",
-        "unit-3.11",
-        "unit-3.12",
         "unit-3.13",
         "docs",
         "system-3.13",
