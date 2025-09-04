@@ -15,7 +15,14 @@
 from google.cloud import bigquery
 import pytest
 
-from bigframes.core import array_value, expression, identifiers, nodes, window_spec
+from bigframes.core import (
+    agg_expressions,
+    array_value,
+    expression,
+    identifiers,
+    nodes,
+    window_spec,
+)
 import bigframes.operations.aggregations as agg_ops
 from bigframes.session import direct_gbq_execution, polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
@@ -48,7 +55,9 @@ def test_engines_with_rows_window(
     )
     window_node = nodes.WindowOpNode(
         child=scalars_array_value.node,
-        expression=expression.UnaryAggregation(agg_op, expression.deref("int64_too")),
+        expression=agg_expressions.UnaryAggregation(
+            agg_op, expression.deref("int64_too")
+        ),
         window_spec=window,
         output_name=identifiers.ColumnId("agg_int64"),
         never_skip_nulls=never_skip_nulls,

@@ -24,6 +24,7 @@ import google.cloud.bigquery
 import pandas
 import pyarrow as pa
 
+from bigframes.core import agg_expressions
 import bigframes.core.expression as ex
 import bigframes.core.guid
 import bigframes.core.identifiers as ids
@@ -190,7 +191,7 @@ class ArrayValue:
                 child=self.node,
                 aggregations=(
                     (
-                        ex.NullaryAggregation(agg_ops.size_op),
+                        agg_expressions.NullaryAggregation(agg_ops.size_op),
                         ids.ColumnId(bigframes.core.guid.generate_guid()),
                     ),
                 ),
@@ -379,7 +380,7 @@ class ArrayValue:
 
     def aggregate(
         self,
-        aggregations: typing.Sequence[typing.Tuple[ex.Aggregation, str]],
+        aggregations: typing.Sequence[typing.Tuple[agg_expressions.Aggregation, str]],
         by_column_ids: typing.Sequence[str] = (),
         dropna: bool = True,
     ) -> ArrayValue:
@@ -420,7 +421,7 @@ class ArrayValue:
         """
 
         return self.project_window_expr(
-            ex.UnaryAggregation(op, ex.deref(column_name)),
+            agg_expressions.UnaryAggregation(op, ex.deref(column_name)),
             window_spec,
             never_skip_nulls,
             skip_reproject_unsafe,
@@ -428,7 +429,7 @@ class ArrayValue:
 
     def project_window_expr(
         self,
-        expression: ex.Aggregation,
+        expression: agg_expressions.Aggregation,
         window: WindowSpec,
         never_skip_nulls=False,
         skip_reproject_unsafe: bool = False,

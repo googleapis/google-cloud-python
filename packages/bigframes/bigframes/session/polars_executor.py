@@ -18,7 +18,14 @@ from typing import Optional, TYPE_CHECKING
 
 import pyarrow as pa
 
-from bigframes.core import array_value, bigframe_node, expression, local_data, nodes
+from bigframes.core import (
+    agg_expressions,
+    array_value,
+    bigframe_node,
+    expression,
+    local_data,
+    nodes,
+)
 import bigframes.operations
 from bigframes.operations import aggregations as agg_ops
 from bigframes.operations import (
@@ -112,7 +119,7 @@ def _is_node_polars_executable(node: nodes.BigFrameNode):
     if not isinstance(node, _COMPATIBLE_NODES):
         return False
     for expr in node._node_expressions:
-        if isinstance(expr, expression.Aggregation):
+        if isinstance(expr, agg_expressions.Aggregation):
             if not type(expr.op) in _COMPATIBLE_AGG_OPS:
                 return False
         if isinstance(expr, expression.Expression):

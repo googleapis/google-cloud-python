@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import sqlglot.expressions as sge
 
-from bigframes.core import expression, window_spec
+from bigframes.core import agg_expressions, window_spec
 from bigframes.core.compile.sqlglot.aggregations import (
     binary_compiler,
     nullary_compiler,
@@ -27,13 +27,13 @@ import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
 
 def compile_aggregate(
-    aggregate: expression.Aggregation,
+    aggregate: agg_expressions.Aggregation,
     order_by: tuple[sge.Expression, ...],
 ) -> sge.Expression:
     """Compiles BigFrames aggregation expression into SQLGlot expression."""
-    if isinstance(aggregate, expression.NullaryAggregation):
+    if isinstance(aggregate, agg_expressions.NullaryAggregation):
         return nullary_compiler.compile(aggregate.op)
-    if isinstance(aggregate, expression.UnaryAggregation):
+    if isinstance(aggregate, agg_expressions.UnaryAggregation):
         column = typed_expr.TypedExpr(
             scalar_compiler.compile_scalar_expression(aggregate.arg),
             aggregate.arg.output_type,
@@ -44,7 +44,7 @@ def compile_aggregate(
             )
         else:
             return unary_compiler.compile(aggregate.op, column)
-    elif isinstance(aggregate, expression.BinaryAggregation):
+    elif isinstance(aggregate, agg_expressions.BinaryAggregation):
         left = typed_expr.TypedExpr(
             scalar_compiler.compile_scalar_expression(aggregate.left),
             aggregate.left.output_type,
@@ -59,18 +59,18 @@ def compile_aggregate(
 
 
 def compile_analytic(
-    aggregate: expression.Aggregation,
+    aggregate: agg_expressions.Aggregation,
     window: window_spec.WindowSpec,
 ) -> sge.Expression:
-    if isinstance(aggregate, expression.NullaryAggregation):
+    if isinstance(aggregate, agg_expressions.NullaryAggregation):
         return nullary_compiler.compile(aggregate.op)
-    if isinstance(aggregate, expression.UnaryAggregation):
+    if isinstance(aggregate, agg_expressions.UnaryAggregation):
         column = typed_expr.TypedExpr(
             scalar_compiler.compile_scalar_expression(aggregate.arg),
             aggregate.arg.output_type,
         )
         return unary_compiler.compile(aggregate.op, column, window)
-    elif isinstance(aggregate, expression.BinaryAggregation):
+    elif isinstance(aggregate, agg_expressions.BinaryAggregation):
         raise NotImplementedError("binary analytic operations not yet supported")
     else:
         raise ValueError(f"Unexpected analytic operation: {aggregate}")

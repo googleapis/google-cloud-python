@@ -22,7 +22,7 @@ from typing import cast, Literal, Optional, Sequence, Tuple, Type, TYPE_CHECKING
 import pandas as pd
 
 import bigframes.core
-from bigframes.core import identifiers, nodes, ordering, window_spec
+from bigframes.core import agg_expressions, identifiers, nodes, ordering, window_spec
 from bigframes.core.compile.polars import lowering
 import bigframes.core.expression as ex
 import bigframes.core.guid as guid
@@ -443,15 +443,15 @@ if polars_installed:
 
         def get_args(
             self,
-            agg: ex.Aggregation,
+            agg: agg_expressions.Aggregation,
         ) -> Sequence[pl.Expr]:
             """Prepares arguments for aggregation by compiling them."""
-            if isinstance(agg, ex.NullaryAggregation):
+            if isinstance(agg, agg_expressions.NullaryAggregation):
                 return []
-            elif isinstance(agg, ex.UnaryAggregation):
+            elif isinstance(agg, agg_expressions.UnaryAggregation):
                 arg = self.scalar_compiler.compile_expression(agg.arg)
                 return [arg]
-            elif isinstance(agg, ex.BinaryAggregation):
+            elif isinstance(agg, agg_expressions.BinaryAggregation):
                 larg = self.scalar_compiler.compile_expression(agg.left)
                 rarg = self.scalar_compiler.compile_expression(agg.right)
                 return [larg, rarg]
@@ -460,13 +460,13 @@ if polars_installed:
                 f"Aggregation {agg} not yet supported in polars engine."
             )
 
-        def compile_agg_expr(self, expr: ex.Aggregation):
-            if isinstance(expr, ex.NullaryAggregation):
+        def compile_agg_expr(self, expr: agg_expressions.Aggregation):
+            if isinstance(expr, agg_expressions.NullaryAggregation):
                 inputs: Tuple = ()
-            elif isinstance(expr, ex.UnaryAggregation):
+            elif isinstance(expr, agg_expressions.UnaryAggregation):
                 assert isinstance(expr.arg, ex.DerefOp)
                 inputs = (expr.arg.id.sql,)
-            elif isinstance(expr, ex.BinaryAggregation):
+            elif isinstance(expr, agg_expressions.BinaryAggregation):
                 assert isinstance(expr.left, ex.DerefOp)
                 assert isinstance(expr.right, ex.DerefOp)
                 inputs = (
@@ -769,7 +769,9 @@ class PolarsCompiler:
     def _aggregate(
         self,
         df: pl.LazyFrame,
-        aggregations: Sequence[Tuple[ex.Aggregation, identifiers.ColumnId]],
+        aggregations: Sequence[
+            Tuple[agg_expressions.Aggregation, identifiers.ColumnId]
+        ],
         grouping_keys: Tuple[ex.DerefOp, ...],
     ) -> pl.LazyFrame:
         # Need to materialize columns to broadcast constants
@@ -858,7 +860,7 @@ class PolarsCompiler:
     def _calc_row_analytic_func(
         self,
         frame: pl.LazyFrame,
-        agg_expr: ex.Aggregation,
+        agg_expr: agg_expressions.Aggregation,
         window: window_spec.WindowSpec,
         name: str,
     ) -> pl.LazyFrame:

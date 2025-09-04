@@ -57,7 +57,7 @@ import tabulate
 import bigframes._config.display_options as display_options
 import bigframes.constants
 import bigframes.core
-from bigframes.core import log_adapter
+from bigframes.core import agg_expressions, log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.convert
@@ -1363,7 +1363,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         block = frame._block
 
         aggregations = [
-            ex.BinaryAggregation(op, ex.deref(left_col), ex.deref(right_col))
+            agg_expressions.BinaryAggregation(
+                op, ex.deref(left_col), ex.deref(right_col)
+            )
             for left_col in block.value_columns
             for right_col in block.value_columns
         ]
@@ -1630,7 +1632,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         block, _ = block.aggregate(
             aggregations=tuple(
-                ex.BinaryAggregation(agg_ops.CorrOp(), left_ex, right_ex)
+                agg_expressions.BinaryAggregation(agg_ops.CorrOp(), left_ex, right_ex)
                 for left_ex, right_ex in expr_pairs
             ),
             column_labels=labels,
@@ -3189,9 +3191,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 for agg_func in agg_func_list:
                     agg_op = agg_ops.lookup_agg_func(typing.cast(str, agg_func))
                     agg_expr = (
-                        ex.UnaryAggregation(agg_op, ex.deref(col_id))
+                        agg_expressions.UnaryAggregation(agg_op, ex.deref(col_id))
                         if isinstance(agg_op, agg_ops.UnaryAggregateOp)
-                        else ex.NullaryAggregation(agg_op)
+                        else agg_expressions.NullaryAggregation(agg_op)
                     )
                     aggs.append(agg_expr)
                     labels.append(col_label)

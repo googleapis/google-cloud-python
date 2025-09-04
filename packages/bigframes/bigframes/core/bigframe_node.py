@@ -20,14 +20,11 @@ import dataclasses
 import functools
 import itertools
 import typing
-from typing import Callable, Dict, Generator, Iterable, Mapping, Sequence, Tuple, Union
+from typing import Callable, Dict, Generator, Iterable, Mapping, Sequence, Tuple
 
 from bigframes.core import expression, field, identifiers
 import bigframes.core.schema as schemata
 import bigframes.dtypes
-
-if typing.TYPE_CHECKING:
-    import bigframes.session
 
 COLUMN_SET = frozenset[identifiers.ColumnId]
 
@@ -281,8 +278,8 @@ class BigFrameNode:
     @property
     def _node_expressions(
         self,
-    ) -> Sequence[Union[expression.Expression, expression.Aggregation]]:
-        """List of scalar expressions. Intended for checking engine compatibility with used ops."""
+    ) -> Sequence[expression.Expression]:
+        """List of expressions. Intended for checking engine compatibility with used ops."""
         return ()
 
     # Plan algorithms

@@ -51,8 +51,9 @@ import pyarrow as pa
 from bigframes import session
 from bigframes._config import sampling_options
 import bigframes.constants
-from bigframes.core import local_data
+from bigframes.core import agg_expressions, local_data
 import bigframes.core as core
+import bigframes.core.agg_expressions as ex_types
 import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.expression as ex
 import bigframes.core.expression as scalars
@@ -1154,7 +1155,7 @@ class Block:
         skip_reproject_unsafe: bool = False,
         never_skip_nulls: bool = False,
     ) -> typing.Tuple[Block, str]:
-        agg_expr = ex.UnaryAggregation(op, ex.deref(column))
+        agg_expr = agg_expressions.UnaryAggregation(op, ex.deref(column))
         return self.apply_analytic(
             agg_expr,
             window_spec,
@@ -1166,7 +1167,7 @@ class Block:
 
     def apply_analytic(
         self,
-        agg_expr: ex.Aggregation,
+        agg_expr: agg_expressions.Aggregation,
         window: windows.WindowSpec,
         result_label: Label,
         *,
@@ -1259,9 +1260,9 @@ class Block:
         if axis_n == 0:
             aggregations = [
                 (
-                    ex.UnaryAggregation(operation, ex.deref(col_id))
+                    agg_expressions.UnaryAggregation(operation, ex.deref(col_id))
                     if isinstance(operation, agg_ops.UnaryAggregateOp)
-                    else ex.NullaryAggregation(operation),
+                    else agg_expressions.NullaryAggregation(operation),
                     col_id,
                 )
                 for col_id in self.value_columns
@@ -1290,7 +1291,10 @@ class Block:
     ):
         """Returns a block object to compute the size(s) of groups."""
         agg_specs = [
-            (ex.NullaryAggregation(agg_ops.SizeOp()), guid.generate_guid()),
+            (
+                agg_expressions.NullaryAggregation(agg_ops.SizeOp()),
+                guid.generate_guid(),
+            ),
         ]
         output_col_ids = [agg_spec[1] for agg_spec in agg_specs]
         result_expr = self.expr.aggregate(agg_specs, by_column_ids, dropna=dropna)
@@ -1361,7 +1365,7 @@ class Block:
     def aggregate(
         self,
         by_column_ids: typing.Sequence[str] = (),
-        aggregations: typing.Sequence[ex.Aggregation] = (),
+        aggregations: typing.Sequence[agg_expressions.Aggregation] = (),
         column_labels: Optional[pd.Index] = None,
         *,
         dropna: bool = True,
@@ -1430,9 +1434,9 @@ class Block:
 
         aggregations = [
             (
-                ex.UnaryAggregation(stat, ex.deref(column_id))
+                agg_expressions.UnaryAggregation(stat, ex.deref(column_id))
                 if isinstance(stat, agg_ops.UnaryAggregateOp)
-                else ex.NullaryAggregation(stat),
+                else agg_expressions.NullaryAggregation(stat),
                 stat.name,
             )
             for stat in stats_to_fetch
@@ -1458,7 +1462,7 @@ class Block:
         # TODO(kemppeterson): Add a cache here.
         aggregations = [
             (
-                ex.BinaryAggregation(
+                agg_expressions.BinaryAggregation(
                     stat, ex.deref(column_id_left), ex.deref(column_id_right)
                 ),
                 f"{stat.name}_{column_id_left}{column_id_right}",
@@ -1485,9 +1489,9 @@ class Block:
         labels = pd.Index([stat.name for stat in stats])
         aggregations = [
             (
-                ex.UnaryAggregation(stat, ex.deref(col_id))
+                agg_expressions.UnaryAggregation(stat, ex.deref(col_id))
                 if isinstance(stat, agg_ops.UnaryAggregateOp)
-                else ex.NullaryAggregation(stat),
+                else agg_expressions.NullaryAggregation(stat),
                 f"{col_id}-{stat.name}",
             )
             for stat in stats
@@ -1761,7 +1765,7 @@ class Block:
 
         block = block.select_columns(column_ids)
         aggregations = [
-            ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(col_id))
+            agg_expressions.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(col_id))
             for col_id in column_ids
         ]
         result_block, _ = block.aggregate(
@@ -2029,7 +2033,7 @@ class Block:
 
         agg_specs = [
             (
-                ex.UnaryAggregation(agg_ops.min_op, ex.deref(col_id)),
+                agg_expressions.UnaryAggregation(agg_ops.min_op, ex.deref(col_id)),
                 guid.generate_guid(),
             ),
         ]
@@ -2058,13 +2062,13 @@ class Block:
         # Generate integer label sequence.
         min_agg_specs = [
             (
-                ex.UnaryAggregation(agg_ops.min_op, ex.deref(label_col_id)),
+                ex_types.UnaryAggregation(agg_ops.min_op, ex.deref(label_col_id)),
                 guid.generate_guid(),
             ),
         ]
         max_agg_specs = [
             (
-                ex.UnaryAggregation(agg_ops.max_op, ex.deref(label_col_id)),
+                ex_types.UnaryAggregation(agg_ops.max_op, ex.deref(label_col_id)),
                 guid.generate_guid(),
             ),
         ]

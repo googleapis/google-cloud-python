@@ -27,6 +27,7 @@ import numpy as np
 import pandas
 
 from bigframes import dtypes
+import bigframes.core.agg_expressions as ex_types
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
@@ -282,7 +283,7 @@ class Index(vendored_pandas_index.Index):
         filtered_block = block_with_offsets.filter_by_id(match_col_id)
 
         # Check if key exists at all by counting
-        count_agg = ex.UnaryAggregation(agg_ops.count_op, ex.deref(offsets_id))
+        count_agg = ex_types.UnaryAggregation(agg_ops.count_op, ex.deref(offsets_id))
         count_result = filtered_block._expr.aggregate([(count_agg, "count")])
 
         count_scalar = self._block.session._executor.execute(
@@ -294,7 +295,7 @@ class Index(vendored_pandas_index.Index):
 
         # If only one match, return integer position
         if count_scalar == 1:
-            min_agg = ex.UnaryAggregation(agg_ops.min_op, ex.deref(offsets_id))
+            min_agg = ex_types.UnaryAggregation(agg_ops.min_op, ex.deref(offsets_id))
             position_result = filtered_block._expr.aggregate([(min_agg, "position")])
             position_scalar = self._block.session._executor.execute(
                 position_result, ex_spec.ExecutionSpec(promise_under_10gb=True)
@@ -317,11 +318,11 @@ class Index(vendored_pandas_index.Index):
         # Combine min and max aggregations into a single query for efficiency
         min_max_aggs = [
             (
-                ex.UnaryAggregation(agg_ops.min_op, ex.deref(offsets_id)),
+                ex_types.UnaryAggregation(agg_ops.min_op, ex.deref(offsets_id)),
                 "min_pos",
             ),
             (
-                ex.UnaryAggregation(agg_ops.max_op, ex.deref(offsets_id)),
+                ex_types.UnaryAggregation(agg_ops.max_op, ex.deref(offsets_id)),
                 "max_pos",
             ),
         ]

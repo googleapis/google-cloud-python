@@ -49,7 +49,7 @@ import pyarrow as pa
 import typing_extensions
 
 import bigframes.core
-from bigframes.core import groupby, log_adapter
+from bigframes.core import agg_expressions, groupby, log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
@@ -1391,7 +1391,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block, agg_ids = block.aggregate(
             by_column_ids=[self._value_column],
             aggregations=(
-                ex.UnaryAggregation(agg_ops.count_op, ex.deref(self._value_column)),
+                agg_expressions.UnaryAggregation(
+                    agg_ops.count_op, ex.deref(self._value_column)
+                ),
             ),
         )
         value_count_col_id = agg_ids[0]
@@ -2116,7 +2118,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             return self.drop_duplicates()
         block, result = self._block.aggregate(
             [self._value_column],
-            [ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(self._value_column))],
+            [
+                agg_expressions.UnaryAggregation(
+                    agg_ops.AnyValueOp(), ex.deref(self._value_column)
+                )
+            ],
             column_labels=self._block.column_labels,
             dropna=False,
         )

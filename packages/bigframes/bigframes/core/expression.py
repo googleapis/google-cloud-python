@@ -27,7 +27,6 @@ from bigframes import dtypes
 from bigframes.core import field
 import bigframes.core.identifiers as ids
 import bigframes.operations
-import bigframes.operations.aggregations as agg_ops
 
 
 def const(
@@ -42,118 +41,6 @@ def deref(name: str) -> DerefOp:
 
 def free_var(id: str) -> UnboundVariableExpression:
     return UnboundVariableExpression(id)
-
-
-@dataclasses.dataclass(frozen=True)
-class Aggregation(abc.ABC):
-    """Represents windowing or aggregation over a column."""
-
-    op: agg_ops.WindowOp = dataclasses.field()
-
-    @abc.abstractmethod
-    def output_type(
-        self, input_fields: Mapping[ids.ColumnId, field.Field]
-    ) -> dtypes.ExpressionType:
-        ...
-
-    @property
-    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
-        return ()
-
-    @abc.abstractmethod
-    def remap_column_refs(
-        self,
-        name_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-        allow_partial_bindings: bool = False,
-    ) -> Aggregation:
-        ...
-
-
-@dataclasses.dataclass(frozen=True)
-class NullaryAggregation(Aggregation):
-    op: agg_ops.NullaryWindowOp = dataclasses.field()
-
-    def output_type(
-        self, input_fields: Mapping[ids.ColumnId, field.Field]
-    ) -> dtypes.ExpressionType:
-        return self.op.output_type()
-
-    def remap_column_refs(
-        self,
-        name_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-        allow_partial_bindings: bool = False,
-    ) -> NullaryAggregation:
-        return self
-
-
-@dataclasses.dataclass(frozen=True)
-class UnaryAggregation(Aggregation):
-    op: agg_ops.UnaryWindowOp
-    arg: Union[DerefOp, ScalarConstantExpression]
-
-    def output_type(
-        self, input_fields: Mapping[ids.ColumnId, field.Field]
-    ) -> dtypes.ExpressionType:
-        # TODO(b/419300717) Remove resolutions once defers are cleaned up.
-        resolved_expr = bind_schema_fields(self.arg, input_fields)
-        assert resolved_expr.is_resolved
-
-        return self.op.output_type(resolved_expr.output_type)
-
-    @property
-    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
-        return self.arg.column_references
-
-    def remap_column_refs(
-        self,
-        name_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-        allow_partial_bindings: bool = False,
-    ) -> UnaryAggregation:
-        return UnaryAggregation(
-            self.op,
-            self.arg.remap_column_refs(
-                name_mapping, allow_partial_bindings=allow_partial_bindings
-            ),
-        )
-
-
-@dataclasses.dataclass(frozen=True)
-class BinaryAggregation(Aggregation):
-    op: agg_ops.BinaryAggregateOp = dataclasses.field()
-    left: Union[DerefOp, ScalarConstantExpression] = dataclasses.field()
-    right: Union[DerefOp, ScalarConstantExpression] = dataclasses.field()
-
-    def output_type(
-        self, input_fields: Mapping[ids.ColumnId, field.Field]
-    ) -> dtypes.ExpressionType:
-        # TODO(b/419300717) Remove resolutions once defers are cleaned up.
-        left_resolved_expr = bind_schema_fields(self.left, input_fields)
-        assert left_resolved_expr.is_resolved
-        right_resolved_expr = bind_schema_fields(self.right, input_fields)
-        assert right_resolved_expr.is_resolved
-
-        return self.op.output_type(
-            left_resolved_expr.output_type, left_resolved_expr.output_type
-        )
-
-    @property
-    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
-        return (*self.left.column_references, *self.right.column_references)
-
-    def remap_column_refs(
-        self,
-        name_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-        allow_partial_bindings: bool = False,
-    ) -> BinaryAggregation:
-        return BinaryAggregation(
-            self.op,
-            self.left.remap_column_refs(
-                name_mapping, allow_partial_bindings=allow_partial_bindings
-            ),
-            self.right.remap_column_refs(
-                name_mapping, allow_partial_bindings=allow_partial_bindings
-            ),
-        )
 
 
 TExpression = TypeVar("TExpression", bound="Expression")

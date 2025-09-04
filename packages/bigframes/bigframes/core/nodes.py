@@ -33,7 +33,7 @@ from typing import (
 
 import google.cloud.bigquery as bq
 
-from bigframes.core import identifiers, local_data, sequences
+from bigframes.core import agg_expressions, identifiers, local_data, sequences
 from bigframes.core.bigframe_node import BigFrameNode, COLUMN_SET
 import bigframes.core.expression as ex
 from bigframes.core.field import Field
@@ -1337,7 +1337,9 @@ class ProjectionNode(UnaryNode, AdditiveNode):
 
 @dataclasses.dataclass(frozen=True, eq=False)
 class AggregateNode(UnaryNode):
-    aggregations: typing.Tuple[typing.Tuple[ex.Aggregation, identifiers.ColumnId], ...]
+    aggregations: typing.Tuple[
+        typing.Tuple[agg_expressions.Aggregation, identifiers.ColumnId], ...
+    ]
     by_column_ids: typing.Tuple[ex.DerefOp, ...] = tuple([])
     order_by: Tuple[OrderingExpression, ...] = ()
     dropna: bool = True
@@ -1360,9 +1362,7 @@ class AggregateNode(UnaryNode):
         agg_items = (
             Field(
                 id,
-                bigframes.dtypes.dtype_for_etype(
-                    agg.output_type(self.child.field_by_id)
-                ),
+                ex.bind_schema_fields(agg, self.child.field_by_id).output_type,
                 nullable=True,
             )
             for agg, id in self.aggregations
@@ -1437,7 +1437,7 @@ class AggregateNode(UnaryNode):
 
 @dataclasses.dataclass(frozen=True, eq=False)
 class WindowOpNode(UnaryNode, AdditiveNode):
-    expression: ex.Aggregation
+    expression: agg_expressions.Aggregation
     window_spec: window.WindowSpec
     output_name: identifiers.ColumnId
     never_skip_nulls: bool = False
@@ -1478,11 +1478,10 @@ class WindowOpNode(UnaryNode, AdditiveNode):
 
     @functools.cached_property
     def added_field(self) -> Field:
-        input_fields = self.child.field_by_id
         # TODO: Determine if output could be non-null
         return Field(
             self.output_name,
-            bigframes.dtypes.dtype_for_etype(self.expression.output_type(input_fields)),
+            ex.bind_schema_fields(self.expression, self.child.field_by_id).output_type,
         )
 
     @property

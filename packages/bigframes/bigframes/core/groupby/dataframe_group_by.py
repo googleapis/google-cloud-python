@@ -24,6 +24,7 @@ import numpy
 import pandas as pd
 
 from bigframes import session
+from bigframes.core import agg_expressions
 from bigframes.core import expression as ex
 from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops
@@ -327,7 +328,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             )
         )
         block, result_id = self._block.apply_analytic(
-            ex.NullaryAggregation(agg_ops.size_op),
+            agg_expressions.NullaryAggregation(agg_ops.size_op),
             window=window_spec,
             result_label=None,
         )
@@ -488,7 +489,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return dataframe if self._as_index else self._convert_index(dataframe)
 
     def _agg_dict(self, func: typing.Mapping) -> df.DataFrame:
-        aggregations: typing.List[ex.Aggregation] = []
+        aggregations: typing.List[agg_expressions.Aggregation] = []
         column_labels = []
 
         want_aggfunc_level = any(utils.is_list_like(aggs) for aggs in func.values())

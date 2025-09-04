@@ -15,7 +15,7 @@ import dataclasses
 import functools
 from typing import Mapping, Tuple
 
-from bigframes.core import expression, identifiers
+from bigframes.core import agg_expressions, expression, identifiers
 import bigframes.core.nodes
 import bigframes.core.ordering
 import bigframes.core.window_spec
@@ -167,9 +167,7 @@ def _pull_up_order(
                 )
             else:
                 # Otherwise we need to generate offsets
-                agg = bigframes.core.expression.NullaryAggregation(
-                    agg_ops.RowNumberOp()
-                )
+                agg = agg_expressions.NullaryAggregation(agg_ops.RowNumberOp())
                 window_spec = bigframes.core.window_spec.unbound(
                     ordering=tuple(child_order.all_ordering_columns)
                 )
@@ -287,9 +285,7 @@ def _pull_up_order(
                     new_source, ((order_expression.scalar_expression, offsets_id),)
                 )
             else:
-                agg = bigframes.core.expression.NullaryAggregation(
-                    agg_ops.RowNumberOp()
-                )
+                agg = agg_expressions.NullaryAggregation(agg_ops.RowNumberOp())
                 window_spec = bigframes.core.window_spec.unbound(
                     ordering=tuple(order.all_ordering_columns)
                 )
@@ -423,7 +419,7 @@ def _pull_up_order(
 def rewrite_promote_offsets(
     node: bigframes.core.nodes.PromoteOffsetsNode,
 ) -> bigframes.core.nodes.WindowOpNode:
-    agg = bigframes.core.expression.NullaryAggregation(agg_ops.RowNumberOp())
+    agg = agg_expressions.NullaryAggregation(agg_ops.RowNumberOp())
     window_spec = bigframes.core.window_spec.unbound()
     return bigframes.core.nodes.WindowOpNode(node.child, agg, window_spec, node.col_id)
 

@@ -14,7 +14,7 @@
 
 import pytest
 
-from bigframes.core import array_value, expression, identifiers, nodes
+from bigframes.core import agg_expressions, array_value, expression, identifiers, nodes
 import bigframes.operations.aggregations as agg_ops
 from bigframes.session import polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
@@ -37,7 +37,7 @@ def apply_agg_to_all_valid(
             continue
         try:
             _ = op.output_type(array.get_column_type(arg))
-            expr = expression.UnaryAggregation(op, expression.deref(arg))
+            expr = agg_expressions.UnaryAggregation(op, expression.deref(arg))
             name = f"{arg}-{op.name}"
             exprs_by_name.append((expr, name))
         except TypeError:
@@ -56,11 +56,11 @@ def test_engines_aggregate_size(
         scalars_array_value.node,
         aggregations=(
             (
-                expression.NullaryAggregation(agg_ops.SizeOp()),
+                agg_expressions.NullaryAggregation(agg_ops.SizeOp()),
                 identifiers.ColumnId("size_op"),
             ),
             (
-                expression.UnaryAggregation(
+                agg_expressions.UnaryAggregation(
                     agg_ops.SizeUnaryOp(), expression.deref("string_col")
                 ),
                 identifiers.ColumnId("unary_size_op"),
@@ -103,11 +103,11 @@ def test_engines_grouped_aggregate(
         scalars_array_value.node,
         aggregations=(
             (
-                expression.NullaryAggregation(agg_ops.SizeOp()),
+                agg_expressions.NullaryAggregation(agg_ops.SizeOp()),
                 identifiers.ColumnId("size_op"),
             ),
             (
-                expression.UnaryAggregation(
+                agg_expressions.UnaryAggregation(
                     agg_ops.SizeUnaryOp(), expression.deref("string_col")
                 ),
                 identifiers.ColumnId("unary_size_op"),

@@ -21,12 +21,12 @@ import bigframes_vendored.constants as constants
 import pandas as pd
 
 import bigframes.constants
+from bigframes.core import agg_expressions
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
 import bigframes.core.ordering as ordering
 import bigframes.core.window_spec as windows
-import bigframes.dtypes
 import bigframes.dtypes as dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -133,7 +133,7 @@ def quantile(
     block, _ = block.aggregate(
         grouping_column_ids,
         tuple(
-            ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(col))
+            agg_expressions.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(col))
             for col in quantile_cols
         ),
         column_labels=pd.Index(labels),
@@ -363,7 +363,7 @@ def value_counts(
         block = dropna(block, columns, how="any")
     block, agg_ids = block.aggregate(
         by_column_ids=(*grouping_keys, *columns),
-        aggregations=[ex.NullaryAggregation(agg_ops.size_op)],
+        aggregations=[agg_expressions.NullaryAggregation(agg_ops.size_op)],
         dropna=drop_na and not grouping_keys,
     )
     count_id = agg_ids[0]
@@ -647,15 +647,15 @@ def skew(
     # counts, moment3 for each column
     aggregations = []
     for i, col in enumerate(original_columns):
-        count_agg = ex.UnaryAggregation(
+        count_agg = agg_expressions.UnaryAggregation(
             agg_ops.count_op,
             ex.deref(col),
         )
-        moment3_agg = ex.UnaryAggregation(
+        moment3_agg = agg_expressions.UnaryAggregation(
             agg_ops.mean_op,
             ex.deref(delta3_ids[i]),
         )
-        variance_agg = ex.UnaryAggregation(
+        variance_agg = agg_expressions.UnaryAggregation(
             agg_ops.PopVarOp(),
             ex.deref(col),
         )
@@ -698,9 +698,13 @@ def kurt(
     # counts, moment4 for each column
     aggregations = []
     for i, col in enumerate(original_columns):
-        count_agg = ex.UnaryAggregation(agg_ops.count_op, ex.deref(col))
-        moment4_agg = ex.UnaryAggregation(agg_ops.mean_op, ex.deref(delta4_ids[i]))
-        variance_agg = ex.UnaryAggregation(agg_ops.PopVarOp(), ex.deref(col))
+        count_agg = agg_expressions.UnaryAggregation(agg_ops.count_op, ex.deref(col))
+        moment4_agg = agg_expressions.UnaryAggregation(
+            agg_ops.mean_op, ex.deref(delta4_ids[i])
+        )
+        variance_agg = agg_expressions.UnaryAggregation(
+            agg_ops.PopVarOp(), ex.deref(col)
+        )
         aggregations.extend([count_agg, moment4_agg, variance_agg])
 
     block, agg_ids = block.aggregate(

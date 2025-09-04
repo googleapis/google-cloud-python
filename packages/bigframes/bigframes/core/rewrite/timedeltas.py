@@ -20,6 +20,7 @@ import typing
 
 from bigframes import dtypes
 from bigframes import operations as ops
+from bigframes.core import agg_expressions as ex_types
 from bigframes.core import expression as ex
 from bigframes.core import nodes, schema, utils
 from bigframes.operations import aggregations as aggs
@@ -219,33 +220,33 @@ def _rewrite_to_timedelta_op(op: ops.ToTimedeltaOp, arg: _TypedExpr):
 
 @functools.cache
 def _rewrite_aggregation(
-    aggregation: ex.Aggregation, schema: schema.ArraySchema
-) -> ex.Aggregation:
-    if not isinstance(aggregation, ex.UnaryAggregation):
+    aggregation: ex_types.Aggregation, schema: schema.ArraySchema
+) -> ex_types.Aggregation:
+    if not isinstance(aggregation, ex_types.UnaryAggregation):
         return aggregation
 
     if isinstance(aggregation.arg, ex.DerefOp):
         input_type = schema.get_type(aggregation.arg.id.sql)
     else:
-        input_type = aggregation.arg.dtype
+        input_type = aggregation.arg.output_type
 
     if isinstance(aggregation.op, aggs.DiffOp):
         if dtypes.is_datetime_like(input_type):
-            return ex.UnaryAggregation(
+            return ex_types.UnaryAggregation(
                 aggs.TimeSeriesDiffOp(aggregation.op.periods), aggregation.arg
             )
         elif input_type == dtypes.DATE_DTYPE:
-            return ex.UnaryAggregation(
+            return ex_types.UnaryAggregation(
                 aggs.DateSeriesDiffOp(aggregation.op.periods), aggregation.arg
             )
 
     if isinstance(aggregation.op, aggs.StdOp) and input_type == dtypes.TIMEDELTA_DTYPE:
-        return ex.UnaryAggregation(
+        return ex_types.UnaryAggregation(
             aggs.StdOp(should_floor_result=True), aggregation.arg
         )
 
     if isinstance(aggregation.op, aggs.MeanOp) and input_type == dtypes.TIMEDELTA_DTYPE:
-        return ex.UnaryAggregation(
+        return ex_types.UnaryAggregation(
             aggs.MeanOp(should_floor_result=True), aggregation.arg
         )
 
@@ -253,7 +254,7 @@ def _rewrite_aggregation(
         isinstance(aggregation.op, aggs.QuantileOp)
         and input_type == dtypes.TIMEDELTA_DTYPE
     ):
-        return ex.UnaryAggregation(
+        return ex_types.UnaryAggregation(
             aggs.QuantileOp(q=aggregation.op.q, should_floor_result=True),
             aggregation.arg,
         )

@@ -15,7 +15,7 @@
 import dataclasses
 import typing
 
-from bigframes.core import bigframe_node
+from bigframes.core import agg_expressions, bigframe_node
 from bigframes.core import expression as ex
 from bigframes.core import nodes, ordering
 
@@ -118,16 +118,16 @@ def bind_schema_to_node(
 
 
 def _bind_schema_to_aggregation_expr(
-    aggregation: ex.Aggregation,
+    aggregation: agg_expressions.Aggregation,
     child: bigframe_node.BigFrameNode,
-) -> ex.Aggregation:
+) -> agg_expressions.Aggregation:
     assert isinstance(
-        aggregation, ex.Aggregation
+        aggregation, agg_expressions.Aggregation
     ), f"Expected Aggregation, got {type(aggregation)}"
 
-    if isinstance(aggregation, ex.UnaryAggregation):
+    if isinstance(aggregation, agg_expressions.UnaryAggregation):
         return typing.cast(
-            ex.Aggregation,
+            agg_expressions.Aggregation,
             dataclasses.replace(
                 aggregation,
                 arg=typing.cast(
@@ -136,9 +136,9 @@ def _bind_schema_to_aggregation_expr(
                 ),
             ),
         )
-    elif isinstance(aggregation, ex.BinaryAggregation):
+    elif isinstance(aggregation, agg_expressions.BinaryAggregation):
         return typing.cast(
-            ex.Aggregation,
+            agg_expressions.Aggregation,
             dataclasses.replace(
                 aggregation,
                 left=typing.cast(

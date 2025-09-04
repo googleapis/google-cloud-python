@@ -14,7 +14,7 @@
 
 import pytest
 
-from bigframes.core import array_value, expression, identifiers, nodes
+from bigframes.core import agg_expressions, array_value, expression, identifiers, nodes
 from bigframes.operations import aggregations as agg_ops
 import bigframes.pandas as bpd
 
@@ -26,7 +26,7 @@ def _apply_unary_op(obj: bpd.DataFrame, op: agg_ops.UnaryWindowOp, arg: str) -> 
         obj._block.expr.node,
         aggregations=(
             (
-                expression.UnaryAggregation(op, expression.deref(arg)),
+                agg_expressions.UnaryAggregation(op, expression.deref(arg)),
                 identifiers.ColumnId(arg + "_agg"),
             ),
         ),
