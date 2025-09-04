@@ -1,0 +1,64 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+description: Integrate BigQuery Storage Handwritten code
+# TODO(Fill in issue number below to add more context)
+url: https://github.com/googleapis/gapic-generator-python/issues/123
+replacements:
+  - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
+      UNIT_TEST_EXTRAS: List\[str\] = \[\]
+    after: |
+      UNIT_TEST_EXTRAS: List[str] = [
+          "tests",
+          "fastavro",
+          "pandas",
+          "pyarrow",
+      ]
+    count: 1
+  - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
+      SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List\[str\] = \[\]
+    after: |
+      SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
+          "google-cloud-bigquery",
+      ]
+    count: 1
+  - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
+      SYSTEM_TEST_EXTRAS: List\[str\] = \[\]
+    after: |
+      SYSTEM_TEST_EXTRAS: List[str] = [
+          "fastavro",
+          "pandas",
+          "pyarrow",
+      ]
+    count: 1
+  - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
+      nox.options.sessions = \[
+          "unit",
+          "system",
+    after: |
+      nox.options.sessions = [
+          "unit",
+          "system-3.13",
+    count: 1
