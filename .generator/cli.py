@@ -55,10 +55,6 @@ def _read_text_file(path: str) -> str:
 
     Returns:
         str: The contents of the file.
-
-    Raises:
-        FileNotFoundError: If the file is not found at the specified path.
-        IOError: If there is an issue reading the file.
     """
 
     with open(path, "r") as f:
@@ -74,10 +70,6 @@ def _write_text_file(path: str, updated_content: str):
 
     Returns:
         None
-
-    Raises:
-        FileNotFoundError: If the file is not found at the specified path.
-        IOError: If there is an issue writing the file.
     """
 
     with open(path, "w") as f:
