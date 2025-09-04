@@ -199,6 +199,140 @@
         }
       }
     },
+    "DataTransferService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataTransferServiceClient",
+          "rpcs": {
+            "CreateDestination": {
+              "methods": [
+                "create_destination"
+              ]
+            },
+            "CreateMulticloudDataTransferConfig": {
+              "methods": [
+                "create_multicloud_data_transfer_config"
+              ]
+            },
+            "DeleteDestination": {
+              "methods": [
+                "delete_destination"
+              ]
+            },
+            "DeleteMulticloudDataTransferConfig": {
+              "methods": [
+                "delete_multicloud_data_transfer_config"
+              ]
+            },
+            "GetDestination": {
+              "methods": [
+                "get_destination"
+              ]
+            },
+            "GetMulticloudDataTransferConfig": {
+              "methods": [
+                "get_multicloud_data_transfer_config"
+              ]
+            },
+            "GetMulticloudDataTransferSupportedService": {
+              "methods": [
+                "get_multicloud_data_transfer_supported_service"
+              ]
+            },
+            "ListDestinations": {
+              "methods": [
+                "list_destinations"
+              ]
+            },
+            "ListMulticloudDataTransferConfigs": {
+              "methods": [
+                "list_multicloud_data_transfer_configs"
+              ]
+            },
+            "ListMulticloudDataTransferSupportedServices": {
+              "methods": [
+                "list_multicloud_data_transfer_supported_services"
+              ]
+            },
+            "UpdateDestination": {
+              "methods": [
+                "update_destination"
+              ]
+            },
+            "UpdateMulticloudDataTransferConfig": {
+              "methods": [
+                "update_multicloud_data_transfer_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DataTransferServiceAsyncClient",
+          "rpcs": {
+            "CreateDestination": {
+              "methods": [
+                "create_destination"
+              ]
+            },
+            "CreateMulticloudDataTransferConfig": {
+              "methods": [
+                "create_multicloud_data_transfer_config"
+              ]
+            },
+            "DeleteDestination": {
+              "methods": [
+                "delete_destination"
+              ]
+            },
+            "DeleteMulticloudDataTransferConfig": {
+              "methods": [
+                "delete_multicloud_data_transfer_config"
+              ]
+            },
+            "GetDestination": {
+              "methods": [
+                "get_destination"
+              ]
+            },
+            "GetMulticloudDataTransferConfig": {
+              "methods": [
+                "get_multicloud_data_transfer_config"
+              ]
+            },
+            "GetMulticloudDataTransferSupportedService": {
+              "methods": [
+                "get_multicloud_data_transfer_supported_service"
+              ]
+            },
+            "ListDestinations": {
+              "methods": [
+                "list_destinations"
+              ]
+            },
+            "ListMulticloudDataTransferConfigs": {
+              "methods": [
+                "list_multicloud_data_transfer_configs"
+              ]
+            },
+            "ListMulticloudDataTransferSupportedServices": {
+              "methods": [
+                "list_multicloud_data_transfer_supported_services"
+              ]
+            },
+            "UpdateDestination": {
+              "methods": [
+                "update_destination"
+              ]
+            },
+            "UpdateMulticloudDataTransferConfig": {
+              "methods": [
+                "update_multicloud_data_transfer_config"
+              ]
+            }
+          }
+        }
+      }
+    },
     "HubService": {
       "clients": {
         "grpc": {
