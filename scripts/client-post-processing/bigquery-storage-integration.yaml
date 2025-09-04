@@ -131,3 +131,100 @@ replacements:
           "ReadRowsStream",
           "ReadSession",
     count: 1
+  - paths: [
+      packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1/__init__.py,
+    ]
+    before: |
+      __version__ = package_version.__version__\n\n
+      from .services.big_query_read import BigQueryReadAsyncClient, BigQueryReadClient
+      from .services.big_query_write import BigQueryWriteAsyncClient, BigQueryWriteClient
+      from .types.arrow import ArrowRecordBatch, ArrowSchema, ArrowSerializationOptions
+      from .types.avro import AvroRows, AvroSchema, AvroSerializationOptions
+      from .types.protobuf import ProtoRows, ProtoSchema
+      from .types.storage import \(
+          AppendRowsRequest,
+          AppendRowsResponse,
+          BatchCommitWriteStreamsRequest,
+          BatchCommitWriteStreamsResponse,
+          CreateReadSessionRequest,
+          CreateWriteStreamRequest,
+          FinalizeWriteStreamRequest,
+          FinalizeWriteStreamResponse,
+          FlushRowsRequest,
+          FlushRowsResponse,
+          GetWriteStreamRequest,
+          ReadRowsRequest,
+          ReadRowsResponse,
+          RowError,
+          SplitReadStreamRequest,
+          SplitReadStreamResponse,
+          StorageError,
+          StreamStats,
+          ThrottleState,
+      \)
+      from .types.stream import \(
+          DataFormat,
+          ReadSession,
+          ReadStream,
+          WriteStream,
+          WriteStreamView,
+      \)
+      from .types.table import TableFieldSchema, TableSchema\n
+      __all__ = \(
+          "BigQueryReadAsyncClient",
+          "BigQueryWriteAsyncClient",
+          "AppendRowsRequest",
+          "AppendRowsResponse",
+          "ArrowRecordBatch",
+          "ArrowSchema",
+          "ArrowSerializationOptions",
+          "AvroRows",
+          "AvroSchema",
+          "AvroSerializationOptions",
+          "BatchCommitWriteStreamsRequest",
+          "BatchCommitWriteStreamsResponse",
+          "BigQueryReadClient",
+          "BigQueryWriteClient",
+          "CreateReadSessionRequest",
+          "CreateWriteStreamRequest",
+          "DataFormat",
+          "FinalizeWriteStreamRequest",
+          "FinalizeWriteStreamResponse",
+          "FlushRowsRequest",
+          "FlushRowsResponse",
+          "GetWriteStreamRequest",
+          "ProtoRows",
+          "ProtoSchema",
+          "ReadRowsRequest",
+          "ReadRowsResponse",
+          "ReadSession",
+          "ReadStream",
+          "RowError",
+          "SplitReadStreamRequest",
+          "SplitReadStreamResponse",
+          "StorageError",
+          "StreamStats",
+          "TableFieldSchema",
+          "TableSchema",
+          "ThrottleState",
+          "WriteStream",
+          "WriteStreamView",
+      \)
+    after: |
+      __version__ = package_version.__version__\n
+      from google.cloud.bigquery_storage_v1 import client, types\n\n
+      class BigQueryReadClient(client.BigQueryReadClient):
+          __doc__ = client.BigQueryReadClient.__doc__\n\n
+      class BigQueryWriteClient(client.BigQueryWriteClient):
+          __doc__ = client.BigQueryWriteClient.__doc__\n\n
+      __all__ = (
+          # google.cloud.bigquery_storage_v1
+          "__version__",
+          "types",
+          # google.cloud.bigquery_storage_v1.client
+          "BigQueryReadClient",
+          "BigQueryWriteClient",
+      )
+    count: 1
+
+
