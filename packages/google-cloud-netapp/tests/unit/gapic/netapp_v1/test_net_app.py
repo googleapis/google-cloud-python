@@ -2040,6 +2040,12 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
             custom_performance_enabled=True,
             total_throughput_mibps=2391,
             total_iops=1086,
+            hot_tier_size_gib=1801,
+            enable_hot_tier_auto_resize=True,
+            qos_type=common.QosType.AUTO,
+            available_throughput_mibps=0.2772,
+            cold_tier_size_used_gib=2416,
+            hot_tier_size_used_gib=2329,
         )
         response = client.get_storage_pool(request)
 
@@ -2074,6 +2080,12 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
     assert response.custom_performance_enabled is True
     assert response.total_throughput_mibps == 2391
     assert response.total_iops == 1086
+    assert response.hot_tier_size_gib == 1801
+    assert response.enable_hot_tier_auto_resize is True
+    assert response.qos_type == common.QosType.AUTO
+    assert math.isclose(response.available_throughput_mibps, 0.2772, rel_tol=1e-6)
+    assert response.cold_tier_size_used_gib == 2416
+    assert response.hot_tier_size_used_gib == 2329
 
 
 def test_get_storage_pool_non_empty_request_with_auto_populated_field():
@@ -2224,6 +2236,12 @@ async def test_get_storage_pool_async(
                 custom_performance_enabled=True,
                 total_throughput_mibps=2391,
                 total_iops=1086,
+                hot_tier_size_gib=1801,
+                enable_hot_tier_auto_resize=True,
+                qos_type=common.QosType.AUTO,
+                available_throughput_mibps=0.2772,
+                cold_tier_size_used_gib=2416,
+                hot_tier_size_used_gib=2329,
             )
         )
         response = await client.get_storage_pool(request)
@@ -2259,6 +2277,12 @@ async def test_get_storage_pool_async(
     assert response.custom_performance_enabled is True
     assert response.total_throughput_mibps == 2391
     assert response.total_iops == 1086
+    assert response.hot_tier_size_gib == 1801
+    assert response.enable_hot_tier_auto_resize is True
+    assert response.qos_type == common.QosType.AUTO
+    assert math.isclose(response.available_throughput_mibps, 0.2772, rel_tol=1e-6)
+    assert response.cold_tier_size_used_gib == 2416
+    assert response.hot_tier_size_used_gib == 2329
 
 
 @pytest.mark.asyncio
@@ -4205,6 +4229,8 @@ def test_get_volume(request_type, transport: str = "grpc"):
             replica_zone="replica_zone_value",
             zone="zone_value",
             cold_tier_size_gib=1888,
+            throughput_mibps=0.1748,
+            hot_tier_size_used_gib=2329,
         )
         response = client.get_volume(request)
 
@@ -4245,6 +4271,8 @@ def test_get_volume(request_type, transport: str = "grpc"):
     assert response.replica_zone == "replica_zone_value"
     assert response.zone == "zone_value"
     assert response.cold_tier_size_gib == 1888
+    assert math.isclose(response.throughput_mibps, 0.1748, rel_tol=1e-6)
+    assert response.hot_tier_size_used_gib == 2329
 
 
 def test_get_volume_non_empty_request_with_auto_populated_field():
@@ -4397,6 +4425,8 @@ async def test_get_volume_async(
                 replica_zone="replica_zone_value",
                 zone="zone_value",
                 cold_tier_size_gib=1888,
+                throughput_mibps=0.1748,
+                hot_tier_size_used_gib=2329,
             )
         )
         response = await client.get_volume(request)
@@ -4438,6 +4468,8 @@ async def test_get_volume_async(
     assert response.replica_zone == "replica_zone_value"
     assert response.zone == "zone_value"
     assert response.cold_tier_size_gib == 1888
+    assert math.isclose(response.throughput_mibps, 0.1748, rel_tol=1e-6)
+    assert response.hot_tier_size_used_gib == 2329
 
 
 @pytest.mark.asyncio
@@ -36298,6 +36330,12 @@ async def test_get_storage_pool_empty_call_grpc_asyncio():
                 custom_performance_enabled=True,
                 total_throughput_mibps=2391,
                 total_iops=1086,
+                hot_tier_size_gib=1801,
+                enable_hot_tier_auto_resize=True,
+                qos_type=common.QosType.AUTO,
+                available_throughput_mibps=0.2772,
+                cold_tier_size_used_gib=2416,
+                hot_tier_size_used_gib=2329,
             )
         )
         await client.get_storage_pool(request=None)
@@ -36489,6 +36527,8 @@ async def test_get_volume_empty_call_grpc_asyncio():
                 replica_zone="replica_zone_value",
                 zone="zone_value",
                 cold_tier_size_gib=1888,
+                throughput_mibps=0.1748,
+                hot_tier_size_used_gib=2329,
             )
         )
         await client.get_volume(request=None)
@@ -38151,6 +38191,12 @@ def test_create_storage_pool_rest_call_success(request_type):
         "custom_performance_enabled": True,
         "total_throughput_mibps": 2391,
         "total_iops": 1086,
+        "hot_tier_size_gib": 1801,
+        "enable_hot_tier_auto_resize": True,
+        "qos_type": 1,
+        "available_throughput_mibps": 0.2772,
+        "cold_tier_size_used_gib": 2416,
+        "hot_tier_size_used_gib": 2329,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -38369,6 +38415,12 @@ def test_get_storage_pool_rest_call_success(request_type):
             custom_performance_enabled=True,
             total_throughput_mibps=2391,
             total_iops=1086,
+            hot_tier_size_gib=1801,
+            enable_hot_tier_auto_resize=True,
+            qos_type=common.QosType.AUTO,
+            available_throughput_mibps=0.2772,
+            cold_tier_size_used_gib=2416,
+            hot_tier_size_used_gib=2329,
         )
 
         # Wrap the value into a proper Response obj
@@ -38408,6 +38460,12 @@ def test_get_storage_pool_rest_call_success(request_type):
     assert response.custom_performance_enabled is True
     assert response.total_throughput_mibps == 2391
     assert response.total_iops == 1086
+    assert response.hot_tier_size_gib == 1801
+    assert response.enable_hot_tier_auto_resize is True
+    assert response.qos_type == common.QosType.AUTO
+    assert math.isclose(response.available_throughput_mibps, 0.2772, rel_tol=1e-6)
+    assert response.cold_tier_size_used_gib == 2416
+    assert response.hot_tier_size_used_gib == 2329
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -38543,6 +38601,12 @@ def test_update_storage_pool_rest_call_success(request_type):
         "custom_performance_enabled": True,
         "total_throughput_mibps": 2391,
         "total_iops": 1086,
+        "hot_tier_size_gib": 1801,
+        "enable_hot_tier_auto_resize": True,
+        "qos_type": 1,
+        "available_throughput_mibps": 0.2772,
+        "cold_tier_size_used_gib": 2416,
+        "hot_tier_size_used_gib": 2329,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -39253,6 +39317,8 @@ def test_get_volume_rest_call_success(request_type):
             replica_zone="replica_zone_value",
             zone="zone_value",
             cold_tier_size_gib=1888,
+            throughput_mibps=0.1748,
+            hot_tier_size_used_gib=2329,
         )
 
         # Wrap the value into a proper Response obj
@@ -39298,6 +39364,8 @@ def test_get_volume_rest_call_success(request_type):
     assert response.replica_zone == "replica_zone_value"
     assert response.zone == "zone_value"
     assert response.cold_tier_size_gib == 1888
+    assert math.isclose(response.throughput_mibps, 0.1748, rel_tol=1e-6)
+    assert response.hot_tier_size_used_gib == 2329
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -39484,7 +39552,11 @@ def test_create_volume_rest_call_success(request_type):
         "restricted_actions": [1],
         "large_capacity": True,
         "multiple_endpoints": True,
-        "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
+        "tiering_policy": {
+            "tier_action": 1,
+            "cooling_threshold_days": 2343,
+            "hot_tier_bypass_mode_enabled": True,
+        },
         "replica_zone": "replica_zone_value",
         "zone": "zone_value",
         "cold_tier_size_gib": 1888,
@@ -39500,7 +39572,12 @@ def test_create_volume_rest_call_success(request_type):
             "cluster_location": "cluster_location_value",
             "description": "description_value",
             "labels": {},
+            "replication_schedule": 1,
+            "hybrid_replication_type": 1,
+            "large_volume_constituent_count": 3241,
         },
+        "throughput_mibps": 0.1748,
+        "hot_tier_size_used_gib": 2329,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -39779,7 +39856,11 @@ def test_update_volume_rest_call_success(request_type):
         "restricted_actions": [1],
         "large_capacity": True,
         "multiple_endpoints": True,
-        "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
+        "tiering_policy": {
+            "tier_action": 1,
+            "cooling_threshold_days": 2343,
+            "hot_tier_bypass_mode_enabled": True,
+        },
         "replica_zone": "replica_zone_value",
         "zone": "zone_value",
         "cold_tier_size_gib": 1888,
@@ -39795,7 +39876,12 @@ def test_update_volume_rest_call_success(request_type):
             "cluster_location": "cluster_location_value",
             "description": "description_value",
             "labels": {},
+            "replication_schedule": 1,
+            "hybrid_replication_type": 1,
+            "large_volume_constituent_count": 3241,
         },
+        "throughput_mibps": 0.1748,
+        "hot_tier_size_used_gib": 2329,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -43193,7 +43279,11 @@ def test_create_replication_rest_call_success(request_type):
             "volume_id": "volume_id_value",
             "share_name": "share_name_value",
             "description": "description_value",
-            "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
+            "tiering_policy": {
+                "tier_action": 1,
+                "cooling_threshold_days": 2343,
+                "hot_tier_bypass_mode_enabled": True,
+            },
         },
         "source_volume": "source_volume_value",
         "hybrid_peering_details": {
@@ -43207,6 +43297,9 @@ def test_create_replication_rest_call_success(request_type):
         },
         "cluster_location": "cluster_location_value",
         "hybrid_replication_type": 1,
+        "hybrid_replication_user_commands": {
+            "commands": ["commands_value1", "commands_value2"]
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -43556,7 +43649,11 @@ def test_update_replication_rest_call_success(request_type):
             "volume_id": "volume_id_value",
             "share_name": "share_name_value",
             "description": "description_value",
-            "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
+            "tiering_policy": {
+                "tier_action": 1,
+                "cooling_threshold_days": 2343,
+                "hot_tier_bypass_mode_enabled": True,
+            },
         },
         "source_volume": "source_volume_value",
         "hybrid_peering_details": {
@@ -43570,6 +43667,9 @@ def test_update_replication_rest_call_success(request_type):
         },
         "cluster_location": "cluster_location_value",
         "hybrid_replication_type": 1,
+        "hybrid_replication_user_commands": {
+            "commands": ["commands_value1", "commands_value2"]
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

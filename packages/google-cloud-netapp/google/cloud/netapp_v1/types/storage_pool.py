@@ -292,11 +292,40 @@ class StoragePool(proto.Message):
             default set to false
         total_throughput_mibps (int):
             Optional. Custom Performance Total Throughput
-            of the pool (in MiB/s)
+            of the pool (in MiBps)
         total_iops (int):
-            Optional. Custom Performance Total IOPS of the pool If not
+            Optional. Custom Performance Total IOPS of the pool if not
             provided, it will be calculated based on the
             total_throughput_mibps
+        hot_tier_size_gib (int):
+            Optional. Total hot tier capacity for the
+            Storage Pool. It is applicable only to Flex
+            service level. It should be less than the
+            minimum storage pool size and cannot be more
+            than the current storage pool size. It cannot be
+            decreased once set.
+        enable_hot_tier_auto_resize (bool):
+            Optional. Flag indicating that the hot-tier
+            threshold will be auto-increased by 10% of the
+            hot-tier when it hits 100%. Default is true. The
+            increment will kick in only if the new size
+            after increment is still less than or equal to
+            storage pool size.
+
+            This field is a member of `oneof`_ ``_enable_hot_tier_auto_resize``.
+        qos_type (google.cloud.netapp_v1.types.QosType):
+            Optional. QoS (Quality of Service) Type of
+            the storage pool
+        available_throughput_mibps (float):
+            Output only. Available throughput of the
+            storage pool (in MiB/s).
+        cold_tier_size_used_gib (int):
+            Output only. Total cold tier data rounded
+            down to the nearest GiB used by the storage
+            pool.
+        hot_tier_size_used_gib (int):
+            Output only. Total hot tier data rounded down
+            to the nearest GiB used by the storage pool.
     """
 
     class State(proto.Enum):
@@ -434,6 +463,32 @@ class StoragePool(proto.Message):
     total_iops: int = proto.Field(
         proto.INT64,
         number=27,
+    )
+    hot_tier_size_gib: int = proto.Field(
+        proto.INT64,
+        number=28,
+    )
+    enable_hot_tier_auto_resize: bool = proto.Field(
+        proto.BOOL,
+        number=29,
+        optional=True,
+    )
+    qos_type: common.QosType = proto.Field(
+        proto.ENUM,
+        number=30,
+        enum=common.QosType,
+    )
+    available_throughput_mibps: float = proto.Field(
+        proto.DOUBLE,
+        number=31,
+    )
+    cold_tier_size_used_gib: int = proto.Field(
+        proto.INT64,
+        number=33,
+    )
+    hot_tier_size_used_gib: int = proto.Field(
+        proto.INT64,
+        number=34,
     )
 
 

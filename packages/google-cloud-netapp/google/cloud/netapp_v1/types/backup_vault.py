@@ -120,23 +120,23 @@ class BackupVault(proto.Message):
                 Required. Minimum retention duration in days
                 for backups in the backup vault.
             daily_backup_immutable (bool):
-                Optional. Indicates if the daily backups are immutable.
-                Atleast one of daily_backup_immutable,
+                Optional. Indicates if the daily backups are immutable. At
+                least one of daily_backup_immutable,
                 weekly_backup_immutable, monthly_backup_immutable and
                 manual_backup_immutable must be true.
             weekly_backup_immutable (bool):
-                Optional. Indicates if the weekly backups are immutable.
-                Atleast one of daily_backup_immutable,
+                Optional. Indicates if the weekly backups are immutable. At
+                least one of daily_backup_immutable,
                 weekly_backup_immutable, monthly_backup_immutable and
                 manual_backup_immutable must be true.
             monthly_backup_immutable (bool):
-                Optional. Indicates if the monthly backups are immutable.
-                Atleast one of daily_backup_immutable,
+                Optional. Indicates if the monthly backups are immutable. At
+                least one of daily_backup_immutable,
                 weekly_backup_immutable, monthly_backup_immutable and
                 manual_backup_immutable must be true.
             manual_backup_immutable (bool):
-                Optional. Indicates if the manual backups are immutable.
-                Atleast one of daily_backup_immutable,
+                Optional. Indicates if the manual backups are immutable. At
+                least one of daily_backup_immutable,
                 weekly_backup_immutable, monthly_backup_immutable and
                 manual_backup_immutable must be true.
         """
