@@ -540,7 +540,6 @@ def _update_version_for_library(
             new_content, num_replacements = re.subn(
                 pattern, replacement_string, content
             )
-            print(content)
             if num_replacements == 0:
                 raise ValueError(
                     f"Could not find version string in {version_file}. File was not modified."
