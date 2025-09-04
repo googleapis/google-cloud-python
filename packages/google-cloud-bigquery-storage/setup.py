@@ -55,7 +55,7 @@ extras = {
     "fastavro": ["fastavro>=0.21.2"],
     "pyarrow": ["pyarrow>=0.15.0"],
 }
-url = "https://github.com/googleapis/google-cloud-python"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-storage"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
