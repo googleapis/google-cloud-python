@@ -731,6 +731,22 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             resp = self._interceptor.post_chat(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_chat_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.geminidataanalytics_v1alpha.DataChatServiceClient.chat",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1alpha.DataChatService",
+                        "rpcName": "Chat",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateConversation(

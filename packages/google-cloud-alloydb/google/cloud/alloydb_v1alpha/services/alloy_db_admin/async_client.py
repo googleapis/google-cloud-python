@@ -372,7 +372,7 @@ class AlloyDBAdminAsyncClient:
                 operation by specifying a value with the following
                 format:
 
-                -  projects/{project}/locations/-
+                - projects/{project}/locations/-
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2069,8 +2069,8 @@ class AlloyDBAdminAsyncClient:
                 operation by specifying a value with one of the
                 following formats:
 
-                -  projects/{project}/locations/-/clusters/-
-                -  projects/{project}/locations/{region}/clusters/-
+                - projects/{project}/locations/-/clusters/-
+                - projects/{project}/locations/{region}/clusters/-
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4212,7 +4212,7 @@ class AlloyDBAdminAsyncClient:
                 Required. The name of the parent resource. The required
                 format is:
 
-                -  projects/{project}/locations/{location}
+                - projects/{project}/locations/{location}
 
                 Regardless of the parent specified here, as long it is
                 contains a valid project and location, the service will
@@ -4351,7 +4351,7 @@ class AlloyDBAdminAsyncClient:
                 Required. The name of the parent resource. The required
                 format is:
 
-                -  projects/{project}/locations/{location}/clusters/{cluster}
+                - projects/{project}/locations/{location}/clusters/{cluster}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

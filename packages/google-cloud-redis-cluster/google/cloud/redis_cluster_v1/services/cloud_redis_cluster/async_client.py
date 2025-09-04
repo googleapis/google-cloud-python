@@ -80,18 +80,18 @@ class CloudRedisClusterAsyncClient:
     Memorystore for Redis API and defines the following resource model
     for managing Redis clusters:
 
-    -  The service works with a collection of cloud projects, named:
-       ``/projects/*``
-    -  Each project has a collection of available locations, named:
-       ``/locations/*``
-    -  Each location has a collection of Redis clusters, named:
-       ``/clusters/*``
-    -  As such, Redis clusters are resources of the form:
-       ``/projects/{project_id}/locations/{location_id}/clusters/{instance_id}``
+    - The service works with a collection of cloud projects, named:
+      ``/projects/*``
+    - Each project has a collection of available locations, named:
+      ``/locations/*``
+    - Each location has a collection of Redis clusters, named:
+      ``/clusters/*``
+    - As such, Redis clusters are resources of the form:
+      ``/projects/{project_id}/locations/{location_id}/clusters/{instance_id}``
 
     Note that location_id must be a GCP ``region``; for example:
 
-    -  ``projects/redpepper-1290/locations/us-central1/clusters/my-redis``
+    - ``projects/redpepper-1290/locations/us-central1/clusters/my-redis``
     """
 
     _client: CloudRedisClusterClient
@@ -369,7 +369,7 @@ class CloudRedisClusterAsyncClient:
 
         The location should have the following format:
 
-        -  ``projects/{project_id}/locations/{location_id}``
+        - ``projects/{project_id}/locations/{location_id}``
 
         If ``location_id`` is specified as ``-`` (wildcard), then all
         regions available to the project are queried, and the results
@@ -665,8 +665,8 @@ class CloudRedisClusterAsyncClient:
                 repeated paths field may only include these fields from
                 [Cluster][google.cloud.redis.cluster.v1.Cluster]:
 
-                -  ``size_gb``
-                -  ``replica_count``
+                - ``size_gb``
+                - ``replica_count``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -963,12 +963,12 @@ class CloudRedisClusterAsyncClient:
                 Required. The logical name of the Redis cluster in the
                 customer project with the following restrictions:
 
-                -  Must contain only lowercase letters, numbers, and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-63 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the customer project / location
+                - Must contain only lowercase letters, numbers, and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-63 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the customer project / location
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -357,10 +357,10 @@ class SessionEntityTypesAsyncClient:
                 Required. The session to list all session entity types
                 from. Supported formats:
 
-                -  \`projects//agent/sessions/,
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                - \`projects//agent/sessions/,
+                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -498,10 +498,10 @@ class SessionEntityTypesAsyncClient:
                 Required. The name of the session entity type. Supported
                 formats:
 
-                -  ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                - ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -530,7 +530,7 @@ class SessionEntityTypesAsyncClient:
                    stored by Dialogflow for 20 minutes.
 
                    For more information, see the [session entity
-                   guide](\ https://cloud.google.com/dialogflow/docs/entities-session).
+                   guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -637,10 +637,10 @@ class SessionEntityTypesAsyncClient:
                 Required. The session to create a session entity type
                 for. Supported formats:
 
-                -  \`projects//agent/sessions/,
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                - \`projects//agent/sessions/,
+                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -676,7 +676,7 @@ class SessionEntityTypesAsyncClient:
                    stored by Dialogflow for 20 minutes.
 
                    For more information, see the [session entity
-                   guide](\ https://cloud.google.com/dialogflow/docs/entities-session).
+                   guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -812,7 +812,7 @@ class SessionEntityTypesAsyncClient:
                    stored by Dialogflow for 20 minutes.
 
                    For more information, see the [session entity
-                   guide](\ https://cloud.google.com/dialogflow/docs/entities-session).
+                   guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -918,10 +918,10 @@ class SessionEntityTypesAsyncClient:
                 Required. The name of the entity type to delete.
                 Supported formats:
 
-                -  ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                - ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,

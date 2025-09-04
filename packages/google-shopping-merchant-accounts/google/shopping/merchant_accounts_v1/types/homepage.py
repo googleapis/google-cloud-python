@@ -104,7 +104,7 @@ class UpdateHomepageRequest(proto.Message):
             The following fields are supported (in both ``snake_case``
             and ``lowerCamelCase``):
 
-            -  ``uri``
+            - ``uri``
     """
 
     homepage: "Homepage" = proto.Field(

@@ -77,18 +77,18 @@ class CloudMemcacheAsyncClient:
     model for managing Memorystore Memcached (also called Memcached
     below) instances:
 
-    -  The service works with a collection of cloud projects, named:
-       ``/projects/*``
-    -  Each project has a collection of available locations, named:
-       ``/locations/*``
-    -  Each location has a collection of Memcached instances, named:
-       ``/instances/*``
-    -  As such, Memcached instances are resources of the form:
-       ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+    - The service works with a collection of cloud projects, named:
+      ``/projects/*``
+    - Each project has a collection of available locations, named:
+      ``/locations/*``
+    - Each location has a collection of Memcached instances, named:
+      ``/instances/*``
+    - As such, Memcached instances are resources of the form:
+      ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
     Note that location_id must be a GCP ``region``; for example:
 
-    -  ``projects/my-memcached-project/locations/us-central1/instances/my-memcached``
+    - ``projects/my-memcached-project/locations/us-central1/instances/my-memcached``
     """
 
     _client: CloudMemcacheClient
@@ -621,12 +621,12 @@ class CloudMemcacheAsyncClient:
                 Required. The logical name of the Memcached instance in
                 the user project with the following restrictions:
 
-                -  Must contain only lowercase letters, numbers, and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-40 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the user project / location.
+                - Must contain only lowercase letters, numbers, and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-40 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the user project / location.
 
                 If any of the above are not met, the API raises an
                 invalid argument error.
@@ -773,7 +773,7 @@ class CloudMemcacheAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Mask of fields to update.
 
-                -  ``displayName``
+                - ``displayName``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

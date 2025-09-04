@@ -1084,18 +1084,18 @@ class CompensationInfo(proto.Message):
 
         Annualization: One compensation entry can be annualized if
 
-        -  it contains valid
-           [amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
-           or
-           [range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range].
-        -  and its
-           [expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year]
-           is set or can be derived. Its annualized range is determined as
-           ([amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
-           or
-           [range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range])
-           times
-           [expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year].
+        - it contains valid
+          [amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
+          or
+          [range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range].
+        - and its
+          [expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year]
+          is set or can be derived. Its annualized range is determined as
+          ([amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
+          or
+          [range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range])
+          times
+          [expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year].
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -1135,11 +1135,11 @@ class CompensationInfo(proto.Message):
                 [unit][google.cloud.talent.v4.CompensationInfo.CompensationEntry.unit].
                 Default values:
 
-                -  HOURLY: 2080
-                -  DAILY: 260
-                -  WEEKLY: 52
-                -  MONTHLY: 12
-                -  ANNUAL: 1
+                - HOURLY: 2080
+                - DAILY: 260
+                - WEEKLY: 52
+                - MONTHLY: 12
+                - ANNUAL: 1
         """
 
         type_: "CompensationInfo.CompensationType" = proto.Field(

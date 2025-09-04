@@ -259,8 +259,8 @@ class FieldConfig(proto.Message):
             starting from ``_root``, with a period ``.`` as the
             delimiter. Examples:
 
-            -  Publish date of the root: \_root.datePublished
-            -  Publish date of the reviews: \_root.review.datePublished
+            - Publish date of the root: \_root.datePublished
+            - Publish date of the reviews: \_root.review.datePublished
     """
 
     class FieldType(proto.Enum):
@@ -283,13 +283,13 @@ class FieldConfig(proto.Message):
                 Field value type is Geolocation. Geolocation is expressed as
                 an object with the following keys:
 
-                -  ``id``: a string representing the location id
-                -  ``longitude``: a number representing the longitude
-                   coordinate of the location
-                -  ``latitude``: a number repesenting the latitude
-                   coordinate of the location
-                -  ``address``: a string representing the full address of
-                   the location
+                - ``id``: a string representing the location id
+                - ``longitude``: a number representing the longitude
+                  coordinate of the location
+                - ``latitude``: a number repesenting the latitude coordinate
+                  of the location
+                - ``address``: a string representing the full address of the
+                  location
 
                 ``latitude`` and ``longitude`` must always be provided
                 together. At least one of a) ``address`` or b)
@@ -298,13 +298,13 @@ class FieldConfig(proto.Message):
                 Field value type is Datetime. Datetime can be expressed as
                 either:
 
-                -  a number representing milliseconds-since-the-epoch
-                -  a string representing milliseconds-since-the-epoch. e.g.
-                   ``"1420070400001"``
-                -  a string representing the `ISO
-                   8601 <https://en.wikipedia.org/wiki/ISO_8601>`__ date or
-                   date and time. e.g. ``"2015-01-01"`` or
-                   ``"2015-01-01T12:10:30Z"``
+                - a number representing milliseconds-since-the-epoch
+                - a string representing milliseconds-since-the-epoch. e.g.
+                  ``"1420070400001"``
+                - a string representing the `ISO
+                  8601 <https://en.wikipedia.org/wiki/ISO_8601>`__ date or
+                  date and time. e.g. ``"2015-01-01"`` or
+                  ``"2015-01-01T12:10:30Z"``
         """
         FIELD_TYPE_UNSPECIFIED = 0
         OBJECT = 1

@@ -113,12 +113,12 @@ class ListDatasetsRequest(proto.Message):
         filter (str):
             An expression for filtering the results of the request.
 
-            -  ``dataset_metadata`` - for existence of the case (e.g.
-               ``image_classification_dataset_metadata:*``). Some
-               examples of using the filter are:
+            - ``dataset_metadata`` - for existence of the case (e.g.
+              ``image_classification_dataset_metadata:*``). Some
+              examples of using the filter are:
 
-            -  ``translation_dataset_metadata:*`` --> The dataset has
-               ``translation_dataset_metadata``.
+            - ``translation_dataset_metadata:*`` --> The dataset has
+              ``translation_dataset_metadata``.
         page_size (int):
             Requested page size. Server may return fewer
             results than requested. If unspecified, server
@@ -576,17 +576,17 @@ class ListModelsRequest(proto.Message):
         filter (str):
             An expression for filtering the results of the request.
 
-            -  ``model_metadata`` - for existence of the case (e.g.
-               ``video_classification_model_metadata:*``).
+            - ``model_metadata`` - for existence of the case (e.g.
+              ``video_classification_model_metadata:*``).
 
-            -  ``dataset_id`` - for = or !=. Some examples of using the
-               filter are:
+            - ``dataset_id`` - for = or !=. Some examples of using the
+              filter are:
 
-            -  ``image_classification_model_metadata:*`` --> The model
-               has ``image_classification_model_metadata``.
+            - ``image_classification_model_metadata:*`` --> The model
+              has ``image_classification_model_metadata``.
 
-            -  ``dataset_id=5`` --> The model was created from a dataset
-               with ID 5.
+            - ``dataset_id=5`` --> The model was created from a dataset
+              with ID 5.
         page_size (int):
             Requested page size.
         page_token (str):
@@ -800,15 +800,15 @@ class ListModelEvaluationsRequest(proto.Message):
         filter (str):
             An expression for filtering the results of the request.
 
-            -  ``annotation_spec_id`` - for =, != or existence. See
-               example below for the last.
+            - ``annotation_spec_id`` - for =, != or existence. See
+              example below for the last.
 
             Some examples of using the filter are:
 
-            -  ``annotation_spec_id!=4`` --> The model evaluation was
-               done for annotation spec with ID different than 4.
-            -  ``NOT annotation_spec_id:*`` --> The model evaluation was
-               done for aggregate of all annotation specs.
+            - ``annotation_spec_id!=4`` --> The model evaluation was
+              done for annotation spec with ID different than 4.
+            - ``NOT annotation_spec_id:*`` --> The model evaluation was
+              done for aggregate of all annotation specs.
         page_size (int):
             Requested page size.
         page_token (str):

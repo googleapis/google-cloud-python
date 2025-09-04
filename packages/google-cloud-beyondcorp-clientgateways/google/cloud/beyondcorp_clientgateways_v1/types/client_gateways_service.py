@@ -215,10 +215,10 @@ class CreateClientGatewayRequest(proto.Message):
         client_gateway_id (str):
             Optional. User-settable client gateway resource ID.
 
-            -  Must start with a letter.
-            -  Must contain between 4-63 characters from
-               ``/[a-z][0-9]-/``.
-            -  Must end with a number or a letter.
+            - Must start with a letter.
+            - Must contain between 4-63 characters from
+              ``/[a-z][0-9]-/``.
+            - Must end with a number or a letter.
         client_gateway (google.cloud.beyondcorp_clientgateways_v1.types.ClientGateway):
             Required. The resource being created.
         request_id (str):

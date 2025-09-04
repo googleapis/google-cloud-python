@@ -120,9 +120,9 @@ class AddGranteesRequest(proto.Message):
             syntax <https://cloud.google.com/iam/docs/principal-identifiers#v2>`__.
             Supported principal types:
 
-            -  User
-            -  Group
-            -  Service account
+            - User
+            - Group
+            - Service account
     """
 
     data_policy: str = proto.Field(
@@ -153,9 +153,9 @@ class RemoveGranteesRequest(proto.Message):
             syntax <https://cloud.google.com/iam/docs/principal-identifiers#v2>`__.
             Supported principal types:
 
-            -  User
-            -  Group
-            -  Service account
+            - User
+            - Group
+            - Service account
     """
 
     data_policy: str = proto.Field(
@@ -417,21 +417,21 @@ class DataMaskingPolicy(proto.Message):
                 masking values. The default masking values for each type
                 listed as below:
 
-                -  STRING: ""
-                -  BYTES: b''
-                -  INTEGER: 0
-                -  FLOAT: 0.0
-                -  NUMERIC: 0
-                -  BOOLEAN: FALSE
-                -  TIMESTAMP: 1970-01-01 00:00:00 UTC
-                -  DATE: 1970-01-01
-                -  TIME: 00:00:00
-                -  DATETIME: 1970-01-01T00:00:00
-                -  GEOGRAPHY: POINT(0 0)
-                -  BIGNUMERIC: 0
-                -  ARRAY: []
-                -  STRUCT: NOT_APPLICABLE
-                -  JSON: NULL
+                - STRING: ""
+                - BYTES: b''
+                - INTEGER: 0
+                - FLOAT: 0.0
+                - NUMERIC: 0
+                - BOOLEAN: FALSE
+                - TIMESTAMP: 1970-01-01 00:00:00 UTC
+                - DATE: 1970-01-01
+                - TIME: 00:00:00
+                - DATETIME: 1970-01-01T00:00:00
+                - GEOGRAPHY: POINT(0 0)
+                - BIGNUMERIC: 0
+                - ARRAY: []
+                - STRUCT: NOT_APPLICABLE
+                - JSON: NULL
         """
         PREDEFINED_EXPRESSION_UNSPECIFIED = 0
         SHA256 = 1

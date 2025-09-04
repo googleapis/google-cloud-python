@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "AnalyticsHubServiceClient",
           "rpcs": {
+            "ApproveQueryTemplate": {
+              "methods": [
+                "approve_query_template"
+              ]
+            },
             "CreateDataExchange": {
               "methods": [
                 "create_data_exchange"
@@ -20,6 +25,11 @@
                 "create_listing"
               ]
             },
+            "CreateQueryTemplate": {
+              "methods": [
+                "create_query_template"
+              ]
+            },
             "DeleteDataExchange": {
               "methods": [
                 "delete_data_exchange"
@@ -28,6 +38,11 @@
             "DeleteListing": {
               "methods": [
                 "delete_listing"
+              ]
+            },
+            "DeleteQueryTemplate": {
+              "methods": [
+                "delete_query_template"
               ]
             },
             "DeleteSubscription": {
@@ -50,6 +65,11 @@
                 "get_listing"
               ]
             },
+            "GetQueryTemplate": {
+              "methods": [
+                "get_query_template"
+              ]
+            },
             "GetSubscription": {
               "methods": [
                 "get_subscription"
@@ -68,6 +88,11 @@
             "ListOrgDataExchanges": {
               "methods": [
                 "list_org_data_exchanges"
+              ]
+            },
+            "ListQueryTemplates": {
+              "methods": [
+                "list_query_templates"
               ]
             },
             "ListSharedResourceSubscriptions": {
@@ -95,6 +120,11 @@
                 "set_iam_policy"
               ]
             },
+            "SubmitQueryTemplate": {
+              "methods": [
+                "submit_query_template"
+              ]
+            },
             "SubscribeDataExchange": {
               "methods": [
                 "subscribe_data_exchange"
@@ -118,6 +148,11 @@
             "UpdateListing": {
               "methods": [
                 "update_listing"
+              ]
+            },
+            "UpdateQueryTemplate": {
+              "methods": [
+                "update_query_template"
               ]
             }
           }
@@ -125,6 +160,11 @@
         "grpc-async": {
           "libraryClient": "AnalyticsHubServiceAsyncClient",
           "rpcs": {
+            "ApproveQueryTemplate": {
+              "methods": [
+                "approve_query_template"
+              ]
+            },
             "CreateDataExchange": {
               "methods": [
                 "create_data_exchange"
@@ -135,6 +175,11 @@
                 "create_listing"
               ]
             },
+            "CreateQueryTemplate": {
+              "methods": [
+                "create_query_template"
+              ]
+            },
             "DeleteDataExchange": {
               "methods": [
                 "delete_data_exchange"
@@ -143,6 +188,11 @@
             "DeleteListing": {
               "methods": [
                 "delete_listing"
+              ]
+            },
+            "DeleteQueryTemplate": {
+              "methods": [
+                "delete_query_template"
               ]
             },
             "DeleteSubscription": {
@@ -165,6 +215,11 @@
                 "get_listing"
               ]
             },
+            "GetQueryTemplate": {
+              "methods": [
+                "get_query_template"
+              ]
+            },
             "GetSubscription": {
               "methods": [
                 "get_subscription"
@@ -183,6 +238,11 @@
             "ListOrgDataExchanges": {
               "methods": [
                 "list_org_data_exchanges"
+              ]
+            },
+            "ListQueryTemplates": {
+              "methods": [
+                "list_query_templates"
               ]
             },
             "ListSharedResourceSubscriptions": {
@@ -210,6 +270,11 @@
                 "set_iam_policy"
               ]
             },
+            "SubmitQueryTemplate": {
+              "methods": [
+                "submit_query_template"
+              ]
+            },
             "SubscribeDataExchange": {
               "methods": [
                 "subscribe_data_exchange"
@@ -233,6 +298,11 @@
             "UpdateListing": {
               "methods": [
                 "update_listing"
+              ]
+            },
+            "UpdateQueryTemplate": {
+              "methods": [
+                "update_query_template"
               ]
             }
           }

@@ -1279,13 +1279,13 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 candidate in ``finish_reason`` and in
                 ``safety_ratings``. The API:
 
-                -  Returns either all requested candidates or none of
-                   them
-                -  Returns no candidates at all only if there was
-                   something wrong with the prompt (check
-                   ``prompt_feedback``)
-                -  Reports feedback on each candidate in
-                   ``finish_reason`` and ``safety_ratings``.
+                - Returns either all requested candidates or none of
+                  them
+                - Returns no candidates at all only if there was
+                  something wrong with the prompt (check
+                  ``prompt_feedback``)
+                - Reports feedback on each candidate in
+                  ``finish_reason`` and ``safety_ratings``.
 
             """
 
@@ -1452,13 +1452,13 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 candidate in ``finish_reason`` and in
                 ``safety_ratings``. The API:
 
-                -  Returns either all requested candidates or none of
-                   them
-                -  Returns no candidates at all only if there was
-                   something wrong with the prompt (check
-                   ``prompt_feedback``)
-                -  Reports feedback on each candidate in
-                   ``finish_reason`` and ``safety_ratings``.
+                - Returns either all requested candidates or none of
+                  them
+                - Returns no candidates at all only if there was
+                  something wrong with the prompt (check
+                  ``prompt_feedback``)
+                - Reports feedback on each candidate in
+                  ``finish_reason`` and ``safety_ratings``.
 
             """
 
@@ -1537,6 +1537,22 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             resp, _ = self._interceptor.post_stream_generate_content_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1alpha.GenerativeServiceClient.stream_generate_content",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1alpha.GenerativeService",
+                        "rpcName": "StreamGenerateContent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

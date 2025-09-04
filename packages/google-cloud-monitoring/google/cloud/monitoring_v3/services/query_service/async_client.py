@@ -347,7 +347,7 @@ class QueryServiceAsyncClient:
                 The QueryTimeSeries response. For information about the status of
                    Monitoring Query Language (MQL), see the [MQL
                    deprecation
-                   notice](\ https://cloud.google.com/stackdriver/docs/deprecations/mql).
+                   notice](https://cloud.google.com/stackdriver/docs/deprecations/mql).
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

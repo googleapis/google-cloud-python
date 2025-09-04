@@ -61,8 +61,8 @@ class BackupPlan(proto.Message):
             Required. Immutable. The source cluster from which Backups
             will be created via this BackupPlan. Valid formats:
 
-            -  ``projects/*/locations/*/clusters/*``
-            -  ``projects/*/zones/*/clusters/*``
+            - ``projects/*/locations/*/clusters/*``
+            - ``projects/*/zones/*/clusters/*``
         retention_policy (google.cloud.gke_backup_v1.types.BackupPlan.RetentionPolicy):
             Optional. RetentionPolicy governs lifecycle
             of Backups created under this plan.
@@ -511,15 +511,15 @@ class ExclusionWindow(proto.Message):
             restrictions based on the recurrence type to allow some time
             for backup to happen:
 
-            -  single_occurrence_date: no restriction, but UI may warn
-               about this when duration >= target RPO
-            -  daily window: duration < 24 hours
-            -  weekly window:
+            - single_occurrence_date: no restriction, but UI may warn
+              about this when duration >= target RPO
+            - daily window: duration < 24 hours
+            - weekly window:
 
-               -  days of week includes all seven days of a week:
-                  duration < 24 hours
-               -  all other weekly window: duration < 168 hours (i.e.,
-                  24 \* 7 hours)
+              - days of week includes all seven days of a week: duration
+                < 24 hours
+              - all other weekly window: duration < 168 hours (i.e., 24
+                \* 7 hours)
         single_occurrence_date (google.type.date_pb2.Date):
             No recurrence. The exclusion window occurs
             only once and on this date in UTC.

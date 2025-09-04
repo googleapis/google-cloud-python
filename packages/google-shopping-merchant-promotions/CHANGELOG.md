@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-promotions-v0.1.9...google-shopping-merchant-promotions-v1.0.0) (2025-08-29)
+
+
+### Features
+
+* set `google.shopping.merchant_promotions_v1` as the default import for `google.shopping.merchant_promotions` ([584e64e](https://github.com/googleapis/google-cloud-python/commit/584e64e2016a5237b02e83d23746bfc54f4e31ec))
+* update release level to stable ([584e64e](https://github.com/googleapis/google-cloud-python/commit/584e64e2016a5237b02e83d23746bfc54f4e31ec))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-promotions-v0.1.8...google-shopping-merchant-promotions-v0.1.9) (2025-08-06)
 
 

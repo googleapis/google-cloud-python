@@ -149,10 +149,10 @@ class CreateAppConnectionRequest(proto.Message):
         app_connection_id (str):
             Optional. User-settable AppConnection resource ID.
 
-            -  Must start with a letter.
-            -  Must contain between 4-63 characters from
-               ``/[a-z][0-9]-/``.
-            -  Must end with a number or a letter.
+            - Must start with a letter.
+            - Must contain between 4-63 characters from
+              ``/[a-z][0-9]-/``.
+            - Must end with a number or a letter.
         app_connection (google.cloud.beyondcorp_appconnections_v1.types.AppConnection):
             Required. A BeyondCorp AppConnection
             resource.
@@ -215,10 +215,10 @@ class UpdateAppConnectionRequest(proto.Message):
             paths field may only include these fields from
             [BeyondCorp.AppConnection]:
 
-            -  ``labels``
-            -  ``display_name``
-            -  ``application_endpoint``
-            -  ``connectors``
+            - ``labels``
+            - ``display_name``
+            - ``application_endpoint``
+            - ``connectors``
         app_connection (google.cloud.beyondcorp_appconnections_v1.types.AppConnection):
             Required. AppConnection message with updated fields. Only
             supported fields specified in update_mask are updated.

@@ -690,12 +690,12 @@ class CheckCompatibilityRequest(proto.Message):
             Required. The name of the resource to check compatibility
             for. The format is either of following:
 
-            -  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions`:
-               Check compatibility with one or more versions of the
-               specified subject.
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/{subject}/versions/{version}:
-               Check compatibility with a specific version of the
-               subject.
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/\*/versions:
+              Check compatibility with one or more versions of the
+              specified subject.
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/{subject}/versions/{version}:
+              Check compatibility with a specific version of the
+              subject.
         schema_type (google.cloud.managedkafka_schemaregistry_v1.types.Schema.SchemaType):
             Optional. The schema type of the schema.
 
@@ -772,10 +772,10 @@ class GetSchemaConfigRequest(proto.Message):
             Required. The resource name to get the config for. It can be
             either of following:
 
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config:
-               Get config at global level.
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}:
-               Get config for a specific subject.
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config:
+              Get config at global level.
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}:
+              Get config for a specific subject.
         default_to_global (bool):
             Optional. If true, the config will fall back
             to the config at the global level if no subject
@@ -808,10 +808,10 @@ class UpdateSchemaConfigRequest(proto.Message):
             Required. The resource name to update the config for. It can
             be either of following:
 
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config:
-               Update config at global level.
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}:
-               Update config for a specific subject.
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config:
+              Update config at global level.
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}:
+              Update config for a specific subject.
         compatibility (google.cloud.managedkafka_schemaregistry_v1.types.SchemaConfig.CompatibilityType):
             Required. The compatibility type of the
             schemas. Cannot be unset for a
@@ -858,7 +858,7 @@ class DeleteSchemaConfigRequest(proto.Message):
             Required. The resource name of subject to delete the config
             for. The format is
 
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/config/{subject}
     """
 
     name: str = proto.Field(
@@ -874,10 +874,10 @@ class GetSchemaModeRequest(proto.Message):
         name (str):
             Required. The resource name of the mode. The format is
 
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}:
-               mode for a schema registry, or
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}:
-               mode for a specific subject in a specific context
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}:
+              mode for a schema registry, or
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}:
+              mode for a specific subject in a specific context
     """
 
     name: str = proto.Field(
@@ -893,10 +893,10 @@ class UpdateSchemaModeRequest(proto.Message):
         name (str):
             Required. The resource name of the mode. The format is
 
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}:
-               mode for a schema registry, or
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}:
-               mode for a specific subject in a specific context
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}:
+              mode for a schema registry, or
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}:
+              mode for a specific subject in a specific context
         mode (google.cloud.managedkafka_schemaregistry_v1.types.SchemaMode.ModeType):
             Required. The mode type.
     """
@@ -920,8 +920,8 @@ class DeleteSchemaModeRequest(proto.Message):
             Required. The resource name of subject to delete the mode
             for. The format is
 
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}
-            -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/mode/{subject}
+            - projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/mode/{subject}
     """
 
     name: str = proto.Field(

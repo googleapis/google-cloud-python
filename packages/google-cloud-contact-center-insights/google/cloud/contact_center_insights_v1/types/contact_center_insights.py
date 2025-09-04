@@ -160,8 +160,8 @@ class ConversationView(proto.Enum):
         CONVERSATION_VIEW_UNSPECIFIED (0):
             The conversation view is not specified.
 
-            -  Defaults to ``FULL`` in ``GetConversationRequest``.
-            -  Defaults to ``BASIC`` in ``ListConversationsRequest``.
+            - Defaults to ``FULL`` in ``GetConversationRequest``.
+            - Defaults to ``BASIC`` in ``ListConversationsRequest``.
         FULL (2):
             Populates all fields in the conversation.
         BASIC (1):
@@ -525,12 +525,12 @@ class ListConversationsRequest(proto.Message):
             descending creation time. Supported values are one of the
             following:
 
-            -  create_time
-            -  customer_satisfaction_rating
-            -  duration
-            -  latest_analysis
-            -  start_time
-            -  turn_count
+            - create_time
+            - customer_satisfaction_rating
+            - duration
+            - latest_analysis
+            - start_time
+            - turn_count
 
             The default sort order is ascending. To specify order,
             append ``asc`` or ``desc`` (``create_time desc``). For more
@@ -631,16 +631,16 @@ class UpdateConversationRequest(proto.Message):
             updated by passing ``*``, or a subset of the following
             updateable fields can be provided:
 
-            -  ``agent_id``
-            -  ``language_code``
-            -  ``labels``
-            -  ``metadata``
-            -  ``quality_metadata``
-            -  ``call_metadata``
-            -  ``start_time``
-            -  ``expire_time`` or ``ttl``
-            -  ``data_source.gcs_source.audio_uri`` or
-               ``data_source.dialogflow_source.audio_uri``
+            - ``agent_id``
+            - ``language_code``
+            - ``labels``
+            - ``metadata``
+            - ``quality_metadata``
+            - ``call_metadata``
+            - ``start_time``
+            - ``expire_time`` or ``ttl``
+            - ``data_source.gcs_source.audio_uri`` or
+              ``data_source.dialogflow_source.audio_uri``
     """
 
     conversation: resources.Conversation = proto.Field(
@@ -2862,8 +2862,8 @@ class QueryMetricsResponse(proto.Message):
         it has a cardinality of 2 (i.e. the data used to compute the metrics
         has 2 issues in total), the response will have 2 slices:
 
-        -  Slice 1 -> dimensions=[Issue 1]
-        -  Slice 2 -> dimensions=[Issue 2]
+        - Slice 1 -> dimensions=[Issue 1]
+        - Slice 2 -> dimensions=[Issue 2]
 
         Attributes:
             dimensions (MutableSequence[google.cloud.contact_center_insights_v1.types.Dimension]):
@@ -2893,11 +2893,10 @@ class QueryMetricsResponse(proto.Message):
                 interval (google.type.interval_pb2.Interval):
                     The interval that this data point represents.
 
-                    -  If this is the total data point, the interval is
-                       [starting create time, ending create time) from the
-                       request.
-                    -  If this a data point from the time series, the interval
-                       is [time, time + time granularity from the request).
+                    - If this is the total data point, the interval is [starting
+                      create time, ending create time) from the request.
+                    - If this a data point from the time series, the interval is
+                      [time, time + time granularity from the request).
             """
 
             class ConversationMeasure(proto.Message):
@@ -3214,12 +3213,12 @@ class UpdateQaQuestionRequest(proto.Message):
             fields can be updated by passing ``*``, or a subset of the
             following updateable fields can be provided:
 
-            -  ``abbreviation``
-            -  ``answer_choices``
-            -  ``answer_instructions``
-            -  ``order``
-            -  ``question_body``
-            -  ``tags``
+            - ``abbreviation``
+            - ``answer_choices``
+            - ``answer_instructions``
+            - ``order``
+            - ``question_body``
+            - ``tags``
     """
 
     qa_question: resources.QaQuestion = proto.Field(
@@ -3310,8 +3309,8 @@ class UpdateQaScorecardRequest(proto.Message):
             fields can be updated by passing ``*``, or a subset of the
             following updateable fields can be provided:
 
-            -  ``description``
-            -  ``display_name``
+            - ``description``
+            - ``display_name``
     """
 
     qa_scorecard: resources.QaScorecard = proto.Field(
@@ -3805,14 +3804,14 @@ class ListFeedbackLabelsRequest(proto.Message):
 
             Supported fields:
 
-            -  ``issue_model_id``
-            -  ``qa_question_id``
-            -  ``qa_scorecard_id``
-            -  ``min_create_time``
-            -  ``max_create_time``
-            -  ``min_update_time``
-            -  ``max_update_time``
-            -  ``feedback_label_type``: QUALITY_AI, TOPIC_MODELING
+            - ``issue_model_id``
+            - ``qa_question_id``
+            - ``qa_scorecard_id``
+            - ``min_create_time``
+            - ``max_create_time``
+            - ``min_update_time``
+            - ``max_update_time``
+            - ``feedback_label_type``: QUALITY_AI, TOPIC_MODELING
         page_size (int):
             Optional. The maximum number of feedback
             labels to return in the response. A valid page
@@ -3952,13 +3951,13 @@ class ListAllFeedbackLabelsRequest(proto.Message):
 
             Supported fields:
 
-            -  ``issue_model_id``
-            -  ``qa_question_id``
-            -  ``min_create_time``
-            -  ``max_create_time``
-            -  ``min_update_time``
-            -  ``max_update_time``
-            -  ``feedback_label_type``: QUALITY_AI, TOPIC_MODELING
+            - ``issue_model_id``
+            - ``qa_question_id``
+            - ``min_create_time``
+            - ``max_create_time``
+            - ``min_update_time``
+            - ``max_update_time``
+            - ``feedback_label_type``: QUALITY_AI, TOPIC_MODELING
     """
 
     parent: str = proto.Field(
@@ -4178,14 +4177,14 @@ class BulkDownloadFeedbackLabelsRequest(proto.Message):
 
             Supported fields:
 
-            -  ``issue_model_id``
-            -  ``qa_question_id``
-            -  ``qa_scorecard_id``
-            -  ``min_create_time``
-            -  ``max_create_time``
-            -  ``min_update_time``
-            -  ``max_update_time``
-            -  ``feedback_label_type``: QUALITY_AI, TOPIC_MODELING
+            - ``issue_model_id``
+            - ``qa_question_id``
+            - ``qa_scorecard_id``
+            - ``min_create_time``
+            - ``max_create_time``
+            - ``min_update_time``
+            - ``max_update_time``
+            - ``feedback_label_type``: QUALITY_AI, TOPIC_MODELING
         max_download_count (int):
             Optional. Limits the maximum number of feedback labels that
             will be downloaded. The first ``N`` feedback labels will be

@@ -192,12 +192,12 @@ class UpdateBusinessIdentityRequest(proto.Message):
             The following fields are supported (in both ``snake_case``
             and ``lowerCamelCase``):
 
-            -  ``black_owned``
-            -  ``latino_owned``
-            -  ``promotions_consent``
-            -  ``small_business``
-            -  ``veteran_owned``
-            -  ``women_owned``
+            - ``black_owned``
+            - ``latino_owned``
+            - ``promotions_consent``
+            - ``small_business``
+            - ``veteran_owned``
+            - ``women_owned``
     """
 
     business_identity: "BusinessIdentity" = proto.Field(

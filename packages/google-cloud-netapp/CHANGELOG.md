@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.3.24](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.23...google-cloud-netapp-v0.3.24) (2025-09-04)
+
+
+### Features
+
+* add fields for hybrid replication ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* add fields for manual qos ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+
+
+### Documentation
+
+* A comment for field `cold_tier_size_gib` in message `.google.cloud.netapp.v1.Volume` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `command_expiry_time` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `command` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `daily_backup_immutable` in message `.google.cloud.netapp.v1.BackupVault` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `manual_backup_immutable` in message `.google.cloud.netapp.v1.BackupVault` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `monthly_backup_immutable` in message `.google.cloud.netapp.v1.BackupVault` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `passphrase` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `peer_cluster_name` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `peer_svm_name` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `peer_volume_name` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `subnet_ip` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `total_iops` in message `.google.cloud.netapp.v1.StoragePool` is added ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `total_throughput_mibps` in message `.google.cloud.netapp.v1.StoragePool` is added ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+* field `weekly_backup_immutable` in message `.google.cloud.netapp.v1.BackupVault` is changed ([0370ed1](https://github.com/googleapis/google-cloud-python/commit/0370ed16110cf59a12945bd7168e518ad4641744))
+
 ## [0.3.23](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.22...google-cloud-netapp-v0.3.23) (2025-05-20)
 
 

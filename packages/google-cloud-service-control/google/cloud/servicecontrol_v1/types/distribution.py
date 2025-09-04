@@ -33,11 +33,10 @@ class Distribution(proto.Message):
     sample points. It contains the size of the population of sample
     points plus additional optional information:
 
-    -  the arithmetic mean of the samples
-    -  the minimum and maximum of the samples
-    -  the sum-squared-deviation of the samples, used to compute
-       variance
-    -  a histogram of the values of the sample points
+    - the arithmetic mean of the samples
+    - the minimum and maximum of the samples
+    - the sum-squared-deviation of the samples, used to compute variance
+    - a histogram of the values of the sample points
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.

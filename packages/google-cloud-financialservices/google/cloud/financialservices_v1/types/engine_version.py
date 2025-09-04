@@ -132,7 +132,7 @@ class ListEngineVersionsRequest(proto.Message):
         filter (str):
             Optional. Specify a filter to narrow search results. If
             empty or unset will default to "state!=DEPRECATED", to view
-            deprecated versions use `state:*` or any other filter.
+            deprecated versions use "state:\*" or any other filter.
         order_by (str):
             Optional. Specify a field to use for
             ordering.

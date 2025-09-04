@@ -414,10 +414,10 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``:
-           [Environment][google.cloud.dialogflow.cx.v3.Environment]
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``:
+          [Environment][google.cloud.dialogflow.cx.v3.Environment]
 
         Returns:
             Callable[[~.CreateEnvironmentRequest],
@@ -453,10 +453,10 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``:
-           [Environment][google.cloud.dialogflow.cx.v3.Environment]
+        - ``metadata``: An empty `Struct
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        - ``response``:
+          [Environment][google.cloud.dialogflow.cx.v3.Environment]
 
         Returns:
             Callable[[~.UpdateEnvironmentRequest],
@@ -549,10 +549,10 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [RunContinuousTestMetadata][google.cloud.dialogflow.cx.v3.RunContinuousTestMetadata]
-        -  ``response``:
-           [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3.RunContinuousTestResponse]
+        - ``metadata``:
+          [RunContinuousTestMetadata][google.cloud.dialogflow.cx.v3.RunContinuousTestMetadata]
+        - ``response``:
+          [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3.RunContinuousTestResponse]
 
         Returns:
             Callable[[~.RunContinuousTestRequest],
@@ -618,10 +618,10 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [DeployFlowMetadata][google.cloud.dialogflow.cx.v3.DeployFlowMetadata]
-        -  ``response``:
-           [DeployFlowResponse][google.cloud.dialogflow.cx.v3.DeployFlowResponse]
+        - ``metadata``:
+          [DeployFlowMetadata][google.cloud.dialogflow.cx.v3.DeployFlowMetadata]
+        - ``response``:
+          [DeployFlowResponse][google.cloud.dialogflow.cx.v3.DeployFlowResponse]
 
         Returns:
             Callable[[~.DeployFlowRequest],

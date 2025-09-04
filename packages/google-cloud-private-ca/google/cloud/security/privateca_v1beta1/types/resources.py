@@ -475,7 +475,7 @@ class CertificateAuthority(proto.Message):
                 allowed_uris (MutableSequence[str]):
                     Optional. Contains valid RFC 3986 URIs. Glob patterns are
                     also supported. To match across path seperators (i.e. '/')
-                    use the double star glob pattern (i.e. '**').
+                    use the double star glob pattern (i.e. '\*\*').
                 allowed_email_addresses (MutableSequence[str]):
                     Optional. Contains valid RFC 2822 E-mail
                     addresses. Glob patterns are also supported.

@@ -263,7 +263,7 @@ class Kubernetes(proto.Message):
 
         Attributes:
             group (str):
-                The API group of the resource. "*" means all.
+                The API group of the resource. "\*" means all.
             ns (str):
                 Namespace of the action being requested.
                 Currently, there is no distinction between no
@@ -273,14 +273,14 @@ class Kubernetes(proto.Message):
                 The name of the resource being requested.
                 Empty means all.
             resource (str):
-                The optional resource type requested. "*" means all.
+                The optional resource type requested. "\*" means all.
             subresource (str):
                 The optional subresource type.
             verb (str):
                 A Kubernetes resource API verb, like get, list, watch,
-                create, update, delete, proxy. "*" means all.
+                create, update, delete, proxy. "\*" means all.
             version (str):
-                The API version of the resource. "*" means all.
+                The API version of the resource. "\*" means all.
         """
 
         group: str = proto.Field(

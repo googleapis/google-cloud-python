@@ -299,10 +299,10 @@ class PrefixList(proto.Message):
         included_object_prefixes (MutableSequence[str]):
             Optional. Include prefixes of the objects to be transformed.
 
-            -  Supports full object name
-            -  Supports prefix of the object name
-            -  Wildcards are not supported
-            -  Supports empty string for all objects in a bucket.
+            - Supports full object name
+            - Supports prefix of the object name
+            - Wildcards are not supported
+            - Supports empty string for all objects in a bucket.
     """
 
     included_object_prefixes: MutableSequence[str] = proto.RepeatedField(

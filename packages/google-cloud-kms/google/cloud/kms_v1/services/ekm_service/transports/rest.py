@@ -641,7 +641,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
     Manages external cryptographic keys and operations using those keys.
     Implements a REST model with the following objects:
 
-    -  [EkmConnection][google.cloud.kms.v1.EkmConnection]
+    - [EkmConnection][google.cloud.kms.v1.EkmConnection]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

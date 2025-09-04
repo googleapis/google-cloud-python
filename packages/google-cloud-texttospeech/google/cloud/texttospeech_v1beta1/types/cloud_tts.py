@@ -468,6 +468,15 @@ class SynthesisInput(proto.Message):
             Only applicable for multi-speaker synthesis.
 
             This field is a member of `oneof`_ ``input_source``.
+        prompt (str):
+            This system instruction is supported only for
+            controllable/promptable voice models. If this
+            system instruction is used, we pass the unedited
+            text to Gemini-TTS. Otherwise, a default system
+            instruction is used. AI Studio calls this system
+            instruction, Style Instructions.
+
+            This field is a member of `oneof`_ ``_prompt``.
         custom_pronunciations (google.cloud.texttospeech_v1beta1.types.CustomPronunciations):
             Optional. The pronunciation customizations
             are applied to the input. If this is set, the
@@ -504,6 +513,11 @@ class SynthesisInput(proto.Message):
         number=4,
         oneof="input_source",
         message="MultiSpeakerMarkup",
+    )
+    prompt: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
     )
     custom_pronunciations: "CustomPronunciations" = proto.Field(
         proto.MESSAGE,

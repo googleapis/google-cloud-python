@@ -397,11 +397,11 @@ class CreateDataTaxonomyRequest(proto.Message):
         data_taxonomy_id (str):
             Required. DataTaxonomy identifier.
 
-            -  Must contain only lowercase letters, numbers and hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-63 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the Project.
+            - Must contain only lowercase letters, numbers and hyphens.
+            - Must start with a letter.
+            - Must be between 1-63 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the Project.
         data_taxonomy (google.cloud.dataplex_v1.types.DataTaxonomy):
             Required. DataTaxonomy resource.
         validate_only (bool):
@@ -588,11 +588,11 @@ class CreateDataAttributeRequest(proto.Message):
         data_attribute_id (str):
             Required. DataAttribute identifier.
 
-            -  Must contain only lowercase letters, numbers and hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-63 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the DataTaxonomy.
+            - Must contain only lowercase letters, numbers and hyphens.
+            - Must start with a letter.
+            - Must be between 1-63 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the DataTaxonomy.
         data_attribute (google.cloud.dataplex_v1.types.DataAttribute):
             Required. DataAttribute resource.
         validate_only (bool):
@@ -779,11 +779,11 @@ class CreateDataAttributeBindingRequest(proto.Message):
         data_attribute_binding_id (str):
             Required. DataAttributeBinding identifier.
 
-            -  Must contain only lowercase letters, numbers and hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-63 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the Location.
+            - Must contain only lowercase letters, numbers and hyphens.
+            - Must start with a letter.
+            - Must be between 1-63 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the Location.
         data_attribute_binding (google.cloud.dataplex_v1.types.DataAttributeBinding):
             Required. DataAttributeBinding resource.
         validate_only (bool):

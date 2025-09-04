@@ -613,12 +613,12 @@ class CatalogServiceAsyncClient:
 
         More specifically:
 
-        -  PredictionService will only return product IDs from branch
-           {newBranch}.
-        -  SearchService will only return product IDs from branch
-           {newBranch} (if branch is not explicitly set).
-        -  UserEventService will only join events with products from
-           branch {newBranch}.
+        - PredictionService will only return product IDs from branch
+          {newBranch}.
+        - SearchService will only return product IDs from branch
+          {newBranch} (if branch is not explicitly set).
+        - UserEventService will only join events with products from
+          branch {newBranch}.
 
         .. code-block:: python
 
@@ -1005,10 +1005,10 @@ class CatalogServiceAsyncClient:
                 [CompletionConfig][google.cloud.retail.v2beta.CompletionConfig]
                 to update. The following are the only supported fields:
 
-                -  [CompletionConfig.matching_order][google.cloud.retail.v2beta.CompletionConfig.matching_order]
-                -  [CompletionConfig.max_suggestions][google.cloud.retail.v2beta.CompletionConfig.max_suggestions]
-                -  [CompletionConfig.min_prefix_length][google.cloud.retail.v2beta.CompletionConfig.min_prefix_length]
-                -  [CompletionConfig.auto_learning][google.cloud.retail.v2beta.CompletionConfig.auto_learning]
+                - [CompletionConfig.matching_order][google.cloud.retail.v2beta.CompletionConfig.matching_order]
+                - [CompletionConfig.max_suggestions][google.cloud.retail.v2beta.CompletionConfig.max_suggestions]
+                - [CompletionConfig.min_prefix_length][google.cloud.retail.v2beta.CompletionConfig.min_prefix_length]
+                - [CompletionConfig.auto_learning][google.cloud.retail.v2beta.CompletionConfig.auto_learning]
 
                 If not set, all supported fields are updated.
 
@@ -1267,7 +1267,7 @@ class CatalogServiceAsyncClient:
                 [AttributesConfig][google.cloud.retail.v2beta.AttributesConfig]
                 to update. The following is the only supported field:
 
-                -  [AttributesConfig.catalog_attributes][google.cloud.retail.v2beta.AttributesConfig.catalog_attributes]
+                - [AttributesConfig.catalog_attributes][google.cloud.retail.v2beta.AttributesConfig.catalog_attributes]
 
                 If not set, all supported fields are updated.
 

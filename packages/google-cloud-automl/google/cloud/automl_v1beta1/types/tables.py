@@ -47,9 +47,9 @@ class TablesDatasetMetadata(proto.Message):
             be non-nullable and have one of following data types
             (otherwise model creation will error):
 
-            -  CATEGORY
+            - CATEGORY
 
-            -  FLOAT64
+            - FLOAT64
 
             If the type is CATEGORY , only up to 100 unique values may
             exist in that column across all rows.
@@ -183,14 +183,14 @@ class TablesModelMetadata(proto.Message):
 
             Only 3 fields are used:
 
-            -  name - May be set on CreateModel, if set only the columns
-               specified are used, otherwise all primary table's columns
-               (except the ones listed above) are used for the training
-               and prediction input.
+            - name - May be set on CreateModel, if set only the columns
+              specified are used, otherwise all primary table's columns
+              (except the ones listed above) are used for the training
+              and prediction input.
 
-            -  display_name - Output only.
+            - display_name - Output only.
 
-            -  data_type - Output only.
+            - data_type - Output only.
         optimization_objective (str):
             Objective function the model is optimizing towards. The
             training process creates a model that maximizes/minimizes
@@ -323,11 +323,11 @@ class TablesAnnotation(proto.Message):
             [target_column][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec].
             The value depends on the column's DataType:
 
-            -  CATEGORY - the predicted (with the above confidence
-               ``score``) CATEGORY value.
+            - CATEGORY - the predicted (with the above confidence
+              ``score``) CATEGORY value.
 
-            -  FLOAT64 - the predicted (with above
-               ``prediction_interval``) FLOAT64 value.
+            - FLOAT64 - the predicted (with above
+              ``prediction_interval``) FLOAT64 value.
         tables_model_column_info (MutableSequence[google.cloud.automl_v1beta1.types.TablesModelColumnInfo]):
             Output only. Auxiliary information for each of the model's
 

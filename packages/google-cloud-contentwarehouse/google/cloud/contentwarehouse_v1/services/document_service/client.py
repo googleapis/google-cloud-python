@@ -1648,7 +1648,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 ``>``, and ``>=`` where the left of the operator is
                 ``DocumentSchemaId`` or property name and the right of
                 the operator is a number or a quoted string. You must
-                escape backslash (\) and quote (") characters.
+                escape backslash (\\) and quote (") characters.
 
                 Boolean expressions (AND/OR) are supported up to 3
                 levels of nesting (for example, "((A AND B AND C) OR D)

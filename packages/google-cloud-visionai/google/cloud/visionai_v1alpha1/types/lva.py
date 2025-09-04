@@ -91,7 +91,7 @@ class AnalyzerDefinition(proto.Message):
         analyzer (str):
             The name of this analyzer.
 
-            Tentatively [a-z][a-z0-9]*(_[a-z0-9]+)*.
+            Tentatively [a-z][a-z0-9]\ *(\_[a-z0-9]+)*.
         operator (str):
             The name of the operator that this analyzer
             runs.

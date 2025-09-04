@@ -921,7 +921,7 @@ class LocalInventoryServiceClient(metaclass=LocalInventoryServiceClientMeta):
                    [storeCode][google.shopping.merchant.inventories.v1beta.LocalInventory.store_code].
                    For a list of all accepted attribute values, see the
                    [local product inventory data
-                   specification](\ https://support.google.com/merchants/answer/3061342).
+                   specification](https://support.google.com/merchants/answer/3061342).
 
         """
         # Create or coerce a protobuf request object.

@@ -568,7 +568,7 @@ class UpdateAccountRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (for example, "field_to_update"). Omitted
             fields will not be updated. To replace the entire entity,
-            use one path with the string "*" to match all fields.
+            use one path with the string "\*" to match all fields.
     """
 
     account: resources.Account = proto.Field(
@@ -734,7 +734,7 @@ class UpdatePropertyRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     property: resources.Property = proto.Field(
@@ -936,7 +936,7 @@ class UpdateGoogleAdsLinkRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     google_ads_link: resources.GoogleAdsLink = proto.Field(
@@ -1596,7 +1596,7 @@ class UpdateGoogleSignalsSettingsRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     google_signals_settings: resources.GoogleSignalsSettings = proto.Field(
@@ -1645,7 +1645,7 @@ class UpdateConversionEventRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     conversion_event: resources.ConversionEvent = proto.Field(
@@ -1789,7 +1789,7 @@ class UpdateKeyEventRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     key_event: resources.KeyEvent = proto.Field(
@@ -2028,7 +2028,7 @@ class UpdateDisplayVideo360AdvertiserLinkRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = (
@@ -2352,7 +2352,7 @@ class UpdateSearchAds360LinkRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     search_ads_360_link: resources.SearchAds360Link = proto.Field(
@@ -2397,7 +2397,7 @@ class UpdateCustomDimensionRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     custom_dimension: resources.CustomDimension = proto.Field(
@@ -2536,7 +2536,7 @@ class UpdateCustomMetricRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     custom_metric: resources.CustomMetric = proto.Field(
@@ -2657,7 +2657,7 @@ class CreateCalculatedMetricRequest(proto.Message):
             resource name.
 
             This value should be 1-80 characters and valid characters
-            are `[a-zA-Z0-9_]`, no spaces allowed. calculated_metric_id
+            are /[a-zA-Z0-9\_]/, no spaces allowed. calculated_metric_id
             must be unique between all calculated metrics under a
             property. The calculated_metric_id is used when referencing
             this calculated metric from external APIs, for example,
@@ -2690,7 +2690,7 @@ class UpdateCalculatedMetricRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     calculated_metric: resources.CalculatedMetric = proto.Field(
@@ -2831,7 +2831,7 @@ class UpdateDataRetentionSettingsRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     data_retention_settings: resources.DataRetentionSettings = proto.Field(
@@ -2892,7 +2892,7 @@ class UpdateDataStreamRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     data_stream: resources.DataStream = proto.Field(
@@ -3091,7 +3091,7 @@ class UpdateAudienceRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     audience: gaa_audience.Audience = proto.Field(
@@ -3148,7 +3148,7 @@ class UpdateAttributionSettingsRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     attribution_settings: resources.AttributionSettings = proto.Field(
@@ -3506,7 +3506,7 @@ class UpdateExpandedDataSetRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     expanded_data_set: gaa_expanded_data_set.ExpandedDataSet = proto.Field(
@@ -3651,7 +3651,7 @@ class UpdateChannelGroupRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     channel_group: gaa_channel_group.ChannelGroup = proto.Field(
@@ -3875,7 +3875,7 @@ class UpdateBigQueryLinkRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     bigquery_link: resources.BigQueryLink = proto.Field(
@@ -3934,7 +3934,7 @@ class UpdateEnhancedMeasurementSettingsRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     enhanced_measurement_settings: resources.EnhancedMeasurementSettings = proto.Field(
@@ -3977,7 +3977,7 @@ class UpdateDataRedactionSettingsRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     data_redaction_settings: resources.DataRedactionSettings = proto.Field(
@@ -4146,7 +4146,7 @@ class UpdateEventCreateRuleRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     event_create_rule: event_create_and_edit.EventCreateRule = proto.Field(
@@ -4293,7 +4293,7 @@ class UpdateEventEditRuleRequest(proto.Message):
             Required. The list of fields to be updated. Field names must
             be in snake case (e.g., "field_to_update"). Omitted fields
             will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            path with the string "\*" to match all fields.
     """
 
     event_edit_rule: event_create_and_edit.EventEditRule = proto.Field(
@@ -4775,7 +4775,7 @@ class UpdateSubpropertyEventFilterRequest(proto.Message):
             Required. The list of fields to update. Field names must be
             in snake case (for example, "field_to_update"). Omitted
             fields will not be updated. To replace the entire entity,
-            use one path with the string "*" to match all fields.
+            use one path with the string "\*" to match all fields.
     """
 
     subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = (
@@ -4863,44 +4863,44 @@ class ListReportingDataAnnotationsRequest(proto.Message):
 
             Supported fields are:
 
-            -  'name'
-            -  ``title``
-            -  ``description``
-            -  ``annotation_date``
-            -  ``annotation_date_range``
-            -  ``color``
+            - 'name'
+            - ``title``
+            - ``description``
+            - ``annotation_date``
+            - ``annotation_date_range``
+            - ``color``
 
             Additionally, this API provides the following helper
             functions:
 
-            -  annotation_duration() : the duration that this annotation
-               marks,
-               `durations <https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto>`__.
-               expect a numeric representation of seconds followed by an
-               ``s`` suffix.
-            -  is_annotation_in_range(start_date, end_date) : if the
-               annotation is in the range specified by the
-               ``start_date`` and ``end_date``. The dates are in
-               ISO-8601 format, for example ``2031-06-28``.
+            - annotation_duration() : the duration that this annotation
+              marks,
+              `durations <https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto>`__.
+              expect a numeric representation of seconds followed by an
+              ``s`` suffix.
+            - is_annotation_in_range(start_date, end_date) : if the
+              annotation is in the range specified by the ``start_date``
+              and ``end_date``. The dates are in ISO-8601 format, for
+              example ``2031-06-28``.
 
             Supported operations:
 
-            -  ``=`` : equals
-            -  ``!=`` : not equals
-            -  ``<`` : less than
-            -  ``>`` : greater than
-            -  ``<=`` : less than or equals
-            -  ``>=`` : greater than or equals
-            -  ``:`` : has operator
-            -  ``=~`` : `regular
-               expression <https://github.com/google/re2/wiki/Syntax>`__
-               match
-            -  ``!~`` : `regular
-               expression <https://github.com/google/re2/wiki/Syntax>`__
-               does not match
-            -  ``NOT`` : Logical not
-            -  ``AND`` : Logical and
-            -  ``OR`` : Logical or
+            - ``=`` : equals
+            - ``!=`` : not equals
+            - ``<`` : less than
+            - ``>`` : greater than
+            - ``<=`` : less than or equals
+            - ``>=`` : greater than or equals
+            - ``:`` : has operator
+            - ``=~`` : `regular
+              expression <https://github.com/google/re2/wiki/Syntax>`__
+              match
+            - ``!~`` : `regular
+              expression <https://github.com/google/re2/wiki/Syntax>`__
+              does not match
+            - ``NOT`` : Logical not
+            - ``AND`` : Logical and
+            - ``OR`` : Logical or
 
             Examples:
 
@@ -4981,7 +4981,7 @@ class UpdateReportingDataAnnotationRequest(proto.Message):
             Optional. The list of fields to update. Field names must be
             in snake case (for example, "field_to_update"). Omitted
             fields will not be updated. To replace the entire entity,
-            use one path with the string "*" to match all fields.
+            use one path with the string "\*" to match all fields.
     """
 
     reporting_data_annotation: resources.ReportingDataAnnotation = proto.Field(
@@ -5046,15 +5046,15 @@ class SubmitUserDeletionRequest(proto.Message):
 
             Email addresses should be normalized as such:
 
-            -  lowercase
-            -  remove periods before @ for gmail.com/googlemail.com
-               addresses
-            -  remove all spaces
+            - lowercase
+            - remove periods before @ for gmail.com/googlemail.com
+              addresses
+            - remove all spaces
 
             Phone numbers should be normalized as such:
 
-            -  remove all non digit characters
-            -  add + prefix
+            - remove all non digit characters
+            - add + prefix
 
             This field is a member of `oneof`_ ``user``.
         name (str):
@@ -5198,7 +5198,7 @@ class UpdateSubpropertySyncConfigRequest(proto.Message):
             Optional. The list of fields to update. Field names must be
             in snake case (for example, "field_to_update"). Omitted
             fields will not be updated. To replace the entire entity,
-            use one path with the string "*" to match all fields.
+            use one path with the string "\*" to match all fields.
     """
 
     subproperty_sync_config: resources.SubpropertySyncConfig = proto.Field(

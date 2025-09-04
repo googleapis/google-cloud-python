@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.12...google-cloud-gdchardwaremanagement-v0.1.13) (2025-08-29)
+
+
+### Features
+
+* Added CancelOrder RPC - allows Customers to request cancellation ([0db1073](https://github.com/googleapis/google-cloud-python/commit/0db1073d0c466ef00dc0bf11b196315349116584))
+* Added RequestOrderDateChange RPC - allows Customers to request date changes ([0db1073](https://github.com/googleapis/google-cloud-python/commit/0db1073d0c466ef00dc0bf11b196315349116584))
+* Exposed Order-level output-only fields for transparency ([0db1073](https://github.com/googleapis/google-cloud-python/commit/0db1073d0c466ef00dc0bf11b196315349116584))
+
+
+### Documentation
+
+* Mark `fulfillment_time` as deprecated ([0db1073](https://github.com/googleapis/google-cloud-python/commit/0db1073d0c466ef00dc0bf11b196315349116584))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.11...google-cloud-gdchardwaremanagement-v0.1.12) (2025-04-23)
 
 

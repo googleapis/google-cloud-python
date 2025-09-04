@@ -286,12 +286,11 @@ class Model(proto.Message):
 
                 Supported types:
 
-                -  ``add-to-cart``: Products being added to cart.
-                -  ``detail-page-view``: Products detail page viewed.
-                -  ``home-page-view``: Homepage viewed
-                -  ``category-page-view``: Homepage viewed
-                -  ``shopping-cart-page-view``: User viewing a shopping
-                   cart.
+                - ``add-to-cart``: Products being added to cart.
+                - ``detail-page-view``: Products detail page viewed.
+                - ``home-page-view``: Homepage viewed
+                - ``category-page-view``: Homepage viewed
+                - ``shopping-cart-page-view``: User viewing a shopping cart.
 
                 ``home-page-view`` only allows models with type
                 ``recommended-for-you``. All other
@@ -333,15 +332,15 @@ class Model(proto.Message):
 
                     ``Valid combinations``:
 
-                    -   (pdp_ctr, home_page_ctr_no_diversity)
-                    -  (pdp_ctr, home_page_ctr_diversity)
-                    -  (pdp_ctr, pdp_cvr_no_diversity)
-                    -  (pdp_cvr, home_page_ctr_no_diversity)
-                    -  (pdp_cvr, home_page_ctr_diversity)
-                    -  (pdp_cvr, pdp_cvr_no_diversity)
-                    -  (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
-                    -  (home_page_ctr_no_diversity, home_page_ctr_diversity)
-                    -  (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
+                    -  (pdp_ctr, home_page_ctr_no_diversity)
+                    - (pdp_ctr, home_page_ctr_diversity)
+                    - (pdp_ctr, pdp_cvr_no_diversity)
+                    - (pdp_cvr, home_page_ctr_no_diversity)
+                    - (pdp_cvr, home_page_ctr_diversity)
+                    - (pdp_cvr, pdp_cvr_no_diversity)
+                    - (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
+                    - (home_page_ctr_no_diversity, home_page_ctr_diversity)
+                    - (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
 
                     ``Invalid combinations``: []
                 UNIQUE_SERVING_CONFIG_RESTRICTION (2):
@@ -361,19 +360,19 @@ class Model(proto.Message):
 
                     ``Valid combinations``:
 
-                    -   (pdp_ctr, home_page_ctr_no_diversity)
-                    -  (pdp_ctr, home_page_ctr_diversity_low)
-                    -  (pdp_ctr, pdp_cvr_no_diversity)
-                    -  (pdp_ctr, pdp_cvr_no_diversity)
-                    -  (pdp_cvr, home_page_ctr_no_diversity)
-                    -  (pdp_cvr, home_page_ctr_diversity_low)
-                    -  (pdp_cvr, pdp_cvr_no_diversity)
-                    -  (home_page_ctr_no_diversity, home_page_ctr_diversity_low)
-                    -  (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
+                    -  (pdp_ctr, home_page_ctr_no_diversity)
+                    - (pdp_ctr, home_page_ctr_diversity_low)
+                    - (pdp_ctr, pdp_cvr_no_diversity)
+                    - (pdp_ctr, pdp_cvr_no_diversity)
+                    - (pdp_cvr, home_page_ctr_no_diversity)
+                    - (pdp_cvr, home_page_ctr_diversity_low)
+                    - (pdp_cvr, pdp_cvr_no_diversity)
+                    - (home_page_ctr_no_diversity, home_page_ctr_diversity_low)
+                    - (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
 
                     ``Invalid combinations``:
 
-                    -   (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
+                    -  (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
                 UNIQUE_MODEL_RESTRICTION (3):
                     Do not allow multiple
                     [ServingConfigs][google.cloud.retail.v2alpha.ServingConfig]
@@ -393,18 +392,18 @@ class Model(proto.Message):
 
                     ``Valid combinations``:
 
-                    -   (pdp_ctr, home_page_ctr_no_diversity)
-                    -  (pdp_ctr, home_page_ctr_diversity)
-                    -  (pdp_ctr, pdp_cvr_no_diversity)
-                    -  (pdp_ctr, pdp_cvr_no_diversity)
-                    -  (pdp_cvr, home_page_ctr_no_diversity)
-                    -  (pdp_cvr, home_page_ctr_diversity_low)
-                    -  (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
+                    -  (pdp_ctr, home_page_ctr_no_diversity)
+                    - (pdp_ctr, home_page_ctr_diversity)
+                    - (pdp_ctr, pdp_cvr_no_diversity)
+                    - (pdp_ctr, pdp_cvr_no_diversity)
+                    - (pdp_cvr, home_page_ctr_no_diversity)
+                    - (pdp_cvr, home_page_ctr_diversity_low)
+                    - (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
 
                     ``Invalid combinations``:
 
-                    -   (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
-                    -  (pdp_cvr, pdp_cvr_no_diversity)
+                    -  (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
+                    - (pdp_cvr, pdp_cvr_no_diversity)
                 UNIQUE_MODEL_TYPE_RESTRICTION (4):
                     Do not allow multiple
                     [ServingConfigs][google.cloud.retail.v2alpha.ServingConfig]
@@ -424,19 +423,19 @@ class Model(proto.Message):
 
                     ``Valid combinations``:
 
-                    -   (pdp_ctr, home_page_ctr_no_diversity)
-                    -  (pdp_ctr, home_page_ctr_diversity)
-                    -  (pdp_cvr, home_page_ctr_no_diversity)
-                    -  (pdp_cvr, home_page_ctr_diversity_low)
-                    -  (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
+                    -  (pdp_ctr, home_page_ctr_no_diversity)
+                    - (pdp_ctr, home_page_ctr_diversity)
+                    - (pdp_cvr, home_page_ctr_no_diversity)
+                    - (pdp_cvr, home_page_ctr_diversity_low)
+                    - (home_page_ctr_no_diversity, pdp_cvr_no_diversity)
 
                     ``Invalid combinations``:
 
-                    -   (pdp_ctr, pdp_cvr_no_diversity)
                     -  (pdp_ctr, pdp_cvr_no_diversity)
-                    -  (pdp_cvr, pdp_cvr_no_diversity)
-                    -  (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
-                    -  (home_page_ctr_no_diversity, home_page_ctr_diversity)
+                    - (pdp_ctr, pdp_cvr_no_diversity)
+                    - (pdp_cvr, pdp_cvr_no_diversity)
+                    - (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
+                    - (home_page_ctr_no_diversity, home_page_ctr_diversity)
             """
             RESTRICTION_UNSPECIFIED = 0
             NO_RESTRICTION = 1

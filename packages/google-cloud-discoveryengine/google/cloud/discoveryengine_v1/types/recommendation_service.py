@@ -84,18 +84,18 @@ class RecommendRequest(proto.Message):
 
             Examples:
 
-            -  ``(filter_tags: ANY("Red", "Blue") OR filter_tags: ANY("Hot", "Cold"))``
-            -  ``(filter_tags: ANY("Red", "Blue")) AND NOT (filter_tags: ANY("Green"))``
+            - ``(filter_tags: ANY("Red", "Blue") OR filter_tags: ANY("Hot", "Cold"))``
+            - ``(filter_tags: ANY("Red", "Blue")) AND NOT (filter_tags: ANY("Green"))``
 
             If ``attributeFilteringSyntax`` is set to true under the
             ``params`` field, then attribute-based expressions are
             expected instead of the above described tag-based syntax.
             Examples:
 
-            -  (language: ANY("en", "es")) AND NOT (categories:
-               ANY("Movie"))
-            -  (available: true) AND (language: ANY("en", "es")) OR
-               (categories: ANY("Movie"))
+            - (language: ANY("en", "es")) AND NOT (categories:
+              ANY("Movie"))
+            - (available: true) AND (language: ANY("en", "es")) OR
+              (categories: ANY("Movie"))
 
             If your filter blocks all results, the API returns generic
             (unfiltered) popular Documents. If you only want results
@@ -119,51 +119,51 @@ class RecommendRequest(proto.Message):
 
             Allowed values:
 
-            -  ``returnDocument``: Boolean. If set to ``true``, the
-               associated Document object is returned in
-               [RecommendResponse.RecommendationResult.document][google.cloud.discoveryengine.v1.RecommendResponse.RecommendationResult.document].
-            -  ``returnScore``: Boolean. If set to true, the
-               recommendation score corresponding to each returned
-               Document is set in
-               [RecommendResponse.RecommendationResult.metadata][google.cloud.discoveryengine.v1.RecommendResponse.RecommendationResult.metadata].
-               The given score indicates the probability of a Document
-               conversion given the user's context and history.
-            -  ``strictFiltering``: Boolean. True by default. If set to
-               ``false``, the service returns generic (unfiltered)
-               popular Documents instead of empty if your filter blocks
-               all recommendation results.
-            -  ``diversityLevel``: String. Default empty. If set to be
-               non-empty, then it needs to be one of:
+            - ``returnDocument``: Boolean. If set to ``true``, the
+              associated Document object is returned in
+              [RecommendResponse.RecommendationResult.document][google.cloud.discoveryengine.v1.RecommendResponse.RecommendationResult.document].
+            - ``returnScore``: Boolean. If set to true, the
+              recommendation score corresponding to each returned
+              Document is set in
+              [RecommendResponse.RecommendationResult.metadata][google.cloud.discoveryengine.v1.RecommendResponse.RecommendationResult.metadata].
+              The given score indicates the probability of a Document
+              conversion given the user's context and history.
+            - ``strictFiltering``: Boolean. True by default. If set to
+              ``false``, the service returns generic (unfiltered)
+              popular Documents instead of empty if your filter blocks
+              all recommendation results.
+            - ``diversityLevel``: String. Default empty. If set to be
+              non-empty, then it needs to be one of:
 
-               -  ``no-diversity``
-               -  ``low-diversity``
-               -  ``medium-diversity``
-               -  ``high-diversity``
-               -  ``auto-diversity`` This gives request-level control
-                  and adjusts recommendation results based on Document
-                  category.
+              - ``no-diversity``
+              - ``low-diversity``
+              - ``medium-diversity``
+              - ``high-diversity``
+              - ``auto-diversity`` This gives request-level control and
+                adjusts recommendation results based on Document
+                category.
 
-            -  ``attributeFilteringSyntax``: Boolean. False by default.
-               If set to true, the ``filter`` field is interpreted
-               according to the new, attribute-based syntax.
+            - ``attributeFilteringSyntax``: Boolean. False by default.
+              If set to true, the ``filter`` field is interpreted
+              according to the new, attribute-based syntax.
         user_labels (MutableMapping[str, str]):
             The user labels applied to a resource must meet the
             following requirements:
 
-            -  Each resource can have multiple labels, up to a maximum
-               of 64.
-            -  Each label must be a key-value pair.
-            -  Keys have a minimum length of 1 character and a maximum
-               length of 63 characters and cannot be empty. Values can
-               be empty and have a maximum length of 63 characters.
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes. All
-               characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  The key portion of a label must be unique. However, you
-               can use the same key with multiple resources.
-            -  Keys must start with a lowercase letter or international
-               character.
+            - Each resource can have multiple labels, up to a maximum of
+              64.
+            - Each label must be a key-value pair.
+            - Keys have a minimum length of 1 character and a maximum
+              length of 63 characters and cannot be empty. Values can be
+              empty and have a maximum length of 63 characters.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes. All
+              characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - The key portion of a label must be unique. However, you
+              can use the same key with multiple resources.
+            - Keys must start with a lowercase letter or international
+              character.
 
             See `Requirements for
             labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -242,9 +242,9 @@ class RecommendResponse(proto.Message):
 
                 Possible values:
 
-                -  ``score``: Recommendation score in double value. Is set
-                   if ``returnScore`` is set to true in
-                   [RecommendRequest.params][google.cloud.discoveryengine.v1.RecommendRequest.params].
+                - ``score``: Recommendation score in double value. Is set if
+                  ``returnScore`` is set to true in
+                  [RecommendRequest.params][google.cloud.discoveryengine.v1.RecommendRequest.params].
         """
 
         id: str = proto.Field(

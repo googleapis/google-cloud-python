@@ -494,7 +494,7 @@ class AccountRelationshipsServiceAsyncClient:
                 The following fields are supported (in both
                 ``snake_case`` and ``lowerCamelCase``):
 
-                -  ``account_id_alias``
+                - ``account_id_alias``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

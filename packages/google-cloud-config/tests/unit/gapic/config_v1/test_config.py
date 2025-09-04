@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 import os
-import re
 
 # try/except added for compatibility with python < 3.8
 try:
@@ -18835,6 +18834,7 @@ def test_create_deployment_rest_call_success(request_type):
         "tf_version": "tf_version_value",
         "quota_validation": 1,
         "annotations": {},
+        "provider_config": {"source_type": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -19078,6 +19078,7 @@ def test_update_deployment_rest_call_success(request_type):
         "tf_version": "tf_version_value",
         "quota_validation": 1,
         "annotations": {},
+        "provider_config": {"source_type": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -20812,6 +20813,7 @@ def test_create_preview_rest_call_success(request_type):
         "tf_version": "tf_version_value",
         "tf_version_constraint": "tf_version_constraint_value",
         "annotations": {},
+        "provider_config": {"source_type": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -774,30 +774,30 @@ class AutoDetectDecodingConfig(proto.Message):
     r"""Automatically detected decoding parameters. Supported for the
     following encodings:
 
-    -  WAV_LINEAR16: 16-bit signed little-endian PCM samples in a WAV
-       container.
+    - WAV_LINEAR16: 16-bit signed little-endian PCM samples in a WAV
+      container.
 
-    -  WAV_MULAW: 8-bit companded mulaw samples in a WAV container.
+    - WAV_MULAW: 8-bit companded mulaw samples in a WAV container.
 
-    -  WAV_ALAW: 8-bit companded alaw samples in a WAV container.
+    - WAV_ALAW: 8-bit companded alaw samples in a WAV container.
 
-    -  RFC4867_5_AMR: AMR frames with an rfc4867.5 header.
+    - RFC4867_5_AMR: AMR frames with an rfc4867.5 header.
 
-    -  RFC4867_5_AMRWB: AMR-WB frames with an rfc4867.5 header.
+    - RFC4867_5_AMRWB: AMR-WB frames with an rfc4867.5 header.
 
-    -  FLAC: FLAC frames in the "native FLAC" container format.
+    - FLAC: FLAC frames in the "native FLAC" container format.
 
-    -  MP3: MPEG audio frames with optional (ignored) ID3 metadata.
+    - MP3: MPEG audio frames with optional (ignored) ID3 metadata.
 
-    -  OGG_OPUS: Opus audio frames in an Ogg container.
+    - OGG_OPUS: Opus audio frames in an Ogg container.
 
-    -  WEBM_OPUS: Opus audio frames in a WebM container.
+    - WEBM_OPUS: Opus audio frames in a WebM container.
 
-    -  MP4_AAC: AAC audio frames in an MP4 container.
+    - MP4_AAC: AAC audio frames in an MP4 container.
 
-    -  M4A_AAC: AAC audio frames in an M4A container.
+    - M4A_AAC: AAC audio frames in an M4A container.
 
-    -  MOV_AAC: AAC audio frames in an MOV container.
+    - MOV_AAC: AAC audio frames in an MOV container.
 
     """
 
@@ -928,7 +928,7 @@ class RecognitionFeatures(proto.Message):
         profanity_filter (bool):
             If set to ``true``, the server will attempt to filter out
             profanities, replacing all but the initial character in each
-            filtered word with asterisks, for instance, "f***". If set
+            filtered word with asterisks, for instance, "f**\*". If set
             to ``false`` or omitted, profanities won't be filtered out.
         enable_word_time_offsets (bool):
             If ``true``, the top result includes a list of words and the
@@ -2324,7 +2324,7 @@ class StreamingRecognitionResult(proto.Message):
             change its guess about this interim result. Values range
             from 0.0 (completely unstable) to 1.0 (completely stable).
             This field is only provided for interim results
-            ([is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final]=``false``).
+            ([is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final]=\ ``false``).
             The default of 0.0 is a sentinel value indicating
             ``stability`` was not set.
         result_end_offset (google.protobuf.duration_pb2.Duration):
@@ -2407,32 +2407,31 @@ class StreamingRecognizeResponse(proto.Message):
 
     Notes:
 
-    -  Only two of the above responses #4 and #7 contain final results;
-       they are indicated by ``is_final: true``. Concatenating these
-       together generates the full transcript: "to be or not to be that
-       is the question".
+    - Only two of the above responses #4 and #7 contain final results;
+      they are indicated by ``is_final: true``. Concatenating these
+      together generates the full transcript: "to be or not to be that
+      is the question".
 
-    -  The others contain interim ``results``. #3 and #6 contain two
-       interim ``results``: the first portion has a high stability and
-       is less likely to change; the second portion has a low stability
-       and is very likely to change. A UI designer might choose to show
-       only high stability ``results``.
+    - The others contain interim ``results``. #3 and #6 contain two
+      interim ``results``: the first portion has a high stability and is
+      less likely to change; the second portion has a low stability and
+      is very likely to change. A UI designer might choose to show only
+      high stability ``results``.
 
-    -  The specific ``stability`` and ``confidence`` values shown above
-       are only for illustrative purposes. Actual values may vary.
+    - The specific ``stability`` and ``confidence`` values shown above
+      are only for illustrative purposes. Actual values may vary.
 
-    -  In each response, only one of these fields will be set:
-       ``error``, ``speech_event_type``, or one or more (repeated)
-       ``results``.
+    - In each response, only one of these fields will be set: ``error``,
+      ``speech_event_type``, or one or more (repeated) ``results``.
 
     Attributes:
         results (MutableSequence[google.cloud.speech_v2.types.StreamingRecognitionResult]):
             This repeated list contains zero or more results that
             correspond to consecutive portions of the audio currently
             being processed. It contains zero or one
-            [is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final]=``true``
+            [is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final]=\ ``true``
             result (the newly settled portion), followed by zero or more
-            [is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final]=``false``
+            [is_final][google.cloud.speech.v2.StreamingRecognitionResult.is_final]=\ ``false``
             results (the interim results).
         speech_event_type (google.cloud.speech_v2.types.StreamingRecognizeResponse.SpeechEventType):
             Indicates the type of speech event.

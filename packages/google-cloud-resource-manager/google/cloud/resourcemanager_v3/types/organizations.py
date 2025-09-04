@@ -184,11 +184,11 @@ class SearchOrganizationsRequest(proto.Message):
             by ``domain``, where the domain is a G Suite domain, for
             example:
 
-            -  Query ``directorycustomerid:123456789`` returns
-               Organization resources with
-               ``owner.directory_customer_id`` equal to ``123456789``.
-            -  Query ``domain:google.com`` returns Organization
-               resources corresponding to the domain ``google.com``.
+            - Query ``directorycustomerid:123456789`` returns
+              Organization resources with
+              ``owner.directory_customer_id`` equal to ``123456789``.
+            - Query ``domain:google.com`` returns Organization resources
+              corresponding to the domain ``google.com``.
     """
 
     page_size: int = proto.Field(

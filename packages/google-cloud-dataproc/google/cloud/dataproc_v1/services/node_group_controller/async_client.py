@@ -370,9 +370,9 @@ class NodeGroupControllerAsyncClient:
                 specified.
 
                 The ID must contain only letters (a-z, A-Z), numbers
-                (0-9), underscores (_), and hyphens (-). Cannot begin or
-                end with underscore or hyphen. Must consist of from 3 to
-                33 characters.
+                (0-9), underscores (\_), and hyphens (-). Cannot begin
+                or end with underscore or hyphen. Must consist of from 3
+                to 33 characters.
 
                 This corresponds to the ``node_group_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -390,8 +390,8 @@ class NodeGroupControllerAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.dataproc_v1.types.NodeGroup` Dataproc Node Group.
-                   **The Dataproc NodeGroup resource is not related to
-                   the Dataproc
+                   **The Dataproc \`NodeGroup\` resource is not related
+                   to the Dataproc
                    [NodeGroupAffinity][google.cloud.dataproc.v1.NodeGroupAffinity]
                    resource.**
 
@@ -535,8 +535,8 @@ class NodeGroupControllerAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.dataproc_v1.types.NodeGroup` Dataproc Node Group.
-                   **The Dataproc NodeGroup resource is not related to
-                   the Dataproc
+                   **The Dataproc \`NodeGroup\` resource is not related
+                   to the Dataproc
                    [NodeGroupAffinity][google.cloud.dataproc.v1.NodeGroupAffinity]
                    resource.**
 
@@ -660,8 +660,8 @@ class NodeGroupControllerAsyncClient:
         Returns:
             google.cloud.dataproc_v1.types.NodeGroup:
                 Dataproc Node Group.
-                   **The Dataproc NodeGroup resource is not related to
-                   the Dataproc
+                   **The Dataproc \`NodeGroup\` resource is not related
+                   to the Dataproc
                    [NodeGroupAffinity][google.cloud.dataproc.v1.NodeGroupAffinity]
                    resource.**
 

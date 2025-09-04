@@ -288,21 +288,21 @@ class DataMaskingPolicy(proto.Message):
                 masking values. The default masking values for each type
                 listed as below:
 
-                -  STRING: ""
-                -  BYTES: b''
-                -  INTEGER: 0
-                -  FLOAT: 0.0
-                -  NUMERIC: 0
-                -  BOOLEAN: FALSE
-                -  TIMESTAMP: 0001-01-01 00:00:00 UTC
-                -  DATE: 0001-01-01
-                -  TIME: 00:00:00
-                -  DATETIME: 0001-01-01T00:00:00
-                -  GEOGRAPHY: POINT(0 0)
-                -  BIGNUMERIC: 0
-                -  ARRAY: []
-                -  STRUCT: NOT_APPLICABLE
-                -  JSON: NULL
+                - STRING: ""
+                - BYTES: b''
+                - INTEGER: 0
+                - FLOAT: 0.0
+                - NUMERIC: 0
+                - BOOLEAN: FALSE
+                - TIMESTAMP: 0001-01-01 00:00:00 UTC
+                - DATE: 0001-01-01
+                - TIME: 00:00:00
+                - DATETIME: 0001-01-01T00:00:00
+                - GEOGRAPHY: POINT(0 0)
+                - BIGNUMERIC: 0
+                - ARRAY: []
+                - STRUCT: NOT_APPLICABLE
+                - JSON: NULL
         """
         PREDEFINED_EXPRESSION_UNSPECIFIED = 0
         SHA256 = 3

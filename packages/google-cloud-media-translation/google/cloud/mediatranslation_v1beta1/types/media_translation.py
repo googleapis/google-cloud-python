@@ -40,46 +40,46 @@ class TranslateSpeechConfig(proto.Message):
         audio_encoding (str):
             Required. Encoding of audio data. Supported formats:
 
-            -  ``linear16``
+            - ``linear16``
 
-               Uncompressed 16-bit signed little-endian samples (Linear
-               PCM).
+              Uncompressed 16-bit signed little-endian samples (Linear
+              PCM).
 
-            -  ``flac``
+            - ``flac``
 
-               ``flac`` (Free Lossless Audio Codec) is the recommended
-               encoding because it is lossless--therefore recognition is
-               not compromised--and requires only about half the
-               bandwidth of ``linear16``.
+              ``flac`` (Free Lossless Audio Codec) is the recommended
+              encoding because it is lossless--therefore recognition is
+              not compromised--and requires only about half the
+              bandwidth of ``linear16``.
 
-            -  ``mulaw``
+            - ``mulaw``
 
-               8-bit samples that compand 14-bit audio samples using
-               G.711 PCMU/mu-law.
+              8-bit samples that compand 14-bit audio samples using
+              G.711 PCMU/mu-law.
 
-            -  ``amr``
+            - ``amr``
 
-               Adaptive Multi-Rate Narrowband codec.
-               ``sample_rate_hertz`` must be 8000.
+              Adaptive Multi-Rate Narrowband codec.
+              ``sample_rate_hertz`` must be 8000.
 
-            -  ``amr-wb``
+            - ``amr-wb``
 
-               Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz``
-               must be 16000.
+              Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz``
+              must be 16000.
 
-            -  ``ogg-opus``
+            - ``ogg-opus``
 
-               Opus encoded audio frames in
-               `Ogg <https://wikipedia.org/wiki/Ogg>`__ container.
-               ``sample_rate_hertz`` must be one of 8000, 12000, 16000,
-               24000, or 48000.
+              Opus encoded audio frames in
+              `Ogg <https://wikipedia.org/wiki/Ogg>`__ container.
+              ``sample_rate_hertz`` must be one of 8000, 12000, 16000,
+              24000, or 48000.
 
-            -  ``mp3``
+            - ``mp3``
 
-               MP3 audio. Support all standard MP3 bitrates (which range
-               from 32-320 kbps). When using this encoding,
-               ``sample_rate_hertz`` has to match the sample rate of the
-               file being used.
+              MP3 audio. Support all standard MP3 bitrates (which range
+              from 32-320 kbps). When using this encoding,
+              ``sample_rate_hertz`` has to match the sample rate of the
+              file being used.
         source_language_code (str):
             Required. Source language code (BCP-47) of
             the input audio.

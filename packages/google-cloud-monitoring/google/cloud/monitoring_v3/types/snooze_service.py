@@ -81,8 +81,8 @@ class ListSnoozesRequest(proto.Message):
             Optional. Optional filter to restrict results to the given
             criteria. The following fields are supported.
 
-            -  ``interval.start_time``
-            -  ``interval.end_time``
+            - ``interval.start_time``
+            - ``interval.end_time``
 
             For example:
 
@@ -177,12 +177,12 @@ class UpdateSnoozeRequest(proto.Message):
     What fields can be updated depends on the start time and end time of
     the ``Snooze``.
 
-    -  end time is in the past: These ``Snooze``\ s are considered
-       read-only and cannot be updated.
-    -  start time is in the past and end time is in the future:
-       ``display_name`` and ``interval.end_time`` can be updated.
-    -  start time is in the future: ``display_name``,
-       ``interval.start_time`` and ``interval.end_time`` can be updated.
+    - end time is in the past: These ``Snooze``\ s are considered
+      read-only and cannot be updated.
+    - start time is in the past and end time is in the future:
+      ``display_name`` and ``interval.end_time`` can be updated.
+    - start time is in the future: ``display_name``,
+      ``interval.start_time`` and ``interval.end_time`` can be updated.
 
     Attributes:
         snooze (google.cloud.monitoring_v3.types.Snooze):
@@ -193,22 +193,22 @@ class UpdateSnoozeRequest(proto.Message):
 
             For each field listed in ``update_mask``:
 
-            -  If the ``Snooze`` object supplied in the
-               ``UpdateSnoozeRequest`` has a value for that field, the
-               value of the field in the existing ``Snooze`` will be set
-               to the value of the field in the supplied ``Snooze``.
-            -  If the field does not have a value in the supplied
-               ``Snooze``, the field in the existing ``Snooze`` is set
-               to its default value.
+            - If the ``Snooze`` object supplied in the
+              ``UpdateSnoozeRequest`` has a value for that field, the
+              value of the field in the existing ``Snooze`` will be set
+              to the value of the field in the supplied ``Snooze``.
+            - If the field does not have a value in the supplied
+              ``Snooze``, the field in the existing ``Snooze`` is set to
+              its default value.
 
             Fields not listed retain their existing value.
 
             The following are the field names that are accepted in
             ``update_mask``:
 
-            -  ``display_name``
-            -  ``interval.start_time``
-            -  ``interval.end_time``
+            - ``display_name``
+            - ``interval.start_time``
+            - ``interval.end_time``
 
             That said, the start time and end time of the ``Snooze``
             determines which fields can legally be updated. Before

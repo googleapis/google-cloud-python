@@ -77,37 +77,37 @@ class SpaceEvent(proto.Message):
             Supported event types for
             `memberships <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.members>`__:
 
-            -  New membership:
-               ``google.workspace.chat.membership.v1.created``
-            -  Updated membership:
-               ``google.workspace.chat.membership.v1.updated``
-            -  Deleted membership:
-               ``google.workspace.chat.membership.v1.deleted``
-            -  Multiple new memberships:
-               ``google.workspace.chat.membership.v1.batchCreated``
-            -  Multiple updated memberships:
-               ``google.workspace.chat.membership.v1.batchUpdated``
-            -  Multiple deleted memberships:
-               ``google.workspace.chat.membership.v1.batchDeleted``
+            - New membership:
+              ``google.workspace.chat.membership.v1.created``
+            - Updated membership:
+              ``google.workspace.chat.membership.v1.updated``
+            - Deleted membership:
+              ``google.workspace.chat.membership.v1.deleted``
+            - Multiple new memberships:
+              ``google.workspace.chat.membership.v1.batchCreated``
+            - Multiple updated memberships:
+              ``google.workspace.chat.membership.v1.batchUpdated``
+            - Multiple deleted memberships:
+              ``google.workspace.chat.membership.v1.batchDeleted``
 
             Supported event types for
             `reactions <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages.reactions>`__:
 
-            -  New reaction:
-               ``google.workspace.chat.reaction.v1.created``
-            -  Deleted reaction:
-               ``google.workspace.chat.reaction.v1.deleted``
-            -  Multiple new reactions:
-               ``google.workspace.chat.reaction.v1.batchCreated``
-            -  Multiple deleted reactions:
-               ``google.workspace.chat.reaction.v1.batchDeleted``
+            - New reaction:
+              ``google.workspace.chat.reaction.v1.created``
+            - Deleted reaction:
+              ``google.workspace.chat.reaction.v1.deleted``
+            - Multiple new reactions:
+              ``google.workspace.chat.reaction.v1.batchCreated``
+            - Multiple deleted reactions:
+              ``google.workspace.chat.reaction.v1.batchDeleted``
 
             Supported event types about the
             `space <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces>`__:
 
-            -  Updated space: ``google.workspace.chat.space.v1.updated``
-            -  Multiple space updates:
-               ``google.workspace.chat.space.v1.batchUpdated``
+            - Updated space: ``google.workspace.chat.space.v1.updated``
+            - Multiple space updates:
+              ``google.workspace.chat.space.v1.batchUpdated``
         message_created_event_data (google.apps.chat_v1.types.MessageCreatedEventData):
             Event payload for a new message.
 
@@ -426,13 +426,13 @@ class ListSpaceEventsRequest(proto.Message):
             Optionally, you can also filter by start time
             (``start_time``) and end time (``end_time``):
 
-            -  ``start_time``: Exclusive timestamp from which to start
-               listing space events. You can list events that occurred
-               up to 28 days ago. If unspecified, lists space events
-               from the past 28 days.
-            -  ``end_time``: Inclusive timestamp until which space
-               events are listed. If unspecified, lists events up to the
-               time of the request.
+            - ``start_time``: Exclusive timestamp from which to start
+              listing space events. You can list events that occurred up
+              to 28 days ago. If unspecified, lists space events from
+              the past 28 days.
+            - ``end_time``: Inclusive timestamp until which space events
+              are listed. If unspecified, lists events up to the time of
+              the request.
 
             To specify a start or end time, use the equals ``=``
             operator and format in

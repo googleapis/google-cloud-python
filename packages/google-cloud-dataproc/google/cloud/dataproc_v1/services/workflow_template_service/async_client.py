@@ -378,14 +378,13 @@ class WorkflowTemplateServiceAsyncClient:
                 as described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For ``projects.regions.workflowTemplates.create``,
-                   the resource name of the region has the following
-                   format: ``projects/{project_id}/regions/{region}``
+                - For ``projects.regions.workflowTemplates.create``, the
+                  resource name of the region has the following format:
+                  ``projects/{project_id}/regions/{region}``
 
-                -  For ``projects.locations.workflowTemplates.create``,
-                   the resource name of the location has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}``
+                - For ``projects.locations.workflowTemplates.create``,
+                  the resource name of the location has the following
+                  format: ``projects/{project_id}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -513,15 +512,15 @@ class WorkflowTemplateServiceAsyncClient:
                 described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For ``projects.regions.workflowTemplates.get``, the
-                   resource name of the template has the following
-                   format:
-                   ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
+                - For ``projects.regions.workflowTemplates.get``, the
+                  resource name of the template has the following
+                  format:
+                  ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
 
-                -  For ``projects.locations.workflowTemplates.get``, the
-                   resource name of the template has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
+                - For ``projects.locations.workflowTemplates.get``, the
+                  resource name of the template has the following
+                  format:
+                  ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -662,17 +661,17 @@ class WorkflowTemplateServiceAsyncClient:
                 described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For
-                   ``projects.regions.workflowTemplates.instantiate``,
-                   the resource name of the template has the following
-                   format:
-                   ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
+                - For
+                  ``projects.regions.workflowTemplates.instantiate``,
+                  the resource name of the template has the following
+                  format:
+                  ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
 
-                -  For
-                   ``projects.locations.workflowTemplates.instantiate``,
-                   the resource name of the template has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
+                - For
+                  ``projects.locations.workflowTemplates.instantiate``,
+                  the resource name of the template has the following
+                  format:
+                  ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -857,16 +856,15 @@ class WorkflowTemplateServiceAsyncClient:
                 as described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For
-                   ``projects.regions.workflowTemplates,instantiateinline``,
-                   the resource name of the region has the following
-                   format: ``projects/{project_id}/regions/{region}``
+                - For
+                  ``projects.regions.workflowTemplates,instantiateinline``,
+                  the resource name of the region has the following
+                  format: ``projects/{project_id}/regions/{region}``
 
-                -  For
-                   ``projects.locations.workflowTemplates.instantiateinline``,
-                   the resource name of the location has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}``
+                - For
+                  ``projects.locations.workflowTemplates.instantiateinline``,
+                  the resource name of the location has the following
+                  format: ``projects/{project_id}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1140,14 +1138,13 @@ class WorkflowTemplateServiceAsyncClient:
                 as described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For ``projects.regions.workflowTemplates,list``, the
-                   resource name of the region has the following format:
-                   ``projects/{project_id}/regions/{region}``
+                - For ``projects.regions.workflowTemplates,list``, the
+                  resource name of the region has the following format:
+                  ``projects/{project_id}/regions/{region}``
 
-                -  For ``projects.locations.workflowTemplates.list``,
-                   the resource name of the location has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}``
+                - For ``projects.locations.workflowTemplates.list``, the
+                  resource name of the location has the following
+                  format: ``projects/{project_id}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1277,16 +1274,16 @@ class WorkflowTemplateServiceAsyncClient:
                 described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For ``projects.regions.workflowTemplates.delete``,
-                   the resource name of the template has the following
-                   format:
-                   ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
+                - For ``projects.regions.workflowTemplates.delete``, the
+                  resource name of the template has the following
+                  format:
+                  ``projects/{project_id}/regions/{region}/workflowTemplates/{template_id}``
 
-                -  For
-                   ``projects.locations.workflowTemplates.instantiate``,
-                   the resource name of the template has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
+                - For
+                  ``projects.locations.workflowTemplates.instantiate``,
+                  the resource name of the template has the following
+                  format:
+                  ``projects/{project_id}/locations/{location}/workflowTemplates/{template_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

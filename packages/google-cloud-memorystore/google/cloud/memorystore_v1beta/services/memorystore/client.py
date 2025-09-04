@@ -1096,12 +1096,12 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
                 This value is subject to the following restrictions:
 
-                -  Must be 4-63 characters in length
-                -  Must begin with a letter or digit
-                -  Must contain only lowercase letters, digits, and
-                   hyphens
-                -  Must not end with a hyphen
-                -  Must be unique within a location
+                - Must be 4-63 characters in length
+                - Must begin with a letter or digit
+                - Must contain only lowercase letters, digits, and
+                  hyphens
+                - Must not end with a hyphen
+                - Must be unique within a location
 
                 This corresponds to the ``instance_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

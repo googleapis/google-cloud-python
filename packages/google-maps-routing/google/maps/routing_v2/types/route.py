@@ -64,10 +64,10 @@ class Route(proto.Message):
         legs (MutableSequence[google.maps.routing_v2.types.RouteLeg]):
             A collection of legs (path segments between waypoints) that
             make up the route. Each leg corresponds to the trip between
-            two non-\ ``via``
+            two non-``via``
             [``Waypoints``][google.maps.routing.v2.Waypoint]. For
             example, a route with no intermediate waypoints has only one
-            leg. A route that includes one non-\ ``via`` intermediate
+            leg. A route that includes one non-``via`` intermediate
             waypoint has two legs. A route that includes one ``via``
             intermediate waypoint has one leg. The order of the legs
             matches the order of waypoints from ``origin`` to
@@ -367,7 +367,7 @@ class RouteLegStepTravelAdvisory(proto.Message):
 
 
 class RouteLeg(proto.Message):
-    r"""Contains a segment between non-\ ``via`` waypoints.
+    r"""Contains a segment between non-``via`` waypoints.
 
     Attributes:
         distance_meters (int):

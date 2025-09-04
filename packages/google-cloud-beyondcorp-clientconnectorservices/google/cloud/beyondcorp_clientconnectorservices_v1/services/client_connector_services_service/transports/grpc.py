@@ -127,8 +127,8 @@ class ClientConnectorServicesServiceGrpcTransport(
 
     The ClientConnectorServicesService exposes the following resources:
 
-    -  Client Connector Services, named as follows:
-       ``projects/{project_id}/locations/{location_id}/client_connector_services/{client_connector_service_id}``.
+    - Client Connector Services, named as follows:
+      ``projects/{project_id}/locations/{location_id}/client_connector_services/{client_connector_service_id}``.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

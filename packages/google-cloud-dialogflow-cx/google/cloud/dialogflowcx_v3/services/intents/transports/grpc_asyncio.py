@@ -505,10 +505,10 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ImportIntentsMetadata][google.cloud.dialogflow.cx.v3.ImportIntentsMetadata]
-        -  ``response``:
-           [ImportIntentsResponse][google.cloud.dialogflow.cx.v3.ImportIntentsResponse]
+        - ``metadata``:
+          [ImportIntentsMetadata][google.cloud.dialogflow.cx.v3.ImportIntentsMetadata]
+        - ``response``:
+          [ImportIntentsResponse][google.cloud.dialogflow.cx.v3.ImportIntentsResponse]
 
         Returns:
             Callable[[~.ImportIntentsRequest],
@@ -541,10 +541,10 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ExportIntentsMetadata][google.cloud.dialogflow.cx.v3.ExportIntentsMetadata]
-        -  ``response``:
-           [ExportIntentsResponse][google.cloud.dialogflow.cx.v3.ExportIntentsResponse]
+        - ``metadata``:
+          [ExportIntentsMetadata][google.cloud.dialogflow.cx.v3.ExportIntentsMetadata]
+        - ``response``:
+          [ExportIntentsResponse][google.cloud.dialogflow.cx.v3.ExportIntentsResponse]
 
         Returns:
             Callable[[~.ExportIntentsRequest],

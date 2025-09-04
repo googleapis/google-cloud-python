@@ -53,19 +53,19 @@ class Job(proto.Message):
             The job name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
 
-            -  ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
-               ([0-9]), hyphens (-), colons (:), or periods (.). For
-               more information, see `Identifying
-               projects <https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects>`__
-            -  ``LOCATION_ID`` is the canonical ID for the job's
-               location. The list of available locations can be obtained
-               by calling
-               [ListLocations][google.cloud.location.Locations.ListLocations].
-               For more information, see
-               https://cloud.google.com/about/locations/.
-            -  ``JOB_ID`` can contain only letters ([A-Za-z]), numbers
-               ([0-9]), hyphens (-), or underscores (_). The maximum
-               length is 500 characters.
+            - ``PROJECT_ID`` can contain letters ([A-Za-z]), numbers
+              ([0-9]), hyphens (-), colons (:), or periods (.). For more
+              information, see `Identifying
+              projects <https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects>`__
+            - ``LOCATION_ID`` is the canonical ID for the job's
+              location. The list of available locations can be obtained
+              by calling
+              [ListLocations][google.cloud.location.Locations.ListLocations].
+              For more information, see
+              https://cloud.google.com/about/locations/.
+            - ``JOB_ID`` can contain only letters ([A-Za-z]), numbers
+              ([0-9]), hyphens (-), or underscores (\_). The maximum
+              length is 500 characters.
         description (str):
             Optionally caller-specified in
             [CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob]
@@ -94,9 +94,9 @@ class Job(proto.Message):
 
             The schedule can be either of the following types:
 
-            -  `Crontab <https://en.wikipedia.org/wiki/Cron#Overview>`__
-            -  English-like
-               `schedule <https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules>`__
+            - `Crontab <https://en.wikipedia.org/wiki/Cron#Overview>`__
+            - English-like
+              `schedule <https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules>`__
 
             As a general rule, execution ``n + 1`` of a job will not
             begin until execution ``n`` has finished. Cloud Scheduler
@@ -158,24 +158,24 @@ class Job(proto.Message):
             The default and the allowed values depend on the type of
             target:
 
-            -  For [HTTP
-               targets][google.cloud.scheduler.v1.Job.http_target], the
-               default is 3 minutes. The deadline must be in the
-               interval [15 seconds, 30 minutes].
+            - For [HTTP
+              targets][google.cloud.scheduler.v1.Job.http_target], the
+              default is 3 minutes. The deadline must be in the interval
+              [15 seconds, 30 minutes].
 
-            -  For [App Engine HTTP
-               targets][google.cloud.scheduler.v1.Job.app_engine_http_target],
-               0 indicates that the request has the default deadline.
-               The default deadline depends on the scaling type of the
-               service: 10 minutes for standard apps with automatic
-               scaling, 24 hours for standard apps with manual and basic
-               scaling, and 60 minutes for flex apps. If the request
-               deadline is set, it must be in the interval [15 seconds,
-               24 hours 15 seconds].
+            - For [App Engine HTTP
+              targets][google.cloud.scheduler.v1.Job.app_engine_http_target],
+              0 indicates that the request has the default deadline. The
+              default deadline depends on the scaling type of the
+              service: 10 minutes for standard apps with automatic
+              scaling, 24 hours for standard apps with manual and basic
+              scaling, and 60 minutes for flex apps. If the request
+              deadline is set, it must be in the interval [15 seconds,
+              24 hours 15 seconds].
 
-            -  For [Pub/Sub
-               targets][google.cloud.scheduler.v1.Job.pubsub_target],
-               this field is ignored.
+            - For [Pub/Sub
+              targets][google.cloud.scheduler.v1.Job.pubsub_target],
+              this field is ignored.
     """
 
     class State(proto.Enum):

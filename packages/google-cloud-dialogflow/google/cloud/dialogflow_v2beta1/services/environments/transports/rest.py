@@ -658,10 +658,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 can publish them to custom environments. You can create
                 a variety of custom environments for:
 
-                -  testing
-                -  development
-                -  production
-                -  etc.
+                - testing
+                - development
+                - production
+                - etc.
 
                 For more information, see the `versions and environments
                 guide <https://cloud.google.com/dialogflow/docs/agents-versions>`__.
@@ -938,10 +938,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 can publish them to custom environments. You can create
                 a variety of custom environments for:
 
-                -  testing
-                -  development
-                -  production
-                -  etc.
+                - testing
+                - development
+                - production
+                - etc.
 
                 For more information, see the `versions and environments
                 guide <https://cloud.google.com/dialogflow/docs/agents-versions>`__.
@@ -1403,10 +1403,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 can publish them to custom environments. You can create
                 a variety of custom environments for:
 
-                -  testing
-                -  development
-                -  production
-                -  etc.
+                - testing
+                - development
+                - production
+                - etc.
 
                 For more information, see the `versions and environments
                 guide <https://cloud.google.com/dialogflow/docs/agents-versions>`__.

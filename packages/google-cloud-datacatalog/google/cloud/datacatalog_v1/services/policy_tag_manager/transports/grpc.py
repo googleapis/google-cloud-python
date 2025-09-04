@@ -504,10 +504,10 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
 
         Deletes a policy tag together with the following:
 
-        -  All of its descendant policy tags, if any
-        -  Policies associated with the policy tag and its descendants
-        -  References from BigQuery table schema of the policy tag and
-           its descendants
+        - All of its descendant policy tags, if any
+        - Policies associated with the policy tag and its descendants
+        - References from BigQuery table schema of the policy tag and
+          its descendants
 
         Returns:
             Callable[[~.DeletePolicyTagRequest],

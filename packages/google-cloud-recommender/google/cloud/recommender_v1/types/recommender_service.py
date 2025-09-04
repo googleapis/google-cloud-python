@@ -59,15 +59,15 @@ class ListInsightsRequest(proto.Message):
             Required. The container resource on which to execute the
             request. Acceptable formats:
 
-            -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+            - ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-            -  ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+            - ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+            - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-            -  ``folders/[FOLDER_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+            - ``folders/[FOLDER_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+            - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
             LOCATION here refers to GCP Locations:
             https://cloud.google.com/about/locations/ INSIGHT_TYPE_ID
@@ -88,25 +88,25 @@ class ListInsightsRequest(proto.Message):
             Optional. Filter expression to restrict the insights
             returned. Supported filter fields:
 
-            -  ``stateInfo.state``
+            - ``stateInfo.state``
 
-            -  ``insightSubtype``
+            - ``insightSubtype``
 
-            -  ``severity``
+            - ``severity``
 
-            -  ``targetResources``
+            - ``targetResources``
 
             Examples:
 
-            -  ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
+            - ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
 
-            -  ``insightSubtype = PERMISSIONS_USAGE``
+            - ``insightSubtype = PERMISSIONS_USAGE``
 
-            -  ``severity = CRITICAL OR severity = HIGH``
+            - ``severity = CRITICAL OR severity = HIGH``
 
-            -  ``targetResources : //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1``
+            - ``targetResources : //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1``
 
-            -  ``stateInfo.state = ACTIVE AND (severity = CRITICAL OR severity = HIGH)``
+            - ``stateInfo.state = ACTIVE AND (severity = CRITICAL OR severity = HIGH)``
 
             The max allowed filter length is 500 characters.
 
@@ -210,15 +210,15 @@ class ListRecommendationsRequest(proto.Message):
             Required. The container resource on which to execute the
             request. Acceptable formats:
 
-            -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+            - ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-            -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+            - ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+            - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-            -  ``folders/[FOLDER_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+            - ``folders/[FOLDER_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+            - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
             LOCATION here refers to GCP Locations:
             https://cloud.google.com/about/locations/ RECOMMENDER_ID
@@ -239,25 +239,25 @@ class ListRecommendationsRequest(proto.Message):
             Filter expression to restrict the recommendations returned.
             Supported filter fields:
 
-            -  ``state_info.state``
+            - ``state_info.state``
 
-            -  ``recommenderSubtype``
+            - ``recommenderSubtype``
 
-            -  ``priority``
+            - ``priority``
 
-            -  ``targetResources``
+            - ``targetResources``
 
             Examples:
 
-            -  ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
+            - ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
 
-            -  ``recommenderSubtype = REMOVE_ROLE OR recommenderSubtype = REPLACE_ROLE``
+            - ``recommenderSubtype = REMOVE_ROLE OR recommenderSubtype = REPLACE_ROLE``
 
-            -  ``priority = P1 OR priority = P2``
+            - ``priority = P1 OR priority = P2``
 
-            -  ``targetResources : //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1``
+            - ``targetResources : //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1``
 
-            -  ``stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)``
+            - ``stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)``
 
             The max allowed filter length is 500 characters.
 
@@ -449,13 +449,13 @@ class GetRecommenderConfigRequest(proto.Message):
 
             Acceptable formats:
 
-            -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+            - ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
 
-            -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+            - ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
 
-            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+            - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
 
-            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+            - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
     """
 
     name: str = proto.Field(
@@ -502,13 +502,13 @@ class GetInsightTypeConfigRequest(proto.Message):
 
             Acceptable formats:
 
-            -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+            - ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-            -  ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+            - ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+            - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+            - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
     """
 
     name: str = proto.Field(

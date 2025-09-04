@@ -64,8 +64,8 @@ class RestorePlan(proto.Message):
             cluster's region must be the same as the RestorePlan. Valid
             formats:
 
-            -  ``projects/*/locations/*/clusters/*``
-            -  ``projects/*/zones/*/clusters/*``
+            - ``projects/*/locations/*/clusters/*``
+            - ``projects/*/zones/*/clusters/*``
         restore_config (google.cloud.gke_backup_v1.types.RestoreConfig):
             Required. Configuration of Restores created
             via this RestorePlan.

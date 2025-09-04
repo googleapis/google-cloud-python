@@ -791,10 +791,10 @@ class PolicyBindingsClient(metaclass=PolicyBindingsClientMeta):
 
                 Format:
 
-                -  ``projects/{project_id}/locations/{location}``
-                -  ``projects/{project_number}/locations/{location}``
-                -  ``folders/{folder_id}/locations/{location}``
-                -  ``organizations/{organization_id}/locations/{location}``
+                - ``projects/{project_id}/locations/{location}``
+                - ``projects/{project_number}/locations/{location}``
+                - ``folders/{folder_id}/locations/{location}``
+                - ``organizations/{organization_id}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -941,10 +941,10 @@ class PolicyBindingsClient(metaclass=PolicyBindingsClientMeta):
 
                 Format:
 
-                -  ``projects/{project_id}/locations/{location}/policyBindings/{policy_binding_id}``
-                -  ``projects/{project_number}/locations/{location}/policyBindings/{policy_binding_id}``
-                -  ``folders/{folder_id}/locations/{location}/policyBindings/{policy_binding_id}``
-                -  ``organizations/{organization_id}/locations/{location}/policyBindings/{policy_binding_id}``
+                - ``projects/{project_id}/locations/{location}/policyBindings/{policy_binding_id}``
+                - ``projects/{project_number}/locations/{location}/policyBindings/{policy_binding_id}``
+                - ``folders/{folder_id}/locations/{location}/policyBindings/{policy_binding_id}``
+                - ``organizations/{organization_id}/locations/{location}/policyBindings/{policy_binding_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1211,10 +1211,10 @@ class PolicyBindingsClient(metaclass=PolicyBindingsClientMeta):
 
                 Format:
 
-                -  ``projects/{project_id}/locations/{location}/policyBindings/{policy_binding_id}``
-                -  ``projects/{project_number}/locations/{location}/policyBindings/{policy_binding_id}``
-                -  ``folders/{folder_id}/locations/{location}/policyBindings/{policy_binding_id}``
-                -  ``organizations/{organization_id}/locations/{location}/policyBindings/{policy_binding_id}``
+                - ``projects/{project_id}/locations/{location}/policyBindings/{policy_binding_id}``
+                - ``projects/{project_number}/locations/{location}/policyBindings/{policy_binding_id}``
+                - ``folders/{folder_id}/locations/{location}/policyBindings/{policy_binding_id}``
+                - ``organizations/{organization_id}/locations/{location}/policyBindings/{policy_binding_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1347,10 +1347,10 @@ class PolicyBindingsClient(metaclass=PolicyBindingsClientMeta):
 
                 Format:
 
-                -  ``projects/{project_id}/locations/{location}``
-                -  ``projects/{project_number}/locations/{location}``
-                -  ``folders/{folder_id}/locations/{location}``
-                -  ``organizations/{organization_id}/locations/{location}``
+                - ``projects/{project_id}/locations/{location}``
+                - ``projects/{project_number}/locations/{location}``
+                - ``folders/{folder_id}/locations/{location}``
+                - ``organizations/{organization_id}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1484,10 +1484,10 @@ class PolicyBindingsClient(metaclass=PolicyBindingsClientMeta):
 
                 Format:
 
-                -  ``projects/{project_id}/locations/{location}``
-                -  ``projects/{project_number}/locations/{location}``
-                -  ``folders/{folder_id}/locations/{location}``
-                -  ``organizations/{organization_id}/locations/{location}``
+                - ``projects/{project_id}/locations/{location}``
+                - ``projects/{project_number}/locations/{location}``
+                - ``folders/{folder_id}/locations/{location}``
+                - ``organizations/{organization_id}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1498,12 +1498,12 @@ class PolicyBindingsClient(metaclass=PolicyBindingsClientMeta):
 
                 Format:
 
-                -  ``//iam.googleapis.com/locations/global/workforcePools/POOL_ID``
-                -  ``//iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID``
-                -  ``//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID``
-                -  ``//cloudresourcemanager.googleapis.com/projects/{project_number}``
-                -  ``//cloudresourcemanager.googleapis.com/folders/{folder_id}``
-                -  ``//cloudresourcemanager.googleapis.com/organizations/{organization_id}``
+                - ``//iam.googleapis.com/locations/global/workforcePools/POOL_ID``
+                - ``//iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID``
+                - ``//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID``
+                - ``//cloudresourcemanager.googleapis.com/projects/{project_number}``
+                - ``//cloudresourcemanager.googleapis.com/folders/{folder_id}``
+                - ``//cloudresourcemanager.googleapis.com/organizations/{organization_id}``
 
                 This corresponds to the ``target`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -28,7 +28,6 @@ from typing import (
     Type,
     Union,
 )
-import uuid
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1

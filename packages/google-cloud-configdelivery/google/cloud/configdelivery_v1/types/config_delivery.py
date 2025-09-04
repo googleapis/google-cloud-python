@@ -408,13 +408,13 @@ class FleetPackage(proto.Message):
             both the user and by Config Delivery. Labels must meet the
             following constraints:
 
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes.
-            -  All characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  Keys must start with a lowercase letter or international
-               character.
-            -  Each resource is limited to a maximum of 64 labels.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes.
+            - All characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - Keys must start with a lowercase letter or international
+              character.
+            - Each resource is limited to a maximum of 64 labels.
 
             Both keys and values are additionally constrained to be <=
             128 bytes.

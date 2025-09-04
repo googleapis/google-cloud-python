@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-conversions-v0.1.10...google-shopping-merchant-conversions-v1.0.0) (2025-08-29)
+
+
+### Features
+
+* set `google.shopping.merchant_conversions_v1` as the default import for `google.shopping.merchant_conversions` ([f8d055c](https://github.com/googleapis/google-cloud-python/commit/f8d055c21bb6edf4d7ca1a77787fa3764f93fb4b))
+* update release level to stable ([f8d055c](https://github.com/googleapis/google-cloud-python/commit/f8d055c21bb6edf4d7ca1a77787fa3764f93fb4b))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-conversions-v0.1.9...google-shopping-merchant-conversions-v0.1.10) (2025-08-06)
 
 

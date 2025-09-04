@@ -783,7 +783,7 @@ class DataSourcesServiceClient(metaclass=DataSourcesServiceClientMeta):
 
         Returns:
             google.shopping.merchant_datasources_v1beta.types.DataSource:
-                The [data source](\ https://support.google.com/merchants/answer/7439058) for
+                The [data source](https://support.google.com/merchants/answer/7439058) for
                    the Merchant Center account.
 
         """
@@ -1026,7 +1026,7 @@ class DataSourcesServiceClient(metaclass=DataSourcesServiceClientMeta):
 
         Returns:
             google.shopping.merchant_datasources_v1beta.types.DataSource:
-                The [data source](\ https://support.google.com/merchants/answer/7439058) for
+                The [data source](https://support.google.com/merchants/answer/7439058) for
                    the Merchant Center account.
 
         """
@@ -1139,7 +1139,7 @@ class DataSourcesServiceClient(metaclass=DataSourcesServiceClientMeta):
                 specified in the body will be deleted from the data
                 source.
 
-                Providing special "*" value for full data source
+                Providing special "\*" value for full data source
                 replacement is not supported.
 
                 This corresponds to the ``update_mask`` field
@@ -1155,7 +1155,7 @@ class DataSourcesServiceClient(metaclass=DataSourcesServiceClientMeta):
 
         Returns:
             google.shopping.merchant_datasources_v1beta.types.DataSource:
-                The [data source](\ https://support.google.com/merchants/answer/7439058) for
+                The [data source](https://support.google.com/merchants/answer/7439058) for
                    the Merchant Center account.
 
         """

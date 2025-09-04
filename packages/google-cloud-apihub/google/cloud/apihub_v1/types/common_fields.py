@@ -483,11 +483,11 @@ class Spec(proto.Message):
         r"""Specifies the parsing mode for API specifications during creation
         and update.
 
-        -  ``RELAXED``: Parsing errors in the specification content do not
-           fail the API call.
-        -  ``STRICT``: Parsing errors in the specification content result in
-           failure of the API call. If not specified, defaults to
-           ``RELAXED``.
+        - ``RELAXED``: Parsing errors in the specification content do not
+          fail the API call.
+        - ``STRICT``: Parsing errors in the specification content result in
+          failure of the API call. If not specified, defaults to
+          ``RELAXED``.
 
         Values:
             PARSING_MODE_UNSPECIFIED (0):
@@ -993,13 +993,13 @@ class Attribute(proto.Message):
             id (str):
                 Required. The ID of the allowed value.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another allowed value in the same attribute resource.
-                -  If not provided, a system generated id derived from the
-                   display name will be used. In this case, the service will
-                   handle conflict resolution by adding a system generated
-                   suffix in case of duplicates.
+                - If provided, the same will be used. The service will throw
+                  an error if the specified id is already used by another
+                  allowed value in the same attribute resource.
+                - If not provided, a system generated id derived from the
+                  display name will be used. In this case, the service will
+                  handle conflict resolution by adding a system generated
+                  suffix in case of duplicates.
 
                 This value should be 4-63 characters, and valid characters
                 are /[a-z][0-9]-/.

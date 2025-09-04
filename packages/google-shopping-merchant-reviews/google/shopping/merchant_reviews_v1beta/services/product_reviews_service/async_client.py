@@ -363,7 +363,7 @@ class ProductReviewsServiceAsyncClient:
             google.shopping.merchant_reviews_v1beta.types.ProductReview:
                 A review for a product. For more information, see
                    [Introduction to Product Review
-                   Feeds](\ https://developers.google.com/product-review-feeds)
+                   Feeds](https://developers.google.com/product-review-feeds)
 
         """
         # Create or coerce a protobuf request object.
@@ -599,7 +599,7 @@ class ProductReviewsServiceAsyncClient:
             google.shopping.merchant_reviews_v1beta.types.ProductReview:
                 A review for a product. For more information, see
                    [Introduction to Product Review
-                   Feeds](\ https://developers.google.com/product-review-feeds)
+                   Feeds](https://developers.google.com/product-review-feeds)
 
         """
         # Create or coerce a protobuf request object.

@@ -883,10 +883,10 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 Required. The name of the session this query is sent to.
                 Supported formats:
 
-                -  \`projects//agent/sessions/,
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                - \`projects//agent/sessions/,
+                - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+                - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+                - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
@@ -1089,12 +1089,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
                    However, note that:
 
-                   -  Dialogflow will bill you for the audio duration so
-                      far.
-                   -  Dialogflow discards all Speech recognition results
-                      in favor of the input text.
-                   -  Dialogflow will use the language code from the
-                      first message.
+                   - Dialogflow will bill you for the audio duration so
+                     far.
+                   - Dialogflow discards all Speech recognition results
+                     in favor of the input text.
+                   - Dialogflow will use the language code from the
+                     first message.
 
                 After you sent all input, you must half-close or abort
                 the request stream.

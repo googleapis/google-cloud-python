@@ -70,10 +70,10 @@ class GrpcRoute(proto.Message):
             host. This matches the RFC 1123 definition of a hostname
             with 2 notable exceptions:
 
-            -  IPs are not allowed.
-            -  A hostname may be prefixed with a wildcard label
-               (``*.``). The wildcard label must appear by itself as the
-               first label.
+            - IPs are not allowed.
+            - A hostname may be prefixed with a wildcard label (``*.``).
+              The wildcard label must appear by itself as the first
+              label.
 
             Hostname can be "precise" which is a domain name without the
             terminating dot of a network host (e.g. ``foo.example.com``)
@@ -445,20 +445,20 @@ class GrpcRoute(proto.Message):
 
         Attributes:
             retry_conditions (MutableSequence[str]):
-                -  connect-failure: Router will retry on failures connecting
-                   to Backend Services, for example due to connection
-                   timeouts.
-                -  refused-stream: Router will retry if the backend service
-                   resets the stream with a REFUSED_STREAM error code. This
-                   reset type indicates that it is safe to retry.
-                -  cancelled: Router will retry if the gRPC status code in
-                   the response header is set to cancelled
-                -  deadline-exceeded: Router will retry if the gRPC status
-                   code in the response header is set to deadline-exceeded
-                -  resource-exhausted: Router will retry if the gRPC status
-                   code in the response header is set to resource-exhausted
-                -  unavailable: Router will retry if the gRPC status code in
-                   the response header is set to unavailable
+                - connect-failure: Router will retry on failures connecting
+                  to Backend Services, for example due to connection
+                  timeouts.
+                - refused-stream: Router will retry if the backend service
+                  resets the stream with a REFUSED_STREAM error code. This
+                  reset type indicates that it is safe to retry.
+                - cancelled: Router will retry if the gRPC status code in
+                  the response header is set to cancelled
+                - deadline-exceeded: Router will retry if the gRPC status
+                  code in the response header is set to deadline-exceeded
+                - resource-exhausted: Router will retry if the gRPC status
+                  code in the response header is set to resource-exhausted
+                - unavailable: Router will retry if the gRPC status code in
+                  the response header is set to unavailable
             num_retries (int):
                 Specifies the allowed number of retries. This
                 number must be > 0. If not specified, default to

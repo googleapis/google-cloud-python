@@ -1568,10 +1568,10 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [RunTestCaseMetadata][google.cloud.dialogflow.cx.v3beta1.RunTestCaseMetadata]
-        -  ``response``:
-           [RunTestCaseResponse][google.cloud.dialogflow.cx.v3beta1.RunTestCaseResponse]
+        - ``metadata``:
+          [RunTestCaseMetadata][google.cloud.dialogflow.cx.v3beta1.RunTestCaseMetadata]
+        - ``response``:
+          [RunTestCaseResponse][google.cloud.dialogflow.cx.v3beta1.RunTestCaseResponse]
 
         .. code-block:: python
 
@@ -1676,10 +1676,10 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [BatchRunTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesMetadata]
-        -  ``response``:
-           [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesResponse]
+        - ``metadata``:
+          [BatchRunTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesMetadata]
+        - ``response``:
+          [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesResponse]
 
         .. code-block:: python
 
@@ -1873,10 +1873,10 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ImportTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.ImportTestCasesMetadata]
-        -  ``response``:
-           [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ImportTestCasesResponse]
+        - ``metadata``:
+          [ImportTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.ImportTestCasesMetadata]
+        - ``response``:
+          [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ImportTestCasesResponse]
 
         .. code-block:: python
 
@@ -1984,10 +1984,10 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ExportTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesMetadata]
-        -  ``response``:
-           [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesResponse]
+        - ``metadata``:
+          [ExportTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesMetadata]
+        - ``response``:
+          [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesResponse]
 
         .. code-block:: python
 

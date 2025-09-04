@@ -553,8 +553,8 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
 
     The ClientGatewaysService exposes the following resources:
 
-    -  Client Gateways, named as follows:
-       ``projects/{project_id}/locations/{location_id}/clientGateways/{client_gateway_id}``.
+    - Client Gateways, named as follows:
+      ``projects/{project_id}/locations/{location_id}/clientGateways/{client_gateway_id}``.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

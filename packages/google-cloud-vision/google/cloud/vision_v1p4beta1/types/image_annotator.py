@@ -1599,16 +1599,16 @@ class GcsDestination(proto.Message):
 
             Examples:
 
-            -  File Prefix: gs://bucket-name/here/filenameprefix The
-               output files will be created in gs://bucket-name/here/
-               and the names of the output files will begin with
-               "filenameprefix".
+            - File Prefix: gs://bucket-name/here/filenameprefix The
+              output files will be created in gs://bucket-name/here/ and
+              the names of the output files will begin with
+              "filenameprefix".
 
-            -  Directory Prefix: gs://bucket-name/some/location/ The
-               output files will be created in
-               gs://bucket-name/some/location/ and the names of the
-               output files could be anything because there was no
-               filename prefix specified.
+            - Directory Prefix: gs://bucket-name/some/location/ The
+              output files will be created in
+              gs://bucket-name/some/location/ and the names of the
+              output files could be anything because there was no
+              filename prefix specified.
 
             If multiple outputs, each response is still
             AnnotateFileResponse, each of which contains some subset of

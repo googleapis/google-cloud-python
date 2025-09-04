@@ -422,11 +422,11 @@ class FetchBackupPlanAssociationsForResourceTypeRequest(proto.Message):
             field name, a comparison operator, and the value that you
             want to use for filtering. Supported fields:
 
-            -  resource
-            -  backup_plan
-            -  state
-            -  data_source
-            -  cloud_sql_instance_backup_plan_association_properties.instance_create_time
+            - resource
+            - backup_plan
+            - state
+            - data_source
+            - cloud_sql_instance_backup_plan_association_properties.instance_create_time
         order_by (str):
             Optional. A comma-separated list of fields to order by,
             sorted in ascending order. Use "desc" after a field name for
@@ -434,7 +434,7 @@ class FetchBackupPlanAssociationsForResourceTypeRequest(proto.Message):
 
             Supported fields:
 
-            -  name
+            - name
     """
 
     parent: str = proto.Field(

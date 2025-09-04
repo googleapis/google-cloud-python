@@ -877,7 +877,7 @@ class HomepageServiceClient(metaclass=HomepageServiceClientMeta):
                 The following fields are supported (in both
                 ``snake_case`` and ``lowerCamelCase``):
 
-                -  ``uri``
+                - ``uri``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

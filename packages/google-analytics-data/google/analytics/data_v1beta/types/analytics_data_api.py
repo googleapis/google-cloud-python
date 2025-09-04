@@ -247,7 +247,7 @@ class RunReportRequest(proto.Message):
         metric_aggregations (MutableSequence[google.analytics.data_v1beta.types.MetricAggregation]):
             Aggregation of metrics. Aggregated metric values will be
             shown in rows where the dimension_values are set to
-            "RESERVED_(MetricAggregation)". Aggregates including both
+            "RESERVED\_(MetricAggregation)". Aggregates including both
             comparisons and multiple date ranges will be aggregated
             based on the date ranges.
         order_bys (MutableSequence[google.analytics.data_v1beta.types.OrderBy]):
@@ -881,7 +881,7 @@ class RunRealtimeReportRequest(proto.Message):
         metric_aggregations (MutableSequence[google.analytics.data_v1beta.types.MetricAggregation]):
             Aggregation of metrics. Aggregated metric values will be
             shown in rows where the dimension_values are set to
-            "RESERVED_(MetricAggregation)".
+            "RESERVED\_(MetricAggregation)".
         order_bys (MutableSequence[google.analytics.data_v1beta.types.OrderBy]):
             Specifies how rows are ordered in the
             response.

@@ -373,7 +373,7 @@ class Document(proto.Message):
                     uses. For example, 0 (CV_8U) is an unsigned 8-bit image. For
                     the full list of OpenCV primitive data types, please refer
                     to
-                    https://docs.opencv.org/4.3.0/d1/d1b/group__core__hal__interface.html
+                    https://docs.opencv.org/4.3.0/d1/d1b/group\__core\__hal\__interface.html
                 data (bytes):
                     The matrix data.
             """
@@ -629,7 +629,7 @@ class Document(proto.Message):
                         Font size in pixels, equal to *unrounded
                         [font_size][google.cloud.documentai.v1beta3.Document.Page.Token.StyleInfo.font_size]*
 
-                        -  *resolution* ÷ ``72.0``.
+                        - *resolution* ÷ ``72.0``.
                     letter_spacing (float):
                         Letter spacing in points.
                     font_type (str):
@@ -946,9 +946,9 @@ class Document(proto.Message):
                     If the value is non-textual, this field represents the type.
                     Current valid values are:
 
-                    -  blank (this indicates the ``field_value`` is normal text)
-                    -  ``unfilled_checkbox``
-                    -  ``filled_checkbox``
+                    - blank (this indicates the ``field_value`` is normal text)
+                    - ``unfilled_checkbox``
+                    - ``filled_checkbox``
                 corrected_key_text (str):
                     Created for Labeling UI to export key text. If corrections
                     were made to the text identified by the
@@ -1068,14 +1068,14 @@ class Document(proto.Message):
                     type_ (str):
                         Name of the defect type. Supported values are:
 
-                        -  ``quality/defect_blurry``
-                        -  ``quality/defect_noisy``
-                        -  ``quality/defect_dark``
-                        -  ``quality/defect_faint``
-                        -  ``quality/defect_text_too_small``
-                        -  ``quality/defect_document_cutoff``
-                        -  ``quality/defect_text_cutoff``
-                        -  ``quality/defect_glare``
+                        - ``quality/defect_blurry``
+                        - ``quality/defect_noisy``
+                        - ``quality/defect_dark``
+                        - ``quality/defect_faint``
+                        - ``quality/defect_text_too_small``
+                        - ``quality/defect_document_cutoff``
+                        - ``quality/defect_text_cutoff``
+                        - ``quality/defect_glare``
                     confidence (float):
                         Confidence of detected defect. Range ``[0, 1]`` where ``1``
                         indicates strong confidence that the defect exists.
@@ -1294,12 +1294,11 @@ class Document(proto.Message):
 
                     Below are sample formats mapped to structured values.
 
-                    -  Money/Currency type (``money_value``) is in the ISO 4217
-                       text format.
-                    -  Date type (``date_value``) is in the ISO 8601 text
-                       format.
-                    -  Datetime type (``datetime_value``) is in the ISO 8601
-                       text format.
+                    - Money/Currency type (``money_value``) is in the ISO 4217
+                      text format.
+                    - Date type (``date_value``) is in the ISO 8601 text format.
+                    - Datetime type (``datetime_value``) is in the ISO 8601 text
+                      format.
             """
 
             money_value: money_pb2.Money = proto.Field(

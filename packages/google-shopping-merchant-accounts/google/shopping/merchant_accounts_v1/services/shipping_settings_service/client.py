@@ -788,7 +788,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         Returns:
             google.shopping.merchant_accounts_v1.types.ShippingSettings:
                 The Merchant Center account's [shipping
-                   settings](\ https://support.google.com/merchants/answer/6069284).
+                   settings](https://support.google.com/merchants/answer/6069284).
                    The ShippingSettings resource lets you retrieve and
                    update the shipping settings of your advanced account
                    and all its associated sub-accounts.
@@ -899,7 +899,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         Returns:
             google.shopping.merchant_accounts_v1.types.ShippingSettings:
                 The Merchant Center account's [shipping
-                   settings](\ https://support.google.com/merchants/answer/6069284).
+                   settings](https://support.google.com/merchants/answer/6069284).
                    The ShippingSettings resource lets you retrieve and
                    update the shipping settings of your advanced account
                    and all its associated sub-accounts.

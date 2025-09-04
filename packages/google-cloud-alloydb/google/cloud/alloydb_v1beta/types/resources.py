@@ -620,7 +620,7 @@ class BackupSource(proto.Message):
         backup_name (str):
             Required. The name of the backup resource with the format:
 
-            -  projects/{project}/locations/{region}/backups/{backup_id}
+            - projects/{project}/locations/{region}/backups/{backup_id}
     """
 
     backup_uid: str = proto.Field(
@@ -705,19 +705,19 @@ class MaintenanceUpdatePolicy(proto.Message):
             start_date (google.type.date_pb2.Date):
                 Deny period start date. This can be:
 
-                -  A full date, with non-zero year, month and day values OR
-                -  A month and day value, with a zero year for recurring
+                - A full date, with non-zero year, month and day values OR
+                - A month and day value, with a zero year for recurring
             end_date (google.type.date_pb2.Date):
                 Deny period end date. This can be:
 
-                -  A full date, with non-zero year, month and day values OR
-                -  A month and day value, with a zero year for recurring
+                - A full date, with non-zero year, month and day values OR
+                - A month and day value, with a zero year for recurring
             time (google.type.timeofday_pb2.TimeOfDay):
                 Time in UTC when the deny period starts on start_date and
                 ends on end_date. This can be:
 
-                -  Full time OR
-                -  All zeros for 00:00:00 UTC
+                - Full time OR
+                - All zeros for 00:00:00 UTC
         """
 
         start_date: date_pb2.Date = proto.Field(
@@ -803,12 +803,12 @@ class Cluster(proto.Message):
             Output only. The name of the cluster resource with the
             format:
 
-            -  projects/{project}/locations/{region}/clusters/{cluster_id}
-               where the cluster ID segment should satisfy the regex
-               expression ``[a-z0-9-]+``. For more details see
-               https://google.aip.dev/122. The prefix of the cluster
-               resource name is the name of the parent resource:
-            -  projects/{project}/locations/{region}
+            - projects/{project}/locations/{region}/clusters/{cluster_id}
+              where the cluster ID segment should satisfy the regex
+              expression ``[a-z0-9-]+``. For more details see
+              https://google.aip.dev/122. The prefix of the cluster
+              resource name is the name of the parent resource:
+            - projects/{project}/locations/{region}
         display_name (str):
             User-settable and human-readable display name
             for the Cluster.
@@ -1046,7 +1046,7 @@ class Cluster(proto.Message):
             primary_cluster_name (str):
                 The name of the primary cluster name with the format:
 
-                -  projects/{project}/locations/{region}/clusters/{cluster_id}
+                - projects/{project}/locations/{region}/clusters/{cluster_id}
         """
 
         primary_cluster_name: str = proto.Field(
@@ -1318,15 +1318,15 @@ class Instance(proto.Message):
             Output only. The name of the instance resource with the
             format:
 
-            -  projects/{project}/locations/{region}/clusters/{cluster_id}/instances/{instance_id}
-               where the cluster and instance ID segments should satisfy
-               the regex expression ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``,
-               e.g. 1-63 characters of lowercase letters, numbers, and
-               dashes, starting with a letter, and ending with a letter
-               or number. For more details see
-               https://google.aip.dev/122. The prefix of the instance
-               resource name is the name of the parent resource:
-            -  projects/{project}/locations/{region}/clusters/{cluster_id}
+            - projects/{project}/locations/{region}/clusters/{cluster_id}/instances/{instance_id}
+              where the cluster and instance ID segments should satisfy
+              the regex expression ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``,
+              e.g. 1-63 characters of lowercase letters, numbers, and
+              dashes, starting with a letter, and ending with a letter
+              or number. For more details see
+              https://google.aip.dev/122. The prefix of the instance
+              resource name is the name of the parent resource:
+            - projects/{project}/locations/{region}/clusters/{cluster_id}
         display_name (str):
             User-settable and human-readable display name
             for the Instance.
@@ -1519,10 +1519,10 @@ class Instance(proto.Message):
                 READ POOL instances support read operations only. Each read
                 pool instance consists of one or more homogeneous nodes.
 
-                -  Read pool of size 1 can only have zonal availability.
-                -  Read pools with node count of 2 or more can have regional
-                   availability (nodes are present in 2 or more zones in a
-                   region).
+                - Read pool of size 1 can only have zonal availability.
+                - Read pools with node count of 2 or more can have regional
+                  availability (nodes are present in 2 or more zones in a
+                  region).
             SECONDARY (3):
                 SECONDARY instances support read operations
                 only. SECONDARY instance is a cross-region read
@@ -2283,7 +2283,7 @@ class ConnectionInfo(proto.Message):
     Attributes:
         name (str):
             The name of the ConnectionInfo singleton resource, e.g.:
-            projects/{project}/locations/{location}/clusters/\ */instances/*/connectionInfo
+            projects/{project}/locations/{location}/clusters/*/instances/*/connectionInfo
             This field currently has no semantic meaning.
         ip_address (str):
             Output only. The private network IP address for the
@@ -2340,15 +2340,15 @@ class Backup(proto.Message):
             Output only. The name of the backup resource with the
             format:
 
-            -  projects/{project}/locations/{region}/backups/{backup_id}
-               where the cluster and backup ID segments should satisfy
-               the regex expression ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``,
-               e.g. 1-63 characters of lowercase letters, numbers, and
-               dashes, starting with a letter, and ending with a letter
-               or number. For more details see
-               https://google.aip.dev/122. The prefix of the backup
-               resource name is the name of the parent resource:
-            -  projects/{project}/locations/{region}
+            - projects/{project}/locations/{region}/backups/{backup_id}
+              where the cluster and backup ID segments should satisfy
+              the regex expression ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``,
+              e.g. 1-63 characters of lowercase letters, numbers, and
+              dashes, starting with a letter, and ending with a letter
+              or number. For more details see
+              https://google.aip.dev/122. The prefix of the backup
+              resource name is the name of the parent resource:
+            - projects/{project}/locations/{region}
         display_name (str):
             User-settable and human-readable display name
             for the Backup.
@@ -2666,8 +2666,8 @@ class SupportedDatabaseFlag(proto.Message):
             The name of the flag resource, following Google Cloud
             conventions, e.g.:
 
-            -  projects/{project}/locations/{location}/flags/{flag} This
-               field currently has no semantic meaning.
+            - projects/{project}/locations/{location}/flags/{flag} This
+              field currently has no semantic meaning.
         flag_name (str):
             The name of the database flag, e.g. "max_allowed_packets".
             The is a possibly key for the Instance.database_flags map

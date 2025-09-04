@@ -368,7 +368,7 @@ class ServingConfigServiceAsyncClient:
                 [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig]
                 to update. The following are NOT supported:
 
-                -  [ServingConfig.name][google.cloud.discoveryengine.v1beta.ServingConfig.name]
+                - [ServingConfig.name][google.cloud.discoveryengine.v1beta.ServingConfig.name]
 
                 If not set, all supported fields are updated.
 

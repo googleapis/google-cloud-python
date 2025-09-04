@@ -496,7 +496,7 @@ class KnowledgeBasesAsyncClient:
                    response to an end-user input.
 
                    For more information, see the [knowledge base
-                   guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
+                   guide](https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
 
                    Note: The projects.agent.knowledgeBases resource is
                    deprecated; only use projects.knowledgeBases.
@@ -635,7 +635,7 @@ class KnowledgeBasesAsyncClient:
                    response to an end-user input.
 
                    For more information, see the [knowledge base
-                   guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
+                   guide](https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
 
                    Note: The projects.agent.knowledgeBases resource is
                    deprecated; only use projects.knowledgeBases.
@@ -880,7 +880,7 @@ class KnowledgeBasesAsyncClient:
                    response to an end-user input.
 
                    For more information, see the [knowledge base
-                   guide](\ https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
+                   guide](https://cloud.google.com/dialogflow/docs/how/knowledge-bases).
 
                    Note: The projects.agent.knowledgeBases resource is
                    deprecated; only use projects.knowledgeBases.

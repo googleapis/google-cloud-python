@@ -114,7 +114,7 @@ class GbpAccountsServiceClient(metaclass=GbpAccountsServiceClientMeta):
     Business Profile (GBP) account settings. This API defines the
     following resource model:
 
-    -  [GbpAccount][google.shopping.merchant.accounts.v1.GbpAccount]
+    - [GbpAccount][google.shopping.merchant.accounts.v1.GbpAccount]
     """
 
     @staticmethod

@@ -172,8 +172,8 @@ class ListConversationsRequest(proto.Message):
             specified within the filter. ListConversations allows
             filtering by:
 
-            -  agent_id
-            -  labels
+            - agent_id
+            - labels
     """
 
     parent: str = proto.Field(

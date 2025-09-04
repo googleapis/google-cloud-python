@@ -528,7 +528,7 @@ def test_handle_release_init_fail():
         handle_release_init()
 
 
-def test_read_valid_file(mocker):
+def test_read_valid_text_file(mocker):
     """Tests reading a valid text file."""
     mock_content = "some text"
     mocker.patch("builtins.open", mocker.mock_open(read_data=mock_content))

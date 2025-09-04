@@ -95,18 +95,18 @@ class ListCasesRequest(proto.Message):
             Expressions use the following fields separated by ``AND``
             and specified with ``=``:
 
-            -  ``state``: Can be ``OPEN`` or ``CLOSED``.
-            -  ``priority``: Can be ``P0``, ``P1``, ``P2``, ``P3``, or
-               ``P4``. You can specify multiple values for priority
-               using the ``OR`` operator. For example,
-               ``priority=P1 OR priority=P2``.
-            -  ``creator.email``: The email address of the case creator.
+            - ``state``: Can be ``OPEN`` or ``CLOSED``.
+            - ``priority``: Can be ``P0``, ``P1``, ``P2``, ``P3``, or
+              ``P4``. You can specify multiple values for priority using
+              the ``OR`` operator. For example,
+              ``priority=P1 OR priority=P2``.
+            - ``creator.email``: The email address of the case creator.
 
             EXAMPLES:
 
-            -  ``state=CLOSED``
-            -  ``state=OPEN AND creator.email="tester@example.com"``
-            -  ``state=OPEN AND (priority=P0 OR priority=P1)``
+            - ``state=CLOSED``
+            - ``state=OPEN AND creator.email="tester@example.com"``
+            - ``state=OPEN AND (priority=P0 OR priority=P1)``
         page_size (int):
             The maximum number of cases fetched with each
             request. Defaults to 10.
@@ -176,16 +176,16 @@ class SearchCasesRequest(proto.Message):
             Expressions use the following fields separated by ``AND``
             and specified with ``=``:
 
-            -  ``organization``: An organization name in the form
-               ``organizations/<organization_id>``.
-            -  ``project``: A project name in the form
-               ``projects/<project_id>``.
-            -  ``state``: Can be ``OPEN`` or ``CLOSED``.
-            -  ``priority``: Can be ``P0``, ``P1``, ``P2``, ``P3``, or
-               ``P4``. You can specify multiple values for priority
-               using the ``OR`` operator. For example,
-               ``priority=P1 OR priority=P2``.
-            -  ``creator.email``: The email address of the case creator.
+            - ``organization``: An organization name in the form
+              ``organizations/<organization_id>``.
+            - ``project``: A project name in the form
+              ``projects/<project_id>``.
+            - ``state``: Can be ``OPEN`` or ``CLOSED``.
+            - ``priority``: Can be ``P0``, ``P1``, ``P2``, ``P3``, or
+              ``P4``. You can specify multiple values for priority using
+              the ``OR`` operator. For example,
+              ``priority=P1 OR priority=P2``.
+            - ``creator.email``: The email address of the case creator.
 
             You must specify either ``organization`` or ``project``.
 
@@ -201,12 +201,12 @@ class SearchCasesRequest(proto.Message):
 
             Examples:
 
-            -  ``organization="organizations/123456789"``
-            -  ``project="projects/my-project-id"``
-            -  ``project="projects/123456789"``
-            -  ``organization="organizations/123456789" AND state=CLOSED``
-            -  ``project="projects/my-project-id" AND creator.email="tester@example.com"``
-            -  ``project="projects/my-project-id" AND (priority=P0 OR priority=P1)``
+            - ``organization="organizations/123456789"``
+            - ``project="projects/my-project-id"``
+            - ``project="projects/123456789"``
+            - ``organization="organizations/123456789" AND state=CLOSED``
+            - ``project="projects/my-project-id" AND creator.email="tester@example.com"``
+            - ``project="projects/my-project-id" AND (priority=P0 OR priority=P1)``
         page_size (int):
             The maximum number of cases fetched with each
             request. The default page size is 10.

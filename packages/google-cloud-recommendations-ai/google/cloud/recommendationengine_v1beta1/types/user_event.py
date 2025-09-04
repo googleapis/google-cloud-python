@@ -44,24 +44,24 @@ class UserEvent(proto.Message):
         event_type (str):
             Required. User event type. Allowed values are:
 
-            -  ``add-to-cart`` Products being added to cart.
-            -  ``add-to-list`` Items being added to a list (shopping
-               list, favorites etc).
-            -  ``category-page-view`` Special pages such as sale or
-               promotion pages viewed.
-            -  ``checkout-start`` User starting a checkout process.
-            -  ``detail-page-view`` Products detail page viewed.
-            -  ``home-page-view`` Homepage viewed.
-            -  ``page-visit`` Generic page visits not included in the
-               event types above.
-            -  ``purchase-complete`` User finishing a purchase.
-            -  ``refund`` Purchased items being refunded or returned.
-            -  ``remove-from-cart`` Products being removed from cart.
-            -  ``remove-from-list`` Items being removed from a list.
-            -  ``search`` Product search.
-            -  ``shopping-cart-page-view`` User viewing a shopping cart.
-            -  ``impression`` List of items displayed. Used by Google
-               Tag Manager.
+            - ``add-to-cart`` Products being added to cart.
+            - ``add-to-list`` Items being added to a list (shopping
+              list, favorites etc).
+            - ``category-page-view`` Special pages such as sale or
+              promotion pages viewed.
+            - ``checkout-start`` User starting a checkout process.
+            - ``detail-page-view`` Products detail page viewed.
+            - ``home-page-view`` Homepage viewed.
+            - ``page-visit`` Generic page visits not included in the
+              event types above.
+            - ``purchase-complete`` User finishing a purchase.
+            - ``refund`` Purchased items being refunded or returned.
+            - ``remove-from-cart`` Products being removed from cart.
+            - ``remove-from-list`` Items being removed from a list.
+            - ``search`` Product search.
+            - ``shopping-cart-page-view`` User viewing a shopping cart.
+            - ``impression`` List of items displayed. Used by Google Tag
+              Manager.
         user_info (google.cloud.recommendationengine_v1beta1.types.UserInfo):
             Required. User information.
         event_detail (google.cloud.recommendationengine_v1beta1.types.EventDetail):
@@ -72,27 +72,27 @@ class UserEvent(proto.Message):
 
             This field is required for the following event types:
 
-            -  ``add-to-cart``
-            -  ``add-to-list``
-            -  ``category-page-view``
-            -  ``checkout-start``
-            -  ``detail-page-view``
-            -  ``purchase-complete``
-            -  ``refund``
-            -  ``remove-from-cart``
-            -  ``remove-from-list``
-            -  ``search``
+            - ``add-to-cart``
+            - ``add-to-list``
+            - ``category-page-view``
+            - ``checkout-start``
+            - ``detail-page-view``
+            - ``purchase-complete``
+            - ``refund``
+            - ``remove-from-cart``
+            - ``remove-from-list``
+            - ``search``
 
             This field is optional for the following event types:
 
-            -  ``page-visit``
-            -  ``shopping-cart-page-view`` - note that
-               'product_event_detail' should be set for this unless the
-               shopping cart is empty.
+            - ``page-visit``
+            - ``shopping-cart-page-view`` - note that
+              'product_event_detail' should be set for this unless the
+              shopping cart is empty.
 
             This field is not allowed for the following event types:
 
-            -  ``home-page-view``
+            - ``home-page-view``
         event_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Only required for ImportUserEvents
             method. Timestamp of user event created.
@@ -323,26 +323,26 @@ class ProductEventDetail(proto.Message):
 
             This field is required for the following event types:
 
-            -  ``add-to-cart``
-            -  ``add-to-list``
-            -  ``checkout-start``
-            -  ``detail-page-view``
-            -  ``purchase-complete``
-            -  ``refund``
-            -  ``remove-from-cart``
-            -  ``remove-from-list``
+            - ``add-to-cart``
+            - ``add-to-list``
+            - ``checkout-start``
+            - ``detail-page-view``
+            - ``purchase-complete``
+            - ``refund``
+            - ``remove-from-cart``
+            - ``remove-from-list``
 
             This field is optional for the following event types:
 
-            -  ``page-visit``
-            -  ``shopping-cart-page-view`` - note that 'product_details'
-               should be set for this unless the shopping cart is empty.
+            - ``page-visit``
+            - ``shopping-cart-page-view`` - note that 'product_details'
+              should be set for this unless the shopping cart is empty.
 
             This field is not allowed for the following event types:
 
-            -  ``category-page-view``
-            -  ``home-page-view``
-            -  ``search``
+            - ``category-page-view``
+            - ``home-page-view``
+            - ``search``
         list_id (str):
             Required for ``add-to-list`` and ``remove-from-list``
             events. The id or name of the list that the item is being

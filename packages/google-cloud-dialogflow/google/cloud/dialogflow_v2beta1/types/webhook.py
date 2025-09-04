@@ -43,10 +43,10 @@ class WebhookRequest(proto.Message):
             be used to identify end-user inside webhook implementation.
             Supported formats:
 
-            -  \`projects//agent/sessions/,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - \`projects//agent/sessions/,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
         response_id (str):
             The unique identifier of the response. Contains the same
             value as ``[Streaming]DetectIntentResponse.response_id``.
@@ -98,9 +98,9 @@ class WebhookResponse(proto.Message):
     field. Setting JSON fields to an empty value with the wrong type is
     a common error. To avoid this error:
 
-    -  Use ``""`` for empty strings
-    -  Use ``{}`` or ``null`` for empty objects
-    -  Use ``[]`` or ``null`` for empty arrays
+    - Use ``""`` for empty strings
+    - Use ``{}`` or ``null`` for empty objects
+    - Use ``[]`` or ``null`` for empty arrays
 
     For more information, see the `Protocol Buffers Language
     Guide <https://developers.google.com/protocol-buffers/docs/proto3#json>`__.

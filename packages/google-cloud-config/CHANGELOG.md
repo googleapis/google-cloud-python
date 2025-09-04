@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.20...google-cloud-config-v0.1.21) (2025-09-04)
+
+
+### Features
+
+* [google-cloud-config] added support for service maintained provider ([#14347](https://github.com/googleapis/google-cloud-python/issues/14347)) ([c7943db](https://github.com/googleapis/google-cloud-python/commit/c7943db754b37d49f7aa993e28f8cd6e6c1ea7e5))
+
 ## [0.1.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.19...google-cloud-config-v0.1.20) (2025-08-06)
 
 

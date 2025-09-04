@@ -55,10 +55,6 @@ def _read_text_file(path: str) -> str:
 
     Returns:
         str: The contents of the file.
-
-    Raises:
-        FileNotFoundError: If the file is not found at the specified path.
-        IOError: If there is an issue reading the file.
     """
 
     with open(path, "r") as f:
@@ -71,13 +67,6 @@ def _write_text_file(path: str, updated_content: str):
     Args:
         path(str): The file path to write.
         updated_content(str): The contents to write to the file.
-
-    Returns:
-        None
-
-    Raises:
-        FileNotFoundError: If the file is not found at the specified path.
-        IOError: If there is an issue writing the file.
     """
 
     with open(path, "w") as f:
@@ -361,10 +350,6 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     Path(f"{output}/{path_to_library}/docs/CHANGELOG.md").unlink(missing_ok=True)
     Path(f"{output}/{path_to_library}/docs/README.rst").unlink(missing_ok=True)
 
-    # Remove  `.repo-metadata.json` file to avoid ownership issues between
-    # the container and librarian. Instead, preserve this file in the destination.
-    Path(f"{output}/{path_to_library}/.repo-metadata.json").unlink(missing_ok=True)
-
     # The glob loops are already safe, as they do nothing if no files match.
     for post_processing_file in glob.glob(
         f"{output}/{path_to_library}/scripts/client-post-processing/*.yaml"
@@ -510,23 +495,21 @@ def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     ]
 
 
-def _update_global_changelog(source_path: str, output_path: str, libraries: List[dict]):
+def _update_global_changelog(changelog_src: str, changelog_dest: str, all_libraries: List[dict]):
     """Updates the versions of libraries in the main CHANGELOG.md.
 
     Args:
-        source_path(str): Path to the changelog file to read.
-        output_path(str): Path to the changelog file to write.
-        libraries(Dict): Dictionary containing all of the library versions to
+        changelog_src(str): Path to the changelog file to read.
+        changelog_dest(str): Path to the changelog file to write.
+        all_libraries(Dict): Dictionary containing all of the library versions to
         modify.
-
-    Returns: None
     """
 
     def replace_version_in_changelog(content):
         new_content = content
-        for individual_library in libraries:
-            package_name = individual_library["id"]
-            version = individual_library["version"]
+        for library in all_libraries:
+            package_name = library["id"]
+            version = library["version"]
             # Find the entry for the given package in the format`<package name>==<version>`
             # Replace the `<version>` part of the string.
             pattern = re.compile(f"(\\[{re.escape(package_name)})(==)([\\d\\.]+)(\\])")
@@ -534,8 +517,8 @@ def _update_global_changelog(source_path: str, output_path: str, libraries: List
             new_content = pattern.sub(replacement, new_content)
         return new_content
 
-    updated_content = replace_version_in_changelog(_read_text_file(source_path))
-    _write_text_file(output_path, updated_content)
+    updated_content = replace_version_in_changelog(_read_text_file(changelog_src))
+    _write_text_file(changelog_dest, updated_content)
 
 
 def _update_version_for_library(
@@ -632,7 +615,8 @@ def handle_release_init(
             path_to_library = f"packages/{package_name}"
             _update_version_for_library(repo, output, path_to_library, version)
 
-            # TODO(https://github.com/googleapis/google-cloud-python/pull/14351):
+            # Update library specific version files.
+            # TODO(https://github.com/googleapis/google-cloud-python/pull/14353):
             # Conditionally update the library specific CHANGELOG if there is a change.
             pass
 
@@ -660,7 +644,7 @@ if __name__ == "__main__":  # pragma: NO COVER
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
         ("build", "Run unit tests via nox for the generated library."),
-        ("release-init", "Prepare to release a specific library"),
+        ("release-init", "Prepare to release a given set of libraries"),
     ]:
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
@@ -692,7 +676,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             "--repo",
             type=str,
             help="Path to the directory in the container which contains google-cloud-python repository",
-            default=SOURCE_DIR,
+            default=REPO_DIR,
         )
 
     if len(sys.argv) == 1:

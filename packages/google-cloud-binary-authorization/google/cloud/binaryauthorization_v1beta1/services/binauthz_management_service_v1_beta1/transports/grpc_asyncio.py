@@ -124,8 +124,8 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
 
     This API implements a REST model with the following objects:
 
-    -  [Policy][google.cloud.binaryauthorization.v1beta1.Policy]
-    -  [Attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
+    - [Policy][google.cloud.binaryauthorization.v1beta1.Policy]
+    - [Attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

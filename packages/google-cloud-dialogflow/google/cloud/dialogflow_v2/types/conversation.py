@@ -1180,11 +1180,11 @@ class SearchKnowledgeRequest(proto.Message):
                             The syntax and supported fields are the same as a filter
                             expression. Examples:
 
-                            -  To boost documents with document ID "doc_1" or "doc_2",
-                               and color "Red" or "Blue":
+                            - To boost documents with document ID "doc_1" or "doc_2",
+                              and color "Red" or "Blue":
 
-                               -  (id: ANY("doc_1", "doc_2")) AND (color:
-                                  ANY("Red","Blue"))
+                              - (id: ANY("doc_1", "doc_2")) AND (color:
+                                ANY("Red","Blue"))
                         boost (float):
                             Optional. Strength of the condition boost, which should be
                             in [-1, 1]. Negative boost means demotion. Default is 0.0.

@@ -908,7 +908,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         Returns:
             google.cloud.cloudcontrolspartner_v1.types.Workload:
                 Contains metadata around the [Workload
-                   resource](\ https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload)
+                   resource](https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload)
                    in the Assured Workloads API.
 
         """
@@ -2064,7 +2064,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
                 The request object. Message for deleting customer
             name (str):
                 Required. name of the resource to be deleted format:
-                name=organizations/\ */locations/*/customers/\*
+                name=organizations/*/locations/*/customers/\*
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

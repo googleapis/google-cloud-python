@@ -47,10 +47,10 @@ class DataQualitySpec(proto.Message):
             Optional. The percentage of the records to be selected from
             the dataset for DataScan.
 
-            -  Value can range between 0.0 and 100.0 with up to 3
-               significant decimal digits.
-            -  Sampling is not applied if ``sampling_percent`` is not
-               specified, 0 or
+            - Value can range between 0.0 and 100.0 with up to 3
+              significant decimal digits.
+            - Sampling is not applied if ``sampling_percent`` is not
+              specified, 0 or
 
             100.
         row_filter (str):
@@ -367,10 +367,10 @@ class DataQualityRuleResult(proto.Message):
 
             Evaluated count can be configured to either
 
-            -  include all rows (default) - with ``null`` rows
-               automatically failing rule evaluation, or
-            -  exclude ``null`` rows from the ``evaluated_count``, by
-               setting ``ignore_nulls = true``.
+            - include all rows (default) - with ``null`` rows
+              automatically failing rule evaluation, or
+            - exclude ``null`` rows from the ``evaluated_count``, by
+              setting ``ignore_nulls = true``.
 
             This field is not set for rule SqlAssertion.
         passed_count (int):
@@ -562,10 +562,10 @@ class DataQualityRule(proto.Message):
 
             This field is only valid for the following type of rules:
 
-            -  RangeExpectation
-            -  RegexExpectation
-            -  SetExpectation
-            -  UniquenessExpectation
+            - RangeExpectation
+            - RegexExpectation
+            - SetExpectation
+            - UniquenessExpectation
         dimension (str):
             Required. The dimension a rule belongs to. Results are also
             aggregated at the dimension level. Supported dimensions are
@@ -581,15 +581,15 @@ class DataQualityRule(proto.Message):
         name (str):
             Optional. A mutable name for the rule.
 
-            -  The name must contain only letters (a-z, A-Z), numbers
-               (0-9), or hyphens (-).
-            -  The maximum length is 63 characters.
-            -  Must start with a letter.
-            -  Must end with a number or a letter.
+            - The name must contain only letters (a-z, A-Z), numbers
+              (0-9), or hyphens (-).
+            - The maximum length is 63 characters.
+            - Must start with a letter.
+            - Must end with a number or a letter.
         description (str):
             Optional. Description of the rule.
 
-            -  The maximum length is 1,024 characters.
+            - The maximum length is 1,024 characters.
         suspended (bool):
             Optional. Whether the Rule is active or
             suspended. Default is false.

@@ -89,15 +89,15 @@ class UpdateOnlineReturnPolicyRequest(proto.Message):
             The following fields are supported (in both ``snake_case``
             and ``lowerCamelCase``):
 
-            -  ``accept_defective_only``
-            -  ``accept_exchange``
-            -  ``item_conditions``
-            -  ``policy``
-            -  ``process_refund_days``
-            -  ``restocking_fee``
-            -  ``return_methods``
-            -  ``return_policy_uri``
-            -  ``return_shipping_fee``
+            - ``accept_defective_only``
+            - ``accept_exchange``
+            - ``item_conditions``
+            - ``policy``
+            - ``process_refund_days``
+            - ``restocking_fee``
+            - ``return_methods``
+            - ``return_policy_uri``
+            - ``return_shipping_fee``
     """
 
     online_return_policy: "OnlineReturnPolicy" = proto.Field(

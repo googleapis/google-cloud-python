@@ -168,9 +168,9 @@ class CreateCloudExadataInfrastructureRequest(proto.Message):
         cloud_exadata_infrastructure_id (str):
             Required. The ID of the Exadata Infrastructure to create.
             This value is restricted to
-            (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a maximum
-            of 63 characters in length. The value must start with a
-            letter and end with a letter or a number.
+            (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+            maximum of 63 characters in length. The value must start
+            with a letter and end with a letter or a number.
         cloud_exadata_infrastructure (google.cloud.oracledatabase_v1.types.CloudExadataInfrastructure):
             Required. Details of the Exadata
             Infrastructure instance to create.
@@ -341,7 +341,7 @@ class CreateCloudVmClusterRequest(proto.Message):
             projects/{project}/locations/{location}.
         cloud_vm_cluster_id (str):
             Required. The ID of the VM Cluster to create. This value is
-            restricted to (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and
+            restricted to (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and
             must be a maximum of 63 characters in length. The value must
             start with a letter and end with a letter or a number.
         cloud_vm_cluster (google.cloud.oracledatabase_v1.types.CloudVmCluster):
@@ -887,9 +887,9 @@ class CreateAutonomousDatabaseRequest(proto.Message):
         autonomous_database_id (str):
             Required. The ID of the Autonomous Database to create. This
             value is restricted to
-            (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a maximum
-            of 63 characters in length. The value must start with a
-            letter and end with a letter or a number.
+            (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+            maximum of 63 characters in length. The value must start
+            with a letter and end with a letter or a number.
         autonomous_database (google.cloud.oracledatabase_v1.types.AutonomousDatabase):
             Required. The Autonomous Database being
             created.

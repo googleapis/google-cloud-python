@@ -1121,13 +1121,13 @@ class UpdateCollectionRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated.
 
-            -  Unset ``update_mask`` or set ``update_mask`` to be a
-               single "*" only will update all updatable fields with the
-               value provided in ``collection``.
-            -  To update ``display_name`` value to empty string, set it
-               in the ``collection`` to empty string, and set
-               ``update_mask`` with "display_name". Same applies to
-               other updatable string fields in the ``collection``.
+            - Unset ``update_mask`` or set ``update_mask`` to be a
+              single "\*" only will update all updatable fields with the
+              value provided in ``collection``.
+            - To update ``display_name`` value to empty string, set it
+              in the ``collection`` to empty string, and set
+              ``update_mask`` with "display_name". Same applies to other
+              updatable string fields in the ``collection``.
     """
 
     collection: "Collection" = proto.Field(
@@ -1468,7 +1468,7 @@ class UpdateIndexRequest(proto.Message):
             specified in the update_mask are relative to the resource,
             not the full request. A field of the resource will be
             overwritten if it is in the mask. Empty field mask is not
-            allowed. If the mask is "*", it triggers a full update of
+            allowed. If the mask is "\*", it triggers a full update of
             the index, and also a whole rebuild of index data.
     """
 
@@ -2090,21 +2090,21 @@ class DataSchemaDetails(proto.Message):
             INTEGER (1):
                 Integer type. Allowed search strategies:
 
-                -  DataSchema.SearchStrategy.NO_SEARCH,
-                -  DataSchema.SearchStrategy.EXACT_SEARCH. Supports query by
-                   IntRangeArray.
+                - DataSchema.SearchStrategy.NO_SEARCH,
+                - DataSchema.SearchStrategy.EXACT_SEARCH. Supports query by
+                  IntRangeArray.
             FLOAT (2):
                 Float type. Allowed search strategies:
 
-                -  DataSchema.SearchStrategy.NO_SEARCH,
-                -  DataSchema.SearchStrategy.EXACT_SEARCH. Supports query by
-                   FloatRangeArray.
+                - DataSchema.SearchStrategy.NO_SEARCH,
+                - DataSchema.SearchStrategy.EXACT_SEARCH. Supports query by
+                  FloatRangeArray.
             STRING (3):
                 String type. Allowed search strategies:
 
-                -  DataSchema.SearchStrategy.NO_SEARCH,
-                -  DataSchema.SearchStrategy.EXACT_SEARCH,
-                -  DataSchema.SearchStrategy.SMART_SEARCH.
+                - DataSchema.SearchStrategy.NO_SEARCH,
+                - DataSchema.SearchStrategy.EXACT_SEARCH,
+                - DataSchema.SearchStrategy.SMART_SEARCH.
             DATETIME (5):
                 Supported formats: %Y-%m-%dT%H:%M:%E\ *S%E*\ z
                 (absl::RFC3339_full) %Y-%m-%dT%H:%M:%E\ *S
@@ -2112,65 +2112,65 @@ class DataSchemaDetails(proto.Message):
                 %Y-%m-%dT%H %Y-%m-%d%E*\ z %Y-%m-%d %Y-%m %Y Allowed search
                 strategies:
 
-                -  DataSchema.SearchStrategy.NO_SEARCH,
-                -  DataSchema.SearchStrategy.EXACT_SEARCH. Supports query by
-                   DateTimeRangeArray.
+                - DataSchema.SearchStrategy.NO_SEARCH,
+                - DataSchema.SearchStrategy.EXACT_SEARCH. Supports query by
+                  DateTimeRangeArray.
             GEO_COORDINATE (7):
                 Geo coordinate type. Allowed search strategies:
 
-                -  DataSchema.SearchStrategy.NO_SEARCH,
-                -  DataSchema.SearchStrategy.EXACT_SEARCH. Supports query by
-                   GeoLocationArray.
+                - DataSchema.SearchStrategy.NO_SEARCH,
+                - DataSchema.SearchStrategy.EXACT_SEARCH. Supports query by
+                  GeoLocationArray.
             PROTO_ANY (8):
                 Type to pass any proto as available in annotations.proto.
                 Only use internally. Available proto types and its
                 corresponding search behavior:
 
-                -  ImageObjectDetectionPredictionResult, allows SMART_SEARCH
-                   on display_names and NO_SEARCH.
-                -  ClassificationPredictionResult, allows SMART_SEARCH on
-                   display_names and NO_SEARCH.
-                -  ImageSegmentationPredictionResult, allows NO_SEARCH.
-                -  VideoActionRecognitionPredictionResult, allows
-                   SMART_SEARCH on display_name and NO_SEARCH.
-                -  VideoObjectTrackingPredictionResult, allows SMART_SEARCH
-                   on display_name and NO_SEARCH.
-                -  VideoClassificationPredictionResult, allows SMART_SEARCH
-                   on display_name and NO_SEARCH.
-                -  OccupancyCountingPredictionResult, allows EXACT_SEARCH on
-                   stats.full_frame_count.count and NO_SEARCH.
-                -  ObjectDetectionPredictionResult, allows SMART_SEARCH on
-                   identified_boxes.entity.label_string and NO_SEARCH.
+                - ImageObjectDetectionPredictionResult, allows SMART_SEARCH
+                  on display_names and NO_SEARCH.
+                - ClassificationPredictionResult, allows SMART_SEARCH on
+                  display_names and NO_SEARCH.
+                - ImageSegmentationPredictionResult, allows NO_SEARCH.
+                - VideoActionRecognitionPredictionResult, allows
+                  SMART_SEARCH on display_name and NO_SEARCH.
+                - VideoObjectTrackingPredictionResult, allows SMART_SEARCH
+                  on display_name and NO_SEARCH.
+                - VideoClassificationPredictionResult, allows SMART_SEARCH
+                  on display_name and NO_SEARCH.
+                - OccupancyCountingPredictionResult, allows EXACT_SEARCH on
+                  stats.full_frame_count.count and NO_SEARCH.
+                - ObjectDetectionPredictionResult, allows SMART_SEARCH on
+                  identified_boxes.entity.label_string and NO_SEARCH.
             BOOLEAN (9):
                 Boolean type. Allowed search strategies:
 
-                -  DataSchema.SearchStrategy.NO_SEARCH,
-                -  DataSchema.SearchStrategy.EXACT_SEARCH.
+                - DataSchema.SearchStrategy.NO_SEARCH,
+                - DataSchema.SearchStrategy.EXACT_SEARCH.
             LIST (10):
                 List type.
 
-                -  Each element in the list must be of the exact same data
-                   schema; otherwise, they are invalid arguments.
-                -  List level cannot set search strategy. Leaf node level
-                   can do.
-                -  Elements cannot be another list (no list of list).
-                -  Elements can be CUSTOMIZED_STRUCT, and max number of
-                   layers is 10.
+                - Each element in the list must be of the exact same data
+                  schema; otherwise, they are invalid arguments.
+                - List level cannot set search strategy. Leaf node level can
+                  do.
+                - Elements cannot be another list (no list of list).
+                - Elements can be CUSTOMIZED_STRUCT, and max number of
+                  layers is 10.
             CUSTOMIZED_STRUCT (6):
                 Struct type.
 
-                -  SearchStrategy:
+                - SearchStrategy:
 
-                   -  Data Schema that's CUSTOMIZED_STRUCT cannot set search
-                      strategy.
-                   -  Leaf-node elements allow setting search strategy based
-                      on element's SearchStrategy restriction.
+                  - Data Schema that's CUSTOMIZED_STRUCT cannot set search
+                    strategy.
+                  - Leaf-node elements allow setting search strategy based
+                    on element's SearchStrategy restriction.
 
-                -  Nested layer restrictions:
+                - Nested layer restrictions:
 
-                   -  Data Schema that's CUSTOMIZED_STRUCT allows its fields
-                      to be of CUSTOMIZED_STRUCT as well, but the overall
-                      layers restriction is 10.
+                  - Data Schema that's CUSTOMIZED_STRUCT allows its fields
+                    to be of CUSTOMIZED_STRUCT as well, but the overall
+                    layers restriction is 10.
         """
         DATA_TYPE_UNSPECIFIED = 0
         INTEGER = 1
@@ -2300,7 +2300,7 @@ class DataSchemaDetails(proto.Message):
                     Required. The path to the confidence score field. It is a
                     string that concatenates all the data schema keys along the
                     path. See the example above. If the data schema contains
-                    LIST, use '_ENTRIES' to concatenate. Example data schema
+                    LIST, use '\_ENTRIES' to concatenate. Example data schema
                     contains a list: "key": "list-name-score", "schemaDetails":
                     { "type": "LIST", "granularity":
                     "GRANULARITY_PARTITION_LEVEL", "listConfig": {
@@ -2902,9 +2902,9 @@ class ImportAssetsRequest(proto.Message):
         assets_gcs_uri (str):
             The file contains all assets information to be imported.
 
-            -  The file is in JSONL format.
-            -  Each line corresponding to one asset.
-            -  Each line will be converted into InputImageAsset proto.
+            - The file is in JSONL format.
+            - Each line corresponding to one asset.
+            - Each line will be converted into InputImageAsset proto.
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
@@ -2989,8 +2989,8 @@ class CreateSearchConfigRequest(proto.Message):
             Required. ID to use for the new search config. Will become
             the final component of the SearchConfig's resource name.
             This value should be up to 63 characters, and valid
-            characters are /[a-z][0-9]-_/. The first character must be a
-            letter, the last could be a letter or a number.
+            characters are /[a-z][0-9]-\_/. The first character must be
+            a letter, the last could be a letter or a number.
     """
 
     parent: str = proto.Field(
@@ -3194,20 +3194,20 @@ class IndexEndpoint(proto.Message):
             Optional. The labels applied to a resource must meet the
             following requirements:
 
-            -  Each resource can have multiple labels, up to a maximum
-               of 64.
-            -  Each label must be a key-value pair.
-            -  Keys have a minimum length of 1 character and a maximum
-               length of 63 characters and cannot be empty. Values can
-               be empty and have a maximum length of 63 characters.
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes. All
-               characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  The key portion of a label must be unique. However, you
-               can use the same key with multiple resources.
-            -  Keys must start with a lowercase letter or international
-               character.
+            - Each resource can have multiple labels, up to a maximum of
+              64.
+            - Each label must be a key-value pair.
+            - Keys have a minimum length of 1 character and a maximum
+              length of 63 characters and cannot be empty. Values can be
+              empty and have a maximum length of 63 characters.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes. All
+              characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - The key portion of a label must be unique. However, you
+              can use the same key with multiple resources.
+            - Keys must start with a lowercase letter or international
+              character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -3459,8 +3459,8 @@ class UpdateIndexEndpointRequest(proto.Message):
             fields specified in the update_mask are relative to the
             resource, not the full request. A field of the resource will
             be overwritten if it is in the mask. Empty field mask is not
-            allowed. If the mask is "*", then this is a full replacement
-            of the resource.
+            allowed. If the mask is "\*", then this is a full
+            replacement of the resource.
     """
 
     index_endpoint: "IndexEndpoint" = proto.Field(
@@ -3720,9 +3720,9 @@ class FacetProperty(proto.Message):
         10, 100, and 1000, we will generate the following facets: [-inf, 0),
         [0, 10), [10, 100), [100, 1000), [1000, inf). Notably:
 
-        -  endpoints must be listed in ascending order. Otherwise, the
-           SearchConfig API will reject the facet config.
-        -  < 1 endpoints is an invalid spec.
+        - endpoints must be listed in ascending order. Otherwise, the
+          SearchConfig API will reject the facet config.
+        - < 1 endpoints is an invalid spec.
 
         Attributes:
             endpoints (MutableSequence[google.cloud.visionai_v1.types.FacetValue]):
@@ -4152,8 +4152,8 @@ class FacetGroup(proto.Message):
             based on partition level annotations. It supports the
             following facet values:
 
-            -  INTEGER
-            -  STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
+            - INTEGER
+            - STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
     """
 
     facet_id: str = proto.Field(
@@ -5103,10 +5103,10 @@ class Criteria(proto.Message):
             not exclusion criteria, with partition level annotations. It
             supports the following data types:
 
-            -  INTEGER
-            -  FLOAT
-            -  STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
-            -  BOOLEAN
+            - INTEGER
+            - FLOAT
+            - STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
+            - BOOLEAN
     """
 
     text_array: "StringArray" = proto.Field(

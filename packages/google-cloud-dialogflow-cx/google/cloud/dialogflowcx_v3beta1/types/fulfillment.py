@@ -37,9 +37,9 @@ class Fulfillment(proto.Message):
     r"""A fulfillment can do one or more of the following actions at the
     same time:
 
-    -  Generate rich message responses.
-    -  Set parameter values.
-    -  Call the webhook.
+    - Generate rich message responses.
+    - Set parameter values.
+    - Call the webhook.
 
     Fulfillments can be called at various stages in the
     [Page][google.cloud.dialogflow.cx.v3beta1.Page] or

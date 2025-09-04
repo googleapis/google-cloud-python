@@ -244,7 +244,7 @@ class UpdateProductInputRequest(proto.Message):
             To specify the update mask for custom attributes you need to
             add the ``custom_attribute.`` prefix.
 
-            Providing special "*" value for full product replacement is
+            Providing special "\*" value for full product replacement is
             not supported.
         data_source (str):
             Required. The primary or supplemental product data source
