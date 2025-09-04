@@ -161,6 +161,34 @@ class ConfidentialComputingTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.verify_confidential_space: gapic_v1.method.wrap_method(
+                self.verify_confidential_space,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.verify_confidential_gke: gapic_v1.method.wrap_method(
+                self.verify_confidential_gke,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -199,6 +227,30 @@ class ConfidentialComputingTransport(abc.ABC):
         Union[
             service.VerifyAttestationResponse,
             Awaitable[service.VerifyAttestationResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def verify_confidential_space(
+        self,
+    ) -> Callable[
+        [service.VerifyConfidentialSpaceRequest],
+        Union[
+            service.VerifyConfidentialSpaceResponse,
+            Awaitable[service.VerifyConfidentialSpaceResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def verify_confidential_gke(
+        self,
+    ) -> Callable[
+        [service.VerifyConfidentialGkeRequest],
+        Union[
+            service.VerifyConfidentialGkeResponse,
+            Awaitable[service.VerifyConfidentialGkeResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -356,7 +356,7 @@ class ConfidentialComputingGrpcTransport(ConfidentialComputingTransport):
         r"""Return a callable for the verify attestation method over gRPC.
 
         Verifies the provided attestation info, returning a
-        signed OIDC token.
+        signed attestation token.
 
         Returns:
             Callable[[~.VerifyAttestationRequest],
@@ -375,6 +375,65 @@ class ConfidentialComputingGrpcTransport(ConfidentialComputingTransport):
                 response_deserializer=service.VerifyAttestationResponse.deserialize,
             )
         return self._stubs["verify_attestation"]
+
+    @property
+    def verify_confidential_space(
+        self,
+    ) -> Callable[
+        [service.VerifyConfidentialSpaceRequest],
+        service.VerifyConfidentialSpaceResponse,
+    ]:
+        r"""Return a callable for the verify confidential space method over gRPC.
+
+        Verifies whether the provided attestation info is
+        valid, returning a signed attestation token if so.
+
+        Returns:
+            Callable[[~.VerifyConfidentialSpaceRequest],
+                    ~.VerifyConfidentialSpaceResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_confidential_space" not in self._stubs:
+            self._stubs["verify_confidential_space"] = self._logged_channel.unary_unary(
+                "/google.cloud.confidentialcomputing.v1.ConfidentialComputing/VerifyConfidentialSpace",
+                request_serializer=service.VerifyConfidentialSpaceRequest.serialize,
+                response_deserializer=service.VerifyConfidentialSpaceResponse.deserialize,
+            )
+        return self._stubs["verify_confidential_space"]
+
+    @property
+    def verify_confidential_gke(
+        self,
+    ) -> Callable[
+        [service.VerifyConfidentialGkeRequest], service.VerifyConfidentialGkeResponse
+    ]:
+        r"""Return a callable for the verify confidential gke method over gRPC.
+
+        Verifies the provided Confidential GKE attestation
+        info, returning a signed OIDC token.
+
+        Returns:
+            Callable[[~.VerifyConfidentialGkeRequest],
+                    ~.VerifyConfidentialGkeResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_confidential_gke" not in self._stubs:
+            self._stubs["verify_confidential_gke"] = self._logged_channel.unary_unary(
+                "/google.cloud.confidentialcomputing.v1.ConfidentialComputing/VerifyConfidentialGke",
+                request_serializer=service.VerifyConfidentialGkeRequest.serialize,
+                response_deserializer=service.VerifyConfidentialGkeResponse.deserialize,
+            )
+        return self._stubs["verify_confidential_gke"]
 
     def close(self):
         self._logged_channel.close()
