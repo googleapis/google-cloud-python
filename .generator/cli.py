@@ -528,6 +528,8 @@ def _update_version_for_library(
             code should be placed.
         path_to_library(str): Relative path to the library to update
         version(str): The new version of the library
+
+    Raises: `ValueError` if a version string could not be located in gapic_version.py
     """
 
     # Find and update gapic_version.py files
