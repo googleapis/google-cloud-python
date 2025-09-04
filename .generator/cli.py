@@ -487,8 +487,6 @@ def _update_global_changelog(changelog_src: str, changelog_dest: str, libraries:
         changelog_dest(str): Path to the changelog file to write.
         libraries(Dict): Dictionary containing all of the library versions to
         modify.
-
-    Returns: None
     """
 
     def replace_version_in_changelog(content):
