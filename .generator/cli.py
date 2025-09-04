@@ -490,12 +490,12 @@ def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     ]
 
 
-def _update_global_changelog(source_path: str, output_path: str, libraries: List[dict]):
+def _update_global_changelog(changelog_src: str, changelog_dest: str, libraries: List[dict]):
     """Updates the versions of libraries in the main CHANGELOG.md.
 
     Args:
-        source_path(str): Path to the changelog file to read.
-        output_path(str): Path to the changelog file to write.
+        changelog_src(str): Path to the changelog file to read.
+        changelog_dest(str): Path to the changelog file to write.
         libraries(Dict): Dictionary containing all of the library versions to
         modify.
 
@@ -514,8 +514,8 @@ def _update_global_changelog(source_path: str, output_path: str, libraries: List
             new_content = pattern.sub(replacement, new_content)
         return new_content
 
-    updated_content = replace_version_in_changelog(_read_text_file(source_path))
-    _write_text_file(output_path, updated_content)
+    updated_content = replace_version_in_changelog(_read_text_file(changelog_src))
+    _write_text_file(changelog_dest, updated_content)
 
 
 def handle_release_init(
