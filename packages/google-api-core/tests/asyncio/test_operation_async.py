@@ -85,7 +85,7 @@ async def test_constructor():
 
 
 @pytest.mark.asyncio
-def test_metadata():
+async def test_metadata():
     expected_metadata = struct_pb2.Struct()
     future, _, _ = make_operation_future(
         [make_operation_proto(metadata=expected_metadata)]
@@ -178,7 +178,7 @@ async def test_unexpected_result(unused_sleep):
 
 
 @pytest.mark.asyncio
-def test_from_gapic():
+async def test_from_gapic():
     operation_proto = make_operation_proto(done=True)
     operations_client = mock.create_autospec(
         operations_v1.OperationsClient, instance=True

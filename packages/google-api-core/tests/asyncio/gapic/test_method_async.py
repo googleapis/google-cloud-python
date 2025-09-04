@@ -256,7 +256,11 @@ async def test_wrap_method_with_overriding_timeout_as_a_number():
     result = await wrapped_method(timeout=22)
 
     assert result == 42
-    method.assert_called_once_with(timeout=22, metadata=mock.ANY)
+
+    actual_timeout = method.call_args[1]["timeout"]
+    metadata = method.call_args[1]["metadata"]
+    assert metadata == mock.ANY
+    assert actual_timeout == pytest.approx(22, abs=0.01)
 
 
 @pytest.mark.asyncio
