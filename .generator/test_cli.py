@@ -34,6 +34,7 @@ from cli import (
     _get_library_id,
     _get_libraries_to_prepare_for_release,
     _locate_and_extract_artifact,
+    _process_version_file,
     _read_json_file,
     _read_text_file,
     _run_individual_session,
@@ -634,6 +635,7 @@ def test_update_version_for_library_success(mocker):
 
 
 def test_update_version_for_library_failure(mocker):
+    """Tests that value error is raised if the version string cannot be found"""
     m = mock_open()
 
     mock_rglob = mocker.patch(
@@ -646,3 +648,18 @@ def test_update_version_for_library_failure(mocker):
             _update_version_for_library(
                 "repo", "output", "packages/google-cloud-language", "1.2.3"
             )
+
+
+def test_process_version_file_success():
+    version_file_contents = '__version__ = "1.2.2"'
+    new_version = "1.2.3"
+    modified_content = _process_version_file(
+        version_file_contents, new_version, "file.txt"
+    )
+    assert modified_content == f'__version__ = "{new_version}"'
+
+
+def test_process_version_file_failure():
+    """Tests that value error is raised if the version string cannot be found"""
+    with pytest.raises(ValueError):
+        _process_version_file("", "", "")

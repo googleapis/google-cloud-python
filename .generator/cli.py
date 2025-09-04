@@ -488,7 +488,9 @@ def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     ]
 
 
-def _update_global_changelog(changelog_src: str, changelog_dest: str, all_libraries: List[dict]):
+def _update_global_changelog(
+    changelog_src: str, changelog_dest: str, all_libraries: List[dict]
+):
     """Updates the versions of libraries in the main CHANGELOG.md.
 
     Args:
@@ -514,6 +516,29 @@ def _update_global_changelog(changelog_src: str, changelog_dest: str, all_librar
     _write_text_file(changelog_dest, updated_content)
 
 
+def _process_version_file(content, version, version_path) -> str:
+    """This function searches for a version string in the
+    given content, replaces the version and returns the content.
+
+    Args:
+        content(str): The contents where the version string should be replaced.
+        version(str): The new version of the library.
+        version_path(str): The relative path to the version file
+
+    Raises: ValueError if the version string could not be found in the given content
+
+    Returns: A string with the modified content.
+    """
+    pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+    replacement_string = f"\\g<1>{version}\\g<3>"
+    new_content, num_replacements = re.subn(pattern, replacement_string, content)
+    if num_replacements == 0:
+        raise ValueError(
+            f"Could not find version string in {version_path}. File was not modified."
+        )
+    return new_content
+
+
 def _update_version_for_library(
     repo: str, output: str, path_to_library: str, version: str
 ):
@@ -536,20 +561,9 @@ def _update_version_for_library(
     # Find and update gapic_version.py files
     gapic_version_files = Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py")
     for version_file in gapic_version_files:
-
-        def process_version_file(content):
-            pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
-            replacement_string = f"\\g<1>{version}\\g<3>"
-            new_content, num_replacements = re.subn(
-                pattern, replacement_string, content
-            )
-            if num_replacements == 0:
-                raise ValueError(
-                    f"Could not find version string in {version_file}. File was not modified."
-                )
-            return new_content
-
-        updated_content = process_version_file(_read_text_file(version_file))
+        updated_content = _process_version_file(
+            _read_text_file(version_file), version, version_file
+        )
         output_path = f"{output}/{version_file.relative_to(repo)}"
         _write_text_file(output_path, updated_content)
 
