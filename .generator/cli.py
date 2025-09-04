@@ -112,7 +112,7 @@ def _write_json_file(path: str, updated_content: Dict):
 
 def handle_configure():
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
-    logger.info("'configure' command executed.")    
+    logger.info("'configure' command executed.")
 
 
 def _get_library_id(request_data: Dict) -> str:
@@ -260,12 +260,13 @@ def handle_generate(
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
-            
-                generator_options=[]
+                generator_options = []
                 with open(f"{source}/{api_path}/BUILD.bazel", "r") as f:
                     content = f.read()
                     result = parse_googleapis_content.parse_content(content)
-                    py_gapic_entry = [key for key in result.keys() if key.endswith("_py_gapic")][0]
+                    py_gapic_entry = [
+                        key for key in result.keys() if key.endswith("_py_gapic")
+                    ][0]
 
                     config_keys = [
                         "grpc_service_config",
@@ -273,17 +274,20 @@ def handle_generate(
                         "service_yaml",
                         "transport",
                     ]
-                    
+
                     for key in config_keys:
                         config_value = result[py_gapic_entry].get(key, None)
                         if config_value is not None:
                             new_key = key.replace("_", "-")
                             if key == "grpc_service_config":
                                 new_key = "retry-config"
-                            
-                        # There is a bug in the Python generator that treats all values of
-                        # `rest-numeric-enums` as True, so just omit it if we want it to be False
-                            if new_key == 'rest-numeric-enums' and config_value == "False":
+
+                            # There is a bug in the Python generator that treats all values of
+                            # `rest-numeric-enums` as True, so just omit it if we want it to be False
+                            if (
+                                new_key == "rest-numeric-enums"
+                                and config_value == "False"
+                            ):
                                 continue
                             elif new_key == "service-yaml" or new_key == "retry-config":
                                 generator_options.append(
@@ -296,19 +300,17 @@ def handle_generate(
                             f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
                         )
                         if len(generator_options):
-                            generator_command += (
-                                f" --python_gapic_opt=metadata,"
-                            )
+                            generator_command += f" --python_gapic_opt=metadata,"
                             for generator_option in generator_options:
                                 generator_command += generator_option
                         subprocess.run([generator_command], cwd=source, shell=True)
                         api_version = api_path.split("/")[-1]
-                        staging_dir = os.path.join(output, "owl-bot-staging", library_id, api_version)
+                        staging_dir = os.path.join(
+                            output, "owl-bot-staging", library_id, api_version
+                        )
                         os.makedirs(staging_dir, exist_ok=True)
                         logger.info(f"Preparing staging directory: {staging_dir}")
-                        subprocess.run(
-                            f"cp -r {tmp_dir}/. {staging_dir}", shell=True
-                        )
+                        subprocess.run(f"cp -r {tmp_dir}/. {staging_dir}", shell=True)
 
         _copy_files_needed_for_post_processing(output, input, library_id)
         _run_post_processor(output, library_id)
