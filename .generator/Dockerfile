@@ -126,6 +126,12 @@ rm -rf /tmp/gapic-generator-python
 RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
 python3.9 -m pip install /tmp/synthtool nox starlark-pyo3>=2025.1
 
+# Download/install pandoc
+RUN wget https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-linux-amd64.tar.gz
+RUN tar -xvf pandoc-3.7.0.2-linux-amd64.tar.gz
+RUN mv pandoc-3.7.0.2/bin/* /usr/local/bin/
+
+
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
 RUN chmod a+rx ./cli.py
