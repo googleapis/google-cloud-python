@@ -24,8 +24,6 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
@@ -503,6 +501,41 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
                 response_deserializer=vmmigration.FetchInventoryResponse.deserialize,
             )
         return self._stubs["fetch_inventory"]
+
+    @property
+    def fetch_storage_inventory(
+        self,
+    ) -> Callable[
+        [vmmigration.FetchStorageInventoryRequest],
+        vmmigration.FetchStorageInventoryResponse,
+    ]:
+        r"""Return a callable for the fetch storage inventory method over gRPC.
+
+        List remote source's inventory of storage resources.
+        The remote source is another cloud vendor (e.g. AWS,
+        Azure). The inventory describes the list of existing
+        storage resources in that source. Note that this
+        operation lists the resources on the remote source, as
+        opposed to listing the MigratingVms resources in the
+        vmmigration service.
+
+        Returns:
+            Callable[[~.FetchStorageInventoryRequest],
+                    ~.FetchStorageInventoryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_storage_inventory" not in self._stubs:
+            self._stubs["fetch_storage_inventory"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/FetchStorageInventory",
+                request_serializer=vmmigration.FetchStorageInventoryRequest.serialize,
+                response_deserializer=vmmigration.FetchStorageInventoryResponse.deserialize,
+            )
+        return self._stubs["fetch_storage_inventory"]
 
     @property
     def list_utilization_reports(
@@ -1012,6 +1045,32 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         return self._stubs["finalize_migration"]
 
     @property
+    def extend_migration(
+        self,
+    ) -> Callable[[vmmigration.ExtendMigrationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the extend migration method over gRPC.
+
+        Extend the migrating VM time to live.
+
+        Returns:
+            Callable[[~.ExtendMigrationRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "extend_migration" not in self._stubs:
+            self._stubs["extend_migration"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ExtendMigration",
+                request_serializer=vmmigration.ExtendMigrationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["extend_migration"]
+
+    @property
     def create_clone_job(
         self,
     ) -> Callable[[vmmigration.CreateCloneJobRequest], operations_pb2.Operation]:
@@ -1071,7 +1130,8 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
     ]:
         r"""Return a callable for the list clone jobs method over gRPC.
 
-        Lists CloneJobs of a given migrating VM.
+        Lists the CloneJobs of a migrating VM. Only 25 most
+        recent CloneJobs are listed.
 
         Returns:
             Callable[[~.ListCloneJobsRequest],
@@ -1179,7 +1239,8 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
     ]:
         r"""Return a callable for the list cutover jobs method over gRPC.
 
-        Lists CutoverJobs of a given migrating VM.
+        Lists the CutoverJobs of a migrating VM. Only 25 most
+        recent CutoverJobs are listed.
 
         Returns:
             Callable[[~.ListCutoverJobsRequest],
@@ -1608,6 +1669,388 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
                 response_deserializer=vmmigration.ReplicationCycle.deserialize,
             )
         return self._stubs["get_replication_cycle"]
+
+    @property
+    def list_image_imports(
+        self,
+    ) -> Callable[
+        [vmmigration.ListImageImportsRequest], vmmigration.ListImageImportsResponse
+    ]:
+        r"""Return a callable for the list image imports method over gRPC.
+
+        Lists ImageImports in a given project.
+
+        Returns:
+            Callable[[~.ListImageImportsRequest],
+                    ~.ListImageImportsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_image_imports" not in self._stubs:
+            self._stubs["list_image_imports"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListImageImports",
+                request_serializer=vmmigration.ListImageImportsRequest.serialize,
+                response_deserializer=vmmigration.ListImageImportsResponse.deserialize,
+            )
+        return self._stubs["list_image_imports"]
+
+    @property
+    def get_image_import(
+        self,
+    ) -> Callable[[vmmigration.GetImageImportRequest], vmmigration.ImageImport]:
+        r"""Return a callable for the get image import method over gRPC.
+
+        Gets details of a single ImageImport.
+
+        Returns:
+            Callable[[~.GetImageImportRequest],
+                    ~.ImageImport]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_image_import" not in self._stubs:
+            self._stubs["get_image_import"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetImageImport",
+                request_serializer=vmmigration.GetImageImportRequest.serialize,
+                response_deserializer=vmmigration.ImageImport.deserialize,
+            )
+        return self._stubs["get_image_import"]
+
+    @property
+    def create_image_import(
+        self,
+    ) -> Callable[[vmmigration.CreateImageImportRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create image import method over gRPC.
+
+        Creates a new ImageImport in a given project.
+
+        Returns:
+            Callable[[~.CreateImageImportRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_image_import" not in self._stubs:
+            self._stubs["create_image_import"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateImageImport",
+                request_serializer=vmmigration.CreateImageImportRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_image_import"]
+
+    @property
+    def delete_image_import(
+        self,
+    ) -> Callable[[vmmigration.DeleteImageImportRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete image import method over gRPC.
+
+        Deletes a single ImageImport.
+
+        Returns:
+            Callable[[~.DeleteImageImportRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_image_import" not in self._stubs:
+            self._stubs["delete_image_import"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteImageImport",
+                request_serializer=vmmigration.DeleteImageImportRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_image_import"]
+
+    @property
+    def list_image_import_jobs(
+        self,
+    ) -> Callable[
+        [vmmigration.ListImageImportJobsRequest],
+        vmmigration.ListImageImportJobsResponse,
+    ]:
+        r"""Return a callable for the list image import jobs method over gRPC.
+
+        Lists ImageImportJobs in a given project.
+
+        Returns:
+            Callable[[~.ListImageImportJobsRequest],
+                    ~.ListImageImportJobsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_image_import_jobs" not in self._stubs:
+            self._stubs["list_image_import_jobs"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListImageImportJobs",
+                request_serializer=vmmigration.ListImageImportJobsRequest.serialize,
+                response_deserializer=vmmigration.ListImageImportJobsResponse.deserialize,
+            )
+        return self._stubs["list_image_import_jobs"]
+
+    @property
+    def get_image_import_job(
+        self,
+    ) -> Callable[[vmmigration.GetImageImportJobRequest], vmmigration.ImageImportJob]:
+        r"""Return a callable for the get image import job method over gRPC.
+
+        Gets details of a single ImageImportJob.
+
+        Returns:
+            Callable[[~.GetImageImportJobRequest],
+                    ~.ImageImportJob]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_image_import_job" not in self._stubs:
+            self._stubs["get_image_import_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetImageImportJob",
+                request_serializer=vmmigration.GetImageImportJobRequest.serialize,
+                response_deserializer=vmmigration.ImageImportJob.deserialize,
+            )
+        return self._stubs["get_image_import_job"]
+
+    @property
+    def cancel_image_import_job(
+        self,
+    ) -> Callable[[vmmigration.CancelImageImportJobRequest], operations_pb2.Operation]:
+        r"""Return a callable for the cancel image import job method over gRPC.
+
+        Initiates the cancellation of a running clone job.
+
+        Returns:
+            Callable[[~.CancelImageImportJobRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_image_import_job" not in self._stubs:
+            self._stubs["cancel_image_import_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CancelImageImportJob",
+                request_serializer=vmmigration.CancelImageImportJobRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["cancel_image_import_job"]
+
+    @property
+    def create_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateDiskMigrationJobRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create disk migration job method over gRPC.
+
+        Creates a new disk migration job in a given Source.
+
+        Returns:
+            Callable[[~.CreateDiskMigrationJobRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_disk_migration_job" not in self._stubs:
+            self._stubs["create_disk_migration_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateDiskMigrationJob",
+                request_serializer=vmmigration.CreateDiskMigrationJobRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_disk_migration_job"]
+
+    @property
+    def list_disk_migration_jobs(
+        self,
+    ) -> Callable[
+        [vmmigration.ListDiskMigrationJobsRequest],
+        vmmigration.ListDiskMigrationJobsResponse,
+    ]:
+        r"""Return a callable for the list disk migration jobs method over gRPC.
+
+        Lists DiskMigrationJobs in a given Source.
+
+        Returns:
+            Callable[[~.ListDiskMigrationJobsRequest],
+                    ~.ListDiskMigrationJobsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_disk_migration_jobs" not in self._stubs:
+            self._stubs["list_disk_migration_jobs"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListDiskMigrationJobs",
+                request_serializer=vmmigration.ListDiskMigrationJobsRequest.serialize,
+                response_deserializer=vmmigration.ListDiskMigrationJobsResponse.deserialize,
+            )
+        return self._stubs["list_disk_migration_jobs"]
+
+    @property
+    def get_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.GetDiskMigrationJobRequest], vmmigration.DiskMigrationJob
+    ]:
+        r"""Return a callable for the get disk migration job method over gRPC.
+
+        Gets details of a single DiskMigrationJob.
+
+        Returns:
+            Callable[[~.GetDiskMigrationJobRequest],
+                    ~.DiskMigrationJob]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_disk_migration_job" not in self._stubs:
+            self._stubs["get_disk_migration_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetDiskMigrationJob",
+                request_serializer=vmmigration.GetDiskMigrationJobRequest.serialize,
+                response_deserializer=vmmigration.DiskMigrationJob.deserialize,
+            )
+        return self._stubs["get_disk_migration_job"]
+
+    @property
+    def update_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.UpdateDiskMigrationJobRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update disk migration job method over gRPC.
+
+        Updates the parameters of a single DiskMigrationJob.
+
+        Returns:
+            Callable[[~.UpdateDiskMigrationJobRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_disk_migration_job" not in self._stubs:
+            self._stubs["update_disk_migration_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/UpdateDiskMigrationJob",
+                request_serializer=vmmigration.UpdateDiskMigrationJobRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_disk_migration_job"]
+
+    @property
+    def delete_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteDiskMigrationJobRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete disk migration job method over gRPC.
+
+        Deletes a single DiskMigrationJob.
+
+        Returns:
+            Callable[[~.DeleteDiskMigrationJobRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_disk_migration_job" not in self._stubs:
+            self._stubs["delete_disk_migration_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteDiskMigrationJob",
+                request_serializer=vmmigration.DeleteDiskMigrationJobRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_disk_migration_job"]
+
+    @property
+    def run_disk_migration_job(
+        self,
+    ) -> Callable[[vmmigration.RunDiskMigrationJobRequest], operations_pb2.Operation]:
+        r"""Return a callable for the run disk migration job method over gRPC.
+
+        Runs the disk migration job.
+
+        Returns:
+            Callable[[~.RunDiskMigrationJobRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "run_disk_migration_job" not in self._stubs:
+            self._stubs["run_disk_migration_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/RunDiskMigrationJob",
+                request_serializer=vmmigration.RunDiskMigrationJobRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["run_disk_migration_job"]
+
+    @property
+    def cancel_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.CancelDiskMigrationJobRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the cancel disk migration job method over gRPC.
+
+        Cancels the disk migration job.
+
+        Returns:
+            Callable[[~.CancelDiskMigrationJobRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_disk_migration_job" not in self._stubs:
+            self._stubs["cancel_disk_migration_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CancelDiskMigrationJob",
+                request_serializer=vmmigration.CancelDiskMigrationJobRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["cancel_disk_migration_job"]
 
     def close(self):
         self._logged_channel.close()
