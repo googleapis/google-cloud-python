@@ -96,7 +96,7 @@ def _write_json_file(path: str, updated_content: Dict):
 
     Args:
         path(str): The file path to write.
-        updated_content(Dict): The dictionary to write
+        updated_content(Dict): The dictionary to write.
     """
 
     with open(path, "w") as f:
