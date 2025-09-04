@@ -27,11 +27,15 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.vmmigration.v1",
     manifest={
-        "UtilizationReportView",
-        "MigratingVmView",
         "ComputeEngineDiskType",
         "ComputeEngineLicenseType",
         "ComputeEngineBootOption",
+        "OsCapability",
+        "BootConversion",
+        "UtilizationReportView",
+        "MigratingVmView",
+        "VmArchitecture",
+        "ComputeEngineNetworkTier",
         "ReplicationCycle",
         "CycleStep",
         "InitializingReplicationStep",
@@ -39,6 +43,7 @@ __protobuf__ = proto.module(
         "PostProcessingStep",
         "ReplicationSync",
         "MigratingVm",
+        "CutoverForecast",
         "CloneJob",
         "CloneStep",
         "AdaptingOSStep",
@@ -54,8 +59,10 @@ __protobuf__ = proto.module(
         "ListCloneJobsResponse",
         "GetCloneJobRequest",
         "Source",
+        "Encryption",
         "VmwareSourceDetails",
         "AwsSourceDetails",
+        "AzureSourceDetails",
         "DatacenterConnector",
         "UpgradeStatus",
         "AvailableUpdates",
@@ -70,9 +77,14 @@ __protobuf__ = proto.module(
         "VmwareVmDetails",
         "AwsVmDetails",
         "AwsSecurityGroup",
+        "AzureVmDetails",
         "VmwareVmsDetails",
         "AwsVmsDetails",
+        "AzureVmsDetails",
         "FetchInventoryResponse",
+        "FetchStorageInventoryRequest",
+        "FetchStorageInventoryResponse",
+        "SourceStorageResource",
         "UtilizationReport",
         "VmUtilizationInfo",
         "VmUtilizationMetrics",
@@ -94,6 +106,16 @@ __protobuf__ = proto.module(
         "AppliedLicense",
         "SchedulingNodeAffinity",
         "ComputeScheduling",
+        "ComputeEngineDisksTargetDefaults",
+        "PersistentDiskDefaults",
+        "VmAttachmentDetails",
+        "DisksMigrationDisksTargetDefaults",
+        "DisksMigrationVmTargetDefaults",
+        "BootDiskDefaults",
+        "ComputeEngineDisksTargetDetails",
+        "PersistentDisk",
+        "DisksMigrationDisksTargetDetails",
+        "DisksMigrationVmTargetDetails",
         "SchedulePolicy",
         "CreateMigratingVmRequest",
         "ListMigratingVmsRequest",
@@ -108,6 +130,8 @@ __protobuf__ = proto.module(
         "ResumeMigrationRequest",
         "ResumeMigrationResponse",
         "FinalizeMigrationRequest",
+        "ExtendMigrationRequest",
+        "ExtendMigrationResponse",
         "FinalizeMigrationResponse",
         "TargetProject",
         "GetTargetProjectRequest",
@@ -135,12 +159,155 @@ __protobuf__ = proto.module(
         "GetCutoverJobRequest",
         "OperationMetadata",
         "MigrationError",
+        "MigrationWarning",
+        "VmwareSourceVmDetails",
         "AwsSourceVmDetails",
+        "AzureSourceVmDetails",
         "ListReplicationCyclesRequest",
         "ListReplicationCyclesResponse",
         "GetReplicationCycleRequest",
+        "VmCapabilities",
+        "ImageImport",
+        "ImageImportJob",
+        "ImageImportStep",
+        "InitializingImageImportStep",
+        "LoadingImageSourceFilesStep",
+        "CreatingImageStep",
+        "DiskImageTargetDetails",
+        "MachineImageTargetDetails",
+        "ServiceAccount",
+        "ShieldedInstanceConfig",
+        "MachineImageParametersOverrides",
+        "ImageImportOsAdaptationParameters",
+        "DataDiskImageImport",
+        "SkipOsAdaptation",
+        "GetImageImportRequest",
+        "ListImageImportsRequest",
+        "ListImageImportsResponse",
+        "CreateImageImportRequest",
+        "DeleteImageImportRequest",
+        "GetImageImportJobRequest",
+        "ListImageImportJobsRequest",
+        "ListImageImportJobsResponse",
+        "CancelImageImportJobRequest",
+        "CancelImageImportJobResponse",
+        "DiskMigrationJob",
+        "DiskMigrationJobTargetDetails",
+        "DiskMigrationStep",
+        "CreatingSourceDiskSnapshotStep",
+        "CopyingSourceDiskSnapshotStep",
+        "ProvisioningTargetDiskStep",
+        "ComputeEngineDisk",
+        "AwsSourceDiskDetails",
+        "CreateDiskMigrationJobRequest",
+        "ListDiskMigrationJobsRequest",
+        "ListDiskMigrationJobsResponse",
+        "GetDiskMigrationJobRequest",
+        "UpdateDiskMigrationJobRequest",
+        "DeleteDiskMigrationJobRequest",
+        "RunDiskMigrationJobRequest",
+        "RunDiskMigrationJobResponse",
+        "CancelDiskMigrationJobRequest",
+        "CancelDiskMigrationJobResponse",
     },
 )
+
+
+class ComputeEngineDiskType(proto.Enum):
+    r"""Types of disks supported for Compute Engine VM.
+
+    Values:
+        COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED (0):
+            An unspecified disk type. Will be used as
+            STANDARD.
+        COMPUTE_ENGINE_DISK_TYPE_STANDARD (1):
+            A Standard disk type.
+        COMPUTE_ENGINE_DISK_TYPE_SSD (2):
+            SSD hard disk type.
+        COMPUTE_ENGINE_DISK_TYPE_BALANCED (3):
+            An alternative to SSD persistent disks that
+            balance performance and cost.
+        COMPUTE_ENGINE_DISK_TYPE_HYPERDISK_BALANCED (4):
+            Hyperdisk balanced disk type.
+    """
+    COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED = 0
+    COMPUTE_ENGINE_DISK_TYPE_STANDARD = 1
+    COMPUTE_ENGINE_DISK_TYPE_SSD = 2
+    COMPUTE_ENGINE_DISK_TYPE_BALANCED = 3
+    COMPUTE_ENGINE_DISK_TYPE_HYPERDISK_BALANCED = 4
+
+
+class ComputeEngineLicenseType(proto.Enum):
+    r"""Types of licenses used in OS adaptation.
+
+    Values:
+        COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT (0):
+            The license type is the default for the OS.
+        COMPUTE_ENGINE_LICENSE_TYPE_PAYG (1):
+            The license type is Pay As You Go license
+            type.
+        COMPUTE_ENGINE_LICENSE_TYPE_BYOL (2):
+            The license type is Bring Your Own License
+            type.
+    """
+    COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT = 0
+    COMPUTE_ENGINE_LICENSE_TYPE_PAYG = 1
+    COMPUTE_ENGINE_LICENSE_TYPE_BYOL = 2
+
+
+class ComputeEngineBootOption(proto.Enum):
+    r"""Possible values for vm boot option.
+
+    Values:
+        COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED (0):
+            The boot option is unknown.
+        COMPUTE_ENGINE_BOOT_OPTION_EFI (1):
+            The boot option is EFI.
+        COMPUTE_ENGINE_BOOT_OPTION_BIOS (2):
+            The boot option is BIOS.
+    """
+    COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED = 0
+    COMPUTE_ENGINE_BOOT_OPTION_EFI = 1
+    COMPUTE_ENGINE_BOOT_OPTION_BIOS = 2
+
+
+class OsCapability(proto.Enum):
+    r"""VM operating system (OS) capabilities needed for determining
+    compatibility with Compute Engine features supported by the
+    migration.
+
+    Values:
+        OS_CAPABILITY_UNSPECIFIED (0):
+            This is for API compatibility only and is not
+            in use.
+        OS_CAPABILITY_NVME_STORAGE_ACCESS (1):
+            NVMe driver installed and the VM can use NVMe
+            PD or local SSD.
+        OS_CAPABILITY_GVNIC_NETWORK_INTERFACE (2):
+            gVNIC virtual NIC driver supported.
+        OS_CAPABILITY_IDPF_NETWORK_INTERFACE (3):
+            IDPF virtual NIC driver supported.
+    """
+    OS_CAPABILITY_UNSPECIFIED = 0
+    OS_CAPABILITY_NVME_STORAGE_ACCESS = 1
+    OS_CAPABILITY_GVNIC_NETWORK_INTERFACE = 2
+    OS_CAPABILITY_IDPF_NETWORK_INTERFACE = 3
+
+
+class BootConversion(proto.Enum):
+    r"""Possible boot options conversions.
+
+    Values:
+        BOOT_CONVERSION_UNSPECIFIED (0):
+            Unspecified conversion type.
+        NONE (1):
+            No conversion.
+        BIOS_TO_EFI (2):
+            Convert from BIOS to EFI.
+    """
+    BOOT_CONVERSION_UNSPECIFIED = 0
+    NONE = 1
+    BIOS_TO_EFI = 2
 
 
 class UtilizationReportView(proto.Enum):
@@ -181,59 +348,39 @@ class MigratingVmView(proto.Enum):
     MIGRATING_VM_VIEW_FULL = 2
 
 
-class ComputeEngineDiskType(proto.Enum):
-    r"""Types of disks supported for Compute Engine VM.
+class VmArchitecture(proto.Enum):
+    r"""Possible values for the VM architecture.
 
     Values:
-        COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED (0):
-            An unspecified disk type. Will be used as
-            STANDARD.
-        COMPUTE_ENGINE_DISK_TYPE_STANDARD (1):
-            A Standard disk type.
-        COMPUTE_ENGINE_DISK_TYPE_SSD (2):
-            SSD hard disk type.
-        COMPUTE_ENGINE_DISK_TYPE_BALANCED (3):
-            An alternative to SSD persistent disks that
-            balance performance and cost.
+        VM_ARCHITECTURE_UNSPECIFIED (0):
+            The architecture is unknown.
+        VM_ARCHITECTURE_X86_FAMILY (1):
+            The architecture is one of the x86
+            architectures.
+        VM_ARCHITECTURE_ARM64 (2):
+            The architecture is ARM64.
     """
-    COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED = 0
-    COMPUTE_ENGINE_DISK_TYPE_STANDARD = 1
-    COMPUTE_ENGINE_DISK_TYPE_SSD = 2
-    COMPUTE_ENGINE_DISK_TYPE_BALANCED = 3
+    VM_ARCHITECTURE_UNSPECIFIED = 0
+    VM_ARCHITECTURE_X86_FAMILY = 1
+    VM_ARCHITECTURE_ARM64 = 2
 
 
-class ComputeEngineLicenseType(proto.Enum):
-    r"""Types of licenses used in OS adaptation.
+class ComputeEngineNetworkTier(proto.Enum):
+    r"""Describes the networking tier used for configuring network
+    access configuration.
 
     Values:
-        COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT (0):
-            The license type is the default for the OS.
-        COMPUTE_ENGINE_LICENSE_TYPE_PAYG (1):
-            The license type is Pay As You Go license
-            type.
-        COMPUTE_ENGINE_LICENSE_TYPE_BYOL (2):
-            The license type is Bring Your Own License
-            type.
+        COMPUTE_ENGINE_NETWORK_TIER_UNSPECIFIED (0):
+            An unspecified network tier. Will be used as
+            PREMIUM.
+        NETWORK_TIER_STANDARD (1):
+            A standard network tier.
+        NETWORK_TIER_PREMIUM (2):
+            A premium network tier.
     """
-    COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT = 0
-    COMPUTE_ENGINE_LICENSE_TYPE_PAYG = 1
-    COMPUTE_ENGINE_LICENSE_TYPE_BYOL = 2
-
-
-class ComputeEngineBootOption(proto.Enum):
-    r"""Possible values for vm boot option.
-
-    Values:
-        COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED (0):
-            The boot option is unknown.
-        COMPUTE_ENGINE_BOOT_OPTION_EFI (1):
-            The boot option is EFI.
-        COMPUTE_ENGINE_BOOT_OPTION_BIOS (2):
-            The boot option is BIOS.
-    """
-    COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED = 0
-    COMPUTE_ENGINE_BOOT_OPTION_EFI = 1
-    COMPUTE_ENGINE_BOOT_OPTION_BIOS = 2
+    COMPUTE_ENGINE_NETWORK_TIER_UNSPECIFIED = 0
+    NETWORK_TIER_STANDARD = 1
+    NETWORK_TIER_PREMIUM = 2
 
 
 class ReplicationCycle(proto.Message):
@@ -263,8 +410,11 @@ class ReplicationCycle(proto.Message):
         state (google.cloud.vmmigration_v1.types.ReplicationCycle.State):
             State of the ReplicationCycle.
         error (google.rpc.status_pb2.Status):
-            Provides details on the state of the cycle in
-            case of an error.
+            Output only. Provides details on the state of
+            the cycle in case of an error.
+        warnings (MutableSequence[google.cloud.vmmigration_v1.types.MigrationWarning]):
+            Output only. Warnings that occurred during
+            the cycle.
     """
 
     class State(proto.Enum):
@@ -331,6 +481,11 @@ class ReplicationCycle(proto.Message):
         proto.MESSAGE,
         number=12,
         message=status_pb2.Status,
+    )
+    warnings: MutableSequence["MigrationWarning"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message="MigrationWarning",
     )
 
 
@@ -456,6 +611,10 @@ class MigratingVm(proto.Message):
     r"""MigratingVm describes the VM that will be migrated from a
     Source environment and its replication state.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -464,8 +623,23 @@ class MigratingVm(proto.Message):
             Details of the target VM in Compute Engine.
 
             This field is a member of `oneof`_ ``target_vm_defaults``.
+        compute_engine_disks_target_defaults (google.cloud.vmmigration_v1.types.ComputeEngineDisksTargetDefaults):
+            Details of the target Persistent Disks in
+            Compute Engine.
+
+            This field is a member of `oneof`_ ``target_vm_defaults``.
+        vmware_source_vm_details (google.cloud.vmmigration_v1.types.VmwareSourceVmDetails):
+            Output only. Details of the VM from a Vmware
+            source.
+
+            This field is a member of `oneof`_ ``source_vm_details``.
         aws_source_vm_details (google.cloud.vmmigration_v1.types.AwsSourceVmDetails):
             Output only. Details of the VM from an AWS
+            source.
+
+            This field is a member of `oneof`_ ``source_vm_details``.
+        azure_source_vm_details (google.cloud.vmmigration_v1.types.AzureSourceVmDetails):
+            Output only. Details of the VM from an Azure
             source.
 
             This field is a member of `oneof`_ ``source_vm_details``.
@@ -502,8 +676,13 @@ class MigratingVm(proto.Message):
             Output only. The last time the migrating VM
             state was updated.
         current_sync_info (google.cloud.vmmigration_v1.types.ReplicationCycle):
-            Output only. The percentage progress of the
-            current running replication cycle.
+            Output only. Details of the current running
+            replication cycle.
+        last_replication_cycle (google.cloud.vmmigration_v1.types.ReplicationCycle):
+            Output only. Details of the last replication cycle. This
+            will be updated whenever a replication cycle is finished and
+            is not to be confused with last_sync which is only updated
+            on successful replication cycles.
         group (str):
             Output only. The group this migrating vm is included in, if
             any. The group is represented by the full path of the
@@ -530,6 +709,13 @@ class MigratingVm(proto.Message):
             Note: To have this field populated you need to
             explicitly request it via the "view" parameter
             of the Get/List request.
+        cutover_forecast (google.cloud.vmmigration_v1.types.CutoverForecast):
+            Output only. Provides details of future
+            CutoverJobs of a MigratingVm. Set to empty when
+            cutover forecast is unavailable.
+        expiration (google.cloud.vmmigration_v1.types.MigratingVm.Expiration):
+            Output only. Provides details about the
+            expiration state of the migrating VM.
     """
 
     class State(proto.Enum):
@@ -572,6 +758,14 @@ class MigratingVm(proto.Message):
             ERROR (13):
                 The replication process encountered an
                 unrecoverable error and was aborted.
+            EXPIRED (14):
+                The migrating VM has passed its expiration
+                date. It might be possible to bring it back to
+                "Active" state by updating the TTL field. For
+                more information, see the documentation.
+            FINALIZED_EXPIRED (17):
+                The migrating VM's has been finalized and
+                migration resources have been removed.
         """
         STATE_UNSPECIFIED = 0
         PENDING = 1
@@ -585,6 +779,38 @@ class MigratingVm(proto.Message):
         FINALIZING = 11
         FINALIZED = 12
         ERROR = 13
+        EXPIRED = 14
+        FINALIZED_EXPIRED = 17
+
+    class Expiration(proto.Message):
+        r"""Expiration holds information about the expiration of a
+        MigratingVm.
+
+        Attributes:
+            expire_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. Timestamp of when this resource
+                is considered expired.
+            extension_count (int):
+                Output only. The number of times expiration
+                was extended.
+            extendable (bool):
+                Output only. Describes whether the expiration
+                can be extended.
+        """
+
+        expire_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        extension_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        extendable: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
     compute_engine_target_defaults: "ComputeEngineTargetDefaults" = proto.Field(
         proto.MESSAGE,
@@ -592,11 +818,31 @@ class MigratingVm(proto.Message):
         oneof="target_vm_defaults",
         message="ComputeEngineTargetDefaults",
     )
+    compute_engine_disks_target_defaults: "ComputeEngineDisksTargetDefaults" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=34,
+            oneof="target_vm_defaults",
+            message="ComputeEngineDisksTargetDefaults",
+        )
+    )
+    vmware_source_vm_details: "VmwareSourceVmDetails" = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        oneof="source_vm_details",
+        message="VmwareSourceVmDetails",
+    )
     aws_source_vm_details: "AwsSourceVmDetails" = proto.Field(
         proto.MESSAGE,
         number=29,
         oneof="source_vm_details",
         message="AwsSourceVmDetails",
+    )
+    azure_source_vm_details: "AzureSourceVmDetails" = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        oneof="source_vm_details",
+        message="AzureSourceVmDetails",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -649,6 +895,11 @@ class MigratingVm(proto.Message):
         number=13,
         message="ReplicationCycle",
     )
+    last_replication_cycle: "ReplicationCycle" = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message="ReplicationCycle",
+    )
     group: str = proto.Field(
         proto.STRING,
         number=15,
@@ -673,6 +924,33 @@ class MigratingVm(proto.Message):
         number=20,
         message="CutoverJob",
     )
+    cutover_forecast: "CutoverForecast" = proto.Field(
+        proto.MESSAGE,
+        number=33,
+        message="CutoverForecast",
+    )
+    expiration: Expiration = proto.Field(
+        proto.MESSAGE,
+        number=37,
+        message=Expiration,
+    )
+
+
+class CutoverForecast(proto.Message):
+    r"""CutoverForecast holds information about future CutoverJobs of
+    a MigratingVm.
+
+    Attributes:
+        estimated_cutover_job_duration (google.protobuf.duration_pb2.Duration):
+            Output only. Estimation of the CutoverJob
+            duration.
+    """
+
+    estimated_cutover_job_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
 
 
 class CloneJob(proto.Message):
@@ -688,6 +966,10 @@ class CloneJob(proto.Message):
     instance it created. It will only delete it in case of the CloneJob
     being cancelled or upon failure to clone.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -695,6 +977,11 @@ class CloneJob(proto.Message):
         compute_engine_target_details (google.cloud.vmmigration_v1.types.ComputeEngineTargetDetails):
             Output only. Details of the target VM in
             Compute Engine.
+
+            This field is a member of `oneof`_ ``target_vm_details``.
+        compute_engine_disks_target_details (google.cloud.vmmigration_v1.types.ComputeEngineDisksTargetDetails):
+            Output only. Details of the target Persistent
+            Disks in Compute Engine.
 
             This field is a member of `oneof`_ ``target_vm_details``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -757,6 +1044,14 @@ class CloneJob(proto.Message):
         number=20,
         oneof="target_vm_details",
         message="ComputeEngineTargetDetails",
+    )
+    compute_engine_disks_target_details: "ComputeEngineDisksTargetDetails" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=25,
+            oneof="target_vm_details",
+            message="ComputeEngineDisksTargetDetails",
+        )
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -868,8 +1163,12 @@ class InstantiatingMigratedVMStep(proto.Message):
 class CutoverJob(proto.Message):
     r"""CutoverJob message describes a cutover of a migrating VM. The
     CutoverJob is the operation of shutting down the VM, creating a
-    snapshot and clonning the VM using the replicated snapshot.
+    snapshot and cloning the VM using the replicated snapshot.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -877,6 +1176,11 @@ class CutoverJob(proto.Message):
         compute_engine_target_details (google.cloud.vmmigration_v1.types.ComputeEngineTargetDetails):
             Output only. Details of the target VM in
             Compute Engine.
+
+            This field is a member of `oneof`_ ``target_vm_details``.
+        compute_engine_disks_target_details (google.cloud.vmmigration_v1.types.ComputeEngineDisksTargetDetails):
+            Output only. Details of the target Persistent
+            Disks in Compute Engine.
 
             This field is a member of `oneof`_ ``target_vm_details``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -945,6 +1249,14 @@ class CutoverJob(proto.Message):
         number=14,
         oneof="target_vm_details",
         message="ComputeEngineTargetDetails",
+    )
+    compute_engine_disks_target_details: "ComputeEngineDisksTargetDetails" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=20,
+            oneof="target_vm_details",
+            message="ComputeEngineDisksTargetDetails",
+        )
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -1093,11 +1405,11 @@ class CreateCloneJobRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1260,6 +1572,10 @@ class Source(proto.Message):
             AWS type source details.
 
             This field is a member of `oneof`_ ``source_details``.
+        azure (google.cloud.vmmigration_v1.types.AzureSourceDetails):
+            Azure type source details.
+
+            This field is a member of `oneof`_ ``source_details``.
         name (str):
             Output only. The Source name.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1270,6 +1586,9 @@ class Source(proto.Message):
             The labels of the source.
         description (str):
             User-provided description of the source.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Optional. Immutable. The encryption details
+            of the source data stored by the service.
     """
 
     vmware: "VmwareSourceDetails" = proto.Field(
@@ -1283,6 +1602,12 @@ class Source(proto.Message):
         number=12,
         oneof="source_details",
         message="AwsSourceDetails",
+    )
+    azure: "AzureSourceDetails" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="source_details",
+        message="AzureSourceDetails",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -1307,6 +1632,27 @@ class Source(proto.Message):
         proto.STRING,
         number=6,
     )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="Encryption",
+    )
+
+
+class Encryption(proto.Message):
+    r"""Encryption message describes the details of the applied
+    encryption.
+
+    Attributes:
+        kms_key (str):
+            Required. The name of the encryption key that
+            is stored in Google Cloud KMS.
+    """
+
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class VmwareSourceDetails(proto.Message):
@@ -1326,6 +1672,8 @@ class VmwareSourceDetails(proto.Message):
         thumbprint (str):
             The thumbprint representing the certificate
             for the vcenter.
+        resolved_vcenter_host (str):
+            The hostname of the vcenter.
     """
 
     username: str = proto.Field(
@@ -1343,6 +1691,10 @@ class VmwareSourceDetails(proto.Message):
     thumbprint: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    resolved_vcenter_host: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -1419,6 +1771,11 @@ class AwsSourceDetails(proto.Message):
                 AWS access key ID.
             secret_access_key (str):
                 Input only. AWS secret access key.
+            session_token (str):
+                Input only. AWS session token.
+                Used only when AWS security token service (STS)
+                is responsible for creating the temporary
+                credentials.
         """
 
         access_key_id: str = proto.Field(
@@ -1429,15 +1786,19 @@ class AwsSourceDetails(proto.Message):
             proto.STRING,
             number=2,
         )
+        session_token: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class Tag(proto.Message):
         r"""Tag is an AWS tag representation.
 
         Attributes:
             key (str):
-                Key of tag.
+                Required. Key of tag.
             value (str):
-                Value of tag.
+                Required. Value of tag.
         """
 
         key: str = proto.Field(
@@ -1486,6 +1847,128 @@ class AwsSourceDetails(proto.Message):
     public_ip: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+
+
+class AzureSourceDetails(proto.Message):
+    r"""AzureSourceDetails message describes a specific source
+    details for the Azure source type.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        client_secret_creds (google.cloud.vmmigration_v1.types.AzureSourceDetails.ClientSecretCredentials):
+            Azure Credentials using tenant ID, client ID
+            and secret.
+
+            This field is a member of `oneof`_ ``credentials_type``.
+        subscription_id (str):
+            Immutable. Azure subscription ID.
+        azure_location (str):
+            Immutable. The Azure location (region) that
+            the source VMs will be migrated from.
+        state (google.cloud.vmmigration_v1.types.AzureSourceDetails.State):
+            Output only. State of the source as
+            determined by the health check.
+        error (google.rpc.status_pb2.Status):
+            Output only. Provides details on the state of
+            the Source in case of an error.
+        migration_resources_user_tags (MutableMapping[str, str]):
+            User specified tags to add to every M2VM generated resource
+            in Azure. These tags will be set in addition to the default
+            tags that are set as part of the migration process. The tags
+            must not begin with the reserved prefix ``m4ce`` or
+            ``m2vm``.
+        resource_group_id (str):
+            Output only. The ID of the Azure resource
+            group that contains all resources related to the
+            migration process of this source.
+    """
+
+    class State(proto.Enum):
+        r"""The possible values of the state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unknown. This is used for API
+                compatibility only and is not used by the
+                system.
+            PENDING (1):
+                The state was not sampled by the health
+                checks yet.
+            FAILED (2):
+                The source is available but might not be
+                usable yet due to invalid credentials or another
+                reason. The error message will contain further
+                details.
+            ACTIVE (3):
+                The source exists and its credentials were
+                verified.
+        """
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        FAILED = 2
+        ACTIVE = 3
+
+    class ClientSecretCredentials(proto.Message):
+        r"""Message describing Azure Credentials using tenant ID, client
+        ID and secret.
+
+        Attributes:
+            tenant_id (str):
+                Azure tenant ID.
+            client_id (str):
+                Azure client ID.
+            client_secret (str):
+                Input only. Azure client secret.
+        """
+
+        tenant_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        client_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        client_secret: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    client_secret_creds: ClientSecretCredentials = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="credentials_type",
+        message=ClientSecretCredentials,
+    )
+    subscription_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    azure_location: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=status_pb2.Status,
+    )
+    migration_resources_user_tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    resource_group_id: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 
@@ -1656,8 +2139,8 @@ class UpgradeStatus(proto.Message):
         state (google.cloud.vmmigration_v1.types.UpgradeStatus.State):
             The state of the upgradeAppliance operation.
         error (google.rpc.status_pb2.Status):
-            Provides details on the state of the upgrade
-            operation in case of an error.
+            Output only. Provides details on the state of
+            the upgrade operation in case of an error.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation was started.
         previous_version (str):
@@ -1709,7 +2192,7 @@ class UpgradeStatus(proto.Message):
 
 
 class AvailableUpdates(proto.Message):
-    r"""Holds informatiom about the available versions for upgrade.
+    r"""Holds information about the available versions for upgrade.
 
     Attributes:
         new_deployable_appliance (google.cloud.vmmigration_v1.types.ApplianceVersion):
@@ -1885,11 +2368,11 @@ class CreateSourceRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1939,11 +2422,11 @@ class UpdateSourceRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1983,11 +2466,11 @@ class DeleteSourceRequest(proto.Message):
             least 60 minutes after the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -2066,6 +2549,8 @@ class VmwareVmDetails(proto.Message):
             for types of strings this might hold.
         boot_option (google.cloud.vmmigration_v1.types.VmwareVmDetails.BootOption):
             Output only. The VM Boot Option.
+        architecture (google.cloud.vmmigration_v1.types.VmwareVmDetails.VmArchitecture):
+            Output only. The CPU architecture.
     """
 
     class PowerState(proto.Enum):
@@ -2101,6 +2586,22 @@ class VmwareVmDetails(proto.Message):
         BOOT_OPTION_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
+
+    class VmArchitecture(proto.Enum):
+        r"""Possible values for the VM architecture.
+
+        Values:
+            VM_ARCHITECTURE_UNSPECIFIED (0):
+                The architecture is unknown.
+            VM_ARCHITECTURE_X86_FAMILY (1):
+                The architecture is one of the x86
+                architectures.
+            VM_ARCHITECTURE_ARM64 (2):
+                The architecture is ARM64.
+        """
+        VM_ARCHITECTURE_UNSPECIFIED = 0
+        VM_ARCHITECTURE_X86_FAMILY = 1
+        VM_ARCHITECTURE_ARM64 = 2
 
     vm_id: str = proto.Field(
         proto.STRING,
@@ -2152,6 +2653,11 @@ class VmwareVmDetails(proto.Message):
         number=13,
         enum=BootOption,
     )
+    architecture: VmArchitecture = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=VmArchitecture,
+    )
 
 
 class AwsVmDetails(proto.Message):
@@ -2173,7 +2679,7 @@ class AwsVmDetails(proto.Message):
             Output only. The power state of the VM at the
             moment list was taken.
         cpu_count (int):
-            The number of cpus the VM has.
+            The number of CPU cores the VM has.
         memory_mb (int):
             The memory size of the VM in MB.
         disk_count (int):
@@ -2199,6 +2705,9 @@ class AwsVmDetails(proto.Message):
             The virtualization type.
         architecture (google.cloud.vmmigration_v1.types.AwsVmDetails.VmArchitecture):
             The CPU architecture.
+        vcpu_count (int):
+            The number of vCPUs the VM has. It is calculated as the
+            number of CPU cores \* threads per CPU the VM has.
     """
 
     class PowerState(proto.Enum):
@@ -2352,6 +2861,10 @@ class AwsVmDetails(proto.Message):
         number=18,
         enum=VmArchitecture,
     )
+    vcpu_count: int = proto.Field(
+        proto.INT32,
+        number=19,
+    )
 
 
 class AwsSecurityGroup(proto.Message):
@@ -2371,6 +2884,252 @@ class AwsSecurityGroup(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class AzureVmDetails(proto.Message):
+    r"""AzureVmDetails describes a VM in Azure.
+
+    Attributes:
+        vm_id (str):
+            The VM full path in Azure.
+        power_state (google.cloud.vmmigration_v1.types.AzureVmDetails.PowerState):
+            The power state of the VM at the moment list
+            was taken.
+        vm_size (str):
+            VM size as configured in Azure. Determines
+            the VM's hardware spec.
+        cpu_count (int):
+            The number of cpus the VM has.
+        memory_mb (int):
+            The memory size of the VM in MB.
+        disk_count (int):
+            The number of disks the VM has, including OS
+            disk.
+        committed_storage_mb (int):
+            The total size of the storage allocated to
+            the VM in MB.
+        os_disk (google.cloud.vmmigration_v1.types.AzureVmDetails.OSDisk):
+            Description of the OS disk.
+        disks (MutableSequence[google.cloud.vmmigration_v1.types.AzureVmDetails.Disk]):
+            Description of the data disks.
+        os_description (google.cloud.vmmigration_v1.types.AzureVmDetails.OSDescription):
+            Description of the OS.
+        boot_option (google.cloud.vmmigration_v1.types.AzureVmDetails.BootOption):
+            The VM Boot Option.
+        tags (MutableMapping[str, str]):
+            The tags of the VM.
+        computer_name (str):
+            The VM's ComputerName.
+        architecture (google.cloud.vmmigration_v1.types.AzureVmDetails.VmArchitecture):
+            The CPU architecture.
+    """
+
+    class PowerState(proto.Enum):
+        r"""Possible values for the power state of the VM.
+
+        Values:
+            POWER_STATE_UNSPECIFIED (0):
+                Power state is not specified.
+            STARTING (1):
+                The VM is starting.
+            RUNNING (2):
+                The VM is running.
+            STOPPING (3):
+                The VM is stopping.
+            STOPPED (4):
+                The VM is stopped.
+            DEALLOCATING (5):
+                The VM is deallocating.
+            DEALLOCATED (6):
+                The VM is deallocated.
+            UNKNOWN (7):
+                The VM's power state is unknown.
+        """
+        POWER_STATE_UNSPECIFIED = 0
+        STARTING = 1
+        RUNNING = 2
+        STOPPING = 3
+        STOPPED = 4
+        DEALLOCATING = 5
+        DEALLOCATED = 6
+        UNKNOWN = 7
+
+    class BootOption(proto.Enum):
+        r"""The possible values for the vm boot option.
+
+        Values:
+            BOOT_OPTION_UNSPECIFIED (0):
+                The boot option is unknown.
+            EFI (1):
+                The boot option is UEFI.
+            BIOS (2):
+                The boot option is BIOS.
+        """
+        BOOT_OPTION_UNSPECIFIED = 0
+        EFI = 1
+        BIOS = 2
+
+    class VmArchitecture(proto.Enum):
+        r"""Possible values for the VM architecture.
+
+        Values:
+            VM_ARCHITECTURE_UNSPECIFIED (0):
+                The architecture is unknown.
+            VM_ARCHITECTURE_X86_FAMILY (1):
+                The architecture is one of the x86
+                architectures.
+            VM_ARCHITECTURE_ARM64 (2):
+                The architecture is ARM64.
+        """
+        VM_ARCHITECTURE_UNSPECIFIED = 0
+        VM_ARCHITECTURE_X86_FAMILY = 1
+        VM_ARCHITECTURE_ARM64 = 2
+
+    class OSDisk(proto.Message):
+        r"""A message describing the OS disk.
+
+        Attributes:
+            type_ (str):
+                The disk's type.
+            name (str):
+                The disk's full name.
+            size_gb (int):
+                The disk's size in GB.
+        """
+
+        type_: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        size_gb: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+
+    class Disk(proto.Message):
+        r"""A message describing a data disk.
+
+        Attributes:
+            name (str):
+                The disk name.
+            size_gb (int):
+                The disk size in GB.
+            lun (int):
+                The disk's Logical Unit Number (LUN).
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        size_gb: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        lun: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+
+    class OSDescription(proto.Message):
+        r"""A message describing the VM's OS. Including OS, Publisher,
+        Offer and Plan if applicable.
+
+        Attributes:
+            type_ (str):
+                OS type.
+            publisher (str):
+                OS publisher.
+            offer (str):
+                OS offer.
+            plan (str):
+                OS plan.
+        """
+
+        type_: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        publisher: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        offer: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        plan: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    vm_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    power_state: PowerState = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=PowerState,
+    )
+    vm_size: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    cpu_count: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    memory_mb: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    disk_count: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    committed_storage_mb: int = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    os_disk: OSDisk = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=OSDisk,
+    )
+    disks: MutableSequence[Disk] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message=Disk,
+    )
+    os_description: OSDescription = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=OSDescription,
+    )
+    boot_option: BootOption = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=BootOption,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=12,
+    )
+    computer_name: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    architecture: VmArchitecture = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=VmArchitecture,
     )
 
 
@@ -2404,6 +3163,21 @@ class AwsVmsDetails(proto.Message):
     )
 
 
+class AzureVmsDetails(proto.Message):
+    r"""AzureVmsDetails describes VMs in Azure.
+
+    Attributes:
+        details (MutableSequence[google.cloud.vmmigration_v1.types.AzureVmDetails]):
+            The details of the Azure VMs.
+    """
+
+    details: MutableSequence["AzureVmDetails"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AzureVmDetails",
+    )
+
+
 class FetchInventoryResponse(proto.Message):
     r"""Response message for
     [fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory].
@@ -2426,6 +3200,11 @@ class FetchInventoryResponse(proto.Message):
             type AWS.
 
             This field is a member of `oneof`_ ``SourceVms``.
+        azure_vms (google.cloud.vmmigration_v1.types.AzureVmsDetails):
+            The description of the VMs in a Source of
+            type Azure.
+
+            This field is a member of `oneof`_ ``SourceVms``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the source
             was last queried (if the result is from the
@@ -2444,10 +3223,140 @@ class FetchInventoryResponse(proto.Message):
         oneof="SourceVms",
         message="AwsVmsDetails",
     )
+    azure_vms: "AzureVmsDetails" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="SourceVms",
+        message="AzureVmsDetails",
+    )
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class FetchStorageInventoryRequest(proto.Message):
+    r"""Request message for
+    [fetchStorageInventory][google.cloud.vmmigration.v1.VmMigration.FetchStorageInventory].
+
+    Attributes:
+        source (str):
+            Required. The name of the Source.
+        type_ (google.cloud.vmmigration_v1.types.FetchStorageInventoryRequest.StorageType):
+            Required. The type of the storage inventory
+            to fetch.
+        force_refresh (bool):
+            Optional. If this flag is set to true, the
+            source will be queried instead of using cached
+            results. Using this flag will make the call
+            slower.
+        page_size (int):
+            Optional. The maximum number of VMs to
+            return. The service may return fewer than this
+            value.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``FetchStorageInventory`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``FetchStorageInventory`` must match the call
+            that provided the page token.
+    """
+
+    class StorageType(proto.Enum):
+        r"""The type of the storage inventory to fetch.
+
+        Values:
+            STORAGE_TYPE_UNSPECIFIED (0):
+                The type is unspecified.
+            DISKS (1):
+                The type is disks.
+            SNAPSHOTS (2):
+                The type is snapshots.
+        """
+        STORAGE_TYPE_UNSPECIFIED = 0
+        DISKS = 1
+        SNAPSHOTS = 2
+
+    source: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_: StorageType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=StorageType,
+    )
+    force_refresh: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class FetchStorageInventoryResponse(proto.Message):
+    r"""Response message for
+    [fetchStorageInventory][google.cloud.vmmigration.v1.VmMigration.FetchStorageInventory].
+
+    Attributes:
+        resources (MutableSequence[google.cloud.vmmigration_v1.types.SourceStorageResource]):
+            The list of storage resources in the source.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the source
+            was last queried (if the result is from the
+            cache).
+        next_page_token (str):
+            Output only. A token, which can be sent as ``page_token`` to
+            retrieve the next page. If this field is omitted, there are
+            no subsequent pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    resources: MutableSequence["SourceStorageResource"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SourceStorageResource",
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class SourceStorageResource(proto.Message):
+    r"""SourceStorageResource describes a storage resource in the
+    source.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        aws_disk_details (google.cloud.vmmigration_v1.types.AwsSourceDiskDetails):
+            Source AWS volume details.
+
+            This field is a member of `oneof`_ ``StorageResource``.
+    """
+
+    aws_disk_details: "AwsSourceDiskDetails" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="StorageResource",
+        message="AwsSourceDiskDetails",
     )
 
 
@@ -2808,11 +3717,11 @@ class CreateUtilizationReportRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -2855,11 +3764,11 @@ class DeleteUtilizationReportRequest(proto.Message):
             least 60 minutes after the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -2949,11 +3858,11 @@ class CreateDatacenterConnectorRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -2996,11 +3905,11 @@ class DeleteDatacenterConnectorRequest(proto.Message):
             minutes after the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -3034,11 +3943,11 @@ class UpgradeApplianceRequest(proto.Message):
             minutes after the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -3129,12 +4038,13 @@ class ComputeEngineTargetDefaults(proto.Message):
         machine_type (str):
             The machine type to create the VM with.
         network_tags (MutableSequence[str]):
-            A map of network tags to associate with the
+            A list of network tags to associate with the
             VM.
         network_interfaces (MutableSequence[google.cloud.vmmigration_v1.types.NetworkInterface]):
             List of NICs connected to this VM.
         service_account (str):
-            The service account to associate the VM with.
+            Optional. The service account to associate
+            the VM with.
         disk_type (google.cloud.vmmigration_v1.types.ComputeEngineDiskType):
             The disk type to use in the VM.
         labels (MutableMapping[str, str]):
@@ -3149,11 +4059,20 @@ class ComputeEngineTargetDefaults(proto.Message):
             empty default is used).
         secure_boot (bool):
             Defines whether the instance has Secure Boot
-            enabled. This can be set to true only if the vm
+            enabled. This can be set to true only if the VM
             boot option is EFI.
+        enable_vtpm (bool):
+            Optional. Defines whether the instance has
+            vTPM enabled. This can be set to true only if
+            the VM boot option is EFI.
+        enable_integrity_monitoring (bool):
+            Optional. Defines whether the instance has
+            integrity monitoring enabled. This can be set to
+            true only if the VM boot option is EFI, and vTPM
+            is enabled.
         boot_option (google.cloud.vmmigration_v1.types.ComputeEngineBootOption):
             Output only. The VM Boot Option, as set in
-            the source vm.
+            the source VM.
         metadata (MutableMapping[str, str]):
             The metadata key/value pairs to assign to the
             VM.
@@ -3161,6 +4080,27 @@ class ComputeEngineTargetDefaults(proto.Message):
             Additional licenses to assign to the VM.
         hostname (str):
             The hostname to assign to the VM.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Optional. Immutable. The encryption to apply
+            to the VM disks.
+        boot_conversion (google.cloud.vmmigration_v1.types.BootConversion):
+            Optional. By default the virtual machine will
+            keep its existing boot option. Setting this
+            property will trigger an internal process which
+            will convert the virtual machine from using the
+            existing boot option to another.
+        disk_replica_zones (MutableSequence[str]):
+            Optional. Additional replica zones of the target regional
+            disks. If this list is not empty a regional disk will be
+            created. The first supported zone would be the one stated in
+            the
+            [zone][google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.zone]
+            field. The rest are taken from this list. Please refer to
+            the `regional disk creation
+            API <https://cloud.google.com/compute/docs/regions-zones/global-regional-zonal-resources>`__
+            for further details about regional vs zonal disks. If not
+            specified, a zonal disk will be created in the same zone the
+            VM is created.
     """
 
     vm_name: str = proto.Field(
@@ -3225,6 +4165,14 @@ class ComputeEngineTargetDefaults(proto.Message):
         proto.BOOL,
         number=14,
     )
+    enable_vtpm: bool = proto.Field(
+        proto.BOOL,
+        number=21,
+    )
+    enable_integrity_monitoring: bool = proto.Field(
+        proto.BOOL,
+        number=22,
+    )
     boot_option: "ComputeEngineBootOption" = proto.Field(
         proto.ENUM,
         number=15,
@@ -3242,6 +4190,20 @@ class ComputeEngineTargetDefaults(proto.Message):
     hostname: str = proto.Field(
         proto.STRING,
         number=18,
+    )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message="Encryption",
+    )
+    boot_conversion: "BootConversion" = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum="BootConversion",
+    )
+    disk_replica_zones: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=24,
     )
 
 
@@ -3263,7 +4225,7 @@ class ComputeEngineTargetDetails(proto.Message):
         machine_type (str):
             The machine type to create the VM with.
         network_tags (MutableSequence[str]):
-            A map of network tags to associate with the
+            A list of network tags to associate with the
             VM.
         network_interfaces (MutableSequence[google.cloud.vmmigration_v1.types.NetworkInterface]):
             List of NICs connected to this VM.
@@ -3283,10 +4245,16 @@ class ComputeEngineTargetDetails(proto.Message):
             empty default is used).
         secure_boot (bool):
             Defines whether the instance has Secure Boot
-            enabled. This can be set to true only if the vm
+            enabled. This can be set to true only if the VM
             boot option is EFI.
+        enable_vtpm (bool):
+            Optional. Defines whether the instance has
+            vTPM enabled.
+        enable_integrity_monitoring (bool):
+            Optional. Defines whether the instance has
+            integrity monitoring enabled.
         boot_option (google.cloud.vmmigration_v1.types.ComputeEngineBootOption):
-            The VM Boot Option, as set in the source vm.
+            The VM Boot Option, as set in the source VM.
         metadata (MutableMapping[str, str]):
             The metadata key/value pairs to assign to the
             VM.
@@ -3294,6 +4262,27 @@ class ComputeEngineTargetDetails(proto.Message):
             Additional licenses to assign to the VM.
         hostname (str):
             The hostname to assign to the VM.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Optional. The encryption to apply to the VM
+            disks.
+        boot_conversion (google.cloud.vmmigration_v1.types.BootConversion):
+            Optional. By default the virtual machine will
+            keep its existing boot option. Setting this
+            property will trigger an internal process which
+            will convert the virtual machine from using the
+            existing boot option to another.
+        disk_replica_zones (MutableSequence[str]):
+            Optional. Additional replica zones of the target regional
+            disks. If this list is not empty a regional disk will be
+            created. The first supported zone would be the one stated in
+            the
+            [zone][google.cloud.vmmigration.v1.ComputeEngineTargetDetails.zone]
+            field. The rest are taken from this list. Please refer to
+            the `regional disk creation
+            API <https://cloud.google.com/compute/docs/regions-zones/global-regional-zonal-resources>`__
+            for further details about regional vs zonal disks. If not
+            specified, a zonal disk will be created in the same zone the
+            VM is created.
     """
 
     vm_name: str = proto.Field(
@@ -3358,6 +4347,14 @@ class ComputeEngineTargetDetails(proto.Message):
         proto.BOOL,
         number=14,
     )
+    enable_vtpm: bool = proto.Field(
+        proto.BOOL,
+        number=21,
+    )
+    enable_integrity_monitoring: bool = proto.Field(
+        proto.BOOL,
+        number=22,
+    )
     boot_option: "ComputeEngineBootOption" = proto.Field(
         proto.ENUM,
         number=15,
@@ -3376,6 +4373,20 @@ class ComputeEngineTargetDetails(proto.Message):
         proto.STRING,
         number=18,
     )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message="Encryption",
+    )
+    boot_conversion: "BootConversion" = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum="BootConversion",
+    )
+    disk_replica_zones: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=24,
+    )
 
 
 class NetworkInterface(proto.Message):
@@ -3383,15 +4394,23 @@ class NetworkInterface(proto.Message):
 
     Attributes:
         network (str):
-            The network to connect the NIC to.
+            Optional. The network to connect the NIC to.
         subnetwork (str):
-            The subnetwork to connect the NIC to.
+            Optional. The subnetwork to connect the NIC
+            to.
         internal_ip (str):
-            The internal IP to define in the NIC. The formats accepted
-            are: ``ephemeral`` \\ ipv4 address \\ a named address
-            resource full path.
+            Optional. The internal IP to define in the NIC. The formats
+            accepted are: ``ephemeral`` \\ ipv4 address \\ a named
+            address resource full path.
         external_ip (str):
-            The external IP to define in the NIC.
+            Optional. The external IP to define in the
+            NIC.
+        network_tier (google.cloud.vmmigration_v1.types.ComputeEngineNetworkTier):
+            Optional. The networking tier used for
+            optimizing connectivity between instances and
+            systems on the internet. Applies only for
+            external ephemeral IP addresses. If left empty,
+            will default to PREMIUM.
     """
 
     network: str = proto.Field(
@@ -3409,6 +4428,11 @@ class NetworkInterface(proto.Message):
     external_ip: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    network_tier: "ComputeEngineNetworkTier" = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="ComputeEngineNetworkTier",
     )
 
 
@@ -3507,7 +4531,9 @@ class SchedulingNodeAffinity(proto.Message):
 
 class ComputeScheduling(proto.Message):
     r"""Scheduling information for VM on maintenance/restart
-    behaviour and node allocation in sole tenant nodes.
+    behaviour and node allocation in sole tenant nodes. Options for
+    instance behavior when the host machine undergoes maintenance
+    that may temporarily impact instance performance.
 
     Attributes:
         on_host_maintenance (google.cloud.vmmigration_v1.types.ComputeScheduling.OnHostMaintenance):
@@ -3590,6 +4616,425 @@ class ComputeScheduling(proto.Message):
     )
 
 
+class ComputeEngineDisksTargetDefaults(proto.Message):
+    r"""ComputeEngineDisksTargetDefaults is a collection of details
+    for creating Persistent Disks in a target Compute Engine
+    project.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        zone (str):
+            The zone in which to create the Persistent
+            Disks.
+
+            This field is a member of `oneof`_ ``location``.
+        disks_target_defaults (google.cloud.vmmigration_v1.types.DisksMigrationDisksTargetDefaults):
+            Details of the disk only migration target.
+
+            This field is a member of `oneof`_ ``vm_target``.
+        vm_target_defaults (google.cloud.vmmigration_v1.types.DisksMigrationVmTargetDefaults):
+            Details of the VM migration target.
+
+            This field is a member of `oneof`_ ``vm_target``.
+        target_project (str):
+            The full path of the resource of type
+            TargetProject which represents the Compute
+            Engine project in which to create the Persistent
+            Disks.
+        disks (MutableSequence[google.cloud.vmmigration_v1.types.PersistentDiskDefaults]):
+            The details of each Persistent Disk to
+            create.
+    """
+
+    zone: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="location",
+    )
+    disks_target_defaults: "DisksMigrationDisksTargetDefaults" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="vm_target",
+        message="DisksMigrationDisksTargetDefaults",
+    )
+    vm_target_defaults: "DisksMigrationVmTargetDefaults" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="vm_target",
+        message="DisksMigrationVmTargetDefaults",
+    )
+    target_project: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    disks: MutableSequence["PersistentDiskDefaults"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="PersistentDiskDefaults",
+    )
+
+
+class PersistentDiskDefaults(proto.Message):
+    r"""Details for creation of a Persistent Disk.
+
+    Attributes:
+        source_disk_number (int):
+            Required. The ordinal number of the source VM
+            disk.
+        disk_name (str):
+            Optional. The name of the Persistent Disk to
+            create.
+        disk_type (google.cloud.vmmigration_v1.types.ComputeEngineDiskType):
+            The disk type to use.
+        additional_labels (MutableMapping[str, str]):
+            A map of labels to associate with the
+            Persistent Disk.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Optional. The encryption to apply to the
+            disk.
+        vm_attachment_details (google.cloud.vmmigration_v1.types.VmAttachmentDetails):
+            Optional. Details for attachment of the disk
+            to a VM. Used when the disk is set to be
+            attached to a target VM.
+    """
+
+    source_disk_number: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    disk_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    disk_type: "ComputeEngineDiskType" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="ComputeEngineDiskType",
+    )
+    additional_labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="Encryption",
+    )
+    vm_attachment_details: "VmAttachmentDetails" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="VmAttachmentDetails",
+    )
+
+
+class VmAttachmentDetails(proto.Message):
+    r"""Details for attachment of the disk to a VM.
+
+    Attributes:
+        device_name (str):
+            Optional. Specifies a unique device name of your choice that
+            is reflected into the /dev/disk/by-id/google-\* tree of a
+            Linux operating system running within the instance. If not
+            specified, the server chooses a default device name to apply
+            to this disk, in the form persistent-disk-x, where x is a
+            number assigned by Google Compute Engine. This field is only
+            applicable for persistent disks.
+    """
+
+    device_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DisksMigrationDisksTargetDefaults(proto.Message):
+    r"""Details for a disk only migration."""
+
+
+class DisksMigrationVmTargetDefaults(proto.Message):
+    r"""Details for creation of a VM that migrated data disks will be
+    attached to.
+
+    Attributes:
+        vm_name (str):
+            Required. The name of the VM to create.
+        machine_type_series (str):
+            Optional. The machine type series to create
+            the VM with. For presentation only.
+        machine_type (str):
+            Required. The machine type to create the VM
+            with.
+        network_tags (MutableSequence[str]):
+            Optional. A list of network tags to associate
+            with the VM.
+        network_interfaces (MutableSequence[google.cloud.vmmigration_v1.types.NetworkInterface]):
+            Optional. NICs to attach to the VM.
+        service_account (str):
+            Optional. The service account to associate
+            the VM with.
+        compute_scheduling (google.cloud.vmmigration_v1.types.ComputeScheduling):
+            Optional. Compute instance scheduling
+            information (if empty default is used).
+        secure_boot (bool):
+            Optional. Defines whether the instance has
+            Secure Boot enabled. This can be set to true
+            only if the VM boot option is EFI.
+        enable_vtpm (bool):
+            Optional. Defines whether the instance has
+            vTPM enabled.
+        enable_integrity_monitoring (bool):
+            Optional. Defines whether the instance has
+            integrity monitoring enabled.
+        metadata (MutableMapping[str, str]):
+            Optional. The metadata key/value pairs to
+            assign to the VM.
+        additional_licenses (MutableSequence[str]):
+            Optional. Additional licenses to assign to
+            the VM.
+        hostname (str):
+            Optional. The hostname to assign to the VM.
+        labels (MutableMapping[str, str]):
+            Optional. A map of labels to associate with
+            the VM.
+        boot_disk_defaults (google.cloud.vmmigration_v1.types.BootDiskDefaults):
+            Optional. Details of the boot disk of the VM.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Optional. The encryption to apply to the VM.
+    """
+
+    vm_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    machine_type_series: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    network_tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    network_interfaces: MutableSequence["NetworkInterface"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="NetworkInterface",
+    )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    compute_scheduling: "ComputeScheduling" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="ComputeScheduling",
+    )
+    secure_boot: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    enable_vtpm: bool = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
+    enable_integrity_monitoring: bool = proto.Field(
+        proto.BOOL,
+        number=17,
+    )
+    metadata: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
+    )
+    additional_licenses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    hostname: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
+    )
+    boot_disk_defaults: "BootDiskDefaults" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="BootDiskDefaults",
+    )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="Encryption",
+    )
+
+
+class BootDiskDefaults(proto.Message):
+    r"""BootDiskDefaults hold information about the boot disk of a
+    VM.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        image (google.cloud.vmmigration_v1.types.BootDiskDefaults.DiskImageDefaults):
+            The image to use when creating the disk.
+
+            This field is a member of `oneof`_ ``source``.
+        disk_name (str):
+            Optional. The name of the disk.
+        disk_type (google.cloud.vmmigration_v1.types.ComputeEngineDiskType):
+            Optional. The type of disk provisioning to
+            use for the VM.
+        device_name (str):
+            Optional. Specifies a unique device name of your choice that
+            is reflected into the /dev/disk/by-id/google-\* tree of a
+            Linux operating system running within the instance. If not
+            specified, the server chooses a default device name to apply
+            to this disk, in the form persistent-disk-x, where x is a
+            number assigned by Google Compute Engine. This field is only
+            applicable for persistent disks.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Optional. The encryption to apply to the boot
+            disk.
+    """
+
+    class DiskImageDefaults(proto.Message):
+        r"""Contains details about the image source used to create the
+        disk.
+
+        Attributes:
+            source_image (str):
+                Required. The Image resource used when
+                creating the disk.
+        """
+
+        source_image: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    image: DiskImageDefaults = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message=DiskImageDefaults,
+    )
+    disk_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    disk_type: "ComputeEngineDiskType" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ComputeEngineDiskType",
+    )
+    device_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="Encryption",
+    )
+
+
+class ComputeEngineDisksTargetDetails(proto.Message):
+    r"""ComputeEngineDisksTargetDetails is a collection of created
+    Persistent Disks details.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        disks_target_details (google.cloud.vmmigration_v1.types.DisksMigrationDisksTargetDetails):
+            Details of the disks-only migration target.
+
+            This field is a member of `oneof`_ ``vm_target``.
+        vm_target_details (google.cloud.vmmigration_v1.types.DisksMigrationVmTargetDetails):
+            Details for the VM the migrated data disks
+            are attached to.
+
+            This field is a member of `oneof`_ ``vm_target``.
+        disks (MutableSequence[google.cloud.vmmigration_v1.types.PersistentDisk]):
+            The details of each created Persistent Disk.
+    """
+
+    disks_target_details: "DisksMigrationDisksTargetDetails" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="vm_target",
+        message="DisksMigrationDisksTargetDetails",
+    )
+    vm_target_details: "DisksMigrationVmTargetDetails" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="vm_target",
+        message="DisksMigrationVmTargetDetails",
+    )
+    disks: MutableSequence["PersistentDisk"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PersistentDisk",
+    )
+
+
+class PersistentDisk(proto.Message):
+    r"""Details of a created Persistent Disk.
+
+    Attributes:
+        source_disk_number (int):
+            The ordinal number of the source VM disk.
+        disk_uri (str):
+            The URI of the Persistent Disk.
+    """
+
+    source_disk_number: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    disk_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DisksMigrationDisksTargetDetails(proto.Message):
+    r"""Details for a disks-only migration."""
+
+
+class DisksMigrationVmTargetDetails(proto.Message):
+    r"""Details for the VM created VM as part of disks migration.
+
+    Attributes:
+        vm_uri (str):
+            Output only. The URI of the Compute Engine
+            VM.
+    """
+
+    vm_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class SchedulePolicy(proto.Message):
     r"""A policy for scheduling replications.
 
@@ -3634,11 +5079,11 @@ class CreateMigratingVmRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -3803,11 +5248,11 @@ class UpdateMigratingVmRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -3914,6 +5359,24 @@ class FinalizeMigrationRequest(proto.Message):
     )
 
 
+class ExtendMigrationRequest(proto.Message):
+    r"""Request message for 'ExtendMigrationRequest' request.
+
+    Attributes:
+        migrating_vm (str):
+            Required. The name of the MigratingVm.
+    """
+
+    migrating_vm: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ExtendMigrationResponse(proto.Message):
+    r"""Response message for 'ExtendMigration' request."""
+
+
 class FinalizeMigrationResponse(proto.Message):
     r"""Response message for 'FinalizeMigration' request."""
 
@@ -3926,8 +5389,8 @@ class TargetProject(proto.Message):
         name (str):
             Output only. The name of the target project.
         project (str):
-            The target project ID (number) or project
-            name.
+            Required. The target project ID (number) or
+            project name.
         description (str):
             The target project's description.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -4080,11 +5543,11 @@ class CreateTargetProjectRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -4134,11 +5597,11 @@ class UpdateTargetProjectRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -4178,11 +5641,11 @@ class DeleteTargetProjectRequest(proto.Message):
             least 60 minutes after the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -4217,7 +5680,27 @@ class Group(proto.Message):
         display_name (str):
             Display name is a user defined name for this
             group which can be updated.
+        migration_target_type (google.cloud.vmmigration_v1.types.Group.MigrationTargetType):
+            Immutable. The target type of this group.
     """
+
+    class MigrationTargetType(proto.Enum):
+        r"""The possible types of the group.
+
+        Values:
+            MIGRATION_TARGET_TYPE_UNSPECIFIED (0):
+                Group type is not specified. This defaults to
+                Compute Engine targets.
+            MIGRATION_TARGET_TYPE_GCE (1):
+                All MigratingVMs in the group must have
+                Compute Engine targets.
+            MIGRATION_TARGET_TYPE_DISKS (2):
+                All MigratingVMs in the group must have
+                Compute Engine Disks targets.
+        """
+        MIGRATION_TARGET_TYPE_UNSPECIFIED = 0
+        MIGRATION_TARGET_TYPE_GCE = 1
+        MIGRATION_TARGET_TYPE_DISKS = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -4240,6 +5723,11 @@ class Group(proto.Message):
     display_name: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    migration_target_type: MigrationTargetType = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=MigrationTargetType,
     )
 
 
@@ -4359,11 +5847,11 @@ class CreateGroupRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -4413,11 +5901,11 @@ class UpdateGroupRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -4457,11 +5945,11 @@ class DeleteGroupRequest(proto.Message):
             least 60 minutes after the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -4548,11 +6036,11 @@ class CreateCutoverJobRequest(proto.Message):
             minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -4785,32 +6273,39 @@ class MigrationError(proto.Message):
             ERROR_CODE_UNSPECIFIED (0):
                 Default value. This value is not used.
             UNKNOWN_ERROR (1):
-                Migrate for Compute encountered an unknown
-                error.
+                Migrate to Virtual Machines encountered an
+                unknown error.
             SOURCE_VALIDATION_ERROR (2):
-                Migrate for Compute encountered an error
-                while validating replication source health.
+                Migrate to Virtual Machines encountered an
+                error while validating replication source
+                health.
             SOURCE_REPLICATION_ERROR (3):
-                Migrate for Compute encountered an error
-                during source data operation.
+                Migrate to Virtual Machines encountered an
+                error during source data operation.
             TARGET_REPLICATION_ERROR (4):
-                Migrate for Compute encountered an error
-                during target data operation.
+                Migrate to Virtual Machines encountered an
+                error during target data operation.
             OS_ADAPTATION_ERROR (5):
-                Migrate for Compute encountered an error
-                during OS adaptation.
+                Migrate to Virtual Machines encountered an
+                error during OS adaptation.
             CLONE_ERROR (6):
-                Migrate for Compute encountered an error in
-                clone operation.
+                Migrate to Virtual Machines encountered an
+                error in clone operation.
             CUTOVER_ERROR (7):
-                Migrate for Compute encountered an error in
-                cutover operation.
+                Migrate to Virtual Machines encountered an
+                error in cutover operation.
             UTILIZATION_REPORT_ERROR (8):
-                Migrate for Compute encountered an error
-                during utilization report creation.
+                Migrate to Virtual Machines encountered an
+                error during utilization report creation.
             APPLIANCE_UPGRADE_ERROR (9):
-                Migrate for Compute encountered an error
-                during appliance upgrade.
+                Migrate to Virtual Machines encountered an
+                error during appliance upgrade.
+            IMAGE_IMPORT_ERROR (10):
+                Migrate to Virtual Machines encountered an
+                error in image import operation.
+            DISK_MIGRATION_ERROR (11):
+                Migrate to Virtual Machines encountered an
+                error in disk migration operation.
         """
         ERROR_CODE_UNSPECIFIED = 0
         UNKNOWN_ERROR = 1
@@ -4822,6 +6317,8 @@ class MigrationError(proto.Message):
         CUTOVER_ERROR = 7
         UTILIZATION_REPORT_ERROR = 8
         APPLIANCE_UPGRADE_ERROR = 9
+        IMAGE_IMPORT_ERROR = 10
+        DISK_MIGRATION_ERROR = 11
 
     code: ErrorCode = proto.Field(
         proto.ENUM,
@@ -4850,15 +6347,172 @@ class MigrationError(proto.Message):
     )
 
 
+class MigrationWarning(proto.Message):
+    r"""Represents migration resource warning information that can be
+    used with google.rpc.Status message. MigrationWarning is used to
+    present the user with warning information in migration
+    operations.
+
+    Attributes:
+        code (google.cloud.vmmigration_v1.types.MigrationWarning.WarningCode):
+            The warning code.
+        warning_message (google.rpc.error_details_pb2.LocalizedMessage):
+            Output only. The localized warning message.
+        action_item (google.rpc.error_details_pb2.LocalizedMessage):
+            Output only. Suggested action for solving the
+            warning.
+        help_links (MutableSequence[google.rpc.error_details_pb2.Link]):
+            Output only. URL(s) pointing to additional
+            information on handling the current warning.
+        warning_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the warning occurred.
+    """
+
+    class WarningCode(proto.Enum):
+        r"""Represents possible warning codes.
+
+        Values:
+            WARNING_CODE_UNSPECIFIED (0):
+                Default value. This value is not used.
+            ADAPTATION_WARNING (1):
+                A warning originated from OS Adaptation.
+        """
+        WARNING_CODE_UNSPECIFIED = 0
+        ADAPTATION_WARNING = 1
+
+    code: WarningCode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=WarningCode,
+    )
+    warning_message: error_details_pb2.LocalizedMessage = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=error_details_pb2.LocalizedMessage,
+    )
+    action_item: error_details_pb2.LocalizedMessage = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=error_details_pb2.LocalizedMessage,
+    )
+    help_links: MutableSequence[error_details_pb2.Help.Link] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=error_details_pb2.Help.Link,
+    )
+    warning_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class VmwareSourceVmDetails(proto.Message):
+    r"""Represent the source Vmware VM details.
+
+    Attributes:
+        firmware (google.cloud.vmmigration_v1.types.VmwareSourceVmDetails.Firmware):
+            Output only. The firmware type of the source
+            VM.
+        committed_storage_bytes (int):
+            Output only. The total size of the disks
+            being migrated in bytes.
+        disks (MutableSequence[google.cloud.vmmigration_v1.types.VmwareSourceVmDetails.VmwareDiskDetails]):
+            Output only. The disks attached to the source
+            VM.
+        vm_capabilities_info (google.cloud.vmmigration_v1.types.VmCapabilities):
+            Output only. Information about VM
+            capabilities needed for some Compute Engine
+            features.
+        architecture (google.cloud.vmmigration_v1.types.VmArchitecture):
+            Output only. The VM architecture.
+    """
+
+    class Firmware(proto.Enum):
+        r"""Possible values for Vmware VM firmware.
+
+        Values:
+            FIRMWARE_UNSPECIFIED (0):
+                The firmware is unknown.
+            EFI (1):
+                The firmware is EFI.
+            BIOS (2):
+                The firmware is BIOS.
+        """
+        FIRMWARE_UNSPECIFIED = 0
+        EFI = 1
+        BIOS = 2
+
+    class VmwareDiskDetails(proto.Message):
+        r"""The details of a Vmware VM disk.
+
+        Attributes:
+            disk_number (int):
+                Output only. The ordinal number of the disk.
+            size_gb (int):
+                Output only. Size in GB.
+            label (str):
+                Output only. The disk label.
+        """
+
+        disk_number: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        size_gb: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        label: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    firmware: Firmware = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Firmware,
+    )
+    committed_storage_bytes: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    disks: MutableSequence[VmwareDiskDetails] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=VmwareDiskDetails,
+    )
+    vm_capabilities_info: "VmCapabilities" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="VmCapabilities",
+    )
+    architecture: "VmArchitecture" = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="VmArchitecture",
+    )
+
+
 class AwsSourceVmDetails(proto.Message):
     r"""Represent the source AWS VM details.
 
     Attributes:
         firmware (google.cloud.vmmigration_v1.types.AwsSourceVmDetails.Firmware):
-            The firmware type of the source VM.
+            Output only. The firmware type of the source
+            VM.
         committed_storage_bytes (int):
-            The total size of the disks being migrated in
-            bytes.
+            Output only. The total size of the disks
+            being migrated in bytes.
+        disks (MutableSequence[google.cloud.vmmigration_v1.types.AwsSourceVmDetails.AwsDiskDetails]):
+            Output only. The disks attached to the source
+            VM.
+        vm_capabilities_info (google.cloud.vmmigration_v1.types.VmCapabilities):
+            Output only. Information about VM
+            capabilities needed for some Compute Engine
+            features.
+        architecture (google.cloud.vmmigration_v1.types.VmArchitecture):
+            Output only. The VM architecture.
     """
 
     class Firmware(proto.Enum):
@@ -4876,6 +6530,31 @@ class AwsSourceVmDetails(proto.Message):
         EFI = 1
         BIOS = 2
 
+    class AwsDiskDetails(proto.Message):
+        r"""The details of an AWS instance disk.
+
+        Attributes:
+            disk_number (int):
+                Output only. The ordinal number of the disk.
+            volume_id (str):
+                Output only. AWS volume ID.
+            size_gb (int):
+                Output only. Size in GB.
+        """
+
+        disk_number: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        volume_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        size_gb: int = proto.Field(
+            proto.INT64,
+            number=3,
+        )
+
     firmware: Firmware = proto.Field(
         proto.ENUM,
         number=1,
@@ -4884,6 +6563,108 @@ class AwsSourceVmDetails(proto.Message):
     committed_storage_bytes: int = proto.Field(
         proto.INT64,
         number=2,
+    )
+    disks: MutableSequence[AwsDiskDetails] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=AwsDiskDetails,
+    )
+    vm_capabilities_info: "VmCapabilities" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="VmCapabilities",
+    )
+    architecture: "VmArchitecture" = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="VmArchitecture",
+    )
+
+
+class AzureSourceVmDetails(proto.Message):
+    r"""Represent the source Azure VM details.
+
+    Attributes:
+        firmware (google.cloud.vmmigration_v1.types.AzureSourceVmDetails.Firmware):
+            Output only. The firmware type of the source
+            VM.
+        committed_storage_bytes (int):
+            Output only. The total size of the disks
+            being migrated in bytes.
+        disks (MutableSequence[google.cloud.vmmigration_v1.types.AzureSourceVmDetails.AzureDiskDetails]):
+            Output only. The disks attached to the source
+            VM.
+        vm_capabilities_info (google.cloud.vmmigration_v1.types.VmCapabilities):
+            Output only. Information about VM
+            capabilities needed for some Compute Engine
+            features.
+        architecture (google.cloud.vmmigration_v1.types.VmArchitecture):
+            Output only. The VM architecture.
+    """
+
+    class Firmware(proto.Enum):
+        r"""Possible values for Azure VM firmware.
+
+        Values:
+            FIRMWARE_UNSPECIFIED (0):
+                The firmware is unknown.
+            EFI (1):
+                The firmware is EFI.
+            BIOS (2):
+                The firmware is BIOS.
+        """
+        FIRMWARE_UNSPECIFIED = 0
+        EFI = 1
+        BIOS = 2
+
+    class AzureDiskDetails(proto.Message):
+        r"""The details of an Azure VM disk.
+
+        Attributes:
+            disk_number (int):
+                Output only. The ordinal number of the disk.
+            disk_id (str):
+                Output only. Azure disk ID.
+            size_gb (int):
+                Output only. Size in GB.
+        """
+
+        disk_number: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        disk_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        size_gb: int = proto.Field(
+            proto.INT64,
+            number=3,
+        )
+
+    firmware: Firmware = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Firmware,
+    )
+    committed_storage_bytes: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    disks: MutableSequence[AzureDiskDetails] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=AzureDiskDetails,
+    )
+    vm_capabilities_info: "VmCapabilities" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="VmCapabilities",
+    )
+    architecture: "VmArchitecture" = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="VmArchitecture",
     )
 
 
@@ -4984,6 +6765,1631 @@ class GetReplicationCycleRequest(proto.Message):
         proto.STRING,
         number=1,
     )
+
+
+class VmCapabilities(proto.Message):
+    r"""Migrating VM source information about the VM capabilities
+    needed for some Compute Engine features.
+
+    Attributes:
+        os_capabilities (MutableSequence[google.cloud.vmmigration_v1.types.OsCapability]):
+            Output only. Unordered list. List of certain
+            VM OS capabilities needed for some Compute
+            Engine features.
+        last_os_capabilities_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last time OS capabilities
+            list was updated.
+    """
+
+    os_capabilities: MutableSequence["OsCapability"] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum="OsCapability",
+    )
+    last_os_capabilities_update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ImageImport(proto.Message):
+    r"""ImageImport describes the configuration of the image import
+    to run.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        cloud_storage_uri (str):
+            Immutable. The path to the Cloud Storage file
+            from which the image should be imported.
+
+            This field is a member of `oneof`_ ``source``.
+        disk_image_target_defaults (google.cloud.vmmigration_v1.types.DiskImageTargetDetails):
+            Immutable. Target details for importing a
+            disk image, will be used by ImageImportJob.
+
+            This field is a member of `oneof`_ ``target_defaults``.
+        machine_image_target_defaults (google.cloud.vmmigration_v1.types.MachineImageTargetDetails):
+            Immutable. Target details for importing a
+            machine image, will be used by ImageImportJob.
+
+            This field is a member of `oneof`_ ``target_defaults``.
+        name (str):
+            Output only. The resource path of the
+            ImageImport.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the image import was
+            created.
+        recent_image_import_jobs (MutableSequence[google.cloud.vmmigration_v1.types.ImageImportJob]):
+            Output only. The result of the most recent
+            runs for this ImageImport. All jobs for this
+            ImageImport can be listed via
+            ListImageImportJobs.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Immutable. The encryption details used by the
+            image import process during the image adaptation
+            for Compute Engine.
+    """
+
+    cloud_storage_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="source",
+    )
+    disk_image_target_defaults: "DiskImageTargetDetails" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="target_defaults",
+        message="DiskImageTargetDetails",
+    )
+    machine_image_target_defaults: "MachineImageTargetDetails" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="target_defaults",
+        message="MachineImageTargetDetails",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    recent_image_import_jobs: MutableSequence["ImageImportJob"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="ImageImportJob",
+    )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="Encryption",
+    )
+
+
+class ImageImportJob(proto.Message):
+    r"""ImageImportJob describes the progress and result of an image
+    import.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        cloud_storage_uri (str):
+            Output only. The path to the Cloud Storage
+            file from which the image should be imported.
+
+            This field is a member of `oneof`_ ``source``.
+        disk_image_target_details (google.cloud.vmmigration_v1.types.DiskImageTargetDetails):
+            Output only. Target details used to import a
+            disk image.
+
+            This field is a member of `oneof`_ ``target_details``.
+        machine_image_target_details (google.cloud.vmmigration_v1.types.MachineImageTargetDetails):
+            Output only. Target details used to import a
+            machine image.
+
+            This field is a member of `oneof`_ ``target_details``.
+        name (str):
+            Output only. The resource path of the
+            ImageImportJob.
+        created_resources (MutableSequence[str]):
+            Output only. The resource paths of the
+            resources created by the image import job.
+        state (google.cloud.vmmigration_v1.types.ImageImportJob.State):
+            Output only. The state of the image import.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the image import was
+            created (as an API call, not when it was
+            actually created in the target).
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the image import was
+            ended.
+        errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Output only. Provides details on the error
+            that led to the image import state in case of an
+            error.
+        warnings (MutableSequence[google.cloud.vmmigration_v1.types.MigrationWarning]):
+            Output only. Warnings that occurred during
+            the image import.
+        steps (MutableSequence[google.cloud.vmmigration_v1.types.ImageImportStep]):
+            Output only. The image import steps list
+            representing its progress.
+    """
+
+    class State(proto.Enum):
+        r"""Possible states of the image import.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unknown.
+            PENDING (1):
+                The image import has not yet started.
+            RUNNING (2):
+                The image import is active and running.
+            SUCCEEDED (3):
+                The image import has finished successfully.
+            FAILED (4):
+                The image import has finished with errors.
+            CANCELLING (5):
+                The image import is being cancelled.
+            CANCELLED (6):
+                The image import was cancelled.
+        """
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        RUNNING = 2
+        SUCCEEDED = 3
+        FAILED = 4
+        CANCELLING = 5
+        CANCELLED = 6
+
+    cloud_storage_uri: str = proto.Field(
+        proto.STRING,
+        number=10,
+        oneof="source",
+    )
+    disk_image_target_details: "DiskImageTargetDetails" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="target_details",
+        message="DiskImageTargetDetails",
+    )
+    machine_image_target_details: "MachineImageTargetDetails" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="target_details",
+        message="MachineImageTargetDetails",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    created_resources: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=status_pb2.Status,
+    )
+    warnings: MutableSequence["MigrationWarning"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="MigrationWarning",
+    )
+    steps: MutableSequence["ImageImportStep"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="ImageImportStep",
+    )
+
+
+class ImageImportStep(proto.Message):
+    r"""ImageImportStep holds information about the image import step
+    progress.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        initializing (google.cloud.vmmigration_v1.types.InitializingImageImportStep):
+            Initializing step.
+
+            This field is a member of `oneof`_ ``step``.
+        loading_source_files (google.cloud.vmmigration_v1.types.LoadingImageSourceFilesStep):
+            Loading source files step.
+
+            This field is a member of `oneof`_ ``step``.
+        adapting_os (google.cloud.vmmigration_v1.types.AdaptingOSStep):
+            Adapting OS step.
+
+            This field is a member of `oneof`_ ``step``.
+        creating_image (google.cloud.vmmigration_v1.types.CreatingImageStep):
+            Creating image step.
+
+            This field is a member of `oneof`_ ``step``.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the step has started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the step has ended.
+    """
+
+    initializing: "InitializingImageImportStep" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="step",
+        message="InitializingImageImportStep",
+    )
+    loading_source_files: "LoadingImageSourceFilesStep" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="step",
+        message="LoadingImageSourceFilesStep",
+    )
+    adapting_os: "AdaptingOSStep" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="step",
+        message="AdaptingOSStep",
+    )
+    creating_image: "CreatingImageStep" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="step",
+        message="CreatingImageStep",
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class InitializingImageImportStep(proto.Message):
+    r"""InitializingImageImportStep contains specific step details."""
+
+
+class LoadingImageSourceFilesStep(proto.Message):
+    r"""LoadingImageSourceFilesStep contains specific step details."""
+
+
+class CreatingImageStep(proto.Message):
+    r"""CreatingImageStep contains specific step details."""
+
+
+class DiskImageTargetDetails(proto.Message):
+    r"""The target details of the image resource that will be created
+    by the import job.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        os_adaptation_parameters (google.cloud.vmmigration_v1.types.ImageImportOsAdaptationParameters):
+            Optional. Use to set the parameters relevant
+            for the OS adaptation process.
+
+            This field is a member of `oneof`_ ``os_adaptation_config``.
+        data_disk_image_import (google.cloud.vmmigration_v1.types.DataDiskImageImport):
+            Optional. Use to skip OS adaptation process.
+
+            This field is a member of `oneof`_ ``os_adaptation_config``.
+        image_name (str):
+            Required. The name of the image to be
+            created.
+        target_project (str):
+            Required. Reference to the TargetProject
+            resource that represents the target project in
+            which the imported image will be created.
+        description (str):
+            Optional. An optional description of the
+            image.
+        family_name (str):
+            Optional. The name of the image family to
+            which the new image belongs.
+        labels (MutableMapping[str, str]):
+            Optional. A map of labels to associate with
+            the image.
+        additional_licenses (MutableSequence[str]):
+            Optional. Additional licenses to assign to the image.
+            Format:
+            https://www.googleapis.com/compute/v1/projects/PROJECT_ID/global/licenses/LICENSE_NAME
+            Or
+            https://www.googleapis.com/compute/beta/projects/PROJECT_ID/global/licenses/LICENSE_NAME
+        single_region_storage (bool):
+            Optional. Set to true to set the image
+            storageLocations to the single region of the
+            import job. When false, the closest multi-region
+            is selected.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Immutable. The encryption to apply to the
+            image.
+    """
+
+    os_adaptation_parameters: "ImageImportOsAdaptationParameters" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="os_adaptation_config",
+        message="ImageImportOsAdaptationParameters",
+    )
+    data_disk_image_import: "DataDiskImageImport" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="os_adaptation_config",
+        message="DataDiskImageImport",
+    )
+    image_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_project: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    family_name: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
+    additional_licenses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
+    single_region_storage: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="Encryption",
+    )
+
+
+class MachineImageTargetDetails(proto.Message):
+    r"""The target details of the machine image resource that will be
+    created by the image import job.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        os_adaptation_parameters (google.cloud.vmmigration_v1.types.ImageImportOsAdaptationParameters):
+            Optional. Use to set the parameters relevant
+            for the OS adaptation process.
+
+            This field is a member of `oneof`_ ``os_adaptation_config``.
+        skip_os_adaptation (google.cloud.vmmigration_v1.types.SkipOsAdaptation):
+            Optional. Use to skip OS adaptation process.
+
+            This field is a member of `oneof`_ ``os_adaptation_config``.
+        machine_image_name (str):
+            Required. The name of the machine image to be
+            created.
+        target_project (str):
+            Required. Reference to the TargetProject
+            resource that represents the target project in
+            which the imported machine image will be
+            created.
+        description (str):
+            Optional. An optional description of the
+            machine image.
+        single_region_storage (bool):
+            Optional. Set to true to set the machine
+            image storageLocations to the single region of
+            the import job. When false, the closest
+            multi-region is selected.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Immutable. The encryption to apply to the
+            machine image. If the Image Import resource has
+            an encryption, this field must be set to the
+            same encryption key.
+        machine_image_parameters_overrides (google.cloud.vmmigration_v1.types.MachineImageParametersOverrides):
+            Optional. Parameters overriding decisions
+            based on the source machine image
+            configurations.
+        service_account (google.cloud.vmmigration_v1.types.ServiceAccount):
+            Optional. The service account to assign to
+            the instance created by the machine image.
+        additional_licenses (MutableSequence[str]):
+            Optional. Additional licenses to assign to the instance
+            created by the machine image. Format:
+            https://www.googleapis.com/compute/v1/projects/PROJECT_ID/global/licenses/LICENSE_NAME
+            Or
+            https://www.googleapis.com/compute/beta/projects/PROJECT_ID/global/licenses/LICENSE_NAME
+        labels (MutableMapping[str, str]):
+            Optional. The labels to apply to the instance
+            created by the machine image.
+        tags (MutableSequence[str]):
+            Optional. The tags to apply to the instance
+            created by the machine image.
+        shielded_instance_config (google.cloud.vmmigration_v1.types.ShieldedInstanceConfig):
+            Optional. Shielded instance configuration.
+        network_interfaces (MutableSequence[google.cloud.vmmigration_v1.types.NetworkInterface]):
+            Optional. The network interfaces to create
+            with the instance created by the machine image.
+            Internal and external IP addresses, and network
+            tiers are ignored for machine image import.
+    """
+
+    os_adaptation_parameters: "ImageImportOsAdaptationParameters" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="os_adaptation_config",
+        message="ImageImportOsAdaptationParameters",
+    )
+    skip_os_adaptation: "SkipOsAdaptation" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        oneof="os_adaptation_config",
+        message="SkipOsAdaptation",
+    )
+    machine_image_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_project: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    single_region_storage: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="Encryption",
+    )
+    machine_image_parameters_overrides: "MachineImageParametersOverrides" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="MachineImageParametersOverrides",
+    )
+    service_account: "ServiceAccount" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="ServiceAccount",
+    )
+    additional_licenses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
+    )
+    tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    shielded_instance_config: "ShieldedInstanceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="ShieldedInstanceConfig",
+    )
+    network_interfaces: MutableSequence["NetworkInterface"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message="NetworkInterface",
+    )
+
+
+class ServiceAccount(proto.Message):
+    r"""Service account to assign to the instance created by the
+    machine image.
+
+    Attributes:
+        email (str):
+            Required. The email address of the service
+            account.
+        scopes (MutableSequence[str]):
+            Optional. The list of scopes to be made
+            available for this service account.
+    """
+
+    email: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    scopes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ShieldedInstanceConfig(proto.Message):
+    r"""Shielded instance configuration.
+
+    Attributes:
+        secure_boot (google.cloud.vmmigration_v1.types.ShieldedInstanceConfig.SecureBoot):
+            Optional. Defines whether the instance
+            created by the machine image has Secure Boot
+            enabled. This can be set to true only if the
+            image boot option is EFI.
+        enable_vtpm (bool):
+            Optional. Defines whether the instance
+            created by the machine image has vTPM enabled.
+            This can be set to true only if the image boot
+            option is EFI.
+        enable_integrity_monitoring (bool):
+            Optional. Defines whether the instance
+            created by the machine image has integrity
+            monitoring enabled. This can be set to true only
+            if the image boot option is EFI, and vTPM is
+            enabled.
+    """
+
+    class SecureBoot(proto.Enum):
+        r"""Possible values for secure boot.
+
+        Values:
+            SECURE_BOOT_UNSPECIFIED (0):
+                No explicit value is selected. Will use the
+                configuration of the source (if exists,
+                otherwise the default will be false).
+            TRUE (1):
+                Use secure boot. This can be set to true only
+                if the image boot option is EFI.
+            FALSE (2):
+                Do not use secure boot.
+        """
+        SECURE_BOOT_UNSPECIFIED = 0
+        TRUE = 1
+        FALSE = 2
+
+    secure_boot: SecureBoot = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=SecureBoot,
+    )
+    enable_vtpm: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    enable_integrity_monitoring: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class MachineImageParametersOverrides(proto.Message):
+    r"""Parameters overriding decisions based on the source machine
+    image configurations.
+
+    Attributes:
+        machine_type (str):
+            Optional. The machine type to create the
+            MachineImage with. If empty, the service will
+            choose a relevant machine type based on the
+            information from the source image.
+            For more information about machine types, please
+            refer to
+            https://cloud.google.com/compute/docs/machine-resource.
+    """
+
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ImageImportOsAdaptationParameters(proto.Message):
+    r"""Parameters affecting the OS adaptation process.
+
+    Attributes:
+        generalize (bool):
+            Optional. Set to true in order to generalize
+            the imported image. The generalization process
+            enables co-existence of multiple VMs created
+            from the same image.
+            For Windows, generalizing the image removes
+            computer-specific information such as installed
+            drivers and the computer security identifier
+            (SID).
+        license_type (google.cloud.vmmigration_v1.types.ComputeEngineLicenseType):
+            Optional. Choose which type of license to
+            apply to the imported image.
+        boot_conversion (google.cloud.vmmigration_v1.types.BootConversion):
+            Optional. By default the image will keep its
+            existing boot option. Setting this property will
+            trigger an internal process which will convert
+            the image from using the existing boot option to
+            another. The size of the boot disk might be
+            increased to allow the conversion
+    """
+
+    generalize: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    license_type: "ComputeEngineLicenseType" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ComputeEngineLicenseType",
+    )
+    boot_conversion: "BootConversion" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="BootConversion",
+    )
+
+
+class DataDiskImageImport(proto.Message):
+    r"""Mentions that the image import is not using OS adaptation
+    process.
+
+    """
+
+
+class SkipOsAdaptation(proto.Message):
+    r"""Mentions that the machine image import is not using OS
+    adaptation process.
+
+    """
+
+
+class GetImageImportRequest(proto.Message):
+    r"""Request message for 'GetImageImport' call.
+
+    Attributes:
+        name (str):
+            Required. The ImageImport name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListImageImportsRequest(proto.Message):
+    r"""Request message for 'ListImageImports' call.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this
+            collection of targets.
+        page_size (int):
+            Optional. The maximum number of targets to
+            return. The service may return fewer than this
+            value. If unspecified, at most 500 targets will
+            be returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListImageImports`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListImageImports`` must match the call that provided the
+            page token.
+        filter (str):
+            Optional. The filter request (according to AIP-160).
+        order_by (str):
+            Optional. The order by fields for the result (according to
+            AIP-132). Currently ordering is only possible by "name"
+            field.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListImageImportsResponse(proto.Message):
+    r"""Response message for 'ListImageImports' call.
+
+    Attributes:
+        image_imports (MutableSequence[google.cloud.vmmigration_v1.types.ImageImport]):
+            Output only. The list of target response.
+        next_page_token (str):
+            Output only. A token, which can be sent as ``page_token`` to
+            retrieve the next page. If this field is omitted, there are
+            no subsequent pages.
+        unreachable (MutableSequence[str]):
+            Output only. Locations that could not be
+            reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    image_imports: MutableSequence["ImageImport"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ImageImport",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CreateImageImportRequest(proto.Message):
+    r"""Request message for 'CreateImageImport' request.
+
+    Attributes:
+        parent (str):
+            Required. The ImageImport's parent.
+        image_import_id (str):
+            Required. The image import identifier. This value maximum
+            length is 63 characters, and valid characters are
+            /[a-z][0-9]-/. It must start with an english letter and must
+            not end with a hyphen.
+        image_import (google.cloud.vmmigration_v1.types.ImageImport):
+            Required. The create request body.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    image_import_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    image_import: "ImageImport" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ImageImport",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeleteImageImportRequest(proto.Message):
+    r"""Request message for 'DeleteImageImport' request.
+
+    Attributes:
+        name (str):
+            Required. The ImageImport name.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and t he request times out.
+            If you make the request again with the same
+            request ID, the server can check if original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetImageImportJobRequest(proto.Message):
+    r"""Request message for 'GetImageImportJob' call.
+
+    Attributes:
+        name (str):
+            Required. The ImageImportJob name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListImageImportJobsRequest(proto.Message):
+    r"""Request message for 'ListImageImportJobs' call.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this
+            collection of targets.
+        page_size (int):
+            Optional. The maximum number of targets to
+            return. The service may return fewer than this
+            value. If unspecified, at most 500 targets will
+            be returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListImageImportJobs`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListImageImportJobs`` must match the call that provided
+            the page token.
+        filter (str):
+            Optional. The filter request (according to AIP-160).
+        order_by (str):
+            Optional. The order by fields for the result (according to
+            AIP-132). Currently ordering is only possible by "name"
+            field.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListImageImportJobsResponse(proto.Message):
+    r"""Response message for 'ListImageImportJobs' call.
+
+    Attributes:
+        image_import_jobs (MutableSequence[google.cloud.vmmigration_v1.types.ImageImportJob]):
+            Output only. The list of target response.
+        next_page_token (str):
+            Output only. A token, which can be sent as ``page_token`` to
+            retrieve the next page. If this field is omitted, there are
+            no subsequent pages.
+        unreachable (MutableSequence[str]):
+            Output only. Locations that could not be
+            reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    image_import_jobs: MutableSequence["ImageImportJob"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ImageImportJob",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CancelImageImportJobRequest(proto.Message):
+    r"""Request message for 'CancelImageImportJob' request.
+
+    Attributes:
+        name (str):
+            Required. The image import job id.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CancelImageImportJobResponse(proto.Message):
+    r"""Response message for 'CancelImageImportJob' request."""
+
+
+class DiskMigrationJob(proto.Message):
+    r"""Describes the disk which will be migrated from the source
+    environment. The source disk has to be unattached.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        aws_source_disk_details (google.cloud.vmmigration_v1.types.AwsSourceDiskDetails):
+            Details of the unattached AWS source disk.
+
+            This field is a member of `oneof`_ ``source_disk_details``.
+        name (str):
+            Output only. Identifier. The identifier of
+            the DiskMigrationJob.
+        target_details (google.cloud.vmmigration_v1.types.DiskMigrationJobTargetDetails):
+            Required. Details of the target Disk in
+            Compute Engine.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the DiskMigrationJob
+            resource was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last time the
+            DiskMigrationJob resource was updated.
+        state (google.cloud.vmmigration_v1.types.DiskMigrationJob.State):
+            Output only. State of the DiskMigrationJob.
+        errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Output only. Provides details on the errors
+            that led to the disk migration job's state in
+            case of an error.
+        steps (MutableSequence[google.cloud.vmmigration_v1.types.DiskMigrationStep]):
+            Output only. The disk migration steps list
+            representing its progress.
+    """
+
+    class State(proto.Enum):
+        r"""The possible values of the state/health of DiskMigrationJob.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unspecified. This is not in use.
+            READY (1):
+                The initial state of the disk migration.
+                In this state the customers can update the
+                target details.
+            RUNNING (3):
+                The migration is active, and it's running or
+                scheduled to run.
+            SUCCEEDED (4):
+                The migration completed successfully.
+            CANCELLING (5):
+                Migration cancellation was initiated.
+            CANCELLED (6):
+                The migration was cancelled.
+            FAILED (7):
+                The migration process encountered an
+                unrecoverable error and was aborted.
+        """
+        STATE_UNSPECIFIED = 0
+        READY = 1
+        RUNNING = 3
+        SUCCEEDED = 4
+        CANCELLING = 5
+        CANCELLED = 6
+        FAILED = 7
+
+    aws_source_disk_details: "AwsSourceDiskDetails" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source_disk_details",
+        message="AwsSourceDiskDetails",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_details: "DiskMigrationJobTargetDetails" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DiskMigrationJobTargetDetails",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=status_pb2.Status,
+    )
+    steps: MutableSequence["DiskMigrationStep"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="DiskMigrationStep",
+    )
+
+
+class DiskMigrationJobTargetDetails(proto.Message):
+    r"""Details of the target disk in Compute Engine.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        target_disk (google.cloud.vmmigration_v1.types.ComputeEngineDisk):
+            Required. The target disk.
+
+            This field is a member of `oneof`_ ``target_storage``.
+        target_project (str):
+            Required. The name of the resource of type
+            TargetProject which represents the Compute
+            Engine project in which to create the disk.
+            Should be of the form:
+            projects/{project}/locations/global/targetProjects/{target-project}
+        labels (MutableMapping[str, str]):
+            Optional. A map of labels to associate with
+            the disk.
+        encryption (google.cloud.vmmigration_v1.types.Encryption):
+            Optional. The encryption to apply to the
+            disk. If the DiskMigrationJob parent Source
+            resource has an encryption, this field must be
+            set to the same encryption key.
+    """
+
+    target_disk: "ComputeEngineDisk" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="target_storage",
+        message="ComputeEngineDisk",
+    )
+    target_project: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    encryption: "Encryption" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="Encryption",
+    )
+
+
+class DiskMigrationStep(proto.Message):
+    r"""DiskMigrationStep holds information about the disk migration
+    step progress.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        creating_source_disk_snapshot (google.cloud.vmmigration_v1.types.CreatingSourceDiskSnapshotStep):
+            Creating source disk snapshot step.
+
+            This field is a member of `oneof`_ ``step``.
+        copying_source_disk_snapshot (google.cloud.vmmigration_v1.types.CopyingSourceDiskSnapshotStep):
+            Copying source disk snapshot step.
+
+            This field is a member of `oneof`_ ``step``.
+        provisioning_target_disk (google.cloud.vmmigration_v1.types.ProvisioningTargetDiskStep):
+            Creating target disk step.
+
+            This field is a member of `oneof`_ ``step``.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the step has started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the step has ended.
+    """
+
+    creating_source_disk_snapshot: "CreatingSourceDiskSnapshotStep" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="step",
+        message="CreatingSourceDiskSnapshotStep",
+    )
+    copying_source_disk_snapshot: "CopyingSourceDiskSnapshotStep" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="step",
+        message="CopyingSourceDiskSnapshotStep",
+    )
+    provisioning_target_disk: "ProvisioningTargetDiskStep" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="step",
+        message="ProvisioningTargetDiskStep",
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class CreatingSourceDiskSnapshotStep(proto.Message):
+    r"""CreatingSourceDiskSnapshotStep contains specific step
+    details.
+
+    """
+
+
+class CopyingSourceDiskSnapshotStep(proto.Message):
+    r"""CopyingSourceDiskSnapshotStep contains specific step details."""
+
+
+class ProvisioningTargetDiskStep(proto.Message):
+    r"""ProvisioningTargetDiskStep contains specific step details."""
+
+
+class ComputeEngineDisk(proto.Message):
+    r"""Compute Engine disk target details.
+
+    Attributes:
+        disk_id (str):
+            Optional. Target Compute Engine Disk ID.
+            This is the resource ID segment of the Compute
+            Engine Disk to create. In the resource name
+            compute/v1/projects/{project}/zones/{zone}/disks/disk1
+            "disk1" is the resource ID for the disk.
+        zone (str):
+            Required. The Compute Engine zone in which to
+            create the disk. Should be of the form:
+            projects/{target-project}/locations/{zone}
+        replica_zones (MutableSequence[str]):
+            Optional. Replication zones of the regional
+            disk. Should be of the form:
+            projects/{target-project}/locations/{replica-zone}
+            Currently only one replica zone is supported.
+        disk_type (google.cloud.vmmigration_v1.types.ComputeEngineDiskType):
+            Required. The disk type to use.
+    """
+
+    disk_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    replica_zones: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    disk_type: "ComputeEngineDiskType" = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="ComputeEngineDiskType",
+    )
+
+
+class AwsSourceDiskDetails(proto.Message):
+    r"""Represents the source AWS Disk details.
+
+    Attributes:
+        volume_id (str):
+            Required. AWS volume ID.
+        size_gib (int):
+            Output only. Size in GiB.
+        disk_type (google.cloud.vmmigration_v1.types.AwsSourceDiskDetails.Type):
+            Optional. Output only. Disk type.
+        tags (MutableMapping[str, str]):
+            Optional. Output only. A map of AWS volume
+            tags.
+    """
+
+    class Type(proto.Enum):
+        r"""Possible values for disk types.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified AWS disk type. Should not be
+                used.
+            GP2 (1):
+                GP2 disk type.
+            GP3 (2):
+                GP3 disk type.
+            IO1 (3):
+                IO1 disk type.
+            IO2 (4):
+                IO2 disk type.
+            ST1 (5):
+                ST1 disk type.
+            SC1 (6):
+                SC1 disk type.
+            STANDARD (7):
+                Standard disk type.
+        """
+        TYPE_UNSPECIFIED = 0
+        GP2 = 1
+        GP3 = 2
+        IO1 = 3
+        IO2 = 4
+        ST1 = 5
+        SC1 = 6
+        STANDARD = 7
+
+    volume_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    size_gib: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    disk_type: Type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Type,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+
+
+class CreateDiskMigrationJobRequest(proto.Message):
+    r"""Request message for 'CreateDiskMigrationJob' request.
+
+    Attributes:
+        parent (str):
+            Required. The DiskMigrationJob's parent.
+        disk_migration_job_id (str):
+            Required. The DiskMigrationJob identifier.
+            The maximum length of this value is 63
+            characters. Valid characters are lower case
+            Latin letters, digits and hyphen. It must start
+            with a Latin letter and must not end with a
+            hyphen.
+        disk_migration_job (google.cloud.vmmigration_v1.types.DiskMigrationJob):
+            Required. The create request body.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request timed out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    disk_migration_job_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    disk_migration_job: "DiskMigrationJob" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DiskMigrationJob",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListDiskMigrationJobsRequest(proto.Message):
+    r"""Request message for 'ListDiskMigrationJobsRequest' request.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this
+            collection of DiskMigrationJobs.
+        page_size (int):
+            Optional. The maximum number of disk
+            migration jobs to return. The service may return
+            fewer than this value. If unspecified, at most
+            500 disk migration jobs will be returned.
+            The maximum value is 1000; values above 1000
+            will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListDiskMigrationJobs`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all parameters provided to
+            ``ListDiskMigrationJobs`` except ``page_size`` must match
+            the call that provided the page token.
+        filter (str):
+            Optional. The filter request (according to AIP-160).
+        order_by (str):
+            Optional. Ordering of the result list.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListDiskMigrationJobsResponse(proto.Message):
+    r"""Response message for 'ListDiskMigrationJobs' request.
+
+    Attributes:
+        disk_migration_jobs (MutableSequence[google.cloud.vmmigration_v1.types.DiskMigrationJob]):
+            Output only. The list of the disk migration
+            jobs.
+        next_page_token (str):
+            Optional. Output only. A token, which can be sent as
+            ``page_token`` to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
+        unreachable (MutableSequence[str]):
+            Output only. Locations that could not be
+            reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    disk_migration_jobs: MutableSequence["DiskMigrationJob"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DiskMigrationJob",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetDiskMigrationJobRequest(proto.Message):
+    r"""Request message for 'GetDiskMigrationJob' request.
+
+    Attributes:
+        name (str):
+            Required. The name of the DiskMigrationJob.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateDiskMigrationJobRequest(proto.Message):
+    r"""Request message for 'UpdateDiskMigrationJob' request.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the DiskMigrationJob resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask,
+            then a mask equivalent to all fields that are populated
+            (have a non-empty value), will be implied.
+        disk_migration_job (google.cloud.vmmigration_v1.types.DiskMigrationJob):
+            Required. The update request body.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request timed out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    disk_migration_job: "DiskMigrationJob" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiskMigrationJob",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteDiskMigrationJobRequest(proto.Message):
+    r"""Request message for 'DeleteDiskMigrationJob' request.
+
+    Attributes:
+        name (str):
+            Required. The name of the DiskMigrationJob.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RunDiskMigrationJobRequest(proto.Message):
+    r"""Request message for 'RunDiskMigrationJobRequest' request.
+
+    Attributes:
+        name (str):
+            Required. The name of the DiskMigrationJob.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RunDiskMigrationJobResponse(proto.Message):
+    r"""Response message for 'RunDiskMigrationJob' request."""
+
+
+class CancelDiskMigrationJobRequest(proto.Message):
+    r"""Request message for 'CancelDiskMigrationJob' request.
+
+    Attributes:
+        name (str):
+            Required. The name of the DiskMigrationJob.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CancelDiskMigrationJobResponse(proto.Message):
+    r"""Response message for 'CancelDiskMigrationJob' request."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

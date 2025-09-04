@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateTargetProject
+# Snippet for CreateDiskMigrationJob
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-vm-migration
 
 
-# [START vmmigration_v1_generated_VmMigration_UpdateTargetProject_sync]
+# [START vmmigration_v1_generated_VmMigration_CreateDiskMigrationJob_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,26 +34,31 @@
 from google.cloud import vmmigration_v1
 
 
-def sample_update_target_project():
+async def sample_create_disk_migration_job():
     # Create a client
-    client = vmmigration_v1.VmMigrationClient()
+    client = vmmigration_v1.VmMigrationAsyncClient()
 
     # Initialize request argument(s)
-    target_project = vmmigration_v1.TargetProject()
-    target_project.project = "project_value"
+    disk_migration_job = vmmigration_v1.DiskMigrationJob()
+    disk_migration_job.aws_source_disk_details.volume_id = "volume_id_value"
+    disk_migration_job.target_details.target_disk.zone = "zone_value"
+    disk_migration_job.target_details.target_disk.disk_type = "COMPUTE_ENGINE_DISK_TYPE_HYPERDISK_BALANCED"
+    disk_migration_job.target_details.target_project = "target_project_value"
 
-    request = vmmigration_v1.UpdateTargetProjectRequest(
-        target_project=target_project,
+    request = vmmigration_v1.CreateDiskMigrationJobRequest(
+        parent="parent_value",
+        disk_migration_job_id="disk_migration_job_id_value",
+        disk_migration_job=disk_migration_job,
     )
 
     # Make the request
-    operation = client.update_target_project(request=request)
+    operation = client.create_disk_migration_job(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)
 
-# [END vmmigration_v1_generated_VmMigration_UpdateTargetProject_sync]
+# [END vmmigration_v1_generated_VmMigration_CreateDiskMigrationJob_async]

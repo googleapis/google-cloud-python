@@ -39,7 +39,11 @@ async def sample_update_target_project():
     client = vmmigration_v1.VmMigrationAsyncClient()
 
     # Initialize request argument(s)
+    target_project = vmmigration_v1.TargetProject()
+    target_project.project = "project_value"
+
     request = vmmigration_v1.UpdateTargetProjectRequest(
+        target_project=target_project,
     )
 
     # Make the request
