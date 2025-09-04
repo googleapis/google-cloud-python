@@ -20,7 +20,6 @@ from typing import Collection, Literal, Mapping, Optional, Union
 
 import google.cloud.bigquery as bigquery
 
-import bigframes.core.sql
 import bigframes.ml.utils as utils
 
 if typing.TYPE_CHECKING:
