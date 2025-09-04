@@ -48,6 +48,9 @@ def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_sessi
     batches = df.to_pandas_batches(
         page_size=100,
     )
+    assert batches.total_rows > 0
+    assert batches.total_bytes_processed is None  # No additional query.
+
     executions_after = maybe_ordered_session._metrics.execution_count
 
     num_batches = 0

@@ -45,6 +45,7 @@ class ExecuteResult:
     query_job: Optional[bigquery.QueryJob] = None
     total_bytes: Optional[int] = None
     total_rows: Optional[int] = None
+    total_bytes_processed: Optional[int] = None
 
     @property
     def arrow_batches(self) -> Iterator[pyarrow.RecordBatch]:

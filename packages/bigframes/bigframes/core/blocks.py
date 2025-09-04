@@ -102,14 +102,23 @@ class PandasBatches(Iterator[pd.DataFrame]):
     """Interface for mutable objects with state represented by a block value object."""
 
     def __init__(
-        self, pandas_batches: Iterator[pd.DataFrame], total_rows: Optional[int] = 0
+        self,
+        pandas_batches: Iterator[pd.DataFrame],
+        total_rows: Optional[int] = 0,
+        *,
+        total_bytes_processed: Optional[int] = 0,
     ):
         self._dataframes: Iterator[pd.DataFrame] = pandas_batches
         self._total_rows: Optional[int] = total_rows
+        self._total_bytes_processed: Optional[int] = total_bytes_processed
 
     @property
     def total_rows(self) -> Optional[int]:
         return self._total_rows
+
+    @property
+    def total_bytes_processed(self) -> Optional[int]:
+        return self._total_bytes_processed
 
     def __next__(self) -> pd.DataFrame:
         return next(self._dataframes)
@@ -721,7 +730,9 @@ class Block:
         if (total_rows is not None) and (max_results is not None):
             total_rows = min(total_rows, max_results)
 
-        return PandasBatches(dfs, total_rows)
+        return PandasBatches(
+            dfs, total_rows, total_bytes_processed=execute_result.total_bytes_processed
+        )
 
     def _copy_index_to_pandas(self, df: pd.DataFrame) -> pd.DataFrame:
         """Set the index on pandas DataFrame to match this block."""

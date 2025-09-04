@@ -339,6 +339,13 @@ def test_to_arrow_override_global_option(scalars_df_index):
         assert scalars_df_index._query_job.destination.table_id == table_id
 
 
+def test_to_pandas_batches_populates_total_bytes_processed(scalars_df_default_index):
+    batches = scalars_df_default_index.sort_values(
+        "int64_col"
+    ).to_pandas_batches()  # Do a sort to force query execution.
+    assert batches.total_bytes_processed > 0
+
+
 def test_to_pandas_batches_w_correct_dtypes(scalars_df_default_index):
     """Verify to_pandas_batches() APIs returns the expected dtypes."""
     expected = scalars_df_default_index.dtypes

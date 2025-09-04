@@ -48,11 +48,12 @@ def test_to_pandas_batches_override_global_option(
 ):
     with bigframes.option_context(LARGE_TABLE_OPTION, False):
         df = session.read_gbq(WIKIPEDIA_TABLE)
-        pages = list(
-            df.to_pandas_batches(
-                page_size=500, max_results=1500, allow_large_results=True
-            )
+        batches = df.sort_values("id").to_pandas_batches(
+            page_size=500, max_results=1500, allow_large_results=True
         )
+        assert batches.total_rows > 0
+        assert batches.total_bytes_processed > 0
+        pages = list(batches)
         assert all((len(page) <= 500) for page in pages)
         assert sum(len(page) for page in pages) == 1500
 

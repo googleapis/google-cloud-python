@@ -63,6 +63,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
             schema=plan.schema,
             query_job=query_job,
             total_rows=iterator.total_rows,
+            total_bytes_processed=iterator.total_bytes_processed,
         )
 
     def _run_execute_query(

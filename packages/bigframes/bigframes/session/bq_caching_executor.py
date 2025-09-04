@@ -323,7 +323,10 @@ class BigQueryCachingExecutor(executor.Executor):
             self.bqclient.update_table(table, ["schema"])
 
         return executor.ExecuteResult(
-            row_iter.to_arrow_iterable(), array_value.schema, query_job
+            row_iter.to_arrow_iterable(),
+            array_value.schema,
+            query_job,
+            total_bytes_processed=row_iter.total_bytes_processed,
         )
 
     def dry_run(
@@ -671,6 +674,7 @@ class BigQueryCachingExecutor(executor.Executor):
             query_job=query_job,
             total_bytes=size_bytes,
             total_rows=iterator.total_rows,
+            total_bytes_processed=iterator.total_bytes_processed,
         )
 
 
