@@ -24,6 +24,12 @@ from google.cloud.networkconnectivity_v1.services.cross_network_automation_servi
 from google.cloud.networkconnectivity_v1.services.cross_network_automation_service.client import (
     CrossNetworkAutomationServiceClient,
 )
+from google.cloud.networkconnectivity_v1.services.data_transfer_service.async_client import (
+    DataTransferServiceAsyncClient,
+)
+from google.cloud.networkconnectivity_v1.services.data_transfer_service.client import (
+    DataTransferServiceClient,
+)
 from google.cloud.networkconnectivity_v1.services.hub_service.async_client import (
     HubServiceAsyncClient,
 )
@@ -73,6 +79,28 @@ from google.cloud.networkconnectivity_v1.types.cross_network_automation import (
     UpdateServiceClassRequest,
     UpdateServiceConnectionMapRequest,
     UpdateServiceConnectionPolicyRequest,
+)
+from google.cloud.networkconnectivity_v1.types.data_transfer import (
+    CreateDestinationRequest,
+    CreateMulticloudDataTransferConfigRequest,
+    DeleteDestinationRequest,
+    DeleteMulticloudDataTransferConfigRequest,
+    Destination,
+    GetDestinationRequest,
+    GetMulticloudDataTransferConfigRequest,
+    GetMulticloudDataTransferSupportedServiceRequest,
+    ListDestinationsRequest,
+    ListDestinationsResponse,
+    ListMulticloudDataTransferConfigsRequest,
+    ListMulticloudDataTransferConfigsResponse,
+    ListMulticloudDataTransferSupportedServicesRequest,
+    ListMulticloudDataTransferSupportedServicesResponse,
+    MulticloudDataTransferConfig,
+    MulticloudDataTransferSupportedService,
+    ServiceConfig,
+    StateTimeline,
+    UpdateDestinationRequest,
+    UpdateMulticloudDataTransferConfigRequest,
 )
 from google.cloud.networkconnectivity_v1.types.hub import (
     AcceptHubSpokeRequest,
@@ -158,6 +186,8 @@ from google.cloud.networkconnectivity_v1.types.policy_based_routing import (
 __all__ = (
     "CrossNetworkAutomationServiceClient",
     "CrossNetworkAutomationServiceAsyncClient",
+    "DataTransferServiceClient",
+    "DataTransferServiceAsyncClient",
     "HubServiceClient",
     "HubServiceAsyncClient",
     "InternalRangeServiceClient",
@@ -194,6 +224,26 @@ __all__ = (
     "ConnectionErrorType",
     "Infrastructure",
     "IPVersion",
+    "CreateDestinationRequest",
+    "CreateMulticloudDataTransferConfigRequest",
+    "DeleteDestinationRequest",
+    "DeleteMulticloudDataTransferConfigRequest",
+    "Destination",
+    "GetDestinationRequest",
+    "GetMulticloudDataTransferConfigRequest",
+    "GetMulticloudDataTransferSupportedServiceRequest",
+    "ListDestinationsRequest",
+    "ListDestinationsResponse",
+    "ListMulticloudDataTransferConfigsRequest",
+    "ListMulticloudDataTransferConfigsResponse",
+    "ListMulticloudDataTransferSupportedServicesRequest",
+    "ListMulticloudDataTransferSupportedServicesResponse",
+    "MulticloudDataTransferConfig",
+    "MulticloudDataTransferSupportedService",
+    "ServiceConfig",
+    "StateTimeline",
+    "UpdateDestinationRequest",
+    "UpdateMulticloudDataTransferConfigRequest",
     "AcceptHubSpokeRequest",
     "AcceptHubSpokeResponse",
     "AcceptSpokeUpdateRequest",
