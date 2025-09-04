@@ -16,6 +16,7 @@ import json
 import logging
 import os
 import subprocess
+import unittest.mock
 from unittest.mock import MagicMock, mock_open
 
 import pytest
@@ -34,9 +35,12 @@ from cli import (
     _get_libraries_to_prepare_for_release,
     _locate_and_extract_artifact,
     _read_json_file,
+    _read_text_file,
     _run_individual_session,
     _run_nox_sessions,
     _run_post_processor,
+    _update_global_changelog,
+    _write_text_file,
     handle_build,
     handle_configure,
     handle_generate,
@@ -461,7 +465,7 @@ def test_read_valid_json(mocker):
     assert result == {"key": "value"}
 
 
-def test_file_not_found(mocker):
+def test_json_file_not_found(mocker):
     """Tests behavior when the file does not exist."""
     mocker.patch("builtins.open", side_effect=FileNotFoundError("No such file"))
 
@@ -505,10 +509,11 @@ def test_get_libraries_to_prepare_for_release(mock_release_init_request_file):
     assert libraries_to_prep_for_release[0]["release_triggered"]
 
 
-def test_handle_release_init_success(mock_release_init_request_file):
+def test_handle_release_init_success(mocker, mock_release_init_request_file):
     """
     Simply tests that `handle_release_init` runs without errors.
     """
+    mocker.patch("cli._update_global_changelog", return_value=None)
     handle_release_init()
 
 
@@ -518,3 +523,51 @@ def test_handle_release_init_fail():
     """
     with pytest.raises(ValueError):
         handle_release_init()
+
+
+def test_read_valid_text_file(mocker):
+    """Tests reading a valid text file."""
+    mock_content = "some text"
+    mocker.patch("builtins.open", mocker.mock_open(read_data=mock_content))
+    result = _read_text_file("fake/path.txt")
+    assert result == "some text"
+
+
+def test_text_file_not_found(mocker):
+    """Tests behavior when the file does not exist."""
+    mocker.patch("builtins.open", side_effect=FileNotFoundError("No such file"))
+
+    with pytest.raises(FileNotFoundError):
+        _read_text_file("non/existent/path.text")
+
+
+def test_write_text_file():
+    """Tests writing a text file.
+    See https://docs.python.org/3/library/unittest.mock.html#mock-open
+    """
+    m = mock_open()
+
+    with unittest.mock.patch("cli.open", m):
+        _write_text_file("fake_path.txt", "modified content")
+
+        handle = m()
+        handle.write.assert_called_once_with("modified content")
+
+
+def test_update_global_changelog(mocker, mock_release_init_request_file):
+    """Tests that the global changelog is updated
+    with the new version for a given library.
+    See https://docs.python.org/3/library/unittest.mock.html#mock-open
+    """
+    m = mock_open()
+    request_data = _read_json_file(f"{LIBRARIAN_DIR}/{RELEASE_INIT_REQUEST_FILE}")
+    libraries = _get_libraries_to_prepare_for_release(request_data)
+
+    with unittest.mock.patch("cli.open", m):
+        mocker.patch(
+            "cli._read_text_file", return_value="[google-cloud-language==1.2.2]"
+        )
+        _update_global_changelog("source", "output", libraries)
+
+        handle = m()
+        handle.write.assert_called_once_with("[google-cloud-language==1.2.3]")

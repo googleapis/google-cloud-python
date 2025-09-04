@@ -47,6 +47,32 @@ REPO_DIR = "repo"
 SOURCE_DIR = "source"
 
 
+def _read_text_file(path: str) -> str:
+    """Helper function that reads a text file path and returns the content.
+
+    Args:
+        path(str): The file path to read.
+
+    Returns:
+        str: The contents of the file.
+    """
+
+    with open(path, "r") as f:
+        return f.read()
+
+
+def _write_text_file(path: str, updated_content: str):
+    """Helper function that writes a text file path with the given content.
+
+    Args:
+        path(str): The file path to write.
+        updated_content(str): The contents to write to the file.
+    """
+
+    with open(path, "w") as f:
+        f.write(updated_content)
+
+
 def _read_json_file(path: str) -> Dict:
     """Helper function that reads a json file path and returns the loaded json content.
 
@@ -449,6 +475,32 @@ def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     ]
 
 
+def _update_global_changelog(changelog_src: str, changelog_dest: str, all_libraries: List[dict]):
+    """Updates the versions of libraries in the main CHANGELOG.md.
+
+    Args:
+        changelog_src(str): Path to the changelog file to read.
+        changelog_dest(str): Path to the changelog file to write.
+        all_libraries(Dict): Dictionary containing all of the library versions to
+        modify.
+    """
+
+    def replace_version_in_changelog(content):
+        new_content = content
+        for library in all_libraries:
+            package_name = library["id"]
+            version = library["version"]
+            # Find the entry for the given package in the format`<package name>==<version>`
+            # Replace the `<version>` part of the string.
+            pattern = re.compile(f"(\\[{re.escape(package_name)})(==)([\\d\\.]+)(\\])")
+            replacement = f"\\g<1>=={version}\\g<4>"
+            new_content = pattern.sub(replacement, new_content)
+        return new_content
+
+    updated_content = replace_version_in_changelog(_read_text_file(changelog_src))
+    _write_text_file(changelog_dest, updated_content)
+
+
 def handle_release_init(
     librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR
 ):
@@ -478,15 +530,18 @@ def handle_release_init(
             request_data
         )
 
-        # TODO(https://github.com/googleapis/google-cloud-python/pull/14349):
-        # Update library global changelog file.
+        _update_global_changelog(
+            f"{repo}/CHANGELOG.md",
+            f"{output}/CHANGELOG.md",
+            libraries_to_prep_for_release,
+        )
 
         # Prepare the release for each library by updating the
         # library specific version files and library specific changelog.
         for library_release_data in libraries_to_prep_for_release:
             # TODO(https://github.com/googleapis/google-cloud-python/pull/14350):
             # Update library specific version files.
-            # TODO(https://github.com/googleapis/google-cloud-python/pull/14351):
+            # TODO(https://github.com/googleapis/google-cloud-python/pull/14353):
             # Conditionally update the library specific CHANGELOG if there is a change.
             pass
 
