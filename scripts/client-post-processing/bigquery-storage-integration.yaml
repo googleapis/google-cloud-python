@@ -183,6 +183,8 @@ replacements:
           "ReadRowsStream",
           "ReadSession",
     count: 1
+    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
+    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1/__init__.py,
     ]
@@ -278,5 +280,66 @@ replacements:
           "BigQueryWriteClient",
       )
     count: 1
-
-
+    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
+    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+  - paths: [
+      packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1alpha/__init__.py,
+      packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta/__init__.py,
+    ]
+    before: |
+      __version__ = package_version.__version__\n\n
+      from .services.metastore_partition_service import \(
+          MetastorePartitionServiceAsyncClient,
+          MetastorePartitionServiceClient,
+      \)
+      from .types.metastore_partition import \(
+          BatchCreateMetastorePartitionsRequest,
+          BatchCreateMetastorePartitionsResponse,
+          BatchDeleteMetastorePartitionsRequest,
+          BatchSizeTooLargeError,
+          BatchUpdateMetastorePartitionsRequest,
+          BatchUpdateMetastorePartitionsResponse,
+          CreateMetastorePartitionRequest,
+          ListMetastorePartitionsRequest,
+          ListMetastorePartitionsResponse,
+          StreamMetastorePartitionsRequest,
+          StreamMetastorePartitionsResponse,
+          UpdateMetastorePartitionRequest,
+      \)
+      from .types.partition import \(
+          FieldSchema,
+          MetastorePartition,
+          MetastorePartitionList,
+          MetastorePartitionValues,
+          ReadStream,
+          SerDeInfo,
+          StorageDescriptor,
+          StreamList,
+      \)\n
+      __all__ = \(
+          "MetastorePartitionServiceAsyncClient",
+          "BatchCreateMetastorePartitionsRequest",
+          "BatchCreateMetastorePartitionsResponse",
+          "BatchDeleteMetastorePartitionsRequest",
+          "BatchSizeTooLargeError",
+          "BatchUpdateMetastorePartitionsRequest",
+          "BatchUpdateMetastorePartitionsResponse",
+          "CreateMetastorePartitionRequest",
+          "FieldSchema",
+          "ListMetastorePartitionsRequest",
+          "ListMetastorePartitionsResponse",
+          "MetastorePartition",
+          "MetastorePartitionList",
+          "MetastorePartitionServiceClient",
+          "MetastorePartitionValues",
+          "ReadStream",
+          "SerDeInfo",
+          "StorageDescriptor",
+          "StreamList",
+          "StreamMetastorePartitionsRequest",
+          "StreamMetastorePartitionsResponse",
+          "UpdateMetastorePartitionRequest",
+      \)
+    after: |
+      __version__ = package_version.__version__
+    count: 2
