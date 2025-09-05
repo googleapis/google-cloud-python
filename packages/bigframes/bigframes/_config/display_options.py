@@ -35,6 +35,7 @@ class DisplayOptions:
     progress_bar: Optional[str] = "auto"
     repr_mode: Literal["head", "deferred", "anywidget"] = "head"
 
+    max_colwidth: Optional[int] = 50
     max_info_columns: int = 100
     max_info_rows: Optional[int] = 200000
     memory_usage: bool = True
@@ -52,6 +53,8 @@ def pandas_repr(display_options: DisplayOptions):
     so that we don't override pandas behavior.
     """
     with pd.option_context(
+        "display.max_colwidth",
+        display_options.max_colwidth,
         "display.max_columns",
         display_options.max_columns,
         "display.max_rows",
