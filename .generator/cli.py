@@ -91,6 +91,19 @@ def _read_json_file(path: str) -> Dict:
         return json.load(f)
 
 
+def _write_json_file(path: str, updated_content: Dict):
+    """Helper function that writes a json file with the given dictionary.
+
+    Args:
+        path(str): The file path to write.
+        updated_content(Dict): The dictionary to write.
+    """
+
+    with open(path, "w") as f:
+        json.dump(updated_content, f, indent=2)
+        f.write("\n")
+
+
 def handle_configure():
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
     logger.info("'configure' command executed.")
@@ -472,7 +485,9 @@ def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     ]
 
 
-def _update_global_changelog(changelog_src: str, changelog_dest: str, all_libraries: List[dict]):
+def _update_global_changelog(
+    changelog_src: str, changelog_dest: str, all_libraries: List[dict]
+):
     """Updates the versions of libraries in the main CHANGELOG.md.
 
     Args:
@@ -496,6 +511,71 @@ def _update_global_changelog(changelog_src: str, changelog_dest: str, all_librar
 
     updated_content = replace_version_in_changelog(_read_text_file(changelog_src))
     _write_text_file(changelog_dest, updated_content)
+
+
+def _process_version_file(content, version, version_path) -> str:
+    """This function searches for a version string in the
+    given content, replaces the version and returns the content.
+
+    Args:
+        content(str): The contents where the version string should be replaced.
+        version(str): The new version of the library.
+        version_path(str): The relative path to the version file
+
+    Raises: ValueError if the version string could not be found in the given content
+
+    Returns: A string with the modified content.
+    """
+    pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+    replacement_string = f"\\g<1>{version}\\g<3>"
+    new_content, num_replacements = re.subn(pattern, replacement_string, content)
+    if num_replacements == 0:
+        raise ValueError(
+            f"Could not find version string in {version_path}. File was not modified."
+        )
+    return new_content
+
+
+def _update_version_for_library(
+    repo: str, output: str, path_to_library: str, version: str
+):
+    """Updates the version string in `**/gapic_version.py` and `samples/**/snippet_metadata.json`
+        for a given library.
+
+    Args:
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+        output(str): Path to the directory in the container where modified
+            code should be placed.
+        path_to_library(str): Relative path to the library to update
+        version(str): The new version of the library
+
+    Raises: `ValueError` if a version string could not be located in `**/gapic_version.py`
+        within the given library.
+    """
+
+    # Find and update gapic_version.py files
+    gapic_version_files = Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py")
+    for version_file in gapic_version_files:
+        updated_content = _process_version_file(
+            _read_text_file(version_file), version, version_file
+        )
+        output_path = f"{output}/{version_file.relative_to(repo)}"
+        _write_text_file(output_path, updated_content)
+
+    # Find and update snippet_metadata.json files
+    snippet_metadata_files = Path(f"{repo}/{path_to_library}").rglob(
+        "samples/**/*.json"
+    )
+    for metadata_file in snippet_metadata_files:
+        output_path = f"{output}/{metadata_file.relative_to(repo)}"
+        os.makedirs(Path(output_path).parent, exist_ok=True)
+        shutil.copy(metadata_file, output_path)
+
+        metadata_contents = _read_json_file(metadata_file)
+        metadata_contents["clientLibrary"]["version"] = version
+        _write_json_file(output_path, metadata_contents)
 
 
 def handle_release_init(
@@ -536,7 +616,11 @@ def handle_release_init(
         # Prepare the release for each library by updating the
         # library specific version files and library specific changelog.
         for library_release_data in libraries_to_prep_for_release:
-            # TODO(https://github.com/googleapis/google-cloud-python/pull/14350):
+            version = library_release_data["version"]
+            package_name = library_release_data["id"]
+            path_to_library = f"packages/{package_name}"
+            _update_version_for_library(repo, output, path_to_library, version)
+
             # Update library specific version files.
             # TODO(https://github.com/googleapis/google-cloud-python/pull/14353):
             # Conditionally update the library specific CHANGELOG if there is a change.
