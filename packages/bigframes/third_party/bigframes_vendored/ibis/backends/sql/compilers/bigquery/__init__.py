@@ -1088,6 +1088,22 @@ class BigQueryCompiler(SQLGlotCompiler):
             expr = arg
         return sge.IgnoreNulls(this=self.agg.array_agg(expr, where=where))
 
+    def visit_StringAgg(self, op, *, arg, sep, order_by, where):
+        if len(order_by) > 0:
+            expr = sge.Order(
+                this=arg,
+                expressions=[
+                    # Avoid adding NULLS FIRST / NULLS LAST in SQL, which is
+                    # unsupported in ARRAY_AGG by reconstructing the node as
+                    # plain SQL text.
+                    f"({order_column.args['this'].sql(dialect='bigquery')}) {'DESC' if order_column.args.get('desc') else 'ASC'}"
+                    for order_column in order_by
+                ],
+            )
+        else:
+            expr = arg
+        return self.agg.string_agg(expr, sep, where=where)
+
     def visit_FirstNonNullValue(self, op, *, arg):
         return sge.IgnoreNulls(this=sge.FirstValue(this=arg))
 

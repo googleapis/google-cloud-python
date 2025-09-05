@@ -24,6 +24,7 @@ from bigframes.core import log_adapter
 import bigframes.dataframe as df
 import bigframes.operations as ops
 from bigframes.operations._op_converters import convert_index, convert_slice
+import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.base
 import bigframes.series as series
 
@@ -294,6 +295,11 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         join: Literal["outer", "left"] = "left",
     ) -> series.Series:
         return self._apply_binary_op(others, ops.strconcat_op, alignment=join)
+
+    def join(self, sep: str) -> series.Series:
+        return self._apply_unary_op(
+            ops.ArrayReduceOp(aggregation=agg_ops.StringAggOp(sep=sep))
+        )
 
     def to_blob(self, connection: Optional[str] = None) -> series.Series:
         """Create a BigFrames Blob series from a series of URIs.

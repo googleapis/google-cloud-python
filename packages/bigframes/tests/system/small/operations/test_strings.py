@@ -736,3 +736,14 @@ def test_getitem_w_struct_array():
     expected = bpd.Series(expected_data, dtype=bpd.ArrowDtype((pa_struct)))
 
     assert_series_equal(result.to_pandas(), expected.to_pandas())
+
+
+def test_string_join(session):
+    pd_series = pd.Series([["a", "b", "c"], ["100"], ["hello", "world"], []])
+    bf_series = session.read_pandas(pd_series)
+
+    pd_result = pd_series.str.join("--")
+    bf_result = bf_series.str.join("--").to_pandas()
+
+    pd_result = pd_result.astype("string[pyarrow]")
+    assert_series_equal(pd_result, bf_result, check_dtype=False, check_index_type=False)

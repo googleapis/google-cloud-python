@@ -676,6 +676,29 @@ def _(
     ).to_expr()
 
 
+@compile_ordered_unary_agg.register
+def _(
+    op: agg_ops.StringAggOp,
+    column: ibis_types.Column,
+    window=None,
+    order_by: typing.Sequence[ibis_types.Value] = [],
+) -> ibis_types.ArrayValue:
+    if window is not None:
+        raise NotImplementedError(
+            f"StringAgg with windowing is not supported. {constants.FEEDBACK_LINK}"
+        )
+
+    return (
+        ibis_ops.StringAgg(
+            column,  # type: ignore
+            sep=op.sep,  # type: ignore
+            order_by=order_by,  # type: ignore
+        )
+        .to_expr()
+        .fill_null(ibis_types.literal(""))
+    )
+
+
 @compile_binary_agg.register
 def _(
     op: agg_ops.CorrOp, left: ibis_types.Column, right: ibis_types.Column, window=None

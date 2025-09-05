@@ -379,9 +379,26 @@ class ArrayAggOp(UnaryAggregateOp):
         return True
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        return pd.ArrowDtype(
-            pa.list_(dtypes.bigframes_dtype_to_arrow_dtype(input_types[0]))
-        )
+        return dtypes.list_type(input_types[0])
+
+
+@dataclasses.dataclass(frozen=True)
+class StringAggOp(UnaryAggregateOp):
+    name: ClassVar[str] = "string_agg"
+    sep: str = ","
+
+    @property
+    def order_independent(self):
+        return False
+
+    @property
+    def skips_nulls(self):
+        return True
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] != dtypes.STRING_DTYPE:
+            raise TypeError(f"Type {input_types[0]} is not string-like")
+        return dtypes.STRING_DTYPE
 
 
 @dataclasses.dataclass(frozen=True)

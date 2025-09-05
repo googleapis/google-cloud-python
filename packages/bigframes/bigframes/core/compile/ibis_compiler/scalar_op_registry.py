@@ -1216,11 +1216,18 @@ def to_arry_op_impl(*values: ibis_types.Value):
 def array_reduce_op_impl(x: ibis_types.Value, op: ops.ArrayReduceOp):
     import bigframes.core.compile.ibis_compiler.aggregate_compiler as agg_compilers
 
-    return typing.cast(ibis_types.ArrayValue, x).reduce(
-        lambda arr_vals: agg_compilers.compile_unary_agg(
-            op.aggregation, typing.cast(ibis_types.Column, arr_vals)
+    if op.aggregation.order_independent:
+        return typing.cast(ibis_types.ArrayValue, x).reduce(
+            lambda arr_vals: agg_compilers.compile_unary_agg(
+                op.aggregation, typing.cast(ibis_types.Column, arr_vals)
+            )
         )
-    )
+    else:
+        return typing.cast(ibis_types.ArrayValue, x).reduce(
+            lambda arr_vals: agg_compilers.compile_ordered_unary_agg(
+                op.aggregation, typing.cast(ibis_types.Column, arr_vals)
+            )
+        )
 
 
 # JSON Ops

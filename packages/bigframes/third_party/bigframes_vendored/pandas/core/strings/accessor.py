@@ -1298,3 +1298,43 @@ class StringMethods:
             bigframes.series.Series: Returns Series or Index with minimum number of char in object.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def join(self, sep: str):
+        """
+        Join lists contained as elements in the Series/Index with passed delimiter.
+
+        If the elements of a Series are lists themselves, join the content of these
+        lists using the delimiter passed to the function.
+        This function is an equivalent to :meth:`str.join`.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> import pandas as pd
+
+        Example with a list that contains non-string elements.
+
+            >>> s = bpd.Series([['lion', 'elephant', 'zebra'],
+            ...                ['dragon'],
+            ...                ['duck', 'swan', 'fish', 'guppy']])
+            >>> s
+            0       ['lion' 'elephant' 'zebra']
+            1                        ['dragon']
+            2    ['duck' 'swan' 'fish' 'guppy']
+            dtype: list<item: string>[pyarrow]
+
+            >>> s.str.join('-')
+            0     lion-elephant-zebra
+            1                  dragon
+            2    duck-swan-fish-guppy
+            dtype: string
+
+        Args:
+            sep (str):
+                Delimiter to use between list entries.
+
+        Returns:
+            bigframes.series.Series: The list entries concatenated by intervening occurrences of the delimiter.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

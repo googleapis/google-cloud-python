@@ -401,3 +401,20 @@ class ArrayAggregate(Filterable, Reduction):
     @attribute
     def dtype(self):
         return dt.Array(self.arg.dtype)
+
+
+@public
+class StringAgg(Filterable, Reduction):
+    """
+    Collects the elements of this expression into a string. Similar to
+    the ibis `GroupConcat`, but adds `order_by_*` parameter.
+    """
+
+    arg: Column
+    sep: Value[dt.String]
+
+    order_by: VarTuple[Value] = ()
+
+    @attribute
+    def dtype(self):
+        return dt.string
