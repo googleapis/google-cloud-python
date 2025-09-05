@@ -138,6 +138,16 @@ def test_df_construct_structs(session):
     )
 
 
+def test_df_construct_local_concat_pd(scalars_pandas_df_index, session):
+    pd_df = pd.concat([scalars_pandas_df_index, scalars_pandas_df_index])
+
+    bf_df = session.read_pandas(pd_df)
+
+    pd.testing.assert_frame_equal(
+        bf_df.to_pandas(), pd_df, check_index_type=False, check_dtype=False
+    )
+
+
 def test_df_construct_pandas_set_dtype(scalars_dfs):
     columns = [
         "int64_too",

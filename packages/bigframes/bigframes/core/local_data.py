@@ -277,7 +277,10 @@ def _adapt_pandas_series(
         )
         return pa.array(series, type=pa.string()), bigframes.dtypes.GEO_DTYPE
     try:
-        return _adapt_arrow_array(pa.array(series))
+        pa_arr = pa.array(series)
+        if isinstance(pa_arr, pa.ChunkedArray):
+            return _adapt_chunked_array(pa_arr)
+        return _adapt_arrow_array(pa_arr)
     except pa.ArrowInvalid as e:
         if series.dtype == np.dtype("O"):
             try:
