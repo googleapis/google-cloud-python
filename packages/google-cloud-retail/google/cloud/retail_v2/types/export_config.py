@@ -92,8 +92,8 @@ class OutputConfig(proto.Message):
                 Required. Describes the table type. The following values are
                 supported:
 
-                -  ``table``: A BigQuery native table.
-                -  ``view``: A virtual table defined by a SQL query.
+                - ``table``: A BigQuery native table.
+                - ``view``: A virtual table defined by a SQL query.
         """
 
         dataset_id: str = proto.Field(
@@ -171,9 +171,9 @@ class ExportAnalyticsMetricsRequest(proto.Message):
 
             Some examples of valid filters expressions:
 
-            -  Example 1:
-               ``timestamp > "2012-04-23T18:25:43.511Z" timestamp < "2012-04-23T18:30:43.511Z"``
-            -  Example 2: ``timestamp > "2012-04-23T18:25:43.511Z"``
+            - Example 1:
+              ``timestamp > "2012-04-23T18:25:43.511Z" timestamp < "2012-04-23T18:30:43.511Z"``
+            - Example 2: ``timestamp > "2012-04-23T18:25:43.511Z"``
     """
 
     catalog: str = proto.Field(

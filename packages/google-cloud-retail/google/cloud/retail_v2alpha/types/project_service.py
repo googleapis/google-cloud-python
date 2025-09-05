@@ -188,8 +188,8 @@ class UpdateLoggingConfigRequest(proto.Message):
             [LoggingConfig][google.cloud.retail.v2alpha.LoggingConfig]
             to update. The following are the only supported fields:
 
-            -  [LoggingConfig.default_log_generation_rule][google.cloud.retail.v2alpha.LoggingConfig.default_log_generation_rule]
-            -  [LoggingConfig.service_log_generation_rules][google.cloud.retail.v2alpha.LoggingConfig.service_log_generation_rules]
+            - [LoggingConfig.default_log_generation_rule][google.cloud.retail.v2alpha.LoggingConfig.default_log_generation_rule]
+            - [LoggingConfig.service_log_generation_rules][google.cloud.retail.v2alpha.LoggingConfig.service_log_generation_rules]
 
             If not set, all supported fields are updated.
     """

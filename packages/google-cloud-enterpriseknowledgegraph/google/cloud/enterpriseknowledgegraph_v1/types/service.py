@@ -143,7 +143,7 @@ class OutputConfig(proto.Message):
 
     Attributes:
         bigquery_dataset (str):
-            Format is “projects/\ */datasets/*\ ”.
+            Format is “projects/*/datasets/*\ ”.
     """
 
     bigquery_dataset: str = proto.Field(

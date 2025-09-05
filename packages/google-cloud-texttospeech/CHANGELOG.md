@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.28.0...google-cloud-texttospeech-v2.29.0) (2025-09-04)
+
+
+### Features
+
+* Add prompt to SynthesisInput ([2c37fa1](https://github.com/googleapis/google-cloud-python/commit/2c37fa1808974239abe79bbf1d2df9fba74c1ac7))
+
+## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.27.0...google-cloud-texttospeech-v2.28.0) (2025-08-29)
+
+
+### Features
+
+* [google-cloud-texttospeech] Support promptable voices by specifying a model name and a prompt ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* Add enum value M4A to enum AudioEncoding ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* Support promptable voices by specifying a model name and a prompt ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+
+
+### Documentation
+
+* A comment for enum value `AUDIO_ENCODING_UNSPECIFIED` in enum `AudioEncoding` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for enum value `OGG_OPUS` in enum `AudioEncoding` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for enum value `PCM` in enum `AudioEncoding` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for enum value `PHONETIC_ENCODING_IPA` in enum `PhoneticEncoding` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for enum value `PHONETIC_ENCODING_X_SAMPA` in enum `PhoneticEncoding` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for field `audio_encoding` in message `.google.cloud.texttospeech.v1beta1.StreamingAudioConfig` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for field `custom_pronunciations` in message `.google.cloud.texttospeech.v1beta1.SynthesisInput` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for field `low_latency_journey_synthesis` in message `.google.cloud.texttospeech.v1beta1.AdvancedVoiceOptions` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for field `phrase` in message `.google.cloud.texttospeech.v1beta1.CustomPronunciationParams` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for field `pronunciations` in message `.google.cloud.texttospeech.v1beta1.CustomPronunciations` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for field `speaking_rate` in message `.google.cloud.texttospeech.v1beta1.AudioConfig` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for field `text` in message `.google.cloud.texttospeech.v1beta1.StreamingSynthesisInput` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for field `voice_clone` in message `.google.cloud.texttospeech.v1beta1.VoiceSelectionParams` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for message `MultiSpeakerMarkup` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+* A comment for method `StreamingSynthesize` in service `TextToSpeech` is changed ([a610c53](https://github.com/googleapis/google-cloud-python/commit/a610c53a8249dbd54d3151ac5e0e6b5b3fda5f09))
+
 ## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.26.0...google-cloud-texttospeech-v2.27.0) (2025-05-08)
 
 

@@ -62,7 +62,7 @@ class DataExchange(proto.Message):
         display_name (str):
             Required. Human-readable display name of the data exchange.
             The display name must contain only Unicode letters, numbers
-            (0-9), underscores (_), dashes (-), spaces ( ), ampersands
+            (0-9), underscores (\_), dashes (-), spaces ( ), ampersands
             (&) and must not start or end with spaces. Default value is
             an empty string. Max length: 63 bytes.
         description (str):
@@ -174,7 +174,7 @@ class DestinationDatasetReference(proto.Message):
         dataset_id (str):
             Required. A unique ID for this dataset, without the project
             name. The ID must contain only letters (a-z, A-Z), numbers
-            (0-9), or underscores (_). The maximum length is 1,024
+            (0-9), or underscores (\_). The maximum length is 1,024
             characters.
         project_id (str):
             Required. The ID of the project containing
@@ -264,7 +264,7 @@ class Listing(proto.Message):
         display_name (str):
             Required. Human-readable display name of the listing. The
             display name must contain only Unicode letters, numbers
-            (0-9), underscores (_), dashes (-), spaces ( ), ampersands
+            (0-9), underscores (\_), dashes (-), spaces ( ), ampersands
             (&) and can't start or end with spaces. Default value is an
             empty string. Max length: 63 bytes.
         description (str):
@@ -601,7 +601,7 @@ class CreateDataExchangeRequest(proto.Message):
             e.g. ``projects/myproject/locations/US``.
         data_exchange_id (str):
             Required. The ID of the data exchange. Must contain only
-            Unicode letters, numbers (0-9), underscores (_). Should not
+            Unicode letters, numbers (0-9), underscores (\_). Should not
             use characters that require URL-escaping, or characters
             outside of ASCII, spaces. Max length: 100 bytes.
         data_exchange (google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange):
@@ -743,7 +743,7 @@ class CreateListingRequest(proto.Message):
             ``projects/myproject/locations/US/dataExchanges/123``.
         listing_id (str):
             Required. The ID of the listing to create. Must contain only
-            Unicode letters, numbers (0-9), underscores (_). Should not
+            Unicode letters, numbers (0-9), underscores (\_). Should not
             use characters that require URL-escaping, or characters
             outside of ASCII, spaces. Max length: 100 bytes.
         listing (google.cloud.bigquery_data_exchange_v1beta1.types.Listing):

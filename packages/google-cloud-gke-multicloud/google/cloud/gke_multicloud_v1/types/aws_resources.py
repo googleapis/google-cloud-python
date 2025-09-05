@@ -126,7 +126,7 @@ class AwsCluster(proto.Message):
             (optional) and name (required), separated by a slash (/).
             Prefix must be a DNS subdomain. Name must be 63 characters
             or less, begin and end with alphanumerics, with dashes (-),
-            underscores (_), dots (.), and alphanumerics between.
+            underscores (\_), dots (.), and alphanumerics between.
         workload_identity_config (google.cloud.gke_multicloud_v1.types.WorkloadIdentityConfig):
             Output only. Workload Identity settings.
         cluster_ca_certificate (str):
@@ -348,7 +348,7 @@ class AwsControlPlane(proto.Message):
             underlying managed AWS resources.
 
             Specify at most 50 pairs containing alphanumerics, spaces,
-            and symbols (.+-=_:@/). Keys can be up to 127 Unicode
+            and symbols (.+-=\_:@/). Keys can be up to 127 Unicode
             characters. Values can be up to 255 Unicode characters.
         aws_services_authentication (google.cloud.gke_multicloud_v1.types.AwsServicesAuthentication):
             Required. Authentication configuration for
@@ -724,7 +724,7 @@ class AwsNodePool(proto.Message):
             (optional) and name (required), separated by a slash (/).
             Prefix must be a DNS subdomain. Name must be 63 characters
             or less, begin and end with alphanumerics, with dashes (-),
-            underscores (_), dots (.), and alphanumerics between.
+            underscores (\_), dots (.), and alphanumerics between.
         max_pods_constraint (google.cloud.gke_multicloud_v1.types.MaxPodsConstraint):
             Required. The constraint on the maximum
             number of pods that can be run simultaneously on
@@ -970,7 +970,7 @@ class AwsNodeConfig(proto.Message):
         tags (MutableMapping[str, str]):
             Optional. Key/value metadata to assign to each underlying
             AWS resource. Specify at most 50 pairs containing
-            alphanumerics, spaces, and symbols (.+-=_:@/). Keys can be
+            alphanumerics, spaces, and symbols (.+-=\_:@/). Keys can be
             up to 127 Unicode characters. Values can be up to 255
             Unicode characters.
         iam_instance_profile (str):
@@ -1322,8 +1322,8 @@ class AwsInstancePlacement(proto.Message):
     r"""Details of placement information for an instance. Limitations for
     using the ``host`` tenancy:
 
-    -  T3 instances that use the unlimited CPU credit option don't
-       support host tenancy.
+    - T3 instances that use the unlimited CPU credit option don't
+      support host tenancy.
 
     Attributes:
         tenancy (google.cloud.gke_multicloud_v1.types.AwsInstancePlacement.Tenancy):

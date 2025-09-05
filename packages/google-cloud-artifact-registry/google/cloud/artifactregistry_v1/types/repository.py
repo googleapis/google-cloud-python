@@ -1316,7 +1316,7 @@ class ListRepositoriesRequest(proto.Message):
             request. Filter rules are case insensitive. The fields
             eligible for filtering are:
 
-            -  ``name``
+            - ``name``
 
             Examples of using a filter:
 
@@ -1325,14 +1325,14 @@ class ListRepositoriesRequest(proto.Message):
             ``us-central`` region, append the following filter
             expression to your request:
 
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo"``
 
             You can also use wildcards to match any number of characters
             before or after the value:
 
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-*"``
-            -  ``name="projects/my-project/locations/us-central1/repositories/*repo"``
-            -  ``name="projects/my-project/locations/us-central1/repositories/*repo*"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-*"``
+            - ``name="projects/my-project/locations/us-central1/repositories/*repo"``
+            - ``name="projects/my-project/locations/us-central1/repositories/*repo*"``
         order_by (str):
             Optional. The field to order the results by.
     """

@@ -67,18 +67,18 @@ class InstanceOSPoliciesCompliance(proto.Message):
 
             It may contain one of the following values:
 
-            -  ``no-compliance-data``: Compliance data is not available
-               for this VM.
-            -  ``no-agent-detected``: OS Config agent is not detected
-               for this VM.
-            -  ``config-not-supported-by-agent``: The version of the OS
-               Config agent running on this VM does not support
-               configuration management.
-            -  ``inactive``: VM is not running.
-            -  ``internal-service-errors``: There were internal service
-               errors encountered while enforcing compliance.
-            -  ``agent-errors``: OS config agent encountered errors
-               while enforcing compliance.
+            - ``no-compliance-data``: Compliance data is not available
+              for this VM.
+            - ``no-agent-detected``: OS Config agent is not detected for
+              this VM.
+            - ``config-not-supported-by-agent``: The version of the OS
+              Config agent running on this VM does not support
+              configuration management.
+            - ``inactive``: VM is not running.
+            - ``internal-service-errors``: There were internal service
+              errors encountered while enforcing compliance.
+            - ``agent-errors``: OS config agent encountered errors while
+              enforcing compliance.
         detailed_state_reason (str):
             Output only. The reason for the ``detailed_state`` of the VM
             (if any).

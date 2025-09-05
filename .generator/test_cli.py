@@ -37,6 +37,7 @@ from cli import (
     _get_libraries_to_prepare_for_release,
     _get_previous_version,
     _locate_and_extract_artifact,
+    _process_version_file,
     _read_json_file,
     _read_text_file,
     _run_individual_session,
@@ -553,7 +554,7 @@ def test_handle_release_init_fail():
         handle_release_init()
 
 
-def test_read_valid_file(mocker):
+def test_read_valid_text_file(mocker):
     """Tests reading a valid text file."""
     mock_content = "some text"
     mocker.patch("builtins.open", mocker.mock_open(read_data=mock_content))
@@ -659,6 +660,7 @@ def test_update_version_for_library_success(mocker):
 
 
 def test_update_version_for_library_failure(mocker):
+    """Tests that value error is raised if the version string cannot be found"""
     m = mock_open()
 
     mock_rglob = mocker.patch(
@@ -755,3 +757,17 @@ def test_update_changelog_for_library_failure(mocker):
                 "1.2.2",
                 "google-cloud-language",
             )
+
+def test_process_version_file_success():
+    version_file_contents = '__version__ = "1.2.2"'
+    new_version = "1.2.3"
+    modified_content = _process_version_file(
+        version_file_contents, new_version, "file.txt"
+    )
+    assert modified_content == f'__version__ = "{new_version}"'
+
+
+def test_process_version_file_failure():
+    """Tests that value error is raised if the version string cannot be found"""
+    with pytest.raises(ValueError):
+        _process_version_file("", "", "")

@@ -1060,12 +1060,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
                    However, note that:
 
-                   -  Dialogflow will bill you for the audio duration so
-                      far.
-                   -  Dialogflow discards all Speech recognition results
-                      in favor of the input text.
-                   -  Dialogflow will use the language code from the
-                      first message.
+                   - Dialogflow will bill you for the audio duration so
+                     far.
+                   - Dialogflow discards all Speech recognition results
+                     in favor of the input text.
+                   - Dialogflow will use the language code from the
+                     first message.
 
                 After you sent all input, you must half-close or abort
                 the request stream.

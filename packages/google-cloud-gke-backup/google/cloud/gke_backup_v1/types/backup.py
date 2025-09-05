@@ -85,10 +85,10 @@ class Backup(proto.Message):
             Optional. The age (in days) after which this Backup will be
             automatically deleted. Must be an integer value >= 0:
 
-            -  If 0, no automatic deletion will occur for this Backup.
-            -  If not 0, this must be >=
-               [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days]
-               and <= 365.
+            - If 0, no automatic deletion will occur for this Backup.
+            - If not 0, this must be >=
+              [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days]
+              and <= 365.
 
             Once a Backup is created, this value may only be increased.
 
@@ -233,8 +233,8 @@ class Backup(proto.Message):
                 Output only. The source cluster from which this Backup was
                 created. Valid formats:
 
-                -  ``projects/*/locations/*/clusters/*``
-                -  ``projects/*/zones/*/clusters/*``
+                - ``projects/*/locations/*/clusters/*``
+                - ``projects/*/zones/*/clusters/*``
 
                 This is inherited from the parent BackupPlan's
                 [cluster][google.cloud.gkebackup.v1.BackupPlan.cluster]

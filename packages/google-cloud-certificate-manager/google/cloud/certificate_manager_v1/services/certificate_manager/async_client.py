@@ -91,18 +91,18 @@ class CertificateManagerAsyncClient:
 
     The Certificates Manager service exposes the following resources:
 
-    -  ``Certificate`` that describes a single TLS certificate.
-    -  ``CertificateMap`` that describes a collection of certificates
-       that can be attached to a target resource.
-    -  ``CertificateMapEntry`` that describes a single configuration
-       entry that consists of a SNI and a group of certificates. It's a
-       subresource of CertificateMap.
+    - ``Certificate`` that describes a single TLS certificate.
+    - ``CertificateMap`` that describes a collection of certificates
+      that can be attached to a target resource.
+    - ``CertificateMapEntry`` that describes a single configuration
+      entry that consists of a SNI and a group of certificates. It's a
+      subresource of CertificateMap.
 
     Certificate, CertificateMap and CertificateMapEntry IDs have to
     fully match the regexp ``[a-z0-9-]{1,63}``. In other words,
 
-    -  only lower case letters, digits, and hyphen are allowed
-    -  length of the resource ID has to be in [1,63] range.
+    - only lower case letters, digits, and hyphen are allowed
+    - length of the resource ID has to be in [1,63] range.
 
     Provides methods to manage Cloud Certificate Manager entities.
     """

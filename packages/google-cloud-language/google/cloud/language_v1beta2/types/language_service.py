@@ -289,37 +289,37 @@ class Entity(proto.Message):
                 local convention, plus whichever additional elements appear
                 in the text:
 
-                -  ``number`` - the actual number, broken down into sections
-                   as per local convention
-                -  ``national_prefix`` - country code, if detected
-                -  ``area_code`` - region or area code, if detected
-                -  ``extension`` - phone extension (to be dialed after
-                   connection), if detected
+                - ``number`` - the actual number, broken down into sections
+                  as per local convention
+                - ``national_prefix`` - country code, if detected
+                - ``area_code`` - region or area code, if detected
+                - ``extension`` - phone extension (to be dialed after
+                  connection), if detected
             ADDRESS (10):
                 Address
 
                 The metadata identifies the street number and locality plus
                 whichever additional elements appear in the text:
 
-                -  ``street_number`` - street number
-                -  ``locality`` - city or town
-                -  ``street_name`` - street/route name, if detected
-                -  ``postal_code`` - postal code, if detected
-                -  ``country`` - country, if detected<
-                -  ``broad_region`` - administrative area, such as the
-                   state, if detected
-                -  ``narrow_region`` - smaller administrative area, such as
-                   county, if detected
-                -  ``sublocality`` - used in Asian addresses to demark a
-                   district within a city, if detected
+                - ``street_number`` - street number
+                - ``locality`` - city or town
+                - ``street_name`` - street/route name, if detected
+                - ``postal_code`` - postal code, if detected
+                - ``country`` - country, if detected<
+                - ``broad_region`` - administrative area, such as the state,
+                  if detected
+                - ``narrow_region`` - smaller administrative area, such as
+                  county, if detected
+                - ``sublocality`` - used in Asian addresses to demark a
+                  district within a city, if detected
             DATE (11):
                 Date
 
                 The metadata identifies the components of the date:
 
-                -  ``year`` - four digit year, if detected
-                -  ``month`` - two digit month number, if detected
-                -  ``day`` - two digit day number, if detected
+                - ``year`` - four digit year, if detected
+                - ``month`` - two digit month number, if detected
+                - ``day`` - two digit day number, if detected
             NUMBER (12):
                 Number
 

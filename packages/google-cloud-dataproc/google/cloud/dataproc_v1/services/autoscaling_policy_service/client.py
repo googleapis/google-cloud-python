@@ -780,15 +780,13 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
                 as described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For ``projects.regions.autoscalingPolicies.create``,
-                   the resource name of the region has the following
-                   format: ``projects/{project_id}/regions/{region}``
+                - For ``projects.regions.autoscalingPolicies.create``,
+                  the resource name of the region has the following
+                  format: ``projects/{project_id}/regions/{region}``
 
-                -  For
-                   ``projects.locations.autoscalingPolicies.create``,
-                   the resource name of the location has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}``
+                - For ``projects.locations.autoscalingPolicies.create``,
+                  the resource name of the location has the following
+                  format: ``projects/{project_id}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1034,14 +1032,14 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
                 as described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For ``projects.regions.autoscalingPolicies.get``, the
-                   resource name of the policy has the following format:
-                   ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
+                - For ``projects.regions.autoscalingPolicies.get``, the
+                  resource name of the policy has the following format:
+                  ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
 
-                -  For ``projects.locations.autoscalingPolicies.get``,
-                   the resource name of the policy has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
+                - For ``projects.locations.autoscalingPolicies.get``,
+                  the resource name of the policy has the following
+                  format:
+                  ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1155,14 +1153,13 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
                 as described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For ``projects.regions.autoscalingPolicies.list``,
-                   the resource name of the region has the following
-                   format: ``projects/{project_id}/regions/{region}``
+                - For ``projects.regions.autoscalingPolicies.list``, the
+                  resource name of the region has the following format:
+                  ``projects/{project_id}/regions/{region}``
 
-                -  For ``projects.locations.autoscalingPolicies.list``,
-                   the resource name of the location has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}``
+                - For ``projects.locations.autoscalingPolicies.list``,
+                  the resource name of the location has the following
+                  format: ``projects/{project_id}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1292,16 +1289,15 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
                 as described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For ``projects.regions.autoscalingPolicies.delete``,
-                   the resource name of the policy has the following
-                   format:
-                   ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
+                - For ``projects.regions.autoscalingPolicies.delete``,
+                  the resource name of the policy has the following
+                  format:
+                  ``projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}``
 
-                -  For
-                   ``projects.locations.autoscalingPolicies.delete``,
-                   the resource name of the policy has the following
-                   format:
-                   ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
+                - For ``projects.locations.autoscalingPolicies.delete``,
+                  the resource name of the policy has the following
+                  format:
+                  ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -24,6 +24,7 @@ from .reservation import (
     DeleteCapacityCommitmentRequest,
     DeleteReservationRequest,
     Edition,
+    FailoverMode,
     FailoverReservationRequest,
     GetBiReservationRequest,
     GetCapacityCommitmentRequest,
@@ -85,4 +86,5 @@ __all__ = (
     "UpdateCapacityCommitmentRequest",
     "UpdateReservationRequest",
     "Edition",
+    "FailoverMode",
 )

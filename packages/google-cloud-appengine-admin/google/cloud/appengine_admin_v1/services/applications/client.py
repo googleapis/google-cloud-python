@@ -805,10 +805,10 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
         r"""Creates an App Engine application for a Google Cloud Platform
         project. Required fields:
 
-        -  ``id`` - The ID of the target Cloud Platform project.
-        -  *location* - The
-           `region <https://cloud.google.com/appengine/docs/locations>`__
-           where you want the App Engine application located.
+        - ``id`` - The ID of the target Cloud Platform project.
+        - *location* - The
+          `region <https://cloud.google.com/appengine/docs/locations>`__
+          where you want the App Engine application located.
 
         For more information about App Engine applications, see
         `Managing Projects, Applications, and
@@ -905,12 +905,11 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
         r"""Updates the specified Application resource. You can update the
         following fields:
 
-        -  ``auth_domain`` - Google authentication domain for
-           controlling user access to the application.
-        -  ``default_cookie_expiration`` - Cookie expiration policy for
-           the application.
-        -  ``iap`` - Identity-Aware Proxy properties for the
-           application.
+        - ``auth_domain`` - Google authentication domain for controlling
+          user access to the application.
+        - ``default_cookie_expiration`` - Cookie expiration policy for
+          the application.
+        - ``iap`` - Identity-Aware Proxy properties for the application.
 
         .. code-block:: python
 

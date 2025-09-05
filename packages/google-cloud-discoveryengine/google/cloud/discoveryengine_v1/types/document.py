@@ -99,12 +99,12 @@ class Document(proto.Message):
         index_status (google.cloud.discoveryengine_v1.types.Document.IndexStatus):
             Output only. The index status of the document.
 
-            -  If document is indexed successfully, the index_time field
-               is populated.
-            -  Otherwise, if document is not indexed due to errors, the
-               error_samples field is populated.
-            -  Otherwise, if document's index is in progress, the
-               pending_message field is populated.
+            - If document is indexed successfully, the index_time field
+              is populated.
+            - Otherwise, if document is not indexed due to errors, the
+              error_samples field is populated.
+            - Otherwise, if document's index is in progress, the
+              pending_message field is populated.
     """
 
     class Content(proto.Message):
@@ -140,28 +140,28 @@ class Document(proto.Message):
             mime_type (str):
                 The MIME type of the content. Supported types:
 
-                -  ``application/pdf`` (PDF, only native PDFs are supported
-                   for now)
-                -  ``text/html`` (HTML)
-                -  ``text/plain`` (TXT)
-                -  ``application/xml`` or ``text/xml`` (XML)
-                -  ``application/json`` (JSON)
-                -  ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
-                   (DOCX)
-                -  ``application/vnd.openxmlformats-officedocument.presentationml.presentation``
-                   (PPTX)
-                -  ``application/vnd.openxmlformats-officedocument.spreadsheetml.sheet``
-                   (XLSX)
-                -  ``application/vnd.ms-excel.sheet.macroenabled.12`` (XLSM)
+                - ``application/pdf`` (PDF, only native PDFs are supported
+                  for now)
+                - ``text/html`` (HTML)
+                - ``text/plain`` (TXT)
+                - ``application/xml`` or ``text/xml`` (XML)
+                - ``application/json`` (JSON)
+                - ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
+                  (DOCX)
+                - ``application/vnd.openxmlformats-officedocument.presentationml.presentation``
+                  (PPTX)
+                - ``application/vnd.openxmlformats-officedocument.spreadsheetml.sheet``
+                  (XLSX)
+                - ``application/vnd.ms-excel.sheet.macroenabled.12`` (XLSM)
 
                 The following types are supported only if layout parser is
                 enabled in the data store:
 
-                -  ``image/bmp`` (BMP)
-                -  ``image/gif`` (GIF)
-                -  ``image/jpeg`` (JPEG)
-                -  ``image/png`` (PNG)
-                -  ``image/tiff`` (TIFF)
+                - ``image/bmp`` (BMP)
+                - ``image/gif`` (GIF)
+                - ``image/jpeg`` (JPEG)
+                - ``image/png`` (PNG)
+                - ``image/tiff`` (TIFF)
 
                 See
                 https://www.iana.org/assignments/media-types/media-types.xhtml.

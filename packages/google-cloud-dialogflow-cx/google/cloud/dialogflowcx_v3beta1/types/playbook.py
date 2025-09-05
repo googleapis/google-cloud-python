@@ -607,9 +607,9 @@ class Handler(proto.Message):
                 Required. The name of the lifecycle stage that triggers this
                 handler. Supported values:
 
-                -  ``playbook-start``
-                -  ``pre-action-selection``
-                -  ``pre-action-execution``
+                - ``playbook-start``
+                - ``pre-action-selection``
+                - ``pre-action-execution``
             condition (str):
                 Optional. The condition that must be
                 satisfied to trigger this handler.

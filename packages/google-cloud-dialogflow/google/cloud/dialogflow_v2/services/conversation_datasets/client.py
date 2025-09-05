@@ -750,10 +750,10 @@ class ConversationDatasetsClient(metaclass=ConversationDatasetsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [CreateConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata]
-        -  ``response``:
-           [ConversationDataset][google.cloud.dialogflow.v2.ConversationDataset]
+        - ``metadata``:
+          [CreateConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata]
+        - ``response``:
+          [ConversationDataset][google.cloud.dialogflow.v2.ConversationDataset]
 
         .. code-block:: python
 
@@ -1151,10 +1151,10 @@ class ConversationDatasetsClient(metaclass=ConversationDatasetsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [DeleteConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationDatasetOperationMetadata]
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+        - ``metadata``:
+          [DeleteConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationDatasetOperationMetadata]
+        - ``response``: An `Empty
+          message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         .. code-block:: python
 
@@ -1298,10 +1298,10 @@ class ConversationDatasetsClient(metaclass=ConversationDatasetsClientMeta):
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ImportConversationDataOperationMetadata][google.cloud.dialogflow.v2.ImportConversationDataOperationMetadata]
-        -  ``response``:
-           [ImportConversationDataOperationResponse][google.cloud.dialogflow.v2.ImportConversationDataOperationResponse]
+        - ``metadata``:
+          [ImportConversationDataOperationMetadata][google.cloud.dialogflow.v2.ImportConversationDataOperationMetadata]
+        - ``response``:
+          [ImportConversationDataOperationResponse][google.cloud.dialogflow.v2.ImportConversationDataOperationResponse]
 
         .. code-block:: python
 

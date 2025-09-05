@@ -803,7 +803,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         overrides and replaces the rules of an existing firewall with
         the new rules.
 
-        If the final rule does not match traffic with the '*' wildcard
+        If the final rule does not match traffic with the '\*' wildcard
         IP range, then an "allow all" rule is explicitly added to the
         end of the list.
 

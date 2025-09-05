@@ -134,7 +134,7 @@ class AnnotateVideoRequest(proto.Message):
             For more information, see `Request
             URIs <https://cloud.google.com/storage/docs/request-endpoints>`__.
             A video URI may include wildcards in ``object-id``, and thus
-            identify multiple videos. Supported wildcards: '*' to match
+            identify multiple videos. Supported wildcards: '\*' to match
             0 or more characters; '?' to match 1 character. If unset,
             the input video should be embedded in the request as
             ``input_content``. If set, ``input_content`` should be
@@ -655,9 +655,9 @@ class SpeechTranscriptionConfig(proto.Message):
         filter_profanity (bool):
             Optional. If set to ``true``, the server will attempt to
             filter out profanities, replacing all but the initial
-            character in each filtered word with asterisks, e.g. "f***".
-            If set to ``false`` or omitted, profanities won't be
-            filtered out.
+            character in each filtered word with asterisks, e.g.
+            "f**\*". If set to ``false`` or omitted, profanities won't
+            be filtered out.
         speech_contexts (MutableSequence[google.cloud.videointelligence_v1p1beta1.types.SpeechContext]):
             Optional. A means to provide context to
             assist the speech recognition.

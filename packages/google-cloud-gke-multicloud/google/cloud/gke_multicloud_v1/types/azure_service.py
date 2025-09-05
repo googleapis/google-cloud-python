@@ -125,23 +125,23 @@ class UpdateAzureClusterRequest(proto.Message):
             paths field can only include these fields from
             [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]:
 
-            -  ``description``.
-            -  ``azureClient``.
-            -  ``control_plane.version``.
-            -  ``control_plane.vm_size``.
-            -  ``annotations``.
-            -  ``authorization.admin_users``.
-            -  ``authorization.admin_groups``.
-            -  ``control_plane.root_volume.size_gib``.
-            -  ``azure_services_authentication``.
-            -  ``azure_services_authentication.tenant_id``.
-            -  ``azure_services_authentication.application_id``.
-            -  ``control_plane.proxy_config``.
-            -  ``control_plane.proxy_config.resource_group_id``.
-            -  ``control_plane.proxy_config.secret_id``.
-            -  ``control_plane.ssh_config.authorized_key``.
-            -  ``logging_config.component_config.enable_components``
-            -  ``monitoring_config.managed_prometheus_config.enabled``.
+            - ``description``.
+            - ``azureClient``.
+            - ``control_plane.version``.
+            - ``control_plane.vm_size``.
+            - ``annotations``.
+            - ``authorization.admin_users``.
+            - ``authorization.admin_groups``.
+            - ``control_plane.root_volume.size_gib``.
+            - ``azure_services_authentication``.
+            - ``azure_services_authentication.tenant_id``.
+            - ``azure_services_authentication.application_id``.
+            - ``control_plane.proxy_config``.
+            - ``control_plane.proxy_config.resource_group_id``.
+            - ``control_plane.proxy_config.secret_id``.
+            - ``control_plane.ssh_config.authorized_key``.
+            - ``logging_config.component_config.enable_components``
+            - ``monitoring_config.managed_prometheus_config.enabled``.
     """
 
     azure_cluster: azure_resources.AzureCluster = proto.Field(
@@ -396,12 +396,12 @@ class UpdateAzureNodePoolRequest(proto.Message):
 
             \*. ``annotations``.
 
-            -  ``version``.
-            -  ``autoscaling.min_node_count``.
-            -  ``autoscaling.max_node_count``.
-            -  ``config.ssh_config.authorized_key``.
-            -  ``management.auto_repair``.
-            -  ``management``.
+            - ``version``.
+            - ``autoscaling.min_node_count``.
+            - ``autoscaling.max_node_count``.
+            - ``config.ssh_config.authorized_key``.
+            - ``management.auto_repair``.
+            - ``management``.
     """
 
     azure_node_pool: azure_resources.AzureNodePool = proto.Field(

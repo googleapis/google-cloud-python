@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.9](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.8...google-apps-chat-v0.2.9) (2025-08-29)
+
+
+### Bug Fixes
+
+* Changed field behavior for an existing field `last_update_time` in message `.google.chat.v1.QuotedMessageMetadata` ([08076ef](https://github.com/googleapis/google-cloud-python/commit/08076ef884baddfe523d0be8cdfafe5637ee073b))
+* Changed field behavior for an existing field name in message .google.chat.v1.QuotedMessageMetadata ([08076ef](https://github.com/googleapis/google-cloud-python/commit/08076ef884baddfe523d0be8cdfafe5637ee073b))
+
+
+### Documentation
+
+* A comment for field `customer` in message `.google.chat.v1.Space` is changed ([08076ef](https://github.com/googleapis/google-cloud-python/commit/08076ef884baddfe523d0be8cdfafe5637ee073b))
+* A comment for field `last_update_time` in message `.google.chat.v1.QuotedMessageMetadata` is changed ([08076ef](https://github.com/googleapis/google-cloud-python/commit/08076ef884baddfe523d0be8cdfafe5637ee073b))
+* A comment for field `name` in message `.google.chat.v1.QuotedMessageMetadata` is changed ([08076ef](https://github.com/googleapis/google-cloud-python/commit/08076ef884baddfe523d0be8cdfafe5637ee073b))
+* A comment for field `quoted_message_metadata` in message `.google.chat.v1.Message` is changed ([08076ef](https://github.com/googleapis/google-cloud-python/commit/08076ef884baddfe523d0be8cdfafe5637ee073b))
+* A comment for field `update_mask` in message `.google.chat.v1.UpdateMessageRequest` is changed ([08076ef](https://github.com/googleapis/google-cloud-python/commit/08076ef884baddfe523d0be8cdfafe5637ee073b))
+* A comment for message `QuotedMessageMetadata` is changed ([08076ef](https://github.com/googleapis/google-cloud-python/commit/08076ef884baddfe523d0be8cdfafe5637ee073b))
+
 ## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.7...google-apps-chat-v0.2.8) (2025-08-06)
 
 

@@ -1756,7 +1756,7 @@ class StorageInsightsClient(metaclass=StorageInsightsClientMeta):
             google.cloud.storageinsights_v1.types.DatasetConfig:
                 Message describing the dataset configuration properties. For more
                    information, see [Dataset configuration
-                   properties](\ https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
+                   properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
 
         """
         # Create or coerce a protobuf request object.
@@ -1890,7 +1890,7 @@ class StorageInsightsClient(metaclass=StorageInsightsClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.storageinsights_v1.types.DatasetConfig` Message describing the dataset configuration properties. For more
                    information, see [Dataset configuration
-                   properties](\ https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
+                   properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
 
         """
         # Create or coerce a protobuf request object.
@@ -2030,7 +2030,7 @@ class StorageInsightsClient(metaclass=StorageInsightsClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.storageinsights_v1.types.DatasetConfig` Message describing the dataset configuration properties. For more
                    information, see [Dataset configuration
-                   properties](\ https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
+                   properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
 
         """
         # Create or coerce a protobuf request object.

@@ -786,7 +786,7 @@ class AutomaticImprovementsServiceClient(
         Returns:
             google.shopping.merchant_accounts_v1.types.AutomaticImprovements:
                 Collection of information related to the [automatic
-                   improvements](\ https://developers.google.com/shopping-content/guides/automatic-improvements)
+                   improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
                    of an account.
 
         """
@@ -897,12 +897,12 @@ class AutomaticImprovementsServiceClient(
                 fields are supported (in both ``snake_case`` and
                 ``lowerCamelCase``):
 
-                -  ``item_updates``
-                -  ``item_updates.account_level_settings``
-                -  ``image_improvements``
-                -  ``image_improvements.account_level_settings``
-                -  ``shipping_improvements``
-                -  ``shipping_improvements.allow_shipping_improvements``
+                - ``item_updates``
+                - ``item_updates.account_level_settings``
+                - ``image_improvements``
+                - ``image_improvements.account_level_settings``
+                - ``shipping_improvements``
+                - ``shipping_improvements.allow_shipping_improvements``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -918,7 +918,7 @@ class AutomaticImprovementsServiceClient(
         Returns:
             google.shopping.merchant_accounts_v1.types.AutomaticImprovements:
                 Collection of information related to the [automatic
-                   improvements](\ https://developers.google.com/shopping-content/guides/automatic-improvements)
+                   improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
                    of an account.
 
         """

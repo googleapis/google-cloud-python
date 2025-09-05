@@ -78,24 +78,23 @@ class PrivilegedAccessManagerAsyncClient:
 
     It defines the following resource model:
 
-    -  A collection of ``Entitlement`` resources. An entitlement allows
-       configuring (among other things):
+    - A collection of ``Entitlement`` resources. An entitlement allows
+      configuring (among other things):
 
-       -  Some kind of privileged access that users can request.
-       -  A set of users called *requesters* who can request this
-          access.
-       -  A maximum duration for which the access can be requested.
-       -  An optional approval workflow which must be satisfied before
-          access is granted.
+      - Some kind of privileged access that users can request.
+      - A set of users called *requesters* who can request this access.
+      - A maximum duration for which the access can be requested.
+      - An optional approval workflow which must be satisfied before
+        access is granted.
 
-    -  A collection of ``Grant`` resources. A grant is a request by a
-       requester to get the privileged access specified in an
-       entitlement for some duration.
+    - A collection of ``Grant`` resources. A grant is a request by a
+      requester to get the privileged access specified in an entitlement
+      for some duration.
 
-       After the approval workflow as specified in the entitlement is
-       satisfied, the specified access is given to the requester. The
-       access is automatically taken back after the requested duration
-       is over.
+      After the approval workflow as specified in the entitlement is
+      satisfied, the specified access is given to the requester. The
+      access is automatically taken back after the requested duration is
+      over.
     """
 
     _client: PrivilegedAccessManagerClient
@@ -823,9 +822,9 @@ class PrivilegedAccessManagerAsyncClient:
                 Required. Name of the parent resource for the
                 entitlement. Possible formats:
 
-                -  ``organizations/{organization-number}/locations/{region}``
-                -  ``folders/{folder-number}/locations/{region}``
-                -  ``projects/{project-id|project-number}/locations/{region}``
+                - ``organizations/{organization-number}/locations/{region}``
+                - ``folders/{folder-number}/locations/{region}``
+                - ``projects/{project-id|project-number}/locations/{region}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1076,15 +1075,15 @@ class PrivilegedAccessManagerAsyncClient:
 
         The following fields are not supported for updates:
 
-        -  All immutable fields
-        -  Entitlement name
-        -  Resource name
-        -  Resource type
-        -  Adding an approval workflow in an entitlement which
-           previously had no approval workflow.
-        -  Deleting the approval workflow from an entitlement.
-        -  Adding or deleting a step in the approval workflow (only one
-           step is supported)
+        - All immutable fields
+        - Entitlement name
+        - Resource name
+        - Resource type
+        - Adding an approval workflow in an entitlement which previously
+          had no approval workflow.
+        - Deleting the approval workflow from an entitlement.
+        - Adding or deleting a step in the approval workflow (only one
+          step is supported)
 
         Note that updates are allowed on the list of approvers in an
         approval workflow step.
@@ -1139,7 +1138,7 @@ class PrivilegedAccessManagerAsyncClient:
                 fields specified in the update_mask are relative to the
                 resource and not to the request. (e.g.
                 ``MaxRequestDuration``; *not*
-                ``entitlement.MaxRequestDuration``) A value of '*' for
+                ``entitlement.MaxRequestDuration``) A value of '\*' for
                 this field refers to full replacement of the resource.
 
                 This corresponds to the ``update_mask`` field

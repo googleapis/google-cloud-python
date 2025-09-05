@@ -42,18 +42,18 @@ class Model(proto.Message):
             Format: ``models/{model}`` with a ``{model}`` naming
             convention of:
 
-            -  "{base_model_id}-{version}"
+            - "{base_model_id}-{version}"
 
             Examples:
 
-            -  ``models/gemini-1.5-flash-001``
+            - ``models/gemini-1.5-flash-001``
         base_model_id (str):
             Required. The name of the base model, pass this to the
             generation request.
 
             Examples:
 
-            -  ``gemini-1.5-flash``
+            - ``gemini-1.5-flash``
         version (str):
             Required. The version number of the model.
 

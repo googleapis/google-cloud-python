@@ -98,8 +98,8 @@ class ListPackagesRequest(proto.Message):
             request. Filter rules are case insensitive. The fields
             eligible for filtering are:
 
-            -  ``name``
-            -  ``annotations``
+            - ``name``
+            - ``annotations``
 
             Examples of using a filter:
 
@@ -108,27 +108,27 @@ class ListPackagesRequest(proto.Message):
             ``us-central`` region, in repository ``my-repo``, append the
             following filter expression to your request:
 
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package"``
 
             You can also use wildcards to match any number of characters
             before or after the value:
 
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-*"``
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/*package"``
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/*pack*"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-*"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/*package"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/*pack*"``
 
             To filter the results of your request to packages with the
             annotation key-value pair [``external_link``:
             ``external_link_value``], append the following filter
             expression to your request":
 
-            -  ``"annotations.external_link:external_link_value"``
+            - ``"annotations.external_link:external_link_value"``
 
             To filter the results just for a specific annotation key
             ``external_link``, append the following filter expression to
             your request:
 
-            -  ``"annotations.external_link"``
+            - ``"annotations.external_link"``
 
             If the annotation key or value contains special characters,
             you can escape them by surrounding the value with backticks.
@@ -137,12 +137,12 @@ class ListPackagesRequest(proto.Message):
             [``external.link``:``https://example.com/my-package``],
             append the following filter expression to your request:
 
-            -  :literal:`"annotations.`external.link`:`https://example.com/my-package`"`
+            - :literal:`"annotations.`external.link\`:\`https://example.com/my-package\`"`
 
             You can also filter with annotations with a wildcard to
             match any number of characters before or after the value:
 
-            -  :literal:`"annotations.*_link:`*example.com*`"`
+            - :literal:`"annotations.*_link:\`*example.com*\`"`
         order_by (str):
             Optional. The field to order the results by.
     """

@@ -750,12 +750,12 @@ class OmnichannelSettingsServiceAsyncClient:
 
                 The following fields are supported in snake_case only:
 
-                -  ``lsf_type``
-                -  ``in_stock``
-                -  ``pickup``
-                -  ``odo``
-                -  ``about``
-                -  ``inventory_verification``
+                - ``lsf_type``
+                - ``in_stock``
+                - ``pickup``
+                - ``odo``
+                - ``about``
+                - ``inventory_verification``
 
                 Full replacement with wildcard ``*``\ is supported,
                 while empty/implied update mask is not.

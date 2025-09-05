@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.18.0...google-cloud-bigquery-reservation-v1.19.0) (2025-09-04)
+
+
+### Features
+
+* Add a new field `failover_mode` to `.google.cloud.bigquery.reservation.v1.FailoverReservationRequest` that allows users to choose between the HARD or SOFT failover modes when they initiate a failover operation on a reservation ([c7bbbfc](https://github.com/googleapis/google-cloud-python/commit/c7bbbfc6e83795e2f813a60ca146a8fd4f232fa2))
+* Add a new field `soft_failover_start_time` in the existing `replication_status` in `.google.cloud.bigquery.reservation.v1.Reservation` to provide visibility into the state of ongoing soft failover operations onthe reservation ([c7bbbfc](https://github.com/googleapis/google-cloud-python/commit/c7bbbfc6e83795e2f813a60ca146a8fd4f232fa2))
+
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.17.2...google-cloud-bigquery-reservation-v1.18.0) (2025-08-29)
+
+
+### Features
+
+* Add Reservation.max_slots field to Reservation proto, indicating the total max number of slots this reservation can use up to ([8ab5fcc](https://github.com/googleapis/google-cloud-python/commit/8ab5fcc4409674815979bd6b378af5165ab0e901))
+* Add Reservation.scaling_mode field and its corresponding enum message ScalingMode. This field should be used together with Reservation.max_slots ([8ab5fcc](https://github.com/googleapis/google-cloud-python/commit/8ab5fcc4409674815979bd6b378af5165ab0e901))
+
 ## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.17.1...google-cloud-bigquery-reservation-v1.17.2) (2025-06-11)
 
 

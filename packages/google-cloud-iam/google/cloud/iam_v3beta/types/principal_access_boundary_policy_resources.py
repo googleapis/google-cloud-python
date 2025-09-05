@@ -150,13 +150,13 @@ class PrincipalAccessBoundaryPolicyRule(proto.Message):
 
             The following resource types are supported:
 
-            -  Organizations, such as
-               ``//cloudresourcemanager.googleapis.com/organizations/123``.
-            -  Folders, such as
-               ``//cloudresourcemanager.googleapis.com/folders/123``.
-            -  Projects, such as
-               ``//cloudresourcemanager.googleapis.com/projects/123`` or
-               ``//cloudresourcemanager.googleapis.com/projects/my-project-id``.
+            - Organizations, such as
+              ``//cloudresourcemanager.googleapis.com/organizations/123``.
+            - Folders, such as
+              ``//cloudresourcemanager.googleapis.com/folders/123``.
+            - Projects, such as
+              ``//cloudresourcemanager.googleapis.com/projects/123`` or
+              ``//cloudresourcemanager.googleapis.com/projects/my-project-id``.
         effect (google.cloud.iam_v3beta.types.PrincipalAccessBoundaryPolicyRule.Effect):
             Required. The access relationship of
             principals to the resources in this rule.

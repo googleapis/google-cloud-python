@@ -136,10 +136,10 @@ class Instance(proto.Message):
             `scopes <https://cloud.google.com/compute/docs/access/service-accounts#accesscopesiam>`__
             are defined:
 
-            -  https://www.googleapis.com/auth/cloud-platform
-            -  https://www.googleapis.com/auth/userinfo.email If not
-               using default scopes, you need at least:
-               https://www.googleapis.com/auth/compute
+            - https://www.googleapis.com/auth/cloud-platform
+            - https://www.googleapis.com/auth/userinfo.email If not
+              using default scopes, you need at least:
+              https://www.googleapis.com/auth/compute
         machine_type (str):
             Required. The `Compute Engine machine
             type <https://cloud.google.com/compute/docs/machine-types>`__
@@ -459,8 +459,8 @@ class Instance(proto.Message):
                 For performance characteristics of SCSI over NVMe, see Local
                 SSD performance. Valid values:
 
-                -  ``NVME``
-                -  ``SCSI``
+                - ``NVME``
+                - ``SCSI``
             kind (str):
                 Type of the resource. Always
                 compute#attachedDisk for attached disks.
@@ -474,8 +474,8 @@ class Instance(proto.Message):
                 or ``READ_ONLY``. If not specified, the default is to attach
                 the disk in ``READ_WRITE`` mode. Valid values:
 
-                -  ``READ_ONLY``
-                -  ``READ_WRITE``
+                - ``READ_ONLY``
+                - ``READ_WRITE``
             source (str):
                 Indicates a valid partial or full URL to an
                 existing Persistent Disk resource.
@@ -483,8 +483,8 @@ class Instance(proto.Message):
                 Indicates the type of the disk, either ``SCRATCH`` or
                 ``PERSISTENT``. Valid values:
 
-                -  ``PERSISTENT``
-                -  ``SCRATCH``
+                - ``PERSISTENT``
+                - ``SCRATCH``
         """
 
         class GuestOsFeature(proto.Message):
@@ -496,12 +496,12 @@ class Instance(proto.Message):
                     system features to see a list of available options. Valid
                     values:
 
-                    -  ``FEATURE_TYPE_UNSPECIFIED``
-                    -  ``MULTI_IP_SUBNET``
-                    -  ``SECURE_BOOT``
-                    -  ``UEFI_COMPATIBLE``
-                    -  ``VIRTIO_SCSI_MULTIQUEUE``
-                    -  ``WINDOWS``
+                    - ``FEATURE_TYPE_UNSPECIFIED``
+                    - ``MULTI_IP_SUBNET``
+                    - ``SECURE_BOOT``
+                    - ``UEFI_COMPATIBLE``
+                    - ``VIRTIO_SCSI_MULTIQUEUE``
+                    - ``WINDOWS``
             """
 
             type_: str = proto.Field(

@@ -889,7 +889,7 @@ class MultiEntityRename(proto.Message):
             Optional. The pattern used to generate the new entity's
             name. This pattern must include the characters '{name}',
             which will be replaced with the name of the original entity.
-            For example, the pattern 't_{name}' for an entity name jobs
+            For example, the pattern 't\_{name}' for an entity name jobs
             would be converted to 't_jobs'.
 
             If unspecified, the default value for this field is '{name}'

@@ -959,6 +959,200 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
             )
         return self._stubs["test_iam_permissions"]
 
+    @property
+    def create_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.CreateQueryTemplateRequest], analyticshub.QueryTemplate
+    ]:
+        r"""Return a callable for the create query template method over gRPC.
+
+        Creates a new QueryTemplate
+
+        Returns:
+            Callable[[~.CreateQueryTemplateRequest],
+                    ~.QueryTemplate]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_query_template" not in self._stubs:
+            self._stubs["create_query_template"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/CreateQueryTemplate",
+                request_serializer=analyticshub.CreateQueryTemplateRequest.serialize,
+                response_deserializer=analyticshub.QueryTemplate.deserialize,
+            )
+        return self._stubs["create_query_template"]
+
+    @property
+    def get_query_template(
+        self,
+    ) -> Callable[[analyticshub.GetQueryTemplateRequest], analyticshub.QueryTemplate]:
+        r"""Return a callable for the get query template method over gRPC.
+
+        Gets a QueryTemplate
+
+        Returns:
+            Callable[[~.GetQueryTemplateRequest],
+                    ~.QueryTemplate]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_query_template" not in self._stubs:
+            self._stubs["get_query_template"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetQueryTemplate",
+                request_serializer=analyticshub.GetQueryTemplateRequest.serialize,
+                response_deserializer=analyticshub.QueryTemplate.deserialize,
+            )
+        return self._stubs["get_query_template"]
+
+    @property
+    def list_query_templates(
+        self,
+    ) -> Callable[
+        [analyticshub.ListQueryTemplatesRequest],
+        analyticshub.ListQueryTemplatesResponse,
+    ]:
+        r"""Return a callable for the list query templates method over gRPC.
+
+        Lists all QueryTemplates in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListQueryTemplatesRequest],
+                    ~.ListQueryTemplatesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_query_templates" not in self._stubs:
+            self._stubs["list_query_templates"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListQueryTemplates",
+                request_serializer=analyticshub.ListQueryTemplatesRequest.serialize,
+                response_deserializer=analyticshub.ListQueryTemplatesResponse.deserialize,
+            )
+        return self._stubs["list_query_templates"]
+
+    @property
+    def update_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.UpdateQueryTemplateRequest], analyticshub.QueryTemplate
+    ]:
+        r"""Return a callable for the update query template method over gRPC.
+
+        Updates an existing QueryTemplate
+
+        Returns:
+            Callable[[~.UpdateQueryTemplateRequest],
+                    ~.QueryTemplate]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_query_template" not in self._stubs:
+            self._stubs["update_query_template"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/UpdateQueryTemplate",
+                request_serializer=analyticshub.UpdateQueryTemplateRequest.serialize,
+                response_deserializer=analyticshub.QueryTemplate.deserialize,
+            )
+        return self._stubs["update_query_template"]
+
+    @property
+    def delete_query_template(
+        self,
+    ) -> Callable[[analyticshub.DeleteQueryTemplateRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete query template method over gRPC.
+
+        Deletes a query template.
+
+        Returns:
+            Callable[[~.DeleteQueryTemplateRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_query_template" not in self._stubs:
+            self._stubs["delete_query_template"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteQueryTemplate",
+                request_serializer=analyticshub.DeleteQueryTemplateRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_query_template"]
+
+    @property
+    def submit_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.SubmitQueryTemplateRequest], analyticshub.QueryTemplate
+    ]:
+        r"""Return a callable for the submit query template method over gRPC.
+
+        Submits a query template for approval.
+
+        Returns:
+            Callable[[~.SubmitQueryTemplateRequest],
+                    ~.QueryTemplate]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "submit_query_template" not in self._stubs:
+            self._stubs["submit_query_template"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubmitQueryTemplate",
+                request_serializer=analyticshub.SubmitQueryTemplateRequest.serialize,
+                response_deserializer=analyticshub.QueryTemplate.deserialize,
+            )
+        return self._stubs["submit_query_template"]
+
+    @property
+    def approve_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.ApproveQueryTemplateRequest], analyticshub.QueryTemplate
+    ]:
+        r"""Return a callable for the approve query template method over gRPC.
+
+        Approves a query template.
+
+        Returns:
+            Callable[[~.ApproveQueryTemplateRequest],
+                    ~.QueryTemplate]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "approve_query_template" not in self._stubs:
+            self._stubs["approve_query_template"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ApproveQueryTemplate",
+                request_serializer=analyticshub.ApproveQueryTemplateRequest.serialize,
+                response_deserializer=analyticshub.QueryTemplate.deserialize,
+            )
+        return self._stubs["approve_query_template"]
+
     def close(self):
         self._logged_channel.close()
 

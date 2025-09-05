@@ -626,9 +626,9 @@ class DashboardsServiceAsyncClient:
                 Required. The resource name of the Dashboard. The format
                 is one of:
 
-                -  ``dashboards/[DASHBOARD_ID]`` (for system dashboards)
-                -  ``projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]``
-                   (for custom dashboards).
+                - ``dashboards/[DASHBOARD_ID]`` (for system dashboards)
+                - ``projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]``
+                  (for custom dashboards).
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

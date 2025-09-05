@@ -159,11 +159,11 @@ class PubSubSubscription(proto.Message):
             for the delivery of a message with a given value of
             ``message_id`` on this subscription:
 
-            -  The message sent to a subscriber is guaranteed not to be
-               resent before the message's acknowledgement deadline
-               expires.
-            -  An acknowledged message will not be resent to a
-               subscriber.
+            - The message sent to a subscriber is guaranteed not to be
+              resent before the message's acknowledgement deadline
+              expires.
+            - An acknowledged message will not be resent to a
+              subscriber.
 
             Note that subscribers may still receive multiple copies of a
             message when ``enable_exactly_once_delivery`` is true if the
@@ -415,10 +415,10 @@ class PushConfig(proto.Message):
             The only supported values for the ``x-goog-version``
             attribute are:
 
-            -  ``v1beta1``: uses the push format defined in the v1beta1
-               Pub/Sub API.
-            -  ``v1`` or ``v1beta2``: uses the push format defined in
-               the v1 Pub/Sub API.
+            - ``v1beta1``: uses the push format defined in the v1beta1
+              Pub/Sub API.
+            - ``v1`` or ``v1beta2``: uses the push format defined in the
+              v1 Pub/Sub API.
 
             For example: ``attributes { "x-goog-version": "v1" }``
     """

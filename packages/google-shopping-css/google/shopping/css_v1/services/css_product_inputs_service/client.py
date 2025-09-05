@@ -903,7 +903,7 @@ class CssProductInputsServiceClient(metaclass=CssProductInputsServiceClientMeta)
                 To specify the update mask for custom attributes you
                 need to add the ``custom_attribute.`` prefix.
 
-                Providing special "*" value for full CSS product
+                Providing special "\*" value for full CSS product
                 replacement is not supported.
 
                 This corresponds to the ``update_mask`` field

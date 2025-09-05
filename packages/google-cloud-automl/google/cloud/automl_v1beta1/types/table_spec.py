@@ -38,7 +38,7 @@ class TableSpec(proto.Message):
     in the table (e.g. string in a FLOAT64 column). The consistency
     validation is done upon creation of a model. Used by:
 
-    -  Tables
+    - Tables
 
     Attributes:
         name (str):

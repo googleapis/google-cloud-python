@@ -37,9 +37,9 @@ class Fulfillment(proto.Message):
     r"""A fulfillment can do one or more of the following actions at the
     same time:
 
-    -  Generate rich message responses.
-    -  Set parameter values.
-    -  Call the webhook.
+    - Generate rich message responses.
+    - Set parameter values.
+    - Call the webhook.
 
     Fulfillments can be called at various stages in the
     [Page][google.cloud.dialogflow.cx.v3.Page] or
@@ -228,8 +228,8 @@ class Fulfillment(proto.Message):
                 choose to fill ``$city`` with
                 ``$session.params.desination-city``.
 
-                -  Map key: [parameter ID][Genrator.Parameter.id]
-                -  Map value: session parameter name
+                - Map key: [parameter ID][Genrator.Parameter.id]
+                - Map value: session parameter name
             output_parameter (str):
                 Required. Output parameter which should
                 contain the generator response.

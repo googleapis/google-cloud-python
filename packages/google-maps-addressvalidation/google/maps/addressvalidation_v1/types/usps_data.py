@@ -112,104 +112,104 @@ class UspsData(proto.Message):
             The possible values for DPV confirmation. Returns a single
             character or returns no value.
 
-            -  ``N``: Primary and any secondary number information
-               failed to DPV confirm.
-            -  ``D``: Address was DPV confirmed for the primary number
-               only, and the secondary number information was missing.
-            -  ``S``: Address was DPV confirmed for the primary number
-               only, and the secondary number information was present
-               but not confirmed.
-            -  ``Y``: Address was DPV confirmed for primary and any
-               secondary numbers.
-            -  Empty: If the response does not contain a
-               ``dpv_confirmation`` value, the address was not submitted
-               for DPV confirmation.
+            - ``N``: Primary and any secondary number information failed
+              to DPV confirm.
+            - ``D``: Address was DPV confirmed for the primary number
+              only, and the secondary number information was missing.
+            - ``S``: Address was DPV confirmed for the primary number
+              only, and the secondary number information was present but
+              not confirmed.
+            - ``Y``: Address was DPV confirmed for primary and any
+              secondary numbers.
+            - Empty: If the response does not contain a
+              ``dpv_confirmation`` value, the address was not submitted
+              for DPV confirmation.
         dpv_footnote (str):
             The footnotes from delivery point validation. Multiple
             footnotes may be strung together in the same string.
 
-            -  ``AA``: Input address matched to the ZIP+4 file
-            -  ``A1``: Input address was not matched to the ZIP+4 file
-            -  ``BB``: Matched to DPV (all components)
-            -  ``CC``: Secondary number not matched and not required
-            -  ``C1``: Secondary number not matched but required
-            -  ``N1``: High-rise address missing secondary number
-            -  ``M1``: Primary number missing
-            -  ``M3``: Primary number invalid
-            -  ``P1``: Input address PO, RR or HC box number missing
-            -  ``P3``: Input address PO, RR, or HC Box number invalid
-            -  ``F1``: Input address matched to a military address
-            -  ``G1``: Input address matched to a general delivery
-               address
-            -  ``U1``: Input address matched to a unique ZIP code
-            -  ``PB``: Input address matched to PBSA record
-            -  ``RR``: DPV confirmed address with PMB information
-            -  ``R1``: DPV confirmed address without PMB information
-            -  ``R7``: Carrier Route R777 or R779 record
-            -  ``IA``: Informed Address identified
-            -  ``TA``: Primary number matched by dropping a trailing
-               alpha
+            - ``AA``: Input address matched to the ZIP+4 file
+            - ``A1``: Input address was not matched to the ZIP+4 file
+            - ``BB``: Matched to DPV (all components)
+            - ``CC``: Secondary number not matched and not required
+            - ``C1``: Secondary number not matched but required
+            - ``N1``: High-rise address missing secondary number
+            - ``M1``: Primary number missing
+            - ``M3``: Primary number invalid
+            - ``P1``: Input address PO, RR or HC box number missing
+            - ``P3``: Input address PO, RR, or HC Box number invalid
+            - ``F1``: Input address matched to a military address
+            - ``G1``: Input address matched to a general delivery
+              address
+            - ``U1``: Input address matched to a unique ZIP code
+            - ``PB``: Input address matched to PBSA record
+            - ``RR``: DPV confirmed address with PMB information
+            - ``R1``: DPV confirmed address without PMB information
+            - ``R7``: Carrier Route R777 or R779 record
+            - ``IA``: Informed Address identified
+            - ``TA``: Primary number matched by dropping a trailing
+              alpha
         dpv_cmra (str):
             Indicates if the address is a CMRA (Commercial Mail
             Receiving Agency)--a private business receiving mail for
             clients. Returns a single character.
 
-            -  ``Y``: The address is a CMRA
-            -  ``N``: The address is not a CMRA
+            - ``Y``: The address is a CMRA
+            - ``N``: The address is not a CMRA
         dpv_vacant (str):
             Is this place vacant? Returns a single character.
 
-            -  ``Y``: The address is vacant
-            -  ``N``: The address is not vacant
+            - ``Y``: The address is vacant
+            - ``N``: The address is not vacant
         dpv_no_stat (str):
             Is this a no stat address or an active address? No stat
             addresses are ones which are not continuously occupied or
             addresses that the USPS does not service. Returns a single
             character.
 
-            -  ``Y``: The address is not active
-            -  ``N``: The address is active
+            - ``Y``: The address is not active
+            - ``N``: The address is active
         dpv_no_stat_reason_code (int):
             Indicates the NoStat type. Returns a reason code as int.
 
-            -  ``1``: IDA (Internal Drop Address) – Addresses that do
-               not receive mail directly from the USPS but are delivered
-               to a drop address that services them.
-            -  ``2``: CDS - Addresses that have not yet become
-               deliverable. For example, a new subdivision where lots
-               and primary numbers have been determined, but no
-               structure exists yet for occupancy.
-            -  ``3``: Collision - Addresses that do not actually DPV
-               confirm.
-            -  ``4``: CMZ (College, Military and Other Types) - ZIP + 4
-               records USPS has incorporated into the data.
-            -  ``5``: Regular - Indicates addresses not receiving
-               delivery and the addresses are not counted as possible
-               deliveries.
-            -  ``6``: Secondary Required - The address requires
-               secondary information.
+            - ``1``: IDA (Internal Drop Address) – Addresses that do not
+              receive mail directly from the USPS but are delivered to a
+              drop address that services them.
+            - ``2``: CDS - Addresses that have not yet become
+              deliverable. For example, a new subdivision where lots and
+              primary numbers have been determined, but no structure
+              exists yet for occupancy.
+            - ``3``: Collision - Addresses that do not actually DPV
+              confirm.
+            - ``4``: CMZ (College, Military and Other Types) - ZIP + 4
+              records USPS has incorporated into the data.
+            - ``5``: Regular - Indicates addresses not receiving
+              delivery and the addresses are not counted as possible
+              deliveries.
+            - ``6``: Secondary Required - The address requires secondary
+              information.
         dpv_drop (str):
             Flag indicates mail is delivered to a single receptable at a
             site. Returns a single character.
 
-            -  ``Y``: The mail is delivered to a single receptable at a
-               site.
-            -  ``N``: The mail is not delivered to a single receptable
-               at a site.
+            - ``Y``: The mail is delivered to a single receptable at a
+              site.
+            - ``N``: The mail is not delivered to a single receptable at
+              a site.
         dpv_throwback (str):
             Indicates that mail is not delivered to the street address.
             Returns a single character.
 
-            -  ``Y``: The mail is not delivered to the street address.
-            -  ``N``: The mail is delivered to the street address.
+            - ``Y``: The mail is not delivered to the street address.
+            - ``N``: The mail is delivered to the street address.
         dpv_non_delivery_days (str):
             Flag indicates mail delivery is not performed every day of
             the week. Returns a single character.
 
-            -  ``Y``: The mail delivery is not performed every day of
-               the week.
-            -  ``N``: No indication the mail delivery is not performed
-               every day of the week.
+            - ``Y``: The mail delivery is not performed every day of the
+              week.
+            - ``N``: No indication the mail delivery is not performed
+              every day of the week.
         dpv_non_delivery_days_values (int):
             Integer identifying non-delivery days. It can
             be interrogated using bit flags:
@@ -225,50 +225,50 @@ class UspsData(proto.Message):
             Flag indicates door is accessible, but package will not be
             left due to security concerns. Returns a single character.
 
-            -  ``Y``: The package will not be left due to security
-               concerns.
-            -  ``N``: No indication the package will not be left due to
-               security concerns.
+            - ``Y``: The package will not be left due to security
+              concerns.
+            - ``N``: No indication the package will not be left due to
+              security concerns.
         dpv_pbsa (str):
             Indicates the address was matched to PBSA record. Returns a
             single character.
 
-            -  ``Y``: The address was matched to PBSA record.
-            -  ``N``: The address was not matched to PBSA record.
+            - ``Y``: The address was matched to PBSA record.
+            - ``N``: The address was not matched to PBSA record.
         dpv_door_not_accessible (str):
             Flag indicates addresses where USPS cannot knock on a door
             to deliver mail. Returns a single character.
 
-            -  ``Y``: The door is not accessible.
-            -  ``N``: No indication the door is not accessible.
+            - ``Y``: The door is not accessible.
+            - ``N``: No indication the door is not accessible.
         dpv_enhanced_delivery_code (str):
             Indicates that more than one DPV return code is valid for
             the address. Returns a single character.
 
-            -  ``Y``: Address was DPV confirmed for primary and any
-               secondary numbers.
-            -  ``N``: Primary and any secondary number information
-               failed to DPV confirm.
-            -  ``S``: Address was DPV confirmed for the primary number
-               only, and the secondary number information was present
-               but not confirmed, or a single trailing alpha on a
-               primary number was dropped to make a DPV match and
-               secondary information required.
-            -  ``D``: Address was DPV confirmed for the primary number
-               only, and the secondary number information was missing.
-            -  ``R``: Address confirmed but assigned to phantom route
-               R777 and R779 and USPS delivery is not provided.
+            - ``Y``: Address was DPV confirmed for primary and any
+              secondary numbers.
+            - ``N``: Primary and any secondary number information failed
+              to DPV confirm.
+            - ``S``: Address was DPV confirmed for the primary number
+              only, and the secondary number information was present but
+              not confirmed, or a single trailing alpha on a primary
+              number was dropped to make a DPV match and secondary
+              information required.
+            - ``D``: Address was DPV confirmed for the primary number
+              only, and the secondary number information was missing.
+            - ``R``: Address confirmed but assigned to phantom route
+              R777 and R779 and USPS delivery is not provided.
         carrier_route (str):
             The carrier route code. A four character code consisting of
             a one letter prefix and a three digit route designator.
 
             Prefixes:
 
-            -  ``C``: Carrier route (or city route)
-            -  ``R``: Rural route
-            -  ``H``: Highway Contract Route
-            -  ``B``: Post Office Box Section
-            -  ``G``: General delivery unit
+            - ``C``: Carrier route (or city route)
+            - ``R``: Rural route
+            - ``H``: Highway Contract Route
+            - ``B``: Post Office Box Section
+            - ``G``: General delivery unit
         carrier_route_indicator (str):
             Carrier route rate sort indicator.
         ews_no_match (bool):
@@ -300,8 +300,8 @@ class UspsData(proto.Message):
             information. If business name match is found, the secondary
             number is returned.
 
-            -  ``A``: SuiteLink record match, business address improved.
-            -  ``00``: No match, business address is not improved.
+            - ``A``: SuiteLink record match, business address improved.
+            - ``00``: No match, business address is not improved.
         pmb_designator (str):
             PMB (Private Mail Box) unit designator.
         pmb_number (str):
@@ -309,19 +309,19 @@ class UspsData(proto.Message):
         address_record_type (str):
             Type of the address record that matches the input address.
 
-            -  ``F``: FIRM. This is a match to a Firm Record, which is
-               the finest level of match available for an address.
-            -  ``G``: GENERAL DELIVERY. This is a match to a General
-               Delivery record.
-            -  ``H``: BUILDING / APARTMENT. This is a match to a
-               Building or Apartment record.
-            -  ``P``: POST OFFICE BOX. This is a match to a Post Office
-               Box.
-            -  ``R``: RURAL ROUTE or HIGHWAY CONTRACT: This is a match
-               to either a Rural Route or a Highway Contract record,
-               both of which may have associated Box Number ranges.
-            -  ``S``: STREET RECORD: This is a match to a Street record
-               containing a valid primary number range.
+            - ``F``: FIRM. This is a match to a Firm Record, which is
+              the finest level of match available for an address.
+            - ``G``: GENERAL DELIVERY. This is a match to a General
+              Delivery record.
+            - ``H``: BUILDING / APARTMENT. This is a match to a Building
+              or Apartment record.
+            - ``P``: POST OFFICE BOX. This is a match to a Post Office
+              Box.
+            - ``R``: RURAL ROUTE or HIGHWAY CONTRACT: This is a match to
+              either a Rural Route or a Highway Contract record, both of
+              which may have associated Box Number ranges.
+            - ``S``: STREET RECORD: This is a match to a Street record
+              containing a valid primary number range.
         default_address (bool):
             Indicator that a default address was found,
             but more specific addresses exists.

@@ -304,10 +304,10 @@ class DeleteToolRequest(proto.Message):
             This field has no effect for Tools not being used. For Tools
             that are used:
 
-            -  If ``force`` is set to false, an error will be returned
-               with message indicating the referenced resources.
-            -  If ``force`` is set to true, Dialogflow will remove the
-               tool, as well as any references to the tool.
+            - If ``force`` is set to false, an error will be returned
+              with message indicating the referenced resources.
+            - If ``force`` is set to true, Dialogflow will remove the
+              tool, as well as any references to the tool.
     """
 
     name: str = proto.Field(
@@ -1181,10 +1181,10 @@ class DeleteToolVersionRequest(proto.Message):
             Optional. This field has no effect for Tools not being used.
             For Tools that are used:
 
-            -  If ``force`` is set to false, an error will be returned
-               with message indicating the referenced resources.
-            -  If ``force`` is set to true, Dialogflow will remove the
-               tool, as well as any references to the tool.
+            - If ``force`` is set to false, an error will be returned
+              with message indicating the referenced resources.
+            - If ``force`` is set to true, Dialogflow will remove the
+              tool, as well as any references to the tool.
     """
 
     name: str = proto.Field(

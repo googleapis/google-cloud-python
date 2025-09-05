@@ -373,7 +373,7 @@ class RepositoryManagerAsyncClient:
                 become the final component of the Connection's resource
                 name. Names must be unique per-project per-location.
                 Allows alphanumeric characters and any of
-                -._~%!$&'()*+,;=@.
+                -.\_~%!$&'()*+,;=@.
 
                 This corresponds to the ``connection_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1026,7 +1026,7 @@ class RepositoryManagerAsyncClient:
                 Required. The ID to use for the repository, which will
                 become the final component of the repository's resource
                 name. This ID should be unique in the connection. Allows
-                alphanumeric characters and any of -._~%!$&'()*+,;=@.
+                alphanumeric characters and any of -.\_~%!$&'()*+,;=@.
 
                 This corresponds to the ``repository_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1168,7 +1168,7 @@ class RepositoryManagerAsyncClient:
             parent (:class:`str`):
                 Required. The connection to contain all the repositories
                 being created. Format:
-                projects/\ */locations/*/connections/\* The parent field
+                projects/*/locations/*/connections/\* The parent field
                 in the CreateRepositoryRequest messages must either be
                 empty or match this field.
 

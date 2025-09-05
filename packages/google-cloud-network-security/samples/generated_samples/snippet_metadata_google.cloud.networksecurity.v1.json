@@ -8,9 +8,1506 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-network-security",
-    "version": "0.1.0"
+    "version": "0.9.19"
   },
   "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient",
+          "shortName": "AddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient.add_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.AddAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "AddAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.AddAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "items",
+            "type": "MutableSequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "add_address_group_items"
+      },
+      "description": "Sample for AddAddressGroupItems",
+      "file": "networksecurity_v1_generated_address_group_service_add_address_group_items_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_AddAddressGroupItems_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_add_address_group_items_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient",
+          "shortName": "AddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient.add_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.AddAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "AddAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.AddAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "items",
+            "type": "MutableSequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "add_address_group_items"
+      },
+      "description": "Sample for AddAddressGroupItems",
+      "file": "networksecurity_v1_generated_address_group_service_add_address_group_items_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_AddAddressGroupItems_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_add_address_group_items_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient",
+          "shortName": "AddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient.clone_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.CloneAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "CloneAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.CloneAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "source_address_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "clone_address_group_items"
+      },
+      "description": "Sample for CloneAddressGroupItems",
+      "file": "networksecurity_v1_generated_address_group_service_clone_address_group_items_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_CloneAddressGroupItems_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_clone_address_group_items_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient",
+          "shortName": "AddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient.clone_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.CloneAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "CloneAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.CloneAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "source_address_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "clone_address_group_items"
+      },
+      "description": "Sample for CloneAddressGroupItems",
+      "file": "networksecurity_v1_generated_address_group_service_clone_address_group_items_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_CloneAddressGroupItems_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_clone_address_group_items_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient",
+          "shortName": "AddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient.create_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.CreateAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "CreateAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.CreateAddressGroupRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "address_group",
+            "type": "google.cloud.network_security_v1.types.AddressGroup"
+          },
+          {
+            "name": "address_group_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_address_group"
+      },
+      "description": "Sample for CreateAddressGroup",
+      "file": "networksecurity_v1_generated_address_group_service_create_address_group_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_CreateAddressGroup_async",
+      "segments": [
+        {
+          "end": 62,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 62,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 59,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 63,
+          "start": 60,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_create_address_group_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient",
+          "shortName": "AddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient.create_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.CreateAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "CreateAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.CreateAddressGroupRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "address_group",
+            "type": "google.cloud.network_security_v1.types.AddressGroup"
+          },
+          {
+            "name": "address_group_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_address_group"
+      },
+      "description": "Sample for CreateAddressGroup",
+      "file": "networksecurity_v1_generated_address_group_service_create_address_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_CreateAddressGroup_sync",
+      "segments": [
+        {
+          "end": 62,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 62,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 59,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 63,
+          "start": 60,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_create_address_group_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient",
+          "shortName": "AddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient.delete_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.DeleteAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "DeleteAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.DeleteAddressGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_address_group"
+      },
+      "description": "Sample for DeleteAddressGroup",
+      "file": "networksecurity_v1_generated_address_group_service_delete_address_group_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_DeleteAddressGroup_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_delete_address_group_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient",
+          "shortName": "AddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient.delete_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.DeleteAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "DeleteAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.DeleteAddressGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_address_group"
+      },
+      "description": "Sample for DeleteAddressGroup",
+      "file": "networksecurity_v1_generated_address_group_service_delete_address_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_DeleteAddressGroup_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_delete_address_group_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient",
+          "shortName": "AddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient.get_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.GetAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "GetAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.GetAddressGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.types.AddressGroup",
+        "shortName": "get_address_group"
+      },
+      "description": "Sample for GetAddressGroup",
+      "file": "networksecurity_v1_generated_address_group_service_get_address_group_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_GetAddressGroup_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_get_address_group_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient",
+          "shortName": "AddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient.get_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.GetAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "GetAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.GetAddressGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.types.AddressGroup",
+        "shortName": "get_address_group"
+      },
+      "description": "Sample for GetAddressGroup",
+      "file": "networksecurity_v1_generated_address_group_service_get_address_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_GetAddressGroup_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_get_address_group_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient",
+          "shortName": "AddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient.list_address_group_references",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.ListAddressGroupReferences",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "ListAddressGroupReferences"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.ListAddressGroupReferencesRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.services.address_group_service.pagers.ListAddressGroupReferencesAsyncPager",
+        "shortName": "list_address_group_references"
+      },
+      "description": "Sample for ListAddressGroupReferences",
+      "file": "networksecurity_v1_generated_address_group_service_list_address_group_references_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_ListAddressGroupReferences_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_list_address_group_references_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient",
+          "shortName": "AddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient.list_address_group_references",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.ListAddressGroupReferences",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "ListAddressGroupReferences"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.ListAddressGroupReferencesRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.services.address_group_service.pagers.ListAddressGroupReferencesPager",
+        "shortName": "list_address_group_references"
+      },
+      "description": "Sample for ListAddressGroupReferences",
+      "file": "networksecurity_v1_generated_address_group_service_list_address_group_references_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_ListAddressGroupReferences_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_list_address_group_references_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient",
+          "shortName": "AddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient.list_address_groups",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.ListAddressGroups",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "ListAddressGroups"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.ListAddressGroupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.services.address_group_service.pagers.ListAddressGroupsAsyncPager",
+        "shortName": "list_address_groups"
+      },
+      "description": "Sample for ListAddressGroups",
+      "file": "networksecurity_v1_generated_address_group_service_list_address_groups_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_ListAddressGroups_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_list_address_groups_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient",
+          "shortName": "AddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient.list_address_groups",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.ListAddressGroups",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "ListAddressGroups"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.ListAddressGroupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.services.address_group_service.pagers.ListAddressGroupsPager",
+        "shortName": "list_address_groups"
+      },
+      "description": "Sample for ListAddressGroups",
+      "file": "networksecurity_v1_generated_address_group_service_list_address_groups_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_ListAddressGroups_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_list_address_groups_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient",
+          "shortName": "AddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient.remove_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.RemoveAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "RemoveAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.RemoveAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "items",
+            "type": "MutableSequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "remove_address_group_items"
+      },
+      "description": "Sample for RemoveAddressGroupItems",
+      "file": "networksecurity_v1_generated_address_group_service_remove_address_group_items_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_RemoveAddressGroupItems_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_remove_address_group_items_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient",
+          "shortName": "AddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient.remove_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.RemoveAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "RemoveAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.RemoveAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "items",
+            "type": "MutableSequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "remove_address_group_items"
+      },
+      "description": "Sample for RemoveAddressGroupItems",
+      "file": "networksecurity_v1_generated_address_group_service_remove_address_group_items_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_RemoveAddressGroupItems_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_remove_address_group_items_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient",
+          "shortName": "AddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceAsyncClient.update_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.UpdateAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "UpdateAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.UpdateAddressGroupRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "google.cloud.network_security_v1.types.AddressGroup"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_address_group"
+      },
+      "description": "Sample for UpdateAddressGroup",
+      "file": "networksecurity_v1_generated_address_group_service_update_address_group_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_UpdateAddressGroup_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_update_address_group_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient",
+          "shortName": "AddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.AddressGroupServiceClient.update_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.AddressGroupService.UpdateAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.AddressGroupService",
+            "shortName": "AddressGroupService"
+          },
+          "shortName": "UpdateAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.UpdateAddressGroupRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "google.cloud.network_security_v1.types.AddressGroup"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_address_group"
+      },
+      "description": "Sample for UpdateAddressGroup",
+      "file": "networksecurity_v1_generated_address_group_service_update_address_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_AddressGroupService_UpdateAddressGroup_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_address_group_service_update_address_group_sync.py"
+    },
     {
       "canonical": true,
       "clientMethod": {
@@ -2497,6 +3994,1503 @@
         }
       ],
       "title": "networksecurity_v1_generated_network_security_update_server_tls_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient",
+          "shortName": "OrganizationAddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient.add_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.AddAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "AddAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.AddAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "items",
+            "type": "MutableSequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "add_address_group_items"
+      },
+      "description": "Sample for AddAddressGroupItems",
+      "file": "networksecurity_v1_generated_organization_address_group_service_add_address_group_items_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_AddAddressGroupItems_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_add_address_group_items_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient",
+          "shortName": "OrganizationAddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient.add_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.AddAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "AddAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.AddAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "items",
+            "type": "MutableSequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "add_address_group_items"
+      },
+      "description": "Sample for AddAddressGroupItems",
+      "file": "networksecurity_v1_generated_organization_address_group_service_add_address_group_items_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_AddAddressGroupItems_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_add_address_group_items_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient",
+          "shortName": "OrganizationAddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient.clone_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.CloneAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "CloneAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.CloneAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "source_address_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "clone_address_group_items"
+      },
+      "description": "Sample for CloneAddressGroupItems",
+      "file": "networksecurity_v1_generated_organization_address_group_service_clone_address_group_items_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_CloneAddressGroupItems_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_clone_address_group_items_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient",
+          "shortName": "OrganizationAddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient.clone_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.CloneAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "CloneAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.CloneAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "source_address_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "clone_address_group_items"
+      },
+      "description": "Sample for CloneAddressGroupItems",
+      "file": "networksecurity_v1_generated_organization_address_group_service_clone_address_group_items_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_CloneAddressGroupItems_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_clone_address_group_items_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient",
+          "shortName": "OrganizationAddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient.create_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.CreateAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "CreateAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.CreateAddressGroupRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "address_group",
+            "type": "google.cloud.network_security_v1.types.AddressGroup"
+          },
+          {
+            "name": "address_group_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_address_group"
+      },
+      "description": "Sample for CreateAddressGroup",
+      "file": "networksecurity_v1_generated_organization_address_group_service_create_address_group_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_CreateAddressGroup_async",
+      "segments": [
+        {
+          "end": 62,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 62,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 59,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 63,
+          "start": 60,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_create_address_group_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient",
+          "shortName": "OrganizationAddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient.create_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.CreateAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "CreateAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.CreateAddressGroupRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "address_group",
+            "type": "google.cloud.network_security_v1.types.AddressGroup"
+          },
+          {
+            "name": "address_group_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_address_group"
+      },
+      "description": "Sample for CreateAddressGroup",
+      "file": "networksecurity_v1_generated_organization_address_group_service_create_address_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_CreateAddressGroup_sync",
+      "segments": [
+        {
+          "end": 62,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 62,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 59,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 63,
+          "start": 60,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_create_address_group_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient",
+          "shortName": "OrganizationAddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient.delete_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.DeleteAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "DeleteAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.DeleteAddressGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_address_group"
+      },
+      "description": "Sample for DeleteAddressGroup",
+      "file": "networksecurity_v1_generated_organization_address_group_service_delete_address_group_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_DeleteAddressGroup_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_delete_address_group_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient",
+          "shortName": "OrganizationAddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient.delete_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.DeleteAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "DeleteAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.DeleteAddressGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_address_group"
+      },
+      "description": "Sample for DeleteAddressGroup",
+      "file": "networksecurity_v1_generated_organization_address_group_service_delete_address_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_DeleteAddressGroup_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_delete_address_group_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient",
+          "shortName": "OrganizationAddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient.get_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.GetAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "GetAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.GetAddressGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.types.AddressGroup",
+        "shortName": "get_address_group"
+      },
+      "description": "Sample for GetAddressGroup",
+      "file": "networksecurity_v1_generated_organization_address_group_service_get_address_group_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_GetAddressGroup_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_get_address_group_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient",
+          "shortName": "OrganizationAddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient.get_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.GetAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "GetAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.GetAddressGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.types.AddressGroup",
+        "shortName": "get_address_group"
+      },
+      "description": "Sample for GetAddressGroup",
+      "file": "networksecurity_v1_generated_organization_address_group_service_get_address_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_GetAddressGroup_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_get_address_group_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient",
+          "shortName": "OrganizationAddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient.list_address_group_references",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.ListAddressGroupReferences",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "ListAddressGroupReferences"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.ListAddressGroupReferencesRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.services.organization_address_group_service.pagers.ListAddressGroupReferencesAsyncPager",
+        "shortName": "list_address_group_references"
+      },
+      "description": "Sample for ListAddressGroupReferences",
+      "file": "networksecurity_v1_generated_organization_address_group_service_list_address_group_references_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_ListAddressGroupReferences_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_list_address_group_references_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient",
+          "shortName": "OrganizationAddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient.list_address_group_references",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.ListAddressGroupReferences",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "ListAddressGroupReferences"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.ListAddressGroupReferencesRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.services.organization_address_group_service.pagers.ListAddressGroupReferencesPager",
+        "shortName": "list_address_group_references"
+      },
+      "description": "Sample for ListAddressGroupReferences",
+      "file": "networksecurity_v1_generated_organization_address_group_service_list_address_group_references_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_ListAddressGroupReferences_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_list_address_group_references_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient",
+          "shortName": "OrganizationAddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient.list_address_groups",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.ListAddressGroups",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "ListAddressGroups"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.ListAddressGroupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.services.organization_address_group_service.pagers.ListAddressGroupsAsyncPager",
+        "shortName": "list_address_groups"
+      },
+      "description": "Sample for ListAddressGroups",
+      "file": "networksecurity_v1_generated_organization_address_group_service_list_address_groups_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_ListAddressGroups_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_list_address_groups_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient",
+          "shortName": "OrganizationAddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient.list_address_groups",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.ListAddressGroups",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "ListAddressGroups"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.ListAddressGroupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1.services.organization_address_group_service.pagers.ListAddressGroupsPager",
+        "shortName": "list_address_groups"
+      },
+      "description": "Sample for ListAddressGroups",
+      "file": "networksecurity_v1_generated_organization_address_group_service_list_address_groups_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_ListAddressGroups_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_list_address_groups_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient",
+          "shortName": "OrganizationAddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient.remove_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.RemoveAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "RemoveAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.RemoveAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "items",
+            "type": "MutableSequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "remove_address_group_items"
+      },
+      "description": "Sample for RemoveAddressGroupItems",
+      "file": "networksecurity_v1_generated_organization_address_group_service_remove_address_group_items_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_RemoveAddressGroupItems_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_remove_address_group_items_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient",
+          "shortName": "OrganizationAddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient.remove_address_group_items",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.RemoveAddressGroupItems",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "RemoveAddressGroupItems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.RemoveAddressGroupItemsRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "str"
+          },
+          {
+            "name": "items",
+            "type": "MutableSequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "remove_address_group_items"
+      },
+      "description": "Sample for RemoveAddressGroupItems",
+      "file": "networksecurity_v1_generated_organization_address_group_service_remove_address_group_items_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_RemoveAddressGroupItems_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_remove_address_group_items_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient",
+          "shortName": "OrganizationAddressGroupServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceAsyncClient.update_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.UpdateAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "UpdateAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.UpdateAddressGroupRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "google.cloud.network_security_v1.types.AddressGroup"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_address_group"
+      },
+      "description": "Sample for UpdateAddressGroup",
+      "file": "networksecurity_v1_generated_organization_address_group_service_update_address_group_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_UpdateAddressGroup_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_update_address_group_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient",
+          "shortName": "OrganizationAddressGroupServiceClient"
+        },
+        "fullName": "google.cloud.network_security_v1.OrganizationAddressGroupServiceClient.update_address_group",
+        "method": {
+          "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService.UpdateAddressGroup",
+          "service": {
+            "fullName": "google.cloud.networksecurity.v1.OrganizationAddressGroupService",
+            "shortName": "OrganizationAddressGroupService"
+          },
+          "shortName": "UpdateAddressGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1.types.UpdateAddressGroupRequest"
+          },
+          {
+            "name": "address_group",
+            "type": "google.cloud.network_security_v1.types.AddressGroup"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_address_group"
+      },
+      "description": "Sample for UpdateAddressGroup",
+      "file": "networksecurity_v1_generated_organization_address_group_service_update_address_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networksecurity_v1_generated_OrganizationAddressGroupService_UpdateAddressGroup_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networksecurity_v1_generated_organization_address_group_service_update_address_group_sync.py"
     }
   ]
 }

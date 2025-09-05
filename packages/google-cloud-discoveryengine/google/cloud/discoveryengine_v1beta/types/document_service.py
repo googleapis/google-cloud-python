@@ -420,10 +420,10 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
 
                 Allowed values are:
 
-                -  ``batch``: Data ingested via Batch API, e.g.,
-                   ImportDocuments.
-                -  ``streaming`` Data ingested via Streaming API, e.g., FHIR
-                   streaming.
+                - ``batch``: Data ingested via Batch API, e.g.,
+                  ImportDocuments.
+                - ``streaming`` Data ingested via Streaming API, e.g., FHIR
+                  streaming.
         """
 
         class MatcherValue(proto.Message):

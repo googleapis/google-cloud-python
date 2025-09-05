@@ -129,8 +129,8 @@ class AppConnectionsServiceGrpcAsyncIOTransport(AppConnectionsServiceTransport):
 
     The AppConnectionsService exposes the following resources:
 
-    -  AppConnections, named as follows:
-       ``projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}``.
+    - AppConnections, named as follows:
+      ``projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}``.
 
     The AppConnectionsService service provides methods to manage
     (create/read/update/delete) BeyondCorp AppConnections.

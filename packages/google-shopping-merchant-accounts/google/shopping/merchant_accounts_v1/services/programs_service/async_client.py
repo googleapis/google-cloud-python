@@ -365,16 +365,16 @@ class ProgramsServiceAsyncClient:
                    Programs provide a mechanism for adding functionality
                    to a Merchant Center accounts. A typical example of
                    this is the [Free product
-                   listings](\ https://support.google.com/merchants/answer/13889434)
+                   listings](https://support.google.com/merchants/answer/13889434)
                    program, which enables products from a business's
                    store to be shown across Google for free.
 
                    The following list is the available set of program
                    resource IDs accessible through the API:
 
-                   -  free-listings
-                   -  shopping-ads
-                   -  youtube-shopping-checkout
+                   - free-listings
+                   - shopping-ads
+                   - youtube-shopping-checkout
 
         """
         # Create or coerce a protobuf request object.
@@ -619,16 +619,16 @@ class ProgramsServiceAsyncClient:
                    Programs provide a mechanism for adding functionality
                    to a Merchant Center accounts. A typical example of
                    this is the [Free product
-                   listings](\ https://support.google.com/merchants/answer/13889434)
+                   listings](https://support.google.com/merchants/answer/13889434)
                    program, which enables products from a business's
                    store to be shown across Google for free.
 
                    The following list is the available set of program
                    resource IDs accessible through the API:
 
-                   -  free-listings
-                   -  shopping-ads
-                   -  youtube-shopping-checkout
+                   - free-listings
+                   - shopping-ads
+                   - youtube-shopping-checkout
 
         """
         # Create or coerce a protobuf request object.
@@ -747,16 +747,16 @@ class ProgramsServiceAsyncClient:
                    Programs provide a mechanism for adding functionality
                    to a Merchant Center accounts. A typical example of
                    this is the [Free product
-                   listings](\ https://support.google.com/merchants/answer/13889434)
+                   listings](https://support.google.com/merchants/answer/13889434)
                    program, which enables products from a business's
                    store to be shown across Google for free.
 
                    The following list is the available set of program
                    resource IDs accessible through the API:
 
-                   -  free-listings
-                   -  shopping-ads
-                   -  youtube-shopping-checkout
+                   - free-listings
+                   - shopping-ads
+                   - youtube-shopping-checkout
 
         """
         # Create or coerce a protobuf request object.

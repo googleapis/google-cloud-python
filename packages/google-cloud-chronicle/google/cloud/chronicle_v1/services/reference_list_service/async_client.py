@@ -753,7 +753,7 @@ class ReferenceListServiceAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The list of fields to update. When no field mask is
                 supplied, all non-empty fields will be updated. A field
-                mask of "*" will update all fields, whether empty or
+                mask of "\*" will update all fields, whether empty or
                 not.
 
                 This corresponds to the ``update_mask`` field

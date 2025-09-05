@@ -810,7 +810,7 @@ class TermsOfServiceServiceClient(metaclass=TermsOfServiceServiceClientMeta):
                    service that merchants must accept to access certain
                    features or services. For more information, see
                    [Terms of
-                   Service](\ https://support.google.com/merchants/answer/160173).
+                   Service](https://support.google.com/merchants/answer/160173).
 
                    This message is important for the onboarding process,
                    ensuring that merchants agree to the necessary legal
@@ -924,7 +924,7 @@ class TermsOfServiceServiceClient(metaclass=TermsOfServiceServiceClientMeta):
                    service that merchants must accept to access certain
                    features or services. For more information, see
                    [Terms of
-                   Service](\ https://support.google.com/merchants/answer/160173).
+                   Service](https://support.google.com/merchants/answer/160173).
 
                    This message is important for the onboarding process,
                    ensuring that merchants agree to the necessary legal

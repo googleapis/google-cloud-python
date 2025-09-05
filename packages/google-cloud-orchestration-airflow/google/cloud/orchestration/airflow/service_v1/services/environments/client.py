@@ -1260,109 +1260,105 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
                 **Note:** Only the following fields can be updated:
 
-                -  ``config.softwareConfig.pypiPackages``
+                - ``config.softwareConfig.pypiPackages``
 
-                   -  Replace all custom custom PyPI packages. If a
-                      replacement package map is not included in
-                      ``environment``, all custom PyPI packages are
-                      cleared. It is an error to provide both this mask
-                      and a mask specifying an individual package.
+                  - Replace all custom custom PyPI packages. If a
+                    replacement package map is not included in
+                    ``environment``, all custom PyPI packages are
+                    cleared. It is an error to provide both this mask
+                    and a mask specifying an individual package.
 
-                -  ``config.softwareConfig.pypiPackages.``\ packagename
+                - ``config.softwareConfig.pypiPackages.``\ packagename
 
-                   -  Update the custom PyPI package *packagename*,
-                      preserving other packages. To delete the package,
-                      include it in ``updateMask``, and omit the mapping
-                      for it in
-                      ``environment.config.softwareConfig.pypiPackages``.
-                      It is an error to provide both a mask of this form
-                      and the ``config.softwareConfig.pypiPackages``
-                      mask.
+                  - Update the custom PyPI package *packagename*,
+                    preserving other packages. To delete the package,
+                    include it in ``updateMask``, and omit the mapping
+                    for it in
+                    ``environment.config.softwareConfig.pypiPackages``.
+                    It is an error to provide both a mask of this form
+                    and the ``config.softwareConfig.pypiPackages`` mask.
 
-                -  ``labels``
+                - ``labels``
 
-                   -  Replace all environment labels. If a replacement
-                      labels map is not included in ``environment``, all
-                      labels are cleared. It is an error to provide both
-                      this mask and a mask specifying one or more
-                      individual labels.
+                  - Replace all environment labels. If a replacement
+                    labels map is not included in ``environment``, all
+                    labels are cleared. It is an error to provide both
+                    this mask and a mask specifying one or more
+                    individual labels.
 
-                -  ``labels.``\ labelName
+                - ``labels.``\ labelName
 
-                   -  Set the label named *labelName*, while preserving
-                      other labels. To delete the label, include it in
-                      ``updateMask`` and omit its mapping in
-                      ``environment.labels``. It is an error to provide
-                      both a mask of this form and the ``labels`` mask.
+                  - Set the label named *labelName*, while preserving
+                    other labels. To delete the label, include it in
+                    ``updateMask`` and omit its mapping in
+                    ``environment.labels``. It is an error to provide
+                    both a mask of this form and the ``labels`` mask.
 
-                -  ``config.nodeCount``
+                - ``config.nodeCount``
 
-                   -  Horizontally scale the number of nodes in the
-                      environment. An integer greater than or equal to 3
-                      must be provided in the ``config.nodeCount``
-                      field. Supported for Cloud Composer environments
-                      in versions composer-1.\ *.*-airflow-*.*.*.
+                  - Horizontally scale the number of nodes in the
+                    environment. An integer greater than or equal to 3
+                    must be provided in the ``config.nodeCount`` field.
+                    Supported for Cloud Composer environments in
+                    versions composer-1.\ *.*-airflow-*.*.\*.
 
-                -  ``config.webServerNetworkAccessControl``
+                - ``config.webServerNetworkAccessControl``
 
-                   -  Replace the environment's current
-                      ``WebServerNetworkAccessControl``.
+                  - Replace the environment's current
+                    ``WebServerNetworkAccessControl``.
 
-                -  ``config.softwareConfig.airflowConfigOverrides``
+                - ``config.softwareConfig.airflowConfigOverrides``
 
-                   -  Replace all Apache Airflow config overrides. If a
-                      replacement config overrides map is not included
-                      in ``environment``, all config overrides are
-                      cleared. It is an error to provide both this mask
-                      and a mask specifying one or more individual
-                      config overrides.
+                  - Replace all Apache Airflow config overrides. If a
+                    replacement config overrides map is not included in
+                    ``environment``, all config overrides are cleared.
+                    It is an error to provide both this mask and a mask
+                    specifying one or more individual config overrides.
 
-                -  ``config.softwareConfig.airflowConfigOverrides.``\ section-name
+                - ``config.softwareConfig.airflowConfigOverrides.``\ section-name
 
-                   -  Override the Apache Airflow config property *name*
-                      in the section named *section*, preserving other
-                      properties. To delete the property override,
-                      include it in ``updateMask`` and omit its mapping
-                      in
-                      ``environment.config.softwareConfig.airflowConfigOverrides``.
-                      It is an error to provide both a mask of this form
-                      and the
-                      ``config.softwareConfig.airflowConfigOverrides``
-                      mask.
+                  - Override the Apache Airflow config property *name*
+                    in the section named *section*, preserving other
+                    properties. To delete the property override, include
+                    it in ``updateMask`` and omit its mapping in
+                    ``environment.config.softwareConfig.airflowConfigOverrides``.
+                    It is an error to provide both a mask of this form
+                    and the
+                    ``config.softwareConfig.airflowConfigOverrides``
+                    mask.
 
-                -  ``config.softwareConfig.envVariables``
+                - ``config.softwareConfig.envVariables``
 
-                   -  Replace all environment variables. If a
-                      replacement environment variable map is not
-                      included in ``environment``, all custom
-                      environment variables are cleared.
+                  - Replace all environment variables. If a replacement
+                    environment variable map is not included in
+                    ``environment``, all custom environment variables
+                    are cleared.
 
-                -  ``config.softwareConfig.schedulerCount``
+                - ``config.softwareConfig.schedulerCount``
 
-                   -  Horizontally scale the number of schedulers in
-                      Airflow. A positive integer not greater than the
-                      number of nodes must be provided in the
-                      ``config.softwareConfig.schedulerCount`` field.
-                      Supported for Cloud Composer environments in
-                      versions composer-1.\ *.*-airflow-2.*.*.
+                  - Horizontally scale the number of schedulers in
+                    Airflow. A positive integer not greater than the
+                    number of nodes must be provided in the
+                    ``config.softwareConfig.schedulerCount`` field.
+                    Supported for Cloud Composer environments in
+                    versions composer-1.\ *.*-airflow-2.\ *.*.
 
-                -  ``config.databaseConfig.machineType``
+                - ``config.databaseConfig.machineType``
 
-                   -  Cloud SQL machine type used by Airflow database.
-                      It has to be one of: db-n1-standard-2,
-                      db-n1-standard-4, db-n1-standard-8 or
-                      db-n1-standard-16. Supported for Cloud Composer
-                      environments in versions
-                      composer-1.\ *.*-airflow-*.*.*.
+                  - Cloud SQL machine type used by Airflow database. It
+                    has to be one of: db-n1-standard-2,
+                    db-n1-standard-4, db-n1-standard-8 or
+                    db-n1-standard-16. Supported for Cloud Composer
+                    environments in versions
+                    composer-1.\ *.*-airflow-*.*.\*.
 
-                -  ``config.webServerConfig.machineType``
+                - ``config.webServerConfig.machineType``
 
-                   -  Machine type on which Airflow web server is
-                      running. It has to be one of:
-                      composer-n1-webserver-2, composer-n1-webserver-4
-                      or composer-n1-webserver-8. Supported for Cloud
-                      Composer environments in versions
-                      composer-1.\ *.*-airflow-*.*.*.
+                  - Machine type on which Airflow web server is running.
+                    It has to be one of: composer-n1-webserver-2,
+                    composer-n1-webserver-4 or composer-n1-webserver-8.
+                    Supported for Cloud Composer environments in
+                    versions composer-1.\ *.*-airflow-*.*.\*.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2071,7 +2067,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Creates a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2197,7 +2193,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         field in the response are cleared.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2313,7 +2309,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Lists user workloads Secrets.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2443,7 +2439,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Updates a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2559,7 +2555,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Deletes a user workloads Secret.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2663,7 +2659,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Creates a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2789,7 +2785,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Gets an existing user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -2905,7 +2901,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Lists user workloads ConfigMaps.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -3036,7 +3032,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Updates a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 
@@ -3158,7 +3154,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Deletes a user workloads ConfigMap.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3-airflow-\ *.*.\ *-build.* and newer.
+        versions composer-3-airflow-*.*.\ *-build.* and newer.
 
         .. code-block:: python
 

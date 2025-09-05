@@ -26,7 +26,10 @@ __protobuf__ = proto.module(
         "FlexPerformance",
         "EncryptionType",
         "DirectoryServiceType",
+        "HybridReplicationSchedule",
+        "QosType",
         "LocationMetadata",
+        "UserCommands",
     },
 )
 
@@ -101,6 +104,43 @@ class DirectoryServiceType(proto.Enum):
     ACTIVE_DIRECTORY = 1
 
 
+class HybridReplicationSchedule(proto.Enum):
+    r"""Schedule for Hybrid Replication.
+    New enum values may be added in future to support different
+    frequency of replication.
+
+    Values:
+        HYBRID_REPLICATION_SCHEDULE_UNSPECIFIED (0):
+            Unspecified HybridReplicationSchedule
+        EVERY_10_MINUTES (1):
+            Replication happens once every 10 minutes.
+        HOURLY (2):
+            Replication happens once every hour.
+        DAILY (3):
+            Replication happens once every day.
+    """
+    HYBRID_REPLICATION_SCHEDULE_UNSPECIFIED = 0
+    EVERY_10_MINUTES = 1
+    HOURLY = 2
+    DAILY = 3
+
+
+class QosType(proto.Enum):
+    r"""QoS (Quality of Service) Types of the storage pool
+
+    Values:
+        QOS_TYPE_UNSPECIFIED (0):
+            Unspecified QoS Type
+        AUTO (1):
+            QoS Type is Auto
+        MANUAL (2):
+            QoS Type is Manual
+    """
+    QOS_TYPE_UNSPECIFIED = 0
+    AUTO = 1
+    MANUAL = 2
+
+
 class LocationMetadata(proto.Message):
     r"""Metadata for a given
     [google.cloud.location.Location][google.cloud.location.Location].
@@ -112,6 +152,9 @@ class LocationMetadata(proto.Message):
         supported_flex_performance (MutableSequence[google.cloud.netapp_v1.types.FlexPerformance]):
             Output only. Supported flex performance in a
             location.
+        has_vcp (bool):
+            Output only. Indicates if the location has
+            VCP support.
     """
 
     supported_service_levels: MutableSequence["ServiceLevel"] = proto.RepeatedField(
@@ -125,6 +168,26 @@ class LocationMetadata(proto.Message):
         proto.ENUM,
         number=2,
         enum="FlexPerformance",
+    )
+    has_vcp: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class UserCommands(proto.Message):
+    r"""UserCommands contains the commands to be executed by the
+    customer.
+
+    Attributes:
+        commands (MutableSequence[str]):
+            Output only. List of commands to be executed
+            by the customer.
+    """
+
+    commands: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 

@@ -63,10 +63,10 @@ class ServingConfig(proto.Message):
             items first. This setting could result in a decrease in
             click-through and conversion rates. Allowed values are:
 
-            -  ``no-price-reranking``
-            -  ``low-price-reranking``
-            -  ``medium-price-reranking``
-            -  ``high-price-reranking``
+            - ``no-price-reranking``
+            - ``low-price-reranking``
+            - ``medium-price-reranking``
+            - ``high-price-reranking``
 
             If not specified, we choose default based on model type.
             Default value: ``no-price-reranking``.
@@ -161,8 +161,8 @@ class ServingConfig(proto.Message):
             not associate conditions match, all matching do not
             associate controls in the list will execute.
 
-            -  Order does not matter.
-            -  Maximum number of specifications is 100.
+            - Order does not matter.
+            - Maximum number of specifications is 100.
 
             Can only be set if
             [solution_types][google.cloud.retail.v2.ServingConfig.solution_types]
@@ -171,9 +171,9 @@ class ServingConfig(proto.Message):
         replacement_control_ids (MutableSequence[str]):
             Condition replacement specifications.
 
-            -  Applied according to the order in the list.
-            -  A previously replaced term can not be re-replaced.
-            -  Maximum number of specifications is 100.
+            - Applied according to the order in the list.
+            - A previously replaced term can not be re-replaced.
+            - Maximum number of specifications is 100.
 
             Can only be set if
             [solution_types][google.cloud.retail.v2.ServingConfig.solution_types]
@@ -184,8 +184,8 @@ class ServingConfig(proto.Message):
             conditions match, all matching ignore controls in the list
             will execute.
 
-            -  Order does not matter.
-            -  Maximum number of specifications is 100.
+            - Order does not matter.
+            - Maximum number of specifications is 100.
 
             Can only be set if
             [solution_types][google.cloud.retail.v2.ServingConfig.solution_types]
@@ -196,11 +196,11 @@ class ServingConfig(proto.Message):
             e.g. ``medium-diversity`` or ``high-diversity``. Currently
             supported values:
 
-            -  ``no-diversity``
-            -  ``low-diversity``
-            -  ``medium-diversity``
-            -  ``high-diversity``
-            -  ``auto-diversity``
+            - ``no-diversity``
+            - ``low-diversity``
+            - ``medium-diversity``
+            - ``high-diversity``
+            - ``auto-diversity``
 
             If not specified, we choose default based on recommendation
             model type. Default value: ``no-diversity``.
@@ -218,16 +218,15 @@ class ServingConfig(proto.Message):
             ``similar-items`` model. If not specified, we enable it by
             default. Allowed values are:
 
-            -  ``no-category-match``: No additional filtering of
-               original results from the model and the customer's
-               filters.
-            -  ``relaxed-category-match``: Only keep results with
-               categories that match at least one item categories in the
-               PredictRequests's context item.
+            - ``no-category-match``: No additional filtering of original
+              results from the model and the customer's filters.
+            - ``relaxed-category-match``: Only keep results with
+              categories that match at least one item categories in the
+              PredictRequests's context item.
 
-               -  If customer also sends filters in the PredictRequest,
-                  then the results will satisfy both conditions (user
-                  given and category match).
+              - If customer also sends filters in the PredictRequest,
+                then the results will satisfy both conditions (user
+                given and category match).
 
             Can only be set if
             [solution_types][google.cloud.retail.v2.ServingConfig.solution_types]

@@ -76,8 +76,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
     This API implements a REST model with the following objects:
 
-    -  [Policy][google.cloud.binaryauthorization.v1beta1.Policy]
-    -  [Attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
+    - [Policy][google.cloud.binaryauthorization.v1beta1.Policy]
+    - [Attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
     """
 
     _client: BinauthzManagementServiceV1Beta1Client

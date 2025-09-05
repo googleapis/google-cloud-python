@@ -2710,6 +2710,22 @@ class ConversationalSearchServiceRestTransport(
             resp, _ = self._interceptor.post_stream_answer_query_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1.ConversationalSearchServiceClient.stream_answer_query",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+                        "rpcName": "StreamAnswerQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConversation(

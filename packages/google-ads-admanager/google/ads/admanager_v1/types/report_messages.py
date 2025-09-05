@@ -4318,27 +4318,27 @@ class ReportDefinition(proto.Message):
             This field is a member of `oneof`_ ``_comparison_date_range``.
         custom_dimension_key_ids (MutableSequence[int]):
             Optional. Custom Dimension keys that represent
-            `CUSTOM_DIMENSION_*` dimensions. The index of this repeated
+            CUSTOM_DIMENSION\_\* dimensions. The index of this repeated
             field corresponds to the index on each dimension. For
             example, custom_dimension_key_ids[0] describes
             CUSTOM_DIMENSION_0_VALUE_ID and CUSTOM_DIMENSION_0_VALUE.
         line_item_custom_field_ids (MutableSequence[int]):
             Optional. Custom field IDs that represent
-            `LINE_ITEM_CUSTOM_FIELD_*` dimensions. The index of this
+            LINE_ITEM_CUSTOM_FIELD\_\* dimensions. The index of this
             repeated field corresponds to the index on each dimension.
             For example, line_item_custom_field_ids[0] describes
             LINE_ITEM_CUSTOM_FIELD_0_OPTION_ID and
             LINE_ITEM_CUSTOM_FIELD_0_VALUE.
         order_custom_field_ids (MutableSequence[int]):
             Optional. Custom field IDs that represent
-            `ORDER_CUSTOM_FIELD_*` dimensions. The index of this repeated
-            field corresponds to the index on each dimension. For
-            example, order_custom_field_ids[0] describes
+            ORDER_CUSTOM_FIELD\_\* dimensions. The index of this
+            repeated field corresponds to the index on each dimension.
+            For example, order_custom_field_ids[0] describes
             ORDER_CUSTOM_FIELD_0_OPTION_ID and
             ORDER_CUSTOM_FIELD_0_VALUE.
         creative_custom_field_ids (MutableSequence[int]):
             Optional. Custom field IDs that represent
-            `CREATIVE_CUSTOM_FIELD_*` dimensions. The index of this
+            CREATIVE_CUSTOM_FIELD\_\* dimensions. The index of this
             repeated field corresponds to the index on each dimension.
             For example, creative_custom_field_ids[0] describes
             CREATIVE_CUSTOM_FIELD_0_OPTION_ID and

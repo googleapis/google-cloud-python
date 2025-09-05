@@ -1,0 +1,40 @@
+{
+  "id": "google-cloud-language",
+  "version": "2.17.2",
+  "last_generated_commit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+  "apis": [
+    {
+      "path": "google/cloud/language/v1beta2",
+      "service_config": "language_v1beta2.yaml",
+      "status": ""
+    },
+    {
+      "path": "google/cloud/language/v2",
+      "service_config": "language_v2.yaml",
+      "status": ""
+    },
+    {
+      "path": "google/cloud/language/v1",
+      "service_config": "language_v1.yaml",
+      "status": ""
+    }
+  ],
+  "source_roots": [
+    "packages/google-cloud-language"
+  ],
+  "preserve_regex": [
+    ".OwlBot.yaml",
+    "packages/google-cloud-language/CHANGELOG.md",
+    "docs/CHANGELOG.md",
+    "docs/README.rst",
+    "samples/README.txt",
+    "tar.gz",
+    "gapic_version.py",
+    "samples/generated_samples/snippet_metadata_",
+    "scripts/client-post-processing"
+  ],
+  "remove_regex": [
+    "packages/google-cloud-language"
+  ],
+  "tag_format": "{id}-v{version}"
+}

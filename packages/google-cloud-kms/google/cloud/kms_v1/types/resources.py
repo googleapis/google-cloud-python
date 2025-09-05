@@ -103,25 +103,23 @@ class AccessReason(proto.Enum):
             own data which their IAM policy authorizes, and one of the
             following is true:
 
-            -  A Google administrator has reset the root-access account
-               associated with the user's organization within the past 7
-               days.
-            -  A Google-initiated emergency access operation has
-               interacted with a resource in the same project or folder
-               as the currently accessed resource within the past 7
-               days.
+            - A Google administrator has reset the root-access account
+              associated with the user's organization within the past 7
+              days.
+            - A Google-initiated emergency access operation has
+              interacted with a resource in the same project or folder
+              as the currently accessed resource within the past 7 days.
         MODIFIED_GOOGLE_INITIATED_SYSTEM_OPERATION (9):
             Google systems access customer data to help optimize the
             structure of the data or quality for future uses by the
             customer, and one of the following is true:
 
-            -  A Google administrator has reset the root-access account
-               associated with the user's organization within the past 7
-               days.
-            -  A Google-initiated emergency access operation has
-               interacted with a resource in the same project or folder
-               as the currently accessed resource within the past 7
-               days.
+            - A Google administrator has reset the root-access account
+              associated with the user's organization within the past 7
+              days.
+            - A Google-initiated emergency access operation has
+              interacted with a resource in the same project or folder
+              as the currently accessed resource within the past 7 days.
         GOOGLE_RESPONSE_TO_PRODUCTION_ALERT (10):
             Google-initiated access to maintain system
             reliability.
@@ -131,13 +129,13 @@ class AccessReason(proto.Enum):
             which prevented a more precise justification code from being
             generated:
 
-            -  Your account has been used to perform any access to your
-               own data which your IAM policy authorizes.
-            -  An automated Google system operates on encrypted customer
-               data which your IAM policy authorizes.
-            -  Customer-initiated Google support access.
-            -  Google-initiated support access to protect system
-               reliability.
+            - Your account has been used to perform any access to your
+              own data which your IAM policy authorizes.
+            - An automated Google system operates on encrypted customer
+              data which your IAM policy authorizes.
+            - Customer-initiated Google support access.
+            - Google-initiated support access to protect system
+              reliability.
     """
     REASON_UNSPECIFIED = 0
     CUSTOMER_INITIATED_SUPPORT = 1
@@ -1119,10 +1117,10 @@ class PublicKey(proto.Message):
                 [public_key_format][google.cloud.kms.v1.GetPublicKeyRequest.public_key_format]
                 field is not specified:
 
-                -  For PQC algorithms, an error will be returned.
-                -  For non-PQC algorithms, the default format is PEM, and
-                   the field [pem][google.cloud.kms.v1.PublicKey.pem] will
-                   be populated.
+                - For PQC algorithms, an error will be returned.
+                - For non-PQC algorithms, the default format is PEM, and the
+                  field [pem][google.cloud.kms.v1.PublicKey.pem] will be
+                  populated.
 
                 Otherwise, the public key will be exported through the
                 [public_key][google.cloud.kms.v1.PublicKey.public_key] field

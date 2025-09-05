@@ -333,28 +333,28 @@ class VehicleServiceGrpcTransport(VehicleServiceTransport):
         The following ``Vehicle`` fields are required when creating a
         ``Vehicle``:
 
-        -  ``vehicleState``
-        -  ``supportedTripTypes``
-        -  ``maximumCapacity``
-        -  ``vehicleType``
+        - ``vehicleState``
+        - ``supportedTripTypes``
+        - ``maximumCapacity``
+        - ``vehicleType``
 
         The following ``Vehicle`` fields are ignored when creating a
         ``Vehicle``:
 
-        -  ``name``
-        -  ``currentTrips``
-        -  ``availableCapacity``
-        -  ``current_route_segment``
-        -  ``current_route_segment_end_point``
-        -  ``current_route_segment_version``
-        -  ``current_route_segment_traffic``
-        -  ``route``
-        -  ``waypoints``
-        -  ``waypoints_version``
-        -  ``remaining_distance_meters``
-        -  ``remaining_time_seconds``
-        -  ``eta_to_next_waypoint``
-        -  ``navigation_status``
+        - ``name``
+        - ``currentTrips``
+        - ``availableCapacity``
+        - ``current_route_segment``
+        - ``current_route_segment_end_point``
+        - ``current_route_segment_version``
+        - ``current_route_segment_traffic``
+        - ``route``
+        - ``waypoints``
+        - ``waypoints_version``
+        - ``remaining_distance_meters``
+        - ``remaining_time_seconds``
+        - ``eta_to_next_waypoint``
+        - ``navigation_status``
 
         All other fields are optional and used if provided.
 
@@ -442,10 +442,10 @@ class VehicleServiceGrpcTransport(VehicleServiceTransport):
         When updating a ``Vehicle``, the following fields cannot be
         updated since they are managed by the server:
 
-        -  ``currentTrips``
-        -  ``availableCapacity``
-        -  ``current_route_segment_version``
-        -  ``waypoints_version``
+        - ``currentTrips``
+        - ``availableCapacity``
+        - ``current_route_segment_version``
+        - ``waypoints_version``
 
         The vehicle ``name`` also cannot be updated.
 

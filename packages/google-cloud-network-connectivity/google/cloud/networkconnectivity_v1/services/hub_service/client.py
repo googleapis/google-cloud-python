@@ -1990,10 +1990,10 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                    You must also identify a value for exactly one of the
                    following fields:
 
-                   -  linked_vpn_tunnels
-                   -  linked_interconnect_attachments
-                   -  linked_router_appliance_instances
-                   -  linked_vpc_network
+                   - linked_vpn_tunnels
+                   - linked_interconnect_attachments
+                   - linked_router_appliance_instances
+                   - linked_vpc_network
 
         """
         # Create or coerce a protobuf request object.
@@ -2128,10 +2128,10 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                    You must also identify a value for exactly one of the
                    following fields:
 
-                   -  linked_vpn_tunnels
-                   -  linked_interconnect_attachments
-                   -  linked_router_appliance_instances
-                   -  linked_vpc_network
+                   - linked_vpn_tunnels
+                   - linked_interconnect_attachments
+                   - linked_router_appliance_instances
+                   - linked_vpc_network
 
         """
         # Create or coerce a protobuf request object.
@@ -2276,10 +2276,10 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                    You must also identify a value for exactly one of the
                    following fields:
 
-                   -  linked_vpn_tunnels
-                   -  linked_interconnect_attachments
-                   -  linked_router_appliance_instances
-                   -  linked_vpc_network
+                   - linked_vpn_tunnels
+                   - linked_interconnect_attachments
+                   - linked_router_appliance_instances
+                   - linked_vpc_network
 
         """
         # Create or coerce a protobuf request object.

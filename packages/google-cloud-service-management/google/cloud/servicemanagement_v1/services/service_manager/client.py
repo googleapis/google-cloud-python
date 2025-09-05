@@ -779,7 +779,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 The Google Service Management implementation accepts the
                 following forms:
 
-                -  project:<project_id>
+                - project:<project_id>
 
                 This corresponds to the ``consumer_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1590,18 +1590,18 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                       apis: - name: google.calendar.v3.Calendar
 
                       visibility:
-                         rules: - selector: "google.calendar.v3.*"
+                         rules: - selector: "google.calendar.v3.\*"
                          restriction: PREVIEW
 
                       backend:
-                         rules: - selector: "google.calendar.v3.*"
+                         rules: - selector: "google.calendar.v3.\*"
                          address: calendar.example.com
 
                       authentication:
                          providers: - id: google_calendar_auth jwks_uri:
                          https://www.googleapis.com/oauth2/v1/certs
                          issuer: https://securetoken.google.com rules: -
-                         selector: "*" requirements: provider_id:
+                         selector: "\*" requirements: provider_id:
                          google_calendar_auth
 
         """
@@ -1754,18 +1754,18 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                       apis: - name: google.calendar.v3.Calendar
 
                       visibility:
-                         rules: - selector: "google.calendar.v3.*"
+                         rules: - selector: "google.calendar.v3.\*"
                          restriction: PREVIEW
 
                       backend:
-                         rules: - selector: "google.calendar.v3.*"
+                         rules: - selector: "google.calendar.v3.\*"
                          address: calendar.example.com
 
                       authentication:
                          providers: - id: google_calendar_auth jwks_uri:
                          https://www.googleapis.com/oauth2/v1/certs
                          issuer: https://securetoken.google.com rules: -
-                         selector: "*" requirements: provider_id:
+                         selector: "\*" requirements: provider_id:
                          google_calendar_auth
 
         """

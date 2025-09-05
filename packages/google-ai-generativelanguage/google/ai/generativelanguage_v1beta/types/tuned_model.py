@@ -66,8 +66,8 @@ class TunedModel(proto.Message):
 
             Example:
 
-            -  display_name = ``Sentence Translator``
-            -  name = ``tunedModels/sentence-translator-u3b7m``
+            - display_name = ``Sentence Translator``
+            - name = ``tunedModels/sentence-translator-u3b7m``
         display_name (str):
             Optional. The name to display for this model
             in user interfaces. The display name must be up

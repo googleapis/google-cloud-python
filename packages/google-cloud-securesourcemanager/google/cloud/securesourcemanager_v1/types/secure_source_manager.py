@@ -137,7 +137,7 @@ class Instance(proto.Message):
         kms_key (str):
             Optional. Immutable. Customer-managed encryption key name,
             in the format
-            projects/\ */locations/*/keyRings/*/cryptoKeys/*.
+            projects/*/locations/*/keyRings/*/cryptoKeys/*.
         host_config (google.cloud.securesourcemanager_v1.types.Instance.HostConfig):
             Output only. A list of hostnames for this
             instance.
@@ -808,7 +808,7 @@ class BranchRule(proto.Message):
         include_pattern (str):
             Optional. The pattern of the branch that can match to this
             BranchRule. Specified as regex. .\* for all branches.
-            Examples: main, (main|release.*). Current MVP phase only
+            Examples: main, (main|release.\*). Current MVP phase only
             support ``.*`` for wildcard.
         disabled (bool):
             Optional. Determines if the branch rule is
@@ -1937,7 +1937,7 @@ class UpdateHookRequest(proto.Message):
             overwritten in the hook resource by the update. The fields
             specified in the update_mask are relative to the resource,
             not the full request. A field will be overwritten if it is
-            in the mask. The special value "*" means full replacement.
+            in the mask. The special value "\*" means full replacement.
         hook (google.cloud.securesourcemanager_v1.types.Hook):
             Required. The hook being updated.
     """
@@ -2079,7 +2079,7 @@ class UpdateBranchRuleRequest(proto.Message):
             overwritten in the branchRule resource by the update. The
             fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
-            if it is in the mask. The special value "*" means full
+            if it is in the mask. The special value "\*" means full
             replacement.
     """
 
@@ -2237,7 +2237,7 @@ class UpdatePullRequestRequest(proto.Message):
             overwritten in the pull request resource by the update. The
             fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
-            if it is in the mask. The special value "*" means full
+            if it is in the mask. The special value "\*" means full
             replacement.
     """
 
@@ -2472,7 +2472,7 @@ class UpdateIssueRequest(proto.Message):
             overwritten in the issue resource by the update. The fields
             specified in the update_mask are relative to the resource,
             not the full request. A field will be overwritten if it is
-            in the mask. The special value "*" means full replacement.
+            in the mask. The special value "\*" means full replacement.
     """
 
     issue: "Issue" = proto.Field(
@@ -3134,7 +3134,7 @@ class UpdateIssueCommentRequest(proto.Message):
             overwritten in the issue comment resource by the update. The
             fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
-            if it is in the mask. The special value "*" means full
+            if it is in the mask. The special value "\*" means full
             replacement.
     """
 

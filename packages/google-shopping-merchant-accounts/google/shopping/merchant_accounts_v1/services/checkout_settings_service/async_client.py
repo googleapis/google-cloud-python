@@ -598,8 +598,8 @@ class CheckoutSettingsServiceAsyncClient:
                 fields are supported (in both ``snake_case`` and
                 ``lowerCamelCase``):
 
-                -  ``eligible_destinations``
-                -  ``uri_settings``
+                - ``eligible_destinations``
+                - ``uri_settings``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

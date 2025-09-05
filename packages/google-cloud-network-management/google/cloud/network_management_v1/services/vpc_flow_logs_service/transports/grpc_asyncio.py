@@ -430,11 +430,11 @@ class VpcFlowLogsServiceGrpcAsyncIOTransport(VpcFlowLogsServiceTransport):
            creating another configuration with the same fields but
            different values for the following fields will fail as well:
 
-           -  name
-           -  create_time
-           -  update_time
-           -  labels
-           -  description
+           - name
+           - create_time
+           - update_time
+           - labels
+           - description
 
         Returns:
             Callable[[~.CreateVpcFlowLogsConfigRequest],
@@ -475,11 +475,11 @@ class VpcFlowLogsServiceGrpcAsyncIOTransport(VpcFlowLogsServiceTransport):
            updating another configuration with the same fields but
            different values for the following fields will fail as well:
 
-           -  name
-           -  create_time
-           -  update_time
-           -  labels
-           -  description
+           - name
+           - create_time
+           - update_time
+           - labels
+           - description
 
         Returns:
             Callable[[~.UpdateVpcFlowLogsConfigRequest],

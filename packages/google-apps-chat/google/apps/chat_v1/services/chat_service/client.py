@@ -957,20 +957,20 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.bot``
+          - ``https://www.googleapis.com/auth/chat.bot``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.messages.create``
-           -  ``https://www.googleapis.com/auth/chat.messages``
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
+          - ``https://www.googleapis.com/auth/chat.messages.create``
+          - ``https://www.googleapis.com/auth/chat.messages``
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
 
         Chat attributes the message sender differently depending on the
         type of authentication that you use in your request.
@@ -1055,13 +1055,13 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 The value for this field must meet the following
                 requirements:
 
-                -  Begins with ``client-``. For example,
-                   ``client-custom-name`` is a valid custom ID, but
-                   ``custom-name`` is not.
-                -  Contains up to 63 characters and only lowercase
-                   letters, numbers, and hyphens.
-                -  Is unique within a space. A Chat app can't use the
-                   same custom ID for different messages.
+                - Begins with ``client-``. For example,
+                  ``client-custom-name`` is a valid custom ID, but
+                  ``custom-name`` is not.
+                - Contains up to 63 characters and only lowercase
+                  letters, numbers, and hyphens.
+                - Is unique within a space. A Chat app can't use the
+                  same custom ID for different messages.
 
                 For details, see `Name a
                 message <https://developers.google.com/workspace/chat/create-messages#name_a_created_message>`__.
@@ -1152,10 +1152,10 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.messages.readonly``
-        -  ``https://www.googleapis.com/auth/chat.messages``
-        -  ``https://www.googleapis.com/auth/chat.import`` (import mode
-           spaces only)
+        - ``https://www.googleapis.com/auth/chat.messages.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages``
+        - ``https://www.googleapis.com/auth/chat.import`` (import mode
+          spaces only)
 
         .. code-block:: python
 
@@ -1295,30 +1295,30 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with one of the following authorization scopes:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.bot``
-           -  ``https://www.googleapis.com/auth/chat.app.memberships``
-              (requires `administrator
-              approval <https://support.google.com/a?p=chat-app-auth>`__)
+          - ``https://www.googleapis.com/auth/chat.bot``
+          - ``https://www.googleapis.com/auth/chat.app.memberships``
+            (requires `administrator
+            approval <https://support.google.com/a?p=chat-app-auth>`__)
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.memberships.readonly``
-           -  ``https://www.googleapis.com/auth/chat.memberships``
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
-           -  User authentication grants administrator privileges when
-              an administrator account authenticates,
-              ``use_admin_access`` is ``true``, and one of the following
-              authorization scopes is used:
+          - ``https://www.googleapis.com/auth/chat.memberships.readonly``
+          - ``https://www.googleapis.com/auth/chat.memberships``
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
+          - User authentication grants administrator privileges when an
+            administrator account authenticates, ``use_admin_access`` is
+            ``true``, and one of the following authorization scopes is
+            used:
 
-              -  ``https://www.googleapis.com/auth/chat.admin.memberships.readonly``
-              -  ``https://www.googleapis.com/auth/chat.admin.memberships``
+            - ``https://www.googleapis.com/auth/chat.admin.memberships.readonly``
+            - ``https://www.googleapis.com/auth/chat.admin.memberships``
 
         .. code-block:: python
 
@@ -1451,28 +1451,28 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with one of the following authorization scopes:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.bot``
-           -  ``https://www.googleapis.com/auth/chat.app.memberships``
-              (requires `administrator
-              approval <https://support.google.com/a?p=chat-app-auth>`__)
+          - ``https://www.googleapis.com/auth/chat.bot``
+          - ``https://www.googleapis.com/auth/chat.app.memberships``
+            (requires `administrator
+            approval <https://support.google.com/a?p=chat-app-auth>`__)
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.memberships.readonly``
-           -  ``https://www.googleapis.com/auth/chat.memberships``
-           -  User authentication grants administrator privileges when
-              an administrator account authenticates,
-              ``use_admin_access`` is ``true``, and one of the following
-              authorization scopes is used:
+          - ``https://www.googleapis.com/auth/chat.memberships.readonly``
+          - ``https://www.googleapis.com/auth/chat.memberships``
+          - User authentication grants administrator privileges when an
+            administrator account authenticates, ``use_admin_access`` is
+            ``true``, and one of the following authorization scopes is
+            used:
 
-              -  ``https://www.googleapis.com/auth/chat.admin.memberships.readonly``
-              -  ``https://www.googleapis.com/auth/chat.admin.memberships``
+            - ``https://www.googleapis.com/auth/chat.admin.memberships.readonly``
+            - ``https://www.googleapis.com/auth/chat.admin.memberships``
 
         .. code-block:: python
 
@@ -1601,18 +1601,18 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.bot``
+          - ``https://www.googleapis.com/auth/chat.bot``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.messages.readonly``
-           -  ``https://www.googleapis.com/auth/chat.messages``
+          - ``https://www.googleapis.com/auth/chat.messages.readonly``
+          - ``https://www.googleapis.com/auth/chat.messages``
 
         Note: Might return a message from a blocked member or space.
 
@@ -1736,19 +1736,19 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.bot``
+          - ``https://www.googleapis.com/auth/chat.bot``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.messages``
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
+          - ``https://www.googleapis.com/auth/chat.messages``
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
 
         When using app authentication, requests can only update messages
         created by the calling Chat app.
@@ -1795,21 +1795,21 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
                 Currently supported field paths:
 
-                -  ``text``
+                - ``text``
 
-                -  ``attachment``
+                - ``attachment``
 
-                -  ``cards`` (Requires `app
-                   authentication </chat/api/guides/auth/service-accounts>`__.)
+                - ``cards`` (Requires `app
+                  authentication </chat/api/guides/auth/service-accounts>`__.)
 
-                -  ``cards_v2`` (Requires `app
-                   authentication </chat/api/guides/auth/service-accounts>`__.)
+                - ``cards_v2`` (Requires `app
+                  authentication </chat/api/guides/auth/service-accounts>`__.)
 
-                -  ``accessory_widgets`` (Requires `app
-                   authentication </chat/api/guides/auth/service-accounts>`__.)
+                - ``accessory_widgets`` (Requires `app
+                  authentication </chat/api/guides/auth/service-accounts>`__.)
 
-                -  ``quoted_message_metadata`` (Only allows removal of
-                   the quoted message.)
+                - ``quoted_message_metadata`` (Only allows removal of
+                  the quoted message.)
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1891,19 +1891,19 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.bot``
+          - ``https://www.googleapis.com/auth/chat.bot``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.messages``
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
+          - ``https://www.googleapis.com/auth/chat.messages``
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
 
         When using app authentication, requests can only delete messages
         created by the calling Chat app.
@@ -2018,7 +2018,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with the `authorization
         scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.bot``
+        - ``https://www.googleapis.com/auth/chat.bot``
 
         .. code-block:: python
 
@@ -2131,10 +2131,10 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.messages.create``
-        -  ``https://www.googleapis.com/auth/chat.messages``
-        -  ``https://www.googleapis.com/auth/chat.import`` (import mode
-           spaces only)
+        - ``https://www.googleapis.com/auth/chat.messages.create``
+        - ``https://www.googleapis.com/auth/chat.messages``
+        - ``https://www.googleapis.com/auth/chat.import`` (import mode
+          spaces only)
 
         You can upload attachments up to 200 MB. Certain file types
         aren't supported. For details, see `File types blocked by Google
@@ -2228,18 +2228,18 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.bot``
+          - ``https://www.googleapis.com/auth/chat.bot``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.spaces.readonly``
-           -  ``https://www.googleapis.com/auth/chat.spaces``
+          - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.spaces``
 
         To list all named spaces by Google Workspace organization, use
         the
@@ -2344,8 +2344,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         and one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
-        -  ``https://www.googleapis.com/auth/chat.admin.spaces``
+        - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
+        - ``https://www.googleapis.com/auth/chat.admin.spaces``
 
         In the request, set ``use_admin_access`` to ``true``.
 
@@ -2448,37 +2448,37 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with one of the following authorization scopes:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.bot``
-           -  ``https://www.googleapis.com/auth/chat.app.spaces`` with
-              `administrator
-              approval <https://support.google.com/a?p=chat-app-auth>`__
+          - ``https://www.googleapis.com/auth/chat.bot``
+          - ``https://www.googleapis.com/auth/chat.app.spaces`` with
+            `administrator
+            approval <https://support.google.com/a?p=chat-app-auth>`__
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.spaces.readonly``
-           -  ``https://www.googleapis.com/auth/chat.spaces``
-           -  User authentication grants administrator privileges when
-              an administrator account authenticates,
-              ``use_admin_access`` is ``true``, and one of the following
-              authorization scopes is used:
+          - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.spaces``
+          - User authentication grants administrator privileges when an
+            administrator account authenticates, ``use_admin_access`` is
+            ``true``, and one of the following authorization scopes is
+            used:
 
-              -  ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
-              -  ``https://www.googleapis.com/auth/chat.admin.spaces``
+            - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
+            - ``https://www.googleapis.com/auth/chat.admin.spaces``
 
         App authentication has the following limitations:
 
-        -  ``space.access_settings`` is only populated when using the
-           ``chat.app.spaces`` scope.
-        -  ``space.predefind_permission_settings`` and
-           ``space.permission_settings`` are only populated when using
-           the ``chat.app.spaces`` scope, and only for spaces the app
-           created.
+        - ``space.access_settings`` is only populated when using the
+          ``chat.app.spaces`` scope.
+        - ``space.predefind_permission_settings`` and
+          ``space.permission_settings`` are only populated when using
+          the ``chat.app.spaces`` scope, and only for spaces the app
+          created.
 
         .. code-block:: python
 
@@ -2596,23 +2596,23 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with `administrator
-           approval <https://support.google.com/a?p=chat-app-auth>`__
-           and one of the following authorization scopes:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with `administrator
+          approval <https://support.google.com/a?p=chat-app-auth>`__ and
+          one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.app.spaces.create``
-           -  ``https://www.googleapis.com/auth/chat.app.spaces``
+          - ``https://www.googleapis.com/auth/chat.app.spaces.create``
+          - ``https://www.googleapis.com/auth/chat.app.spaces``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.spaces.create``
-           -  ``https://www.googleapis.com/auth/chat.spaces``
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
+          - ``https://www.googleapis.com/auth/chat.spaces.create``
+          - ``https://www.googleapis.com/auth/chat.spaces``
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
 
         When authenticating as an app, the ``space.customer`` field must
         be set in the request.
@@ -2628,12 +2628,12 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Space membership upon creation depends on whether the space is
         created in ``Import mode``:
 
-        -  **Import mode:** No members are created.
-        -  **All other modes:** The calling user is added as a member.
-           This is:
+        - **Import mode:** No members are created.
+        - **All other modes:** The calling user is added as a member.
+          This is:
 
-           -  The app itself when using app authentication.
-           -  The human user when using user authentication.
+          - The app itself when using app authentication.
+          - The human user when using user authentication.
 
         If you receive the error message ``ALREADY_EXISTS`` when
         creating a space, try a different ``displayName``. An existing
@@ -2816,8 +2816,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.spaces.create``
-        -  ``https://www.googleapis.com/auth/chat.spaces``
+        - ``https://www.googleapis.com/auth/chat.spaces.create``
+        - ``https://www.googleapis.com/auth/chat.spaces``
 
         .. code-block:: python
 
@@ -2913,35 +2913,34 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with `administrator
-           approval <https://support.google.com/a?p=chat-app-auth>`__
-           and one of the following authorization scopes:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with `administrator
+          approval <https://support.google.com/a?p=chat-app-auth>`__ and
+          one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.app.spaces``
+          - ``https://www.googleapis.com/auth/chat.app.spaces``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.spaces``
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
-           -  User authentication grants administrator privileges when
-              an administrator account authenticates,
-              ``use_admin_access`` is ``true``, and the following
-              authorization scopes is used:
+          - ``https://www.googleapis.com/auth/chat.spaces``
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
+          - User authentication grants administrator privileges when an
+            administrator account authenticates, ``use_admin_access`` is
+            ``true``, and the following authorization scopes is used:
 
-              -  ``https://www.googleapis.com/auth/chat.admin.spaces``
+            - ``https://www.googleapis.com/auth/chat.admin.spaces``
 
         App authentication has the following limitations:
 
-        -  To update either ``space.predefined_permission_settings`` or
-           ``space.permission_settings``, the app must be the space
-           creator.
-        -  Updating the ``space.access_settings.audience`` is not
-           supported for app authentication.
+        - To update either ``space.predefined_permission_settings`` or
+          ``space.permission_settings``, the app must be the space
+          creator.
+        - Updating the ``space.access_settings.audience`` is not
+          supported for app authentication.
 
         .. code-block:: python
 
@@ -3048,13 +3047,13 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 ``permissionSettings`` is not supported with
                 ``useAdminAccess``. The supported field masks include:
 
-                -  ``permission_settings.manageMembersAndGroups``
-                -  ``permission_settings.modifySpaceDetails``
-                -  ``permission_settings.toggleHistory``
-                -  ``permission_settings.useAtMentionAll``
-                -  ``permission_settings.manageApps``
-                -  ``permission_settings.manageWebhooks``
-                -  ``permission_settings.replyMessages``
+                - ``permission_settings.manageMembersAndGroups``
+                - ``permission_settings.modifySpaceDetails``
+                - ``permission_settings.toggleHistory``
+                - ``permission_settings.useAtMentionAll``
+                - ``permission_settings.manageApps``
+                - ``permission_settings.manageWebhooks``
+                - ``permission_settings.replyMessages``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3143,28 +3142,27 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with `administrator
-           approval <https://support.google.com/a?p=chat-app-auth>`__
-           and the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with `administrator
+          approval <https://support.google.com/a?p=chat-app-auth>`__ and
+          the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.app.delete`` (only
-              in spaces the app created)
+          - ``https://www.googleapis.com/auth/chat.app.delete`` (only in
+            spaces the app created)
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.delete``
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
-           -  User authentication grants administrator privileges when
-              an administrator account authenticates,
-              ``use_admin_access`` is ``true``, and the following
-              authorization scope is used:
+          - ``https://www.googleapis.com/auth/chat.delete``
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
+          - User authentication grants administrator privileges when an
+            administrator account authenticates, ``use_admin_access`` is
+            ``true``, and the following authorization scope is used:
 
-              -  ``https://www.googleapis.com/auth/chat.admin.delete``
+            - ``https://www.googleapis.com/auth/chat.admin.delete``
 
         .. code-block:: python
 
@@ -3268,7 +3266,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         and domain-wide delegation with the `authorization
         scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.import``
+        - ``https://www.googleapis.com/auth/chat.import``
 
         For more information, see `Authorize Google Chat apps to import
         data <https://developers.google.com/workspace/chat/authorize-import>`__.
@@ -3373,18 +3371,18 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.bot``
+          - ``https://www.googleapis.com/auth/chat.bot``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.spaces.readonly``
-           -  ``https://www.googleapis.com/auth/chat.spaces``
+          - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.spaces``
 
         .. code-block:: python
 
@@ -3477,45 +3475,44 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with `administrator
-           approval <https://support.google.com/a?p=chat-app-auth>`__
-           and the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with `administrator
+          approval <https://support.google.com/a?p=chat-app-auth>`__ and
+          the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.app.memberships``
+          - ``https://www.googleapis.com/auth/chat.app.memberships``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.memberships``
-           -  ``https://www.googleapis.com/auth/chat.memberships.app``
-              (to add the calling app to the space)
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
-           -  User authentication grants administrator privileges when
-              an administrator account authenticates,
-              ``use_admin_access`` is ``true``, and the following
-              authorization scope is used:
+          - ``https://www.googleapis.com/auth/chat.memberships``
+          - ``https://www.googleapis.com/auth/chat.memberships.app`` (to
+            add the calling app to the space)
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
+          - User authentication grants administrator privileges when an
+            administrator account authenticates, ``use_admin_access`` is
+            ``true``, and the following authorization scope is used:
 
-              -  ``https://www.googleapis.com/auth/chat.admin.memberships``
+            - ``https://www.googleapis.com/auth/chat.admin.memberships``
 
         App authentication is not supported for the following use cases:
 
-        -  Inviting users external to the Workspace organization that
-           owns the space.
-        -  Adding a Google Group to a space.
-        -  Adding a Chat app to a space.
+        - Inviting users external to the Workspace organization that
+          owns the space.
+        - Adding a Google Group to a space.
+        - Adding a Chat app to a space.
 
         For example usage, see:
 
-        -  `Invite or add a user to a
-           space <https://developers.google.com/workspace/chat/create-members#create-user-membership>`__.
-        -  `Invite or add a Google Group to a
-           space <https://developers.google.com/workspace/chat/create-members#create-group-membership>`__.
-        -  `Add the Chat app to a
-           space <https://developers.google.com/workspace/chat/create-members#create-membership-calling-api>`__.
+        - `Invite or add a user to a
+          space <https://developers.google.com/workspace/chat/create-members#create-user-membership>`__.
+        - `Invite or add a Google Group to a
+          space <https://developers.google.com/workspace/chat/create-members#create-group-membership>`__.
+        - `Add the Chat app to a
+          space <https://developers.google.com/workspace/chat/create-members#create-membership-calling-api>`__.
 
         .. code-block:: python
 
@@ -3569,28 +3566,28 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 human user, it must use certain authorization scopes and
                 set specific values for certain fields:
 
-                -  When `authenticating as a
-                   user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-                   the ``chat.memberships`` authorization scope is
-                   required.
+                - When `authenticating as a
+                  user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
+                  the ``chat.memberships`` authorization scope is
+                  required.
 
-                -  When `authenticating as an
-                   app <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__,
-                   the ``chat.app.memberships`` authorization scope is
-                   required.
+                - When `authenticating as an
+                  app <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__,
+                  the ``chat.app.memberships`` authorization scope is
+                  required.
 
-                -  Set ``user.type`` to ``HUMAN``, and set ``user.name``
-                   with format ``users/{user}``, where ``{user}`` can be
-                   the email address for the user. For users in the same
-                   Workspace organization ``{user}`` can also be the
-                   ``id`` of the
-                   `person <https://developers.google.com/people/api/rest/v1/people>`__
-                   from the People API, or the ``id`` for the user in
-                   the Directory API. For example, if the People API
-                   Person profile ID for ``user@example.com`` is
-                   ``123456789``, you can add the user to the space by
-                   setting the ``membership.member.name`` to
-                   ``users/user@example.com`` or ``users/123456789``.
+                - Set ``user.type`` to ``HUMAN``, and set ``user.name``
+                  with format ``users/{user}``, where ``{user}`` can be
+                  the email address for the user. For users in the same
+                  Workspace organization ``{user}`` can also be the
+                  ``id`` of the
+                  `person <https://developers.google.com/people/api/rest/v1/people>`__
+                  from the People API, or the ``id`` for the user in the
+                  Directory API. For example, if the People API Person
+                  profile ID for ``user@example.com`` is ``123456789``,
+                  you can add the user to the space by setting the
+                  ``membership.member.name`` to
+                  ``users/user@example.com`` or ``users/123456789``.
 
                 Inviting users external to the Workspace organization
                 that owns the space requires `user
@@ -3687,28 +3684,27 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with `administrator
-           approval <https://support.google.com/a?p=chat-app-auth>`__
-           and the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with `administrator
+          approval <https://support.google.com/a?p=chat-app-auth>`__ and
+          the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.app.memberships``
-              (only in spaces the app created)
+          - ``https://www.googleapis.com/auth/chat.app.memberships``
+            (only in spaces the app created)
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.memberships``
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
-           -  User authentication grants administrator privileges when
-              an administrator account authenticates,
-              ``use_admin_access`` is ``true``, and the following
-              authorization scope is used:
+          - ``https://www.googleapis.com/auth/chat.memberships``
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
+          - User authentication grants administrator privileges when an
+            administrator account authenticates, ``use_admin_access`` is
+            ``true``, and the following authorization scope is used:
 
-              -  ``https://www.googleapis.com/auth/chat.admin.memberships``
+            - ``https://www.googleapis.com/auth/chat.admin.memberships``
 
         .. code-block:: python
 
@@ -3753,7 +3749,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
                 Currently supported field paths:
 
-                -  ``role``
+                - ``role``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3840,34 +3836,33 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Supports the following types of
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        -  `App
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-           with `administrator
-           approval <https://support.google.com/a?p=chat-app-auth>`__
-           and the authorization scope:
+        - `App
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+          with `administrator
+          approval <https://support.google.com/a?p=chat-app-auth>`__ and
+          the authorization scope:
 
-           -  ``https://www.googleapis.com/auth/chat.app.memberships``
+          - ``https://www.googleapis.com/auth/chat.app.memberships``
 
-        -  `User
-           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-           with one of the following authorization scopes:
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
 
-           -  ``https://www.googleapis.com/auth/chat.memberships``
-           -  ``https://www.googleapis.com/auth/chat.memberships.app``
-              (to remove the calling app from the space)
-           -  ``https://www.googleapis.com/auth/chat.import`` (import
-              mode spaces only)
-           -  User authentication grants administrator privileges when
-              an administrator account authenticates,
-              ``use_admin_access`` is ``true``, and the following
-              authorization scope is used:
+          - ``https://www.googleapis.com/auth/chat.memberships``
+          - ``https://www.googleapis.com/auth/chat.memberships.app`` (to
+            remove the calling app from the space)
+          - ``https://www.googleapis.com/auth/chat.import`` (import mode
+            spaces only)
+          - User authentication grants administrator privileges when an
+            administrator account authenticates, ``use_admin_access`` is
+            ``true``, and the following authorization scope is used:
 
-              -  ``https://www.googleapis.com/auth/chat.admin.memberships``
+            - ``https://www.googleapis.com/auth/chat.admin.memberships``
 
         App authentication is not supported for the following use cases:
 
-        -  Removing a Google Group from a space.
-        -  Removing a Chat app from a space.
+        - Removing a Google Group from a space.
+        - Removing a Chat app from a space.
 
         To delete memberships for space managers, the requester must be
         a space manager. If you're using `app
@@ -4012,11 +4007,11 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.messages.reactions.create``
-        -  ``https://www.googleapis.com/auth/chat.messages.reactions``
-        -  ``https://www.googleapis.com/auth/chat.messages``
-        -  ``https://www.googleapis.com/auth/chat.import`` (import mode
-           spaces only)
+        - ``https://www.googleapis.com/auth/chat.messages.reactions.create``
+        - ``https://www.googleapis.com/auth/chat.messages.reactions``
+        - ``https://www.googleapis.com/auth/chat.messages``
+        - ``https://www.googleapis.com/auth/chat.import`` (import mode
+          spaces only)
 
         .. code-block:: python
 
@@ -4142,10 +4137,10 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.messages.reactions.readonly``
-        -  ``https://www.googleapis.com/auth/chat.messages.reactions``
-        -  ``https://www.googleapis.com/auth/chat.messages.readonly``
-        -  ``https://www.googleapis.com/auth/chat.messages``
+        - ``https://www.googleapis.com/auth/chat.messages.reactions.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages.reactions``
+        - ``https://www.googleapis.com/auth/chat.messages.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages``
 
         .. code-block:: python
 
@@ -4276,10 +4271,10 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.messages.reactions``
-        -  ``https://www.googleapis.com/auth/chat.messages``
-        -  ``https://www.googleapis.com/auth/chat.import`` (import mode
-           spaces only)
+        - ``https://www.googleapis.com/auth/chat.messages.reactions``
+        - ``https://www.googleapis.com/auth/chat.messages``
+        - ``https://www.googleapis.com/auth/chat.import`` (import mode
+          spaces only)
 
         .. code-block:: python
 
@@ -4391,7 +4386,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with the `authorization
         scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.customemojis``
+        - ``https://www.googleapis.com/auth/chat.customemojis``
 
         .. code-block:: python
 
@@ -4437,7 +4432,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Returns:
             google.apps.chat_v1.types.CustomEmoji:
                 Represents a [custom
-                emoji](\ https://support.google.com/chat/answer/12800149).
+                emoji](https://support.google.com/chat/answer/12800149).
 
         """
         # Create or coerce a protobuf request object.
@@ -4504,8 +4499,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.customemojis.readonly``
-        -  ``https://www.googleapis.com/auth/chat.customemojis``
+        - ``https://www.googleapis.com/auth/chat.customemojis.readonly``
+        - ``https://www.googleapis.com/auth/chat.customemojis``
 
         .. code-block:: python
 
@@ -4562,7 +4557,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Returns:
             google.apps.chat_v1.types.CustomEmoji:
                 Represents a [custom
-                emoji](\ https://support.google.com/chat/answer/12800149).
+                emoji](https://support.google.com/chat/answer/12800149).
 
         """
         # Create or coerce a protobuf request object.
@@ -4634,8 +4629,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.customemojis.readonly``
-        -  ``https://www.googleapis.com/auth/chat.customemojis``
+        - ``https://www.googleapis.com/auth/chat.customemojis.readonly``
+        - ``https://www.googleapis.com/auth/chat.customemojis``
 
         .. code-block:: python
 
@@ -4748,7 +4743,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with the `authorization
         scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.customemojis``
+        - ``https://www.googleapis.com/auth/chat.customemojis``
 
         .. code-block:: python
 
@@ -4862,8 +4857,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.users.readstate.readonly``
-        -  ``https://www.googleapis.com/auth/chat.users.readstate``
+        - ``https://www.googleapis.com/auth/chat.users.readstate.readonly``
+        - ``https://www.googleapis.com/auth/chat.users.readstate``
 
         .. code-block:: python
 
@@ -4903,14 +4898,14 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
                 To refer to the calling user, set one of the following:
 
-                -  The ``me`` alias. For example,
-                   ``users/me/spaces/{space}/spaceReadState``.
+                - The ``me`` alias. For example,
+                  ``users/me/spaces/{space}/spaceReadState``.
 
-                -  Their Workspace email address. For example,
-                   ``users/user@example.com/spaces/{space}/spaceReadState``.
+                - Their Workspace email address. For example,
+                  ``users/user@example.com/spaces/{space}/spaceReadState``.
 
-                -  Their user id. For example,
-                   ``users/123456789/spaces/{space}/spaceReadState``.
+                - Their user id. For example,
+                  ``users/123456789/spaces/{space}/spaceReadState``.
 
                 Format: users/{user}/spaces/{space}/spaceReadState
 
@@ -5000,7 +4995,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with the `authorization
         scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.users.readstate``
+        - ``https://www.googleapis.com/auth/chat.users.readstate``
 
         .. code-block:: python
 
@@ -5038,14 +5033,14 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
                 To refer to the calling user, set one of the following:
 
-                -  The ``me`` alias. For example,
-                   ``users/me/spaces/{space}/spaceReadState``.
+                - The ``me`` alias. For example,
+                  ``users/me/spaces/{space}/spaceReadState``.
 
-                -  Their Workspace email address. For example,
-                   ``users/user@example.com/spaces/{space}/spaceReadState``.
+                - Their Workspace email address. For example,
+                  ``users/user@example.com/spaces/{space}/spaceReadState``.
 
-                -  Their user id. For example,
-                   ``users/123456789/spaces/{space}/spaceReadState``.
+                - Their user id. For example,
+                  ``users/123456789/spaces/{space}/spaceReadState``.
 
                 Format: users/{user}/spaces/{space}/spaceReadState
 
@@ -5056,7 +5051,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 Required. The field paths to update. Currently supported
                 field paths:
 
-                -  ``last_read_time``
+                - ``last_read_time``
 
                 When the ``last_read_time`` is before the latest message
                 create time, the space appears as unread in the UI.
@@ -5159,8 +5154,8 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with one of the following `authorization
         scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.users.readstate.readonly``
-        -  ``https://www.googleapis.com/auth/chat.users.readstate``
+        - ``https://www.googleapis.com/auth/chat.users.readstate.readonly``
+        - ``https://www.googleapis.com/auth/chat.users.readstate``
 
         .. code-block:: python
 
@@ -5200,14 +5195,14 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
 
                 To refer to the calling user, set one of the following:
 
-                -  The ``me`` alias. For example,
-                   ``users/me/spaces/{space}/threads/{thread}/threadReadState``.
+                - The ``me`` alias. For example,
+                  ``users/me/spaces/{space}/threads/{thread}/threadReadState``.
 
-                -  Their Workspace email address. For example,
-                   ``users/user@example.com/spaces/{space}/threads/{thread}/threadReadState``.
+                - Their Workspace email address. For example,
+                  ``users/user@example.com/spaces/{space}/threads/{thread}/threadReadState``.
 
-                -  Their user id. For example,
-                   ``users/123456789/spaces/{space}/threads/{thread}/threadReadState``.
+                - Their user id. For example,
+                  ``users/123456789/spaces/{space}/threads/{thread}/threadReadState``.
 
                 Format:
                 users/{user}/spaces/{space}/threads/{thread}/threadReadState
@@ -5301,14 +5296,14 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__
         appropriate for reading the requested data:
 
-        -  ``https://www.googleapis.com/auth/chat.spaces.readonly``
-        -  ``https://www.googleapis.com/auth/chat.spaces``
-        -  ``https://www.googleapis.com/auth/chat.messages.readonly``
-        -  ``https://www.googleapis.com/auth/chat.messages``
-        -  ``https://www.googleapis.com/auth/chat.messages.reactions.readonly``
-        -  ``https://www.googleapis.com/auth/chat.messages.reactions``
-        -  ``https://www.googleapis.com/auth/chat.memberships.readonly``
-        -  ``https://www.googleapis.com/auth/chat.memberships``
+        - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+        - ``https://www.googleapis.com/auth/chat.spaces``
+        - ``https://www.googleapis.com/auth/chat.messages.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages``
+        - ``https://www.googleapis.com/auth/chat.messages.reactions.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages.reactions``
+        - ``https://www.googleapis.com/auth/chat.memberships.readonly``
+        - ``https://www.googleapis.com/auth/chat.memberships``
 
         To get an event, the authenticated user must be a member of the
         space.
@@ -5367,7 +5362,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
             google.apps.chat_v1.types.SpaceEvent:
                 An event that represents a change or activity in a Google Chat space. To
                    learn more, see [Work with events from Google
-                   Chat](\ https://developers.google.com/workspace/chat/events-overview).
+                   Chat](https://developers.google.com/workspace/chat/events-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -5441,14 +5436,14 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__
         appropriate for reading the requested data:
 
-        -  ``https://www.googleapis.com/auth/chat.spaces.readonly``
-        -  ``https://www.googleapis.com/auth/chat.spaces``
-        -  ``https://www.googleapis.com/auth/chat.messages.readonly``
-        -  ``https://www.googleapis.com/auth/chat.messages``
-        -  ``https://www.googleapis.com/auth/chat.messages.reactions.readonly``
-        -  ``https://www.googleapis.com/auth/chat.messages.reactions``
-        -  ``https://www.googleapis.com/auth/chat.memberships.readonly``
-        -  ``https://www.googleapis.com/auth/chat.memberships``
+        - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+        - ``https://www.googleapis.com/auth/chat.spaces``
+        - ``https://www.googleapis.com/auth/chat.messages.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages``
+        - ``https://www.googleapis.com/auth/chat.messages.reactions.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages.reactions``
+        - ``https://www.googleapis.com/auth/chat.memberships.readonly``
+        - ``https://www.googleapis.com/auth/chat.memberships``
 
         To list events, the authenticated user must be a member of the
         space.
@@ -5517,13 +5512,13 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 Optionally, you can also filter by start time
                 (``start_time``) and end time (``end_time``):
 
-                -  ``start_time``: Exclusive timestamp from which to
-                   start listing space events. You can list events that
-                   occurred up to 28 days ago. If unspecified, lists
-                   space events from the past 28 days.
-                -  ``end_time``: Inclusive timestamp until which space
-                   events are listed. If unspecified, lists events up to
-                   the time of the request.
+                - ``start_time``: Exclusive timestamp from which to
+                  start listing space events. You can list events that
+                  occurred up to 28 days ago. If unspecified, lists
+                  space events from the past 28 days.
+                - ``end_time``: Inclusive timestamp until which space
+                  events are listed. If unspecified, lists events up to
+                  the time of the request.
 
                 To specify a start or end time, use the equals ``=``
                 operator and format in
@@ -5658,7 +5653,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with the `authorization
         scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.users.spacesettings``
+        - ``https://www.googleapis.com/auth/chat.users.spacesettings``
 
         .. code-block:: python
 
@@ -5696,13 +5691,13 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
                 Required. Format:
                 users/{user}/spaces/{space}/spaceNotificationSetting
 
-                -  ``users/me/spaces/{space}/spaceNotificationSetting``,
-                   OR
-                -  ``users/user@example.com/spaces/{space}/spaceNotificationSetting``,
-                   OR
-                -  ``users/123456789/spaces/{space}/spaceNotificationSetting``.
-                   Note: Only the caller's user id or email is allowed
-                   in the path.
+                - ``users/me/spaces/{space}/spaceNotificationSetting``,
+                  OR
+                - ``users/user@example.com/spaces/{space}/spaceNotificationSetting``,
+                  OR
+                - ``users/123456789/spaces/{space}/spaceNotificationSetting``.
+                  Note: Only the caller's user id or email is allowed in
+                  the path.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5799,7 +5794,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         with the `authorization
         scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
-        -  ``https://www.googleapis.com/auth/chat.users.spacesettings``
+        - ``https://www.googleapis.com/auth/chat.users.spacesettings``
 
         .. code-block:: python
 
@@ -5844,9 +5839,9 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Supported field paths:
 
-                -  ``notification_setting``
+                - ``notification_setting``
 
-                -  ``mute_setting``
+                - ``mute_setting``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

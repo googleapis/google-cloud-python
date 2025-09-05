@@ -45,7 +45,7 @@ class Condition(proto.Message):
             https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
             Types common to all resources include:
 
-            -  "Ready": True when the Resource is ready.
+            - "Ready": True when the Resource is ready.
         state (google.cloud.run_v2.types.Condition.State):
             State of the condition.
         message (str):

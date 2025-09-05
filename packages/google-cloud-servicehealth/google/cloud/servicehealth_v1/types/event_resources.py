@@ -216,8 +216,8 @@ class Event(proto.Message):
                 The incident was automatically closed because of the
                 following reasons:
 
-                -  The impact of the incident could not be confirmed.
-                -  The incident was intermittent or resolved itself.
+                - The impact of the incident could not be confirmed.
+                - The incident was intermittent or resolved itself.
 
                 The incident does not have a resolution because no action or
                 investigation happened. If it is intermittent, the incident
@@ -477,8 +477,8 @@ class OrganizationEvent(proto.Message):
                 The incident was automatically closed because of the
                 following reasons:
 
-                -  The impact of the incident could not be confirmed.
-                -  The incident was intermittent or resolved itself.
+                - The impact of the incident could not be confirmed.
+                - The incident was intermittent or resolved itself.
 
                 The incident does not have a resolution because no action or
                 investigation happened. If it is intermittent, the incident
@@ -768,11 +768,11 @@ class ListEventsRequest(proto.Message):
             Optional. A filter expression that filters resources listed
             in the response. The expression takes the following forms:
 
-            -  field=value for ``category`` and ``state``\
-            -  field <, >, <=, or >= value for ``update_time`` Examples:
-               ``category=INCIDENT``,
-               ``update_time>="2000-01-01T11:30:00-04:00"``,
-               ``event_impacts.product.product_name:"Eventarc"``
+            - field=value for ``category`` and ``state``\
+            - field <, >, <=, or >= value for ``update_time`` Examples:
+              ``category=INCIDENT``,
+              ``update_time>="2000-01-01T11:30:00-04:00"``,
+              ``event_impacts.product.product_name:"Eventarc"``
 
             .. raw:: html
 
@@ -910,8 +910,8 @@ class ListOrganizationEventsRequest(proto.Message):
             Optional. A filter expression that filters resources listed
             in the response. The expression takes the following forms:
 
-            -  field=value for ``category`` and ``state``
-            -  field <, >, <=, or >= value for ``update_time``
+            - field=value for ``category`` and ``state``
+            - field <, >, <=, or >= value for ``update_time``
 
             Examples: ``category=INCIDENT``,
             ``update_time>="2000-01-01T11:30:00-04:00"``

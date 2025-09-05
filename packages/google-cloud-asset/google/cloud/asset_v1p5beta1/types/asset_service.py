@@ -80,12 +80,12 @@ class ListAssetsRequest(proto.Message):
 
             Regular expression is also supported. For example:
 
-            -  "compute.googleapis.com.*" snapshots resources whose
-               asset type starts with "compute.googleapis.com".
-            -  ".*Instance" snapshots resources whose asset type ends
-               with "Instance".
-            -  ".*Instance.*" snapshots resources whose asset type
-               contains "Instance".
+            - "compute.googleapis.com.\*" snapshots resources whose
+              asset type starts with "compute.googleapis.com".
+            - ".*Instance" snapshots resources whose asset type ends
+              with "Instance".
+            - ".\ *Instance.*" snapshots resources whose asset type
+              contains "Instance".
 
             See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
             all supported regular expression syntax. If the regular

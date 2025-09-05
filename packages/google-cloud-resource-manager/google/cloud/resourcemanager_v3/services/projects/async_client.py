@@ -606,39 +606,38 @@ class ProjectsAsyncClient:
                 query, then it will return results that match any of the
                 fields. Some eligible fields are:
 
-                -  **``displayName``, ``name``**: Filters by
-                   displayName.
-                -  **``parent``**: Project's parent (for example:
-                   ``folders/123``, ``organizations/*``). Prefer
-                   ``parent`` field over ``parent.type`` and
-                   ``parent.id``.
-                -  **``parent.type``**: Parent's type: ``folder`` or
-                   ``organization``.
-                -  **``parent.id``**: Parent's id number (for example:
-                   ``123``).
-                -  **``id``, ``projectId``**: Filters by projectId.
-                -  **``state``, ``lifecycleState``**: Filters by state.
-                -  **``labels``**: Filters by label name or value.
-                -  **``labels.<key>`` (where ``<key>`` is the name of a
-                   label)**: Filters by label name.
+                - **``displayName``, ``name``**: Filters by displayName.
+                - **``parent``**: Project's parent (for example:
+                  ``folders/123``, ``organizations/*``). Prefer
+                  ``parent`` field over ``parent.type`` and
+                  ``parent.id``.
+                - **``parent.type``**: Parent's type: ``folder`` or
+                  ``organization``.
+                - **``parent.id``**: Parent's id number (for example:
+                  ``123``).
+                - **``id``, ``projectId``**: Filters by projectId.
+                - **``state``, ``lifecycleState``**: Filters by state.
+                - **``labels``**: Filters by label name or value.
+                - **``labels.<key>`` (where ``<key>`` is the name of a
+                  label)**: Filters by label name.
 
                 Search expressions are case insensitive.
 
                 Some examples queries:
 
-                -  **``name:how*``**: The project's name starts with
-                   "how".
-                -  **``name:Howl``**: The project's name is ``Howl`` or
-                   ``howl``.
-                -  **``name:HOWL``**: Equivalent to above.
-                -  **``NAME:howl``**: Equivalent to above.
-                -  **``labels.color:*``**: The project has the label
-                   ``color``.
-                -  **``labels.color:red``**: The project's label
-                   ``color`` has the value ``red``.
-                -  **``labels.color:red labels.size:big``**: The
-                   project's label ``color`` has the value ``red`` or
-                   its label ``size`` has the value ``big``.
+                - **``name:how*``**: The project's name starts with
+                  "how".
+                - **``name:Howl``**: The project's name is ``Howl`` or
+                  ``howl``.
+                - **``name:HOWL``**: Equivalent to above.
+                - **``NAME:howl``**: Equivalent to above.
+                - **``labels.color:*``**: The project has the label
+                  ``color``.
+                - **``labels.color:red``**: The project's label
+                  ``color`` has the value ``red``.
+                - **``labels.color:red labels.size:big``**: The
+                  project's label ``color`` has the value ``red`` or its
+                  label ``size`` has the value ``big``.
 
                 If no query is specified, the call will return projects
                 for which the user has the
@@ -1534,19 +1533,19 @@ class ProjectsAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1617,41 +1616,41 @@ class ProjectsAsyncClient:
 
         The following constraints apply when using ``setIamPolicy()``:
 
-        -  Project does not support ``allUsers`` and
-           ``allAuthenticatedUsers`` as ``members`` in a ``Binding`` of
-           a ``Policy``.
+        - Project does not support ``allUsers`` and
+          ``allAuthenticatedUsers`` as ``members`` in a ``Binding`` of a
+          ``Policy``.
 
-        -  The owner role can be granted to a ``user``,
-           ``serviceAccount``, or a group that is part of an
-           organization. For example, group@myownpersonaldomain.com
-           could be added as an owner to a project in the
-           myownpersonaldomain.com organization, but not the
-           examplepetstore.com organization.
+        - The owner role can be granted to a ``user``,
+          ``serviceAccount``, or a group that is part of an
+          organization. For example, group@myownpersonaldomain.com could
+          be added as an owner to a project in the
+          myownpersonaldomain.com organization, but not the
+          examplepetstore.com organization.
 
-        -  Service accounts can be made owners of a project directly
-           without any restrictions. However, to be added as an owner, a
-           user must be invited using the Cloud Platform console and
-           must accept the invitation.
+        - Service accounts can be made owners of a project directly
+          without any restrictions. However, to be added as an owner, a
+          user must be invited using the Cloud Platform console and must
+          accept the invitation.
 
-        -  A user cannot be granted the owner role using
-           ``setIamPolicy()``. The user must be granted the owner role
-           using the Cloud Platform Console and must explicitly accept
-           the invitation.
+        - A user cannot be granted the owner role using
+          ``setIamPolicy()``. The user must be granted the owner role
+          using the Cloud Platform Console and must explicitly accept
+          the invitation.
 
-        -  Invitations to grant the owner role cannot be sent using
-           ``setIamPolicy()``; they must be sent only using the Cloud
-           Platform Console.
+        - Invitations to grant the owner role cannot be sent using
+          ``setIamPolicy()``; they must be sent only using the Cloud
+          Platform Console.
 
-        -  If the project is not part of an organization, there must be
-           at least one owner who has accepted the Terms of Service
-           (ToS) agreement in the policy. Calling ``setIamPolicy()`` to
-           remove the last ToS-accepted owner from the policy will fail.
-           This restriction also applies to legacy projects that no
-           longer have owners who have accepted the ToS. Edits to IAM
-           policies will be rejected until the lack of a ToS-accepting
-           owner is rectified. If the project is part of an
-           organization, you can remove all owners, potentially making
-           the organization inaccessible.
+        - If the project is not part of an organization, there must be
+          at least one owner who has accepted the Terms of Service (ToS)
+          agreement in the policy. Calling ``setIamPolicy()`` to remove
+          the last ToS-accepted owner from the policy will fail. This
+          restriction also applies to legacy projects that no longer
+          have owners who have accepted the ToS. Edits to IAM policies
+          will be rejected until the lack of a ToS-accepting owner is
+          rectified. If the project is part of an organization, you can
+          remove all owners, potentially making the organization
+          inaccessible.
 
         .. code-block:: python
 
@@ -1719,19 +1718,19 @@ class ProjectsAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.

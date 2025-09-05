@@ -179,12 +179,11 @@ class CreateClusterRequest(proto.Message):
             Required. The logical name of the Redis cluster in the
             customer project with the following restrictions:
 
-            -  Must contain only lowercase letters, numbers, and
-               hyphens.
-            -  Must start with a letter.
-            -  Must be between 1-63 characters.
-            -  Must end with a number or a letter.
-            -  Must be unique within the customer project / location
+            - Must contain only lowercase letters, numbers, and hyphens.
+            - Must start with a letter.
+            - Must be between 1-63 characters.
+            - Must end with a number or a letter.
+            - Must be unique within the customer project / location
         cluster (google.cloud.redis_cluster_v1.types.Cluster):
             Required. The cluster that is to be created.
         request_id (str):
@@ -300,8 +299,8 @@ class UpdateClusterRequest(proto.Message):
             paths field may only include these fields from
             [Cluster][google.cloud.redis.cluster.v1.Cluster]:
 
-            -  ``size_gb``
-            -  ``replica_count``
+            - ``size_gb``
+            - ``replica_count``
         cluster (google.cloud.redis_cluster_v1.types.Cluster):
             Required. Update description. Only fields specified in
             update_mask are updated.
@@ -627,7 +626,7 @@ class BackupClusterRequest(proto.Message):
             the default value is 100 years.
         backup_id (str):
             Optional. The id of the backup to be created. If not
-            specified, the default value ([YYYYMMDDHHMMSS]_[Shortened
+            specified, the default value ([YYYYMMDDHHMMSS]\_[Shortened
             Cluster UID] is used.
 
             This field is a member of `oneof`_ ``_backup_id``.
@@ -1186,8 +1185,8 @@ class Backup(proto.Message):
         name (str):
             Identifier. Full resource path of the backup. the last part
             of the name is the backup id with the following format:
-            [YYYYMMDDHHMMSS]_[Shorted Cluster UID] OR customer specified
-            while backup cluster. Example: 20240515123000_1234
+            [YYYYMMDDHHMMSS]\_[Shorted Cluster UID] OR customer
+            specified while backup cluster. Example: 20240515123000_1234
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the backup was
             created.

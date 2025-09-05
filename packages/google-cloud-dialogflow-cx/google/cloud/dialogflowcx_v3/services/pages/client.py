@@ -1063,7 +1063,7 @@ class PagesClient(metaclass=PagesClientMeta):
                    state represented by the page.
 
                    For more information, see the [Page
-                   guide](\ https://cloud.google.com/dialogflow/cx/docs/concept/page).
+                   guide](https://cloud.google.com/dialogflow/cx/docs/concept/page).
 
         """
         # Create or coerce a protobuf request object.
@@ -1205,7 +1205,7 @@ class PagesClient(metaclass=PagesClientMeta):
                    state represented by the page.
 
                    For more information, see the [Page
-                   guide](\ https://cloud.google.com/dialogflow/cx/docs/concept/page).
+                   guide](https://cloud.google.com/dialogflow/cx/docs/concept/page).
 
         """
         # Create or coerce a protobuf request object.
@@ -1349,7 +1349,7 @@ class PagesClient(metaclass=PagesClientMeta):
                    state represented by the page.
 
                    For more information, see the [Page
-                   guide](\ https://cloud.google.com/dialogflow/cx/docs/concept/page).
+                   guide](https://cloud.google.com/dialogflow/cx/docs/concept/page).
 
         """
         # Create or coerce a protobuf request object.

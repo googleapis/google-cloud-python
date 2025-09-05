@@ -215,12 +215,12 @@ class StreamingRecognitionConfig(proto.Message):
             [RecognitionConfig][google.cloud.speech.v1p1beta1.RecognitionConfig]
             must be set to:
 
-            -  ``command_and_search``
-            -  ``phone_call`` AND additional field
-               ``useEnhanced``\ =\ ``true``
-            -  The ``model`` field is left undefined. In this case the
-               API auto-selects a model based on any other parameters
-               that you set in ``RecognitionConfig``.
+            - ``command_and_search``
+            - ``phone_call`` AND additional field
+              ``useEnhanced``\ =\ ``true``
+            - The ``model`` field is left undefined. In this case the
+              API auto-selects a model based on any other parameters
+              that you set in ``RecognitionConfig``.
         interim_results (bool):
             If ``true``, interim results (tentative hypotheses) may be
             returned as they become available (these interim results are
@@ -353,7 +353,7 @@ class RecognitionConfig(proto.Message):
         profanity_filter (bool):
             If set to ``true``, the server will attempt to filter out
             profanities, replacing all but the initial character in each
-            filtered word with asterisks, e.g. "f***". If set to
+            filtered word with asterisks, e.g. "f**\*". If set to
             ``false`` or omitted, profanities won't be filtered out.
         adaptation (google.cloud.speech_v1p1beta1.types.SpeechAdaptation):
             Speech adaptation configuration improves the accuracy of
@@ -1225,23 +1225,22 @@ class StreamingRecognizeResponse(proto.Message):
 
     Notes:
 
-    -  Only two of the above responses #4 and #7 contain final results;
-       they are indicated by ``is_final: true``. Concatenating these
-       together generates the full transcript: "to be or not to be that
-       is the question".
+    - Only two of the above responses #4 and #7 contain final results;
+      they are indicated by ``is_final: true``. Concatenating these
+      together generates the full transcript: "to be or not to be that
+      is the question".
 
-    -  The others contain interim ``results``. #3 and #6 contain two
-       interim ``results``: the first portion has a high stability and
-       is less likely to change; the second portion has a low stability
-       and is very likely to change. A UI designer might choose to show
-       only high stability ``results``.
+    - The others contain interim ``results``. #3 and #6 contain two
+      interim ``results``: the first portion has a high stability and is
+      less likely to change; the second portion has a low stability and
+      is very likely to change. A UI designer might choose to show only
+      high stability ``results``.
 
-    -  The specific ``stability`` and ``confidence`` values shown above
-       are only for illustrative purposes. Actual values may vary.
+    - The specific ``stability`` and ``confidence`` values shown above
+      are only for illustrative purposes. Actual values may vary.
 
-    -  In each response, only one of these fields will be set:
-       ``error``, ``speech_event_type``, or one or more (repeated)
-       ``results``.
+    - In each response, only one of these fields will be set: ``error``,
+      ``speech_event_type``, or one or more (repeated) ``results``.
 
     Attributes:
         error (google.rpc.status_pb2.Status):

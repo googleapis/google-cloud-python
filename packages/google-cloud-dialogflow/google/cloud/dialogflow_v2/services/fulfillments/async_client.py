@@ -358,7 +358,7 @@ class FulfillmentsAsyncClient:
                    for Friday.
 
                    For more information, see the [fulfillment
-                   guide](\ https://cloud.google.com/dialogflow/docs/fulfillment-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/fulfillment-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -490,7 +490,7 @@ class FulfillmentsAsyncClient:
                    for Friday.
 
                    For more information, see the [fulfillment
-                   guide](\ https://cloud.google.com/dialogflow/docs/fulfillment-overview).
+                   guide](https://cloud.google.com/dialogflow/docs/fulfillment-overview).
 
         """
         # Create or coerce a protobuf request object.

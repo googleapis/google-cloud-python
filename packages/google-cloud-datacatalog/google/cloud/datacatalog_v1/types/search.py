@@ -82,8 +82,8 @@ class SearchCatalogResult(proto.Message):
 
             Examples:
 
-            -  ``projects/{PROJECT_ID}/locations/{LOCATION_ID}/entryGroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}``
-            -  ``projects/{PROJECT_ID}/tagTemplates/{TAG_TEMPLATE_ID}``
+            - ``projects/{PROJECT_ID}/locations/{LOCATION_ID}/entryGroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}``
+            - ``projects/{PROJECT_ID}/tagTemplates/{TAG_TEMPLATE_ID}``
         linked_resource (str):
             The full name of the Google Cloud resource the entry belongs
             to.
@@ -113,13 +113,13 @@ class SearchCatalogResult(proto.Message):
 
             FQNs take two forms:
 
-            -  For non-regionalized resources:
+            - For non-regionalized resources:
 
-               ``{SYSTEM}:{PROJECT}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
+              ``{SYSTEM}:{PROJECT}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
 
-            -  For regionalized resources:
+            - For regionalized resources:
 
-               ``{SYSTEM}:{PROJECT}.{LOCATION_ID}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
+              ``{SYSTEM}:{PROJECT}.{LOCATION_ID}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
 
             Example for a DPMS table:
 

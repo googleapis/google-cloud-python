@@ -36,17 +36,17 @@ class ExternalSystem(proto.Message):
             Full resource name of the external system. The following
             list shows some examples:
 
-            -  ``organizations/1234/sources/5678/findings/123456/externalSystems/jira``
+            - ``organizations/1234/sources/5678/findings/123456/externalSystems/jira``
             -
 
             ``organizations/1234/sources/5678/locations/us/findings/123456/externalSystems/jira``
 
-            -  ``folders/1234/sources/5678/findings/123456/externalSystems/jira``
+            - ``folders/1234/sources/5678/findings/123456/externalSystems/jira``
             -
 
             ``folders/1234/sources/5678/locations/us/findings/123456/externalSystems/jira``
 
-            -  ``projects/1234/sources/5678/findings/123456/externalSystems/jira``
+            - ``projects/1234/sources/5678/findings/123456/externalSystems/jira``
             -
 
             ``projects/1234/sources/5678/locations/us/findings/123456/externalSystems/jira``

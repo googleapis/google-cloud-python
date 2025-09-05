@@ -80,8 +80,8 @@ class Input(proto.Message):
             [type][google.cloud.video.livestream.v1.Input.type], for
             example:
 
-            -  ``RTMP_PUSH``: ``rtmp://1.2.3.4/live/{STREAM-ID}``
-            -  ``SRT_PUSH``: ``srt://1.2.3.4:4201?streamid={STREAM-ID}``
+            - ``RTMP_PUSH``: ``rtmp://1.2.3.4/live/{STREAM-ID}``
+            - ``SRT_PUSH``: ``srt://1.2.3.4:4201?streamid={STREAM-ID}``
         preprocessing_config (google.cloud.video.live_stream_v1.types.PreprocessingConfig):
             Preprocessing configurations.
         security_rules (google.cloud.video.live_stream_v1.types.Input.SecurityRule):
@@ -1763,8 +1763,8 @@ class Encryption(proto.Message):
             scheme (str):
                 Required. Specify the encryption scheme, supported schemes:
 
-                -  ``cenc`` - AES-CTR subsample
-                -  ``cbcs``- AES-CBC subsample pattern
+                - ``cenc`` - AES-CTR subsample
+                - ``cbcs``- AES-CBC subsample pattern
         """
 
         scheme: str = proto.Field(

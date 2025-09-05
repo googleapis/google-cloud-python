@@ -40,7 +40,7 @@ class SecurityMarks(proto.Message):
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             The following list shows some examples:
 
-            -  ``organizations/{organization_id}/assets/{asset_id}/securityMarks``
+            - ``organizations/{organization_id}/assets/{asset_id}/securityMarks``
             -
 
             ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks``
@@ -50,31 +50,31 @@ class SecurityMarks(proto.Message):
             Mutable user specified security marks belonging to the
             parent resource. Constraints are as follows:
 
-            -  Keys and values are treated as case insensitive
-            -  Keys must be between 1 - 256 characters (inclusive)
-            -  Keys must be letters, numbers, underscores, or dashes
-            -  Values have leading and trailing whitespace trimmed,
-               remaining characters must be between 1 - 4096 characters
-               (inclusive)
+            - Keys and values are treated as case insensitive
+            - Keys must be between 1 - 256 characters (inclusive)
+            - Keys must be letters, numbers, underscores, or dashes
+            - Values have leading and trailing whitespace trimmed,
+              remaining characters must be between 1 - 4096 characters
+              (inclusive)
         canonical_name (str):
             The canonical name of the marks. The following list shows
             some examples:
 
-            -  ``organizations/{organization_id}/assets/{asset_id}/securityMarks``
+            - ``organizations/{organization_id}/assets/{asset_id}/securityMarks``
             -
 
             ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks``
             +
             ``organizations/{organization_id}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks``
 
-            -  ``folders/{folder_id}/assets/{asset_id}/securityMarks``
+            - ``folders/{folder_id}/assets/{asset_id}/securityMarks``
             -
 
             ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}/securityMarks``
             +
             ``folders/{folder_id}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks``
 
-            -  ``projects/{project_number}/assets/{asset_id}/securityMarks``
+            - ``projects/{project_number}/assets/{asset_id}/securityMarks``
             -
 
             ``projects/{project_number}/sources/{source_id}/findings/{finding_id}/securityMarks``

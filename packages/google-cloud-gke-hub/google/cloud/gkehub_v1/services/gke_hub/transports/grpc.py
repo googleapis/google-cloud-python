@@ -117,8 +117,8 @@ class GkeHubGrpcTransport(GkeHubTransport):
 
     The GKE Hub service operates on the following resources:
 
-    -  [Membership][google.cloud.gkehub.v1.Membership]
-    -  [Feature][google.cloud.gkehub.v1.Feature]
+    - [Membership][google.cloud.gkehub.v1.Membership]
+    - [Feature][google.cloud.gkehub.v1.Feature]
 
     GKE Hub is currently available in the global region and all regions
     in https://cloud.google.com/compute/docs/regions-zones. Feature is

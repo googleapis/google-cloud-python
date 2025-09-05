@@ -44,9 +44,9 @@ class SchemaRegistry(proto.Message):
             The instance name {schema_registry} can contain the
             following:
 
-            -  Up to 255 characters.
-            -  Letters (uppercase or lowercase), numbers, and
-               underscores.
+            - Up to 255 characters.
+            - Letters (uppercase or lowercase), numbers, and
+              underscores.
         contexts (MutableSequence[str]):
             Output only. The contexts of the schema
             registry instance.
@@ -72,10 +72,10 @@ class Context(proto.Message):
             ``projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}``
             The context name {context} can contain the following:
 
-            -  Up to 255 characters.
-            -  Allowed characters: letters (uppercase or lowercase),
-               numbers, and the following special characters: ``.``,
-               ``-``, ``_``, ``+``, ``%``, and ``~``.
+            - Up to 255 characters.
+            - Allowed characters: letters (uppercase or lowercase),
+              numbers, and the following special characters: ``.``,
+              ``-``, ``_``, ``+``, ``%``, and ``~``.
         subjects (MutableSequence[str]):
             Optional. The subjects of the context.
     """
@@ -175,10 +175,10 @@ class SchemaSubject(proto.Message):
 
             Subject name {subject} can contain the following:
 
-            -  Up to 255 UTF-8 bytes.
-            -  Allowed characters: letters (uppercase or lowercase),
-               numbers, and the following special characters: ``.``,
-               ``-``, ``_``, ``+``, ``%``, and ``~``.
+            - Up to 255 UTF-8 bytes.
+            - Allowed characters: letters (uppercase or lowercase),
+              numbers, and the following special characters: ``.``,
+              ``-``, ``_``, ``+``, ``%``, and ``~``.
         versions (MutableSequence[str]):
             The versions of the subject.
     """
@@ -327,14 +327,14 @@ class SchemaMode(proto.Message):
     r"""SchemaMode represents the mode of a schema registry or a specific
     subject. Four modes are supported:
 
-    -  NONE: deprecated. This was the default mode for a subject, but
-       now the default is unset (which means use the global schema
-       registry setting)
-    -  READONLY: The schema registry is in read-only mode.
-    -  READWRITE: The schema registry is in read-write mode, which
-       allows limited write operations on the schema.
-    -  IMPORT: The schema registry is in import mode, which allows more
-       editing operations on the schema for data importing purposes.
+    - NONE: deprecated. This was the default mode for a subject, but now
+      the default is unset (which means use the global schema registry
+      setting)
+    - READONLY: The schema registry is in read-only mode.
+    - READWRITE: The schema registry is in read-write mode, which allows
+      limited write operations on the schema.
+    - IMPORT: The schema registry is in import mode, which allows more
+      editing operations on the schema for data importing purposes.
 
     Attributes:
         mode (google.cloud.managedkafka_schemaregistry_v1.types.SchemaMode.ModeType):

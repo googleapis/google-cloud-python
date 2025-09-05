@@ -52,10 +52,10 @@ class SessionEntityType(proto.Message):
             Required. The unique identifier of this session entity type.
             Supported formats:
 
-            -  ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -126,10 +126,10 @@ class ListSessionEntityTypesRequest(proto.Message):
             Required. The session to list all session entity types from.
             Supported formats:
 
-            -  \`projects//agent/sessions/,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - \`projects//agent/sessions/,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -197,10 +197,10 @@ class GetSessionEntityTypeRequest(proto.Message):
             Required. The name of the session entity type. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -223,10 +223,10 @@ class CreateSessionEntityTypeRequest(proto.Message):
             Required. The session to create a session entity type for.
             Supported formats:
 
-            -  \`projects//agent/sessions/,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - \`projects//agent/sessions/,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -280,10 +280,10 @@ class DeleteSessionEntityTypeRequest(proto.Message):
             Required. The name of the entity type to delete. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/ <Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume

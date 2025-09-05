@@ -928,6 +928,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-cloudsecuritycompliance": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-cloudsecuritycompliance",
+            "extra-files": [
+                "google/cloud/cloudsecuritycompliance/gapic_version.py",
+                "google/cloud/cloudsecuritycompliance_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.cloudsecuritycompliance.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-commerce-consumer-procurement": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

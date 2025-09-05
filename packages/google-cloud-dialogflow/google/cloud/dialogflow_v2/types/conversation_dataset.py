@@ -69,7 +69,7 @@ class InputConfig(proto.Message):
 
     Attributes:
         gcs_source (google.cloud.dialogflow_v2.types.GcsSources):
-            The Cloud Storage URI has the form gs:////agent*.json.
+            The Cloud Storage URI has the form gs:////agent\*.json.
             Wildcards are allowed and will be expanded into all matched
             JSON files, which will be read as one conversation per file.
 

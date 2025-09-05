@@ -388,9 +388,9 @@ class OracleConnectionProfile(proto.Message):
             SSL configuration for the connection to the source Oracle
             database.
 
-            -  Only ``SERVER_ONLY`` configuration is supported for
-               Oracle SSL.
-            -  SSL is supported for Oracle versions 12 and above.
+            - Only ``SERVER_ONLY`` configuration is supported for Oracle
+              SSL.
+            - SSL is supported for Oracle versions 12 and above.
         static_service_ip_connectivity (google.cloud.clouddms_v1.types.StaticServiceIpConnectivity):
             Static Service IP connectivity.
 
@@ -721,10 +721,10 @@ class CloudSqlSettings(proto.Message):
         availability_type (google.cloud.clouddms_v1.types.CloudSqlSettings.SqlAvailabilityType):
             Optional. Availability type. Potential values:
 
-            -  ``ZONAL``: The instance serves data from only one zone.
-               Outages in that zone affect data availability.
-            -  ``REGIONAL``: The instance can serve data from more than
-               one zone in a region (it is highly available).
+            - ``ZONAL``: The instance serves data from only one zone.
+              Outages in that zone affect data availability.
+            - ``REGIONAL``: The instance can serve data from more than
+              one zone in a region (it is highly available).
         edition (google.cloud.clouddms_v1.types.CloudSqlSettings.Edition):
             Optional. The edition of the given Cloud SQL
             instance.
@@ -1367,14 +1367,14 @@ class MigrationJob(proto.Message):
             key name used for the migration job. This field supports all
             migration jobs types except for:
 
-            -  Mysql to Mysql (use the cmek field in the cloudsql
-               connection profile instead).
-            -  PostrgeSQL to PostgreSQL (use the cmek field in the
-               cloudsql connection profile instead).
-            -  PostgreSQL to AlloyDB (use the kms_key_name field in the
-               alloydb connection profile instead). Each Cloud CMEK key
-               has the following format:
-               projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
+            - Mysql to Mysql (use the cmek field in the cloudsql
+              connection profile instead).
+            - PostrgeSQL to PostgreSQL (use the cmek field in the
+              cloudsql connection profile instead).
+            - PostgreSQL to AlloyDB (use the kms_key_name field in the
+              alloydb connection profile instead). Each Cloud CMEK key
+              has the following format:
+              projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
         performance_config (google.cloud.clouddms_v1.types.MigrationJob.PerformanceConfig):
             Optional. Data dump parallelism settings used
             by the migration. Currently applicable only for

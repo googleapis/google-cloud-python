@@ -810,8 +810,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             google.cloud.billing_v1.types.BillingAccount:
                 A billing account in the
                    [Google Cloud
-                   Console](\ https://console.cloud.google.com/). You
-                   can assign a billing account to one or more projects.
+                   Console](https://console.cloud.google.com/). You can
+                   assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -906,10 +906,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 Optional. The parent resource to list billing accounts
                 from. Format:
 
-                -  ``organizations/{organization_id}``, for example,
-                   ``organizations/12345678``
-                -  ``billingAccounts/{billing_account_id}``, for
-                   example, ``billingAccounts/012345-567890-ABCDEF``
+                - ``organizations/{organization_id}``, for example,
+                  ``organizations/12345678``
+                - ``billingAccounts/{billing_account_id}``, for example,
+                  ``billingAccounts/012345-567890-ABCDEF``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1056,8 +1056,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             google.cloud.billing_v1.types.BillingAccount:
                 A billing account in the
                    [Google Cloud
-                   Console](\ https://console.cloud.google.com/). You
-                   can assign a billing account to one or more projects.
+                   Console](https://console.cloud.google.com/). You can
+                   assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -1178,8 +1178,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 Optional. The parent to create a billing account from.
                 Format:
 
-                -  ``billingAccounts/{billing_account_id}``, for
-                   example, ``billingAccounts/012345-567890-ABCDEF``
+                - ``billingAccounts/{billing_account_id}``, for example,
+                  ``billingAccounts/012345-567890-ABCDEF``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1196,8 +1196,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             google.cloud.billing_v1.types.BillingAccount:
                 A billing account in the
                    [Google Cloud
-                   Console](\ https://console.cloud.google.com/). You
-                   can assign a billing account to one or more projects.
+                   Console](https://console.cloud.google.com/). You can
+                   assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -1733,19 +1733,19 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1876,19 +1876,19 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2117,8 +2117,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             google.cloud.billing_v1.types.BillingAccount:
                 A billing account in the
                    [Google Cloud
-                   Console](\ https://console.cloud.google.com/). You
-                   can assign a billing account to one or more projects.
+                   Console](https://console.cloud.google.com/). You can
+                   assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.

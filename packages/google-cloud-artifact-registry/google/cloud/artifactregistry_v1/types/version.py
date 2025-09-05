@@ -150,8 +150,8 @@ class ListVersionsRequest(proto.Message):
             request. Filter rules are case insensitive. The fields
             eligible for filtering are:
 
-            -  ``name``
-            -  ``annotations``
+            - ``name``
+            - ``annotations``
 
             Examples of using a filter:
 
@@ -160,27 +160,27 @@ class ListVersionsRequest(proto.Message):
             ``us-central`` region, in repository ``my-repo``, append the
             following filter expression to your request:
 
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my-version"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my-version"``
 
             You can also use wildcards to match any number of characters
             before or after the value:
 
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version"``
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my*"``
-            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version*"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my*"``
+            - ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version*"``
 
             To filter the results of your request to versions with the
             annotation key-value pair [``external_link``:
             ``external_link_value``], append the following filter
             expression to your request:
 
-            -  ``"annotations.external_link:external_link_value"``
+            - ``"annotations.external_link:external_link_value"``
 
             To filter just for a specific annotation key
             ``external_link``, append the following filter expression to
             your request:
 
-            -  ``"annotations.external_link"``
+            - ``"annotations.external_link"``
 
             If the annotation key or value contains special characters,
             you can escape them by surrounding the value with backticks.
@@ -189,12 +189,12 @@ class ListVersionsRequest(proto.Message):
             [``external.link``:``https://example.com/my-version``],
             append the following filter expression to your request:
 
-            -  :literal:`"annotations.`external.link`:`https://example.com/my-version`"`
+            - :literal:`"annotations.`external.link\`:\`https://example.com/my-version\`"`
 
             You can also filter with annotations with a wildcard to
             match any number of characters before or after the value:
 
-            -  :literal:`"annotations.*_link:`*example.com*`"`
+            - :literal:`"annotations.*_link:\`*example.com*\`"`
     """
 
     parent: str = proto.Field(

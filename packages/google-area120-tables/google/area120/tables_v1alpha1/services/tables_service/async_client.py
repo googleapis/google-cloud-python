@@ -67,17 +67,17 @@ class TablesServiceAsyncClient:
     """The Tables Service provides an API for reading and updating tables.
     It defines the following resource model:
 
-    -  The API has a collection of
-       [Table][google.area120.tables.v1alpha1.Table] resources, named
-       ``tables/*``
+    - The API has a collection of
+      [Table][google.area120.tables.v1alpha1.Table] resources, named
+      ``tables/*``
 
-    -  Each Table has a collection of
-       [Row][google.area120.tables.v1alpha1.Row] resources, named
-       ``tables/*/rows/*``
+    - Each Table has a collection of
+      [Row][google.area120.tables.v1alpha1.Row] resources, named
+      ``tables/*/rows/*``
 
-    -  The API has a collection of
-       [Workspace][google.area120.tables.v1alpha1.Workspace] resources,
-       named ``workspaces/*``.
+    - The API has a collection of
+      [Workspace][google.area120.tables.v1alpha1.Workspace] resources,
+      named ``workspaces/*``.
     """
 
     _client: TablesServiceClient

@@ -212,10 +212,10 @@ class Condition(proto.Message):
 class Rule(proto.Message):
     r"""A rule is a condition-action pair
 
-    -  A condition defines when a rule is to be triggered.
-    -  An action specifies what occurs on that trigger. Currently rules
-       only work for [controls][google.cloud.retail.v2beta.Control] with
-       [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
+    - A condition defines when a rule is to be triggered.
+    - An action specifies what occurs on that trigger. Currently rules
+      only work for [controls][google.cloud.retail.v2beta.Control] with
+      [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -317,10 +317,10 @@ class Rule(proto.Message):
 
                 Examples:
 
-                -  To boost products with product ID "product_1" or
-                   "product_2", and color "Red" or "Blue": *(id:
-                   ANY("product_1", "product_2"))* *AND* *(colorFamilies:
-                   ANY("Red", "Blue"))*
+                - To boost products with product ID "product_1" or
+                  "product_2", and color "Red" or "Blue": *(id:
+                  ANY("product_1", "product_2"))* *AND* *(colorFamilies:
+                  ANY("Red", "Blue"))*
         """
 
         boost: float = proto.Field(
@@ -333,39 +333,39 @@ class Rule(proto.Message):
         )
 
     class FilterAction(proto.Message):
-        r"""-  Rule Condition:
+        r"""- Rule Condition:
 
-           -  No
-              [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
-              provided is a global match.
-           -  1 or more
-              [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
-              provided are combined with OR operator.
+          - No
+            [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+            provided is a global match.
+          - 1 or more
+            [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+            provided are combined with OR operator.
 
-        -  Action Input: The request query and filter that are applied to
-           the retrieved products, in addition to any filters already
-           provided with the SearchRequest. The AND operator is used to
-           combine the query's existing filters with the filter rule(s).
-           NOTE: May result in 0 results when filters conflict.
+        - Action Input: The request query and filter that are applied to the
+          retrieved products, in addition to any filters already provided
+          with the SearchRequest. The AND operator is used to combine the
+          query's existing filters with the filter rule(s). NOTE: May result
+          in 0 results when filters conflict.
 
-        -  Action Result: Filters the returned objects to be ONLY those that
-           passed the filter.
+        - Action Result: Filters the returned objects to be ONLY those that
+          passed the filter.
 
         Attributes:
             filter (str):
                 A filter to apply on the matching condition results.
                 Supported features:
 
-                -  [filter][google.cloud.retail.v2beta.Rule.FilterAction.filter]
-                   must be set.
-                -  Filter syntax is identical to
-                   [SearchRequest.filter][google.cloud.retail.v2beta.SearchRequest.filter].
-                   For more information, see
-                   `Filter </retail/docs/filter-and-order#filter>`__.
-                -  To filter products with product ID "product_1" or
-                   "product_2", and color "Red" or "Blue": *(id:
-                   ANY("product_1", "product_2"))* *AND* *(colorFamilies:
-                   ANY("Red", "Blue"))*
+                - [filter][google.cloud.retail.v2beta.Rule.FilterAction.filter]
+                  must be set.
+                - Filter syntax is identical to
+                  [SearchRequest.filter][google.cloud.retail.v2beta.SearchRequest.filter].
+                  For more information, see
+                  `Filter </retail/docs/filter-and-order#filter>`__.
+                - To filter products with product ID "product_1" or
+                  "product_2", and color "Red" or "Blue": *(id:
+                  ANY("product_1", "product_2"))* *AND* *(colorFamilies:
+                  ANY("Red", "Blue"))*
         """
 
         filter: str = proto.Field(
@@ -376,10 +376,10 @@ class Rule(proto.Message):
     class RedirectAction(proto.Message):
         r"""Redirects a shopper to a specific page.
 
-        -  Rule Condition: Must specify
-           [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms].
-        -  Action Input: Request Query
-        -  Action Result: Redirects shopper to provided uri.
+        - Rule Condition: Must specify
+          [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms].
+        - Action Input: Request Query
+        - Action Result: Redirects shopper to provided uri.
 
         Attributes:
             redirect_uri (str):
@@ -396,8 +396,8 @@ class Rule(proto.Message):
         r"""Creates a set of terms that will be treated as synonyms of each
         other. Example: synonyms of "sneakers" and "shoes":
 
-        -  "sneakers" will use a synonym of "shoes".
-        -  "shoes" will use a synonym of "sneakers".
+        - "sneakers" will use a synonym of "shoes".
+        - "shoes" will use a synonym of "sneakers".
 
         Attributes:
             synonyms (MutableSequence[str]):
@@ -521,16 +521,16 @@ class Rule(proto.Message):
         r"""Force returns an attribute/facet in the request around a certain
         position or above.
 
-        -  Rule Condition: Must specify non-empty
-           [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
-           (for search only) or
-           [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
-           (for browse only), but can't specify both.
+        - Rule Condition: Must specify non-empty
+          [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+          (for search only) or
+          [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
+          (for browse only), but can't specify both.
 
-        -  Action Inputs: attribute name, position
+        - Action Inputs: attribute name, position
 
-        -  Action Result: Will force return a facet key around a certain
-           position or above if the condition is satisfied.
+        - Action Result: Will force return a facet key around a certain
+          position or above if the condition is satisfied.
 
         Example: Suppose the query is "shoes", the
         [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
@@ -588,16 +588,16 @@ class Rule(proto.Message):
     class RemoveFacetAction(proto.Message):
         r"""Removes an attribute/facet in the request if is present.
 
-        -  Rule Condition: Must specify non-empty
-           [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
-           (for search only) or
-           [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
-           (for browse only), but can't specify both.
+        - Rule Condition: Must specify non-empty
+          [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+          (for search only) or
+          [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
+          (for browse only), but can't specify both.
 
-        -  Action Input: attribute name
+        - Action Input: attribute name
 
-        -  Action Result: Will remove the attribute (as a facet) from the
-           request if it is present.
+        - Action Result: Will remove the attribute (as a facet) from the
+          request if it is present.
 
         Example: Suppose the query is "shoes", the
         [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
@@ -623,17 +623,17 @@ class Rule(proto.Message):
         r"""Pins one or more specified products to a specific position in the
         results.
 
-        -  Rule Condition: Must specify non-empty
-           [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
-           (for search only) or
-           [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
-           (for browse only), but can't specify both.
+        - Rule Condition: Must specify non-empty
+          [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+          (for search only) or
+          [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
+          (for browse only), but can't specify both.
 
-        -  Action Input: mapping of ``[pin_position, product_id]`` pairs
-           (pin position uses 1-based indexing).
+        - Action Input: mapping of ``[pin_position, product_id]`` pairs (pin
+          position uses 1-based indexing).
 
-        -  Action Result: Will pin products with matching ids to the
-           position specified in the final result order.
+        - Action Result: Will pin products with matching ids to the position
+          specified in the final result order.
 
         Example: Suppose the query is ``shoes``, the
         [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
@@ -950,15 +950,15 @@ class FulfillmentInfo(proto.Message):
 
             Supported values:
 
-            -  "pickup-in-store"
-            -  "ship-to-store"
-            -  "same-day-delivery"
-            -  "next-day-delivery"
-            -  "custom-type-1"
-            -  "custom-type-2"
-            -  "custom-type-3"
-            -  "custom-type-4"
-            -  "custom-type-5"
+            - "pickup-in-store"
+            - "ship-to-store"
+            - "same-day-delivery"
+            - "next-day-delivery"
+            - "custom-type-1"
+            - "custom-type-2"
+            - "custom-type-3"
+            - "custom-type-4"
+            - "custom-type-5"
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
@@ -1121,9 +1121,9 @@ class PriceInfo(proto.Message):
             The costs associated with the sale of a particular product.
             Used for gross profit reporting.
 
-            -  Profit =
-               [price][google.cloud.retail.v2beta.PriceInfo.price] -
-               [cost][google.cloud.retail.v2beta.PriceInfo.cost]
+            - Profit =
+              [price][google.cloud.retail.v2beta.PriceInfo.price] -
+              [cost][google.cloud.retail.v2beta.PriceInfo.cost]
 
             Google Merchant Center property
             `cost_of_goods_sold <https://support.google.com/merchants/answer/9017895>`__.
@@ -1319,13 +1319,13 @@ class UserInfo(proto.Message):
 
             This should not be set when:
 
-            -  setting
-               [SearchRequest.user_info][google.cloud.retail.v2beta.SearchRequest.user_info].
-            -  using the JavaScript tag in
-               [UserEventService.CollectUserEvent][google.cloud.retail.v2beta.UserEventService.CollectUserEvent]
-               or if
-               [direct_user_request][google.cloud.retail.v2beta.UserInfo.direct_user_request]
-               is set.
+            - setting
+              [SearchRequest.user_info][google.cloud.retail.v2beta.SearchRequest.user_info].
+            - using the JavaScript tag in
+              [UserEventService.CollectUserEvent][google.cloud.retail.v2beta.UserEventService.CollectUserEvent]
+              or if
+              [direct_user_request][google.cloud.retail.v2beta.UserInfo.direct_user_request]
+              is set.
         user_agent (str):
             User agent as included in the HTTP header. The field must be
             a UTF-8 encoded string with a length limit of 1,000
@@ -1391,21 +1391,20 @@ class LocalInventory(proto.Message):
             This field needs to pass all below criteria, otherwise an
             INVALID_ARGUMENT error is returned:
 
-            -  At most 30 attributes are allowed.
-            -  The key must be a UTF-8 encoded string with a length
-               limit of 32 characters.
-            -  The key must match the pattern:
-               ``[a-zA-Z0-9][a-zA-Z0-9_]*``. For example, key0LikeThis
-               or KEY_1_LIKE_THIS.
-            -  The attribute values must be of the same type (text or
-               number).
-            -  Only 1 value is allowed for each attribute.
-            -  For text values, the length limit is 256 UTF-8
-               characters.
-            -  The attribute does not support search. The ``searchable``
-               field should be unset or set to false.
-            -  The max summed total bytes of custom attribute keys and
-               values per product is 5MiB.
+            - At most 30 attributes are allowed.
+            - The key must be a UTF-8 encoded string with a length limit
+              of 32 characters.
+            - The key must match the pattern:
+              ``[a-zA-Z0-9][a-zA-Z0-9_]*``. For example, key0LikeThis or
+              KEY_1_LIKE_THIS.
+            - The attribute values must be of the same type (text or
+              number).
+            - Only 1 value is allowed for each attribute.
+            - For text values, the length limit is 256 UTF-8 characters.
+            - The attribute does not support search. The ``searchable``
+              field should be unset or set to false.
+            - The max summed total bytes of custom attribute keys and
+              values per product is 5MiB.
         fulfillment_types (MutableSequence[str]):
             Optional. Supported fulfillment types. Valid fulfillment
             type values include commonly used types (such as pickup in
@@ -1415,15 +1414,15 @@ class LocalInventory(proto.Message):
 
             Supported values:
 
-            -  "pickup-in-store"
-            -  "ship-to-store"
-            -  "same-day-delivery"
-            -  "next-day-delivery"
-            -  "custom-type-1"
-            -  "custom-type-2"
-            -  "custom-type-3"
-            -  "custom-type-4"
-            -  "custom-type-5"
+            - "pickup-in-store"
+            - "ship-to-store"
+            - "same-day-delivery"
+            - "next-day-delivery"
+            - "custom-type-1"
+            - "custom-type-2"
+            - "custom-type-3"
+            - "custom-type-4"
+            - "custom-type-5"
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.

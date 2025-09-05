@@ -915,10 +915,10 @@ class TestCasesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [RunTestCaseMetadata][google.cloud.dialogflow.cx.v3.RunTestCaseMetadata]
-        -  ``response``:
-           [RunTestCaseResponse][google.cloud.dialogflow.cx.v3.RunTestCaseResponse]
+        - ``metadata``:
+          [RunTestCaseMetadata][google.cloud.dialogflow.cx.v3.RunTestCaseMetadata]
+        - ``response``:
+          [RunTestCaseResponse][google.cloud.dialogflow.cx.v3.RunTestCaseResponse]
 
         .. code-block:: python
 
@@ -1025,10 +1025,10 @@ class TestCasesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [BatchRunTestCasesMetadata][google.cloud.dialogflow.cx.v3.BatchRunTestCasesMetadata]
-        -  ``response``:
-           [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3.BatchRunTestCasesResponse]
+        - ``metadata``:
+          [BatchRunTestCasesMetadata][google.cloud.dialogflow.cx.v3.BatchRunTestCasesMetadata]
+        - ``response``:
+          [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3.BatchRunTestCasesResponse]
 
         .. code-block:: python
 
@@ -1226,10 +1226,10 @@ class TestCasesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ImportTestCasesMetadata][google.cloud.dialogflow.cx.v3.ImportTestCasesMetadata]
-        -  ``response``:
-           [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3.ImportTestCasesResponse]
+        - ``metadata``:
+          [ImportTestCasesMetadata][google.cloud.dialogflow.cx.v3.ImportTestCasesMetadata]
+        - ``response``:
+          [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3.ImportTestCasesResponse]
 
         .. code-block:: python
 
@@ -1339,10 +1339,10 @@ class TestCasesAsyncClient:
         The returned ``Operation`` type has the following
         method-specific fields:
 
-        -  ``metadata``:
-           [ExportTestCasesMetadata][google.cloud.dialogflow.cx.v3.ExportTestCasesMetadata]
-        -  ``response``:
-           [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3.ExportTestCasesResponse]
+        - ``metadata``:
+          [ExportTestCasesMetadata][google.cloud.dialogflow.cx.v3.ExportTestCasesMetadata]
+        - ``response``:
+          [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3.ExportTestCasesResponse]
 
         .. code-block:: python
 

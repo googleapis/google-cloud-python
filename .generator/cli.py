@@ -59,10 +59,6 @@ def _read_text_file(path: str) -> str:
 
     Returns:
         str: The contents of the file.
-
-    Raises:
-        FileNotFoundError: If the file is not found at the specified path.
-        IOError: If there is an issue reading the file.
     """
 
     with open(path, "r") as f:
@@ -75,13 +71,6 @@ def _write_text_file(path: str, updated_content: str):
     Args:
         path(str): The file path to write.
         updated_content(str): The contents to write to the file.
-
-    Returns:
-        None
-
-    Raises:
-        FileNotFoundError: If the file is not found at the specified path.
-        IOError: If there is an issue writing the file.
     """
 
     with open(path, "w") as f:
@@ -111,14 +100,7 @@ def _write_json_file(path: str, updated_content: Dict):
 
     Args:
         path(str): The file path to write.
-        updated_content(Dict): The dictionary to write
-
-    Returns:
-        None
-
-    Raises:
-        FileNotFoundError: If the file is not found at the specified path.
-        IOError: If there is an issue writing the file.
+        updated_content(Dict): The dictionary to write.
     """
 
     with open(path, "w") as f:
@@ -365,10 +347,6 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     Path(f"{output}/{path_to_library}/docs/CHANGELOG.md").unlink(missing_ok=True)
     Path(f"{output}/{path_to_library}/docs/README.rst").unlink(missing_ok=True)
 
-    # Remove  `.repo-metadata.json` file to avoid ownership issues between
-    # the container and librarian. Instead, preserve this file in the destination.
-    Path(f"{output}/{path_to_library}/.repo-metadata.json").unlink(missing_ok=True)
-
     # The glob loops are already safe, as they do nothing if no files match.
     for post_processing_file in glob.glob(
         f"{output}/{path_to_library}/scripts/client-post-processing/*.yaml"
@@ -480,9 +458,6 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
     sessions = [
         "unit-3.9",
-        "unit-3.10",
-        "unit-3.11",
-        "unit-3.12",
         "unit-3.13",
         "docs",
         "system-3.13",
@@ -514,23 +489,23 @@ def _get_libraries_to_prepare_for_release(library_entries: Dict) -> List[dict]:
     ]
 
 
-def _update_global_changelog(source_path: str, output_path: str, libraries: List[dict]):
+def _update_global_changelog(
+    changelog_src: str, changelog_dest: str, all_libraries: List[dict]
+):
     """Updates the versions of libraries in the main CHANGELOG.md.
 
     Args:
-        source_path(str): Path to the changelog file to read.
-        output_path(str): Path to the changelog file to write.
-        libraries(Dict): Dictionary containing all of the library versions to
+        changelog_src(str): Path to the changelog file to read.
+        changelog_dest(str): Path to the changelog file to write.
+        all_libraries(Dict): Dictionary containing all of the library versions to
         modify.
-
-    Returns: None
     """
 
     def replace_version_in_changelog(content):
         new_content = content
-        for individual_library in libraries:
-            package_name = individual_library["id"]
-            version = individual_library["version"]
+        for library in all_libraries:
+            package_name = library["id"]
+            version = library["version"]
             # Find the entry for the given package in the format`<package name>==<version>`
             # Replace the `<version>` part of the string.
             pattern = re.compile(f"(\\[{re.escape(package_name)})(==)([\\d\\.]+)(\\])")
@@ -538,15 +513,38 @@ def _update_global_changelog(source_path: str, output_path: str, libraries: List
             new_content = pattern.sub(replacement, new_content)
         return new_content
 
-    updated_content = replace_version_in_changelog(_read_text_file(source_path))
-    _write_text_file(output_path, updated_content)
+    updated_content = replace_version_in_changelog(_read_text_file(changelog_src))
+    _write_text_file(changelog_dest, updated_content)
+
+
+def _process_version_file(content, version, version_path) -> str:
+    """This function searches for a version string in the
+    given content, replaces the version and returns the content.
+
+    Args:
+        content(str): The contents where the version string should be replaced.
+        version(str): The new version of the library.
+        version_path(str): The relative path to the version file
+
+    Raises: ValueError if the version string could not be found in the given content
+
+    Returns: A string with the modified content.
+    """
+    pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+    replacement_string = f"\\g<1>{version}\\g<3>"
+    new_content, num_replacements = re.subn(pattern, replacement_string, content)
+    if num_replacements == 0:
+        raise ValueError(
+            f"Could not find version string in {version_path}. File was not modified."
+        )
+    return new_content
 
 
 def _update_version_for_library(
     repo: str, output: str, path_to_library: str, version: str
 ):
-    """Updates the version string in various files for a library, such as
-    gapic_version.py and snippet_metadata.json files.
+    """Updates the version string in `**/gapic_version.py` and `samples/**/snippet_metadata.json`
+        for a given library.
 
     Args:
         repo(str): This directory will contain all directories that make up a
@@ -556,26 +554,17 @@ def _update_version_for_library(
             code should be placed.
         path_to_library(str): Relative path to the library to update
         version(str): The new version of the library
+
+    Raises: `ValueError` if a version string could not be located in `**/gapic_version.py`
+        within the given library.
     """
 
     # Find and update gapic_version.py files
     gapic_version_files = Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py")
     for version_file in gapic_version_files:
-
-        def process_version_file(content):
-            pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
-            replacement_string = f"\\g<1>{version}\\g<3>"
-            new_content, num_replacements = re.subn(
-                pattern, replacement_string, content
-            )
-            print(content)
-            if num_replacements == 0:
-                raise ValueError(
-                    f"Could not find version string in {version_file}. File was not modified."
-                )
-            return new_content
-
-        updated_content = process_version_file(_read_text_file(version_file))
+        updated_content = _process_version_file(
+            _read_text_file(version_file), version, version_file
+        )
         output_path = f"{output}/{version_file.relative_to(repo)}"
         _write_text_file(output_path, updated_content)
 
@@ -767,7 +756,7 @@ if __name__ == "__main__":  # pragma: NO COVER
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
         ("build", "Run unit tests via nox for the generated library."),
-        ("release-init", "Prepare to release a specific library"),
+        ("release-init", "Prepare to release a given set of libraries"),
     ]:
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
@@ -799,7 +788,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             "--repo",
             type=str,
             help="Path to the directory in the container which contains google-cloud-python repository",
-            default=SOURCE_DIR,
+            default=REPO_DIR,
         )
 
     if len(sys.argv) == 1:

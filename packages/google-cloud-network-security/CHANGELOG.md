@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.18...google-cloud-network-security-v0.9.19) (2025-09-04)
+
+
+### Features
+
+* [google-cloud-network-security] add address groups API ([#14332](https://github.com/googleapis/google-cloud-python/issues/14332)) ([9ff9ff6](https://github.com/googleapis/google-cloud-python/commit/9ff9ff62d9fb692d6cb3eccc2d4e74c1dd8624ca))
+
 ## [0.9.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.17...google-cloud-network-security-v0.9.18) (2025-06-11)
 
 

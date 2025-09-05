@@ -1044,8 +1044,8 @@ class Tax(proto.Message):
             The postal code range that the tax rate applies to,
             represented by a ZIP code, a ZIP code prefix using \*
             wildcard, a range between two ZIP codes or two ZIP code
-            prefixes of equal length. Examples: 94114, 94*, 94002-95460,
-            94*-95*.
+            prefixes of equal length. Examples: 94114, 94\*,
+            94002-95460, 94\*-95\*.
     """
 
     rate: float = proto.Field(
@@ -1163,8 +1163,8 @@ class SubscriptionCost(proto.Message):
         period (google.shopping.merchant_products_v1beta.types.SubscriptionPeriod):
             The type of subscription period. Supported values are:
 
-            -  "``month``"
-            -  "``year``".
+            - "``month``"
+            - "``year``".
         period_length (int):
             The number of subscription periods the buyer
             has to pay.
@@ -1208,8 +1208,8 @@ class Installment(proto.Message):
         credit_type (str):
             Type of installment payments. Supported values are:
 
-            -  "``finance``"
-            -  "``lease``".
+            - "``finance``"
+            - "``lease``".
 
             This field is a member of `oneof`_ ``_credit_type``.
     """
@@ -1697,8 +1697,8 @@ class ProductDimension(proto.Message):
         unit (str):
             Required. The dimension units. Acceptable values are:
 
-            -  "``in``"
-            -  "``cm``".
+            - "``in``"
+            - "``cm``".
     """
 
     value: float = proto.Field(
@@ -1722,10 +1722,10 @@ class ProductWeight(proto.Message):
         unit (str):
             Required. The weight unit. Acceptable values are:
 
-            -  "``g``"
-            -  "``kg``"
-            -  "``oz``"
-            -  "``lb``".
+            - "``g``"
+            - "``kg``"
+            - "``oz``"
+            - "``lb``".
     """
 
     value: float = proto.Field(

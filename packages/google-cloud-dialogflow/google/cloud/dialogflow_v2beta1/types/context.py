@@ -59,10 +59,10 @@ class Context(proto.Message):
             Required. The unique identifier of the context. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
 
             The ``Context ID`` is always converted to lowercase, may
             only contain characters in ``a-zA-Z0-9_-%`` and may be at
@@ -76,9 +76,9 @@ class Context(proto.Message):
             Dialogflow. You should not use these contexts or create
             contexts with these names:
 
-            -  ``__system_counters__``
-            -  ``*_id_dialog_context``
-            -  ``*_dialog_params_size``
+            - ``__system_counters__``
+            - ``*_id_dialog_context``
+            - ``*_dialog_params_size``
         lifespan_count (int):
             Optional. The number of conversational query requests after
             which the context expires. The default is ``0``. If set to
@@ -94,15 +94,15 @@ class Context(proto.Message):
             JSON object composed of a collection of (MapKey, MapValue)
             pairs:
 
-            -  MapKey type: string
-            -  MapKey value: parameter name
-            -  MapValue type: If parameter's entity type is a composite
-               entity then use map, otherwise, depending on the
-               parameter value type, it could be one of string, number,
-               boolean, null, list or map.
-            -  MapValue value: If parameter's entity type is a composite
-               entity then use map from composite entity property names
-               to property values, otherwise, use parameter value.
+            - MapKey type: string
+            - MapKey value: parameter name
+            - MapValue type: If parameter's entity type is a composite
+              entity then use map, otherwise, depending on the parameter
+              value type, it could be one of string, number, boolean,
+              null, list or map.
+            - MapValue value: If parameter's entity type is a composite
+              entity then use map from composite entity property names
+              to property values, otherwise, use parameter value.
     """
 
     name: str = proto.Field(
@@ -129,10 +129,10 @@ class ListContextsRequest(proto.Message):
             Required. The session to list all contexts from. Supported
             formats:
 
-            -  \`projects//agent/sessions/,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - \`projects//agent/sessions/,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -198,10 +198,10 @@ class GetContextRequest(proto.Message):
         name (str):
             Required. The name of the context. Supported formats:
 
-            -  ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -224,10 +224,10 @@ class CreateContextRequest(proto.Message):
             Required. The session to create a context for. Supported
             formats:
 
-            -  \`projects//agent/sessions/,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - \`projects//agent/sessions/,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -281,10 +281,10 @@ class DeleteContextRequest(proto.Message):
             Required. The name of the context to delete. Supported
             formats:
 
-            -  ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``,
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified, we assume
@@ -307,10 +307,10 @@ class DeleteAllContextsRequest(proto.Message):
             Required. The name of the session to delete all contexts
             from. Supported formats:
 
-            -  \`projects//agent/sessions/,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - \`projects//agent/sessions/,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
+            - ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
+            - ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
 
             If ``Location ID`` is not specified we assume default 'us'
             location. If ``Environment ID`` is not specified we assume

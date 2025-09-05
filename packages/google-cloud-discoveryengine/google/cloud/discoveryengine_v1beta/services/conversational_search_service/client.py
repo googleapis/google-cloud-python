@@ -1308,7 +1308,7 @@ class ConversationalSearchServiceClient(
                 [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
                 to update. The following are NOT supported:
 
-                -  [Conversation.name][google.cloud.discoveryengine.v1beta.Conversation.name]
+                - [Conversation.name][google.cloud.discoveryengine.v1beta.Conversation.name]
 
                 If not set or empty, all supported fields are updated.
 
@@ -2099,7 +2099,7 @@ class ConversationalSearchServiceClient(
                 [Session][google.cloud.discoveryengine.v1beta.Session]
                 to update. The following are NOT supported:
 
-                -  [Session.name][google.cloud.discoveryengine.v1beta.Session.name]
+                - [Session.name][google.cloud.discoveryengine.v1beta.Session.name]
 
                 If not set or empty, all supported fields are updated.
 

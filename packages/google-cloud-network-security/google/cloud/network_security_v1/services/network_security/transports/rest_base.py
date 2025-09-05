@@ -892,6 +892,10 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*}",
+                },
             ]
             return http_options
 
@@ -917,6 +921,10 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
                     "method": "get",
                     "uri": "/v1/{name=projects/*}/locations",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*}",
+                },
             ]
             return http_options
 
@@ -941,6 +949,14 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:getIamPolicy",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/addressGroups/*}:getIamPolicy",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:getIamPolicy",
                 },
                 {
                     "method": "get",
@@ -974,6 +990,16 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/addressGroups/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:setIamPolicy",
                     "body": "*",
                 },
                 {
@@ -1019,6 +1045,16 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
                 },
                 {
                     "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/addressGroups/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/serverTlsPolicies/*}:testIamPermissions",
                     "body": "*",
                 },
@@ -1058,6 +1094,11 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
                     "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -1088,6 +1129,10 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
                     "method": "delete",
                     "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -1113,6 +1158,10 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -1137,6 +1186,10 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*}/operations",
                 },
             ]
             return http_options

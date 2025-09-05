@@ -41,10 +41,10 @@ class PolicyBinding(proto.Message):
 
             Format:
 
-            -  ``projects/{project_id}/locations/{location}/policyBindings/{policy_binding_id}``
-            -  ``projects/{project_number}/locations/{location}/policyBindings/{policy_binding_id}``
-            -  ``folders/{folder_id}/locations/{location}/policyBindings/{policy_binding_id}``
-            -  ``organizations/{organization_id}/locations/{location}/policyBindings/{policy_binding_id}``
+            - ``projects/{project_id}/locations/{location}/policyBindings/{policy_binding_id}``
+            - ``projects/{project_number}/locations/{location}/policyBindings/{policy_binding_id}``
+            - ``folders/{folder_id}/locations/{location}/policyBindings/{policy_binding_id}``
+            - ``organizations/{organization_id}/locations/{location}/policyBindings/{policy_binding_id}``
         uid (str):
             Output only. The globally unique ID of the
             policy binding. Assigned when the policy binding
@@ -83,9 +83,9 @@ class PolicyBinding(proto.Message):
         condition (google.type.expr_pb2.Expr):
             Optional. The condition to apply to the policy binding. When
             set, the ``expression`` field in the ``Expr`` must include
-            from 1 to 10 subexpressions, joined by the "||"(Logical OR),
-            "&&"(Logical AND) or "!"(Logical NOT) operators and cannot
-            contain more than 250 characters.
+            from 1 to 10 subexpressions, joined by the "\|\|"(Logical
+            OR), "&&"(Logical AND) or "!"(Logical NOT) operators and
+            cannot contain more than 250 characters.
 
             The condition is currently only supported when bound to
             policies of kind principal access boundary.
@@ -99,26 +99,26 @@ class PolicyBinding(proto.Message):
 
             Allowed operations for ``principal.subject``:
 
-            -  ``principal.subject == <principal subject string>``
-            -  ``principal.subject != <principal subject string>``
-            -  ``principal.subject in [<list of principal subjects>]``
-            -  ``principal.subject.startsWith(<string>)``
-            -  ``principal.subject.endsWith(<string>)``
+            - ``principal.subject == <principal subject string>``
+            - ``principal.subject != <principal subject string>``
+            - ``principal.subject in [<list of principal subjects>]``
+            - ``principal.subject.startsWith(<string>)``
+            - ``principal.subject.endsWith(<string>)``
 
             Allowed operations for ``principal.type``:
 
-            -  ``principal.type == <principal type string>``
-            -  ``principal.type != <principal type string>``
-            -  ``principal.type in [<list of principal types>]``
+            - ``principal.type == <principal type string>``
+            - ``principal.type != <principal type string>``
+            - ``principal.type in [<list of principal types>]``
 
             Supported principal types are Workspace, Workforce Pool,
             Workload Pool and Service Account. Allowed string must be
             one of:
 
-            -  iam.googleapis.com/WorkspaceIdentity
-            -  iam.googleapis.com/WorkforcePoolIdentity
-            -  iam.googleapis.com/WorkloadPoolIdentity
-            -  iam.googleapis.com/ServiceAccount
+            - iam.googleapis.com/WorkspaceIdentity
+            - iam.googleapis.com/WorkforcePoolIdentity
+            - iam.googleapis.com/WorkloadPoolIdentity
+            - iam.googleapis.com/ServiceAccount
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the policy binding
             was created.
@@ -155,29 +155,29 @@ class PolicyBinding(proto.Message):
 
                 Examples:
 
-                -  For binding's parented by an organization:
+                - For binding's parented by an organization:
 
-                   -  Organization:
-                      ``//cloudresourcemanager.googleapis.com/organizations/ORGANIZATION_ID``
-                   -  Workforce Identity:
-                      ``//iam.googleapis.com/locations/global/workforcePools/WORKFORCE_POOL_ID``
-                   -  Workspace Identity:
-                      ``//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID``
+                  - Organization:
+                    ``//cloudresourcemanager.googleapis.com/organizations/ORGANIZATION_ID``
+                  - Workforce Identity:
+                    ``//iam.googleapis.com/locations/global/workforcePools/WORKFORCE_POOL_ID``
+                  - Workspace Identity:
+                    ``//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID``
 
-                -  For binding's parented by a folder:
+                - For binding's parented by a folder:
 
-                   -  Folder:
-                      ``//cloudresourcemanager.googleapis.com/folders/FOLDER_ID``
+                  - Folder:
+                    ``//cloudresourcemanager.googleapis.com/folders/FOLDER_ID``
 
-                -  For binding's parented by a project:
+                - For binding's parented by a project:
 
-                   -  Project:
+                  - Project:
 
-                      -  ``//cloudresourcemanager.googleapis.com/projects/PROJECT_NUMBER``
-                      -  ``//cloudresourcemanager.googleapis.com/projects/PROJECT_ID``
+                    - ``//cloudresourcemanager.googleapis.com/projects/PROJECT_NUMBER``
+                    - ``//cloudresourcemanager.googleapis.com/projects/PROJECT_ID``
 
-                   -  Workload Identity Pool:
-                      ``//iam.googleapis.com/projects/PROJECT_NUMBER/locations/LOCATION/workloadIdentityPools/WORKLOAD_POOL_ID``
+                  - Workload Identity Pool:
+                    ``//iam.googleapis.com/projects/PROJECT_NUMBER/locations/LOCATION/workloadIdentityPools/WORKLOAD_POOL_ID``
 
                 This field is a member of `oneof`_ ``target``.
         """

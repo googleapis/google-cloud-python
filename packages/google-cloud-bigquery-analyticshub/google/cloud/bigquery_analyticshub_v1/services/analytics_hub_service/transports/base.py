@@ -249,6 +249,41 @@ class AnalyticsHubServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_query_template: gapic_v1.method.wrap_method(
+                self.create_query_template,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_query_template: gapic_v1.method.wrap_method(
+                self.get_query_template,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_query_templates: gapic_v1.method.wrap_method(
+                self.list_query_templates,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_query_template: gapic_v1.method.wrap_method(
+                self.update_query_template,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_query_template: gapic_v1.method.wrap_method(
+                self.delete_query_template,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.submit_query_template: gapic_v1.method.wrap_method(
+                self.submit_query_template,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.approve_query_template: gapic_v1.method.wrap_method(
+                self.approve_query_template,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -484,6 +519,72 @@ class AnalyticsHubServiceTransport(abc.ABC):
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.CreateQueryTemplateRequest],
+        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.GetQueryTemplateRequest],
+        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_query_templates(
+        self,
+    ) -> Callable[
+        [analyticshub.ListQueryTemplatesRequest],
+        Union[
+            analyticshub.ListQueryTemplatesResponse,
+            Awaitable[analyticshub.ListQueryTemplatesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.UpdateQueryTemplateRequest],
+        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.DeleteQueryTemplateRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def submit_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.SubmitQueryTemplateRequest],
+        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def approve_query_template(
+        self,
+    ) -> Callable[
+        [analyticshub.ApproveQueryTemplateRequest],
+        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
     ]:
         raise NotImplementedError()
 

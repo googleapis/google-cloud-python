@@ -5938,14 +5938,14 @@ class NetworkServicesAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.network_services_v1.types.ServiceBinding` ServiceBinding can be used to:
-                   -  Bind a Service Directory Service to be used in a
-                      BackendService resource. This feature will be
-                      deprecated soon.
-                   -  Bind a Private Service Connect producer service to
-                      be used in consumer Cloud Service Mesh or
-                      Application Load Balancers.
-                   -  Bind a Cloud Run service to be used in consumer
-                      Cloud Service Mesh or Application Load Balancers.
+                   - Bind a Service Directory Service to be used in a
+                     BackendService resource. This feature will be
+                     deprecated soon.
+                   - Bind a Private Service Connect producer service to
+                     be used in consumer Cloud Service Mesh or
+                     Application Load Balancers.
+                   - Bind a Cloud Run service to be used in consumer
+                     Cloud Service Mesh or Application Load Balancers.
 
         """
         # Create or coerce a protobuf request object.
@@ -6088,14 +6088,14 @@ class NetworkServicesAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.network_services_v1.types.ServiceBinding` ServiceBinding can be used to:
-                   -  Bind a Service Directory Service to be used in a
-                      BackendService resource. This feature will be
-                      deprecated soon.
-                   -  Bind a Private Service Connect producer service to
-                      be used in consumer Cloud Service Mesh or
-                      Application Load Balancers.
-                   -  Bind a Cloud Run service to be used in consumer
-                      Cloud Service Mesh or Application Load Balancers.
+                   - Bind a Service Directory Service to be used in a
+                     BackendService resource. This feature will be
+                     deprecated soon.
+                   - Bind a Private Service Connect producer service to
+                     be used in consumer Cloud Service Mesh or
+                     Application Load Balancers.
+                   - Bind a Cloud Run service to be used in consumer
+                     Cloud Service Mesh or Application Load Balancers.
 
         """
         # Create or coerce a protobuf request object.

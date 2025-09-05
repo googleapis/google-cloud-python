@@ -82,8 +82,8 @@ class ClientGatewaysServiceAsyncClient:
 
     The ClientGatewaysService exposes the following resources:
 
-    -  Client Gateways, named as follows:
-       ``projects/{project_id}/locations/{location_id}/clientGateways/{client_gateway_id}``.
+    - Client Gateways, named as follows:
+      ``projects/{project_id}/locations/{location_id}/clientGateways/{client_gateway_id}``.
     """
 
     _client: ClientGatewaysServiceClient
@@ -621,10 +621,10 @@ class ClientGatewaysServiceAsyncClient:
             client_gateway_id (:class:`str`):
                 Optional. User-settable client gateway resource ID.
 
-                -  Must start with a letter.
-                -  Must contain between 4-63 characters from
-                   ``/[a-z][0-9]-/``.
-                -  Must end with a number or a letter.
+                - Must start with a letter.
+                - Must contain between 4-63 characters from
+                  ``/[a-z][0-9]-/``.
+                - Must end with a number or a letter.
 
                 This corresponds to the ``client_gateway_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

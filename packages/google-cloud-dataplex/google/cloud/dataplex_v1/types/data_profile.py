@@ -38,10 +38,10 @@ class DataProfileSpec(proto.Message):
             Optional. The percentage of the records to be selected from
             the dataset for DataScan.
 
-            -  Value can range between 0.0 and 100.0 with up to 3
-               significant decimal digits.
-            -  Sampling is not applied if ``sampling_percent`` is not
-               specified, 0 or
+            - Value can range between 0.0 and 100.0 with up to 3
+              significant decimal digits.
+            - Sampling is not applied if ``sampling_percent`` is not
+              specified, 0 or
 
             100.
         row_filter (str):
@@ -186,9 +186,9 @@ class DataProfileResult(proto.Message):
                 mode (str):
                     The mode of the field. Possible values include:
 
-                    -  REQUIRED, if it is a required field.
-                    -  NULLABLE, if it is an optional field.
-                    -  REPEATED, if it is a repeated field.
+                    - REQUIRED, if it is a required field.
+                    - NULLABLE, if it is an optional field.
+                    - REPEATED, if it is a repeated field.
                 profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo):
                     Profile information for the corresponding
                     field.

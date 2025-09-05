@@ -285,13 +285,13 @@ class CreatePrivateCloudRequest(proto.Message):
             token in the name URI. The identifier must meet the
             following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         private_cloud (google.cloud.vmwareengine_v1.types.PrivateCloud):
             Required. The initial description of the new
             private cloud.
@@ -601,13 +601,13 @@ class CreateClusterRequest(proto.Message):
             within the parent and becomes the final token in the name
             URI. The identifier must meet the following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         cluster (google.cloud.vmwareengine_v1.types.Cluster):
             Required. The initial description of the new
             cluster.
@@ -1041,13 +1041,13 @@ class CreateExternalAddressRequest(proto.Message):
             and becomes the final token in the name URI. The identifier
             must meet the following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1476,13 +1476,13 @@ class CreateExternalAccessRuleRequest(proto.Message):
             parent and becomes the final token in the name URI. The
             identifier must meet the following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         request_id (str):
             A request ID to identify requests. Specify a
             unique request ID so that if you must retry your
@@ -1788,13 +1788,13 @@ class CreateLoggingServerRequest(proto.Message):
             and becomes the final token in the name URI. The identifier
             must meet the following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -2408,13 +2408,13 @@ class CreateHcxActivationKeyRequest(proto.Message):
             parent and becomes the final token in the name URI. The
             identifier must meet the following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         request_id (str):
             A request ID to identify requests. Specify a
             unique request ID so that if you must retry your
@@ -2549,13 +2549,13 @@ class CreateNetworkPeeringRequest(proto.Message):
             the final token in the name URI. The identifier must meet
             the following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         network_peering (google.cloud.vmwareengine_v1.types.NetworkPeering):
             Required. The initial description of the new
             network peering.
@@ -3131,13 +3131,13 @@ class CreateNetworkPolicyRequest(proto.Message):
             and becomes the final token in the name URI. The identifier
             must meet the following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         network_policy (google.cloud.vmwareengine_v1.types.NetworkPolicy):
             Required. The network policy configuration to
             use in the request.
@@ -3393,13 +3393,13 @@ class CreateManagementDnsZoneBindingRequest(proto.Message):
             the name URI. The identifier must meet the following
             requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -3609,17 +3609,17 @@ class CreateVmwareEngineNetworkRequest(proto.Message):
             final token in the name URI. The identifier must meet the
             following requirements:
 
-            -  For networks of type LEGACY, adheres to the format:
-               ``{region-id}-default``. Replace ``{region-id}`` with the
-               region where you want to create the VMware Engine
-               network. For example, "us-central1-default".
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - For networks of type LEGACY, adheres to the format:
+              ``{region-id}-default``. Replace ``{region-id}`` with the
+              region where you want to create the VMware Engine network.
+              For example, "us-central1-default".
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         vmware_engine_network (google.cloud.vmwareengine_v1.types.VmwareEngineNetwork):
             Required. The initial description of the new
             VMware Engine network.
@@ -3931,13 +3931,13 @@ class CreatePrivateConnectionRequest(proto.Message):
             token in the name URI. The identifier must meet the
             following requirements:
 
-            -  Only contains 1-63 alphanumeric characters and hyphens
-            -  Begins with an alphabetical character
-            -  Ends with a non-hyphen character
-            -  Not formatted as a UUID
-            -  Complies with `RFC
-               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
-               (section 3.5)
+            - Only contains 1-63 alphanumeric characters and hyphens
+            - Begins with an alphabetical character
+            - Ends with a non-hyphen character
+            - Not formatted as a UUID
+            - Complies with `RFC
+              1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+              (section 3.5)
         private_connection (google.cloud.vmwareengine_v1.types.PrivateConnection):
             Required. The initial description of the new
             private connection.

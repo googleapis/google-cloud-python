@@ -283,12 +283,12 @@ class NodeKubeletConfig(proto.Message):
 
             The following values are allowed.
 
-            -  "none": the default, which represents the existing
-               scheduling behavior.
-            -  "static": allows pods with certain resource
-               characteristics to be granted increased CPU affinity and
-               exclusivity on the node. The default value is 'none' if
-               unspecified.
+            - "none": the default, which represents the existing
+              scheduling behavior.
+            - "static": allows pods with certain resource
+              characteristics to be granted increased CPU affinity and
+              exclusivity on the node. The default value is 'none' if
+              unspecified.
 
             This field is a member of `oneof`_ ``_cpu_manager_policy``.
         cpu_cfs_quota (bool):

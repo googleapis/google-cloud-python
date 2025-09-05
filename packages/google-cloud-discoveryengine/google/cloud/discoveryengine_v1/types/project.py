@@ -60,11 +60,11 @@ class Project(proto.Message):
                 The unique identifier of this terms of service. Available
                 terms:
 
-                -  ``GA_DATA_USE_TERMS``: `Terms for data
-                   use <https://cloud.google.com/retail/data-use-terms>`__.
-                   When using this as ``id``, the acceptable
-                   [version][google.cloud.discoveryengine.v1.Project.ServiceTerms.version]
-                   to provide is ``2022-11-23``.
+                - ``GA_DATA_USE_TERMS``: `Terms for data
+                  use <https://cloud.google.com/retail/data-use-terms>`__.
+                  When using this as ``id``, the acceptable
+                  [version][google.cloud.discoveryengine.v1.Project.ServiceTerms.version]
+                  to provide is ``2022-11-23``.
             version (str):
                 The version string of the terms of service. For acceptable
                 values, see the comments for

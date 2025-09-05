@@ -739,7 +739,7 @@ class CreateConnectionRequest(proto.Message):
             Required. The ID to use for the Connection, which will
             become the final component of the Connection's resource
             name. Names must be unique per-project per-location. Allows
-            alphanumeric characters and any of -._~%!$&'()*+,;=@.
+            alphanumeric characters and any of -.\_~%!$&'()*+,;=@.
     """
 
     parent: str = proto.Field(
@@ -914,7 +914,7 @@ class CreateRepositoryRequest(proto.Message):
             Required. The ID to use for the repository, which will
             become the final component of the repository's resource
             name. This ID should be unique in the connection. Allows
-            alphanumeric characters and any of -._~%!$&'()*+,;=@.
+            alphanumeric characters and any of -.\_~%!$&'()*+,;=@.
     """
 
     parent: str = proto.Field(
@@ -938,10 +938,9 @@ class BatchCreateRepositoriesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The connection to contain all the repositories
-            being created. Format:
-            projects/\ */locations/*/connections/\* The parent field in
-            the CreateRepositoryRequest messages must either be empty or
-            match this field.
+            being created. Format: projects/*/locations/*/connections/\*
+            The parent field in the CreateRepositoryRequest messages
+            must either be empty or match this field.
         requests (MutableSequence[google.cloud.devtools.cloudbuild_v2.types.CreateRepositoryRequest]):
             Required. The request messages specifying the
             repositories to create.

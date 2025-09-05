@@ -287,13 +287,13 @@ class DeliveryPipeline(proto.Message):
             user and by Cloud Deploy. Labels must meet the following
             constraints:
 
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes.
-            -  All characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  Keys must start with a lowercase letter or international
-               character.
-            -  Each resource is limited to a maximum of 64 labels.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes.
+            - All characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - Keys must start with a lowercase letter or international
+              character.
+            - Each resource is limited to a maximum of 64 labels.
 
             Both keys and values are additionally constrained to be <=
             128 bytes.
@@ -1556,13 +1556,13 @@ class Target(proto.Message):
             both the user and by Cloud Deploy. Labels must meet the
             following constraints:
 
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes.
-            -  All characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  Keys must start with a lowercase letter or international
-               character.
-            -  Each resource is limited to a maximum of 64 labels.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes.
+            - All characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - Keys must start with a lowercase letter or international
+              character.
+            - Each resource is limited to a maximum of 64 labels.
 
             Both keys and values are additionally constrained to be <=
             128 bytes.
@@ -2357,13 +2357,13 @@ class CustomTargetType(proto.Message):
             both the user and by Cloud Deploy. Labels must meet the
             following constraints:
 
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes.
-            -  All characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  Keys must start with a lowercase letter or international
-               character.
-            -  Each resource is limited to a maximum of 64 labels.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes.
+            - All characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - Keys must start with a lowercase letter or international
+              character.
+            - Each resource is limited to a maximum of 64 labels.
 
             Both keys and values are additionally constrained to be <=
             128 bytes.
@@ -2532,7 +2532,7 @@ class SkaffoldModules(proto.Message):
         Attributes:
             source (str):
                 Required. Cloud Storage source paths to copy recursively.
-                For example, providing `gs://my-bucket/dir/configs/*` will
+                For example, providing "gs://my-bucket/dir/configs/\*" will
                 result in Skaffold copying all files within the
                 "dir/configs" directory in the bucket "my-bucket".
             path (str):
@@ -2917,17 +2917,17 @@ class DeployPolicy(proto.Message):
             and used by the user, and not by Cloud Deploy. Annotations
             must meet the following constraints:
 
-            -  Annotations are key/value pairs.
-            -  Valid annotation keys have two segments: an optional
-               prefix and name, separated by a slash (``/``).
-            -  The name segment is required and must be 63 characters or
-               less, beginning and ending with an alphanumeric character
-               (``[a-z0-9A-Z]``) with dashes (``-``), underscores
-               (``_``), dots (``.``), and alphanumerics between.
-            -  The prefix is optional. If specified, the prefix must be
-               a DNS subdomain: a series of DNS labels separated by
-               dots(\ ``.``), not longer than 253 characters in total,
-               followed by a slash (``/``).
+            - Annotations are key/value pairs.
+            - Valid annotation keys have two segments: an optional
+              prefix and name, separated by a slash (``/``).
+            - The name segment is required and must be 63 characters or
+              less, beginning and ending with an alphanumeric character
+              (``[a-z0-9A-Z]``) with dashes (``-``), underscores
+              (``_``), dots (``.``), and alphanumerics between.
+            - The prefix is optional. If specified, the prefix must be a
+              DNS subdomain: a series of DNS labels separated by
+              dots(``.``), not longer than 253 characters in total,
+              followed by a slash (``/``).
 
             See
             https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/#syntax-and-character-set
@@ -2937,13 +2937,13 @@ class DeployPolicy(proto.Message):
             user and by Cloud Deploy. Labels must meet the following
             constraints:
 
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes.
-            -  All characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  Keys must start with a lowercase letter or international
-               character.
-            -  Each resource is limited to a maximum of 64 labels.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes.
+            - All characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - Keys must start with a lowercase letter or international
+              character.
+            - Each resource is limited to a maximum of 64 labels.
 
             Both keys and values are additionally constrained to be <=
             128 bytes.
@@ -3082,8 +3082,8 @@ class DeliveryPipelineAttribute(proto.Message):
             Optional. ID of the ``DeliveryPipeline``. The value of this
             field could be one of the following:
 
-            -  The last segment of a pipeline name
-            -  "*", all delivery pipelines in a location
+            - The last segment of a pipeline name
+            - "\*", all delivery pipelines in a location
         labels (MutableMapping[str, str]):
             DeliveryPipeline labels.
     """
@@ -3108,8 +3108,8 @@ class TargetAttribute(proto.Message):
             Optional. ID of the ``Target``. The value of this field
             could be one of the following:
 
-            -  The last segment of a target name
-            -  "*", all targets in a location
+            - The last segment of a target name
+            - "\*", all targets in a location
         labels (MutableMapping[str, str]):
             Target labels.
     """
@@ -3409,13 +3409,13 @@ class Release(proto.Message):
             user and by Cloud Deploy. Labels must meet the following
             constraints:
 
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes.
-            -  All characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  Keys must start with a lowercase letter or international
-               character.
-            -  Each resource is limited to a maximum of 64 labels.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes.
+            - All characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - Keys must start with a lowercase letter or international
+              character.
+            - Each resource is limited to a maximum of 64 labels.
 
             Both keys and values are additionally constrained to be <=
             128 bytes.
@@ -4455,13 +4455,13 @@ class Rollout(proto.Message):
             user and by Cloud Deploy. Labels must meet the following
             constraints:
 
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes.
-            -  All characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  Keys must start with a lowercase letter or international
-               character.
-            -  Each resource is limited to a maximum of 64 labels.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes.
+            - All characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - Keys must start with a lowercase letter or international
+              character.
+            - Each resource is limited to a maximum of 64 labels.
 
             Both keys and values are additionally constrained to be <=
             128 bytes.
@@ -6389,17 +6389,17 @@ class Automation(proto.Message):
             and used by the user, and not by Cloud Deploy. Annotations
             must meet the following constraints:
 
-            -  Annotations are key/value pairs.
-            -  Valid annotation keys have two segments: an optional
-               prefix and name, separated by a slash (``/``).
-            -  The name segment is required and must be 63 characters or
-               less, beginning and ending with an alphanumeric character
-               (``[a-z0-9A-Z]``) with dashes (``-``), underscores
-               (``_``), dots (``.``), and alphanumerics between.
-            -  The prefix is optional. If specified, the prefix must be
-               a DNS subdomain: a series of DNS labels separated by
-               dots(\ ``.``), not longer than 253 characters in total,
-               followed by a slash (``/``).
+            - Annotations are key/value pairs.
+            - Valid annotation keys have two segments: an optional
+              prefix and name, separated by a slash (``/``).
+            - The name segment is required and must be 63 characters or
+              less, beginning and ending with an alphanumeric character
+              (``[a-z0-9A-Z]``) with dashes (``-``), underscores
+              (``_``), dots (``.``), and alphanumerics between.
+            - The prefix is optional. If specified, the prefix must be a
+              DNS subdomain: a series of DNS labels separated by
+              dots(``.``), not longer than 253 characters in total,
+              followed by a slash (``/``).
 
             See
             https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/#syntax-and-character-set
@@ -6409,13 +6409,13 @@ class Automation(proto.Message):
             both the user and by Cloud Deploy. Labels must meet the
             following constraints:
 
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes.
-            -  All characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  Keys must start with a lowercase letter or international
-               character.
-            -  Each resource is limited to a maximum of 64 labels.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes.
+            - All characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - Keys must start with a lowercase letter or international
+              character.
+            - Each resource is limited to a maximum of 64 labels.
 
             Both keys and values are additionally constrained to be <=
             63 characters.
@@ -6591,8 +6591,8 @@ class TimedPromoteReleaseRule(proto.Message):
             next stage in the promotion flow. The value of this field
             could be one of the following:
 
-            -  The last segment of a target name
-            -  "@next", the next target in the promotion sequence
+            - The last segment of a target name
+            - "@next", the next target in the promotion sequence
         schedule (str):
             Required. Schedule in crontab format. e.g. "0 9 \* \* 1" for
             every Monday at 9am.
@@ -6654,8 +6654,8 @@ class PromoteReleaseRule(proto.Message):
             next stage in the promotion flow. The value of this field
             could be one of the following:
 
-            -  The last segment of a target name
-            -  "@next", the next target in the promotion sequence
+            - The last segment of a target name
+            - "@next", the next target in the promotion sequence
         condition (google.cloud.deploy_v1.types.AutomationRuleCondition):
             Output only. Information around the state of
             the Automation rule.

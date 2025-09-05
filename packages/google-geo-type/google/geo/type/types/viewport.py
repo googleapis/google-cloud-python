@@ -36,20 +36,19 @@ class Viewport(proto.Message):
     bounds must range between -180 to 180 degrees inclusive. Various
     cases include:
 
-    -  If ``low`` = ``high``, the viewport consists of that single
-       point.
+    - If ``low`` = ``high``, the viewport consists of that single point.
 
-    -  If ``low.longitude`` > ``high.longitude``, the longitude range is
-       inverted (the viewport crosses the 180 degree longitude line).
+    - If ``low.longitude`` > ``high.longitude``, the longitude range is
+      inverted (the viewport crosses the 180 degree longitude line).
 
-    -  If ``low.longitude`` = -180 degrees and ``high.longitude`` = 180
-       degrees, the viewport includes all longitudes.
+    - If ``low.longitude`` = -180 degrees and ``high.longitude`` = 180
+      degrees, the viewport includes all longitudes.
 
-    -  If ``low.longitude`` = 180 degrees and ``high.longitude`` = -180
-       degrees, the longitude range is empty.
+    - If ``low.longitude`` = 180 degrees and ``high.longitude`` = -180
+      degrees, the longitude range is empty.
 
-    -  If ``low.latitude`` > ``high.latitude``, the latitude range is
-       empty.
+    - If ``low.latitude`` > ``high.latitude``, the latitude range is
+      empty.
 
     Both ``low`` and ``high`` must be populated, and the represented box
     cannot be empty (as specified by the definitions above). An empty

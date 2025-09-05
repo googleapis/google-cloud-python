@@ -64,11 +64,11 @@ class SearchRequest(proto.Message):
             Values above the maximum value are coerced to the maximum
             value.
 
-            -  Websites with basic indexing: Default ``10``, Maximum
-               ``25``.
-            -  Websites with advanced indexing: Default ``25``, Maximum
-               ``50``.
-            -  Other: Default ``50``, Maximum ``100``.
+            - Websites with basic indexing: Default ``10``, Maximum
+              ``25``.
+            - Websites with advanced indexing: Default ``25``, Maximum
+              ``50``.
+            - Other: Default ``50``, Maximum ``100``.
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
@@ -181,18 +181,18 @@ class SearchRequest(proto.Message):
 
             For public website search only, supported values are:
 
-            -  ``user_country_code``: string. Default empty. If set to
-               non-empty, results are restricted or boosted based on the
-               location provided. For example,
-               ``user_country_code: "au"``
+            - ``user_country_code``: string. Default empty. If set to
+              non-empty, results are restricted or boosted based on the
+              location provided. For example,
+              ``user_country_code: "au"``
 
-               For available codes see `Country
-               Codes <https://developers.google.com/custom-search/docs/json_api_reference#countryCodes>`__
+              For available codes see `Country
+              Codes <https://developers.google.com/custom-search/docs/json_api_reference#countryCodes>`__
 
-            -  ``search_type``: double. Default empty. Enables
-               non-webpage searching depending on the value. The only
-               valid non-default value is 1, which enables image
-               searching. For example, ``search_type: 1``
+            - ``search_type``: double. Default empty. Enables
+              non-webpage searching depending on the value. The only
+              valid non-default value is 1, which enables image
+              searching. For example, ``search_type: 1``
         query_expansion_spec (google.cloud.discoveryengine_v1.types.SearchRequest.QueryExpansionSpec):
             The query expansion specification that
             specifies the conditions under which query
@@ -229,20 +229,20 @@ class SearchRequest(proto.Message):
             The user labels applied to a resource must meet the
             following requirements:
 
-            -  Each resource can have multiple labels, up to a maximum
-               of 64.
-            -  Each label must be a key-value pair.
-            -  Keys have a minimum length of 1 character and a maximum
-               length of 63 characters and cannot be empty. Values can
-               be empty and have a maximum length of 63 characters.
-            -  Keys and values can contain only lowercase letters,
-               numeric characters, underscores, and dashes. All
-               characters must use UTF-8 encoding, and international
-               characters are allowed.
-            -  The key portion of a label must be unique. However, you
-               can use the same key with multiple resources.
-            -  Keys must start with a lowercase letter or international
-               character.
+            - Each resource can have multiple labels, up to a maximum of
+              64.
+            - Each label must be a key-value pair.
+            - Keys have a minimum length of 1 character and a maximum
+              length of 63 characters and cannot be empty. Values can be
+              empty and have a maximum length of 63 characters.
+            - Keys and values can contain only lowercase letters,
+              numeric characters, underscores, and dashes. All
+              characters must use UTF-8 encoding, and international
+              characters are allowed.
+            - The key portion of a label must be unique. However, you
+              can use the same key with multiple resources.
+            - Keys must start with a lowercase letter or international
+              character.
 
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
@@ -458,11 +458,11 @@ class SearchRequest(proto.Message):
                 Another example, assuming you have the following facets in
                 the request:
 
-                -  "rating", enable_dynamic_position = true
+                - "rating", enable_dynamic_position = true
 
-                -  "price", enable_dynamic_position = false
+                - "price", enable_dynamic_position = false
 
-                -  "brands", enable_dynamic_position = false
+                - "brands", enable_dynamic_position = false
 
                 And also you have a dynamic facets enabled, which generates
                 a facet ``gender``. Then the final order of the facets in
@@ -521,13 +521,13 @@ class SearchRequest(proto.Message):
 
                     Allowed values are:
 
-                    -  "count desc", which means order by
-                       [SearchResponse.Facet.values.count][google.cloud.discoveryengine.v1.SearchResponse.Facet.FacetValue.count]
-                       descending.
+                    - "count desc", which means order by
+                      [SearchResponse.Facet.values.count][google.cloud.discoveryengine.v1.SearchResponse.Facet.FacetValue.count]
+                      descending.
 
-                    -  "value desc", which means order by
-                       [SearchResponse.Facet.values.value][google.cloud.discoveryengine.v1.SearchResponse.Facet.FacetValue.value]
-                       descending. Only applies to textual facets.
+                    - "value desc", which means order by
+                      [SearchResponse.Facet.values.value][google.cloud.discoveryengine.v1.SearchResponse.Facet.FacetValue.value]
+                      descending. Only applies to textual facets.
 
                     If not set, textual values are sorted in `natural
                     order <https://en.wikipedia.org/wiki/Natural_sort_order>`__;
@@ -609,9 +609,9 @@ class SearchRequest(proto.Message):
 
                     Examples:
 
-                    -  To boost documents with document ID "doc_1" or "doc_2",
-                       and color "Red" or "Blue":
-                       ``(document_id: ANY("doc_1", "doc_2")) AND (color: ANY("Red", "Blue"))``
+                    - To boost documents with document ID "doc_1" or "doc_2",
+                      and color "Red" or "Blue":
+                      ``(document_id: ANY("doc_1", "doc_2")) AND (color: ANY("Red", "Blue"))``
                 boost (float):
                     Strength of the condition boost, which should be in [-1, 1].
                     Negative boost means demotion. Default is 0.0.
@@ -1069,15 +1069,15 @@ class SearchRequest(proto.Message):
 
                         Supported values are:
 
-                        -  ``stable``: string. Default value when no value is
-                           specified. Uses a generally available, fine-tuned model.
-                           For more information, see `Answer generation model
-                           versions and
-                           lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
-                        -  ``preview``: string. (Public preview) Uses a preview
-                           model. For more information, see `Answer generation model
-                           versions and
-                           lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
+                        - ``stable``: string. Default value when no value is
+                          specified. Uses a generally available, fine-tuned model.
+                          For more information, see `Answer generation model
+                          versions and
+                          lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
+                        - ``preview``: string. (Public preview) Uses a preview
+                          model. For more information, see `Answer generation model
+                          versions and
+                          lifecycle <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
                 """
 
                 version: str = proto.Field(

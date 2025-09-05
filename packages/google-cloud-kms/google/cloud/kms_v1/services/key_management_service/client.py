@@ -122,10 +122,10 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
     Manages cryptographic keys and operations using those keys.
     Implements a REST model with the following objects:
 
-    -  [KeyRing][google.cloud.kms.v1.KeyRing]
-    -  [CryptoKey][google.cloud.kms.v1.CryptoKey]
-    -  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-    -  [ImportJob][google.cloud.kms.v1.ImportJob]
+    - [KeyRing][google.cloud.kms.v1.KeyRing]
+    - [CryptoKey][google.cloud.kms.v1.CryptoKey]
+    - [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+    - [ImportJob][google.cloud.kms.v1.ImportJob]
 
     If you are using manual gRPC libraries, see `Using gRPC with Cloud
     KMS <https://cloud.google.com/kms/docs/grpc>`__.
@@ -1906,7 +1906,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                    key.
 
                    For more information, see [Importing a
-                   key](\ https://cloud.google.com/kms/docs/importing-a-key).
+                   key](https://cloud.google.com/kms/docs/importing-a-key).
 
         """
         # Create or coerce a protobuf request object.
@@ -2609,7 +2609,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                    key.
 
                    For more information, see [Importing a
-                   key](\ https://cloud.google.com/kms/docs/importing-a-key).
+                   key](https://cloud.google.com/kms/docs/importing-a-key).
 
         """
         # Create or coerce a protobuf request object.

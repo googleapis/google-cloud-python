@@ -56,28 +56,28 @@ class PurgeUserEventsRequest(proto.Message):
             deleted with a length limit of 5,000 characters. The
             eligible fields for filtering are:
 
-            -  ``eventType``: Double quoted
-               [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
-               string.
-            -  ``eventTime``: in ISO 8601 "zulu" format.
-            -  ``userPseudoId``: Double quoted string. Specifying this
-               will delete all events associated with a visitor.
-            -  ``userId``: Double quoted string. Specifying this will
-               delete all events associated with a user.
+            - ``eventType``: Double quoted
+              [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
+              string.
+            - ``eventTime``: in ISO 8601 "zulu" format.
+            - ``userPseudoId``: Double quoted string. Specifying this
+              will delete all events associated with a visitor.
+            - ``userId``: Double quoted string. Specifying this will
+              delete all events associated with a user.
 
             Note: This API only supports purging a max range of 30 days.
 
             Examples:
 
-            -  Deleting all events in a time range:
-               ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z"``
-            -  Deleting specific eventType in a time range:
-               ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z" eventType = "search"``
-            -  Deleting all events for a specific visitor in a time
-               range:
-               ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z" userPseudoId = "visitor1024"``
-            -  Deleting the past 30 days of events inside a DataStore:
-               ``*``
+            - Deleting all events in a time range:
+              ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z"``
+            - Deleting specific eventType in a time range:
+              ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z" eventType = "search"``
+            - Deleting all events for a specific visitor in a time
+              range:
+              ``eventTime > "2012-04-23T18:25:43.511Z" eventTime < "2012-04-23T18:30:43.511Z" userPseudoId = "visitor1024"``
+            - Deleting the past 30 days of events inside a DataStore:
+              ``*``
 
             The filtering fields are assumed to have an implicit AND.
         force (bool):
@@ -198,9 +198,9 @@ class PurgeDocumentsRequest(proto.Message):
             Cloud Storage location for the input content. Supported
             ``data_schema``:
 
-            -  ``document_id``: One valid
-               [Document.id][google.cloud.discoveryengine.v1.Document.id]
-               per line.
+            - ``document_id``: One valid
+              [Document.id][google.cloud.discoveryengine.v1.Document.id]
+              per line.
 
             This field is a member of `oneof`_ ``source``.
         inline_source (google.cloud.discoveryengine_v1.types.PurgeDocumentsRequest.InlineSource):
@@ -354,7 +354,7 @@ class PurgeSuggestionDenyListEntriesRequest(proto.Message):
         parent (str):
             Required. The parent data store resource name for which to
             import denylist entries. Follows pattern
-            projects/\ */locations/*/collections/*/dataStores/*.
+            projects/*/locations/*/collections/*/dataStores/*.
     """
 
     parent: str = proto.Field(
@@ -422,7 +422,7 @@ class PurgeCompletionSuggestionsRequest(proto.Message):
         parent (str):
             Required. The parent data store resource name for which to
             purge completion suggestions. Follows pattern
-            projects/\ */locations/*/collections/*/dataStores/*.
+            projects/*/locations/*/collections/*/dataStores/*.
     """
 
     parent: str = proto.Field(

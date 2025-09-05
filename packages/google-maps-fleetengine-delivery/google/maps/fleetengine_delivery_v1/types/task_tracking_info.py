@@ -46,12 +46,12 @@ class TaskTrackingInfo(proto.Message):
         tracking_id (str):
             Immutable. The tracking ID of a Task.
 
-            -  Must be a valid Unicode string.
-            -  Limited to a maximum length of 64 characters.
-            -  Normalized according to [Unicode Normalization Form C]
-               (http://www.unicode.org/reports/tr15/).
-            -  May not contain any of the following ASCII characters:
-               '/', ':', '?', ',', or '#'.
+            - Must be a valid Unicode string.
+            - Limited to a maximum length of 64 characters.
+            - Normalized according to [Unicode Normalization Form C]
+              (http://www.unicode.org/reports/tr15/).
+            - May not contain any of the following ASCII characters:
+              '/', ':', '?', ',', or '#'.
         vehicle_location (google.maps.fleetengine_delivery_v1.types.DeliveryVehicleLocation):
             The vehicle's last location.
         route_polyline_points (MutableSequence[google.type.latlng_pb2.LatLng]):

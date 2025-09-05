@@ -62,11 +62,10 @@ class DataStore(proto.Message):
             solutions for each
             [industry_vertical][google.cloud.discoveryengine.v1.DataStore.industry_vertical]:
 
-            -  ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
-               ``SOLUTION_TYPE_SEARCH``.
-            -  ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is
-               automatically enrolled. Other solutions cannot be
-               enrolled.
+            - ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
+              ``SOLUTION_TYPE_SEARCH``.
+            - ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is automatically
+              enrolled. Other solutions cannot be enrolled.
         default_schema_id (str):
             Output only. The id of the default
             [Schema][google.cloud.discoveryengine.v1.Schema] associated
@@ -115,7 +114,7 @@ class DataStore(proto.Message):
             [DocumentService.ListDocuments][google.cloud.discoveryengine.v1.DocumentService.ListDocuments].
 
             Currently ACL is only supported in ``GENERIC`` industry
-            vertical with non-\ ``PUBLIC_WEBSITE`` content config.
+            vertical with non-``PUBLIC_WEBSITE`` content config.
         workspace_config (google.cloud.discoveryengine_v1.types.WorkspaceConfig):
             Config to store data store type configuration for workspace
             data. This must be set when

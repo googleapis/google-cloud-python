@@ -158,7 +158,7 @@ class ObjectConditions(proto.Message):
             [start_time][google.storagetransfer.v1.TransferOperation.start_time]
             of the ``TransferOperation`` and the "last modification
             time" of the object is equal to or greater than the value of
-            min_time_elapsed_since_last_modification`. Objects that do
+            min_time_elapsed_since_last_modification\`. Objects that do
             not have a "last modification time" are also transferred.
         max_time_elapsed_since_last_modification (google.protobuf.duration_pb2.Duration):
             Ensures that objects are not transferred if a specific
@@ -170,7 +170,7 @@ class ObjectConditions(proto.Message):
             [start_time][google.storagetransfer.v1.TransferOperation.start_time]
             of the ``TransferOperation``\ and the "last modification
             time" of the object is less than the value of
-            max_time_elapsed_since_last_modification`. Objects that do
+            max_time_elapsed_since_last_modification\`. Objects that do
             not have a "last modification time" are also transferred.
         include_prefixes (MutableSequence[str]):
             If you specify ``include_prefixes``, Storage Transfer
@@ -185,23 +185,23 @@ class ObjectConditions(proto.Message):
 
             The following are requirements of ``include_prefixes``:
 
-            -  Each include-prefix can contain any sequence of Unicode
-               characters, to a max length of 1024 bytes when
-               UTF8-encoded, and must not contain Carriage Return or
-               Line Feed characters. Wildcard matching and regular
-               expression matching are not supported.
+            - Each include-prefix can contain any sequence of Unicode
+              characters, to a max length of 1024 bytes when
+              UTF8-encoded, and must not contain Carriage Return or Line
+              Feed characters. Wildcard matching and regular expression
+              matching are not supported.
 
-            -  Each include-prefix must omit the leading slash. For
-               example, to include the object
-               ``s3://my-aws-bucket/logs/y=2015/requests.gz``, specify
-               the include-prefix as ``logs/y=2015/requests.gz``.
+            - Each include-prefix must omit the leading slash. For
+              example, to include the object
+              ``s3://my-aws-bucket/logs/y=2015/requests.gz``, specify
+              the include-prefix as ``logs/y=2015/requests.gz``.
 
-            -  None of the include-prefix values can be empty, if
-               specified.
+            - None of the include-prefix values can be empty, if
+              specified.
 
-            -  Each include-prefix must include a distinct portion of
-               the object namespace. No include-prefix may be a prefix
-               of another include-prefix.
+            - Each include-prefix must include a distinct portion of the
+              object namespace. No include-prefix may be a prefix of
+              another include-prefix.
 
             The max size of ``include_prefixes`` is 1000.
 
@@ -216,29 +216,29 @@ class ObjectConditions(proto.Message):
 
             The following are requirements of ``exclude_prefixes``:
 
-            -  Each exclude-prefix can contain any sequence of Unicode
-               characters, to a max length of 1024 bytes when
-               UTF8-encoded, and must not contain Carriage Return or
-               Line Feed characters. Wildcard matching and regular
-               expression matching are not supported.
+            - Each exclude-prefix can contain any sequence of Unicode
+              characters, to a max length of 1024 bytes when
+              UTF8-encoded, and must not contain Carriage Return or Line
+              Feed characters. Wildcard matching and regular expression
+              matching are not supported.
 
-            -  Each exclude-prefix must omit the leading slash. For
-               example, to exclude the object
-               ``s3://my-aws-bucket/logs/y=2015/requests.gz``, specify
-               the exclude-prefix as ``logs/y=2015/requests.gz``.
+            - Each exclude-prefix must omit the leading slash. For
+              example, to exclude the object
+              ``s3://my-aws-bucket/logs/y=2015/requests.gz``, specify
+              the exclude-prefix as ``logs/y=2015/requests.gz``.
 
-            -  None of the exclude-prefix values can be empty, if
-               specified.
+            - None of the exclude-prefix values can be empty, if
+              specified.
 
-            -  Each exclude-prefix must exclude a distinct portion of
-               the object namespace. No exclude-prefix may be a prefix
-               of another exclude-prefix.
+            - Each exclude-prefix must exclude a distinct portion of the
+              object namespace. No exclude-prefix may be a prefix of
+              another exclude-prefix.
 
-            -  If
-               [include_prefixes][google.storagetransfer.v1.ObjectConditions.include_prefixes]
-               is specified, then each exclude-prefix must start with
-               the value of a path explicitly included by
-               ``include_prefixes``.
+            - If
+              [include_prefixes][google.storagetransfer.v1.ObjectConditions.include_prefixes]
+              is specified, then each exclude-prefix must start with the
+              value of a path explicitly included by
+              ``include_prefixes``.
 
             The max size of ``exclude_prefixes`` is 1000.
 
@@ -255,9 +255,9 @@ class ObjectConditions(proto.Message):
             of data at a time. For that you'd set each of the fields as
             follows:
 
-            -  ``last_modified_since`` to the start of the day
+            - ``last_modified_since`` to the start of the day
 
-            -  ``last_modified_before`` to the end of the day
+            - ``last_modified_before`` to the end of the day
         last_modified_before (google.protobuf.timestamp_pb2.Timestamp):
             If specified, only objects with a "last
             modification time" before this timestamp and
@@ -321,10 +321,10 @@ class GcsData(proto.Message):
 
             If set to true:
 
-            -  Managed folders in the source bucket are transferred to
-               the destination bucket.
-            -  Managed folders in the destination bucket are
-               overwritten. Other OVERWRITE options are not supported.
+            - Managed folders in the source bucket are transferred to
+              the destination bucket.
+            - Managed folders in the destination bucket are overwritten.
+              Other OVERWRITE options are not supported.
 
             See `Transfer Cloud Storage managed
             folders </storage-transfer/docs/managed-folders>`__.
@@ -585,11 +585,11 @@ class HttpData(proto.Message):
     list of objects, one object per list entry. Each entry has the
     following tab-delimited fields:
 
-    -  **HTTP URL** — The location of the object.
+    - **HTTP URL** — The location of the object.
 
-    -  **Length** — The size of the object in bytes.
+    - **Length** — The size of the object in bytes.
 
-    -  **MD5** — The base64-encoded MD5 hash of the object.
+    - **MD5** — The base64-encoded MD5 hash of the object.
 
     For an example of a valid TSV file, see `Transferring data from
     URLs <https://cloud.google.com/storage-transfer/docs/create-url-list>`__.
@@ -597,26 +597,26 @@ class HttpData(proto.Message):
     When transferring data based on a URL list, keep the following in
     mind:
 
-    -  When an object located at ``http(s)://hostname:port/<URL-path>``
-       is transferred to a data sink, the name of the object at the data
-       sink is ``<hostname>/<URL-path>``.
+    - When an object located at ``http(s)://hostname:port/<URL-path>``
+      is transferred to a data sink, the name of the object at the data
+      sink is ``<hostname>/<URL-path>``.
 
-    -  If the specified size of an object does not match the actual size
-       of the object fetched, the object is not transferred.
+    - If the specified size of an object does not match the actual size
+      of the object fetched, the object is not transferred.
 
-    -  If the specified MD5 does not match the MD5 computed from the
-       transferred bytes, the object transfer fails.
+    - If the specified MD5 does not match the MD5 computed from the
+      transferred bytes, the object transfer fails.
 
-    -  Ensure that each URL you specify is publicly accessible. For
-       example, in Cloud Storage you can [share an object publicly]
-       (/storage/docs/cloud-console#_sharingdata) and get a link to it.
+    - Ensure that each URL you specify is publicly accessible. For
+      example, in Cloud Storage you can [share an object publicly]
+      (/storage/docs/cloud-console#_sharingdata) and get a link to it.
 
-    -  Storage Transfer Service obeys ``robots.txt`` rules and requires
-       the source HTTP server to support ``Range`` requests and to
-       return a ``Content-Length`` header in each response.
+    - Storage Transfer Service obeys ``robots.txt`` rules and requires
+      the source HTTP server to support ``Range`` requests and to return
+      a ``Content-Length`` header in each response.
 
-    -  [ObjectConditions][google.storagetransfer.v1.ObjectConditions]
-       have no effect when filtering objects to transfer.
+    - [ObjectConditions][google.storagetransfer.v1.ObjectConditions]
+      have no effect when filtering objects to transfer.
 
     Attributes:
         list_url (str):
@@ -1550,31 +1550,31 @@ class Schedule(proto.Message):
             relative to UTC time. A job runs once per 24 hours within
             the following guidelines:
 
-            -  If ``schedule_end_date`` and
-               [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date]
-               are the same and in the future relative to UTC, the
-               transfer is executed only one time.
-            -  If ``schedule_end_date`` is later than
-               ``schedule_start_date`` and ``schedule_end_date`` is in
-               the future relative to UTC, the job runs each day at
-               [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day]
-               through ``schedule_end_date``.
+            - If ``schedule_end_date`` and
+              [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date]
+              are the same and in the future relative to UTC, the
+              transfer is executed only one time.
+            - If ``schedule_end_date`` is later than
+              ``schedule_start_date`` and ``schedule_end_date`` is in
+              the future relative to UTC, the job runs each day at
+              [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day]
+              through ``schedule_end_date``.
         start_time_of_day (google.type.timeofday_pb2.TimeOfDay):
             The time in UTC that a transfer job is scheduled to run.
             Transfers may start later than this time.
 
             If ``start_time_of_day`` is not specified:
 
-            -  One-time transfers run immediately.
-            -  Recurring transfers run immediately, and each day at
-               midnight UTC, through
-               [schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date].
+            - One-time transfers run immediately.
+            - Recurring transfers run immediately, and each day at
+              midnight UTC, through
+              [schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date].
 
             If ``start_time_of_day`` is specified:
 
-            -  One-time transfers run at the specified time.
-            -  Recurring transfers run at the specified time each day,
-               through ``schedule_end_date``.
+            - One-time transfers run at the specified time.
+            - Recurring transfers run at the specified time each day,
+              through ``schedule_end_date``.
         end_time_of_day (google.type.timeofday_pb2.TimeOfDay):
             The time in UTC that no further transfer operations are
             scheduled. Combined with
@@ -1588,14 +1588,14 @@ class Schedule(proto.Message):
             [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day],
             and is subject to the following:
 
-            -  If ``end_time_of_day`` is not set and
-               ``schedule_end_date`` is set, then a default value of
-               ``23:59:59`` is used for ``end_time_of_day``.
+            - If ``end_time_of_day`` is not set and
+              ``schedule_end_date`` is set, then a default value of
+              ``23:59:59`` is used for ``end_time_of_day``.
 
-            -  If ``end_time_of_day`` is set and ``schedule_end_date``
-               is not set, then
-               [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] is
-               returned.
+            - If ``end_time_of_day`` is set and ``schedule_end_date`` is
+              not set, then
+              [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] is
+              returned.
         repeat_interval (google.protobuf.duration_pb2.Duration):
             Interval between the start of each scheduled
             TransferOperation. If unspecified, the default
@@ -2103,21 +2103,21 @@ class NotificationConfig(proto.Message):
     Notifications are published to the customer-provided topic using the
     following ``PubsubMessage.attributes``:
 
-    -  ``"eventType"``: one of the
-       [EventType][google.storagetransfer.v1.NotificationConfig.EventType]
-       values
-    -  ``"payloadFormat"``: one of the
-       [PayloadFormat][google.storagetransfer.v1.NotificationConfig.PayloadFormat]
-       values
-    -  ``"projectId"``: the
-       [project_id][google.storagetransfer.v1.TransferOperation.project_id]
-       of the ``TransferOperation``
-    -  ``"transferJobName"``: the
-       [transfer_job_name][google.storagetransfer.v1.TransferOperation.transfer_job_name]
-       of the ``TransferOperation``
-    -  ``"transferOperationName"``: the
-       [name][google.storagetransfer.v1.TransferOperation.name] of the
-       ``TransferOperation``
+    - ``"eventType"``: one of the
+      [EventType][google.storagetransfer.v1.NotificationConfig.EventType]
+      values
+    - ``"payloadFormat"``: one of the
+      [PayloadFormat][google.storagetransfer.v1.NotificationConfig.PayloadFormat]
+      values
+    - ``"projectId"``: the
+      [project_id][google.storagetransfer.v1.TransferOperation.project_id]
+      of the ``TransferOperation``
+    - ``"transferJobName"``: the
+      [transfer_job_name][google.storagetransfer.v1.TransferOperation.transfer_job_name]
+      of the ``TransferOperation``
+    - ``"transferOperationName"``: the
+      [name][google.storagetransfer.v1.TransferOperation.name] of the
+      ``TransferOperation``
 
     The ``PubsubMessage.data`` contains a
     [TransferOperation][google.storagetransfer.v1.TransferOperation]

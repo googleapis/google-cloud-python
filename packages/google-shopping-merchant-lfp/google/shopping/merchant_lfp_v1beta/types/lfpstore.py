@@ -88,25 +88,25 @@ class LfpStore(proto.Message):
         matching_state_hint (str):
             Optional. Output only. The hint of why the matching has
             failed. This is only set when
-            [matchingState][google.shopping.merchant.lfp.v1beta.LfpStore.matching_state]=``STORE_MATCHING_STATE_FAILED``.
+            [matchingState][google.shopping.merchant.lfp.v1beta.LfpStore.matching_state]=\ ``STORE_MATCHING_STATE_FAILED``.
 
             Possible values are:
 
-            -  "``linked-store-not-found``": There aren't any Google
-               Business Profile stores available for matching.
-            -  "``store-match-not-found``": The provided ``LfpStore``
-               couldn't be matched to any of the connected Google
-               Business Profile stores. Merchant Center account is
-               connected correctly and stores are available on Google
-               Business Profile, but the ``LfpStore`` location address
-               does not match with Google Business Profile stores'
-               addresses. Update the ``LfpStore`` address or Google
-               Business Profile store address to match correctly.
-            -  "``store-match-unverified``": The provided ``LfpStore``
-               couldn't be matched to any of the connected Google
-               Business Profile stores, as the matched Google Business
-               Profile store is unverified. Go through the Google
-               Business Profile verification process to match correctly.
+            - "``linked-store-not-found``": There aren't any Google
+              Business Profile stores available for matching.
+            - "``store-match-not-found``": The provided ``LfpStore``
+              couldn't be matched to any of the connected Google
+              Business Profile stores. Merchant Center account is
+              connected correctly and stores are available on Google
+              Business Profile, but the ``LfpStore`` location address
+              does not match with Google Business Profile stores'
+              addresses. Update the ``LfpStore`` address or Google
+              Business Profile store address to match correctly.
+            - "``store-match-unverified``": The provided ``LfpStore``
+              couldn't be matched to any of the connected Google
+              Business Profile stores, as the matched Google Business
+              Profile store is unverified. Go through the Google
+              Business Profile verification process to match correctly.
 
             This field is a member of `oneof`_ ``_matching_state_hint``.
     """

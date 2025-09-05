@@ -1293,7 +1293,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             cloud_exadata_infrastructure_id (str):
                 Required. The ID of the Exadata Infrastructure to
                 create. This value is restricted to
-                (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
                 maximum of 63 characters in length. The value must start
                 with a letter and end with a letter or a number.
 
@@ -1826,10 +1826,10 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
                 should not be set.
             cloud_vm_cluster_id (str):
                 Required. The ID of the VM Cluster to create. This value
-                is restricted to (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$)
-                and must be a maximum of 63 characters in length. The
-                value must start with a letter and end with a letter or
-                a number.
+                is restricted to
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+                maximum of 63 characters in length. The value must start
+                with a letter and end with a letter or a number.
 
                 This corresponds to the ``cloud_vm_cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2964,7 +2964,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             autonomous_database_id (str):
                 Required. The ID of the Autonomous Database to create.
                 This value is restricted to
-                (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
                 maximum of 63 characters in length. The value must start
                 with a letter and end with a letter or a number.
 

@@ -80,11 +80,11 @@ class AutomaticImprovements(proto.Message):
             better conversion rates. Google will improve your estimated
             delivery times based on various factors:
 
-            -  Delivery address of an order
-            -  Current handling time and shipping time settings
-            -  Estimated weekdays or business days
-            -  Parcel tracking data This field is only updated (cleared)
-               if provided in the update mask.
+            - Delivery address of an order
+            - Current handling time and shipping time settings
+            - Estimated weekdays or business days
+            - Parcel tracking data This field is only updated (cleared)
+              if provided in the update mask.
 
             This field is a member of `oneof`_ ``_shipping_improvements``.
     """
@@ -314,10 +314,10 @@ class AutomaticShippingImprovements(proto.Message):
     Google will improve your estimated delivery times based on various
     factors:
 
-    -  Delivery address of an order
-    -  Current handling time and shipping time settings
-    -  Estimated weekdays or business days
-    -  Parcel tracking data
+    - Delivery address of an order
+    - Current handling time and shipping time settings
+    - Estimated weekdays or business days
+    - Parcel tracking data
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -363,12 +363,12 @@ class UpdateAutomaticImprovementsRequest(proto.Message):
             are supported (in both ``snake_case`` and
             ``lowerCamelCase``):
 
-            -  ``item_updates``
-            -  ``item_updates.account_level_settings``
-            -  ``image_improvements``
-            -  ``image_improvements.account_level_settings``
-            -  ``shipping_improvements``
-            -  ``shipping_improvements.allow_shipping_improvements``
+            - ``item_updates``
+            - ``item_updates.account_level_settings``
+            - ``image_improvements``
+            - ``image_improvements.account_level_settings``
+            - ``shipping_improvements``
+            - ``shipping_improvements.allow_shipping_improvements``
     """
 
     automatic_improvements: "AutomaticImprovements" = proto.Field(

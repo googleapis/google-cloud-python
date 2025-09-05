@@ -214,9 +214,9 @@ class ListWatchlistsRequest(proto.Message):
             Optional. Which watchlist to return in aip.dev/160 form.
             Currently, only the following filters are supported:
 
-            -  ``watchlist_user_preferences.pinned=true``
-            -  ``has_entity([ENTITY_INDICATOR],[ENTITY_TYPE])``
-            -  ``has_entity([ENTITY_INDICATOR],[ENTITY_TYPE],[NAMESPACE])``
+            - ``watchlist_user_preferences.pinned=true``
+            - ``has_entity([ENTITY_INDICATOR],[ENTITY_TYPE])``
+            - ``has_entity([ENTITY_INDICATOR],[ENTITY_TYPE],[NAMESPACE])``
     """
 
     parent: str = proto.Field(

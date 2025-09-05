@@ -74,10 +74,10 @@ class NetworkConfig(proto.Message):
             Optional, reserved_ip_range can have one of the following
             two types of values.
 
-            -  CIDR range value when using DIRECT_PEERING connect mode.
-            -  `Allocated IP address
-               range <https://cloud.google.com/compute/docs/ip-addresses/reserve-static-internal-ip-address>`__
-               when using PRIVATE_SERVICE_ACCESS connect mode.
+            - CIDR range value when using DIRECT_PEERING connect mode.
+            - `Allocated IP address
+              range <https://cloud.google.com/compute/docs/ip-addresses/reserve-static-internal-ip-address>`__
+              when using PRIVATE_SERVICE_ACCESS connect mode.
 
             When the name of an allocated IP address range is specified,
             it must be one of the ranges associated with the private
@@ -467,10 +467,10 @@ class Instance(proto.Message):
             : "production", "123456789013/costCenter" : "marketing" See
             the documentation for more information:
 
-            -  Namespaced name:
-               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key
-            -  Short name:
-               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value
+            - Namespaced name:
+              https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key
+            - Short name:
+              https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value
         protocol (google.cloud.filestore_v1.types.Instance.FileProtocol):
             Immutable. The protocol indicates the access protocol for
             all shares in the instance. This field is immutable and it
@@ -909,12 +909,12 @@ class UpdateInstanceRequest(proto.Message):
             in this field. The elements of the repeated paths field may
             only include these fields:
 
-            -  "description"
-            -  "file_shares"
-            -  "labels"
-            -  "performance_config"
-            -  "deletion_protection_enabled"
-            -  "deletion_protection_reason".
+            - "description"
+            - "file_shares"
+            - "labels"
+            - "performance_config"
+            - "deletion_protection_enabled"
+            - "deletion_protection_reason".
         instance (google.cloud.filestore_v1.types.Instance):
             Only fields specified in update_mask are updated.
     """
@@ -1133,10 +1133,10 @@ class Snapshot(proto.Message):
             : "production", "123456789013/costCenter" : "marketing" See
             the documentation for more information:
 
-            -  Namespaced name:
-               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key
-            -  Short name:
-               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value
+            - Namespaced name:
+              https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key
+            - Short name:
+              https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value
     """
 
     class State(proto.Enum):
@@ -1424,10 +1424,10 @@ class Backup(proto.Message):
             : "production", "123456789013/costCenter" : "marketing" See
             the documentation for more information:
 
-            -  Namespaced name:
-               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key
-            -  Short name:
-               https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value
+            - Namespaced name:
+              https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key
+            - Short name:
+              https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value
         file_system_protocol (google.cloud.filestore_v1.types.Instance.FileProtocol):
             Output only. The file system protocol of the
             source Filestore instance that this backup is

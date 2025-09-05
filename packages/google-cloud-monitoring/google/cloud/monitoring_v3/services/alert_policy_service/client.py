@@ -944,7 +944,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
                    considered to be "unhealthy" and the ways to notify
                    people or services about this state. For an overview
                    of alerting policies, see [Introduction to
-                   Alerting](\ https://cloud.google.com/monitoring/alerts/).
+                   Alerting](https://cloud.google.com/monitoring/alerts/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1084,7 +1084,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
                    considered to be "unhealthy" and the ways to notify
                    people or services about this state. For an overview
                    of alerting policies, see [Introduction to
-                   Alerting](\ https://cloud.google.com/monitoring/alerts/).
+                   Alerting](https://cloud.google.com/monitoring/alerts/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1309,15 +1309,15 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
                 deleting the existing policy and adding the supplied
                 policy, except for the following:
 
-                -  The new policy will have the same
-                   ``[ALERT_POLICY_ID]`` as the former policy. This
-                   gives you continuity with the former policy in your
-                   notifications and incidents.
-                -  Conditions in the new policy will keep their former
-                   ``[CONDITION_ID]`` if the supplied condition includes
-                   the ``name`` field with that ``[CONDITION_ID]``. If
-                   the supplied condition omits the ``name`` field, then
-                   a new ``[CONDITION_ID]`` is created.
+                - The new policy will have the same
+                  ``[ALERT_POLICY_ID]`` as the former policy. This gives
+                  you continuity with the former policy in your
+                  notifications and incidents.
+                - Conditions in the new policy will keep their former
+                  ``[CONDITION_ID]`` if the supplied condition includes
+                  the ``name`` field with that ``[CONDITION_ID]``. If
+                  the supplied condition omits the ``name`` field, then
+                  a new ``[CONDITION_ID]`` is created.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1345,7 +1345,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
                    considered to be "unhealthy" and the ways to notify
                    people or services about this state. For an overview
                    of alerting policies, see [Introduction to
-                   Alerting](\ https://cloud.google.com/monitoring/alerts/).
+                   Alerting](https://cloud.google.com/monitoring/alerts/).
 
         """
         # Create or coerce a protobuf request object.

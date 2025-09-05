@@ -132,26 +132,25 @@ class ManagedIdentitiesServiceGrpcAsyncIOTransport(ManagedIdentitiesServiceTrans
 
     The Managed Identities service exposes the following resources:
 
-    -  Locations as global, named as follows:
-       ``projects/{project_id}/locations/global``.
+    - Locations as global, named as follows:
+      ``projects/{project_id}/locations/global``.
 
-    -  Domains, named as follows:
-       ``/projects/{project_id}/locations/global/domain/{domain_name}``.
+    - Domains, named as follows:
+      ``/projects/{project_id}/locations/global/domain/{domain_name}``.
 
     The ``{domain_name}`` refers to fully qualified domain name in the
     customer project e.g. mydomain.myorganization.com, with the
     following restrictions:
 
-    -  Must contain only lowercase letters, numbers, periods and
-       hyphens.
-    -  Must start with a letter.
-    -  Must contain between 2-64 characters.
-    -  Must end with a number or a letter.
-    -  Must not start with period.
-    -  First segement length (mydomain form example above) shouldn't
-       exceed 15 chars.
-    -  The last segment cannot be fully numeric.
-    -  Must be unique within the customer project.
+    - Must contain only lowercase letters, numbers, periods and hyphens.
+    - Must start with a letter.
+    - Must contain between 2-64 characters.
+    - Must end with a number or a letter.
+    - Must not start with period.
+    - First segement length (mydomain form example above) shouldn't
+      exceed 15 chars.
+    - The last segment cannot be fully numeric.
+    - Must be unique within the customer project.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

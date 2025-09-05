@@ -941,7 +941,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
                    For more information about entity types, see the
                    [Dialogflow
-                   documentation](\ https://cloud.google.com/dialogflow/docs/entities-overview).
+                   documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -1087,7 +1087,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
                    For more information about entity types, see the
                    [Dialogflow
-                   documentation](\ https://cloud.google.com/dialogflow/docs/entities-overview).
+                   documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -1237,7 +1237,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
                    For more information about entity types, see the
                    [Dialogflow
-                   documentation](\ https://cloud.google.com/dialogflow/docs/entities-overview).
+                   documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
 
         """
         # Create or coerce a protobuf request object.

@@ -497,11 +497,11 @@ class FileMetadata(proto.Message):
             Output only. Alternate views of this file object. Each file
             view is attached to a specific role. Possible example keys:
 
-            -  "thumbnail"
-            -  "mobile_thumbnail"
-            -  "clip"
-            -  "summary"
-            -  "translation".
+            - "thumbnail"
+            - "mobile_thumbnail"
+            - "clip"
+            - "summary"
+            - "translation".
     """
 
     file_id: str = proto.Field(

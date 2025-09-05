@@ -340,8 +340,8 @@ class EnvironmentsAsyncClient:
                 Required. The agent to list all environments from.
                 Format:
 
-                -  ``projects/<Project ID>/agent``
-                -  ``projects/<Project ID>/locations/<Location ID>/agent``
+                - ``projects/<Project ID>/agent``
+                - ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -486,14 +486,14 @@ class EnvironmentsAsyncClient:
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   -  testing
-                   -  development
-                   -  production
-                   -  etc.
+                   - testing
+                   - development
+                   - production
+                   - etc.
 
                    For more information, see the [versions and
                    environments
-                   guide](\ https://cloud.google.com/dialogflow/docs/agents-versions).
+                   guide](https://cloud.google.com/dialogflow/docs/agents-versions).
 
         """
         # Create or coerce a protobuf request object.
@@ -592,14 +592,14 @@ class EnvironmentsAsyncClient:
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   -  testing
-                   -  development
-                   -  production
-                   -  etc.
+                   - testing
+                   - development
+                   - production
+                   - etc.
 
                    For more information, see the [versions and
                    environments
-                   guide](\ https://cloud.google.com/dialogflow/docs/agents-versions).
+                   guide](https://cloud.google.com/dialogflow/docs/agents-versions).
 
         """
         # Create or coerce a protobuf request object.
@@ -709,14 +709,14 @@ class EnvironmentsAsyncClient:
                    you can publish them to custom environments. You can
                    create a variety of custom environments for:
 
-                   -  testing
-                   -  development
-                   -  production
-                   -  etc.
+                   - testing
+                   - development
+                   - production
+                   - etc.
 
                    For more information, see the [versions and
                    environments
-                   guide](\ https://cloud.google.com/dialogflow/docs/agents-versions).
+                   guide](https://cloud.google.com/dialogflow/docs/agents-versions).
 
         """
         # Create or coerce a protobuf request object.
