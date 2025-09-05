@@ -606,6 +606,75 @@ def _get_previous_version(package_name: str, librarian: str) -> str:
     )
 
 
+def _process_changelog(
+    content, library_changes, version, previous_version, package_name
+):
+    """This function searches the given content for the anchor pattern
+    `[1]: https://pypi.org/project/{package_name}/#history`
+    and adds an entry in the following format:
+
+    ## [{version}](https://github.com/googleapis/google-cloud-python/compare/{package_name}-v{previous_version}...{package_name}-v{version}) (YYYY-MM-DD)
+
+    ### Documentation
+
+    * Update import statement example in README ([868b006](https://github.com/googleapis/google-cloud-python/commit/868b0069baf1a4bf6705986e0b6885419b35cdcc))
+
+    Args:
+        content(str): The contents of an existing changelog.
+        library_changes(List[Dict]): List of dictionaries containing the changes
+            for a given library.
+        version(str): The new version of the library.
+        previous_version: The previous version of the library.
+        package_name(str): The name of the package where the changelog should
+            be updated.
+
+    Raises: ValueError if the anchor pattern string could not be found in the given content
+
+    Returns: A string with the modified content.
+    """
+    repo_url = "https://github.com/googleapis/google-cloud-python"
+    current_date = datetime.now().strftime("%Y-%m-%d")
+
+    # Create the main version header
+    version_header = (
+        f"## [{version}]({repo_url}/compare/{package_name}-v{previous_version}"
+        f"...{package_name}-v{version}) ({current_date})"
+    )
+    entry_parts = [version_header]
+
+    # Group changes by type (e.g., feat, fix, docs)
+    library_changes.sort(key=lambda x: x["type"])
+    grouped_changes = itertools.groupby(library_changes, key=lambda x: x["type"])
+
+    for change_type, changes in grouped_changes:
+        # We only care about feat, fix, docs
+        adjusted_change_type = change_type.replace("!", "")
+        if adjusted_change_type in ["feat", "fix", "docs"]:
+            if adjusted_change_type == "feat":
+                adjusted_change_type = "Features"
+            elif adjusted_change_type == "fix":
+                adjusted_change_type = "Bug Fixes"
+            else:
+                adjusted_change_type = "Documentation"
+
+            entry_parts.append(f"\n\n### {adjusted_change_type}\n")
+            for change in changes:
+                commit_link = f"([{change['source_commit_hash']}]({repo_url}/commit/{change['source_commit_hash']}))"
+                entry_parts.append(f"* {change['subject']} {commit_link}")
+
+    new_entry_text = "\n".join(entry_parts)
+    anchor_pattern = re.compile(
+        rf"(\[1\]: https://pypi\.org/project/{package_name}/#history)",
+        re.MULTILINE,
+    )
+    replacement_text = f"\\g<1>\n\n{new_entry_text}"
+    updated_content, num_subs = anchor_pattern.subn(replacement_text, content, count=1)
+    if num_subs == 0:
+        raise ValueError("Changelog anchor '[1]: ...#history' not found.")
+
+    return updated_content
+
+
 def _update_changelog_for_library(
     repo: str,
     output: str,
@@ -614,7 +683,7 @@ def _update_changelog_for_library(
     previous_version: str,
     package_name: str,
 ):
-    """Prepends a new release entry with multiple, grouped changes to a changelog.
+    """Prepends a new release entry with multiple, grouped changes, to a changelog.
 
     Args:
         repo(str): This directory will contain all directories that make up a
@@ -630,49 +699,15 @@ def _update_changelog_for_library(
             be updated.
     """
 
-    def process_changelog(content):
-        repo_url = "https://github.com/googleapis/google-cloud-python"
-        current_date = datetime.now().strftime("%Y-%m-%d")
-
-        # Create the main version header
-        version_header = (
-            f"## [{version}]({repo_url}/compare/{package_name}-v{previous_version}"
-            f"...{package_name}-v{version}) ({current_date})"
-        )
-        entry_parts = [version_header]
-
-        # Group changes by type (e.g., feat, fix, docs)
-        library_changes.sort(key=lambda x: x["type"])
-        grouped_changes = itertools.groupby(library_changes, key=lambda x: x["type"])
-
-        for change_type, changes in grouped_changes:
-            # We only care about feat, fix, docs
-            if change_type.replace("!", "") in ["feat", "fix", "docs"]:
-                entry_parts.append(
-                    f"\n\n### {change_type.capitalize().replace('!', '')}\n"
-                )
-                for change in changes:
-                    commit_link = f"([{change['source_commit_hash']}]({repo_url}/commit/{change['source_commit_hash']}))"
-                    entry_parts.append(f"* {change['subject']} {commit_link}")
-
-        new_entry_text = "\n".join(entry_parts)
-        anchor_pattern = re.compile(
-            r"(\[1\]: https://pypi\.org/project/google-cloud-language/#history)",
-            re.MULTILINE,
-        )
-        replacement_text = f"\\g<1>\n\n{new_entry_text}"
-        updated_content, num_subs = anchor_pattern.subn(
-            replacement_text, content, count=1
-        )
-
-        if num_subs == 0:
-            raise ValueError("Changelog anchor '[1]: ...#history' not found.")
-
-        return updated_content
-
     source_path = f"{repo}/packages/{package_name}/CHANGELOG.md"
     output_path = f"{output}/packages/{package_name}/CHANGELOG.md"
-    updated_content = process_changelog(_read_text_file(source_path))
+    updated_content = _process_changelog(
+        _read_text_file(source_path),
+        library_changes,
+        version,
+        previous_version,
+        package_name,
+    )
     _write_text_file(output_path, updated_content)
 
 
