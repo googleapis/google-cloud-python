@@ -38,6 +38,12 @@ from google.cloud.retail_v2.services.control_service.async_client import (
     ControlServiceAsyncClient,
 )
 from google.cloud.retail_v2.services.control_service.client import ControlServiceClient
+from google.cloud.retail_v2.services.conversational_search_service.async_client import (
+    ConversationalSearchServiceAsyncClient,
+)
+from google.cloud.retail_v2.services.conversational_search_service.client import (
+    ConversationalSearchServiceClient,
+)
 from google.cloud.retail_v2.services.generative_question_service.async_client import (
     GenerativeQuestionServiceAsyncClient,
 )
@@ -129,6 +135,10 @@ from google.cloud.retail_v2.types.control_service import (
     ListControlsRequest,
     ListControlsResponse,
     UpdateControlRequest,
+)
+from google.cloud.retail_v2.types.conversational_search_service import (
+    ConversationalSearchRequest,
+    ConversationalSearchResponse,
 )
 from google.cloud.retail_v2.types.export_config import (
     BigQueryOutputResult,
@@ -223,6 +233,7 @@ from google.cloud.retail_v2.types.purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
+from google.cloud.retail_v2.types.safety import HarmCategory, SafetySetting
 from google.cloud.retail_v2.types.search_service import (
     ExperimentInfo,
     ProductAttributeInterval,
@@ -265,6 +276,8 @@ __all__ = (
     "CompletionServiceAsyncClient",
     "ControlServiceClient",
     "ControlServiceAsyncClient",
+    "ConversationalSearchServiceClient",
+    "ConversationalSearchServiceAsyncClient",
     "GenerativeQuestionServiceClient",
     "GenerativeQuestionServiceAsyncClient",
     "ModelServiceClient",
@@ -325,6 +338,8 @@ __all__ = (
     "ListControlsRequest",
     "ListControlsResponse",
     "UpdateControlRequest",
+    "ConversationalSearchRequest",
+    "ConversationalSearchResponse",
     "BigQueryOutputResult",
     "ExportAnalyticsMetricsRequest",
     "ExportAnalyticsMetricsResponse",
@@ -402,6 +417,8 @@ __all__ = (
     "PurgeProductsResponse",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "SafetySetting",
+    "HarmCategory",
     "ExperimentInfo",
     "ProductAttributeInterval",
     "ProductAttributeValue",

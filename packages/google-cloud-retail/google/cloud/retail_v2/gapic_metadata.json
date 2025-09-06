@@ -366,6 +366,40 @@
         }
       }
     },
+    "ConversationalSearchService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ConversationalSearchServiceClient",
+          "rpcs": {
+            "ConversationalSearch": {
+              "methods": [
+                "conversational_search"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ConversationalSearchServiceAsyncClient",
+          "rpcs": {
+            "ConversationalSearch": {
+              "methods": [
+                "conversational_search"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ConversationalSearchServiceClient",
+          "rpcs": {
+            "ConversationalSearch": {
+              "methods": [
+                "conversational_search"
+              ]
+            }
+          }
+        }
+      }
+    },
     "GenerativeQuestionService": {
       "clients": {
         "grpc": {
