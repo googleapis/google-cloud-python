@@ -66,6 +66,10 @@ from .control_service import (
     ListControlsResponse,
     UpdateControlRequest,
 )
+from .conversational_search_service import (
+    ConversationalSearchRequest,
+    ConversationalSearchResponse,
+)
 from .export_config import (
     BigQueryOutputResult,
     ExportAnalyticsMetricsRequest,
@@ -156,6 +160,7 @@ from .purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
+from .safety import HarmCategory, SafetySetting
 from .search_service import (
     ExperimentInfo,
     ProductAttributeInterval,
@@ -231,6 +236,8 @@ __all__ = (
     "ListControlsRequest",
     "ListControlsResponse",
     "UpdateControlRequest",
+    "ConversationalSearchRequest",
+    "ConversationalSearchResponse",
     "BigQueryOutputResult",
     "ExportAnalyticsMetricsRequest",
     "ExportAnalyticsMetricsResponse",
@@ -308,6 +315,8 @@ __all__ = (
     "PurgeProductsResponse",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "SafetySetting",
+    "HarmCategory",
     "ExperimentInfo",
     "ProductAttributeInterval",
     "ProductAttributeValue",

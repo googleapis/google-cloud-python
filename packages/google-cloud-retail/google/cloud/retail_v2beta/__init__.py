@@ -28,6 +28,10 @@ from .services.completion_service import (
     CompletionServiceClient,
 )
 from .services.control_service import ControlServiceAsyncClient, ControlServiceClient
+from .services.conversational_search_service import (
+    ConversationalSearchServiceAsyncClient,
+    ConversationalSearchServiceClient,
+)
 from .services.generative_question_service import (
     GenerativeQuestionServiceAsyncClient,
     GenerativeQuestionServiceClient,
@@ -103,6 +107,10 @@ from .types.control_service import (
     ListControlsRequest,
     ListControlsResponse,
     UpdateControlRequest,
+)
+from .types.conversational_search_service import (
+    ConversationalSearchRequest,
+    ConversationalSearchResponse,
 )
 from .types.export_config import (
     BigQueryOutputResult,
@@ -200,6 +208,7 @@ from .types.purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
+from .types.safety import HarmCategory, SafetySetting
 from .types.search_service import (
     ExperimentInfo,
     ProductAttributeInterval,
@@ -238,6 +247,7 @@ __all__ = (
     "CatalogServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ControlServiceAsyncClient",
+    "ConversationalSearchServiceAsyncClient",
     "GenerativeQuestionServiceAsyncClient",
     "ModelServiceAsyncClient",
     "PredictionServiceAsyncClient",
@@ -279,6 +289,9 @@ __all__ = (
     "Condition",
     "Control",
     "ControlServiceClient",
+    "ConversationalSearchRequest",
+    "ConversationalSearchResponse",
+    "ConversationalSearchServiceClient",
     "CreateControlRequest",
     "CreateModelMetadata",
     "CreateModelRequest",
@@ -314,6 +327,7 @@ __all__ = (
     "GetModelRequest",
     "GetProductRequest",
     "GetServingConfigRequest",
+    "HarmCategory",
     "Image",
     "ImportCompletionDataRequest",
     "ImportCompletionDataResponse",
@@ -383,6 +397,7 @@ __all__ = (
     "ReplaceCatalogAttributeRequest",
     "ResumeModelRequest",
     "Rule",
+    "SafetySetting",
     "SearchRequest",
     "SearchResponse",
     "SearchServiceClient",

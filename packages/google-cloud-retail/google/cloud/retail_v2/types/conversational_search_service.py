@@ -19,10 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.retail_v2alpha.types import common, safety, search_service
+from google.cloud.retail_v2.types import common, safety, search_service
 
 __protobuf__ = proto.module(
-    package="google.cloud.retail.v2alpha",
+    package="google.cloud.retail.v2",
     manifest={
         "ConversationalSearchRequest",
         "ConversationalSearchResponse",
@@ -32,7 +32,7 @@ __protobuf__ = proto.module(
 
 class ConversationalSearchRequest(proto.Message):
     r"""Request message for
-    [ConversationalSearchService.ConversationalSearch][google.cloud.retail.v2alpha.ConversationalSearchService.ConversationalSearch]
+    [ConversationalSearchService.ConversationalSearch][google.cloud.retail.v2.ConversationalSearchService.ConversationalSearch]
     method.
 
     Attributes:
@@ -59,7 +59,7 @@ class ConversationalSearchRequest(proto.Message):
             Optional. The categories associated with a category page.
             Must be set for category navigation queries to achieve good
             search quality. The format should be the same as
-            [UserEvent.page_categories][google.cloud.retail.v2alpha.UserEvent.page_categories];
+            [UserEvent.page_categories][google.cloud.retail.v2.UserEvent.page_categories];
 
             To represent full path of category, use '>' sign to separate
             different hierarchies. If '>' is part of the category name,
@@ -73,9 +73,9 @@ class ConversationalSearchRequest(proto.Message):
             Optional. This field specifies the conversation id, which
             maintains the state of the conversation between client side
             and server side. Use the value from the previous
-            [ConversationalSearchResponse.conversation_id][google.cloud.retail.v2alpha.ConversationalSearchResponse.conversation_id].
+            [ConversationalSearchResponse.conversation_id][google.cloud.retail.v2.ConversationalSearchResponse.conversation_id].
             For the initial request, this should be empty.
-        search_params (google.cloud.retail_v2alpha.types.ConversationalSearchRequest.SearchParams):
+        search_params (google.cloud.retail_v2.types.ConversationalSearchRequest.SearchParams):
             Optional. Search parameters.
         visitor_id (str):
             Required. A unique identifier for tracking visitors. For
@@ -85,14 +85,14 @@ class ConversationalSearchRequest(proto.Message):
             the visitor logs in or out of the website.
 
             This should be the same identifier as
-            [UserEvent.visitor_id][google.cloud.retail.v2alpha.UserEvent.visitor_id].
+            [UserEvent.visitor_id][google.cloud.retail.v2.UserEvent.visitor_id].
 
             The field must be a UTF-8 encoded string with a length limit
             of 128 characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
-        user_info (google.cloud.retail_v2alpha.types.UserInfo):
+        user_info (google.cloud.retail_v2.types.UserInfo):
             Optional. User information.
-        conversational_filtering_spec (google.cloud.retail_v2alpha.types.ConversationalSearchRequest.ConversationalFilteringSpec):
+        conversational_filtering_spec (google.cloud.retail_v2.types.ConversationalSearchRequest.ConversationalFilteringSpec):
             Optional. This field specifies all
             conversational filtering related parameters.
         user_labels (MutableMapping[str, str]):
@@ -117,7 +117,7 @@ class ConversationalSearchRequest(proto.Message):
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
-        safety_settings (MutableSequence[google.cloud.retail_v2alpha.types.SafetySetting]):
+        safety_settings (MutableSequence[google.cloud.retail_v2.types.SafetySetting]):
             Optional. The safety settings to be applied
             to the generated content.
     """
@@ -130,25 +130,25 @@ class ConversationalSearchRequest(proto.Message):
                 Optional. The filter string to restrict search results.
 
                 The syntax of the filter string is the same as
-                [SearchRequest.filter][google.cloud.retail.v2alpha.SearchRequest.filter].
+                [SearchRequest.filter][google.cloud.retail.v2.SearchRequest.filter].
             canonical_filter (str):
                 Optional. The canonical filter string to restrict search
                 results.
 
                 The syntax of the canonical filter string is the same as
-                [SearchRequest.canonical_filter][google.cloud.retail.v2alpha.SearchRequest.canonical_filter].
+                [SearchRequest.canonical_filter][google.cloud.retail.v2.SearchRequest.canonical_filter].
             sort_by (str):
                 Optional. The sort string to specify the sorting of search
                 results.
 
                 The syntax of the sort string is the same as
                 [SearchRequest.sort][].
-            boost_spec (google.cloud.retail_v2alpha.types.SearchRequest.BoostSpec):
+            boost_spec (google.cloud.retail_v2.types.SearchRequest.BoostSpec):
                 Optional. The boost spec to specify the boosting of search
                 results.
 
                 The syntax of the boost spec is the same as
-                [SearchRequest.boost_spec][google.cloud.retail.v2alpha.SearchRequest.boost_spec].
+                [SearchRequest.boost_spec][google.cloud.retail.v2.SearchRequest.boost_spec].
         """
 
         filter: str = proto.Field(
@@ -188,7 +188,7 @@ class ConversationalSearchRequest(proto.Message):
                 search.
 
                 This field is a member of `oneof`_ ``type``.
-            selected_answer (google.cloud.retail_v2alpha.types.ConversationalSearchRequest.UserAnswer.SelectedAnswer):
+            selected_answer (google.cloud.retail_v2.types.ConversationalSearchRequest.UserAnswer.SelectedAnswer):
                 Optional. This field specifies the selected answer during
                 the conversational search. This should be a subset of
                 [ConversationalSearchResponse.followup_question.suggested_answers][].
@@ -201,7 +201,7 @@ class ConversationalSearchRequest(proto.Message):
             conversational search.
 
             Attributes:
-                product_attribute_value (google.cloud.retail_v2alpha.types.ProductAttributeValue):
+                product_attribute_value (google.cloud.retail_v2.types.ProductAttributeValue):
                     Optional. This field specifies the selected
                     answer which is a attribute key-value.
             """
@@ -233,17 +233,17 @@ class ConversationalSearchRequest(proto.Message):
         Attributes:
             enable_conversational_filtering (bool):
                 Optional. This field is deprecated. Please use
-                [ConversationalFilteringSpec.conversational_filtering_mode][google.cloud.retail.v2alpha.ConversationalSearchRequest.ConversationalFilteringSpec.conversational_filtering_mode]
+                [ConversationalFilteringSpec.conversational_filtering_mode][google.cloud.retail.v2.ConversationalSearchRequest.ConversationalFilteringSpec.conversational_filtering_mode]
                 instead.
-            user_answer (google.cloud.retail_v2alpha.types.ConversationalSearchRequest.UserAnswer):
+            user_answer (google.cloud.retail_v2.types.ConversationalSearchRequest.UserAnswer):
                 Optional. This field specifies the current
                 user answer during the conversational filtering
                 search. It can be either user selected from
                 suggested answers or user input plain text.
-            conversational_filtering_mode (google.cloud.retail_v2alpha.types.ConversationalSearchRequest.ConversationalFilteringSpec.Mode):
+            conversational_filtering_mode (google.cloud.retail_v2.types.ConversationalSearchRequest.ConversationalFilteringSpec.Mode):
                 Optional. Mode to control Conversational Filtering. Defaults
                 to
-                [Mode.DISABLED][google.cloud.retail.v2alpha.ConversationalSearchRequest.ConversationalFilteringSpec.Mode.DISABLED]
+                [Mode.DISABLED][google.cloud.retail.v2.ConversationalSearchRequest.ConversationalFilteringSpec.Mode.DISABLED]
                 if it's unset.
         """
 
@@ -339,7 +339,7 @@ class ConversationalSearchRequest(proto.Message):
 
 class ConversationalSearchResponse(proto.Message):
     r"""Response message for
-    [ConversationalSearchService.ConversationalSearch][google.cloud.retail.v2alpha.ConversationalSearchService.ConversationalSearch]
+    [ConversationalSearchService.ConversationalSearch][google.cloud.retail.v2.ConversationalSearchService.ConversationalSearch]
     method.
 
     Attributes:
@@ -358,29 +358,29 @@ class ConversationalSearchResponse(proto.Message):
             - "BLOCKLISTED"
             - "BEST_PRODUCT"
             - "RETAIL_SUPPORT"
-            - "DISABLED" clang-format off clang-format on
+            - "DISABLED".
         conversational_text_response (str):
             The conversational answer-based text response
             generated by the Server.
-        followup_question (google.cloud.retail_v2alpha.types.ConversationalSearchResponse.FollowupQuestion):
+        followup_question (google.cloud.retail_v2.types.ConversationalSearchResponse.FollowupQuestion):
             The conversational followup question
             generated for Intent refinement.
         conversation_id (str):
             Conversation UUID. This field will be stored in client side
             storage to maintain the conversation session with server and
             will be used for next search request's
-            [ConversationalSearchRequest.conversation_id][google.cloud.retail.v2alpha.ConversationalSearchRequest.conversation_id]
+            [ConversationalSearchRequest.conversation_id][google.cloud.retail.v2.ConversationalSearchRequest.conversation_id]
             to restore conversation state in server.
-        refined_search (MutableSequence[google.cloud.retail_v2alpha.types.ConversationalSearchResponse.RefinedSearch]):
+        refined_search (MutableSequence[google.cloud.retail_v2.types.ConversationalSearchResponse.RefinedSearch]):
             The proposed refined search queries. They can be used to
             fetch the relevant search results. When using
             CONVERSATIONAL_FILTER_ONLY mode, the refined_query from
             search response will be populated here.
-        conversational_filtering_result (google.cloud.retail_v2alpha.types.ConversationalSearchResponse.ConversationalFilteringResult):
+        conversational_filtering_result (google.cloud.retail_v2.types.ConversationalSearchResponse.ConversationalFilteringResult):
             This field specifies all related information
             that is needed on client side for UI rendering
             of conversational filtering search.
-        state (google.cloud.retail_v2alpha.types.ConversationalSearchResponse.State):
+        state (google.cloud.retail_v2.types.ConversationalSearchResponse.State):
             Output only. The state of the response
             generation.
     """
@@ -408,7 +408,7 @@ class ConversationalSearchResponse(proto.Message):
             followup_question (str):
                 The conversational followup question
                 generated for Intent refinement.
-            suggested_answers (MutableSequence[google.cloud.retail_v2alpha.types.ConversationalSearchResponse.FollowupQuestion.SuggestedAnswer]):
+            suggested_answers (MutableSequence[google.cloud.retail_v2.types.ConversationalSearchResponse.FollowupQuestion.SuggestedAnswer]):
                 The answer options provided to client for the
                 follow-up question.
         """
@@ -420,7 +420,7 @@ class ConversationalSearchResponse(proto.Message):
             will be set.
 
             Attributes:
-                product_attribute_value (google.cloud.retail_v2alpha.types.ProductAttributeValue):
+                product_attribute_value (google.cloud.retail_v2.types.ProductAttributeValue):
                     Product attribute value, including an
                     attribute key and an attribute value. Other
                     types can be added here in the future.
@@ -465,14 +465,14 @@ class ConversationalSearchResponse(proto.Message):
         search.
 
         Attributes:
-            followup_question (google.cloud.retail_v2alpha.types.ConversationalSearchResponse.FollowupQuestion):
+            followup_question (google.cloud.retail_v2.types.ConversationalSearchResponse.FollowupQuestion):
                 The conversational filtering question.
-            additional_filter (google.cloud.retail_v2alpha.types.ConversationalSearchResponse.ConversationalFilteringResult.AdditionalFilter):
+            additional_filter (google.cloud.retail_v2.types.ConversationalSearchResponse.ConversationalFilteringResult.AdditionalFilter):
                 This is the incremental additional filters implied from the
                 current user answer. User should add the suggested addition
                 filters to the previous
                 [ConversationalSearchRequest.search_params.filter][] and
-                [SearchRequest.filter][google.cloud.retail.v2alpha.SearchRequest.filter],
+                [SearchRequest.filter][google.cloud.retail.v2.SearchRequest.filter],
                 and use the merged filter in the follow up requests.
         """
 
@@ -480,7 +480,7 @@ class ConversationalSearchResponse(proto.Message):
             r"""Additional filter that client side need to apply.
 
             Attributes:
-                product_attribute_value (google.cloud.retail_v2alpha.types.ProductAttributeValue):
+                product_attribute_value (google.cloud.retail_v2.types.ProductAttributeValue):
                     Product attribute value, including an
                     attribute key and an attribute value. Other
                     types can be added here in the future.

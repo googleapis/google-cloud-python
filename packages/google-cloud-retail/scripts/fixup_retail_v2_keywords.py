@@ -46,6 +46,7 @@ class retailCallTransformer(cst.CSTTransformer):
         'batch_update_generative_question_configs': ('requests', 'parent', ),
         'collect_user_event': ('parent', 'user_event', 'prebuilt_rule', 'uri', 'ets', 'raw_json', ),
         'complete_query': ('catalog', 'query', 'visitor_id', 'language_codes', 'device_type', 'dataset', 'max_suggestions', 'enable_attribute_suggestions', 'entity', ),
+        'conversational_search': ('placement', 'branch', 'visitor_id', 'query', 'page_categories', 'conversation_id', 'search_params', 'user_info', 'conversational_filtering_spec', 'user_labels', 'safety_settings', ),
         'create_control': ('parent', 'control', 'control_id', ),
         'create_model': ('parent', 'model', 'dry_run', ),
         'create_product': ('parent', 'product', 'product_id', ),
