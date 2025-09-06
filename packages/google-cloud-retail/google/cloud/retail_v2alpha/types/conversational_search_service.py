@@ -249,18 +249,22 @@ class ConversationalSearchRequest(proto.Message):
 
         class Mode(proto.Enum):
             r"""Enum to control Conversational Filtering mode.
+            A single conversation session including multiple turns supports
+            modes for Conversational Search OR Conversational Filtering
+            without Conversational Search, but not both.
 
             Values:
                 MODE_UNSPECIFIED (0):
                     Default value.
                 DISABLED (1):
-                    Disable Conversational Filtering.
+                    Disables Conversational Filtering when using
+                    Conversational Search.
                 ENABLED (2):
-                    Enabled Conversational Filtering with default
+                    Enables Conversational Filtering when using
                     Conversational Search.
                 CONVERSATIONAL_FILTER_ONLY (3):
-                    Enabled Conversational Filtering without
-                    default Conversational Search.
+                    Enables Conversational Filtering without
+                    Conversational Search.
             """
             MODE_UNSPECIFIED = 0
             DISABLED = 1
@@ -344,9 +348,6 @@ class ConversationalSearchResponse(proto.Message):
 
             Supported values are:
 
-            - "ADVERSARIAL"
-            - "CHITCHAT"
-            - "JAILBREAK"
             - "ORDER_SUPPORT"
             - "SIMPLE_PRODUCT_SEARCH"
             - "INTENT_REFINEMENT"
