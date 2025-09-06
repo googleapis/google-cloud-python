@@ -1400,7 +1400,7 @@ class _QueryResults(object):
             api_response (Dict): Response returned from an API call
         """
         self._properties.clear()
-        self._properties.update(copy.deepcopy(api_response))
+        self._properties.update(api_response)
 
 
 def _query_param_from_api_repr(resource):
