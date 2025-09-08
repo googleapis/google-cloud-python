@@ -649,15 +649,13 @@ def _process_changelog(
     for change_type, changes in grouped_changes:
         # We only care about feat, fix, docs
         adjusted_change_type = change_type.replace("!", "")
+        change_type_map = {
+            "feat": "Features",
+            "fix": "Bug Fixes",
+            "docs": "Documentation",
+        }
         if adjusted_change_type in ["feat", "fix", "docs"]:
-            if adjusted_change_type == "feat":
-                adjusted_change_type = "Features"
-            elif adjusted_change_type == "fix":
-                adjusted_change_type = "Bug Fixes"
-            else:
-                adjusted_change_type = "Documentation"
-
-            entry_parts.append(f"\n\n### {adjusted_change_type}\n")
+            entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in changes:
                 commit_link = f"([{change['source_commit_hash']}]({repo_url}/commit/{change['source_commit_hash']}))"
                 entry_parts.append(f"* {change['subject']} {commit_link}")
