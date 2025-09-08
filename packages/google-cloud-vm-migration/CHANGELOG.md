@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vm-migration-v1.11.3...google-cloud-vm-migration-v1.12.0) (2025-09-08)
+
+
+### Features
+
+* API for extending the time to live (TTL) of a Migrating VM ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* Azure as a source ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* CMEK support ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* Cutover forecast ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* Image Import ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* Machine Image Import ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* Migration warnings in addition to errors ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* Multiple additional supported target details ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* OS capabilities detection ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* VM disk migration ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+
+
+### Bug Fixes
+
+* Changed field behavior for an existing field `key` in message `.google.cloud.vmmigration.v1.AwsSourceDetails` to `required` to protect from incorrect input ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* Changed field behavior for an existing field `project` in message `.google.cloud.vmmigration.v1.TargetProject` to `required` to protect from incorrect input ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+* Changed field behavior for an existing field `value` in message `.google.cloud.vmmigration.v1.AwsSourceDetails` to `required` to protect from incorrect input ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+
+
+### Documentation
+
+* Updated comments and descriptions to improve clarity ([6b7325d](https://github.com/googleapis/google-cloud-python/commit/6b7325d5339c513f4567d0b745c2d1b9fac3fc24))
+
 ## [1.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vm-migration-v1.11.2...google-cloud-vm-migration-v1.11.3) (2025-06-11)
 
 

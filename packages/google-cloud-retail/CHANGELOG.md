@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.5.0...google-cloud-retail-v2.6.0) (2025-09-08)
+
+
+### Features
+
+* release the conversational search public SDK ([6b0660c](https://github.com/googleapis/google-cloud-python/commit/6b0660c83e33976f0a7441b01310244d7b205381))
+
+
+### Documentation
+
+* A comment for enum `Mode` is changed ([6b0660c](https://github.com/googleapis/google-cloud-python/commit/6b0660c83e33976f0a7441b01310244d7b205381))
+* A comment for enum value `CONVERSATIONAL_FILTER_ONLY` in enum `Mode` is changed ([6b0660c](https://github.com/googleapis/google-cloud-python/commit/6b0660c83e33976f0a7441b01310244d7b205381))
+* A comment for enum value `DISABLED` in enum `Mode` is changed ([6b0660c](https://github.com/googleapis/google-cloud-python/commit/6b0660c83e33976f0a7441b01310244d7b205381))
+* A comment for enum value `ENABLED` in enum `Mode` is changed ([6b0660c](https://github.com/googleapis/google-cloud-python/commit/6b0660c83e33976f0a7441b01310244d7b205381))
+* A comment for field `user_query_types` in message `.google.cloud.retail.v2alpha.ConversationalSearchResponse` is changed ([6b0660c](https://github.com/googleapis/google-cloud-python/commit/6b0660c83e33976f0a7441b01310244d7b205381))
+
 ## [2.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.4.0...google-cloud-retail-v2.5.0) (2025-07-26)
 
 
