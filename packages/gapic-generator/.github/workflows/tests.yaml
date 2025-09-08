@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         # Use python 3.10 for docs to match the version for the sphinx plugin
         # https://github.com/googleapis/synthtool/pull/1891
         with:
@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         # Use python 3.10 for docs to match the version for the sphinx plugin
         # https://github.com/googleapis/synthtool/pull/1891
         with:
@@ -58,7 +58,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python "${{ matrix.python }}"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "${{ matrix.python }}"
           cache: 'pip'
@@ -81,7 +81,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python "${{ matrix.python }}"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "${{ matrix.python }}"
           cache: 'pip'
@@ -127,7 +127,7 @@ jobs:
           sudo mkdir -p /tmp/workspace/tests/cert/
           sudo chown -R ${USER} /tmp/workspace/
       - name: Set up Python "3.13"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: 'pip'
@@ -173,7 +173,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python "${{ matrix.python }}"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "${{ matrix.python }}"
           cache: 'pip'
@@ -201,7 +201,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python "3.13"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: 'pip'
@@ -229,7 +229,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python "3.13"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: 'pip'
@@ -254,7 +254,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python "3.13"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: 'pip'
@@ -277,7 +277,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
           cache: 'pip'
@@ -302,7 +302,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
           cache: 'pip'
@@ -349,7 +349,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python 3.13
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: 'pip'
@@ -368,7 +368,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python 3.13
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: 'pip'
@@ -389,7 +389,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python 3.13
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: 'pip'
@@ -410,7 +410,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python "3.13"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
           cache: 'pip'

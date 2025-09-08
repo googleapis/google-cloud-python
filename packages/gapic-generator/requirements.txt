@@ -112,9 +112,9 @@ backports-asyncio-runner==1.2.0 \
     --hash=sha256:0da0a936a8aeb554eccb426dc55af3ba63bcdc69fa1a600b5bb305413a4477b5 \
     --hash=sha256:a5aa7b2b7d8f8bfcaa2b57313f70792df84e32a2a746f585213373f900b42162
     # via pytest-asyncio
-cachetools==5.5.2 \
-    --hash=sha256:1a661caa9175d26759571b2e19580f9d6393969e5dfca11fdb1f947a23e640d4 \
-    --hash=sha256:d26a22bcc62eb95c3beabd9f1ee5e820d3d2704fe2967cbe350e20c8ffcd3f0a
+cachetools==6.2.0 \
+    --hash=sha256:1c76a8960c0041fcc21097e357f882197c79da0dbff766e7317890a65d7d8ba6 \
+    --hash=sha256:38b328c0889450f05f5e120f56ab68c8abaf424e1275522b138ffc93253f7e32
     # via google-auth
 certifi==2025.8.3 \
     --hash=sha256:e564105f78ded564e3ae7c923924435e1daa7463faeab5bb932bc53ffae63407 \
@@ -201,9 +201,9 @@ charset-normalizer==3.4.3 \
     --hash=sha256:fd10de089bcdcd1be95a2f73dbe6254798ec1bda9f450d5828c96f93e2536b9c \
     --hash=sha256:fdabf8315679312cfa71302f9bd509ded4f2f263fb5b765cf1433b39106c3cc9
     # via requests
-click==8.1.8 \
-    --hash=sha256:63c132bbbed01578a06712a2d1f497bb62d9c1c0d329b7903a866228027263b2 \
-    --hash=sha256:ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a
+click==8.2.1 \
+    --hash=sha256:27c491cc05d968d271d5a1db13e3b5a184636d9d930f148c50b038f0d0646202 \
+    --hash=sha256:61a3265b914e850b85317d0b3109c7f8cd35a670f963866005d6ef1d5175a12b
     # via -r requirements.in
 exceptiongroup==1.3.0 \
     --hash=sha256:4d111e6e0c13d0644cad6ddaa7ed0261a0b36971f6d23e7ec9b4b9097da78a10 \
@@ -801,9 +801,9 @@ pypandoc==1.15 \
     --hash=sha256:4ededcc76c8770f27aaca6dff47724578428eca84212a31479403a9731fc2b16 \
     --hash=sha256:ea25beebe712ae41d63f7410c08741a3cab0e420f6703f95bc9b3a749192ce13
     # via -r requirements.in
-pytest==8.4.1 \
-    --hash=sha256:539c70ba6fcead8e78eebbf1115e8b589e7565830d7d006a8723f19ac8a0afb7 \
-    --hash=sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c
+pytest==8.4.2 \
+    --hash=sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01 \
+    --hash=sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79
     # via pytest-asyncio
 pytest-asyncio==1.1.0 \
     --hash=sha256:5fe2d69607b0bd75c656d1211f969cadba035030156745ee09e7d71740e58ecf \
