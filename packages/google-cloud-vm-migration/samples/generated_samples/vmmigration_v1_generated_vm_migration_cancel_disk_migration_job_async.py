@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateTargetProject
+# Snippet for CancelDiskMigrationJob
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-vm-migration
 
 
-# [START vmmigration_v1_generated_VmMigration_UpdateTargetProject_sync]
+# [START vmmigration_v1_generated_VmMigration_CancelDiskMigrationJob_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,26 +34,23 @@
 from google.cloud import vmmigration_v1
 
 
-def sample_update_target_project():
+async def sample_cancel_disk_migration_job():
     # Create a client
-    client = vmmigration_v1.VmMigrationClient()
+    client = vmmigration_v1.VmMigrationAsyncClient()
 
     # Initialize request argument(s)
-    target_project = vmmigration_v1.TargetProject()
-    target_project.project = "project_value"
-
-    request = vmmigration_v1.UpdateTargetProjectRequest(
-        target_project=target_project,
+    request = vmmigration_v1.CancelDiskMigrationJobRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.update_target_project(request=request)
+    operation = client.cancel_disk_migration_job(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)
 
-# [END vmmigration_v1_generated_VmMigration_UpdateTargetProject_sync]
+# [END vmmigration_v1_generated_VmMigration_CancelDiskMigrationJob_async]

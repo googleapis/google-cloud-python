@@ -25,6 +25,16 @@
                 "cancel_cutover_job"
               ]
             },
+            "CancelDiskMigrationJob": {
+              "methods": [
+                "cancel_disk_migration_job"
+              ]
+            },
+            "CancelImageImportJob": {
+              "methods": [
+                "cancel_image_import_job"
+              ]
+            },
             "CreateCloneJob": {
               "methods": [
                 "create_clone_job"
@@ -40,9 +50,19 @@
                 "create_datacenter_connector"
               ]
             },
+            "CreateDiskMigrationJob": {
+              "methods": [
+                "create_disk_migration_job"
+              ]
+            },
             "CreateGroup": {
               "methods": [
                 "create_group"
+              ]
+            },
+            "CreateImageImport": {
+              "methods": [
+                "create_image_import"
               ]
             },
             "CreateMigratingVm": {
@@ -70,9 +90,19 @@
                 "delete_datacenter_connector"
               ]
             },
+            "DeleteDiskMigrationJob": {
+              "methods": [
+                "delete_disk_migration_job"
+              ]
+            },
             "DeleteGroup": {
               "methods": [
                 "delete_group"
+              ]
+            },
+            "DeleteImageImport": {
+              "methods": [
+                "delete_image_import"
               ]
             },
             "DeleteMigratingVm": {
@@ -95,9 +125,19 @@
                 "delete_utilization_report"
               ]
             },
+            "ExtendMigration": {
+              "methods": [
+                "extend_migration"
+              ]
+            },
             "FetchInventory": {
               "methods": [
                 "fetch_inventory"
+              ]
+            },
+            "FetchStorageInventory": {
+              "methods": [
+                "fetch_storage_inventory"
               ]
             },
             "FinalizeMigration": {
@@ -120,9 +160,24 @@
                 "get_datacenter_connector"
               ]
             },
+            "GetDiskMigrationJob": {
+              "methods": [
+                "get_disk_migration_job"
+              ]
+            },
             "GetGroup": {
               "methods": [
                 "get_group"
+              ]
+            },
+            "GetImageImport": {
+              "methods": [
+                "get_image_import"
+              ]
+            },
+            "GetImageImportJob": {
+              "methods": [
+                "get_image_import_job"
               ]
             },
             "GetMigratingVm": {
@@ -165,9 +220,24 @@
                 "list_datacenter_connectors"
               ]
             },
+            "ListDiskMigrationJobs": {
+              "methods": [
+                "list_disk_migration_jobs"
+              ]
+            },
             "ListGroups": {
               "methods": [
                 "list_groups"
+              ]
+            },
+            "ListImageImportJobs": {
+              "methods": [
+                "list_image_import_jobs"
+              ]
+            },
+            "ListImageImports": {
+              "methods": [
+                "list_image_imports"
               ]
             },
             "ListMigratingVms": {
@@ -210,9 +280,19 @@
                 "resume_migration"
               ]
             },
+            "RunDiskMigrationJob": {
+              "methods": [
+                "run_disk_migration_job"
+              ]
+            },
             "StartMigration": {
               "methods": [
                 "start_migration"
+              ]
+            },
+            "UpdateDiskMigrationJob": {
+              "methods": [
+                "update_disk_migration_job"
               ]
             },
             "UpdateGroup": {
@@ -260,6 +340,16 @@
                 "cancel_cutover_job"
               ]
             },
+            "CancelDiskMigrationJob": {
+              "methods": [
+                "cancel_disk_migration_job"
+              ]
+            },
+            "CancelImageImportJob": {
+              "methods": [
+                "cancel_image_import_job"
+              ]
+            },
             "CreateCloneJob": {
               "methods": [
                 "create_clone_job"
@@ -275,9 +365,19 @@
                 "create_datacenter_connector"
               ]
             },
+            "CreateDiskMigrationJob": {
+              "methods": [
+                "create_disk_migration_job"
+              ]
+            },
             "CreateGroup": {
               "methods": [
                 "create_group"
+              ]
+            },
+            "CreateImageImport": {
+              "methods": [
+                "create_image_import"
               ]
             },
             "CreateMigratingVm": {
@@ -305,9 +405,19 @@
                 "delete_datacenter_connector"
               ]
             },
+            "DeleteDiskMigrationJob": {
+              "methods": [
+                "delete_disk_migration_job"
+              ]
+            },
             "DeleteGroup": {
               "methods": [
                 "delete_group"
+              ]
+            },
+            "DeleteImageImport": {
+              "methods": [
+                "delete_image_import"
               ]
             },
             "DeleteMigratingVm": {
@@ -330,9 +440,19 @@
                 "delete_utilization_report"
               ]
             },
+            "ExtendMigration": {
+              "methods": [
+                "extend_migration"
+              ]
+            },
             "FetchInventory": {
               "methods": [
                 "fetch_inventory"
+              ]
+            },
+            "FetchStorageInventory": {
+              "methods": [
+                "fetch_storage_inventory"
               ]
             },
             "FinalizeMigration": {
@@ -355,9 +475,24 @@
                 "get_datacenter_connector"
               ]
             },
+            "GetDiskMigrationJob": {
+              "methods": [
+                "get_disk_migration_job"
+              ]
+            },
             "GetGroup": {
               "methods": [
                 "get_group"
+              ]
+            },
+            "GetImageImport": {
+              "methods": [
+                "get_image_import"
+              ]
+            },
+            "GetImageImportJob": {
+              "methods": [
+                "get_image_import_job"
               ]
             },
             "GetMigratingVm": {
@@ -400,9 +535,24 @@
                 "list_datacenter_connectors"
               ]
             },
+            "ListDiskMigrationJobs": {
+              "methods": [
+                "list_disk_migration_jobs"
+              ]
+            },
             "ListGroups": {
               "methods": [
                 "list_groups"
+              ]
+            },
+            "ListImageImportJobs": {
+              "methods": [
+                "list_image_import_jobs"
+              ]
+            },
+            "ListImageImports": {
+              "methods": [
+                "list_image_imports"
               ]
             },
             "ListMigratingVms": {
@@ -445,9 +595,19 @@
                 "resume_migration"
               ]
             },
+            "RunDiskMigrationJob": {
+              "methods": [
+                "run_disk_migration_job"
+              ]
+            },
             "StartMigration": {
               "methods": [
                 "start_migration"
+              ]
+            },
+            "UpdateDiskMigrationJob": {
+              "methods": [
+                "update_disk_migration_job"
               ]
             },
             "UpdateGroup": {
@@ -495,6 +655,16 @@
                 "cancel_cutover_job"
               ]
             },
+            "CancelDiskMigrationJob": {
+              "methods": [
+                "cancel_disk_migration_job"
+              ]
+            },
+            "CancelImageImportJob": {
+              "methods": [
+                "cancel_image_import_job"
+              ]
+            },
             "CreateCloneJob": {
               "methods": [
                 "create_clone_job"
@@ -510,9 +680,19 @@
                 "create_datacenter_connector"
               ]
             },
+            "CreateDiskMigrationJob": {
+              "methods": [
+                "create_disk_migration_job"
+              ]
+            },
             "CreateGroup": {
               "methods": [
                 "create_group"
+              ]
+            },
+            "CreateImageImport": {
+              "methods": [
+                "create_image_import"
               ]
             },
             "CreateMigratingVm": {
@@ -540,9 +720,19 @@
                 "delete_datacenter_connector"
               ]
             },
+            "DeleteDiskMigrationJob": {
+              "methods": [
+                "delete_disk_migration_job"
+              ]
+            },
             "DeleteGroup": {
               "methods": [
                 "delete_group"
+              ]
+            },
+            "DeleteImageImport": {
+              "methods": [
+                "delete_image_import"
               ]
             },
             "DeleteMigratingVm": {
@@ -565,9 +755,19 @@
                 "delete_utilization_report"
               ]
             },
+            "ExtendMigration": {
+              "methods": [
+                "extend_migration"
+              ]
+            },
             "FetchInventory": {
               "methods": [
                 "fetch_inventory"
+              ]
+            },
+            "FetchStorageInventory": {
+              "methods": [
+                "fetch_storage_inventory"
               ]
             },
             "FinalizeMigration": {
@@ -590,9 +790,24 @@
                 "get_datacenter_connector"
               ]
             },
+            "GetDiskMigrationJob": {
+              "methods": [
+                "get_disk_migration_job"
+              ]
+            },
             "GetGroup": {
               "methods": [
                 "get_group"
+              ]
+            },
+            "GetImageImport": {
+              "methods": [
+                "get_image_import"
+              ]
+            },
+            "GetImageImportJob": {
+              "methods": [
+                "get_image_import_job"
               ]
             },
             "GetMigratingVm": {
@@ -635,9 +850,24 @@
                 "list_datacenter_connectors"
               ]
             },
+            "ListDiskMigrationJobs": {
+              "methods": [
+                "list_disk_migration_jobs"
+              ]
+            },
             "ListGroups": {
               "methods": [
                 "list_groups"
+              ]
+            },
+            "ListImageImportJobs": {
+              "methods": [
+                "list_image_import_jobs"
+              ]
+            },
+            "ListImageImports": {
+              "methods": [
+                "list_image_imports"
               ]
             },
             "ListMigratingVms": {
@@ -680,9 +910,19 @@
                 "resume_migration"
               ]
             },
+            "RunDiskMigrationJob": {
+              "methods": [
+                "run_disk_migration_job"
+              ]
+            },
             "StartMigration": {
               "methods": [
                 "start_migration"
+              ]
+            },
+            "UpdateDiskMigrationJob": {
+              "methods": [
+                "update_disk_migration_job"
               ]
             },
             "UpdateGroup": {

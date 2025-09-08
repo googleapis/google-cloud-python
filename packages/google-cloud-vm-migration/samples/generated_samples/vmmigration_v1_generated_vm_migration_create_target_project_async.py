@@ -39,9 +39,13 @@ async def sample_create_target_project():
     client = vmmigration_v1.VmMigrationAsyncClient()
 
     # Initialize request argument(s)
+    target_project = vmmigration_v1.TargetProject()
+    target_project.project = "project_value"
+
     request = vmmigration_v1.CreateTargetProjectRequest(
         parent="parent_value",
         target_project_id="target_project_id_value",
+        target_project=target_project,
     )
 
     # Make the request

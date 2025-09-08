@@ -23,8 +23,6 @@ from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
@@ -166,6 +164,11 @@ class VmMigrationTransport(abc.ABC):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
+            self.fetch_storage_inventory: gapic_v1.method.wrap_method(
+                self.fetch_storage_inventory,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_utilization_reports: gapic_v1.method.wrap_method(
                 self.list_utilization_reports,
                 default_timeout=None,
@@ -253,6 +256,11 @@ class VmMigrationTransport(abc.ABC):
             ),
             self.finalize_migration: gapic_v1.method.wrap_method(
                 self.finalize_migration,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.extend_migration: gapic_v1.method.wrap_method(
+                self.extend_migration,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -366,6 +374,76 @@ class VmMigrationTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_image_imports: gapic_v1.method.wrap_method(
+                self.list_image_imports,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_image_import: gapic_v1.method.wrap_method(
+                self.get_image_import,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_image_import: gapic_v1.method.wrap_method(
+                self.create_image_import,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_image_import: gapic_v1.method.wrap_method(
+                self.delete_image_import,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_image_import_jobs: gapic_v1.method.wrap_method(
+                self.list_image_import_jobs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_image_import_job: gapic_v1.method.wrap_method(
+                self.get_image_import_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_image_import_job: gapic_v1.method.wrap_method(
+                self.cancel_image_import_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_disk_migration_job: gapic_v1.method.wrap_method(
+                self.create_disk_migration_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_disk_migration_jobs: gapic_v1.method.wrap_method(
+                self.list_disk_migration_jobs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_disk_migration_job: gapic_v1.method.wrap_method(
+                self.get_disk_migration_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_disk_migration_job: gapic_v1.method.wrap_method(
+                self.update_disk_migration_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_disk_migration_job: gapic_v1.method.wrap_method(
+                self.delete_disk_migration_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_disk_migration_job: gapic_v1.method.wrap_method(
+                self.run_disk_migration_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_disk_migration_job: gapic_v1.method.wrap_method(
+                self.cancel_disk_migration_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -467,6 +545,18 @@ class VmMigrationTransport(abc.ABC):
         Union[
             vmmigration.FetchInventoryResponse,
             Awaitable[vmmigration.FetchInventoryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_storage_inventory(
+        self,
+    ) -> Callable[
+        [vmmigration.FetchStorageInventoryRequest],
+        Union[
+            vmmigration.FetchStorageInventoryResponse,
+            Awaitable[vmmigration.FetchStorageInventoryResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -640,6 +730,15 @@ class VmMigrationTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmmigration.FinalizeMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def extend_migration(
+        self,
+    ) -> Callable[
+        [vmmigration.ExtendMigrationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -853,6 +952,141 @@ class VmMigrationTransport(abc.ABC):
     ) -> Callable[
         [vmmigration.GetReplicationCycleRequest],
         Union[vmmigration.ReplicationCycle, Awaitable[vmmigration.ReplicationCycle]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_image_imports(
+        self,
+    ) -> Callable[
+        [vmmigration.ListImageImportsRequest],
+        Union[
+            vmmigration.ListImageImportsResponse,
+            Awaitable[vmmigration.ListImageImportsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_image_import(
+        self,
+    ) -> Callable[
+        [vmmigration.GetImageImportRequest],
+        Union[vmmigration.ImageImport, Awaitable[vmmigration.ImageImport]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_image_import(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateImageImportRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_image_import(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteImageImportRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_image_import_jobs(
+        self,
+    ) -> Callable[
+        [vmmigration.ListImageImportJobsRequest],
+        Union[
+            vmmigration.ListImageImportJobsResponse,
+            Awaitable[vmmigration.ListImageImportJobsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_image_import_job(
+        self,
+    ) -> Callable[
+        [vmmigration.GetImageImportJobRequest],
+        Union[vmmigration.ImageImportJob, Awaitable[vmmigration.ImageImportJob]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_image_import_job(
+        self,
+    ) -> Callable[
+        [vmmigration.CancelImageImportJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateDiskMigrationJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_disk_migration_jobs(
+        self,
+    ) -> Callable[
+        [vmmigration.ListDiskMigrationJobsRequest],
+        Union[
+            vmmigration.ListDiskMigrationJobsResponse,
+            Awaitable[vmmigration.ListDiskMigrationJobsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.GetDiskMigrationJobRequest],
+        Union[vmmigration.DiskMigrationJob, Awaitable[vmmigration.DiskMigrationJob]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.UpdateDiskMigrationJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteDiskMigrationJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.RunDiskMigrationJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_disk_migration_job(
+        self,
+    ) -> Callable[
+        [vmmigration.CancelDiskMigrationJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateTargetProject
+# Snippet for DeleteDiskMigrationJob
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-vm-migration
 
 
-# [START vmmigration_v1_generated_VmMigration_UpdateTargetProject_sync]
+# [START vmmigration_v1_generated_VmMigration_DeleteDiskMigrationJob_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,20 +34,17 @@
 from google.cloud import vmmigration_v1
 
 
-def sample_update_target_project():
+def sample_delete_disk_migration_job():
     # Create a client
     client = vmmigration_v1.VmMigrationClient()
 
     # Initialize request argument(s)
-    target_project = vmmigration_v1.TargetProject()
-    target_project.project = "project_value"
-
-    request = vmmigration_v1.UpdateTargetProjectRequest(
-        target_project=target_project,
+    request = vmmigration_v1.DeleteDiskMigrationJobRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.update_target_project(request=request)
+    operation = client.delete_disk_migration_job(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -56,4 +53,4 @@ def sample_update_target_project():
     # Handle the response
     print(response)
 
-# [END vmmigration_v1_generated_VmMigration_UpdateTargetProject_sync]
+# [END vmmigration_v1_generated_VmMigration_DeleteDiskMigrationJob_sync]
