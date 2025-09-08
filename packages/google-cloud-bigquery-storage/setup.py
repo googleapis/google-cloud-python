@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 #
 import io
 import os
+import re
 
 import setuptools  # type: ignore
 
@@ -25,12 +26,14 @@ name = "google-cloud-bigquery-storage"
 
 description = "Google Cloud Bigquery Storage API client library"
 
-version = {}
+version = None
+
 with open(
     os.path.join(package_root, "google/cloud/bigquery_storage/gapic_version.py")
 ) as fp:
-    exec(fp.read(), version)
-version = version["__version__"]
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    assert len(version_candidates) == 1
+    version = version_candidates[0]
 
 if version[0] == "0":
     release_status = "Development Status :: 4 - Beta"
@@ -38,12 +41,13 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 1.34.0, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "google-auth >= 2.14.1, <3.0.0",
-    "proto-plus >= 1.22.0, <2.0.0",
-    "proto-plus >= 1.22.2, <2.0.0; python_version>='3.11'",
-    "proto-plus >= 1.25.0, <2.0.0; python_version>='3.13'",
-    "protobuf>=3.20.2,<7.0.0,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    # Exclude incompatible versions of `google-auth`
+    # See https://github.com/googleapis/google-cloud-python/issues/12364
+    "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
+    "proto-plus >= 1.22.3, <2.0.0",
+    "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
+    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 extras = {
     # 'importlib-metadata' is required for Python 3.7 compatibility
@@ -95,7 +99,6 @@ setuptools.setup(
     python_requires=">=3.7",
     install_requires=dependencies,
     extras_require=extras,
-    scripts=["scripts/fixup_bigquery_storage_v1_keywords.py"],
     include_package_data=True,
     zip_safe=False,
 )
