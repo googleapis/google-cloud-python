@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.18...google-cloud-confidentialcomputing-v0.5.0) (2025-09-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Move `AwsPrincipalTagsOptions` out from `TokenOptions` message
+
+### Features
+
+* Add new `VerifyConfidentialSpace` and `VerifyConfidentialGke` rpcs and relevant fields ([cb89cdd](https://github.com/googleapis/google-cloud-python/commit/cb89cdd46498a1012b0a5caf01a2d965bb63a232))
+
+
+### Bug Fixes
+
+* Move `AwsPrincipalTagsOptions` out from `TokenOptions` message ([cb89cdd](https://github.com/googleapis/google-cloud-python/commit/cb89cdd46498a1012b0a5caf01a2d965bb63a232))
+
+
+### Documentation
+
+* A comment for field `aws_principal_tags_options` in message `.google.cloud.confidentialcomputing.v1.TokenOptions` is changed ([cb89cdd](https://github.com/googleapis/google-cloud-python/commit/cb89cdd46498a1012b0a5caf01a2d965bb63a232))
+* Updated comment for method `VerifyAttestation`, `VerifyAttestationRequest` and  `VerifyAttestationResponse` in service `ConfidentialComputing` is changed ([cb89cdd](https://github.com/googleapis/google-cloud-python/commit/cb89cdd46498a1012b0a5caf01a2d965bb63a232))
+
 ## [0.4.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.17...google-cloud-confidentialcomputing-v0.4.18) (2025-06-11)
 
 

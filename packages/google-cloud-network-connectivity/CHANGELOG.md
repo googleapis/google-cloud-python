@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.9.0...google-cloud-network-connectivity-v2.10.0) (2025-09-08)
+
+
+### Features
+
+* [google-cloud-network-connectivity] introduce DataTransfer APIs ([#14364](https://github.com/googleapis/google-cloud-python/issues/14364)) ([61eb9fa](https://github.com/googleapis/google-cloud-python/commit/61eb9fa706f71a919ecff3a95365a01648a20f1b))
+
 ## [2.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.8.1...google-cloud-network-connectivity-v2.9.0) (2025-07-23)
 
 
