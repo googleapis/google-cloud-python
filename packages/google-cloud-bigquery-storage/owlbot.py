@@ -76,18 +76,6 @@ for library in s.get_staging_dirs(default_version):
             ),
         )
 
-        # The DataFormat enum is not exposed in bigquery_storage_v1/types, add it there.
-        assert 1 == s.replace(
-            library / f"google/cloud/bigquery_storage_{library.name}*/types/__init__.py",
-            r"from \.stream import \(",
-            "\\g<0>\n    DataFormat,",
-        )
-        assert 1 == s.replace(
-            library / f"google/cloud/bigquery_storage_{library.name}*/types/__init__.py",
-            r"""["']ReadSession["']""",
-            '"DataFormat",\n    \\g<0>',
-        )
-
         # Expose handwritten classes AppendRowsStream and ReadRowsStream here.
         assert 1 == s.replace(
             library / "google/cloud/bigquery_storage/__init__.py",
