@@ -19,6 +19,7 @@ import pathlib
 import subprocess
 import yaml
 import unittest.mock
+from datetime import datetime
 from unittest.mock import MagicMock, mock_open
 
 import pytest
@@ -54,6 +55,38 @@ from cli import (
     handle_generate,
     handle_release_init,
 )
+
+
+_MOCK_LIBRARY_CHANGES = [
+    {
+        "type": "feat",
+        "subject": "add new UpdateRepository API",
+        "body": "This adds the ability to update a repository's properties.",
+        "piper_cl_number": "786353207",
+        "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
+    },
+    {
+        "type": "fix",
+        "subject": "some fix",
+        "body": "",
+        "piper_cl_number": "786353208",
+        "source_commit_hash": "1231532e7d19c8d71709ec3b502e5d81340fb661",
+    },
+    {
+        "type": "fix",
+        "subject": "another fix",
+        "body": "",
+        "piper_cl_number": "786353209",
+        "source_commit_hash": "1241532e7d19c8d71709ec3b502e5d81340fb661",
+    },
+    {
+        "type": "docs",
+        "subject": "fix typo in BranchRule comment",
+        "body": "",
+        "piper_cl_number": "786353210",
+        "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
+    },
+]
 
 
 @pytest.fixture
@@ -700,37 +733,25 @@ def test_update_changelog_for_library_success(mocker):
 ## [2.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.17.1...google-cloud-language-v2.17.2) (2025-06-11)
 
 """
-
-    mock_changes = [
-        {
-            "type": "feat",
-            "subject": "add new UpdateRepository API",
-            "body": "This adds the ability to update a repository's properties.",
-            "piper_cl_number": "786353207",
-            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
-        },
-        {
-            "type": "docs",
-            "subject": "fix typo in BranchRule comment",
-            "body": "",
-            "piper_cl_number": "786353207",
-            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
-        },
-    ]
-
     with unittest.mock.patch("cli.open", m):
         mocker.patch("cli._read_text_file", return_value=mock_content)
         _update_changelog_for_library(
-            "repo", "output", mock_changes, "1.2.3", "1.2.2", "google-cloud-language"
+            "repo",
+            "output",
+            _MOCK_LIBRARY_CHANGES,
+            "1.2.3",
+            "1.2.2",
+            "google-cloud-language",
         )
 
 
 def test_process_changelog_success():
     """Tests that value error is raised if the changelog anchor string cannot be found"""
+    current_date = datetime.now().strftime("%Y-%m-%d")
     mock_content = """# Changelog\n[PyPI History][1]\n[1]: https://pypi.org/project/google-cloud-language/#history\n
 ## [1.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.1...google-cloud-language-v1.2.2) (2025-06-11)"""
-    expected_result = """# Changelog\n[PyPI History][1]\n[1]: https://pypi.org/project/google-cloud-language/#history\n
-## [1.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.2...google-cloud-language-v1.2.3) (2025-09-05)\n\n
+    expected_result = f"""# Changelog\n[PyPI History][1]\n[1]: https://pypi.org/project/google-cloud-language/#history\n
+## [1.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.2...google-cloud-language-v1.2.3) ({current_date})\n\n
 ### Documentation\n
 * fix typo in BranchRule comment ([9461532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/9461532e7d19c8d71709ec3b502e5d81340fb661))\n\n
 ### Features\n
@@ -739,42 +760,12 @@ def test_process_changelog_success():
 * some fix ([1231532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/1231532e7d19c8d71709ec3b502e5d81340fb661))
 * another fix ([1241532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/1241532e7d19c8d71709ec3b502e5d81340fb661))\n
 ## [1.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.1...google-cloud-language-v1.2.2) (2025-06-11)"""
-    mock_changes = [
-        {
-            "type": "feat",
-            "subject": "add new UpdateRepository API",
-            "body": "This adds the ability to update a repository's properties.",
-            "piper_cl_number": "786353207",
-            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
-        },
-        {
-            "type": "fix",
-            "subject": "some fix",
-            "body": "",
-            "piper_cl_number": "786353208",
-            "source_commit_hash": "1231532e7d19c8d71709ec3b502e5d81340fb661",
-        },
-        {
-            "type": "fix",
-            "subject": "another fix",
-            "body": "",
-            "piper_cl_number": "786353209",
-            "source_commit_hash": "1241532e7d19c8d71709ec3b502e5d81340fb661",
-        },
-        {
-            "type": "docs",
-            "subject": "fix typo in BranchRule comment",
-            "body": "",
-            "piper_cl_number": "786353210",
-            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
-        },
-    ]
     version = "1.2.3"
     previous_version = "1.2.2"
     package_name = "google-cloud-language"
 
     result = _process_changelog(
-        mock_content, mock_changes, version, previous_version, package_name
+        mock_content, _MOCK_LIBRARY_CHANGES, version, previous_version, package_name
     )
     assert result == expected_result
 
@@ -790,30 +781,13 @@ def test_update_changelog_for_library_failure(mocker):
 
     mock_content = """# Changelog"""
 
-    mock_changes = [
-        {
-            "type": "feat",
-            "subject": "add new UpdateRepository API",
-            "body": "This adds the ability to update a repository's properties.",
-            "piper_cl_number": "786353207",
-            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
-        },
-        {
-            "type": "docs",
-            "subject": "fix typo in BranchRule comment",
-            "body": "",
-            "piper_cl_number": "786353207",
-            "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
-        },
-    ]
-
     with pytest.raises(ValueError):
         with unittest.mock.patch("cli.open", m):
             mocker.patch("cli._read_text_file", return_value=mock_content)
             _update_changelog_for_library(
                 "repo",
                 "output",
-                mock_changes,
+                _MOCK_LIBRARY_CHANGES,
                 "1.2.3",
                 "1.2.2",
                 "google-cloud-language",
