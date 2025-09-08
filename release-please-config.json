@@ -624,6 +624,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-biglake": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-biglake",
+            "extra-files": [
+                "google/cloud/biglake/gapic_version.py",
+                "google/cloud/biglake_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.biglake.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-bigquery-analyticshub": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
