@@ -85,6 +85,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
     git \
+    libsqlite3-0 \
     pandoc \
     wget \
     unzip \
