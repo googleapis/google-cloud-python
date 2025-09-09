@@ -693,9 +693,7 @@ def _get_previous_version(library_id: str, librarian: str) -> str:
     )
 
 
-def _process_changelog(
-    content, library_changes, version, previous_version, library_id
-):
+def _process_changelog(content, library_changes, version, previous_version, library_id):
     """This function searches the given content for the anchor pattern
     `[1]: https://pypi.org/project/{library_id}/#history`
     and adds an entry in the following format:
@@ -843,16 +841,16 @@ def handle_release_init(
             version = library_release_data["version"]
             library_id = library_release_data["id"]
             library_changes = library_release_data["changes"]
-            path_to_library = f"packages/{package_name}"
+            path_to_library = f"packages/{library_id}"
 
             # Get previous version from state.yaml
-            previous_version = _get_previous_version(package_name, librarian)
+            previous_version = _get_previous_version(library_id, librarian)
             if previous_version == version:
                 raise ValueError(
                     f"The version in {RELEASE_INIT_REQUEST_FILE} is the same as the version in {STATE_YAML_FILE}\n"
-                    f"{package_name} previous released version: {previous_version}\n"
-                    f"{package_name} current version: {version}\n"
-
+                    f"{library_id} previous released version: {previous_version}\n"
+                    f"{library_id} current version: {version}\n"
+                )
 
             _update_version_for_library(repo, output, path_to_library, version)
             _update_changelog_for_library(
