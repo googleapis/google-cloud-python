@@ -14,11 +14,14 @@
 
 from unittest import mock
 
+import google.cloud.bigquery
 import pytest
 
 import bigframes.dataframe
+import bigframes.pandas
 import bigframes.pandas.io.api as bf_io_api
 import bigframes.session
+import bigframes.session.clients
 
 # _read_gbq_colab requires the polars engine.
 pytest.importorskip("polars")
@@ -45,6 +48,49 @@ def test_read_gbq_colab_dry_run_doesnt_call_set_location(
     )
 
     mock_set_location.assert_not_called()
+
+
+@mock.patch("bigframes._config.auth.get_default_credentials_with_project")
+@mock.patch("bigframes.core.global_session.with_default_session")
+def test_read_gbq_colab_dry_run_doesnt_authenticate_multiple_times(
+    mock_with_default_session, mock_get_credentials, monkeypatch
+):
+    """
+    Ensure that we authenticate too often, which is an expensive operation,
+    performance-wise (2+ seconds).
+    """
+    bigframes.pandas.close_session()
+
+    mock_get_credentials.return_value = (mock.Mock(), "unit-test-project")
+    mock_create_bq_client = mock.Mock()
+    mock_bq_client = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
+    mock_create_bq_client.return_value = mock_bq_client
+    mock_query_job = mock.create_autospec(google.cloud.bigquery.QueryJob, instance=True)
+    type(mock_query_job).schema = mock.PropertyMock(return_value=[])
+    mock_query_job._properties = {}
+    mock_bq_client.query.return_value = mock_query_job
+    monkeypatch.setattr(
+        bigframes.session.clients.ClientsProvider,
+        "_create_bigquery_client",
+        mock_create_bq_client,
+    )
+    mock_df = mock.create_autospec(bigframes.dataframe.DataFrame)
+    mock_with_default_session.return_value = mock_df
+
+    query_or_table = "SELECT {param1} AS param1"
+    sample_pyformat_args = {"param1": "value1"}
+    bf_io_api._read_gbq_colab(
+        query_or_table, pyformat_args=sample_pyformat_args, dry_run=True
+    )
+
+    mock_with_default_session.assert_not_called()
+    mock_get_credentials.reset_mock()
+
+    # Repeat the operation so that the credentials would have have been cached.
+    bf_io_api._read_gbq_colab(
+        query_or_table, pyformat_args=sample_pyformat_args, dry_run=True
+    )
+    mock_get_credentials.assert_not_called()
 
 
 @mock.patch(

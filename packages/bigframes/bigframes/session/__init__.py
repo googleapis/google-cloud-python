@@ -49,7 +49,6 @@ import bigframes_vendored.pandas.io.parquet as third_party_pandas_parquet
 import bigframes_vendored.pandas.io.parsers.readers as third_party_pandas_readers
 import bigframes_vendored.pandas.io.pickle as third_party_pandas_pickle
 import google.cloud.bigquery as bigquery
-import google.cloud.storage as storage  # type: ignore
 import numpy as np
 import pandas
 from pandas._typing import (
@@ -1424,7 +1423,7 @@ class Session(
         if filepath.startswith("gs://"):  # GCS file path
             bucket_name, blob_path = filepath.split("/", 3)[2:]
 
-            client = storage.Client()
+            client = self._clients_provider.storageclient
             bucket = client.bucket(bucket_name)
 
             list_blobs_params = inspect.signature(bucket.list_blobs).parameters

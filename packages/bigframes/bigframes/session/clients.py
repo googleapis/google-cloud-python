@@ -29,9 +29,10 @@ import google.cloud.bigquery_connection_v1
 import google.cloud.bigquery_storage_v1
 import google.cloud.functions_v2
 import google.cloud.resourcemanager_v3
-import pydata_google_auth
+import google.cloud.storage  # type: ignore
 import requests
 
+import bigframes._config
 import bigframes.constants
 import bigframes.version
 
@@ -39,7 +40,6 @@ from . import environment
 
 _ENV_DEFAULT_PROJECT = "GOOGLE_CLOUD_PROJECT"
 _APPLICATION_NAME = f"bigframes/{bigframes.version.__version__} ibis/9.2.0"
-_SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 
 
 # BigQuery is a REST API, which requires the protocol as part of the URL.
@@ -48,10 +48,6 @@ _BIGQUERY_REGIONAL_ENDPOINT = "https://bigquery.{location}.rep.googleapis.com"
 # BigQuery Connection and Storage are gRPC APIs, which don't support the
 # https:// protocol in the API endpoint URL.
 _BIGQUERYSTORAGE_REGIONAL_ENDPOINT = "bigquerystorage.{location}.rep.googleapis.com"
-
-
-def _get_default_credentials_with_project():
-    return pydata_google_auth.default(scopes=_SCOPES, use_local_webserver=False)
 
 
 def _get_application_names():
@@ -88,10 +84,8 @@ class ClientsProvider:
     ):
         credentials_project = None
         if credentials is None:
-            credentials, credentials_project = _get_default_credentials_with_project()
-
-            # Ensure an access token is available.
-            credentials.refresh(google.auth.transport.requests.Request())
+            credentials = bigframes._config.options.bigquery.credentials
+            credentials_project = bigframes._config.options.bigquery.project
 
         # Prefer the project in this order:
         # 1. Project explicitly specified by the user
@@ -164,6 +158,9 @@ class ClientsProvider:
         self._resourcemanagerclient: Optional[
             google.cloud.resourcemanager_v3.ProjectsClient
         ] = None
+
+        self._storageclient_lock = threading.Lock()
+        self._storageclient: Optional[google.cloud.storage.Client] = None
 
     def _create_bigquery_client(self):
         bq_options = None
@@ -347,3 +344,17 @@ class ClientsProvider:
                 )
 
         return self._resourcemanagerclient
+
+    @property
+    def storageclient(self):
+        with self._storageclient_lock:
+            if not self._storageclient:
+                storage_info = google.api_core.client_info.ClientInfo(
+                    user_agent=self._application_name
+                )
+                self._storageclient = google.cloud.storage.Client(
+                    client_info=storage_info,
+                    credentials=self._credentials,
+                )
+
+        return self._storageclient
