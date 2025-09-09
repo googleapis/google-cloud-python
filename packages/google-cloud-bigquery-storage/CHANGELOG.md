@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.33.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.33.0...v2.33.1) (2025-09-08)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([5b60dd4](https://github.com/googleapis/python-bigquery-storage/commit/5b60dd4ebf838f08e382cac12a6c84e1e0286862))
+* **deps:** Require google-api-core &gt;= 1.34.1 ([5b60dd4](https://github.com/googleapis/python-bigquery-storage/commit/5b60dd4ebf838f08e382cac12a6c84e1e0286862))
+* **deps:** Require proto-plus &gt;= 1.22.3 ([5b60dd4](https://github.com/googleapis/python-bigquery-storage/commit/5b60dd4ebf838f08e382cac12a6c84e1e0286862))
+
 ## [2.33.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.32.0...v2.33.0) (2025-09-02)
 
 
