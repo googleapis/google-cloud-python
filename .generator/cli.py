@@ -548,8 +548,8 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     try:
         request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
-        _run_nox_sessions(library_id, repo)
         _verify_library_namespace(library_id, repo)
+        _run_nox_sessions(library_id, repo)
     except Exception as e:
         raise ValueError("Generation failed.") from e
 
