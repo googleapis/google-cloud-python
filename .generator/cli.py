@@ -583,11 +583,11 @@ def _update_global_changelog(
     def replace_version_in_changelog(content):
         new_content = content
         for library in all_libraries:
-            package_name = library["id"]
+            library_id = library["id"]
             version = library["version"]
-            # Find the entry for the given package in the format`<package name>==<version>`
+            # Find the entry for the given library in the format`<library_id>==<version>`
             # Replace the `<version>` part of the string.
-            pattern = re.compile(f"(\\[{re.escape(package_name)})(==)([\\d\\.]+)(\\])")
+            pattern = re.compile(f"(\\[{re.escape(library_id)})(==)([\\d\\.]+)(\\])")
             replacement = f"\\g<1>=={version}\\g<4>"
             new_content = pattern.sub(replacement, new_content)
         return new_content
@@ -661,11 +661,11 @@ def _update_version_for_library(
         _write_json_file(output_path, metadata_contents)
 
 
-def _get_previous_version(package_name: str, librarian: str) -> str:
+def _get_previous_version(library_id: str, librarian: str) -> str:
     """Gets the previous version of the library from state.yaml.
 
     Args:
-        package_name(str): name of the package.
+        library_id(str): id of the library.
         librarian(str): Path to the directory in the container which contains
             the `state.yaml` file.
 
@@ -677,22 +677,22 @@ def _get_previous_version(package_name: str, librarian: str) -> str:
     with open(state_yaml_path, "r") as state_yaml_file:
         state_yaml = yaml.safe_load(state_yaml_file)
         for library in state_yaml.get("libraries", []):
-            if library.get("id") == package_name:
+            if library.get("id") == library_id:
                 return library.get("version")
 
     raise ValueError(
-        f"Could not determine previous version for {package_name} from state.yaml"
+        f"Could not determine previous version for {library_id} from state.yaml"
     )
 
 
 def _process_changelog(
-    content, library_changes, version, previous_version, package_name
+    content, library_changes, version, previous_version, library_id
 ):
     """This function searches the given content for the anchor pattern
-    `[1]: https://pypi.org/project/{package_name}/#history`
+    `[1]: https://pypi.org/project/{library_id}/#history`
     and adds an entry in the following format:
 
-    ## [{version}](https://github.com/googleapis/google-cloud-python/compare/{package_name}-v{previous_version}...{package_name}-v{version}) (YYYY-MM-DD)
+    ## [{version}](https://github.com/googleapis/google-cloud-python/compare/{library_id}-v{previous_version}...{library_id}-v{version}) (YYYY-MM-DD)
 
     ### Documentation
 
@@ -704,7 +704,7 @@ def _process_changelog(
             for a given library.
         version(str): The new version of the library.
         previous_version: The previous version of the library.
-        package_name(str): The name of the package where the changelog should
+        library_id(str): The id of the library where the changelog should
             be updated.
 
     Raises: ValueError if the anchor pattern string could not be found in the given content
@@ -716,8 +716,8 @@ def _process_changelog(
 
     # Create the main version header
     version_header = (
-        f"## [{version}]({repo_url}/compare/{package_name}-v{previous_version}"
-        f"...{package_name}-v{version}) ({current_date})"
+        f"## [{version}]({repo_url}/compare/{library_id}-v{previous_version}"
+        f"...{library_id}-v{version}) ({current_date})"
     )
     entry_parts = [version_header]
 
@@ -741,7 +741,7 @@ def _process_changelog(
 
     new_entry_text = "\n".join(entry_parts)
     anchor_pattern = re.compile(
-        rf"(\[1\]: https://pypi\.org/project/{package_name}/#history)",
+        rf"(\[1\]: https://pypi\.org/project/{library_id}/#history)",
         re.MULTILINE,
     )
     replacement_text = f"\\g<1>\n\n{new_entry_text}"
@@ -758,7 +758,7 @@ def _update_changelog_for_library(
     library_changes: List[Dict],
     version: str,
     previous_version: str,
-    package_name: str,
+    library_id: str,
 ):
     """Prepends a new release entry with multiple, grouped changes, to a changelog.
 
@@ -771,19 +771,19 @@ def _update_changelog_for_library(
         library_changes(List[Dict]): List of dictionaries containing the changes
             for a given library
         version(str): The desired version
-        previous_version(str): The version in state.yaml for a given package
-        package_name(str): The name of the package where the changelog should
+        previous_version(str): The version in state.yaml for a given library
+        library_id(str): The id of the library where the changelog should
             be updated.
     """
 
-    source_path = f"{repo}/packages/{package_name}/CHANGELOG.md"
-    output_path = f"{output}/packages/{package_name}/CHANGELOG.md"
+    source_path = f"{repo}/packages/{library_id}/CHANGELOG.md"
+    output_path = f"{output}/packages/{library_id}/CHANGELOG.md"
     updated_content = _process_changelog(
         _read_text_file(source_path),
         library_changes,
         version,
         previous_version,
-        package_name,
+        library_id,
     )
     _write_text_file(output_path, updated_content)
 
@@ -827,13 +827,13 @@ def handle_release_init(
         # library specific version files and library specific changelog.
         for library_release_data in libraries_to_prep_for_release:
             version = library_release_data["version"]
-            package_name = library_release_data["id"]
+            library_id = library_release_data["id"]
             library_changes = library_release_data["changes"]
-            path_to_library = f"packages/{package_name}"
+            path_to_library = f"packages/{library_id}"
             _update_version_for_library(repo, output, path_to_library, version)
 
             # Get previous version from state.yaml
-            previous_version = _get_previous_version(package_name, librarian)
+            previous_version = _get_previous_version(library_id, librarian)
             if previous_version != version:
                 _update_changelog_for_library(
                     repo,
@@ -841,7 +841,7 @@ def handle_release_init(
                     library_changes,
                     version,
                     previous_version,
-                    package_name,
+                    library_id,
                 )
 
     except Exception as e:
