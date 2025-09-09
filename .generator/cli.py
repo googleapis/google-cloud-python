@@ -643,22 +643,27 @@ def _process_changelog(
     entry_parts = [version_header]
 
     # Group changes by type (e.g., feat, fix, docs)
-    library_changes.sort(key=lambda x: x["type"])
-    grouped_changes = itertools.groupby(library_changes, key=lambda x: x["type"])
+    type_key = "type"
+    source_commit_hash_key = "source_commit_hash"
+    subject_key = "subject"
+    library_changes.sort(key=lambda x: x[type_key])
+    grouped_changes = itertools.groupby(library_changes, key=lambda x: x[type_key])
 
-    for change_type, changes in grouped_changes:
+    library_change_type_map = {
+        "feat": "Features",
+        "fix": "Bug Fixes",
+        "docs": "Documentation",
+    }
+    for library_change_type, library_changes in grouped_changes:
         # We only care about feat, fix, docs
-        adjusted_change_type = change_type.replace("!", "")
-        change_type_map = {
-            "feat": "Features",
-            "fix": "Bug Fixes",
-            "docs": "Documentation",
-        }
-        if adjusted_change_type in ["feat", "fix", "docs"]:
-            entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
-            for change in changes:
-                commit_link = f"([{change['source_commit_hash']}]({repo_url}/commit/{change['source_commit_hash']}))"
-                entry_parts.append(f"* {change['subject']} {commit_link}")
+        adjusted_change_type = library_change_type.replace("!", "")
+        if adjusted_change_type in library_change_type_map:
+            entry_parts.append(
+                f"\n\n### {library_change_type_map[adjusted_change_type]}\n"
+            )
+            for change in library_changes:
+                commit_link = f"([{change[source_commit_hash_key]}]({repo_url}/commit/{change[source_commit_hash_key]}))"
+                entry_parts.append(f"* {change[subject_key]} {commit_link}")
 
     new_entry_text = "\n".join(entry_parts)
     anchor_pattern = re.compile(
@@ -697,16 +702,17 @@ def _update_changelog_for_library(
             be updated.
     """
 
-    source_path = f"{repo}/packages/{package_name}/CHANGELOG.md"
-    output_path = f"{output}/packages/{package_name}/CHANGELOG.md"
+    relative_path = f"packages/{package_name}/CHANGELOG.md"
+    changelog_src = f"{repo}/{relative_path}"
+    changelog_dest = f"{output}/{relative_path}"
     updated_content = _process_changelog(
-        _read_text_file(source_path),
+        _read_text_file(changelog_src),
         library_changes,
         version,
         previous_version,
         package_name,
     )
-    _write_text_file(output_path, updated_content)
+    _write_text_file(changelog_dest, updated_content)
 
 
 def handle_release_init(
