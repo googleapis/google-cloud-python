@@ -15,6 +15,79 @@
 import starlark as sl
 
 
+_PY_CALLABLES = (
+    "py_gapic_assembly_pkg",
+    "py_gapic_library",
+    "py_test",
+    "py_proto_library",
+    "py_grpc_library",
+    "py_import",
+)
+
+_JAVA_CALLABLES = (
+    "java_gapic_assembly_gradle_pkg",
+    "java_gapic_library",
+    "java_gapic_test",
+    "java_grpc_library",
+    "java_proto_library",
+)
+
+_GO_CALLABLES = (
+    "go_gapic_assembly_pkg",
+    "go_gapic_library",
+    "go_proto_library",
+    "go_grpc_library",
+)
+
+_PHP_CALLABLES = (
+    "php_gapic_assembly_pkg",
+    "php_gapic_library",
+    "php_grpc_library",
+    "php_proto_library",
+)
+
+_NODEJS_CALLABLES = ("nodejs_gapic_assembly_pkg", "nodejs_gapic_library")
+
+_RUBY_CALLABLES = (
+    "ruby_ads_gapic_library",
+    "ruby_cloud_gapic_library",
+    "ruby_gapic_assembly_pkg",
+    "ruby_grpc_library",
+    "ruby_proto_library",
+)
+
+_CSHARP_CALLABLES = (
+    "csharp_gapic_assembly_pkg",
+    "csharp_gapic_library",
+    "csharp_grpc_library",
+    "csharp_proto_library",
+)
+
+_CC_CALLABLES = ("cc_grpc_library", "cc_gapic_library", "cc_proto_library")
+
+_MISC_CALLABLES = (
+    "moved_proto_library",
+    "proto_library",
+    "proto_library_with_info",
+    "upb_c_proto_library",
+)
+
+_CALLABLE_MAP = {
+    "@rules_proto//proto:defs.bzl": ("proto_library",),
+    "@com_google_googleapis_imports//:imports.bzl": (
+        _PY_CALLABLES
+        + _JAVA_CALLABLES
+        + _GO_CALLABLES
+        + _PHP_CALLABLES
+        + _NODEJS_CALLABLES
+        + _RUBY_CALLABLES
+        + _CSHARP_CALLABLES
+        + _CC_CALLABLES
+        + _MISC_CALLABLES
+    ),
+}
+
+
 def parse_content(content: str) -> dict:
     """Parses content from BUILD.bazel and returns a dictionary
     containing bazel rules and arguments.
@@ -36,51 +109,6 @@ def parse_content(content: str) -> dict:
     def noop_bazel_rule(**args):
         pass
 
-    def load(name):
-        mod = sl.Module()
-        if name == "@rules_proto//proto:defs.bzl":
-            mod.add_callable("proto_library", bazel_target)
-        elif name == "@com_google_googleapis_imports//:imports.bzl":
-            mod.add_callable("py_gapic_assembly_pkg", bazel_target)
-            mod.add_callable("py_gapic_library", bazel_target)
-            mod.add_callable("py_test", bazel_target)
-            mod.add_callable("py_proto_library", bazel_target)
-            mod.add_callable("py_grpc_library", bazel_target)
-            mod.add_callable("py_import", bazel_target)
-
-            mod.add_callable("proto_library_with_info", bazel_target)
-            mod.add_callable("java_gapic_assembly_gradle_pkg", bazel_target)
-            mod.add_callable("java_gapic_library", bazel_target)
-            mod.add_callable("java_gapic_test", bazel_target)
-            mod.add_callable("java_grpc_library", bazel_target)
-            mod.add_callable("java_proto_library", bazel_target)
-            mod.add_callable("go_gapic_assembly_pkg", bazel_target)
-            mod.add_callable("go_gapic_library", bazel_target)
-            mod.add_callable("go_proto_library", bazel_target)
-            mod.add_callable("go_grpc_library", bazel_target)
-            mod.add_callable("php_gapic_assembly_pkg", bazel_target)
-            mod.add_callable("php_gapic_library", bazel_target)
-            mod.add_callable("php_grpc_library", bazel_target)
-            mod.add_callable("php_proto_library", bazel_target)
-            mod.add_callable("nodejs_gapic_assembly_pkg", bazel_target)
-            mod.add_callable("nodejs_gapic_library", bazel_target)
-            mod.add_callable("ruby_ads_gapic_library", bazel_target)
-            mod.add_callable("ruby_cloud_gapic_library", bazel_target)
-            mod.add_callable("ruby_gapic_assembly_pkg", bazel_target)
-            mod.add_callable("ruby_grpc_library", bazel_target)
-            mod.add_callable("ruby_proto_library", bazel_target)
-            mod.add_callable("csharp_gapic_assembly_pkg", bazel_target)
-            mod.add_callable("csharp_gapic_library", bazel_target)
-            mod.add_callable("csharp_grpc_library", bazel_target)
-            mod.add_callable("csharp_proto_library", bazel_target)
-            mod.add_callable("cc_grpc_library", bazel_target)
-            mod.add_callable("cc_gapic_library", bazel_target)
-            mod.add_callable("cc_proto_library", bazel_target)
-            mod.add_callable("moved_proto_library", bazel_target)
-            mod.add_callable("proto_library", bazel_target)
-            mod.add_callable("upb_c_proto_library", bazel_target)
-        return mod.freeze()
-
     mod.add_callable("package", noop_bazel_rule)
     mod.add_callable("alias", noop_bazel_rule)
     mod.add_callable("py_test", noop_bazel_rule)
@@ -88,6 +116,12 @@ def parse_content(content: str) -> dict:
     mod.add_callable("proto_library", noop_bazel_rule)
     mod.add_callable("java_proto_library", noop_bazel_rule)
     mod.add_callable("genrule", noop_bazel_rule)
+
+    def load(name):
+        mod = sl.Module()
+        for callable_name in _CALLABLE_MAP.get(name, []):
+            mod.add_callable(callable_name, bazel_target)
+        return mod.freeze()
 
     ast = sl.parse("BUILD.bazel", content)
 
