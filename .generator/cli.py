@@ -770,7 +770,7 @@ def _process_changelog(
             "fix": "Bug Fixes",
             "docs": "Documentation",
         }
-        if adjusted_change_type in ["feat", "fix", "docs"]:
+        if adjusted_change_type in change_type_map:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
                 commit_link = f"([{change[source_commit_hash_key]}]({_REPO_URL}/commit/{change[source_commit_hash_key]}))"
