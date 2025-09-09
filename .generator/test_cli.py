@@ -20,6 +20,7 @@ import subprocess
 import yaml
 import unittest.mock
 from datetime import datetime
+from pathlib import Path
 from unittest.mock import MagicMock, mock_open
 
 import pytest
@@ -34,6 +35,7 @@ from cli import (
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _determine_bazel_rule,
+    _determine_library_namespace,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
     _get_previous_version,
@@ -48,6 +50,7 @@ from cli import (
     _update_changelog_for_library,
     _update_global_changelog,
     _update_version_for_library,
+    _verify_library_namespace,
     _write_json_file,
     _write_text_file,
     handle_build,
@@ -446,22 +449,33 @@ def test_run_individual_session_failure(mocker):
         _run_individual_session("lint", "another-library", "repo")
 
 
-def test_run_nox_sessions_success(
-    mocker, mock_generate_request_data_for_nox, mock_build_request_file
-):
+def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
     """Tests that _run_nox_sessions successfully runs all specified sessions."""
     mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
     mocker.patch("cli._get_library_id", return_value="mock-library")
     mock_run_individual_session = mocker.patch("cli._run_individual_session")
 
-    sessions_to_run = ["unit-3.9", "lint"]
-    _run_nox_sessions(sessions_to_run, "librarian", "repo")
+    sessions_to_run = [
+        "unit-3.9",
+        "unit-3.13",
+        "docs",
+        "system-3.13",
+        "lint",
+        "lint_setup_py",
+        "mypy-3.13",
+    ]
+    _run_nox_sessions("mock-library", "repo")
 
     assert mock_run_individual_session.call_count == len(sessions_to_run)
     mock_run_individual_session.assert_has_calls(
         [
             mocker.call("unit-3.9", "mock-library", "repo"),
+            mocker.call("unit-3.13", "mock-library", "repo"),
+            mocker.call("docs", "mock-library", "repo"),
+            mocker.call("system-3.13", "mock-library", "repo"),
             mocker.call("lint", "mock-library", "repo"),
+            mocker.call("lint_setup_py", "mock-library", "repo"),
+            mocker.call("mypy-3.13", "mock-library", "repo"),
         ]
     )
 
@@ -471,7 +485,7 @@ def test_run_nox_sessions_read_file_failure(mocker):
     mocker.patch("cli._read_json_file", side_effect=FileNotFoundError("file not found"))
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"], "librarian", "repo")
+        _run_nox_sessions("mock-library", "repo")
 
 
 def test_run_nox_sessions_get_library_id_failure(mocker):
@@ -483,7 +497,7 @@ def test_run_nox_sessions_get_library_id_failure(mocker):
     )
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"], "librarian", "repo")
+        _run_nox_sessions("mock-library", "repo")
 
 
 def test_run_nox_sessions_individual_session_failure(
@@ -497,21 +511,21 @@ def test_run_nox_sessions_individual_session_failure(
         side_effect=[None, subprocess.CalledProcessError(1, "nox", "session failed")],
     )
 
-    sessions_to_run = ["unit-3.9", "lint"]
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(sessions_to_run, "librarian", "repo")
+        _run_nox_sessions("mock-library", "repo")
 
     # Check that _run_individual_session was called at least once
     assert mock_run_individual_session.call_count > 0
 
 
-def test_handle_build_success(caplog, mocker):
+def test_handle_build_success(caplog, mocker, mock_build_request_file):
     """
     Tests the successful execution path of handle_build.
     """
     caplog.set_level(logging.INFO)
 
     mocker.patch("cli._run_nox_sessions")
+    mocker.patch("cli._verify_library_namespace", return_value=True)
     handle_build()
 
     assert "'build' command executed." in caplog.text
@@ -807,3 +821,203 @@ def test_process_version_file_failure():
     """Tests that value error is raised if the version string cannot be found"""
     with pytest.raises(ValueError):
         _process_version_file("", "", "")
+
+
+@pytest.mark.parametrize(
+    "pkg_root_str, gapic_parent_str, expected_namespace",
+    [
+        # Standard google.cloud
+        (
+            "repo/packages/google-cloud-lang",
+            "repo/packages/google-cloud-lang/google/cloud/language",
+            "google.cloud",
+        ),
+        # Standard google.ads
+        (
+            "repo/packages/google-ads",
+            "repo/packages/google-ads/google/ads/v17",
+            "google.ads",
+        ),
+        # Root 'google' namespace
+        (
+            "repo/packages/google-auth",
+            "repo/packages/google-auth/google/auth",
+            "google",
+        ),
+        # Case where gapic file is just under 'google' (handles the edge case)
+        ("repo/packages/google-api", "repo/packages/google-api/google", "google"),
+    ],
+)
+def test_determine_library_namespace_success(
+    pkg_root_str, gapic_parent_str, expected_namespace
+):
+    """Tests that the refactored namespace logic correctly calculates the relative namespace."""
+    pkg_root_path = Path(pkg_root_str)
+    gapic_parent_path = Path(gapic_parent_str)
+
+    namespace = _determine_library_namespace(gapic_parent_path, pkg_root_path)
+    assert namespace == expected_namespace
+
+
+def test_determine_library_namespace_fails_not_subpath():
+    """Tests that a ValueError is raised if the gapic path is not inside the package root."""
+    pkg_root_path = Path("repo/packages/my-lib")
+    gapic_parent_path = Path("SOME/OTHER/PATH/google/cloud/api")
+
+    with pytest.raises(ValueError, match="is not a sub-path of"):
+        _determine_library_namespace(gapic_parent_path, pkg_root_path)
+
+
+@pytest.fixture
+def mock_path_instance(mocker):
+    """Fixture to create a mock Path object that we can track."""
+    mock_path = MagicMock(spec=Path)
+    # Patch the Path class in the 'cli' module where it's being used
+    mocker.patch("cli.Path", return_value=mock_path)
+    return mock_path
+
+
+@pytest.fixture
+def mock_path_class(mocker):
+    """
+    CORRECTED FIXTURE: Mocks cli.Path and returns the MOCK CLASS itself.
+    A mock instance is pre-configured as its return_value.
+    """
+    mock_instance = MagicMock(spec=Path)
+    mock_class_patch = mocker.patch("cli.Path", return_value=mock_instance)
+    return mock_class_patch  # Return the mock *class*
+
+
+import pytest
+from pathlib import Path
+from unittest.mock import MagicMock, call
+
+# Assuming your functions are in 'cli.py'
+from cli import _determine_library_namespace, _verify_library_namespace
+
+# --- Tests for _determine_library_namespace (Refactored) ---
+# (These tests were correct and need no changes)
+
+
+@pytest.mark.parametrize(
+    "pkg_root_str, gapic_parent_str, expected_namespace",
+    [
+        (
+            "repo/packages/google-cloud-lang",
+            "repo/packages/google-cloud-lang/google/cloud/language",
+            "google.cloud",
+        ),
+        (
+            "repo/packages/google-ads",
+            "repo/packages/google-ads/google/ads/v17",
+            "google.ads",
+        ),
+        (
+            "repo/packages/google-auth",
+            "repo/packages/google-auth/google/auth",
+            "google",
+        ),
+        ("repo/packages/google-api", "repo/packages/google-api/google", "google"),
+    ],
+)
+def test_determine_library_namespace_success(
+    pkg_root_str, gapic_parent_str, expected_namespace
+):
+    """Tests that the refactored namespace logic correctly calculates the relative namespace."""
+    pkg_root_path = Path(pkg_root_str)
+    gapic_parent_path = Path(gapic_parent_str)
+
+    namespace = _determine_library_namespace(gapic_parent_path, pkg_root_path)
+    assert namespace == expected_namespace
+
+
+def test_determine_library_namespace_fails_not_subpath():
+    """Tests that a ValueError is raised if the gapic path is not inside the package root."""
+    pkg_root_path = Path("repo/packages/my-lib")
+    gapic_parent_path = Path("SOME/OTHER/PATH/google/cloud/api")
+
+    with pytest.raises(ValueError, match="is not a sub-path of"):
+        _determine_library_namespace(gapic_parent_path, pkg_root_path)
+
+
+@pytest.fixture
+def mock_path_class(mocker):
+    """
+    CORRECTED FIXTURE: Mocks cli.Path and returns the MOCK CLASS itself.
+    A mock instance is pre-configured as its return_value.
+    """
+    mock_instance = MagicMock(spec=Path)
+    mock_class_patch = mocker.patch("cli.Path", return_value=mock_instance)
+    return mock_class_patch  # Return the mock *class*
+
+
+def test_verify_library_namespace_success_valid(mocker, mock_path_class):
+    """Tests success when a single valid namespace is found."""
+    # 1. Get the mock instance from the mock class's return_value
+    mock_instance = mock_path_class.return_value
+
+    # 2. Configure the mock instance
+    mock_instance.is_dir.return_value = True
+    mock_file = MagicMock(spec=Path)
+    mock_file.parent = Path("/abs/repo/packages/my-lib/google/cloud/language")
+    mock_instance.rglob.return_value = [mock_file]
+
+    mock_determine_ns = mocker.patch(
+        "cli._determine_library_namespace", return_value="google.cloud"
+    )
+
+    result = _verify_library_namespace("my-lib", "/abs/repo")
+
+    assert result is True
+
+    # 3. Assert against the mock CLASS (from the fixture)
+    mock_path_class.assert_called_once_with("/abs/repo/packages/my-lib")
+
+    # 4. Verify the helper was called with the correct instance
+    mock_determine_ns.assert_called_once_with(mock_file.parent, mock_instance)
+
+
+def test_verify_library_namespace_failure_invalid(mocker, mock_path_class):
+    """Tests failure when a namespace is found that is NOT in the valid list."""
+    mock_instance = mock_path_class.return_value
+    mock_instance.is_dir.return_value = True
+
+    mock_file = MagicMock(spec=Path)
+    mock_file.parent = Path("/abs/repo/packages/my-lib/google/api/core")
+    mock_instance.rglob.return_value = [mock_file]
+
+    mock_determine_ns = mocker.patch(
+        "cli._determine_library_namespace", return_value="google.api"
+    )
+
+    result = _verify_library_namespace("my-lib", "/abs/repo")
+
+    assert result is False
+    # Verify the class was still called correctly
+    mock_path_class.assert_called_once_with("/abs/repo/packages/my-lib")
+    mock_determine_ns.assert_called_once_with(mock_file.parent, mock_instance)
+
+
+def test_verify_library_namespace_error_no_directory(mocker, mock_path_class):
+    """Tests that the specific ValueError is raised if the path isn't a directory."""
+    mock_instance = mock_path_class.return_value
+    mock_instance.is_dir.return_value = False  # Configure the failure case
+
+    with pytest.raises(ValueError, match="Error: Path is not a directory"):
+        _verify_library_namespace("my-lib", "repo")
+
+    # Verify the function was called and triggered the check
+    mock_path_class.assert_called_once_with("repo/packages/my-lib")
+
+
+def test_verify_library_namespace_error_no_gapic_file(mocker, mock_path_class):
+    """Tests that the specific ValueError is raised if no gapic files are found."""
+    mock_instance = mock_path_class.return_value
+    mock_instance.is_dir.return_value = True
+    mock_instance.rglob.return_value = []  # rglob returns an empty list
+
+    with pytest.raises(ValueError, match="Library is missing a `gapic_version.py`"):
+        _verify_library_namespace("my-lib", "repo")
+
+    # Verify the initial path logic still ran
+    mock_path_class.assert_called_once_with("repo/packages/my-lib")

@@ -415,18 +415,26 @@ def handle_generate(
     logger.info("'generate' command executed.")
 
 
-def _run_nox_sessions(sessions: List[str], librarian: str, repo: str):
+def _run_nox_sessions(library_id: str, repo: str):
     """Calls nox for all specified sessions.
 
     Args:
-        sessions(List[str]): The list of nox sessions to run.
-        librarian(str): The path to the librarian build configuration directory
+        library_id(str): The library id under test.
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
     """
-    # Read a build-request.json file
+    sessions = [
+        "unit-3.9",
+        "unit-3.13",
+        "docs",
+        "system-3.13",
+        "lint",
+        "lint_setup_py",
+        "mypy-3.13",
+    ]
     current_session = None
     try:
-        request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
-        library_id = _get_library_id(request_data)
         for nox_session in sessions:
             _run_individual_session(nox_session, library_id, repo)
 
@@ -439,8 +447,11 @@ def _run_individual_session(nox_session: str, library_id: str, repo: str):
     Calls nox with the specified sessions.
 
     Args:
-        nox_session(str): The nox session to run
-        library_id(str): The library id under test
+        nox_session(str): The nox session to run.
+        library_id(str): The library id under test.
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
     """
 
     command = [
@@ -454,18 +465,90 @@ def _run_individual_session(nox_session: str, library_id: str, repo: str):
     logger.info(result)
 
 
+def _determine_library_namespace(
+    gapic_parent_path: Path, package_root_path: Path
+) -> str:
+    """
+    Determines the namespace from the gapic file's parent path relative
+    to its package root.
+
+    Args:
+        gapic_parent_path (Path): The absolute path to the directory containing
+                                  gapic_version.py (e.g., .../google/cloud/language).
+        package_root_path (Path): The absolute path to the root of the package
+                                  (e.g., .../packages/google-cloud-language).
+    """
+    try:
+        # This robustly calculates the relative path, e.g., "google/cloud/language"
+        relative_path = gapic_parent_path.relative_to(package_root_path)
+    except ValueError as e:
+        raise ValueError(
+            f"Path {gapic_parent_path} is not a sub-path of {package_root_path}. Error: {e}"
+        )
+
+    # relative_path.parts will be like: ('google', 'cloud', 'language')
+    # We want all parts *except* the last one (the service dir) to form the namespace.
+    namespace_parts = relative_path.parts[:-1]
+
+    if not namespace_parts and relative_path.parts:
+        # This handles the edge case where the parts are just ('google',).
+        # This implies the namespace is just "google".
+        return ".".join(relative_path.parts)
+
+    return ".".join(namespace_parts)
+
+
+def _verify_library_namespace(library_id: str, repo: str):
+    """
+    Verifies that all found package namespaces are one of
+    `google`, `google.cloud`, or `google.ads`.
+
+    Args:
+        library_id (str): The library id under test (e.g., "google-cloud-language").
+        repo (str): The path to the root of the repository.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/14376): Update the list of namespaces which are exceptions.
+    exception_namespaces = ["google.cloud.billing"]
+    valid_namespaces = ["google", "google.cloud", "google.ads", *exception_namespaces]
+    gapic_version_file = "gapic_version.py"
+
+    # This is now the "package root" path we will use for comparison
+    library_path = Path(f"{repo}/packages/{library_id}")
+
+    if not library_path.is_dir():
+        raise ValueError(f"Error: Path is not a directory: {library_path}")
+
+    # Recursively glob (rglob) for all 'gapic_version.py' files
+    all_gapic_files = list(library_path.rglob(gapic_version_file))
+
+    if not all_gapic_files:
+        raise ValueError(
+            f"Error: namespace cannot be determined for {library_id}."
+            f" Library is missing a `{gapic_version_file}`."
+        )
+
+    for gapic_file in all_gapic_files:
+        # The directory we want is the parent of `gapic_version.py` file.
+        gapic_parent_dir = gapic_file.parent
+
+        # Pass both the specific dir and the package root for a safe relative comparison
+        library_namespace = _determine_library_namespace(gapic_parent_dir, library_path)
+
+        if library_namespace not in valid_namespaces:
+            return False
+
+    return True
+
+
 def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
-    sessions = [
-        "unit-3.9",
-        "unit-3.13",
-        "docs",
-        "system-3.13",
-        "lint",
-        "lint_setup_py",
-        "mypy-3.13",
-    ]
-    _run_nox_sessions(sessions, librarian, repo)
+    try:
+        request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
+        library_id = _get_library_id(request_data)
+        _run_nox_sessions(library_id, repo)
+        _verify_library_namespace(library_id, repo)
+    except Exception as e:
+        raise ValueError("Generation failed.") from e
 
     logger.info("'build' command executed.")
 
