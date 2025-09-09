@@ -536,7 +536,9 @@ def _verify_library_namespace(library_id: str, repo: str):
         library_namespace = _determine_library_namespace(gapic_parent_dir, library_path)
 
         if library_namespace not in valid_namespaces:
-            return False
+            raise ValueError(
+                f"The namespace `{library_namespace}` for `{library_id}` must be one of {valid_namespaces}."
+            )
 
     return True
 

@@ -16,6 +16,7 @@ import json
 import logging
 import os
 import pathlib
+import re
 import subprocess
 import yaml
 import unittest.mock
@@ -990,9 +991,10 @@ def test_verify_library_namespace_failure_invalid(mocker, mock_path_class):
         "cli._determine_library_namespace", return_value="google.api"
     )
 
-    result = _verify_library_namespace("my-lib", "/abs/repo")
+    expected_error = "The namespace `google.api` for `my-lib` must be one of ['google', 'google.cloud', 'google.ads', 'google.cloud.billing']."
+    with pytest.raises(ValueError, match=re.escape(expected_error)):
+        _verify_library_namespace("my-lib", "/abs/repo")
 
-    assert result is False
     # Verify the class was still called correctly
     mock_path_class.assert_called_once_with("/abs/repo/packages/my-lib")
     mock_determine_ns.assert_called_once_with(mock_file.parent, mock_instance)
