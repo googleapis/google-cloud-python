@@ -535,8 +535,6 @@ def _verify_library_namespace(library_id: str, repo: str):
                 f"The namespace `{library_namespace}` for `{library_id}` must be one of {valid_namespaces}."
             )
 
-    return True
-
 
 def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""

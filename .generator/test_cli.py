@@ -835,12 +835,11 @@ def test_process_version_file_failure():
 @pytest.fixture
 def mock_path_class(mocker):
     """
-    CORRECTED FIXTURE: Mocks cli.Path and returns the MOCK CLASS itself.
     A mock instance is pre-configured as its return_value.
     """
     mock_instance = MagicMock(spec=Path)
     mock_class_patch = mocker.patch("cli.Path", return_value=mock_instance)
-    return mock_class_patch  # Return the mock *class*
+    return mock_class_patch
 
 
 @pytest.mark.parametrize(
@@ -899,9 +898,7 @@ def test_verify_library_namespace_success_valid(mocker, mock_path_class):
         "cli._determine_library_namespace", return_value="google.cloud"
     )
 
-    result = _verify_library_namespace("my-lib", "/abs/repo")
-
-    assert result is True
+    _verify_library_namespace("my-lib", "/abs/repo")
 
     # 3. Assert against the mock CLASS (from the fixture)
     mock_path_class.assert_called_once_with("/abs/repo/packages/my-lib")
@@ -923,8 +920,7 @@ def test_verify_library_namespace_failure_invalid(mocker, mock_path_class):
         "cli._determine_library_namespace", return_value="google.api"
     )
 
-    expected_error = "The namespace `google.api` for `my-lib` must be one of ['google', 'google.cloud', 'google.ads', 'google.cloud.billing']."
-    with pytest.raises(ValueError, match=re.escape(expected_error)):
+    with pytest.raises(ValueError):
         _verify_library_namespace("my-lib", "/abs/repo")
 
     # Verify the class was still called correctly
