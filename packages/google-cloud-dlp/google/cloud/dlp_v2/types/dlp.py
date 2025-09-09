@@ -92,6 +92,7 @@ __protobuf__ = proto.module(
         "ActionDetails",
         "DeidentifyDataSourceStats",
         "DeidentifyDataSourceDetails",
+        "LocationSupport",
         "InfoTypeDescription",
         "InfoTypeCategory",
         "VersionDescription",
@@ -309,6 +310,7 @@ __protobuf__ = proto.module(
         "FileClusterType",
         "ProcessingLocation",
         "SaveToGcsFindingsOutput",
+        "Domain",
     },
 )
 
@@ -2592,8 +2594,7 @@ class InspectDataSourceDetails(proto.Message):
         )
 
     class Result(proto.Message):
-        r"""All result fields mentioned below are updated while the job
-        is processing.
+        r"""All Result fields are updated while the job is processing.
 
         Attributes:
             processed_bytes (int):
@@ -2835,6 +2836,46 @@ class DeidentifyDataSourceDetails(proto.Message):
     )
 
 
+class LocationSupport(proto.Message):
+    r"""Locations at which a feature can be used.
+
+    Attributes:
+        regionalization_scope (google.cloud.dlp_v2.types.LocationSupport.RegionalizationScope):
+            The current scope for location on this
+            feature. This may expand over time.
+        locations (MutableSequence[str]):
+            Specific locations where the feature may be used. Examples:
+            us-central1, us, asia, global If scope is ANY_LOCATION, no
+            regions will be listed.
+    """
+
+    class RegionalizationScope(proto.Enum):
+        r"""The location scope for a feature.
+
+        Values:
+            REGIONALIZATION_SCOPE_UNSPECIFIED (0):
+                Invalid.
+            REGIONAL (1):
+                Feature may be used with one or more regions.
+                See locations for details.
+            ANY_LOCATION (2):
+                Feature may be used anywhere. Default value.
+        """
+        REGIONALIZATION_SCOPE_UNSPECIFIED = 0
+        REGIONAL = 1
+        ANY_LOCATION = 2
+
+    regionalization_scope: RegionalizationScope = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=RegionalizationScope,
+    )
+    locations: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
 class InfoTypeDescription(proto.Message):
     r"""InfoType description.
 
@@ -2849,6 +2890,9 @@ class InfoTypeDescription(proto.Message):
         description (str):
             Description of the infotype. Translated when
             language is provided in the request.
+        location_support (google.cloud.dlp_v2.types.LocationSupport):
+            Locations at which this feature can be used.
+            May change over time.
         example (str):
             A sample that is a true positive for this
             infoType.
@@ -2884,6 +2928,11 @@ class InfoTypeDescription(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    location_support: "LocationSupport" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="LocationSupport",
     )
     example: str = proto.Field(
         proto.STRING,
@@ -2955,6 +3004,8 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in Armenia.
             AUSTRALIA (3):
                 The infoType is typically used in Australia.
+            AUSTRIA (53):
+                The infoType is typically used in Austria.
             AZERBAIJAN (48):
                 The infoType is typically used in Azerbaijan.
             BELARUS (50):
@@ -3062,6 +3113,7 @@ class InfoTypeCategory(proto.Message):
         ARGENTINA = 2
         ARMENIA = 51
         AUSTRALIA = 3
+        AUSTRIA = 53
         AZERBAIJAN = 48
         BELARUS = 50
         BELGIUM = 4
@@ -3331,7 +3383,7 @@ class QuasiId(proto.Message):
             A column can be tagged with a custom tag. In
             this case, the user must indicate an auxiliary
             table that contains statistical information on
-            the possible values of this column (below).
+            the possible values of this column.
 
             This field is a member of `oneof`_ ``tag``.
         inferred (google.protobuf.empty_pb2.Empty):
@@ -3398,7 +3450,7 @@ class StatisticalTable(proto.Message):
                 A column can be tagged with a custom tag. In
                 this case, the user must indicate an auxiliary
                 table that contains statistical information on
-                the possible values of this column (below).
+                the possible values of this column.
         """
 
         field: storage.FieldId = proto.Field(
@@ -3616,7 +3668,7 @@ class PrivacyMetric(proto.Message):
                     A column can be tagged with a custom tag. In
                     this case, the user must indicate an auxiliary
                     table that contains statistical information on
-                    the possible values of this column (below).
+                    the possible values of this column.
 
                     This field is a member of `oneof`_ ``tag``.
                 inferred (google.protobuf.empty_pb2.Empty):
@@ -6959,13 +7011,14 @@ class Action(proto.Message):
                 This field is a member of `oneof`_ ``output``.
             file_types_to_transform (MutableSequence[google.cloud.dlp_v2.types.FileType]):
                 List of user-specified file type groups to transform. If
-                specified, only the files with these file types will be
-                transformed. If empty, all supported files will be
-                transformed. Supported types may be automatically added over
-                time. If a file type is set in this field that isn't
-                supported by the Deidentify action then the job will fail
-                and will not be successfully created/started. Currently the
-                only file types supported are: IMAGES, TEXT_FILES, CSV, TSV.
+                specified, only the files with these file types are
+                transformed. If empty, all supported files are transformed.
+                Supported types may be automatically added over time. Any
+                unsupported file types that are set in this field are
+                excluded from de-identification. An error is recorded for
+                each unsupported file in the TransformationDetails output
+                table. Currently the only file types supported are: IMAGES,
+                TEXT_FILES, CSV, TSV.
         """
 
         transformation_config: "TransformationConfig" = proto.Field(
@@ -12113,11 +12166,14 @@ class ListTableDataProfilesRequest(proto.Message):
 
             - Filter expressions are made up of one or more
               restrictions.
+
             - Restrictions can be combined by ``AND`` or ``OR`` logical
               operators. A sequence of restrictions implicitly uses
               ``AND``.
+
             - A restriction has the form of
               ``{field} {operator} {value}``.
+
             - Supported fields/values:
 
               - ``project_id`` - The Google Cloud project ID.
@@ -12512,7 +12568,9 @@ class TableDataProfile(proto.Message):
             profile generation attempt. May be empty if the
             profile is still being generated.
         state (google.cloud.dlp_v2.types.TableDataProfile.State):
-            State of a profile.
+            State of a profile. This will always be set
+            to DONE when the table data profile is written
+            to another service like BigQuery or Pub/Sub.
         sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
             The sensitivity score of this table.
         data_risk_level (google.cloud.dlp_v2.types.DataRiskLevel):
@@ -12563,6 +12621,8 @@ class TableDataProfile(proto.Message):
             SQL table profiles.
         related_resources (MutableSequence[google.cloud.dlp_v2.types.RelatedResource]):
             Resources related to this profile.
+        domains (MutableSequence[google.cloud.dlp_v2.types.Domain]):
+            Domains associated with the profile.
     """
 
     class State(proto.Enum):
@@ -12716,6 +12776,11 @@ class TableDataProfile(proto.Message):
         proto.MESSAGE,
         number=41,
         message="RelatedResource",
+    )
+    domains: MutableSequence["Domain"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=47,
+        message="Domain",
     )
 
 
@@ -13152,6 +13217,8 @@ class FileStoreDataProfile(proto.Message):
             any tags attached during profiling.
         related_resources (MutableSequence[google.cloud.dlp_v2.types.RelatedResource]):
             Resources related to this profile.
+        domains (MutableSequence[google.cloud.dlp_v2.types.Domain]):
+            Domains associated with the profile.
     """
 
     class State(proto.Enum):
@@ -13295,6 +13362,11 @@ class FileStoreDataProfile(proto.Message):
         proto.MESSAGE,
         number=26,
         message="RelatedResource",
+    )
+    domains: MutableSequence["Domain"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=27,
+        message="Domain",
     )
 
 
@@ -13539,11 +13611,14 @@ class ListFileStoreDataProfilesRequest(proto.Message):
 
             - Filter expressions are made up of one or more
               restrictions.
+
             - Restrictions can be combined by ``AND`` or ``OR`` logical
               operators. A sequence of restrictions implicitly uses
               ``AND``.
+
             - A restriction has the form of
               ``{field} {operator} {value}``.
+
             - Supported fields/values:
 
               - ``project_id`` - The Google Cloud project ID.
@@ -14313,29 +14388,59 @@ class ProcessingLocation(proto.Message):
 
     Attributes:
         image_fallback_location (google.cloud.dlp_v2.types.ProcessingLocation.ImageFallbackLocation):
-            Image processing will fall back using this
+            Image processing falls back using this
+            configuration.
+        document_fallback_location (google.cloud.dlp_v2.types.ProcessingLocation.DocumentFallbackLocation):
+            Document processing falls back using this
             configuration.
     """
 
     class MultiRegionProcessing(proto.Message):
-        r"""Processing will happen in a multi-region that contains the
-        current region if available.
+        r"""Processing occurs in a multi-region that contains the current
+        region if available.
 
         """
 
     class GlobalProcessing(proto.Message):
-        r"""Processing will happen in the global region."""
+        r"""Processing occurs in the global region."""
 
     class ImageFallbackLocation(proto.Message):
-        r"""Configure image processing to fall back to the configured
-        processing option below if unavailable in the request location.
+        r"""Configure image processing to fall back to any of the
+        following processing options if image processing is unavailable
+        in the original request location.
 
         Attributes:
             multi_region_processing (google.cloud.dlp_v2.types.ProcessingLocation.MultiRegionProcessing):
-                Processing will happen in a multi-region that
+                Processing occurs in a multi-region that
                 contains the current region if available.
             global_processing (google.cloud.dlp_v2.types.ProcessingLocation.GlobalProcessing):
-                Processing will happen in the global region.
+                Processing occurs in the global region.
+        """
+
+        multi_region_processing: "ProcessingLocation.MultiRegionProcessing" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=100,
+                message="ProcessingLocation.MultiRegionProcessing",
+            )
+        )
+        global_processing: "ProcessingLocation.GlobalProcessing" = proto.Field(
+            proto.MESSAGE,
+            number=200,
+            message="ProcessingLocation.GlobalProcessing",
+        )
+
+    class DocumentFallbackLocation(proto.Message):
+        r"""Configure document processing to fall back to any of the
+        following processing options if document processing is
+        unavailable in the original request location.
+
+        Attributes:
+            multi_region_processing (google.cloud.dlp_v2.types.ProcessingLocation.MultiRegionProcessing):
+                Processing occurs in a multi-region that
+                contains the current region if available.
+            global_processing (google.cloud.dlp_v2.types.ProcessingLocation.GlobalProcessing):
+                Processing occurs in the global region.
         """
 
         multi_region_processing: "ProcessingLocation.MultiRegionProcessing" = (
@@ -14356,12 +14461,17 @@ class ProcessingLocation(proto.Message):
         number=1,
         message=ImageFallbackLocation,
     )
+    document_fallback_location: DocumentFallbackLocation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=DocumentFallbackLocation,
+    )
 
 
 class SaveToGcsFindingsOutput(proto.Message):
     r"""Collection of findings saved to a Cloud Storage bucket. This
     is used as the proto schema for textproto files created when
-    specifying a cloud storage path to save inspection findings.
+    specifying a cloud storage path to save Inspect findings.
 
     Attributes:
         findings (MutableSequence[google.cloud.dlp_v2.types.Finding]):
@@ -14372,6 +14482,85 @@ class SaveToGcsFindingsOutput(proto.Message):
         proto.MESSAGE,
         number=1,
         message="Finding",
+    )
+
+
+class Domain(proto.Message):
+    r"""A domain represents a thematic category that a data profile
+    can fall under.
+
+    Attributes:
+        category (google.cloud.dlp_v2.types.Domain.Category):
+            A domain category that this profile is
+            related to.
+        signals (MutableSequence[google.cloud.dlp_v2.types.Domain.Signal]):
+            The collection of signals that influenced
+            selection of the category.
+    """
+
+    class Category(proto.Enum):
+        r"""This enum defines the various domain categories a data
+        profile can fall under.
+
+        Values:
+            CATEGORY_UNSPECIFIED (0):
+                Category unspecified.
+            AI (1):
+                Indicates that the data profile is related to artificial
+                intelligence. When set, all findings stored to Security
+                Command Center will set the corresponding AI domain field of
+                ``Finding`` objects.
+            CODE (2):
+                Indicates that the data profile is related to
+                code.
+        """
+        CATEGORY_UNSPECIFIED = 0
+        AI = 1
+        CODE = 2
+
+    class Signal(proto.Enum):
+        r"""The signal used to determine the category.
+        This list may increase over time.
+
+        Values:
+            SIGNAL_UNSPECIFIED (0):
+                Unused.
+            MODEL (1):
+                One or more machine learning models are
+                present.
+            TEXT_EMBEDDING (2):
+                A table appears to be a text embedding.
+            VERTEX_PLUGIN (3):
+                The `Cloud SQL Vertex
+                AI <https://cloud.google.com/sql/docs/postgres/integrate-cloud-sql-with-vertex-ai>`__
+                plugin is installed on the database.
+            VECTOR_PLUGIN (4):
+                Support for `Cloud SQL vector
+                embeddings <https://cloud.google.com/sql/docs/mysql/enable-vector-search>`__
+                is enabled on the database.
+            SOURCE_CODE (5):
+                Source code is present.
+            SERVICE (6):
+                If the service determines the category type. For example,
+                Vertex AI assets would always have a ``Category`` of ``AI``.
+        """
+        SIGNAL_UNSPECIFIED = 0
+        MODEL = 1
+        TEXT_EMBEDDING = 2
+        VERTEX_PLUGIN = 3
+        VECTOR_PLUGIN = 4
+        SOURCE_CODE = 5
+        SERVICE = 6
+
+    category: Category = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Category,
+    )
+    signals: MutableSequence[Signal] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=Signal,
     )
 
 
