@@ -730,7 +730,7 @@ def handle_release_init(
         output(str): Path to the directory in the container where modified
             code should be placed.
 
-    Raises: 
+    Raises:
         ValueError: if the version in `release-init-request.json` is
             the same as the version in state.yaml
         ValueError: if the `release-init-request.json` file in the given
@@ -762,7 +762,7 @@ def handle_release_init(
             previous_version = _get_previous_version(package_name, librarian)
             if previous_version == version:
                 raise ValueError(
-                    "The version in `release-init-request.json` is the same as the version in state.yaml\n"
+                    f"The version in {RELEASE_INIT_REQUEST_FILE} is the same as the version in {STATE_YAML_FILE}\n"
                     f"{package_name} previous released version: {previous_version}\n"
                     f"{package_name} current version: {version}\n"
                 )
