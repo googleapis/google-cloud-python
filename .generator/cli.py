@@ -762,14 +762,9 @@ def _process_changelog(
     library_changes.sort(key=lambda x: x[type_key])
     grouped_changes = itertools.groupby(library_changes, key=lambda x: x[type_key])
 
-    library_change_type_map = {
-        "feat": "Features",
-        "fix": "Bug Fixes",
-        "docs": "Documentation",
-    }
     for library_change_type, library_changes in grouped_changes:
         # We only care about feat, fix, docs
-        adjusted_change_type = change_type.replace("!", "")
+        adjusted_change_type = library_change_type.replace("!", "")
         change_type_map = {
             "feat": "Features",
             "fix": "Bug Fixes",
@@ -777,7 +772,7 @@ def _process_changelog(
         }
         if adjusted_change_type in ["feat", "fix", "docs"]:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
-            for change in changes:
+            for change in library_changes:
                 commit_link = f"([{change[source_commit_hash_key]}]({_REPO_URL}/commit/{change[source_commit_hash_key]}))"
                 entry_parts.append(f"* {change[subject_key]} {commit_link}")
 
