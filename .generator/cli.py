@@ -76,7 +76,7 @@ def _write_text_file(path: str, updated_content: str):
     """
 
     with open(path, "w+") as f:
-        os.makedirs(f"{os.makedirs(Path(updated_content).parent, exist_ok=True)}")
+        os.makedirs((updated_content).parent, exist_ok=True)
         f.write(updated_content)
 
 
