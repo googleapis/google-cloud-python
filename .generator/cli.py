@@ -436,6 +436,7 @@ def _run_nox_sessions(library_id: str, repo: str):
     current_session = None
     try:
         for nox_session in sessions:
+            current_session = nox_session
             _run_individual_session(nox_session, library_id, repo)
 
     except Exception as e:
