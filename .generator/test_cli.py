@@ -762,10 +762,10 @@ def test_process_changelog_success():
 ## [1.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.1...google-cloud-language-v1.2.2) (2025-06-11)"""
     version = "1.2.3"
     previous_version = "1.2.2"
-    package_name = "google-cloud-language"
+    library_id = "google-cloud-language"
 
     result = _process_changelog(
-        mock_content, _MOCK_LIBRARY_CHANGES, version, previous_version, package_name
+        mock_content, _MOCK_LIBRARY_CHANGES, version, previous_version, library_id
     )
     assert result == expected_result
 
