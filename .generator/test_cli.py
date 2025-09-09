@@ -878,15 +878,6 @@ def test_determine_library_namespace_fails_not_subpath():
 
 
 @pytest.fixture
-def mock_path_instance(mocker):
-    """Fixture to create a mock Path object that we can track."""
-    mock_path = MagicMock(spec=Path)
-    # Patch the Path class in the 'cli' module where it's being used
-    mocker.patch("cli.Path", return_value=mock_path)
-    return mock_path
-
-
-@pytest.fixture
 def mock_path_class(mocker):
     """
     CORRECTED FIXTURE: Mocks cli.Path and returns the MOCK CLASS itself.
@@ -895,17 +886,6 @@ def mock_path_class(mocker):
     mock_instance = MagicMock(spec=Path)
     mock_class_patch = mocker.patch("cli.Path", return_value=mock_instance)
     return mock_class_patch  # Return the mock *class*
-
-
-import pytest
-from pathlib import Path
-from unittest.mock import MagicMock, call
-
-# Assuming your functions are in 'cli.py'
-from cli import _determine_library_namespace, _verify_library_namespace
-
-# --- Tests for _determine_library_namespace (Refactored) ---
-# (These tests were correct and need no changes)
 
 
 @pytest.mark.parametrize(
@@ -947,17 +927,6 @@ def test_determine_library_namespace_fails_not_subpath():
 
     with pytest.raises(ValueError, match="is not a sub-path of"):
         _determine_library_namespace(gapic_parent_path, pkg_root_path)
-
-
-@pytest.fixture
-def mock_path_class(mocker):
-    """
-    CORRECTED FIXTURE: Mocks cli.Path and returns the MOCK CLASS itself.
-    A mock instance is pre-configured as its return_value.
-    """
-    mock_instance = MagicMock(spec=Path)
-    mock_class_patch = mocker.patch("cli.Path", return_value=mock_instance)
-    return mock_class_patch  # Return the mock *class*
 
 
 def test_verify_library_namespace_success_valid(mocker, mock_path_class):
