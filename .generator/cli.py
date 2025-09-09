@@ -505,7 +505,15 @@ def _verify_library_namespace(library_id: str, repo: str):
     """
     # TODO(https://github.com/googleapis/google-cloud-python/issues/14376): Update the list of namespaces which are exceptions.
     exception_namespaces = ["google.cloud.billing"]
-    valid_namespaces = ["google", "google.cloud", "google.ads", *exception_namespaces]
+    valid_namespaces = [
+        "google",
+        "google.apps",
+        "google.ads",
+        "google.cloud",
+        "google.maps",
+        "google.shopping",
+        *exception_namespaces,
+    ]
     gapic_version_file = "gapic_version.py"
 
     # This is now the "package root" path we will use for comparison
