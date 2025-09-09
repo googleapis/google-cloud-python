@@ -87,6 +87,9 @@ def remote_function(
     cloud_function_timeout: Optional[int] = 600,
     cloud_function_max_instances: Optional[int] = None,
     cloud_function_vpc_connector: Optional[str] = None,
+    cloud_function_vpc_connector_egress_settings: Literal[
+        "all", "private-ranges-only", "unspecified"
+    ] = "private-ranges-only",
     cloud_function_memory_mib: Optional[int] = 1024,
     cloud_function_ingress_settings: Literal[
         "all", "internal-only", "internal-and-gclb"
@@ -109,6 +112,7 @@ def remote_function(
         cloud_function_timeout=cloud_function_timeout,
         cloud_function_max_instances=cloud_function_max_instances,
         cloud_function_vpc_connector=cloud_function_vpc_connector,
+        cloud_function_vpc_connector_egress_settings=cloud_function_vpc_connector_egress_settings,
         cloud_function_memory_mib=cloud_function_memory_mib,
         cloud_function_ingress_settings=cloud_function_ingress_settings,
         cloud_build_service_account=cloud_build_service_account,

@@ -1478,14 +1478,20 @@ def test_remote_function_via_session_vpc(scalars_dfs):
             reuse=False,
             cloud_function_service_account="default",
             cloud_function_vpc_connector=gcf_vpc_connector,
+            cloud_function_vpc_connector_egress_settings="all",
             cloud_function_ingress_settings="all",
         )(square_num)
 
-        # assert that the GCF is created with the intended vpc connector
         gcf = rf_session.cloudfunctionsclient.get_function(
             name=square_num_remote.bigframes_cloud_function
         )
+
+        # assert that the GCF is created with the intended vpc connector and
+        # egress settings.
         assert gcf.service_config.vpc_connector == gcf_vpc_connector
+        # The value is <VpcConnectorEgressSettings.ALL_TRAFFIC: 2> since we set
+        # cloud_function_vpc_connector_egress_settings="all" earlier.
+        assert gcf.service_config.vpc_connector_egress_settings == 2
 
         # assert that the function works as expected on data
         scalars_df, scalars_pandas_df = scalars_dfs

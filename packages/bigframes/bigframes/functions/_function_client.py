@@ -51,6 +51,15 @@ _INGRESS_SETTINGS_MAP = types.MappingProxyType(
     }
 )
 
+# https://cloud.google.com/functions/docs/reference/rest/v2/projects.locations.functions#vpconnectoregresssettings
+_VPC_EGRESS_SETTINGS_MAP = types.MappingProxyType(
+    {
+        "all": functions_v2.ServiceConfig.VpcConnectorEgressSettings.ALL_TRAFFIC,
+        "private-ranges-only": functions_v2.ServiceConfig.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY,
+        "unspecified": functions_v2.ServiceConfig.VpcConnectorEgressSettings.VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED,
+    }
+)
+
 # BQ managed functions (@udf) currently only support Python 3.11.
 _MANAGED_FUNC_PYTHON_VERSION = "python-3.11"
 
@@ -375,6 +384,7 @@ class FunctionClient:
         max_instance_count=None,
         is_row_processor=False,
         vpc_connector=None,
+        vpc_connector_egress_settings="private-ranges-only",
         memory_mib=1024,
         ingress_settings="internal-only",
     ):
@@ -472,6 +482,15 @@ class FunctionClient:
                 function.service_config.max_instance_count = max_instance_count
             if vpc_connector is not None:
                 function.service_config.vpc_connector = vpc_connector
+                if vpc_connector_egress_settings not in _VPC_EGRESS_SETTINGS_MAP:
+                    raise bf_formatting.create_exception_with_feedback_link(
+                        ValueError,
+                        f"'{vpc_connector_egress_settings}' not one of the supported vpc egress settings values: {list(_VPC_EGRESS_SETTINGS_MAP)}",
+                    )
+                function.service_config.vpc_connector_egress_settings = cast(
+                    functions_v2.ServiceConfig.VpcConnectorEgressSettings,
+                    _VPC_EGRESS_SETTINGS_MAP[vpc_connector_egress_settings],
+                )
             function.service_config.service_account_email = (
                 self._cloud_function_service_account
             )
@@ -532,6 +551,7 @@ class FunctionClient:
         cloud_function_max_instance_count,
         is_row_processor,
         cloud_function_vpc_connector,
+        cloud_function_vpc_connector_egress_settings,
         cloud_function_memory_mib,
         cloud_function_ingress_settings,
         bq_metadata,
@@ -580,6 +600,7 @@ class FunctionClient:
                 max_instance_count=cloud_function_max_instance_count,
                 is_row_processor=is_row_processor,
                 vpc_connector=cloud_function_vpc_connector,
+                vpc_connector_egress_settings=cloud_function_vpc_connector_egress_settings,
                 memory_mib=cloud_function_memory_mib,
                 ingress_settings=cloud_function_ingress_settings,
             )

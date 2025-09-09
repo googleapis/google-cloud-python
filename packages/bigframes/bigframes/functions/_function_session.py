@@ -245,6 +245,9 @@ class FunctionSession:
         cloud_function_timeout: Optional[int] = 600,
         cloud_function_max_instances: Optional[int] = None,
         cloud_function_vpc_connector: Optional[str] = None,
+        cloud_function_vpc_connector_egress_settings: Literal[
+            "all", "private-ranges-only", "unspecified"
+        ] = "private-ranges-only",
         cloud_function_memory_mib: Optional[int] = 1024,
         cloud_function_ingress_settings: Literal[
             "all", "internal-only", "internal-and-gclb"
@@ -425,6 +428,13 @@ class FunctionSession:
                 function. This is useful if your code needs access to data or
                 service(s) that are on a VPC network. See for more details
                 https://cloud.google.com/functions/docs/networking/connecting-vpc.
+            cloud_function_vpc_connector_egress_settings (str, Optional):
+                Egress settings for the VPC connector, controlling what outbound
+                traffic is routed through the VPC connector.
+                Options are: `all`, `private-ranges-only`, or `unspecified`.
+                If not specified, `private-ranges-only` is used by default.
+                See for more details
+                https://cloud.google.com/run/docs/configuring/vpc-connectors#egress-job.
             cloud_function_memory_mib (int, Optional):
                 The amounts of memory (in mebibytes) to allocate for the cloud
                 function (2nd gen) created. This also dictates a corresponding
@@ -616,6 +626,7 @@ class FunctionSession:
                 cloud_function_max_instance_count=cloud_function_max_instances,
                 is_row_processor=is_row_processor,
                 cloud_function_vpc_connector=cloud_function_vpc_connector,
+                cloud_function_vpc_connector_egress_settings=cloud_function_vpc_connector_egress_settings,
                 cloud_function_memory_mib=cloud_function_memory_mib,
                 cloud_function_ingress_settings=cloud_function_ingress_settings,
                 bq_metadata=bqrf_metadata,
