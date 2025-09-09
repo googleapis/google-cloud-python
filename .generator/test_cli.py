@@ -532,6 +532,14 @@ def test_handle_build_success(caplog, mocker, mock_build_request_file):
     assert "'build' command executed." in caplog.text
 
 
+def test_handle_build_fail(caplog):
+    """
+    Tests the failed to read `librarian/build-request.json` file in handle_generates.
+    """
+    with pytest.raises(ValueError):
+        handle_build()
+
+
 def test_read_valid_json(mocker):
     """Tests reading a valid JSON file."""
     mock_content = '{"key": "value"}'

@@ -551,7 +551,7 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
         _verify_library_namespace(library_id, repo)
         _run_nox_sessions(library_id, repo)
     except Exception as e:
-        raise ValueError("Generation failed.") from e
+        raise ValueError("Build failed.") from e
 
     logger.info("'build' command executed.")
 
