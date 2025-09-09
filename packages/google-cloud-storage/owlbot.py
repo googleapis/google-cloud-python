@@ -16,6 +16,7 @@
 
 import json
 from pathlib import Path
+import shutil
 
 import synthtool as s
 from synthtool import gcp
@@ -49,6 +50,11 @@ for library in s.get_staging_dirs(default_version):
 
     source_path = Path("google/cloud/storage_v2")
     renamed_path = Path("google/cloud/_storage_v2")
+
+    # Remove the old _storage_v2 directory if it exists
+    if renamed_path.exists():
+        shutil.rmtree(renamed_path)
+
     if source_path.exists():
         source_path.rename(renamed_path)
 
