@@ -2,6 +2,15 @@ import starlark as sl
 
 
 def parse_content(content: str) -> dict:
+    """Parses content from BUILD.bazel and returns a dictionary
+    containing bazel rules and arguments.
+
+    Args:
+        content(str): contents of a BUILD.bazel.
+
+    Returns: Dictionary containing bazel rules and arguments.
+
+    """
     glb = sl.Globals.standard()
     mod = sl.Module()
     packages = {}
