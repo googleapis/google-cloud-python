@@ -5,6 +5,24 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.37.0](https://github.com/googleapis/python-bigquery/compare/v3.36.0...v3.37.0) (2025-09-08)
+
+
+### Features
+
+* Updates to fastpath query execution ([#2268](https://github.com/googleapis/python-bigquery/issues/2268)) ([ef2740a](https://github.com/googleapis/python-bigquery/commit/ef2740a158199633b5543a7b6eb19587580792cd))
+
+
+### Bug Fixes
+
+* Remove deepcopy while setting properties for _QueryResults ([#2280](https://github.com/googleapis/python-bigquery/issues/2280)) ([33ea296](https://github.com/googleapis/python-bigquery/commit/33ea29616c06a2e2a106a785d216e784737ae386))
+
+
+### Documentation
+
+* Clarify that the presence of `XyzJob.errors`  doesn't necessarily mean that the job has not completed or was unsuccessful ([#2278](https://github.com/googleapis/python-bigquery/issues/2278)) ([6e88d7d](https://github.com/googleapis/python-bigquery/commit/6e88d7dbe42ebfc35986da665d656b49ac481db4))
+* Clarify the api_method arg for client.query() ([#2277](https://github.com/googleapis/python-bigquery/issues/2277)) ([8a13c12](https://github.com/googleapis/python-bigquery/commit/8a13c12905ffcb3dbb6086a61df37556f0c2cd31))
+
 ## [3.36.0](https://github.com/googleapis/python-bigquery/compare/v3.35.1...v3.36.0) (2025-08-20)
 
 
