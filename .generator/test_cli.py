@@ -925,7 +925,7 @@ def test_determine_library_namespace_fails_not_subpath():
     pkg_root_path = Path("repo/packages/my-lib")
     gapic_parent_path = Path("SOME/OTHER/PATH/google/cloud/api")
 
-    with pytest.raises(ValueError, match="is not a sub-path of"):
+    with pytest.raises(ValueError):
         _determine_library_namespace(gapic_parent_path, pkg_root_path)
 
 

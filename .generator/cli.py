@@ -479,13 +479,8 @@ def _determine_library_namespace(
         package_root_path (Path): The absolute path to the root of the package
                                   (e.g., .../packages/google-cloud-language).
     """
-    try:
-        # This robustly calculates the relative path, e.g., "google/cloud/language"
-        relative_path = gapic_parent_path.relative_to(package_root_path)
-    except ValueError as e:
-        raise ValueError(
-            f"Path {gapic_parent_path} is not a sub-path of {package_root_path}. Error: {e}"
-        )
+    # This robustly calculates the relative path, e.g., "google/cloud/language"
+    relative_path = gapic_parent_path.relative_to(package_root_path)
 
     # relative_path.parts will be like: ('google', 'cloud', 'language')
     # We want all parts *except* the last one (the service dir) to form the namespace.
