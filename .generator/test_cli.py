@@ -832,51 +832,6 @@ def test_process_version_file_failure():
         _process_version_file("", "", "")
 
 
-@pytest.mark.parametrize(
-    "pkg_root_str, gapic_parent_str, expected_namespace",
-    [
-        # Standard google.cloud
-        (
-            "repo/packages/google-cloud-lang",
-            "repo/packages/google-cloud-lang/google/cloud/language",
-            "google.cloud",
-        ),
-        # Standard google.ads
-        (
-            "repo/packages/google-ads",
-            "repo/packages/google-ads/google/ads/v17",
-            "google.ads",
-        ),
-        # Root 'google' namespace
-        (
-            "repo/packages/google-auth",
-            "repo/packages/google-auth/google/auth",
-            "google",
-        ),
-        # Case where gapic file is just under 'google' (handles the edge case)
-        ("repo/packages/google-api", "repo/packages/google-api/google", "google"),
-    ],
-)
-def test_determine_library_namespace_success(
-    pkg_root_str, gapic_parent_str, expected_namespace
-):
-    """Tests that the refactored namespace logic correctly calculates the relative namespace."""
-    pkg_root_path = Path(pkg_root_str)
-    gapic_parent_path = Path(gapic_parent_str)
-
-    namespace = _determine_library_namespace(gapic_parent_path, pkg_root_path)
-    assert namespace == expected_namespace
-
-
-def test_determine_library_namespace_fails_not_subpath():
-    """Tests that a ValueError is raised if the gapic path is not inside the package root."""
-    pkg_root_path = Path("repo/packages/my-lib")
-    gapic_parent_path = Path("SOME/OTHER/PATH/google/cloud/api")
-
-    with pytest.raises(ValueError, match="is not a sub-path of"):
-        _determine_library_namespace(gapic_parent_path, pkg_root_path)
-
-
 @pytest.fixture
 def mock_path_class(mocker):
     """
