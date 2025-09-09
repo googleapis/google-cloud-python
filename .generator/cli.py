@@ -415,19 +415,28 @@ def handle_generate(
     logger.info("'generate' command executed.")
 
 
-def _run_nox_sessions(sessions: List[str], librarian: str, repo: str):
+def _run_nox_sessions(library_id: str, repo: str):
     """Calls nox for all specified sessions.
 
     Args:
-        sessions(List[str]): The list of nox sessions to run.
-        librarian(str): The path to the librarian build configuration directory
+        library_id(str): The library id under test.
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
     """
-    # Read a build-request.json file
+    sessions = [
+        "unit-3.9",
+        "unit-3.13",
+        "docs",
+        "system-3.13",
+        "lint",
+        "lint_setup_py",
+        "mypy-3.13",
+    ]
     current_session = None
     try:
-        request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
-        library_id = _get_library_id(request_data)
         for nox_session in sessions:
+            current_session = nox_session
             _run_individual_session(nox_session, library_id, repo)
 
     except Exception as e:
@@ -439,8 +448,11 @@ def _run_individual_session(nox_session: str, library_id: str, repo: str):
     Calls nox with the specified sessions.
 
     Args:
-        nox_session(str): The nox session to run
-        library_id(str): The library id under test
+        nox_session(str): The nox session to run.
+        library_id(str): The library id under test.
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
     """
 
     command = [
@@ -454,18 +466,93 @@ def _run_individual_session(nox_session: str, library_id: str, repo: str):
     logger.info(result)
 
 
+def _determine_library_namespace(
+    gapic_parent_path: Path, package_root_path: Path
+) -> str:
+    """
+    Determines the namespace from the gapic file's parent path relative
+    to its package root.
+
+    Args:
+        gapic_parent_path (Path): The absolute path to the directory containing
+                                  gapic_version.py (e.g., .../google/cloud/language).
+        package_root_path (Path): The absolute path to the root of the package
+                                  (e.g., .../packages/google-cloud-language).
+    """
+    # This robustly calculates the relative path, e.g., "google/cloud/language"
+    relative_path = gapic_parent_path.relative_to(package_root_path)
+
+    # relative_path.parts will be like: ('google', 'cloud', 'language')
+    # We want all parts *except* the last one (the service dir) to form the namespace.
+    namespace_parts = relative_path.parts[:-1]
+
+    if not namespace_parts and relative_path.parts:
+        # This handles the edge case where the parts are just ('google',).
+        # This implies the namespace is just "google".
+        return ".".join(relative_path.parts)
+
+    return ".".join(namespace_parts)
+
+
+def _verify_library_namespace(library_id: str, repo: str):
+    """
+    Verifies that all found package namespaces are one of
+    `google`, `google.cloud`, or `google.ads`.
+
+    Args:
+        library_id (str): The library id under test (e.g., "google-cloud-language").
+        repo (str): The path to the root of the repository.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/14376): Update the list of namespaces which are exceptions.
+    exception_namespaces = ["google.cloud.billing"]
+    valid_namespaces = [
+        "google",
+        "google.apps",
+        "google.ads",
+        "google.cloud",
+        "google.maps",
+        "google.shopping",
+        *exception_namespaces,
+    ]
+    gapic_version_file = "gapic_version.py"
+
+    # This is now the "package root" path we will use for comparison
+    library_path = Path(f"{repo}/packages/{library_id}")
+
+    if not library_path.is_dir():
+        raise ValueError(f"Error: Path is not a directory: {library_path}")
+
+    # Recursively glob (rglob) for all 'gapic_version.py' files
+    all_gapic_files = list(library_path.rglob(gapic_version_file))
+
+    if not all_gapic_files:
+        raise ValueError(
+            f"Error: namespace cannot be determined for {library_id}."
+            f" Library is missing a `{gapic_version_file}`."
+        )
+
+    for gapic_file in all_gapic_files:
+        # The directory we want is the parent of `gapic_version.py` file.
+        gapic_parent_dir = gapic_file.parent
+
+        # Pass both the specific dir and the package root for a safe relative comparison
+        library_namespace = _determine_library_namespace(gapic_parent_dir, library_path)
+
+        if library_namespace not in valid_namespaces:
+            raise ValueError(
+                f"The namespace `{library_namespace}` for `{library_id}` must be one of {valid_namespaces}."
+            )
+
+
 def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
-    sessions = [
-        "unit-3.9",
-        "unit-3.13",
-        "docs",
-        "system-3.13",
-        "lint",
-        "lint_setup_py",
-        "mypy-3.13",
-    ]
-    _run_nox_sessions(sessions, librarian, repo)
+    try:
+        request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
+        library_id = _get_library_id(request_data)
+        _verify_library_namespace(library_id, repo)
+        _run_nox_sessions(library_id, repo)
+    except Exception as e:
+        raise ValueError("Build failed.") from e
 
     logger.info("'build' command executed.")
 
@@ -504,11 +591,11 @@ def _update_global_changelog(
     def replace_version_in_changelog(content):
         new_content = content
         for library in all_libraries:
-            package_name = library["id"]
+            library_id = library["id"]
             version = library["version"]
-            # Find the entry for the given package in the format`<package name>==<version>`
+            # Find the entry for the given library in the format`<library_id>==<version>`
             # Replace the `<version>` part of the string.
-            pattern = re.compile(f"(\\[{re.escape(package_name)})(==)([\\d\\.]+)(\\])")
+            pattern = re.compile(f"(\\[{re.escape(library_id)})(==)([\\d\\.]+)(\\])")
             replacement = f"\\g<1>=={version}\\g<4>"
             new_content = pattern.sub(replacement, new_content)
         return new_content
@@ -582,11 +669,11 @@ def _update_version_for_library(
         _write_json_file(output_path, metadata_contents)
 
 
-def _get_previous_version(package_name: str, librarian: str) -> str:
+def _get_previous_version(library_id: str, librarian: str) -> str:
     """Gets the previous version of the library from state.yaml.
 
     Args:
-        package_name(str): name of the package.
+        library_id(str): id of the library.
         librarian(str): Path to the directory in the container which contains
             the `state.yaml` file.
 
@@ -598,22 +685,22 @@ def _get_previous_version(package_name: str, librarian: str) -> str:
     with open(state_yaml_path, "r") as state_yaml_file:
         state_yaml = yaml.safe_load(state_yaml_file)
         for library in state_yaml.get("libraries", []):
-            if library.get("id") == package_name:
+            if library.get("id") == library_id:
                 return library.get("version")
 
     raise ValueError(
-        f"Could not determine previous version for {package_name} from state.yaml"
+        f"Could not determine previous version for {library_id} from state.yaml"
     )
 
 
 def _process_changelog(
-    content, library_changes, version, previous_version, package_name
+    content, library_changes, version, previous_version, library_id
 ):
     """This function searches the given content for the anchor pattern
-    `[1]: https://pypi.org/project/{package_name}/#history`
+    `[1]: https://pypi.org/project/{library_id}/#history`
     and adds an entry in the following format:
 
-    ## [{version}](https://github.com/googleapis/google-cloud-python/compare/{package_name}-v{previous_version}...{package_name}-v{version}) (YYYY-MM-DD)
+    ## [{version}](https://github.com/googleapis/google-cloud-python/compare/{library_id}-v{previous_version}...{library_id}-v{version}) (YYYY-MM-DD)
 
     ### Documentation
 
@@ -625,7 +712,7 @@ def _process_changelog(
             for a given library.
         version(str): The new version of the library.
         previous_version: The previous version of the library.
-        package_name(str): The name of the package where the changelog should
+        library_id(str): The id of the library where the changelog should
             be updated.
 
     Raises: ValueError if the anchor pattern string could not be found in the given content
@@ -637,8 +724,8 @@ def _process_changelog(
 
     # Create the main version header
     version_header = (
-        f"## [{version}]({repo_url}/compare/{package_name}-v{previous_version}"
-        f"...{package_name}-v{version}) ({current_date})"
+        f"## [{version}]({repo_url}/compare/{library_id}-v{previous_version}"
+        f"...{library_id}-v{version}) ({current_date})"
     )
     entry_parts = [version_header]
 
@@ -667,7 +754,7 @@ def _process_changelog(
 
     new_entry_text = "\n".join(entry_parts)
     anchor_pattern = re.compile(
-        rf"(\[1\]: https://pypi\.org/project/{package_name}/#history)",
+        rf"(\[1\]: https://pypi\.org/project/{library_id}/#history)",
         re.MULTILINE,
     )
     replacement_text = f"\\g<1>\n\n{new_entry_text}"
@@ -684,7 +771,7 @@ def _update_changelog_for_library(
     library_changes: List[Dict],
     version: str,
     previous_version: str,
-    package_name: str,
+    library_id: str,
 ):
     """Prepends a new release entry with multiple, grouped changes, to a changelog.
 
@@ -697,12 +784,12 @@ def _update_changelog_for_library(
         library_changes(List[Dict]): List of dictionaries containing the changes
             for a given library
         version(str): The desired version
-        previous_version(str): The version in state.yaml for a given package
-        package_name(str): The name of the package where the changelog should
+        previous_version(str): The version in state.yaml for a given library
+        library_id(str): The id of the library where the changelog should
             be updated.
     """
 
-    relative_path = f"packages/{package_name}/CHANGELOG.md"
+    relative_path = f"packages/{library_id}/CHANGELOG.md"
     changelog_src = f"{repo}/{relative_path}"
     changelog_dest = f"{output}/{relative_path}"
     updated_content = _process_changelog(
@@ -710,7 +797,7 @@ def _update_changelog_for_library(
         library_changes,
         version,
         previous_version,
-        package_name,
+        library_id,
     )
     _write_text_file(changelog_dest, updated_content)
 
@@ -754,13 +841,13 @@ def handle_release_init(
         # library specific version files and library specific changelog.
         for library_release_data in libraries_to_prep_for_release:
             version = library_release_data["version"]
-            package_name = library_release_data["id"]
+            library_id = library_release_data["id"]
             library_changes = library_release_data["changes"]
-            path_to_library = f"packages/{package_name}"
+            path_to_library = f"packages/{library_id}"
             _update_version_for_library(repo, output, path_to_library, version)
 
             # Get previous version from state.yaml
-            previous_version = _get_previous_version(package_name, librarian)
+            previous_version = _get_previous_version(library_id, librarian)
             if previous_version != version:
                 _update_changelog_for_library(
                     repo,
@@ -768,7 +855,7 @@ def handle_release_init(
                     library_changes,
                     version,
                     previous_version,
-                    package_name,
+                    library_id,
                 )
 
     except Exception as e:
