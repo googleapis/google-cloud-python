@@ -762,14 +762,14 @@ def _process_changelog(
     library_changes.sort(key=lambda x: x[type_key])
     grouped_changes = itertools.groupby(library_changes, key=lambda x: x[type_key])
 
+    change_type_map = {
+        "feat": "Features",
+        "fix": "Bug Fixes",
+        "docs": "Documentation",
+    }
     for library_change_type, library_changes in grouped_changes:
         # We only care about feat, fix, docs
         adjusted_change_type = library_change_type.replace("!", "")
-        change_type_map = {
-            "feat": "Features",
-            "fix": "Bug Fixes",
-            "docs": "Documentation",
-        }
         if adjusted_change_type in change_type_map:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
