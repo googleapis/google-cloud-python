@@ -28,7 +28,7 @@ jobs:
         pip install -r .generator/requirements-test.in
     - name: Run generator_cli tests
       run: |
-        pytest .generator/test_cli.py
+        pytest .generator
     - name: Check coverage
       run: |
         pytest --cov=. --cov-report=term-missing --cov-fail-under=100
