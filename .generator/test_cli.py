@@ -33,6 +33,7 @@ from cli import (
     _build_bazel_target,
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
+    _create_main_version_header,
     _determine_bazel_rule,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
@@ -807,3 +808,13 @@ def test_process_version_file_failure():
     """Tests that value error is raised if the version string cannot be found"""
     with pytest.raises(ValueError):
         _process_version_file("", "", "")
+
+
+def test_create_main_version_header():
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    expected_header = f"## [1.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.2...google-cloud-language-v1.2.3) ({current_date})"
+    previous_version = "1.2.2"
+    version = "1.2.3"
+    library_id = "google-cloud-language"
+    actual_header = _create_main_version_header(version, previous_version, library_id)
+    assert actual_header == expected_header

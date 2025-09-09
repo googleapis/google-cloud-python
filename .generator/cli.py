@@ -50,6 +50,8 @@ OUTPUT_DIR = "output"
 REPO_DIR = "repo"
 SOURCE_DIR = "source"
 
+_REPO_URL = "https://github.com/googleapis/google-cloud-python"
+
 
 def _read_text_file(path: str) -> str:
     """Helper function that reads a text file path and returns the content.
@@ -606,8 +608,35 @@ def _get_previous_version(library_id: str, librarian: str) -> str:
     )
 
 
+def _create_main_version_header(
+    version: str, previous_version: str, library_id: str
+) -> str:
+    """This function creates a header to be used in a changelog. The header has the following format:
+    `## [{version}](https://github.com/googleapis/google-cloud-python/compare/{library_id}-v{previous_version}...{library_id}-v{version}) (YYYY-MM-DD)`
+
+    Args:
+        version(str): The new version of the library.
+        previous_version(str): The previous version of the library.
+        library_id(str): The id of the library where the changelog should
+            be updated.
+
+    Returns:
+        A header to be used in the changelog.
+    """
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    # Return the main version header
+    return (
+        f"## [{version}]({_REPO_URL}/compare/{library_id}-v{previous_version}"
+        f"...{library_id}-v{version}) ({current_date})"
+    )
+
+
 def _process_changelog(
-    content, library_changes, version, previous_version, library_id
+    content: str,
+    library_changes: List[Dict],
+    version: str,
+    previous_version: str,
+    library_id: str,
 ):
     """This function searches the given content for the anchor pattern
     `[1]: https://pypi.org/project/{library_id}/#history`
@@ -624,7 +653,7 @@ def _process_changelog(
         library_changes(List[Dict]): List of dictionaries containing the changes
             for a given library.
         version(str): The new version of the library.
-        previous_version: The previous version of the library.
+        previous_version(str): The previous version of the library.
         library_id(str): The id of the library where the changelog should
             be updated.
 
@@ -632,15 +661,12 @@ def _process_changelog(
 
     Returns: A string with the modified content.
     """
-    repo_url = "https://github.com/googleapis/google-cloud-python"
-    current_date = datetime.now().strftime("%Y-%m-%d")
-
-    # Create the main version header
-    version_header = (
-        f"## [{version}]({repo_url}/compare/{library_id}-v{previous_version}"
-        f"...{library_id}-v{version}) ({current_date})"
+    entry_parts = []
+    entry_parts.append(
+        _create_main_version_header(
+            version=version, previous_version=previous_version, library_id=library_id
+        )
     )
-    entry_parts = [version_header]
 
     # Group changes by type (e.g., feat, fix, docs)
     library_changes.sort(key=lambda x: x["type"])
@@ -657,7 +683,7 @@ def _process_changelog(
         if adjusted_change_type in ["feat", "fix", "docs"]:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in changes:
-                commit_link = f"([{change['source_commit_hash']}]({repo_url}/commit/{change['source_commit_hash']}))"
+                commit_link = f"([{change['source_commit_hash']}]({_REPO_URL}/commit/{change['source_commit_hash']}))"
                 entry_parts.append(f"* {change['subject']} {commit_link}")
 
     new_entry_text = "\n".join(entry_parts)
