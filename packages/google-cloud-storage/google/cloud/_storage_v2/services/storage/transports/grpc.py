@@ -125,22 +125,22 @@ class StorageGrpcTransport(StorageTransport):
 
     Resources are named as follows:
 
-    -  Projects are referred to as they are defined by the Resource
-       Manager API, using strings like ``projects/123456`` or
-       ``projects/my-string-id``.
+    - Projects are referred to as they are defined by the Resource
+      Manager API, using strings like ``projects/123456`` or
+      ``projects/my-string-id``.
 
-    -  Buckets are named using string names of the form:
-       ``projects/{project}/buckets/{bucket}`` For globally unique
-       buckets, ``_`` may be substituted for the project.
+    - Buckets are named using string names of the form:
+      ``projects/{project}/buckets/{bucket}`` For globally unique
+      buckets, ``_`` may be substituted for the project.
 
-    -  Objects are uniquely identified by their name along with the name
-       of the bucket they belong to, as separate strings in this API.
-       For example:
+    - Objects are uniquely identified by their name along with the name
+      of the bucket they belong to, as separate strings in this API. For
+      example:
 
-       ReadObjectRequest { bucket: 'projects/_/buckets/my-bucket'
-       object: 'my-object' } Note that object names can contain ``/``
-       characters, which are treated as any other character (no special
-       directory semantics).
+      ReadObjectRequest { bucket: 'projects/\_/buckets/my-bucket'
+      object: 'my-object' } Note that object names can contain ``/``
+      characters, which are treated as any other character (no special
+      directory semantics).
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -887,41 +887,41 @@ class StorageGrpcTransport(StorageTransport):
         explicitly by the client or due to a network error or an error
         response from the server), the client should do as follows:
 
-        -  Check the result Status of the stream, to determine if
-           writing can be resumed on this stream or must be restarted
-           from scratch (by calling ``StartResumableWrite()``). The
-           resumable errors are DEADLINE_EXCEEDED, INTERNAL, and
-           UNAVAILABLE. For each case, the client should use binary
-           exponential backoff before retrying. Additionally, writes can
-           be resumed after RESOURCE_EXHAUSTED errors, but only after
-           taking appropriate measures, which may include reducing
-           aggregate send rate across clients and/or requesting a quota
-           increase for your project.
-        -  If the call to ``WriteObject`` returns ``ABORTED``, that
-           indicates concurrent attempts to update the resumable write,
-           caused either by multiple racing clients or by a single
-           client where the previous request was timed out on the client
-           side but nonetheless reached the server. In this case the
-           client should take steps to prevent further concurrent writes
-           (e.g., increase the timeouts, stop using more than one
-           process to perform the upload, etc.), and then should follow
-           the steps below for resuming the upload.
-        -  For resumable errors, the client should call
-           ``QueryWriteStatus()`` and then continue writing from the
-           returned ``persisted_size``. This may be less than the amount
-           of data the client previously sent. Note also that it is
-           acceptable to send data starting at an offset earlier than
-           the returned ``persisted_size``; in this case, the service
-           will skip data at offsets that were already persisted
-           (without checking that it matches the previously written
-           data), and write only the data starting from the persisted
-           offset. Even though the data isn't written, it may still
-           incur a performance cost over resuming at the correct write
-           offset. This behavior can make client-side handling simpler
-           in some cases.
-        -  Clients must only send data that is a multiple of 256 KiB per
-           message, unless the object is being finished with
-           ``finish_write`` set to ``true``.
+        - Check the result Status of the stream, to determine if writing
+          can be resumed on this stream or must be restarted from
+          scratch (by calling ``StartResumableWrite()``). The resumable
+          errors are DEADLINE_EXCEEDED, INTERNAL, and UNAVAILABLE. For
+          each case, the client should use binary exponential backoff
+          before retrying. Additionally, writes can be resumed after
+          RESOURCE_EXHAUSTED errors, but only after taking appropriate
+          measures, which may include reducing aggregate send rate
+          across clients and/or requesting a quota increase for your
+          project.
+        - If the call to ``WriteObject`` returns ``ABORTED``, that
+          indicates concurrent attempts to update the resumable write,
+          caused either by multiple racing clients or by a single client
+          where the previous request was timed out on the client side
+          but nonetheless reached the server. In this case the client
+          should take steps to prevent further concurrent writes (e.g.,
+          increase the timeouts, stop using more than one process to
+          perform the upload, etc.), and then should follow the steps
+          below for resuming the upload.
+        - For resumable errors, the client should call
+          ``QueryWriteStatus()`` and then continue writing from the
+          returned ``persisted_size``. This may be less than the amount
+          of data the client previously sent. Note also that it is
+          acceptable to send data starting at an offset earlier than the
+          returned ``persisted_size``; in this case, the service will
+          skip data at offsets that were already persisted (without
+          checking that it matches the previously written data), and
+          write only the data starting from the persisted offset. Even
+          though the data isn't written, it may still incur a
+          performance cost over resuming at the correct write offset.
+          This behavior can make client-side handling simpler in some
+          cases.
+        - Clients must only send data that is a multiple of 256 KiB per
+          message, unless the object is being finished with
+          ``finish_write`` set to ``true``.
 
         The service will not view the object as complete until the
         client has sent a ``WriteObjectRequest`` with ``finish_write``

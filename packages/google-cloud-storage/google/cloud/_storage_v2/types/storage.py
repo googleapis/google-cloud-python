@@ -146,7 +146,7 @@ class GetBucketRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_if_metageneration_not_match``.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Mask specifying which fields to read. A "*" field may be
+            Mask specifying which fields to read. A "\*" field may be
             used to indicate all fields. If no mask is specified, will
             default to all fields.
 
@@ -269,7 +269,7 @@ class ListBucketsRequest(proto.Message):
             mask is specified, will default to all fields except
             items.owner, items.acl, and items.default_object_acl.
 
-            -  may be used to mean "all fields".
+            - may be used to mean "all fields".
 
             This field is a member of `oneof`_ ``_read_mask``.
     """
@@ -860,7 +860,7 @@ class ReadObjectRequest(proto.Message):
             specified, will default to all fields except metadata.owner
             and metadata.acl.
 
-            -  may be used to mean "all fields".
+            - may be used to mean "all fields".
 
             This field is a member of `oneof`_ ``_read_mask``.
     """
@@ -975,7 +975,7 @@ class GetObjectRequest(proto.Message):
             specified, will default to all fields except metadata.acl
             and metadata.owner.
 
-            -  may be used to mean "all fields".
+            - may be used to mean "all fields".
 
             This field is a member of `oneof`_ ``_read_mask``.
         restore_token (str):
@@ -1142,10 +1142,10 @@ class BidiReadObjectSpec(proto.Message):
             specified, will default to all fields except metadata.owner
             and metadata.acl.
 
-            -  may be used to mean "all fields". As per
-               https://google.aip.dev/161, this field is deprecated. As
-               an alternative, grpc metadata can be used:
-               https://cloud.google.com/apis/docs/system-parameters#definitions
+            - may be used to mean "all fields". As per
+              https://google.aip.dev/161, this field is deprecated. As
+              an alternative, grpc metadata can be used:
+              https://cloud.google.com/apis/docs/system-parameters#definitions
 
             This field is a member of `oneof`_ ``_read_mask``.
         read_handle (google.cloud._storage_v2.types.BidiReadHandle):
@@ -2095,7 +2095,7 @@ class ListObjectsRequest(proto.Message):
             mask is specified, will default to all fields except
             items.acl and items.owner.
 
-            -  may be used to mean "all fields".
+            - may be used to mean "all fields".
 
             This field is a member of `oneof`_ ``_read_mask``.
         lexicographic_start (str):
@@ -3187,12 +3187,12 @@ class Bucket(proto.Message):
                 Optional. The list of Origins eligible to receive CORS
                 response headers. See
                 [https://tools.ietf.org/html/rfc6454][RFC 6454] for more on
-                origins. Note: "*" is permitted in the list of origins, and
+                origins. Note: "\*" is permitted in the list of origins, and
                 means "any Origin".
             method (MutableSequence[str]):
                 Optional. The list of HTTP methods on which to include CORS
                 response headers, (``GET``, ``OPTIONS``, ``POST``, etc)
-                Note: "*" is permitted in the list of methods, and means
+                Note: "\*" is permitted in the list of methods, and means
                 "any method".
             response_header (MutableSequence[str]):
                 Optional. The list of HTTP headers other than the
@@ -4152,23 +4152,23 @@ class BucketAccessControl(proto.Message):
             Optional. The entity holding the permission, in one of the
             following forms:
 
-            -  ``user-{userid}``
-            -  ``user-{email}``
-            -  ``group-{groupid}``
-            -  ``group-{email}``
-            -  ``domain-{domain}``
-            -  ``project-{team}-{projectnumber}``
-            -  ``project-{team}-{projectid}``
-            -  ``allUsers``
-            -  ``allAuthenticatedUsers`` Examples:
-            -  The user ``liz@example.com`` would be
-               ``user-liz@example.com``.
-            -  The group ``example@googlegroups.com`` would be
-               ``group-example@googlegroups.com``
-            -  All members of the Google Apps for Business domain
-               ``example.com`` would be ``domain-example.com`` For
-               project entities, ``project-{team}-{projectnumber}``
-               format will be returned on response.
+            - ``user-{userid}``
+            - ``user-{email}``
+            - ``group-{groupid}``
+            - ``group-{email}``
+            - ``domain-{domain}``
+            - ``project-{team}-{projectnumber}``
+            - ``project-{team}-{projectid}``
+            - ``allUsers``
+            - ``allAuthenticatedUsers`` Examples:
+            - The user ``liz@example.com`` would be
+              ``user-liz@example.com``.
+            - The group ``example@googlegroups.com`` would be
+              ``group-example@googlegroups.com``
+            - All members of the Google Apps for Business domain
+              ``example.com`` would be ``domain-example.com`` For
+              project entities, ``project-{team}-{projectnumber}``
+              format will be returned on response.
         entity_alt (str):
             Output only. The alternative entity format, if exists. For
             project entities, ``project-{team}-{projectid}`` format will
@@ -4767,32 +4767,32 @@ class ObjectAccessControl(proto.Message):
             Optional. The access permission for the entity. One of the
             following values:
 
-            -  ``READER``
-            -  ``WRITER``
-            -  ``OWNER``
+            - ``READER``
+            - ``WRITER``
+            - ``OWNER``
         id (str):
             Optional. The ID of the access-control entry.
         entity (str):
             Optional. The entity holding the permission, in one of the
             following forms:
 
-            -  ``user-{userid}``
-            -  ``user-{email}``
-            -  ``group-{groupid}``
-            -  ``group-{email}``
-            -  ``domain-{domain}``
-            -  ``project-{team}-{projectnumber}``
-            -  ``project-{team}-{projectid}``
-            -  ``allUsers``
-            -  ``allAuthenticatedUsers`` Examples:
-            -  The user ``liz@example.com`` would be
-               ``user-liz@example.com``.
-            -  The group ``example@googlegroups.com`` would be
-               ``group-example@googlegroups.com``.
-            -  All members of the Google Apps for Business domain
-               ``example.com`` would be ``domain-example.com``. For
-               project entities, ``project-{team}-{projectnumber}``
-               format will be returned on response.
+            - ``user-{userid}``
+            - ``user-{email}``
+            - ``group-{groupid}``
+            - ``group-{email}``
+            - ``domain-{domain}``
+            - ``project-{team}-{projectnumber}``
+            - ``project-{team}-{projectid}``
+            - ``allUsers``
+            - ``allAuthenticatedUsers`` Examples:
+            - The user ``liz@example.com`` would be
+              ``user-liz@example.com``.
+            - The group ``example@googlegroups.com`` would be
+              ``group-example@googlegroups.com``.
+            - All members of the Google Apps for Business domain
+              ``example.com`` would be ``domain-example.com``. For
+              project entities, ``project-{team}-{projectnumber}``
+              format will be returned on response.
         entity_alt (str):
             Output only. The alternative entity format, if exists. For
             project entities, ``project-{team}-{projectid}`` format will
