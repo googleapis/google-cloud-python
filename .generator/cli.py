@@ -729,6 +729,12 @@ def handle_release_init(
             the config.yaml.
         output(str): Path to the directory in the container where modified
             code should be placed.
+
+    Raises: 
+        ValueError: if the version in `release-init-request.json` is
+            the same as the version in state.yaml
+        ValueError: if the `release-init-request.json` file in the given
+            librarian directory cannot be read.
     """
 
     try:
@@ -751,19 +757,25 @@ def handle_release_init(
             package_name = library_release_data["id"]
             library_changes = library_release_data["changes"]
             path_to_library = f"packages/{package_name}"
-            _update_version_for_library(repo, output, path_to_library, version)
 
             # Get previous version from state.yaml
             previous_version = _get_previous_version(package_name, librarian)
-            if previous_version != version:
-                _update_changelog_for_library(
-                    repo,
-                    output,
-                    library_changes,
-                    version,
-                    previous_version,
-                    package_name,
+            if previous_version == version:
+                raise ValueError(
+                    "The version in `release-init-request.json` is the same as the version in state.yaml\n"
+                    f"{package_name} previous released version: {previous_version}\n"
+                    f"{package_name} current version: {version}\n"
                 )
+
+            _update_version_for_library(repo, output, path_to_library, version)
+            _update_changelog_for_library(
+                repo,
+                output,
+                library_changes,
+                version,
+                previous_version,
+                package_name,
+            )
 
     except Exception as e:
         raise ValueError(f"Release init failed: {e}") from e
