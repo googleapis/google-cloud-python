@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.19.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.18.0...v2.19.0) (2025-09-09)
+
+
+### Features
+
+* Add str.join method ([#2054](https://github.com/googleapis/python-bigquery-dataframes/issues/2054)) ([8804ada](https://github.com/googleapis/python-bigquery-dataframes/commit/8804adaf8ba23fdcad6e42a7bf034bd0a11c890f))
+* Support display.max_colwidth option ([#2053](https://github.com/googleapis/python-bigquery-dataframes/issues/2053)) ([5229e07](https://github.com/googleapis/python-bigquery-dataframes/commit/5229e07b4535c01b0cdbd731455ff225a373b5c8))
+* Support VPC egress setting in remote function ([#2059](https://github.com/googleapis/python-bigquery-dataframes/issues/2059)) ([5df779d](https://github.com/googleapis/python-bigquery-dataframes/commit/5df779d4f421d3ba777cfd928d99ca2e8a3f79ad))
+
+
+### Bug Fixes
+
+* Fix issue mishandling chunked array while loading data ([#2051](https://github.com/googleapis/python-bigquery-dataframes/issues/2051)) ([873d0ee](https://github.com/googleapis/python-bigquery-dataframes/commit/873d0eee474ed34f1d5164c37383f2737dbec4db))
+* Remove warning for slot_millis_sum ([#2047](https://github.com/googleapis/python-bigquery-dataframes/issues/2047)) ([425a691](https://github.com/googleapis/python-bigquery-dataframes/commit/425a6917d5442eeb4df486c6eed1fd136bbcedfb))
+
 ## [2.18.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.17.0...v2.18.0) (2025-09-03)
 
 
