@@ -87,6 +87,15 @@ _CALLABLE_MAP = {
     ),
 }
 
+_NOOP_CALLABLES = (
+    "package",
+    "alias",
+    "py_test",
+    "sh_binary",
+    "proto_library",
+    "java_proto_library",
+    "genrule",
+)
 
 def parse_content(content: str) -> dict:
     """Parses content from BUILD.bazel and returns a dictionary
@@ -109,13 +118,8 @@ def parse_content(content: str) -> dict:
     def noop_bazel_rule(**args):
         pass
 
-    mod.add_callable("package", noop_bazel_rule)
-    mod.add_callable("alias", noop_bazel_rule)
-    mod.add_callable("py_test", noop_bazel_rule)
-    mod.add_callable("sh_binary", noop_bazel_rule)
-    mod.add_callable("proto_library", noop_bazel_rule)
-    mod.add_callable("java_proto_library", noop_bazel_rule)
-    mod.add_callable("genrule", noop_bazel_rule)
+    for noop_callable in _NOOP_CALLABLES:
+        mod.add_callable(noop_callable, noop_bazel_rule)
 
     def load(name):
         mod = sl.Module()
