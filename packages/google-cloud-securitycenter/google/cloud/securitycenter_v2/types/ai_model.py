@@ -64,10 +64,16 @@ class AiModel(proto.Message):
                 Vertex AI.
             GKE (2):
                 Google Kubernetes Engine.
+            GCE (3):
+                Google Compute Engine.
+            FINE_TUNED_MODEL (4):
+                Fine tuned model.
         """
         DEPLOYMENT_PLATFORM_UNSPECIFIED = 0
         VERTEX_AI = 1
         GKE = 2
+        GCE = 3
+        FINE_TUNED_MODEL = 4
 
     name: str = proto.Field(
         proto.STRING,
