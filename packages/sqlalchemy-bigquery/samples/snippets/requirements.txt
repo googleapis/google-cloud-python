@@ -5,7 +5,7 @@ geoalchemy2===0.17.1; python_version == '3.9'
 geoalchemy2==0.18.0; python_version >= '3.10'
 google-api-core[grpc]==2.25.1
 google-auth==2.40.3
-google-cloud-bigquery==3.36.0; python_version >= '3.9'
+google-cloud-bigquery==3.37.0; python_version >= '3.9'
 google-cloud-core==2.4.3
 google-crc32c==1.7.1; python_version >= '3.9'
 google-resumable-media==2.7.2
