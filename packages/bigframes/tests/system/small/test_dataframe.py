@@ -1197,6 +1197,11 @@ def test_assign_new_column_w_setitem_list_error(scalars_dfs):
         pytest.param(
             ["new_col", "new_col_too"], [1, 2], id="sequence_to_full_new_column"
         ),
+        pytest.param(
+            pd.Index(("new_col", "new_col_too")),
+            [1, 2],
+            id="sequence_to_full_new_column_as_index",
+        ),
     ],
 )
 def test_setitem_multicolumn_with_literals(scalars_dfs, key, value):

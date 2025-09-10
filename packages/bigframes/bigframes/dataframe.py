@@ -890,9 +890,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self._set_block(df._get_block())
 
     def __setitem__(
-        self, key: str | list[str], value: SingleItemValue | MultiItemValue
+        self,
+        key: str | list[str] | pandas.Index,
+        value: SingleItemValue | MultiItemValue,
     ):
-        if isinstance(key, list):
+        if isinstance(key, (list, pandas.Index)):
             df = self._assign_multi_items(key, value)
         else:
             df = self._assign_single_item(key, value)
@@ -2246,7 +2248,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def _assign_multi_items(
         self,
-        k: list[str],
+        k: list[str] | pandas.Index,
         v: SingleItemValue | MultiItemValue,
     ) -> DataFrame:
         value_sources: Sequence[Any] = []
