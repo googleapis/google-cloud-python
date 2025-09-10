@@ -271,25 +271,22 @@ def handle_generate(
                         key for key in result.keys() if key.endswith("_py_gapic")
                     ][0]
 
-                    config_keys = [
-                        "grpc_service_config",
-                        "rest_numeric_enums",
-                        "service_yaml",
-                        "transport",
-                    ]
+                    config_key_map = {
+                        "grpc_service_config": "retry-config",
+                        "rest_numeric_enums": "rest-numeric-enums",
+                        "service_yaml": "service-yaml",
+                        "transport": "transport"
+                    }
 
-                    for key in config_keys:
+                    for key in config_key_map:
                         config_value = result[py_gapic_entry].get(key, None)
                         if config_value is not None:
-                            new_key = key.replace("_", "-")
-                            if key == "grpc_service_config":
-                                new_key = "retry-config"
-                            if new_key == "service-yaml" or new_key == "retry-config":
+                            if key == "service_yaml" or key == "grpc_service_config":
                                 generator_options.append(
-                                    f"{new_key}={api_path}/{config_value},"
+                                    f"{config_key_map[key]}={api_path}/{config_value},"
                                 )
                             else:
-                                generator_options.append(f"{new_key}={config_value},")
+                                generator_options.append(f"{config_key_map[key]}={config_value},")
                     with tempfile.TemporaryDirectory() as tmp_dir:
                         generator_command = (
                             f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
