@@ -540,7 +540,7 @@ class UpdateBackupRequest(proto.Message):
             required. Other fields are ignored. Update is only supported
             for the following fields:
 
-            -  ``backup.expire_time``.
+            - ``backup.expire_time``.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A mask specifying which fields (e.g.
             ``expire_time``) in the Backup resource should be updated.
@@ -617,17 +617,17 @@ class ListBackupsRequest(proto.Message):
             [Backup][google.spanner.admin.database.v1.Backup] are
             eligible for filtering:
 
-            -  ``name``
-            -  ``database``
-            -  ``state``
-            -  ``create_time`` (and values are of the format
-               YYYY-MM-DDTHH:MM:SSZ)
-            -  ``expire_time`` (and values are of the format
-               YYYY-MM-DDTHH:MM:SSZ)
-            -  ``version_time`` (and values are of the format
-               YYYY-MM-DDTHH:MM:SSZ)
-            -  ``size_bytes``
-            -  ``backup_schedules``
+            - ``name``
+            - ``database``
+            - ``state``
+            - ``create_time`` (and values are of the format
+              YYYY-MM-DDTHH:MM:SSZ)
+            - ``expire_time`` (and values are of the format
+              YYYY-MM-DDTHH:MM:SSZ)
+            - ``version_time`` (and values are of the format
+              YYYY-MM-DDTHH:MM:SSZ)
+            - ``size_bytes``
+            - ``backup_schedules``
 
             You can combine multiple expressions by enclosing each
             expression in parentheses. By default, expressions are
@@ -636,23 +636,23 @@ class ListBackupsRequest(proto.Message):
 
             Here are a few examples:
 
-            -  ``name:Howl`` - The backup's name contains the string
-               "howl".
-            -  ``database:prod`` - The database's name contains the
-               string "prod".
-            -  ``state:CREATING`` - The backup is pending creation.
-            -  ``state:READY`` - The backup is fully created and ready
-               for use.
-            -  ``(name:howl) AND (create_time < \"2018-03-28T14:50:00Z\")``
-               - The backup name contains the string "howl" and
-               ``create_time`` of the backup is before
-               2018-03-28T14:50:00Z.
-            -  ``expire_time < \"2018-03-28T14:50:00Z\"`` - The backup
-               ``expire_time`` is before 2018-03-28T14:50:00Z.
-            -  ``size_bytes > 10000000000`` - The backup's size is
-               greater than 10GB
-            -  ``backup_schedules:daily`` - The backup is created from a
-               schedule with "daily" in its name.
+            - ``name:Howl`` - The backup's name contains the string
+              "howl".
+            - ``database:prod`` - The database's name contains the
+              string "prod".
+            - ``state:CREATING`` - The backup is pending creation.
+            - ``state:READY`` - The backup is fully created and ready
+              for use.
+            - ``(name:howl) AND (create_time < \"2018-03-28T14:50:00Z\")``
+              - The backup name contains the string "howl" and
+              ``create_time`` of the backup is before
+              2018-03-28T14:50:00Z.
+            - ``expire_time < \"2018-03-28T14:50:00Z\"`` - The backup
+              ``expire_time`` is before 2018-03-28T14:50:00Z.
+            - ``size_bytes > 10000000000`` - The backup's size is
+              greater than 10GB
+            - ``backup_schedules:daily`` - The backup is created from a
+              schedule with "daily" in its name.
         page_size (int):
             Number of backups to be returned in the
             response. If 0 or less, defaults to the server's
@@ -736,21 +736,21 @@ class ListBackupOperationsRequest(proto.Message):
             [operation][google.longrunning.Operation] are eligible for
             filtering:
 
-            -  ``name`` - The name of the long-running operation
-            -  ``done`` - False if the operation is in progress, else
-               true.
-            -  ``metadata.@type`` - the type of metadata. For example,
-               the type string for
-               [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata]
-               is
-               ``type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata``.
-            -  ``metadata.<field_name>`` - any field in metadata.value.
-               ``metadata.@type`` must be specified first if filtering
-               on metadata fields.
-            -  ``error`` - Error associated with the long-running
-               operation.
-            -  ``response.@type`` - the type of response.
-            -  ``response.<field_name>`` - any field in response.value.
+            - ``name`` - The name of the long-running operation
+            - ``done`` - False if the operation is in progress, else
+              true.
+            - ``metadata.@type`` - the type of metadata. For example,
+              the type string for
+              [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata]
+              is
+              ``type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata``.
+            - ``metadata.<field_name>`` - any field in metadata.value.
+              ``metadata.@type`` must be specified first if filtering on
+              metadata fields.
+            - ``error`` - Error associated with the long-running
+              operation.
+            - ``response.@type`` - the type of response.
+            - ``response.<field_name>`` - any field in response.value.
 
             You can combine multiple expressions by enclosing each
             expression in parentheses. By default, expressions are
@@ -759,55 +759,55 @@ class ListBackupOperationsRequest(proto.Message):
 
             Here are a few examples:
 
-            -  ``done:true`` - The operation is complete.
-            -  ``(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata) AND``
-               ``metadata.database:prod`` - Returns operations where:
+            - ``done:true`` - The operation is complete.
+            - ``(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata) AND``
+              ``metadata.database:prod`` - Returns operations where:
 
-               -  The operation's metadata type is
-                  [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata].
-               -  The source database name of backup contains the string
-                  "prod".
+              - The operation's metadata type is
+                [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata].
+              - The source database name of backup contains the string
+                "prod".
 
-            -  ``(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata) AND``
-               ``(metadata.name:howl) AND``
-               ``(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND``
-               ``(error:*)`` - Returns operations where:
+            - ``(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata) AND``
+              ``(metadata.name:howl) AND``
+              ``(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND``
+              ``(error:*)`` - Returns operations where:
 
-               -  The operation's metadata type is
-                  [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata].
-               -  The backup name contains the string "howl".
-               -  The operation started before 2018-03-28T14:50:00Z.
-               -  The operation resulted in an error.
+              - The operation's metadata type is
+                [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata].
+              - The backup name contains the string "howl".
+              - The operation started before 2018-03-28T14:50:00Z.
+              - The operation resulted in an error.
 
-            -  ``(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CopyBackupMetadata) AND``
-               ``(metadata.source_backup:test) AND``
-               ``(metadata.progress.start_time < \"2022-01-18T14:50:00Z\") AND``
-               ``(error:*)`` - Returns operations where:
+            - ``(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CopyBackupMetadata) AND``
+              ``(metadata.source_backup:test) AND``
+              ``(metadata.progress.start_time < \"2022-01-18T14:50:00Z\") AND``
+              ``(error:*)`` - Returns operations where:
 
-               -  The operation's metadata type is
-                  [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata].
-               -  The source backup name contains the string "test".
-               -  The operation started before 2022-01-18T14:50:00Z.
-               -  The operation resulted in an error.
+              - The operation's metadata type is
+                [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata].
+              - The source backup name contains the string "test".
+              - The operation started before 2022-01-18T14:50:00Z.
+              - The operation resulted in an error.
 
-            -  ``((metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata) AND``
-               ``(metadata.database:test_db)) OR``
-               ``((metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CopyBackupMetadata) AND``
-               ``(metadata.source_backup:test_bkp)) AND``
-               ``(error:*)`` - Returns operations where:
+            - ``((metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata) AND``
+              ``(metadata.database:test_db)) OR``
+              ``((metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CopyBackupMetadata) AND``
+              ``(metadata.source_backup:test_bkp)) AND``
+              ``(error:*)`` - Returns operations where:
 
-               -  The operation's metadata matches either of criteria:
+              - The operation's metadata matches either of criteria:
 
-                  -  The operation's metadata type is
-                     [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata]
-                     AND the source database name of the backup contains
-                     the string "test_db"
-                  -  The operation's metadata type is
-                     [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata]
-                     AND the source backup name contains the string
-                     "test_bkp"
+                - The operation's metadata type is
+                  [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata]
+                  AND the source database name of the backup contains
+                  the string "test_db"
+                - The operation's metadata type is
+                  [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata]
+                  AND the source backup name contains the string
+                  "test_bkp"
 
-               -  The operation resulted in an error.
+              - The operation resulted in an error.
         page_size (int):
             Number of operations to be returned in the
             response. If 0 or less, defaults to the server's
@@ -940,17 +940,16 @@ class CreateBackupEncryptionConfig(proto.Message):
             regions of the backup's instance configuration. Some
             examples:
 
-            -  For single region instance configs, specify a single
-               regional location KMS key.
-            -  For multi-regional instance configs of type
-               GOOGLE_MANAGED, either specify a multi-regional location
-               KMS key or multiple regional location KMS keys that cover
-               all regions in the instance config.
-            -  For an instance config of type USER_MANAGED, please
-               specify only regional location KMS keys to cover each
-               region in the instance config. Multi-regional location
-               KMS keys are not supported for USER_MANAGED instance
-               configs.
+            - For single region instance configs, specify a single
+              regional location KMS key.
+            - For multi-regional instance configs of type
+              GOOGLE_MANAGED, either specify a multi-regional location
+              KMS key or multiple regional location KMS keys that cover
+              all regions in the instance config.
+            - For an instance config of type USER_MANAGED, please
+              specify only regional location KMS keys to cover each
+              region in the instance config. Multi-regional location KMS
+              keys are not supported for USER_MANAGED instance configs.
     """
 
     class EncryptionType(proto.Enum):
@@ -1014,17 +1013,16 @@ class CopyBackupEncryptionConfig(proto.Message):
             regions of the backup's instance configuration. Some
             examples:
 
-            -  For single region instance configs, specify a single
-               regional location KMS key.
-            -  For multi-regional instance configs of type
-               GOOGLE_MANAGED, either specify a multi-regional location
-               KMS key or multiple regional location KMS keys that cover
-               all regions in the instance config.
-            -  For an instance config of type USER_MANAGED, please
-               specify only regional location KMS keys to cover each
-               region in the instance config. Multi-regional location
-               KMS keys are not supported for USER_MANAGED instance
-               configs.
+            - For single region instance configs, specify a single
+              regional location KMS key.
+            - For multi-regional instance configs of type
+              GOOGLE_MANAGED, either specify a multi-regional location
+              KMS key or multiple regional location KMS keys that cover
+              all regions in the instance config.
+            - For an instance config of type USER_MANAGED, please
+              specify only regional location KMS keys to cover each
+              region in the instance config. Multi-regional location KMS
+              keys are not supported for USER_MANAGED instance configs.
     """
 
     class EncryptionType(proto.Enum):

@@ -84,10 +84,10 @@ class DatabaseAdminAsyncClient:
 
     The Cloud Spanner Database Admin API can be used to:
 
-    -  create, drop, and list databases
-    -  update the schema of pre-existing databases
-    -  create, delete, copy and list backups for a database
-    -  restore a database from an existing backup
+    - create, drop, and list databases
+    - update the schema of pre-existing databases
+    - create, delete, copy and list backups for a database
+    - restore a database from an existing backup
     """
 
     _client: DatabaseAdminClient
@@ -749,26 +749,26 @@ class DatabaseAdminAsyncClient:
 
         While the operation is pending:
 
-        -  The database's
-           [reconciling][google.spanner.admin.database.v1.Database.reconciling]
-           field is set to true.
-        -  Cancelling the operation is best-effort. If the cancellation
-           succeeds, the operation metadata's
-           [cancel_time][google.spanner.admin.database.v1.UpdateDatabaseMetadata.cancel_time]
-           is set, the updates are reverted, and the operation
-           terminates with a ``CANCELLED`` status.
-        -  New UpdateDatabase requests will return a
-           ``FAILED_PRECONDITION`` error until the pending operation is
-           done (returns successfully or with error).
-        -  Reading the database via the API continues to give the
-           pre-request values.
+        - The database's
+          [reconciling][google.spanner.admin.database.v1.Database.reconciling]
+          field is set to true.
+        - Cancelling the operation is best-effort. If the cancellation
+          succeeds, the operation metadata's
+          [cancel_time][google.spanner.admin.database.v1.UpdateDatabaseMetadata.cancel_time]
+          is set, the updates are reverted, and the operation terminates
+          with a ``CANCELLED`` status.
+        - New UpdateDatabase requests will return a
+          ``FAILED_PRECONDITION`` error until the pending operation is
+          done (returns successfully or with error).
+        - Reading the database via the API continues to give the
+          pre-request values.
 
         Upon completion of the returned operation:
 
-        -  The new values are in effect and readable via the API.
-        -  The database's
-           [reconciling][google.spanner.admin.database.v1.Database.reconciling]
-           field becomes false.
+        - The new values are in effect and readable via the API.
+        - The database's
+          [reconciling][google.spanner.admin.database.v1.Database.reconciling]
+          field becomes false.
 
         The returned [long-running
         operation][google.longrunning.Operation] will have a name of the
@@ -1384,19 +1384,19 @@ class DatabaseAdminAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1531,19 +1531,19 @@ class DatabaseAdminAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2226,7 +2226,7 @@ class DatabaseAdminAsyncClient:
                 required. Other fields are ignored. Update is only
                 supported for the following fields:
 
-                -  ``backup.expire_time``.
+                - ``backup.expire_time``.
 
                 This corresponds to the ``backup`` field
                 on the ``request`` instance; if ``request`` is provided, this

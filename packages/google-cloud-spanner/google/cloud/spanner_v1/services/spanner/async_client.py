@@ -314,14 +314,14 @@ class SpannerAsyncClient:
         transaction internally, and count toward the one transaction
         limit.
 
-        Active sessions use additional server resources, so it is a good
+        Active sessions use additional server resources, so it's a good
         idea to delete idle and unneeded sessions. Aside from explicit
-        deletes, Cloud Spanner may delete sessions for which no
-        operations are sent for more than an hour. If a session is
-        deleted, requests to it return ``NOT_FOUND``.
+        deletes, Cloud Spanner can delete sessions when no operations
+        are sent for more than an hour. If a session is deleted,
+        requests to it return ``NOT_FOUND``.
 
         Idle sessions can be kept alive by sending a trivial SQL query
-        periodically, e.g., ``"SELECT 1"``.
+        periodically, for example, ``"SELECT 1"``.
 
         .. code-block:: python
 
@@ -477,10 +477,10 @@ class SpannerAsyncClient:
                 should not be set.
             session_count (:class:`int`):
                 Required. The number of sessions to be created in this
-                batch call. The API may return fewer than the requested
+                batch call. The API can return fewer than the requested
                 number of sessions. If a specific number of sessions are
                 desired, the client can make additional calls to
-                BatchCreateSessions (adjusting
+                ``BatchCreateSessions`` (adjusting
                 [session_count][google.spanner.v1.BatchCreateSessionsRequest.session_count]
                 as necessary).
 
@@ -561,7 +561,7 @@ class SpannerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> spanner.Session:
-        r"""Gets a session. Returns ``NOT_FOUND`` if the session does not
+        r"""Gets a session. Returns ``NOT_FOUND`` if the session doesn't
         exist. This is mainly useful for determining whether a session
         is still alive.
 
@@ -799,7 +799,7 @@ class SpannerAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Ends a session, releasing server resources associated
-        with it. This will asynchronously trigger cancellation
+        with it. This asynchronously triggers the cancellation
         of any operations that are running with this session.
 
         .. code-block:: python
@@ -899,7 +899,7 @@ class SpannerAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> result_set.ResultSet:
         r"""Executes an SQL statement, returning all results in a single
-        reply. This method cannot be used to return a result set larger
+        reply. This method can't be used to return a result set larger
         than 10 MiB; if the query yields more data than that, the query
         fails with a ``FAILED_PRECONDITION`` error.
 
@@ -912,6 +912,9 @@ class SpannerAsyncClient:
         calling
         [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql]
         instead.
+
+        The query string can be SQL or `Graph Query Language
+        (GQL) <https://cloud.google.com/spanner/docs/reference/standard-sql/graph-intro>`__.
 
         .. code-block:: python
 
@@ -1005,6 +1008,9 @@ class SpannerAsyncClient:
         limit on the size of the returned result set. However, no
         individual row in the result set can exceed 100 MiB, and no
         column value can exceed 10 MiB.
+
+        The query string can be SQL or `Graph Query Language
+        (GQL) <https://cloud.google.com/spanner/docs/reference/standard-sql/graph-intro>`__.
 
         .. code-block:: python
 
@@ -1179,8 +1185,8 @@ class SpannerAsyncClient:
 
                    Example 1:
 
-                   -  Request: 5 DML statements, all executed
-                      successfully.
+                   - Request: 5 DML statements, all executed
+                     successfully.
 
                    \* Response: 5
                    [ResultSet][google.spanner.v1.ResultSet] messages,
@@ -1188,8 +1194,8 @@ class SpannerAsyncClient:
 
                    Example 2:
 
-                   -  Request: 5 DML statements. The third statement has
-                      a syntax error.
+                   - Request: 5 DML statements. The third statement has
+                     a syntax error.
 
                    \* Response: 2
                    [ResultSet][google.spanner.v1.ResultSet] messages,
@@ -1243,7 +1249,7 @@ class SpannerAsyncClient:
         r"""Reads rows from the database using key lookups and scans, as a
         simple key/value style alternative to
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql]. This method
-        cannot be used to return a result set larger than 10 MiB; if the
+        can't be used to return a result set larger than 10 MiB; if the
         read matches more data than that, the read fails with a
         ``FAILED_PRECONDITION`` error.
 
@@ -1573,7 +1579,7 @@ class SpannerAsyncClient:
         any time; commonly, the cause is conflicts with concurrent
         transactions. However, it can also happen for a variety of other
         reasons. If ``Commit`` returns ``ABORTED``, the caller should
-        re-attempt the transaction from the beginning, re-using the same
+        retry the transaction from the beginning, reusing the same
         session.
 
         On very rare occasions, ``Commit`` might return ``UNKNOWN``.
@@ -1643,7 +1649,7 @@ class SpannerAsyncClient:
                 commit with a temporary transaction is non-idempotent.
                 That is, if the ``CommitRequest`` is sent to Cloud
                 Spanner more than once (for instance, due to retries in
-                the application, or in the transport library), it is
+                the application, or in the transport library), it's
                 possible that the mutations are executed more than once.
                 If this is undesirable, use
                 [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction]
@@ -1729,7 +1735,7 @@ class SpannerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Rolls back a transaction, releasing any locks it holds. It is a
+        r"""Rolls back a transaction, releasing any locks it holds. It's a
         good idea to call this for any transaction that includes one or
         more [Read][google.spanner.v1.Spanner.Read] or
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] requests and
@@ -1737,8 +1743,7 @@ class SpannerAsyncClient:
 
         ``Rollback`` returns ``OK`` if it successfully aborts the
         transaction, the transaction was already aborted, or the
-        transaction is not found. ``Rollback`` never returns
-        ``ABORTED``.
+        transaction isn't found. ``Rollback`` never returns ``ABORTED``.
 
         .. code-block:: python
 
@@ -1850,12 +1855,12 @@ class SpannerAsyncClient:
         [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql]
         to specify a subset of the query result to read. The same
         session and read-only transaction must be used by the
-        PartitionQueryRequest used to create the partition tokens and
-        the ExecuteSqlRequests that use the partition tokens.
+        ``PartitionQueryRequest`` used to create the partition tokens
+        and the ``ExecuteSqlRequests`` that use the partition tokens.
 
         Partition tokens become invalid when the session used to create
         them is deleted, is idle for too long, begins a new transaction,
-        or becomes too old. When any of these happen, it is not possible
+        or becomes too old. When any of these happen, it isn't possible
         to resume the query, and the whole operation must be restarted
         from the beginning.
 
@@ -1951,15 +1956,15 @@ class SpannerAsyncClient:
         [StreamingRead][google.spanner.v1.Spanner.StreamingRead] to
         specify a subset of the read result to read. The same session
         and read-only transaction must be used by the
-        PartitionReadRequest used to create the partition tokens and the
-        ReadRequests that use the partition tokens. There are no
+        ``PartitionReadRequest`` used to create the partition tokens and
+        the ``ReadRequests`` that use the partition tokens. There are no
         ordering guarantees on rows returned among the returned
-        partition tokens, or even within each individual StreamingRead
-        call issued with a partition_token.
+        partition tokens, or even within each individual
+        ``StreamingRead`` call issued with a ``partition_token``.
 
         Partition tokens become invalid when the session used to create
         them is deleted, is idle for too long, begins a new transaction,
-        or becomes too old. When any of these happen, it is not possible
+        or becomes too old. When any of these happen, it isn't possible
         to resume the read, and the whole operation must be restarted
         from the beginning.
 
@@ -2053,25 +2058,23 @@ class SpannerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Awaitable[AsyncIterable[spanner.BatchWriteResponse]]:
-        r"""Batches the supplied mutation groups in a collection
-        of efficient transactions. All mutations in a group are
-        committed atomically. However, mutations across groups
-        can be committed non-atomically in an unspecified order
-        and thus, they must be independent of each other.
-        Partial failure is possible, i.e., some groups may have
-        been committed successfully, while some may have failed.
-        The results of individual batches are streamed into the
-        response as the batches are applied.
+        r"""Batches the supplied mutation groups in a collection of
+        efficient transactions. All mutations in a group are committed
+        atomically. However, mutations across groups can be committed
+        non-atomically in an unspecified order and thus, they must be
+        independent of each other. Partial failure is possible, that is,
+        some groups might have been committed successfully, while some
+        might have failed. The results of individual batches are
+        streamed into the response as the batches are applied.
 
-        BatchWrite requests are not replay protected, meaning
-        that each mutation group may be applied more than once.
-        Replays of non-idempotent mutations may have undesirable
-        effects. For example, replays of an insert mutation may
-        produce an already exists error or if you use generated
-        or commit timestamp-based keys, it may result in
-        additional rows being added to the mutation's table. We
-        recommend structuring your mutation groups to be
-        idempotent to avoid this issue.
+        ``BatchWrite`` requests are not replay protected, meaning that
+        each mutation group can be applied more than once. Replays of
+        non-idempotent mutations can have undesirable effects. For
+        example, replays of an insert mutation can produce an already
+        exists error or if you use generated or commit timestamp-based
+        keys, it can result in additional rows being added to the
+        mutation's table. We recommend structuring your mutation groups
+        to be idempotent to avoid this issue.
 
         .. code-block:: python
 

@@ -120,15 +120,15 @@ class PartialResultSet(proto.Message):
             field. Two or more chunked values can be merged to form a
             complete value as follows:
 
-            -  ``bool/number/null``: can't be chunked
-            -  ``string``: concatenate the strings
-            -  ``list``: concatenate the lists. If the last element in a
-               list is a ``string``, ``list``, or ``object``, merge it
-               with the first element in the next list by applying these
-               rules recursively.
-            -  ``object``: concatenate the (field name, field value)
-               pairs. If a field name is duplicated, then apply these
-               rules recursively to merge the field values.
+            - ``bool/number/null``: can't be chunked
+            - ``string``: concatenate the strings
+            - ``list``: concatenate the lists. If the last element in a
+              list is a ``string``, ``list``, or ``object``, merge it
+              with the first element in the next list by applying these
+              rules recursively.
+            - ``object``: concatenate the (field name, field value)
+              pairs. If a field name is duplicated, then apply these
+              rules recursively to merge the field values.
 
             Some examples of merging:
 

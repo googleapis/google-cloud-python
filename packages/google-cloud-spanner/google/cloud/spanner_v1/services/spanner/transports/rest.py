@@ -1259,6 +1259,22 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             resp, _ = self._interceptor.post_batch_write_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.batch_write",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "BatchWrite",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BeginTransaction(
@@ -1910,20 +1926,20 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
 
                 Example 1:
 
-                -  Request: 5 DML statements, all executed successfully.
-                -  Response: 5 [ResultSet][google.spanner.v1.ResultSet]
-                   messages, with the status ``OK``.
+                - Request: 5 DML statements, all executed successfully.
+                - Response: 5 [ResultSet][google.spanner.v1.ResultSet]
+                  messages, with the status ``OK``.
 
                 Example 2:
 
-                -  Request: 5 DML statements. The third statement has a
-                   syntax error.
-                -  Response: 2 [ResultSet][google.spanner.v1.ResultSet]
-                   messages, and a syntax error (``INVALID_ARGUMENT``)
-                   status. The number of
-                   [ResultSet][google.spanner.v1.ResultSet] messages
-                   indicates that the third statement failed, and the
-                   fourth and fifth statements were not executed.
+                - Request: 5 DML statements. The third statement has a
+                  syntax error.
+                - Response: 2 [ResultSet][google.spanner.v1.ResultSet]
+                  messages, and a syntax error (``INVALID_ARGUMENT``)
+                  status. The number of
+                  [ResultSet][google.spanner.v1.ResultSet] messages
+                  indicates that the third statement failed, and the
+                  fourth and fifth statements were not executed.
 
             """
 
@@ -2320,6 +2336,22 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             resp, _ = self._interceptor.post_execute_streaming_sql_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.execute_streaming_sql",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "ExecuteStreamingSql",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSession(_BaseSpannerRestTransport._BaseGetSession, SpannerRestStub):
@@ -3331,6 +3363,22 @@ class SpannerRestTransport(_BaseSpannerRestTransport):
             resp, _ = self._interceptor.post_streaming_read_with_metadata(
                 resp, response_metadata
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner_v1.SpannerClient.streaming_read",
+                    extra={
+                        "serviceName": "google.spanner.v1.Spanner",
+                        "rpcName": "StreamingRead",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

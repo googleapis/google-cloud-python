@@ -91,12 +91,12 @@ class TypeCode(proto.Enum):
             7159. The following rules are applied when parsing JSON
             input:
 
-            -  Whitespace characters are not preserved.
-            -  If a JSON object has duplicate keys, only the first key
-               is preserved.
-            -  Members of a JSON object are not guaranteed to have their
-               order preserved.
-            -  JSON array elements will have their order preserved.
+            - Whitespace characters are not preserved.
+            - If a JSON object has duplicate keys, only the first key is
+              preserved.
+            - Members of a JSON object are not guaranteed to have their
+              order preserved.
+            - JSON array elements will have their order preserved.
         PROTO (13):
             Encoded as a base64-encoded ``string``, as described in RFC
             4648, section 4.

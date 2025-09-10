@@ -1584,10 +1584,10 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
 
     The Cloud Spanner Database Admin API can be used to:
 
-    -  create, drop, and list databases
-    -  update the schema of pre-existing databases
-    -  create, delete, copy and list backups for a database
-    -  restore a database from an existing backup
+    - create, drop, and list databases
+    - update the schema of pre-existing databases
+    - create, delete, copy and list backups for a database
+    - restore a database from an existing backup
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

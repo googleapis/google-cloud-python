@@ -1041,24 +1041,24 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Immediately after the request returns:
 
-        -  The instance configuration is readable via the API, with all
-           requested attributes. The instance configuration's
-           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
-           field is set to true. Its state is ``CREATING``.
+        - The instance configuration is readable via the API, with all
+          requested attributes. The instance configuration's
+          [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+          field is set to true. Its state is ``CREATING``.
 
         While the operation is pending:
 
-        -  Cancelling the operation renders the instance configuration
-           immediately unreadable via the API.
-        -  Except for deleting the creating resource, all other attempts
-           to modify the instance configuration are rejected.
+        - Cancelling the operation renders the instance configuration
+          immediately unreadable via the API.
+        - Except for deleting the creating resource, all other attempts
+          to modify the instance configuration are rejected.
 
         Upon completion of the returned operation:
 
-        -  Instances can be created using the instance configuration.
-        -  The instance configuration's
-           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
-           field becomes false. Its state becomes ``READY``.
+        - Instances can be created using the instance configuration.
+        - The instance configuration's
+          [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+          field becomes false. Its state becomes ``READY``.
 
         The returned long-running operation will have a name of the
         format ``<instance_config_name>/operations/<operation_id>`` and
@@ -1234,31 +1234,30 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Immediately after the request returns:
 
-        -  The instance configuration's
-           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
-           field is set to true.
+        - The instance configuration's
+          [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+          field is set to true.
 
         While the operation is pending:
 
-        -  Cancelling the operation sets its metadata's
-           [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceConfigMetadata.cancel_time].
-           The operation is guaranteed to succeed at undoing all
-           changes, after which point it terminates with a ``CANCELLED``
-           status.
-        -  All other attempts to modify the instance configuration are
-           rejected.
-        -  Reading the instance configuration via the API continues to
-           give the pre-request values.
+        - Cancelling the operation sets its metadata's
+          [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceConfigMetadata.cancel_time].
+          The operation is guaranteed to succeed at undoing all changes,
+          after which point it terminates with a ``CANCELLED`` status.
+        - All other attempts to modify the instance configuration are
+          rejected.
+        - Reading the instance configuration via the API continues to
+          give the pre-request values.
 
         Upon completion of the returned operation:
 
-        -  Creating instances using the instance configuration uses the
-           new values.
-        -  The new values of the instance configuration are readable via
-           the API.
-        -  The instance configuration's
-           [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
-           field becomes false.
+        - Creating instances using the instance configuration uses the
+          new values.
+        - The new values of the instance configuration are readable via
+          the API.
+        - The instance configuration's
+          [reconciling][google.spanner.admin.instance.v1.InstanceConfig.reconciling]
+          field becomes false.
 
         The returned long-running operation will have a name of the
         format ``<instance_config_name>/operations/<operation_id>`` and
@@ -2045,25 +2044,25 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Immediately upon completion of this request:
 
-        -  The instance is readable via the API, with all requested
-           attributes but no allocated resources. Its state is
-           ``CREATING``.
+        - The instance is readable via the API, with all requested
+          attributes but no allocated resources. Its state is
+          ``CREATING``.
 
         Until completion of the returned operation:
 
-        -  Cancelling the operation renders the instance immediately
-           unreadable via the API.
-        -  The instance can be deleted.
-        -  All other attempts to modify the instance are rejected.
+        - Cancelling the operation renders the instance immediately
+          unreadable via the API.
+        - The instance can be deleted.
+        - All other attempts to modify the instance are rejected.
 
         Upon completion of the returned operation:
 
-        -  Billing for all successfully-allocated resources begins (some
-           types may have lower than the requested levels).
-        -  Databases can be created in the instance.
-        -  The instance's allocated resource levels are readable via the
-           API.
-        -  The instance's state becomes ``READY``.
+        - Billing for all successfully-allocated resources begins (some
+          types may have lower than the requested levels).
+        - Databases can be created in the instance.
+        - The instance's allocated resource levels are readable via the
+          API.
+        - The instance's state becomes ``READY``.
 
         The returned long-running operation will have a name of the
         format ``<instance_name>/operations/<operation_id>`` and can be
@@ -2233,29 +2232,29 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Immediately upon completion of this request:
 
-        -  For resource types for which a decrease in the instance's
-           allocation has been requested, billing is based on the
-           newly-requested level.
+        - For resource types for which a decrease in the instance's
+          allocation has been requested, billing is based on the
+          newly-requested level.
 
         Until completion of the returned operation:
 
-        -  Cancelling the operation sets its metadata's
-           [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time],
-           and begins restoring resources to their pre-request values.
-           The operation is guaranteed to succeed at undoing all
-           resource changes, after which point it terminates with a
-           ``CANCELLED`` status.
-        -  All other attempts to modify the instance are rejected.
-        -  Reading the instance via the API continues to give the
-           pre-request resource levels.
+        - Cancelling the operation sets its metadata's
+          [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time],
+          and begins restoring resources to their pre-request values.
+          The operation is guaranteed to succeed at undoing all resource
+          changes, after which point it terminates with a ``CANCELLED``
+          status.
+        - All other attempts to modify the instance are rejected.
+        - Reading the instance via the API continues to give the
+          pre-request resource levels.
 
         Upon completion of the returned operation:
 
-        -  Billing begins for all successfully-allocated resources (some
-           types may have lower than the requested levels).
-        -  All newly-reserved resources are available for serving the
-           instance's tables.
-        -  The instance's new resource levels are readable via the API.
+        - Billing begins for all successfully-allocated resources (some
+          types may have lower than the requested levels).
+        - All newly-reserved resources are available for serving the
+          instance's tables.
+        - The instance's new resource levels are readable via the API.
 
         The returned long-running operation will have a name of the
         format ``<instance_name>/operations/<operation_id>`` and can be
@@ -2422,13 +2421,13 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Immediately upon completion of the request:
 
-        -  Billing ceases for all of the instance's reserved resources.
+        - Billing ceases for all of the instance's reserved resources.
 
         Soon afterward:
 
-        -  The instance and *all of its databases* immediately and
-           irrevocably disappear from the API. All data in the databases
-           is permanently deleted.
+        - The instance and *all of its databases* immediately and
+          irrevocably disappear from the API. All data in the databases
+          is permanently deleted.
 
         .. code-block:: python
 
@@ -2597,19 +2596,19 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2741,19 +2740,19 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
-                   :literal:`\`     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time <             timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
 
                    **YAML example:**
 
-                   :literal:`\`     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -3066,26 +3065,26 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Immediately upon completion of this request:
 
-        -  The instance partition is readable via the API, with all
-           requested attributes but no allocated resources. Its state is
-           ``CREATING``.
+        - The instance partition is readable via the API, with all
+          requested attributes but no allocated resources. Its state is
+          ``CREATING``.
 
         Until completion of the returned operation:
 
-        -  Cancelling the operation renders the instance partition
-           immediately unreadable via the API.
-        -  The instance partition can be deleted.
-        -  All other attempts to modify the instance partition are
-           rejected.
+        - Cancelling the operation renders the instance partition
+          immediately unreadable via the API.
+        - The instance partition can be deleted.
+        - All other attempts to modify the instance partition are
+          rejected.
 
         Upon completion of the returned operation:
 
-        -  Billing for all successfully-allocated resources begins (some
-           types may have lower than the requested levels).
-        -  Databases can start using this instance partition.
-        -  The instance partition's allocated resource levels are
-           readable via the API.
-        -  The instance partition's state becomes ``READY``.
+        - Billing for all successfully-allocated resources begins (some
+          types may have lower than the requested levels).
+        - Databases can start using this instance partition.
+        - The instance partition's allocated resource levels are
+          readable via the API.
+        - The instance partition's state becomes ``READY``.
 
         The returned long-running operation will have a name of the
         format ``<instance_partition_name>/operations/<operation_id>``
@@ -3371,31 +3370,31 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Immediately upon completion of this request:
 
-        -  For resource types for which a decrease in the instance
-           partition's allocation has been requested, billing is based
-           on the newly-requested level.
+        - For resource types for which a decrease in the instance
+          partition's allocation has been requested, billing is based on
+          the newly-requested level.
 
         Until completion of the returned operation:
 
-        -  Cancelling the operation sets its metadata's
-           [cancel_time][google.spanner.admin.instance.v1.UpdateInstancePartitionMetadata.cancel_time],
-           and begins restoring resources to their pre-request values.
-           The operation is guaranteed to succeed at undoing all
-           resource changes, after which point it terminates with a
-           ``CANCELLED`` status.
-        -  All other attempts to modify the instance partition are
-           rejected.
-        -  Reading the instance partition via the API continues to give
-           the pre-request resource levels.
+        - Cancelling the operation sets its metadata's
+          [cancel_time][google.spanner.admin.instance.v1.UpdateInstancePartitionMetadata.cancel_time],
+          and begins restoring resources to their pre-request values.
+          The operation is guaranteed to succeed at undoing all resource
+          changes, after which point it terminates with a ``CANCELLED``
+          status.
+        - All other attempts to modify the instance partition are
+          rejected.
+        - Reading the instance partition via the API continues to give
+          the pre-request resource levels.
 
         Upon completion of the returned operation:
 
-        -  Billing begins for all successfully-allocated resources (some
-           types may have lower than the requested levels).
-        -  All newly-reserved resources are available for serving the
-           instance partition's tables.
-        -  The instance partition's new resource levels are readable via
-           the API.
+        - Billing begins for all successfully-allocated resources (some
+          types may have lower than the requested levels).
+        - All newly-reserved resources are available for serving the
+          instance partition's tables.
+        - The instance partition's new resource levels are readable via
+          the API.
 
         The returned long-running operation will have a name of the
         format ``<instance_partition_name>/operations/<operation_id>``
@@ -3713,33 +3712,33 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         ``MoveInstance`` returns ``FAILED_PRECONDITION`` if the instance
         meets any of the following criteria:
 
-        -  Is undergoing a move to a different instance configuration
-        -  Has backups
-        -  Has an ongoing update
-        -  Contains any CMEK-enabled databases
-        -  Is a free trial instance
+        - Is undergoing a move to a different instance configuration
+        - Has backups
+        - Has an ongoing update
+        - Contains any CMEK-enabled databases
+        - Is a free trial instance
 
         While the operation is pending:
 
-        -  All other attempts to modify the instance, including changes
-           to its compute capacity, are rejected.
+        - All other attempts to modify the instance, including changes
+          to its compute capacity, are rejected.
 
-        -  The following database and backup admin operations are
-           rejected:
+        - The following database and backup admin operations are
+          rejected:
 
-           -  ``DatabaseAdmin.CreateDatabase``
-           -  ``DatabaseAdmin.UpdateDatabaseDdl`` (disabled if
-              default_leader is specified in the request.)
-           -  ``DatabaseAdmin.RestoreDatabase``
-           -  ``DatabaseAdmin.CreateBackup``
-           -  ``DatabaseAdmin.CopyBackup``
+          - ``DatabaseAdmin.CreateDatabase``
+          - ``DatabaseAdmin.UpdateDatabaseDdl`` (disabled if
+            default_leader is specified in the request.)
+          - ``DatabaseAdmin.RestoreDatabase``
+          - ``DatabaseAdmin.CreateBackup``
+          - ``DatabaseAdmin.CopyBackup``
 
-        -  Both the source and target instance configurations are
-           subject to hourly compute and storage charges.
+        - Both the source and target instance configurations are subject
+          to hourly compute and storage charges.
 
-        -  The instance might experience higher read-write latencies and
-           a higher transaction abort rate. However, moving an instance
-           doesn't cause any downtime.
+        - The instance might experience higher read-write latencies and
+          a higher transaction abort rate. However, moving an instance
+          doesn't cause any downtime.
 
         The returned long-running operation has a name of the format
         ``<instance_name>/operations/<operation_id>`` and can be used to
@@ -3758,10 +3757,10 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         If not cancelled, upon completion of the returned operation:
 
-        -  The instance successfully moves to the target instance
-           configuration.
-        -  You are billed for compute and storage in target instance
-           configuration.
+        - The instance successfully moves to the target instance
+          configuration.
+        - You are billed for compute and storage in target instance
+          configuration.
 
         Authorization requires the ``spanner.instances.update``
         permission on the resource

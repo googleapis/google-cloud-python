@@ -167,15 +167,15 @@ class CrontabSpec(proto.Message):
             hour, 1 day, 1 week and 1 month. Examples of valid cron
             specifications:
 
-            -  ``0 2/12 * * *`` : every 12 hours at (2, 14) hours past
-               midnight in UTC.
-            -  ``0 2,14 * * *`` : every 12 hours at (2,14) hours past
-               midnight in UTC.
-            -  ``0 2 * * *`` : once a day at 2 past midnight in UTC.
-            -  ``0 2 * * 0`` : once a week every Sunday at 2 past
-               midnight in UTC.
-            -  ``0 2 8 * *`` : once a month on 8th day at 2 past
-               midnight in UTC.
+            - ``0 2/12 * * *`` : every 12 hours at (2, 14) hours past
+              midnight in UTC.
+            - ``0 2,14 * * *`` : every 12 hours at (2,14) hours past
+              midnight in UTC.
+            - ``0 2 * * *`` : once a day at 2 past midnight in UTC.
+            - ``0 2 * * 0`` : once a week every Sunday at 2 past
+              midnight in UTC.
+            - ``0 2 8 * *`` : once a month on 8th day at 2 past midnight
+              in UTC.
         time_zone (str):
             Output only. The time zone of the times in
             ``CrontabSpec.text``. Currently only UTC is supported.

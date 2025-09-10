@@ -75,13 +75,13 @@ class TransactionOptions(proto.Message):
             it prevents read or write transactions from being tracked in
             change streams.
 
-            -  If the DDL option ``allow_txn_exclusion`` is set to
-               ``true``, then the updates made within this transaction
-               aren't recorded in the change stream.
+            - If the DDL option ``allow_txn_exclusion`` is set to
+              ``true``, then the updates made within this transaction
+              aren't recorded in the change stream.
 
-            -  If you don't set the DDL option ``allow_txn_exclusion``
-               or if it's set to ``false``, then the updates made within
-               this transaction are recorded in the change stream.
+            - If you don't set the DDL option ``allow_txn_exclusion`` or
+              if it's set to ``false``, then the updates made within
+              this transaction are recorded in the change stream.
 
             When ``exclude_txn_from_change_streams`` is set to ``false``
             or not set, modifications from this transaction are recorded
@@ -106,17 +106,15 @@ class TransactionOptions(proto.Message):
                 If the value is not specified, the ``SERIALIZABLE``
                 isolation level is used.
             SERIALIZABLE (1):
-                All transactions appear as if they executed
-                in a serial order, even if some of the reads,
-                writes, and other operations of distinct
-                transactions actually occurred in parallel.
-                Spanner assigns commit timestamps that reflect
-                the order of committed transactions to implement
-                this property. Spanner offers a stronger
-                guarantee than serializability called external
-                consistency. For further details, please refer
-                to
-                https://cloud.google.com/spanner/docs/true-time-external-consistency#serializability.
+                All transactions appear as if they executed in a serial
+                order, even if some of the reads, writes, and other
+                operations of distinct transactions actually occurred in
+                parallel. Spanner assigns commit timestamps that reflect the
+                order of committed transactions to implement this property.
+                Spanner offers a stronger guarantee than serializability
+                called external consistency. For more information, see
+                `TrueTime and external
+                consistency <https://cloud.google.com/spanner/docs/true-time-external-consistency#serializability>`__.
             REPEATABLE_READ (2):
                 All reads performed during the transaction observe a
                 consistent snapshot of the database, and the transaction is
@@ -159,22 +157,22 @@ class TransactionOptions(proto.Message):
                 READ_LOCK_MODE_UNSPECIFIED (0):
                     Default value.
 
-                    -  If isolation level is
-                       [REPEATABLE_READ][google.spanner.v1.TransactionOptions.IsolationLevel.REPEATABLE_READ],
-                       then it is an error to specify ``read_lock_mode``.
-                       Locking semantics default to ``OPTIMISTIC``. No
-                       validation checks are done for reads, except to validate
-                       that the data that was served at the snapshot time is
-                       unchanged at commit time in the following cases:
+                    - If isolation level is
+                      [REPEATABLE_READ][google.spanner.v1.TransactionOptions.IsolationLevel.REPEATABLE_READ],
+                      then it is an error to specify ``read_lock_mode``. Locking
+                      semantics default to ``OPTIMISTIC``. No validation checks
+                      are done for reads, except to validate that the data that
+                      was served at the snapshot time is unchanged at commit
+                      time in the following cases:
 
-                       1. reads done as part of queries that use
-                          ``SELECT FOR UPDATE``
-                       2. reads done as part of statements with a
-                          ``LOCK_SCANNED_RANGES`` hint
-                       3. reads done as part of DML statements
+                      1. reads done as part of queries that use
+                         ``SELECT FOR UPDATE``
+                      2. reads done as part of statements with a
+                         ``LOCK_SCANNED_RANGES`` hint
+                      3. reads done as part of DML statements
 
-                    -  At all other isolation levels, if ``read_lock_mode`` is
-                       the default value, then pessimistic read locks are used.
+                    - At all other isolation levels, if ``read_lock_mode`` is
+                      the default value, then pessimistic read locks are used.
                 PESSIMISTIC (1):
                     Pessimistic lock mode.
 

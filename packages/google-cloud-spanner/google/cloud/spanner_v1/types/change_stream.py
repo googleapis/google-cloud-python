@@ -42,7 +42,7 @@ class ChangeStreamRecord(proto.Message):
     partition_mode='MUTABLE_KEY_RANGE'. Spanner automatically creates a
     special Table-Valued Function (TVF) along with each Change Streams.
     The function provides access to the change stream's records. The
-    function is named READ_<change_stream_name> (where
+    function is named READ\_<change_stream_name> (where
     <change_stream_name> is the name of the change stream), and it
     returns a table with only one column called ChangeRecord.
 

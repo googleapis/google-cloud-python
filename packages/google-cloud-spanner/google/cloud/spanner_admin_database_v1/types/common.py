@@ -99,17 +99,17 @@ class EncryptionConfig(proto.Message):
             regions of the database instance configuration. Some
             examples:
 
-            -  For single region database instance configs, specify a
-               single regional location KMS key.
-            -  For multi-regional database instance configs of type
-               GOOGLE_MANAGED, either specify a multi-regional location
-               KMS key or multiple regional location KMS keys that cover
-               all regions in the instance config.
-            -  For a database instance config of type USER_MANAGED,
-               please specify only regional location KMS keys to cover
-               each region in the instance config. Multi-regional
-               location KMS keys are not supported for USER_MANAGED
-               instance configs.
+            - For single region database instance configs, specify a
+              single regional location KMS key.
+            - For multi-regional database instance configs of type
+              GOOGLE_MANAGED, either specify a multi-regional location
+              KMS key or multiple regional location KMS keys that cover
+              all regions in the instance config.
+            - For a database instance config of type USER_MANAGED,
+              please specify only regional location KMS keys to cover
+              each region in the instance config. Multi-regional
+              location KMS keys are not supported for USER_MANAGED
+              instance configs.
     """
 
     kms_key_name: str = proto.Field(

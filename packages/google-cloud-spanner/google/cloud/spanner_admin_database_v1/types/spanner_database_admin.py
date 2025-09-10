@@ -786,21 +786,21 @@ class ListDatabaseOperationsRequest(proto.Message):
             [Operation][google.longrunning.Operation] are eligible for
             filtering:
 
-            -  ``name`` - The name of the long-running operation
-            -  ``done`` - False if the operation is in progress, else
-               true.
-            -  ``metadata.@type`` - the type of metadata. For example,
-               the type string for
-               [RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata]
-               is
-               ``type.googleapis.com/google.spanner.admin.database.v1.RestoreDatabaseMetadata``.
-            -  ``metadata.<field_name>`` - any field in metadata.value.
-               ``metadata.@type`` must be specified first, if filtering
-               on metadata fields.
-            -  ``error`` - Error associated with the long-running
-               operation.
-            -  ``response.@type`` - the type of response.
-            -  ``response.<field_name>`` - any field in response.value.
+            - ``name`` - The name of the long-running operation
+            - ``done`` - False if the operation is in progress, else
+              true.
+            - ``metadata.@type`` - the type of metadata. For example,
+              the type string for
+              [RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata]
+              is
+              ``type.googleapis.com/google.spanner.admin.database.v1.RestoreDatabaseMetadata``.
+            - ``metadata.<field_name>`` - any field in metadata.value.
+              ``metadata.@type`` must be specified first, if filtering
+              on metadata fields.
+            - ``error`` - Error associated with the long-running
+              operation.
+            - ``response.@type`` - the type of response.
+            - ``response.<field_name>`` - any field in response.value.
 
             You can combine multiple expressions by enclosing each
             expression in parentheses. By default, expressions are
@@ -809,21 +809,21 @@ class ListDatabaseOperationsRequest(proto.Message):
 
             Here are a few examples:
 
-            -  ``done:true`` - The operation is complete.
-            -  ``(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.RestoreDatabaseMetadata) AND``
-               ``(metadata.source_type:BACKUP) AND``
-               ``(metadata.backup_info.backup:backup_howl) AND``
-               ``(metadata.name:restored_howl) AND``
-               ``(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND``
-               ``(error:*)`` - Return operations where:
+            - ``done:true`` - The operation is complete.
+            - ``(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.RestoreDatabaseMetadata) AND``
+              ``(metadata.source_type:BACKUP) AND``
+              ``(metadata.backup_info.backup:backup_howl) AND``
+              ``(metadata.name:restored_howl) AND``
+              ``(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND``
+              ``(error:*)`` - Return operations where:
 
-               -  The operation's metadata type is
-                  [RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata].
-               -  The database is restored from a backup.
-               -  The backup name contains "backup_howl".
-               -  The restored database's name contains "restored_howl".
-               -  The operation started before 2018-03-28T14:50:00Z.
-               -  The operation resulted in an error.
+              - The operation's metadata type is
+                [RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata].
+              - The database is restored from a backup.
+              - The backup name contains "backup_howl".
+              - The restored database's name contains "restored_howl".
+              - The operation started before 2018-03-28T14:50:00Z.
+              - The operation resulted in an error.
         page_size (int):
             Number of operations to be returned in the
             response. If 0 or less, defaults to the server's
@@ -967,17 +967,17 @@ class RestoreDatabaseEncryptionConfig(proto.Message):
             regions of the database instance configuration. Some
             examples:
 
-            -  For single region database instance configs, specify a
-               single regional location KMS key.
-            -  For multi-regional database instance configs of type
-               GOOGLE_MANAGED, either specify a multi-regional location
-               KMS key or multiple regional location KMS keys that cover
-               all regions in the instance config.
-            -  For a database instance config of type USER_MANAGED,
-               please specify only regional location KMS keys to cover
-               each region in the instance config. Multi-regional
-               location KMS keys are not supported for USER_MANAGED
-               instance configs.
+            - For single region database instance configs, specify a
+              single regional location KMS key.
+            - For multi-regional database instance configs of type
+              GOOGLE_MANAGED, either specify a multi-regional location
+              KMS key or multiple regional location KMS keys that cover
+              all regions in the instance config.
+            - For a database instance config of type USER_MANAGED,
+              please specify only regional location KMS keys to cover
+              each region in the instance config. Multi-regional
+              location KMS keys are not supported for USER_MANAGED
+              instance configs.
     """
 
     class EncryptionType(proto.Enum):

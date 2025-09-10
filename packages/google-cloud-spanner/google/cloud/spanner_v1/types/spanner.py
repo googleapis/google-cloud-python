@@ -93,13 +93,12 @@ class BatchCreateSessionsRequest(proto.Message):
             Required. The database in which the new
             sessions are created.
         session_template (google.cloud.spanner_v1.types.Session):
-            Parameters to be applied to each created
-            session.
+            Parameters to apply to each created session.
         session_count (int):
             Required. The number of sessions to be created in this batch
-            call. The API may return fewer than the requested number of
+            call. The API can return fewer than the requested number of
             sessions. If a specific number of sessions are desired, the
-            client can make additional calls to BatchCreateSessions
+            client can make additional calls to ``BatchCreateSessions``
             (adjusting
             [session_count][google.spanner.v1.BatchCreateSessionsRequest.session_count]
             as necessary).
@@ -146,14 +145,14 @@ class Session(proto.Message):
         labels (MutableMapping[str, str]):
             The labels for the session.
 
-            -  Label keys must be between 1 and 63 characters long and
-               must conform to the following regular expression:
-               ``[a-z]([-a-z0-9]*[a-z0-9])?``.
-            -  Label values must be between 0 and 63 characters long and
-               must conform to the regular expression
-               ``([a-z]([-a-z0-9]*[a-z0-9])?)?``.
-            -  No more than 64 labels can be associated with a given
-               session.
+            - Label keys must be between 1 and 63 characters long and
+              must conform to the following regular expression:
+              ``[a-z]([-a-z0-9]*[a-z0-9])?``.
+            - Label values must be between 0 and 63 characters long and
+              must conform to the regular expression
+              ``([a-z]([-a-z0-9]*[a-z0-9])?)?``.
+            - No more than 64 labels can be associated with a given
+              session.
 
             See https://goo.gl/xmQnxf for more information on and
             examples of labels.
@@ -162,20 +161,20 @@ class Session(proto.Message):
             is created.
         approximate_last_use_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The approximate timestamp when
-            the session is last used. It is typically
-            earlier than the actual last use time.
+            the session is last used. It's typically earlier
+            than the actual last use time.
         creator_role (str):
             The database role which created this session.
         multiplexed (bool):
-            Optional. If true, specifies a multiplexed session. A
-            multiplexed session may be used for multiple, concurrent
-            read-only operations but can not be used for read-write
-            transactions, partitioned reads, or partitioned queries.
-            Multiplexed sessions can be created via
-            [CreateSession][google.spanner.v1.Spanner.CreateSession] but
-            not via
-            [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].
-            Multiplexed sessions may not be deleted nor listed.
+            Optional. If ``true``, specifies a multiplexed session. Use
+            a multiplexed session for multiple, concurrent read-only
+            operations. Don't use them for read-write transactions,
+            partitioned reads, or partitioned queries. Use
+            [``sessions.create``][google.spanner.v1.Spanner.CreateSession]
+            to create multiplexed sessions. Don't use
+            [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions]
+            to create a multiplexed session. You can't delete or list
+            multiplexed sessions.
     """
 
     name: str = proto.Field(
@@ -244,13 +243,13 @@ class ListSessionsRequest(proto.Message):
             Filter rules are case insensitive. The fields eligible for
             filtering are:
 
-            -  ``labels.key`` where key is the name of a label
+            - ``labels.key`` where key is the name of a label
 
             Some examples of using filters are:
 
-            -  ``labels.env:*`` --> The session has the label "env".
-            -  ``labels.env:dev`` --> The session has the label "env"
-               and the value of the label contains the string "dev".
+            - ``labels.env:*`` --> The session has the label "env".
+            - ``labels.env:dev`` --> The session has the label "env" and
+              the value of the label contains the string "dev".
     """
 
     database: str = proto.Field(
@@ -322,47 +321,47 @@ class RequestOptions(proto.Message):
             Priority for the request.
         request_tag (str):
             A per-request tag which can be applied to queries or reads,
-            used for statistics collection. Both request_tag and
-            transaction_tag can be specified for a read or query that
-            belongs to a transaction. This field is ignored for requests
-            where it's not applicable (e.g. CommitRequest). Legal
-            characters for ``request_tag`` values are all printable
-            characters (ASCII 32 - 126) and the length of a request_tag
-            is limited to 50 characters. Values that exceed this limit
-            are truncated. Any leading underscore (_) characters will be
-            removed from the string.
+            used for statistics collection. Both ``request_tag`` and
+            ``transaction_tag`` can be specified for a read or query
+            that belongs to a transaction. This field is ignored for
+            requests where it's not applicable (for example,
+            ``CommitRequest``). Legal characters for ``request_tag``
+            values are all printable characters (ASCII 32 - 126) and the
+            length of a request_tag is limited to 50 characters. Values
+            that exceed this limit are truncated. Any leading underscore
+            (\_) characters are removed from the string.
         transaction_tag (str):
             A tag used for statistics collection about this transaction.
-            Both request_tag and transaction_tag can be specified for a
-            read or query that belongs to a transaction. The value of
-            transaction_tag should be the same for all requests
-            belonging to the same transaction. If this request doesn't
-            belong to any transaction, transaction_tag will be ignored.
-            Legal characters for ``transaction_tag`` values are all
-            printable characters (ASCII 32 - 126) and the length of a
-            transaction_tag is limited to 50 characters. Values that
-            exceed this limit are truncated. Any leading underscore (_)
-            characters will be removed from the string.
+            Both ``request_tag`` and ``transaction_tag`` can be
+            specified for a read or query that belongs to a transaction.
+            The value of transaction_tag should be the same for all
+            requests belonging to the same transaction. If this request
+            doesn't belong to any transaction, ``transaction_tag`` is
+            ignored. Legal characters for ``transaction_tag`` values are
+            all printable characters (ASCII 32 - 126) and the length of
+            a ``transaction_tag`` is limited to 50 characters. Values
+            that exceed this limit are truncated. Any leading underscore
+            (\_) characters are removed from the string.
     """
 
     class Priority(proto.Enum):
-        r"""The relative priority for requests. Note that priority is not
+        r"""The relative priority for requests. Note that priority isn't
         applicable for
         [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
 
-        The priority acts as a hint to the Cloud Spanner scheduler and does
-        not guarantee priority or order of execution. For example:
+        The priority acts as a hint to the Cloud Spanner scheduler and
+        doesn't guarantee priority or order of execution. For example:
 
-        -  Some parts of a write operation always execute at
-           ``PRIORITY_HIGH``, regardless of the specified priority. This may
-           cause you to see an increase in high priority workload even when
-           executing a low priority request. This can also potentially cause
-           a priority inversion where a lower priority request will be
-           fulfilled ahead of a higher priority request.
-        -  If a transaction contains multiple operations with different
-           priorities, Cloud Spanner does not guarantee to process the
-           higher priority operations first. There may be other constraints
-           to satisfy, such as order of operations.
+        - Some parts of a write operation always execute at
+          ``PRIORITY_HIGH``, regardless of the specified priority. This can
+          cause you to see an increase in high priority workload even when
+          executing a low priority request. This can also potentially cause
+          a priority inversion where a lower priority request is fulfilled
+          ahead of a higher priority request.
+        - If a transaction contains multiple operations with different
+          priorities, Cloud Spanner doesn't guarantee to process the higher
+          priority operations first. There might be other constraints to
+          satisfy, such as the order of operations.
 
         Values:
             PRIORITY_UNSPECIFIED (0):
@@ -398,11 +397,11 @@ class RequestOptions(proto.Message):
 
 
 class DirectedReadOptions(proto.Message):
-    r"""The DirectedReadOptions can be used to indicate which replicas or
-    regions should be used for non-transactional reads or queries.
+    r"""The ``DirectedReadOptions`` can be used to indicate which replicas
+    or regions should be used for non-transactional reads or queries.
 
-    DirectedReadOptions may only be specified for a read-only
-    transaction, otherwise the API will return an ``INVALID_ARGUMENT``
+    ``DirectedReadOptions`` can only be specified for a read-only
+    transaction, otherwise the API returns an ``INVALID_ARGUMENT``
     error.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -414,18 +413,18 @@ class DirectedReadOptions(proto.Message):
 
     Attributes:
         include_replicas (google.cloud.spanner_v1.types.DirectedReadOptions.IncludeReplicas):
-            Include_replicas indicates the order of replicas (as they
-            appear in this list) to process the request. If
-            auto_failover_disabled is set to true and all replicas are
-            exhausted without finding a healthy replica, Spanner will
-            wait for a replica in the list to become available, requests
-            may fail due to ``DEADLINE_EXCEEDED`` errors.
+            ``Include_replicas`` indicates the order of replicas (as
+            they appear in this list) to process the request. If
+            ``auto_failover_disabled`` is set to ``true`` and all
+            replicas are exhausted without finding a healthy replica,
+            Spanner waits for a replica in the list to become available,
+            requests might fail due to ``DEADLINE_EXCEEDED`` errors.
 
             This field is a member of `oneof`_ ``replicas``.
         exclude_replicas (google.cloud.spanner_v1.types.DirectedReadOptions.ExcludeReplicas):
-            Exclude_replicas indicates that specified replicas should be
-            excluded from serving requests. Spanner will not route
-            requests to the replicas in this list.
+            ``Exclude_replicas`` indicates that specified replicas
+            should be excluded from serving requests. Spanner doesn't
+            route requests to the replicas in this list.
 
             This field is a member of `oneof`_ ``replicas``.
     """
@@ -434,24 +433,23 @@ class DirectedReadOptions(proto.Message):
         r"""The directed read replica selector. Callers must provide one or more
         of the following fields for replica selection:
 
-        -  ``location`` - The location must be one of the regions within the
-           multi-region configuration of your database.
-        -  ``type`` - The type of the replica.
+        - ``location`` - The location must be one of the regions within the
+          multi-region configuration of your database.
+        - ``type`` - The type of the replica.
 
         Some examples of using replica_selectors are:
 
-        -  ``location:us-east1`` --> The "us-east1" replica(s) of any
-           available type will be used to process the request.
-        -  ``type:READ_ONLY`` --> The "READ_ONLY" type replica(s) in nearest
-           available location will be used to process the request.
-        -  ``location:us-east1 type:READ_ONLY`` --> The "READ_ONLY" type
-           replica(s) in location "us-east1" will be used to process the
-           request.
+        - ``location:us-east1`` --> The "us-east1" replica(s) of any
+          available type is used to process the request.
+        - ``type:READ_ONLY`` --> The "READ_ONLY" type replica(s) in the
+          nearest available location are used to process the request.
+        - ``location:us-east1 type:READ_ONLY`` --> The "READ_ONLY" type
+          replica(s) in location "us-east1" is used to process the request.
 
         Attributes:
             location (str):
                 The location or region of the serving
-                requests, e.g. "us-east1".
+                requests, for example, "us-east1".
             type_ (google.cloud.spanner_v1.types.DirectedReadOptions.ReplicaSelection.Type):
                 The type of replica.
         """
@@ -484,18 +482,18 @@ class DirectedReadOptions(proto.Message):
         )
 
     class IncludeReplicas(proto.Message):
-        r"""An IncludeReplicas contains a repeated set of
-        ReplicaSelection which indicates the order in which replicas
+        r"""An ``IncludeReplicas`` contains a repeated set of
+        ``ReplicaSelection`` which indicates the order in which replicas
         should be considered.
 
         Attributes:
             replica_selections (MutableSequence[google.cloud.spanner_v1.types.DirectedReadOptions.ReplicaSelection]):
                 The directed read replica selector.
             auto_failover_disabled (bool):
-                If true, Spanner will not route requests to a replica
-                outside the include_replicas list when all of the specified
-                replicas are unavailable or unhealthy. Default value is
-                ``false``.
+                If ``true``, Spanner doesn't route requests to a replica
+                outside the <``include_replicas`` list when all of the
+                specified replicas are unavailable or unhealthy. Default
+                value is ``false``.
         """
 
         replica_selections: MutableSequence[
@@ -559,7 +557,7 @@ class ExecuteSqlRequest(proto.Message):
 
             Standard DML statements require a read-write
             transaction. To protect against replays,
-            single-use transactions are not supported.  The
+            single-use transactions are not supported. The
             caller must either supply an existing
             transaction ID or begin a new transaction.
 
@@ -583,16 +581,16 @@ class ExecuteSqlRequest(proto.Message):
 
             ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
-            It is an error to execute a SQL statement with unbound
+            It's an error to execute a SQL statement with unbound
             parameters.
         param_types (MutableMapping[str, google.cloud.spanner_v1.types.Type]):
-            It is not always possible for Cloud Spanner to infer the
+            It isn't always possible for Cloud Spanner to infer the
             right SQL type from a JSON value. For example, values of
             type ``BYTES`` and values of type ``STRING`` both appear in
             [params][google.spanner.v1.ExecuteSqlRequest.params] as JSON
             strings.
 
-            In these cases, ``param_types`` can be used to specify the
+            In these cases, you can use ``param_types`` to specify the
             exact SQL type for some or all of the SQL statement
             parameters. See the definition of
             [Type][google.spanner.v1.Type] for more information about
@@ -615,24 +613,23 @@ class ExecuteSqlRequest(proto.Message):
             can only be set to
             [QueryMode.NORMAL][google.spanner.v1.ExecuteSqlRequest.QueryMode.NORMAL].
         partition_token (bytes):
-            If present, results will be restricted to the specified
-            partition previously created using PartitionQuery(). There
+            If present, results are restricted to the specified
+            partition previously created using ``PartitionQuery``. There
             must be an exact match for the values of fields common to
-            this message and the PartitionQueryRequest message used to
-            create this partition_token.
+            this message and the ``PartitionQueryRequest`` message used
+            to create this ``partition_token``.
         seqno (int):
             A per-transaction sequence number used to
             identify this request. This field makes each
             request idempotent such that if the request is
-            received multiple times, at most one will
-            succeed.
+            received multiple times, at most one succeeds.
 
             The sequence number must be monotonically
             increasing within the transaction. If a request
             arrives for the first time with an out-of-order
-            sequence number, the transaction may be aborted.
-            Replays of previously handled requests will
-            yield the same response as the first execution.
+            sequence number, the transaction can be aborted.
+            Replays of previously handled requests yield the
+            same response as the first execution.
 
             Required for DML statements. Ignored for
             queries.
@@ -648,23 +645,21 @@ class ExecuteSqlRequest(proto.Message):
             ``true``, the request is executed with Spanner Data Boost
             independent compute resources.
 
-            If the field is set to ``true`` but the request does not set
+            If the field is set to ``true`` but the request doesn't set
             ``partition_token``, the API returns an ``INVALID_ARGUMENT``
             error.
         last_statement (bool):
-            Optional. If set to true, this statement
-            marks the end of the transaction. The
-            transaction should be committed or aborted after
-            this statement executes, and attempts to execute
-            any other requests against this transaction
-            (including reads and queries) will be rejected.
+            Optional. If set to ``true``, this statement marks the end
+            of the transaction. After this statement executes, you must
+            commit or abort the transaction. Attempts to execute any
+            other requests against this transaction (including reads and
+            queries) are rejected.
 
-            For DML statements, setting this option may
-            cause some error reporting to be deferred until
-            commit time (e.g. validation of unique
-            constraints). Given this, successful execution
-            of a DML statement should not be assumed until a
-            subsequent Commit call completes successfully.
+            For DML statements, setting this option might cause some
+            error reporting to be deferred until commit time (for
+            example, validation of unique constraints). Given this,
+            successful execution of a DML statement shouldn't be assumed
+            until a subsequent ``Commit`` call completes successfully.
     """
 
     class QueryMode(proto.Enum):
@@ -683,8 +678,8 @@ class ExecuteSqlRequest(proto.Message):
                 execution statistics, operator level execution
                 statistics along with the results. This has a
                 performance overhead compared to the other
-                modes. It is not recommended to use this mode
-                for production traffic.
+                modes. It isn't recommended to use this mode for
+                production traffic.
             WITH_STATS (3):
                 This mode returns the overall (but not
                 operator-level) execution statistics along with
@@ -718,7 +713,7 @@ class ExecuteSqlRequest(proto.Message):
                 default optimizer version for query execution.
 
                 The list of supported optimizer versions can be queried from
-                SPANNER_SYS.SUPPORTED_OPTIMIZER_VERSIONS.
+                ``SPANNER_SYS.SUPPORTED_OPTIMIZER_VERSIONS``.
 
                 Executing a SQL statement with an invalid optimizer version
                 fails with an ``INVALID_ARGUMENT`` error.
@@ -740,13 +735,13 @@ class ExecuteSqlRequest(proto.Message):
                 use the latest generated statistics package. If not
                 specified, Cloud Spanner uses the statistics package set at
                 the database level options, or the latest package if the
-                database option is not set.
+                database option isn't set.
 
                 The statistics package requested by the query has to be
                 exempt from garbage collection. This can be achieved with
                 the following DDL statement:
 
-                ::
+                .. code:: sql
 
                    ALTER STATISTICS <package_name> SET OPTIONS (allow_gc=false)
 
@@ -861,31 +856,29 @@ class ExecuteBatchDmlRequest(proto.Message):
             Required. A per-transaction sequence number
             used to identify this request. This field makes
             each request idempotent such that if the request
-            is received multiple times, at most one will
-            succeed.
+            is received multiple times, at most one
+            succeeds.
 
             The sequence number must be monotonically
             increasing within the transaction. If a request
             arrives for the first time with an out-of-order
-            sequence number, the transaction may be aborted.
-            Replays of previously handled requests will
+            sequence number, the transaction might be
+            aborted. Replays of previously handled requests
             yield the same response as the first execution.
         request_options (google.cloud.spanner_v1.types.RequestOptions):
             Common options for this request.
         last_statements (bool):
-            Optional. If set to true, this request marks
-            the end of the transaction. The transaction
-            should be committed or aborted after these
-            statements execute, and attempts to execute any
-            other requests against this transaction
-            (including reads and queries) will be rejected.
+            Optional. If set to ``true``, this request marks the end of
+            the transaction. After these statements execute, you must
+            commit or abort the transaction. Attempts to execute any
+            other requests against this transaction (including reads and
+            queries) are rejected.
 
-            Setting this option may cause some error
-            reporting to be deferred until commit time (e.g.
-            validation of unique constraints). Given this,
-            successful execution of statements should not be
-            assumed until a subsequent Commit call completes
-            successfully.
+            Setting this option might cause some error reporting to be
+            deferred until commit time (for example, validation of
+            unique constraints). Given this, successful execution of
+            statements shouldn't be assumed until a subsequent
+            ``Commit`` call completes successfully.
     """
 
     class Statement(proto.Message):
@@ -909,10 +902,10 @@ class ExecuteBatchDmlRequest(proto.Message):
 
                 ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
-                It is an error to execute a SQL statement with unbound
+                It's an error to execute a SQL statement with unbound
                 parameters.
             param_types (MutableMapping[str, google.cloud.spanner_v1.types.Type]):
-                It is not always possible for Cloud Spanner to infer the
+                It isn't always possible for Cloud Spanner to infer the
                 right SQL type from a JSON value. For example, values of
                 type ``BYTES`` and values of type ``STRING`` both appear in
                 [params][google.spanner.v1.ExecuteBatchDmlRequest.Statement.params]
@@ -991,19 +984,18 @@ class ExecuteBatchDmlResponse(proto.Message):
 
     Example 1:
 
-    -  Request: 5 DML statements, all executed successfully.
-    -  Response: 5 [ResultSet][google.spanner.v1.ResultSet] messages,
-       with the status ``OK``.
+    - Request: 5 DML statements, all executed successfully.
+    - Response: 5 [ResultSet][google.spanner.v1.ResultSet] messages,
+      with the status ``OK``.
 
     Example 2:
 
-    -  Request: 5 DML statements. The third statement has a syntax
-       error.
-    -  Response: 2 [ResultSet][google.spanner.v1.ResultSet] messages,
-       and a syntax error (``INVALID_ARGUMENT``) status. The number of
-       [ResultSet][google.spanner.v1.ResultSet] messages indicates that
-       the third statement failed, and the fourth and fifth statements
-       were not executed.
+    - Request: 5 DML statements. The third statement has a syntax error.
+    - Response: 2 [ResultSet][google.spanner.v1.ResultSet] messages, and
+      a syntax error (``INVALID_ARGUMENT``) status. The number of
+      [ResultSet][google.spanner.v1.ResultSet] messages indicates that
+      the third statement failed, and the fourth and fifth statements
+      were not executed.
 
     Attributes:
         result_sets (MutableSequence[google.cloud.spanner_v1.types.ResultSet]):
@@ -1024,13 +1016,12 @@ class ExecuteBatchDmlResponse(proto.Message):
             is ``OK``. Otherwise, the error status of the first failed
             statement.
         precommit_token (google.cloud.spanner_v1.types.MultiplexedSessionPrecommitToken):
-            Optional. A precommit token will be included if the
-            read-write transaction is on a multiplexed session. The
-            precommit token with the highest sequence number from this
-            transaction attempt should be passed to the
+            Optional. A precommit token is included if the read-write
+            transaction is on a multiplexed session. Pass the precommit
+            token with the highest sequence number from this transaction
+            attempt should be passed to the
             [Commit][google.spanner.v1.Spanner.Commit] request for this
-            transaction. This feature is not yet supported and will
-            result in an UNIMPLEMENTED error.
+            transaction.
     """
 
     result_sets: MutableSequence[result_set.ResultSet] = proto.RepeatedField(
@@ -1051,28 +1042,28 @@ class ExecuteBatchDmlResponse(proto.Message):
 
 
 class PartitionOptions(proto.Message):
-    r"""Options for a PartitionQueryRequest and
-    PartitionReadRequest.
+    r"""Options for a ``PartitionQueryRequest`` and
+    ``PartitionReadRequest``.
 
     Attributes:
         partition_size_bytes (int):
-            **Note:** This hint is currently ignored by PartitionQuery
-            and PartitionRead requests.
+            **Note:** This hint is currently ignored by
+            ``PartitionQuery`` and ``PartitionRead`` requests.
 
             The desired data size for each partition generated. The
             default for this option is currently 1 GiB. This is only a
-            hint. The actual size of each partition may be smaller or
+            hint. The actual size of each partition can be smaller or
             larger than this size request.
         max_partitions (int):
-            **Note:** This hint is currently ignored by PartitionQuery
-            and PartitionRead requests.
+            **Note:** This hint is currently ignored by
+            ``PartitionQuery`` and ``PartitionRead`` requests.
 
             The desired maximum number of partitions to return. For
-            example, this may be set to the number of workers available.
-            The default for this option is currently 10,000. The maximum
-            value is currently 200,000. This is only a hint. The actual
-            number of partitions returned may be smaller or larger than
-            this maximum count request.
+            example, this might be set to the number of workers
+            available. The default for this option is currently 10,000.
+            The maximum value is currently 200,000. This is only a hint.
+            The actual number of partitions returned can be smaller or
+            larger than this maximum count request.
     """
 
     partition_size_bytes: int = proto.Field(
@@ -1094,23 +1085,23 @@ class PartitionQueryRequest(proto.Message):
             Required. The session used to create the
             partitions.
         transaction (google.cloud.spanner_v1.types.TransactionSelector):
-            Read only snapshot transactions are
-            supported, read/write and single use
+            Read-only snapshot transactions are
+            supported, read and write and single-use
             transactions are not.
         sql (str):
             Required. The query request to generate partitions for. The
-            request will fail if the query is not root partitionable.
-            For a query to be root partitionable, it needs to satisfy a
-            few conditions. For example, if the query execution plan
+            request fails if the query isn't root partitionable. For a
+            query to be root partitionable, it needs to satisfy a few
+            conditions. For example, if the query execution plan
             contains a distributed union operator, then it must be the
             first operator in the plan. For more information about other
             conditions, see `Read data in
             parallel <https://cloud.google.com/spanner/docs/reads#read_data_in_parallel>`__.
 
             The query request must not contain DML commands, such as
-            INSERT, UPDATE, or DELETE. Use
-            [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql]
-            with a PartitionedDml transaction for large,
+            ``INSERT``, ``UPDATE``, or ``DELETE``. Use
+            [``ExecuteStreamingSql``][google.spanner.v1.Spanner.ExecuteStreamingSql]
+            with a ``PartitionedDml`` transaction for large,
             partition-friendly DML operations.
         params (google.protobuf.struct_pb2.Struct):
             Parameter names and values that bind to placeholders in the
@@ -1127,10 +1118,10 @@ class PartitionQueryRequest(proto.Message):
 
             ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
-            It is an error to execute a SQL statement with unbound
+            It's an error to execute a SQL statement with unbound
             parameters.
         param_types (MutableMapping[str, google.cloud.spanner_v1.types.Type]):
-            It is not always possible for Cloud Spanner to infer the
+            It isn't always possible for Cloud Spanner to infer the
             right SQL type from a JSON value. For example, values of
             type ``BYTES`` and values of type ``STRING`` both appear in
             [params][google.spanner.v1.PartitionQueryRequest.params] as
@@ -1217,8 +1208,8 @@ class PartitionReadRequest(proto.Message):
             instead names index keys in
             [index][google.spanner.v1.PartitionReadRequest.index].
 
-            It is not an error for the ``key_set`` to name rows that do
-            not exist in the database. Read yields nothing for
+            It isn't an error for the ``key_set`` to name rows that
+            don't exist in the database. Read yields nothing for
             nonexistent rows.
         partition_options (google.cloud.spanner_v1.types.PartitionOptions):
             Additional options that affect how many
@@ -1264,10 +1255,9 @@ class Partition(proto.Message):
 
     Attributes:
         partition_token (bytes):
-            This token can be passed to Read,
-            StreamingRead, ExecuteSql, or
-            ExecuteStreamingSql requests to restrict the
-            results to those identified by this partition
+            This token can be passed to ``Read``, ``StreamingRead``,
+            ``ExecuteSql``, or ``ExecuteStreamingSql`` requests to
+            restrict the results to those identified by this partition
             token.
     """
 
@@ -1347,16 +1337,15 @@ class ReadRequest(proto.Message):
             [index][google.spanner.v1.ReadRequest.index] is non-empty).
             If the
             [partition_token][google.spanner.v1.ReadRequest.partition_token]
-            field is not empty, rows will be yielded in an unspecified
-            order.
+            field isn't empty, rows are yielded in an unspecified order.
 
-            It is not an error for the ``key_set`` to name rows that do
-            not exist in the database. Read yields nothing for
+            It isn't an error for the ``key_set`` to name rows that
+            don't exist in the database. Read yields nothing for
             nonexistent rows.
         limit (int):
             If greater than zero, only the first ``limit`` rows are
             yielded. If ``limit`` is zero, the default is no limit. A
-            limit cannot be specified if ``partition_token`` is set.
+            limit can't be specified if ``partition_token`` is set.
         resume_token (bytes):
             If this request is resuming a previously interrupted read,
             ``resume_token`` should be copied from the last
@@ -1366,8 +1355,8 @@ class ReadRequest(proto.Message):
             request parameters must exactly match the request that
             yielded this token.
         partition_token (bytes):
-            If present, results will be restricted to the specified
-            partition previously created using PartitionRead(). There
+            If present, results are restricted to the specified
+            partition previously created using ``PartitionRead``. There
             must be an exact match for the values of fields common to
             this message and the PartitionReadRequest message used to
             create this partition_token.
@@ -1380,19 +1369,19 @@ class ReadRequest(proto.Message):
             ``true``, the request is executed with Spanner Data Boost
             independent compute resources.
 
-            If the field is set to ``true`` but the request does not set
+            If the field is set to ``true`` but the request doesn't set
             ``partition_token``, the API returns an ``INVALID_ARGUMENT``
             error.
         order_by (google.cloud.spanner_v1.types.ReadRequest.OrderBy):
             Optional. Order for the returned rows.
 
-            By default, Spanner will return result rows in primary key
-            order except for PartitionRead requests. For applications
-            that do not require rows to be returned in primary key
+            By default, Spanner returns result rows in primary key order
+            except for PartitionRead requests. For applications that
+            don't require rows to be returned in primary key
             (``ORDER_BY_PRIMARY_KEY``) order, setting
             ``ORDER_BY_NO_ORDER`` option allows Spanner to optimize row
             retrieval, resulting in lower latencies in certain cases
-            (e.g. bulk point lookups).
+            (for example, bulk point lookups).
         lock_hint (google.cloud.spanner_v1.types.ReadRequest.LockHint):
             Optional. Lock Hint for the request, it can
             only be used with read-write transactions.
@@ -1406,12 +1395,13 @@ class ReadRequest(proto.Message):
             ORDER_BY_UNSPECIFIED (0):
                 Default value.
 
-                ORDER_BY_UNSPECIFIED is equivalent to ORDER_BY_PRIMARY_KEY.
+                ``ORDER_BY_UNSPECIFIED`` is equivalent to
+                ``ORDER_BY_PRIMARY_KEY``.
             ORDER_BY_PRIMARY_KEY (1):
                 Read rows are returned in primary key order.
 
                 In the event that this option is used in conjunction with
-                the ``partition_token`` field, the API will return an
+                the ``partition_token`` field, the API returns an
                 ``INVALID_ARGUMENT`` error.
             ORDER_BY_NO_ORDER (2):
                 Read rows are returned in any order.
@@ -1427,7 +1417,8 @@ class ReadRequest(proto.Message):
             LOCK_HINT_UNSPECIFIED (0):
                 Default value.
 
-                LOCK_HINT_UNSPECIFIED is equivalent to LOCK_HINT_SHARED.
+                ``LOCK_HINT_UNSPECIFIED`` is equivalent to
+                ``LOCK_HINT_SHARED``.
             LOCK_HINT_SHARED (1):
                 Acquire shared locks.
 
@@ -1460,9 +1451,9 @@ class ReadRequest(proto.Message):
                 turn to acquire the lock and avoids getting into deadlock
                 situations.
 
-                Because the exclusive lock hint is just a hint, it should
-                not be considered equivalent to a mutex. In other words, you
-                should not use Spanner exclusive locks as a mutual exclusion
+                Because the exclusive lock hint is just a hint, it shouldn't
+                be considered equivalent to a mutex. In other words, you
+                shouldn't use Spanner exclusive locks as a mutual exclusion
                 mechanism for the execution of code outside of Spanner.
 
                 **Note:** Request exclusive locks judiciously because they
@@ -1553,19 +1544,17 @@ class BeginTransactionRequest(proto.Message):
             Required. Options for the new transaction.
         request_options (google.cloud.spanner_v1.types.RequestOptions):
             Common options for this request. Priority is ignored for
-            this request. Setting the priority in this request_options
-            struct will not do anything. To set the priority for a
-            transaction, set it on the reads and writes that are part of
-            this transaction instead.
+            this request. Setting the priority in this
+            ``request_options`` struct doesn't do anything. To set the
+            priority for a transaction, set it on the reads and writes
+            that are part of this transaction instead.
         mutation_key (google.cloud.spanner_v1.types.Mutation):
             Optional. Required for read-write
             transactions on a multiplexed session that
-            commit mutations but do not perform any reads or
-            queries. Clients should randomly select one of
-            the mutations from the mutation set and send it
-            as a part of this request.
-            This feature is not yet supported and will
-            result in an UNIMPLEMENTED error.
+            commit mutations but don't perform any reads or
+            queries. You must randomly select one of the
+            mutations from the mutation set and send it as a
+            part of this request.
     """
 
     session: str = proto.Field(
@@ -1613,8 +1602,8 @@ class CommitRequest(proto.Message):
             with a temporary transaction is non-idempotent. That is, if
             the ``CommitRequest`` is sent to Cloud Spanner more than
             once (for instance, due to retries in the application, or in
-            the transport library), it is possible that the mutations
-            are executed more than once. If this is undesirable, use
+            the transport library), it's possible that the mutations are
+            executed more than once. If this is undesirable, use
             [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction]
             and [Commit][google.spanner.v1.Spanner.Commit] instead.
 
@@ -1625,29 +1614,26 @@ class CommitRequest(proto.Message):
             atomically, in the order they appear in this
             list.
         return_commit_stats (bool):
-            If ``true``, then statistics related to the transaction will
-            be included in the
+            If ``true``, then statistics related to the transaction is
+            included in the
             [CommitResponse][google.spanner.v1.CommitResponse.commit_stats].
             Default value is ``false``.
         max_commit_delay (google.protobuf.duration_pb2.Duration):
             Optional. The amount of latency this request
-            is willing to incur in order to improve
-            throughput. If this field is not set, Spanner
+            is configured to incur in order to improve
+            throughput. If this field isn't set, Spanner
             assumes requests are relatively latency
             sensitive and automatically determines an
-            appropriate delay time. You can specify a
-            batching delay value between 0 and 500 ms.
+            appropriate delay time. You can specify a commit
+            delay value between 0 and 500 ms.
         request_options (google.cloud.spanner_v1.types.RequestOptions):
             Common options for this request.
         precommit_token (google.cloud.spanner_v1.types.MultiplexedSessionPrecommitToken):
-            Optional. If the read-write transaction was
-            executed on a multiplexed session, the precommit
-            token with the highest sequence number received
-            in this transaction attempt, should be included
-            here. Failing to do so will result in a
-            FailedPrecondition error.
-            This feature is not yet supported and will
-            result in an UNIMPLEMENTED error.
+            Optional. If the read-write transaction was executed on a
+            multiplexed session, then you must include the precommit
+            token with the highest sequence number received in this
+            transaction attempt. Failing to do so results in a
+            ``FailedPrecondition`` error.
     """
 
     session: str = proto.Field(
@@ -1725,22 +1711,11 @@ class BatchWriteRequest(proto.Message):
             Required. The groups of mutations to be
             applied.
         exclude_txn_from_change_streams (bool):
-            Optional. When ``exclude_txn_from_change_streams`` is set to
-            ``true``:
-
-            -  Mutations from all transactions in this batch write
-               operation will not be recorded in change streams with DDL
-               option ``allow_txn_exclusion=true`` that are tracking
-               columns modified by these transactions.
-            -  Mutations from all transactions in this batch write
-               operation will be recorded in change streams with DDL
-               option ``allow_txn_exclusion=false or not set`` that are
-               tracking columns modified by these transactions.
-
-            When ``exclude_txn_from_change_streams`` is set to ``false``
-            or not set, mutations from all transactions in this batch
-            write operation will be recorded in all change streams that
-            are tracking columns modified by these transactions.
+            Optional. If you don't set the
+            ``exclude_txn_from_change_streams`` option or if it's set to
+            ``false``, then any change streams monitoring columns
+            modified by transactions will capture the updates made
+            within that transaction.
     """
 
     class MutationGroup(proto.Message):

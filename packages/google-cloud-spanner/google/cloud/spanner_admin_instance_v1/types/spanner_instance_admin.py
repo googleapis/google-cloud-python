@@ -99,28 +99,28 @@ class ReplicaInfo(proto.Message):
                 Read-write replicas support both reads and writes. These
                 replicas:
 
-                -  Maintain a full copy of your data.
-                -  Serve reads.
-                -  Can vote whether to commit a write.
-                -  Participate in leadership election.
-                -  Are eligible to become a leader.
+                - Maintain a full copy of your data.
+                - Serve reads.
+                - Can vote whether to commit a write.
+                - Participate in leadership election.
+                - Are eligible to become a leader.
             READ_ONLY (2):
                 Read-only replicas only support reads (not writes).
                 Read-only replicas:
 
-                -  Maintain a full copy of your data.
-                -  Serve reads.
-                -  Do not participate in voting to commit writes.
-                -  Are not eligible to become a leader.
+                - Maintain a full copy of your data.
+                - Serve reads.
+                - Do not participate in voting to commit writes.
+                - Are not eligible to become a leader.
             WITNESS (3):
                 Witness replicas don't support reads but do participate in
                 voting to commit writes. Witness replicas:
 
-                -  Do not maintain a full copy of data.
-                -  Do not serve reads.
-                -  Vote whether to commit writes.
-                -  Participate in leader election but are not eligible to
-                   become leader.
+                - Do not maintain a full copy of data.
+                - Do not serve reads.
+                - Vote whether to commit writes.
+                - Participate in leader election but are not eligible to
+                  become leader.
         """
         TYPE_UNSPECIFIED = 0
         READ_WRITE = 1
@@ -190,14 +190,14 @@ class InstanceConfig(proto.Message):
             management rules (e.g. route, firewall, load balancing,
             etc.).
 
-            -  Label keys must be between 1 and 63 characters long and
-               must conform to the following regular expression:
-               ``[a-z][a-z0-9_-]{0,62}``.
-            -  Label values must be between 0 and 63 characters long and
-               must conform to the regular expression
-               ``[a-z0-9_-]{0,63}``.
-            -  No more than 64 labels can be associated with a given
-               resource.
+            - Label keys must be between 1 and 63 characters long and
+              must conform to the following regular expression:
+              ``[a-z][a-z0-9_-]{0,62}``.
+            - Label values must be between 0 and 63 characters long and
+              must conform to the regular expression
+              ``[a-z0-9_-]{0,63}``.
+            - No more than 64 labels can be associated with a given
+              resource.
 
             See https://goo.gl/xmQnxf for more information on and
             examples of labels.
@@ -725,14 +725,14 @@ class Instance(proto.Message):
             management rules (e.g. route, firewall, load balancing,
             etc.).
 
-            -  Label keys must be between 1 and 63 characters long and
-               must conform to the following regular expression:
-               ``[a-z][a-z0-9_-]{0,62}``.
-            -  Label values must be between 0 and 63 characters long and
-               must conform to the regular expression
-               ``[a-z0-9_-]{0,63}``.
-            -  No more than 64 labels can be associated with a given
-               resource.
+            - Label keys must be between 1 and 63 characters long and
+              must conform to the following regular expression:
+              ``[a-z][a-z0-9_-]{0,62}``.
+            - Label values must be between 0 and 63 characters long and
+              must conform to the regular expression
+              ``[a-z0-9_-]{0,63}``.
+            - No more than 64 labels can be associated with a given
+              resource.
 
             See https://goo.gl/xmQnxf for more information on and
             examples of labels.
@@ -1169,21 +1169,21 @@ class ListInstanceConfigOperationsRequest(proto.Message):
             The following fields in the Operation are eligible for
             filtering:
 
-            -  ``name`` - The name of the long-running operation
-            -  ``done`` - False if the operation is in progress, else
-               true.
-            -  ``metadata.@type`` - the type of metadata. For example,
-               the type string for
-               [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata]
-               is
-               ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata``.
-            -  ``metadata.<field_name>`` - any field in metadata.value.
-               ``metadata.@type`` must be specified first, if filtering
-               on metadata fields.
-            -  ``error`` - Error associated with the long-running
-               operation.
-            -  ``response.@type`` - the type of response.
-            -  ``response.<field_name>`` - any field in response.value.
+            - ``name`` - The name of the long-running operation
+            - ``done`` - False if the operation is in progress, else
+              true.
+            - ``metadata.@type`` - the type of metadata. For example,
+              the type string for
+              [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata]
+              is
+              ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata``.
+            - ``metadata.<field_name>`` - any field in metadata.value.
+              ``metadata.@type`` must be specified first, if filtering
+              on metadata fields.
+            - ``error`` - Error associated with the long-running
+              operation.
+            - ``response.@type`` - the type of response.
+            - ``response.<field_name>`` - any field in response.value.
 
             You can combine multiple expressions by enclosing each
             expression in parentheses. By default, expressions are
@@ -1192,19 +1192,19 @@ class ListInstanceConfigOperationsRequest(proto.Message):
 
             Here are a few examples:
 
-            -  ``done:true`` - The operation is complete.
-            -  ``(metadata.@type=``
-               ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata) AND``
-               ``(metadata.instance_config.name:custom-config) AND``
-               ``(metadata.progress.start_time < \"2021-03-28T14:50:00Z\") AND``
-               ``(error:*)`` - Return operations where:
+            - ``done:true`` - The operation is complete.
+            - ``(metadata.@type=``
+              ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata) AND``
+              ``(metadata.instance_config.name:custom-config) AND``
+              ``(metadata.progress.start_time < \"2021-03-28T14:50:00Z\") AND``
+              ``(error:*)`` - Return operations where:
 
-               -  The operation's metadata type is
-                  [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata].
-               -  The instance configuration name contains
-                  "custom-config".
-               -  The operation started before 2021-03-28T14:50:00Z.
-               -  The operation resulted in an error.
+              - The operation's metadata type is
+                [CreateInstanceConfigMetadata][google.spanner.admin.instance.v1.CreateInstanceConfigMetadata].
+              - The instance configuration name contains
+                "custom-config".
+              - The operation started before 2021-03-28T14:50:00Z.
+              - The operation resulted in an error.
         page_size (int):
             Number of operations to be returned in the
             response. If 0 or less, defaults to the server's
@@ -1350,23 +1350,23 @@ class ListInstancesRequest(proto.Message):
             Filter rules are case insensitive. The fields eligible for
             filtering are:
 
-            -  ``name``
-            -  ``display_name``
-            -  ``labels.key`` where key is the name of a label
+            - ``name``
+            - ``display_name``
+            - ``labels.key`` where key is the name of a label
 
             Some examples of using filters are:
 
-            -  ``name:*`` --> The instance has a name.
-            -  ``name:Howl`` --> The instance's name contains the string
-               "howl".
-            -  ``name:HOWL`` --> Equivalent to above.
-            -  ``NAME:howl`` --> Equivalent to above.
-            -  ``labels.env:*`` --> The instance has the label "env".
-            -  ``labels.env:dev`` --> The instance has the label "env"
-               and the value of the label contains the string "dev".
-            -  ``name:howl labels.env:dev`` --> The instance's name
-               contains "howl" and it has the label "env" with its value
-               containing "dev".
+            - ``name:*`` --> The instance has a name.
+            - ``name:Howl`` --> The instance's name contains the string
+              "howl".
+            - ``name:HOWL`` --> Equivalent to above.
+            - ``NAME:howl`` --> Equivalent to above.
+            - ``labels.env:*`` --> The instance has the label "env".
+            - ``labels.env:dev`` --> The instance has the label "env"
+              and the value of the label contains the string "dev".
+            - ``name:howl labels.env:dev`` --> The instance's name
+              contains "howl" and it has the label "env" with its value
+              containing "dev".
         instance_deadline (google.protobuf.timestamp_pb2.Timestamp):
             Deadline used while retrieving metadata for instances.
             Instances whose metadata cannot be retrieved within this
@@ -2185,21 +2185,21 @@ class ListInstancePartitionOperationsRequest(proto.Message):
             The following fields in the Operation are eligible for
             filtering:
 
-            -  ``name`` - The name of the long-running operation
-            -  ``done`` - False if the operation is in progress, else
-               true.
-            -  ``metadata.@type`` - the type of metadata. For example,
-               the type string for
-               [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata]
-               is
-               ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstancePartitionMetadata``.
-            -  ``metadata.<field_name>`` - any field in metadata.value.
-               ``metadata.@type`` must be specified first, if filtering
-               on metadata fields.
-            -  ``error`` - Error associated with the long-running
-               operation.
-            -  ``response.@type`` - the type of response.
-            -  ``response.<field_name>`` - any field in response.value.
+            - ``name`` - The name of the long-running operation
+            - ``done`` - False if the operation is in progress, else
+              true.
+            - ``metadata.@type`` - the type of metadata. For example,
+              the type string for
+              [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata]
+              is
+              ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstancePartitionMetadata``.
+            - ``metadata.<field_name>`` - any field in metadata.value.
+              ``metadata.@type`` must be specified first, if filtering
+              on metadata fields.
+            - ``error`` - Error associated with the long-running
+              operation.
+            - ``response.@type`` - the type of response.
+            - ``response.<field_name>`` - any field in response.value.
 
             You can combine multiple expressions by enclosing each
             expression in parentheses. By default, expressions are
@@ -2208,19 +2208,19 @@ class ListInstancePartitionOperationsRequest(proto.Message):
 
             Here are a few examples:
 
-            -  ``done:true`` - The operation is complete.
-            -  ``(metadata.@type=``
-               ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstancePartitionMetadata) AND``
-               ``(metadata.instance_partition.name:custom-instance-partition) AND``
-               ``(metadata.start_time < \"2021-03-28T14:50:00Z\") AND``
-               ``(error:*)`` - Return operations where:
+            - ``done:true`` - The operation is complete.
+            - ``(metadata.@type=``
+              ``type.googleapis.com/google.spanner.admin.instance.v1.CreateInstancePartitionMetadata) AND``
+              ``(metadata.instance_partition.name:custom-instance-partition) AND``
+              ``(metadata.start_time < \"2021-03-28T14:50:00Z\") AND``
+              ``(error:*)`` - Return operations where:
 
-               -  The operation's metadata type is
-                  [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata].
-               -  The instance partition name contains
-                  "custom-instance-partition".
-               -  The operation started before 2021-03-28T14:50:00Z.
-               -  The operation resulted in an error.
+              - The operation's metadata type is
+                [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata].
+              - The instance partition name contains
+                "custom-instance-partition".
+              - The operation started before 2021-03-28T14:50:00Z.
+              - The operation resulted in an error.
         page_size (int):
             Optional. Number of operations to be returned
             in the response. If 0 or less, defaults to the

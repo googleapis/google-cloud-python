@@ -132,10 +132,10 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
 
     The Cloud Spanner Database Admin API can be used to:
 
-    -  create, drop, and list databases
-    -  update the schema of pre-existing databases
-    -  create, delete, copy and list backups for a database
-    -  restore a database from an existing backup
+    - create, drop, and list databases
+    - update the schema of pre-existing databases
+    - create, delete, copy and list backups for a database
+    - restore a database from an existing backup
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -475,26 +475,26 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
 
         While the operation is pending:
 
-        -  The database's
-           [reconciling][google.spanner.admin.database.v1.Database.reconciling]
-           field is set to true.
-        -  Cancelling the operation is best-effort. If the cancellation
-           succeeds, the operation metadata's
-           [cancel_time][google.spanner.admin.database.v1.UpdateDatabaseMetadata.cancel_time]
-           is set, the updates are reverted, and the operation
-           terminates with a ``CANCELLED`` status.
-        -  New UpdateDatabase requests will return a
-           ``FAILED_PRECONDITION`` error until the pending operation is
-           done (returns successfully or with error).
-        -  Reading the database via the API continues to give the
-           pre-request values.
+        - The database's
+          [reconciling][google.spanner.admin.database.v1.Database.reconciling]
+          field is set to true.
+        - Cancelling the operation is best-effort. If the cancellation
+          succeeds, the operation metadata's
+          [cancel_time][google.spanner.admin.database.v1.UpdateDatabaseMetadata.cancel_time]
+          is set, the updates are reverted, and the operation terminates
+          with a ``CANCELLED`` status.
+        - New UpdateDatabase requests will return a
+          ``FAILED_PRECONDITION`` error until the pending operation is
+          done (returns successfully or with error).
+        - Reading the database via the API continues to give the
+          pre-request values.
 
         Upon completion of the returned operation:
 
-        -  The new values are in effect and readable via the API.
-        -  The database's
-           [reconciling][google.spanner.admin.database.v1.Database.reconciling]
-           field becomes false.
+        - The new values are in effect and readable via the API.
+        - The database's
+          [reconciling][google.spanner.admin.database.v1.Database.reconciling]
+          field becomes false.
 
         The returned [long-running
         operation][google.longrunning.Operation] will have a name of the
