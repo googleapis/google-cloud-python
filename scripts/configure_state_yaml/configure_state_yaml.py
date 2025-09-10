@@ -46,7 +46,7 @@ def configure_state_yaml() -> None:
 
     state_dict[
         "image"
-    ] = "us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-dev/python-librarian-generator:latest"
+    ] = "us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest"
     state_dict["libraries"] = []
     for package_name in packages_to_onboard["packages_to_onboard"]:
         package_path = Path(PACKAGES_DIR / package_name).resolve()
@@ -79,6 +79,8 @@ def configure_state_yaml() -> None:
                     "gapic_version.py",
                     "samples/generated_samples/snippet_metadata_",
                     "scripts/client-post-processing",
+                    "samples/snippets/README.rst",
+                    "tests/system",
                 ],
                 "remove_regex": [f"packages/{package_path.name}"],
                 "tag_format": "{id}-v{version}",
