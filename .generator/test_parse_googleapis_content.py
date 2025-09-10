@@ -22,14 +22,16 @@ BUILD_BAZEL_PATH = f"{GENERATOR_DIR}/test-resources/librarian/BUILD.bazel"
 
 def test_parse_build_bazel():
     expected_result = {
-     'language_proto': {'name': 'language_proto'},
-     'language_py_gapic': {'deps': [],
-                           'grpc_service_config': 'language_grpc_service_config.json',
-                           'name': 'language_py_gapic',
-                           'rest_numeric_enums': True,
-                           'service_yaml': 'language_v1.yaml',
-                           'srcs': [':language_proto'],
-                           'transport': 'grpc+rest'},
+        "language_proto": {"name": "language_proto"},
+        "language_py_gapic": {
+            "deps": [],
+            "grpc_service_config": "language_grpc_service_config.json",
+            "name": "language_py_gapic",
+            "rest_numeric_enums": True,
+            "service_yaml": "language_v1.yaml",
+            "srcs": [":language_proto"],
+            "transport": "grpc+rest",
+        },
     }
     with open(BUILD_BAZEL_PATH, "r") as f:
         content = f.read()
