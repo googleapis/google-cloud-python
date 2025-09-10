@@ -1,17 +1,15 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
 libraries:
-- id: google-cloud-language
-  version: 2.17.2
+- id: google-cloud-dlp
+  version: 3.31.0
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
   apis:
-  - path: google/cloud/language/v1beta2
-  - path: google/cloud/language/v2
-  - path: google/cloud/language/v1
+  - path: google/privacy/dlp/v2
   source_roots:
-  - packages/google-cloud-language
+  - packages/google-cloud-dlp
   preserve_regex:
   - .OwlBot.yaml
-  - packages/google-cloud-language/CHANGELOG.md
+  - packages/google-cloud-dlp/CHANGELOG.md
   - docs/CHANGELOG.md
   - docs/README.rst
   - samples/README.txt
@@ -19,6 +17,8 @@ libraries:
   - gapic_version.py
   - samples/generated_samples/snippet_metadata_
   - scripts/client-post-processing
+  - samples/snippets/README.rst
+  - tests/system
   remove_regex:
-  - packages/google-cloud-language
+  - packages/google-cloud-dlp
   tag_format: '{id}-v{version}'
