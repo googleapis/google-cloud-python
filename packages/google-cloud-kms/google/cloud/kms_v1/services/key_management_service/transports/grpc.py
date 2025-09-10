@@ -1167,6 +1167,38 @@ class KeyManagementServiceGrpcTransport(KeyManagementServiceTransport):
         return self._stubs["mac_verify"]
 
     @property
+    def decapsulate(
+        self,
+    ) -> Callable[[service.DecapsulateRequest], service.DecapsulateResponse]:
+        r"""Return a callable for the decapsulate method over gRPC.
+
+        Decapsulates data that was encapsulated with a public key
+        retrieved from
+        [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey]
+        corresponding to a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with
+        [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
+        KEY_ENCAPSULATION.
+
+        Returns:
+            Callable[[~.DecapsulateRequest],
+                    ~.DecapsulateResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "decapsulate" not in self._stubs:
+            self._stubs["decapsulate"] = self._logged_channel.unary_unary(
+                "/google.cloud.kms.v1.KeyManagementService/Decapsulate",
+                request_serializer=service.DecapsulateRequest.serialize,
+                response_deserializer=service.DecapsulateResponse.deserialize,
+            )
+        return self._stubs["decapsulate"]
+
+    @property
     def generate_random_bytes(
         self,
     ) -> Callable[

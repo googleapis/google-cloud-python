@@ -504,6 +504,11 @@ class KeyManagementServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.decapsulate: gapic_v1.method.wrap_method(
+                self.decapsulate,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.generate_random_bytes: gapic_v1.method.wrap_method(
                 self.generate_random_bytes,
                 default_retry=retries.Retry(
@@ -812,6 +817,15 @@ class KeyManagementServiceTransport(abc.ABC):
     ) -> Callable[
         [service.MacVerifyRequest],
         Union[service.MacVerifyResponse, Awaitable[service.MacVerifyResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def decapsulate(
+        self,
+    ) -> Callable[
+        [service.DecapsulateRequest],
+        Union[service.DecapsulateResponse, Awaitable[service.DecapsulateResponse]],
     ]:
         raise NotImplementedError()
 

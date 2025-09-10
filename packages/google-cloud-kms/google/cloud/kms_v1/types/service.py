@@ -57,6 +57,7 @@ __protobuf__ = proto.module(
         "AsymmetricDecryptRequest",
         "MacSignRequest",
         "MacVerifyRequest",
+        "DecapsulateRequest",
         "GenerateRandomBytesRequest",
         "EncryptResponse",
         "DecryptResponse",
@@ -66,6 +67,7 @@ __protobuf__ = proto.module(
         "AsymmetricDecryptResponse",
         "MacSignResponse",
         "MacVerifyResponse",
+        "DecapsulateResponse",
         "GenerateRandomBytesResponse",
         "Digest",
         "LocationMetadata",
@@ -1682,6 +1684,58 @@ class MacVerifyRequest(proto.Message):
     )
 
 
+class DecapsulateRequest(proto.Message):
+    r"""Request message for
+    [KeyManagementService.Decapsulate][google.cloud.kms.v1.KeyManagementService.Decapsulate].
+
+    Attributes:
+        name (str):
+            Required. The resource name of the
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+            use for decapsulation.
+        ciphertext (bytes):
+            Required. The ciphertext produced from encapsulation with
+            the named
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            public key(s).
+        ciphertext_crc32c (google.protobuf.wrappers_pb2.Int64Value):
+            Optional. A CRC32C checksum of the
+            [DecapsulateRequest.ciphertext][google.cloud.kms.v1.DecapsulateRequest.ciphertext].
+            If specified,
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will verify the integrity of the received
+            [DecapsulateRequest.ciphertext][google.cloud.kms.v1.DecapsulateRequest.ciphertext]
+            using this checksum.
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will report an error if the checksum verification fails. If
+            you receive a checksum error, your client should verify that
+            CRC32C([DecapsulateRequest.ciphertext][google.cloud.kms.v1.DecapsulateRequest.ciphertext])
+            is equal to
+            [DecapsulateRequest.ciphertext_crc32c][google.cloud.kms.v1.DecapsulateRequest.ciphertext_crc32c],
+            and if so, perform a limited number of retries. A persistent
+            mismatch may indicate an issue in your computation of the
+            CRC32C checksum. Note: This field is defined as int64 for
+            reasons of compatibility across different languages.
+            However, it is a non-negative integer, which will never
+            exceed 2^32-1, and can be safely downconverted to uint32 in
+            languages that support this type.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ciphertext: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    ciphertext_crc32c: wrappers_pb2.Int64Value = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=wrappers_pb2.Int64Value,
+    )
+
+
 class GenerateRandomBytesRequest(proto.Message):
     r"""Request message for
     [KeyManagementService.GenerateRandomBytes][google.cloud.kms.v1.KeyManagementService.GenerateRandomBytes].
@@ -2443,6 +2497,92 @@ class MacVerifyResponse(proto.Message):
     protection_level: resources.ProtectionLevel = proto.Field(
         proto.ENUM,
         number=6,
+        enum=resources.ProtectionLevel,
+    )
+
+
+class DecapsulateResponse(proto.Message):
+    r"""Response message for
+    [KeyManagementService.Decapsulate][google.cloud.kms.v1.KeyManagementService.Decapsulate].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            The resource name of the
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            used for decapsulation. Check this field to verify that the
+            intended resource was used for decapsulation.
+        shared_secret (bytes):
+            The decapsulated shared_secret originally encapsulated with
+            the matching public key.
+        shared_secret_crc32c (int):
+            Integrity verification field. A CRC32C checksum of the
+            returned
+            [DecapsulateResponse.shared_secret][google.cloud.kms.v1.DecapsulateResponse.shared_secret].
+            An integrity check of
+            [DecapsulateResponse.shared_secret][google.cloud.kms.v1.DecapsulateResponse.shared_secret]
+            can be performed by computing the CRC32C checksum of
+            [DecapsulateResponse.shared_secret][google.cloud.kms.v1.DecapsulateResponse.shared_secret]
+            and comparing your results to this field. Discard the
+            response in case of non-matching checksum values, and
+            perform a limited number of retries. A persistent mismatch
+            may indicate an issue in your computation of the CRC32C
+            checksum. Note: receiving this response message indicates
+            that
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            is able to successfully decrypt the
+            [ciphertext][google.cloud.kms.v1.DecapsulateRequest.ciphertext].
+            Note: This field is defined as int64 for reasons of
+            compatibility across different languages. However, it is a
+            non-negative integer, which will never exceed 2^32-1, and
+            can be safely downconverted to uint32 in languages that
+            support this type.
+
+            This field is a member of `oneof`_ ``_shared_secret_crc32c``.
+        verified_ciphertext_crc32c (bool):
+            Integrity verification field. A flag indicating whether
+            [DecapsulateRequest.ciphertext_crc32c][google.cloud.kms.v1.DecapsulateRequest.ciphertext_crc32c]
+            was received by
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            and used for the integrity verification of the
+            [ciphertext][google.cloud.kms.v1.DecapsulateRequest.ciphertext].
+            A false value of this field indicates either that
+            [DecapsulateRequest.ciphertext_crc32c][google.cloud.kms.v1.DecapsulateRequest.ciphertext_crc32c]
+            was left unset or that it was not delivered to
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService].
+            If you've set
+            [DecapsulateRequest.ciphertext_crc32c][google.cloud.kms.v1.DecapsulateRequest.ciphertext_crc32c]
+            but this field is still false, discard the response and
+            perform a limited number of retries.
+        protection_level (google.cloud.kms_v1.types.ProtectionLevel):
+            The [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
+            of the
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            used in decapsulation.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    shared_secret: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    shared_secret_crc32c: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    verified_ciphertext_crc32c: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    protection_level: resources.ProtectionLevel = proto.Field(
+        proto.ENUM,
+        number=5,
         enum=resources.ProtectionLevel,
     )
 

@@ -47,6 +47,7 @@ class kmsCallTransformer(cst.CSTTransformer):
         'create_import_job': ('parent', 'import_job_id', 'import_job', ),
         'create_key_handle': ('parent', 'key_handle', 'key_handle_id', ),
         'create_key_ring': ('parent', 'key_ring_id', 'key_ring', ),
+        'decapsulate': ('name', 'ciphertext', 'ciphertext_crc32c', ),
         'decrypt': ('name', 'ciphertext', 'additional_authenticated_data', 'ciphertext_crc32c', 'additional_authenticated_data_crc32c', ),
         'destroy_crypto_key_version': ('name', ),
         'encrypt': ('name', 'plaintext', 'additional_authenticated_data', 'plaintext_crc32c', 'additional_authenticated_data_crc32c', ),
