@@ -12,8 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-pytest
-pytest-cov
-pytest-mock
-gcp-synthtool @ git+https://github.com/googleapis/synthtool@5aa438a342707842d11fbbb302c6277fbf9e4655
-starlark-pyo3>=2025.1
+package(default_visibility = ["//visibility:public"])
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load(
+    "@com_google_googleapis_imports//:imports.bzl",
+    "py_gapic_library",
+)
+
+proto_library(
+    name = "language_proto",
+)
+
+py_gapic_library(
+    name = "language_py_gapic",
+    srcs = [":language_proto"],
+    grpc_service_config = "language_grpc_service_config.json",
+    rest_numeric_enums = True,
+    service_yaml = "language_v1.yaml",
+    transport = "grpc+rest",
+    deps = [
+    ],
+)
