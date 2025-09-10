@@ -1,0 +1,4 @@
+click
+gapic-generator @ git+https://github.com/googleapis/gapic-generator-python@v1.26.2
+nox
+starlark-pyo3>=2025.1
