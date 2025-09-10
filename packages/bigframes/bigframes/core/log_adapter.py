@@ -149,49 +149,61 @@ def class_logger(decorated_cls=None):
     return wrap(decorated_cls)
 
 
-def method_logger(method, /, *, custom_base_name: Optional[str] = None):
+def method_logger(method=None, /, *, custom_base_name: Optional[str] = None):
     """Decorator that adds logging functionality to a method."""
 
-    @functools.wraps(method)
-    def wrapper(*args, **kwargs):
-        api_method_name = getattr(method, LOG_OVERRIDE_NAME, method.__name__)
-        if custom_base_name is None:
-            qualname_parts = getattr(method, "__qualname__", method.__name__).split(".")
-            class_name = qualname_parts[-2] if len(qualname_parts) > 1 else ""
-            base_name = (
-                class_name if class_name else "_".join(method.__module__.split(".")[1:])
-            )
-        else:
-            base_name = custom_base_name
-
-        full_method_name = f"{base_name.lower()}-{api_method_name}"
-        # Track directly called methods
-        if len(_call_stack) == 0:
-            add_api_method(full_method_name)
-
-        _call_stack.append(full_method_name)
-
-        try:
-            return method(*args, **kwargs)
-        except (NotImplementedError, TypeError) as e:
-            # Log method parameters that are implemented in pandas but either missing (TypeError)
-            # or not fully supported (NotImplementedError) in BigFrames.
-            # Logging is currently supported only when we can access the bqclient through
-            # _block.session.bqclient.
-            if len(_call_stack) == 1:
-                submit_pandas_labels(
-                    _get_bq_client(*args, **kwargs),
-                    base_name,
-                    api_method_name,
-                    args,
-                    kwargs,
-                    task=PANDAS_PARAM_TRACKING_TASK,
+    def outer_wrapper(method):
+        @functools.wraps(method)
+        def wrapper(*args, **kwargs):
+            api_method_name = getattr(method, LOG_OVERRIDE_NAME, method.__name__)
+            if custom_base_name is None:
+                qualname_parts = getattr(method, "__qualname__", method.__name__).split(
+                    "."
                 )
-            raise e
-        finally:
-            _call_stack.pop()
+                class_name = qualname_parts[-2] if len(qualname_parts) > 1 else ""
+                base_name = (
+                    class_name
+                    if class_name
+                    else "_".join(method.__module__.split(".")[1:])
+                )
+            else:
+                base_name = custom_base_name
 
-    return wrapper
+            full_method_name = f"{base_name.lower()}-{api_method_name}"
+            # Track directly called methods
+            if len(_call_stack) == 0:
+                add_api_method(full_method_name)
+
+            _call_stack.append(full_method_name)
+
+            try:
+                return method(*args, **kwargs)
+            except (NotImplementedError, TypeError) as e:
+                # Log method parameters that are implemented in pandas but either missing (TypeError)
+                # or not fully supported (NotImplementedError) in BigFrames.
+                # Logging is currently supported only when we can access the bqclient through
+                # _block.session.bqclient.
+                if len(_call_stack) == 1:
+                    submit_pandas_labels(
+                        _get_bq_client(*args, **kwargs),
+                        base_name,
+                        api_method_name,
+                        args,
+                        kwargs,
+                        task=PANDAS_PARAM_TRACKING_TASK,
+                    )
+                raise e
+            finally:
+                _call_stack.pop()
+
+        return wrapper
+
+    if method is None:
+        # Called with parentheses
+        return outer_wrapper
+
+    # Called without parentheses
+    return outer_wrapper(method)
 
 
 def property_logger(prop):

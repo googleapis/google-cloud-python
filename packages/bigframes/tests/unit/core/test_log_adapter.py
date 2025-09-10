@@ -101,6 +101,17 @@ def test_method_logging_with_custom_base_name(test_method_w_custom_base):
     assert "pandas-method1" in api_methods
 
 
+def test_method_logging_with_custom_base__logger_as_decorator():
+    @log_adapter.method_logger(custom_base_name="pandas")
+    def my_method():
+        pass
+
+    my_method()
+
+    api_methods = log_adapter.get_and_reset_api_methods()
+    assert "pandas-my_method" in api_methods
+
+
 def test_property_logging(test_instance):
     test_instance.my_field
 
