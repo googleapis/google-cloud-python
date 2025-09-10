@@ -20,6 +20,7 @@ import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile
 import pandas as pd
 
+import bigframes
 import bigframes.constants
 import bigframes.core.expression as ex
 import bigframes.core.ordering as order
@@ -32,7 +33,7 @@ import bigframes.series
 
 
 def cut(
-    x: bigframes.series.Series,
+    x,
     bins: typing.Union[
         int,
         pd.IntervalIndex,
@@ -60,8 +61,11 @@ def cut(
             f"but found {type(list(labels)[0])}. {constants.FEEDBACK_LINK}"
         )
 
-    if x.size == 0:
+    if len(x) == 0:
         raise ValueError("Cannot cut empty array.")
+
+    if not isinstance(x, bigframes.series.Series):
+        x = bigframes.series.Series(x)
 
     if isinstance(bins, int):
         if bins <= 0:

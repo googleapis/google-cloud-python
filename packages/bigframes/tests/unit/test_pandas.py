@@ -122,6 +122,7 @@ def test_method_matches_session(method_name: str):
 )
 def test_cut_raises_with_invalid_labels(bins: int, labels, error_message: str):
     mock_series = mock.create_autospec(bigframes.pandas.Series, instance=True)
+    mock_series.__len__.return_value = 5
     with pytest.raises(ValueError, match=error_message):
         bigframes.pandas.cut(mock_series, bins, labels=labels)
 
@@ -160,6 +161,8 @@ def test_cut_raises_with_unsupported_labels():
 )
 def test_cut_raises_with_invalid_bins(bins: int, error_message: str):
     mock_series = mock.create_autospec(bigframes.pandas.Series, instance=True)
+    mock_series.__len__.return_value = 5
+
     with pytest.raises(ValueError, match=error_message):
         bigframes.pandas.cut(mock_series, bins, labels=False)
 

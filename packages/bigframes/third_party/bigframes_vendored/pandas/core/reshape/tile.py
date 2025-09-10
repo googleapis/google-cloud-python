@@ -8,11 +8,11 @@ import typing
 
 import pandas as pd
 
-from bigframes import constants, series
+from bigframes import constants
 
 
 def cut(
-    x: series.Series,
+    x,
     bins: typing.Union[
         int,
         pd.IntervalIndex,
@@ -113,7 +113,7 @@ def cut(
         dtype: struct<left_inclusive: int64, right_exclusive: int64>[pyarrow]
 
     Args:
-        x (bigframes.pandas.Series):
+        x (array-like):
             The input Series to be binned. Must be 1-dimensional.
         bins (int, pd.IntervalIndex, Iterable):
             The criteria to bin by.

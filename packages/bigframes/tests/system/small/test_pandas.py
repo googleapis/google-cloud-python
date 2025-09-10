@@ -520,6 +520,18 @@ def _convert_pandas_category(pd_s: pd.Series):
     )
 
 
+def test_cut_for_array():
+    """Avoid regressions for internal issue 329866195"""
+    sc = [30, 80, 40, 90, 60, 45, 95, 75, 55, 100, 65, 85]
+    x = [20, 40, 60, 80, 100]
+
+    pd_result: pd.Series = pd.Series(pd.cut(sc, x))
+    bf_result = bpd.cut(sc, x)
+
+    pd_result = _convert_pandas_category(pd_result)
+    pd.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
+
+
 @pytest.mark.parametrize(
     ("right", "labels"),
     [
