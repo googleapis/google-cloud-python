@@ -16,7 +16,6 @@
 # This stage installs all build dependencies and compiles all Python versions.
 FROM marketplace.gcr.io/google/ubuntu2404 AS builder
 
-# TODO(https://github.com/googleapis/librarian/issues/901): Install the necssary dependencies and build tools.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     # Essential for compiling C code
@@ -25,13 +24,6 @@ RUN apt-get update && \
     git \
     wget \
     ca-certificates \
-    # For running bazelisk commands
-    openjdk-17-jdk \
-    zip \
-    unzip \ 
-    # To avoid bazel error
-    # "python interpreter `python3` not found in PATH"
-    python3-dev \
     # --- Critical libraries for a complete Python build ---
     libssl-dev \
     zlib1g-dev \
@@ -42,9 +34,6 @@ RUN apt-get update && \
     # ------------------------------------------------------
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# Set up environment variables for tool versions to make updates easier.
-ENV BAZELISK_VERSION=v1.26.0
 
 # Install multiple Python versions from source. `make altinstall` is used to
 # prevent replacing the system's default python binary.
@@ -70,9 +59,6 @@ RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/ge
 
 RUN /usr/local/bin/python3.9 -m venv bazel_env
 RUN . bazel_env/bin/activate
-
-
-# TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 
 # --- Final Stage ---
 # This stage creates the lightweight final image, copying only the
@@ -117,21 +103,15 @@ ENV PATH="/usr/bin:${PATH}"
 # Set the working directory in the container.
 WORKDIR /app
 
-
-# TODO: move to requirements.txt file
-RUN python3.9 -m pip install click black==23.7.0 isort==5.11.0
-RUN git clone --depth 1 https://github.com/googleapis/gapic-generator-python.git /tmp/gapic-generator-python && \
-python3.9 -m pip install /tmp/gapic-generator-python && \
-rm -rf /tmp/gapic-generator-python
+RUN python3.9 -m pip install -r requirements.in
 
 RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
-python3.9 -m pip install /tmp/synthtool nox starlark-pyo3>=2025.1
+python3.9 -m pip install /tmp/synthtool
 
 # Download/install pandoc
 RUN wget https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-linux-amd64.tar.gz
 RUN tar -xvf pandoc-3.7.0.2-linux-amd64.tar.gz
 RUN mv pandoc-3.7.0.2/bin/* /usr/local/bin/
-
 
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
