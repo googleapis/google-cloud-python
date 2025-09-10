@@ -1,6 +1,7 @@
 Google Cloud Python Client
 ==========================
 
+
 Python idiomatic clients for `Google Cloud Platform`_ services.
 
 .. _Google Cloud Platform: https://cloud.google.com/
