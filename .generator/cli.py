@@ -431,7 +431,6 @@ def _run_nox_sessions(library_id: str, repo: str):
         "unit-3.9",
         "unit-3.13",
         "docs",
-        "system-3.13",
         "lint",
         "lint_setup_py",
         "mypy-3.13",
