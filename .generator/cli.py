@@ -275,7 +275,7 @@ def handle_generate(
                         "grpc_service_config": "retry-config",
                         "rest_numeric_enums": "rest-numeric-enums",
                         "service_yaml": "service-yaml",
-                        "transport": "transport"
+                        "transport": "transport",
                     }
 
                     for key in config_key_map:
@@ -286,7 +286,9 @@ def handle_generate(
                                     f"{config_key_map[key]}={api_path}/{config_value},"
                                 )
                             else:
-                                generator_options.append(f"{config_key_map[key]}={config_value},")
+                                generator_options.append(
+                                    f"{config_key_map[key]}={config_value},"
+                                )
                     with tempfile.TemporaryDirectory() as tmp_dir:
                         generator_command = (
                             f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
