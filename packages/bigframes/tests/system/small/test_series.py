@@ -3866,6 +3866,30 @@ def test_string_astype_timestamp():
     pd.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
 
 
+def test_struct_astype_json():
+    """See internal issue 444196993."""
+    s = series.Series(
+        [
+            {"version": 1, "project": "pandas"},
+            {"version": 2, "project": "numpy"},
+        ]
+    )
+    assert dtypes.is_struct_like(s.dtype)
+
+    expected = series.Series(s, dtype=dtypes.JSON_DTYPE)
+    assert expected.dtype == dtypes.JSON_DTYPE
+
+    result = s.astype("json")
+    pd.testing.assert_series_equal(
+        result.to_pandas(), expected.to_pandas(), check_index_type=False
+    )
+
+    result = s.astype(dtypes.JSON_DTYPE)
+    pd.testing.assert_series_equal(
+        result.to_pandas(), expected.to_pandas(), check_index_type=False
+    )
+
+
 def test_timestamp_astype_string():
     bf_series = series.Series(
         [
