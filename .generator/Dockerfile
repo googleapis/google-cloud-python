@@ -103,6 +103,7 @@ ENV PATH="/usr/bin:${PATH}"
 # Set the working directory in the container.
 WORKDIR /app
 
+COPY .generator/requirements.in .
 RUN python3.9 -m pip install -r requirements.in
 
 RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
