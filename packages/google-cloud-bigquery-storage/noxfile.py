@@ -335,6 +335,34 @@ def system(session):
             *session.posargs,
         )
 
+        # Maunally added samples tests.
+        # TODO: remove tests after samples are migrated to https://github.com/GoogleCloudPlatform/python-docs-samples
+        samples_tests = ["pyarrow", "quickstart", "snippets", "to_dataframe"]
+        for name in samples_tests:
+            _run_samples_test(session, name)
+
+
+    # Maunally added samples tests helper function.
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/14417): remove tests after samples are migrated to https://github.com/GoogleCloudPlatform/python-docs-samples
+    def _run_samples_test(session, name):
+        samples_path = os.path.join("samples", name)
+        samples_requirements_path = os.path.join("samples", name, "requirements.txt")
+        test_requirements_path = os.path.join("samples", name, "requirements-test.txt")
+
+        # Install dependencies.
+        if os.path.exists(samples_requirements_path):
+            session.install("-r", samples_requirements_path)
+
+        if os.path.exists(test_requirements_path):
+            session.install("-r", test_requirements_path)
+
+        session.run(
+            "pytest",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            *session.posargs,
+            samples_path,
+        )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
