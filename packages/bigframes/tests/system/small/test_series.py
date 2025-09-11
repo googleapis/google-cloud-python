@@ -3903,6 +3903,18 @@ def test_float_astype_json(errors):
     pd.testing.assert_series_equal(bf_result.to_pandas(), expected_result)
 
 
+def test_float_astype_json_str():
+    data = ["1.25", "2500000000", None, "-12323.24"]
+    bf_series = series.Series(data, dtype=dtypes.FLOAT_DTYPE)
+
+    bf_result = bf_series.astype("json")
+    assert bf_result.dtype == dtypes.JSON_DTYPE
+
+    expected_result = pd.Series(data, dtype=dtypes.JSON_DTYPE)
+    expected_result.index = expected_result.index.astype("Int64")
+    pd.testing.assert_series_equal(bf_result.to_pandas(), expected_result)
+
+
 @pytest.mark.parametrize("errors", ["raise", "null"])
 def test_string_astype_json(errors):
     data = [
