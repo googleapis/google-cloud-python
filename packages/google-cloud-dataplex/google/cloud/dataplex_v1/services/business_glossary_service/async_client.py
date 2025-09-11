@@ -54,20 +54,12 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.dataplex_v1.services.data_scan_service import pagers
-from google.cloud.dataplex_v1.types import (
-    data_discovery,
-    data_profile,
-    data_quality,
-    datascans,
-    processing,
-    resources,
-    service,
-)
+from google.cloud.dataplex_v1.services.business_glossary_service import pagers
+from google.cloud.dataplex_v1.types import business_glossary, service
 
-from .client import DataScanServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, DataScanServiceTransport
-from .transports.grpc_asyncio import DataScanServiceGrpcAsyncIOTransport
+from .client import BusinessGlossaryServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, BusinessGlossaryServiceTransport
+from .transports.grpc_asyncio import BusinessGlossaryServiceGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -79,57 +71,68 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class DataScanServiceAsyncClient:
-    """DataScanService manages DataScan resources which can be
-    configured to run various types of data scanning workload and
-    generate enriched metadata (e.g. Data Profile, Data Quality) for
-    the data source.
+class BusinessGlossaryServiceAsyncClient:
+    """BusinessGlossaryService provides APIs for managing business
+    glossary resources for enterprise customers.
+    The resources currently supported in Business Glossary are:
+
+    1. Glossary
+    2. GlossaryCategory
+    3. GlossaryTerm
     """
 
-    _client: DataScanServiceClient
+    _client: BusinessGlossaryServiceClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = DataScanServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = DataScanServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = DataScanServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = DataScanServiceClient._DEFAULT_UNIVERSE
-
-    connection_path = staticmethod(DataScanServiceClient.connection_path)
-    parse_connection_path = staticmethod(DataScanServiceClient.parse_connection_path)
-    data_scan_path = staticmethod(DataScanServiceClient.data_scan_path)
-    parse_data_scan_path = staticmethod(DataScanServiceClient.parse_data_scan_path)
-    data_scan_job_path = staticmethod(DataScanServiceClient.data_scan_job_path)
-    parse_data_scan_job_path = staticmethod(
-        DataScanServiceClient.parse_data_scan_job_path
+    DEFAULT_ENDPOINT = BusinessGlossaryServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = BusinessGlossaryServiceClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = (
+        BusinessGlossaryServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     )
-    dataset_path = staticmethod(DataScanServiceClient.dataset_path)
-    parse_dataset_path = staticmethod(DataScanServiceClient.parse_dataset_path)
-    entity_path = staticmethod(DataScanServiceClient.entity_path)
-    parse_entity_path = staticmethod(DataScanServiceClient.parse_entity_path)
+    _DEFAULT_UNIVERSE = BusinessGlossaryServiceClient._DEFAULT_UNIVERSE
+
+    glossary_path = staticmethod(BusinessGlossaryServiceClient.glossary_path)
+    parse_glossary_path = staticmethod(
+        BusinessGlossaryServiceClient.parse_glossary_path
+    )
+    glossary_category_path = staticmethod(
+        BusinessGlossaryServiceClient.glossary_category_path
+    )
+    parse_glossary_category_path = staticmethod(
+        BusinessGlossaryServiceClient.parse_glossary_category_path
+    )
+    glossary_term_path = staticmethod(BusinessGlossaryServiceClient.glossary_term_path)
+    parse_glossary_term_path = staticmethod(
+        BusinessGlossaryServiceClient.parse_glossary_term_path
+    )
     common_billing_account_path = staticmethod(
-        DataScanServiceClient.common_billing_account_path
+        BusinessGlossaryServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        DataScanServiceClient.parse_common_billing_account_path
+        BusinessGlossaryServiceClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(DataScanServiceClient.common_folder_path)
+    common_folder_path = staticmethod(BusinessGlossaryServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
-        DataScanServiceClient.parse_common_folder_path
+        BusinessGlossaryServiceClient.parse_common_folder_path
     )
     common_organization_path = staticmethod(
-        DataScanServiceClient.common_organization_path
+        BusinessGlossaryServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
-        DataScanServiceClient.parse_common_organization_path
+        BusinessGlossaryServiceClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(DataScanServiceClient.common_project_path)
+    common_project_path = staticmethod(
+        BusinessGlossaryServiceClient.common_project_path
+    )
     parse_common_project_path = staticmethod(
-        DataScanServiceClient.parse_common_project_path
+        BusinessGlossaryServiceClient.parse_common_project_path
     )
-    common_location_path = staticmethod(DataScanServiceClient.common_location_path)
+    common_location_path = staticmethod(
+        BusinessGlossaryServiceClient.common_location_path
+    )
     parse_common_location_path = staticmethod(
-        DataScanServiceClient.parse_common_location_path
+        BusinessGlossaryServiceClient.parse_common_location_path
     )
 
     @classmethod
@@ -143,9 +146,9 @@ class DataScanServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DataScanServiceAsyncClient: The constructed client.
+            BusinessGlossaryServiceAsyncClient: The constructed client.
         """
-        return DataScanServiceClient.from_service_account_info.__func__(DataScanServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return BusinessGlossaryServiceClient.from_service_account_info.__func__(BusinessGlossaryServiceAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -159,9 +162,9 @@ class DataScanServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DataScanServiceAsyncClient: The constructed client.
+            BusinessGlossaryServiceAsyncClient: The constructed client.
         """
-        return DataScanServiceClient.from_service_account_file.__func__(DataScanServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return BusinessGlossaryServiceClient.from_service_account_file.__func__(BusinessGlossaryServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -199,14 +202,14 @@ class DataScanServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return DataScanServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return BusinessGlossaryServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> DataScanServiceTransport:
+    def transport(self) -> BusinessGlossaryServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            DataScanServiceTransport: The transport used by the client instance.
+            BusinessGlossaryServiceTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -229,7 +232,7 @@ class DataScanServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = DataScanServiceClient.get_transport_class
+    get_transport_class = BusinessGlossaryServiceClient.get_transport_class
 
     def __init__(
         self,
@@ -237,13 +240,15 @@ class DataScanServiceAsyncClient:
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
             Union[
-                str, DataScanServiceTransport, Callable[..., DataScanServiceTransport]
+                str,
+                BusinessGlossaryServiceTransport,
+                Callable[..., BusinessGlossaryServiceTransport],
             ]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the data scan service async client.
+        """Instantiates the business glossary service async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -251,10 +256,10 @@ class DataScanServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,DataScanServiceTransport,Callable[..., DataScanServiceTransport]]]):
+            transport (Optional[Union[str,BusinessGlossaryServiceTransport,Callable[..., BusinessGlossaryServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the DataScanServiceTransport constructor.
+                arguments as used in the BusinessGlossaryServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -292,7 +297,7 @@ class DataScanServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = DataScanServiceClient(
+        self._client = BusinessGlossaryServiceClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
@@ -303,9 +308,9 @@ class DataScanServiceAsyncClient:
             std_logging.DEBUG
         ):  # pragma: NO COVER
             _LOGGER.debug(
-                "Created client `google.cloud.dataplex_v1.DataScanServiceAsyncClient`.",
+                "Created client `google.cloud.dataplex_v1.BusinessGlossaryServiceAsyncClient`.",
                 extra={
-                    "serviceName": "google.cloud.dataplex.v1.DataScanService",
+                    "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                     "universeDomain": getattr(
                         self._client._transport._credentials, "universe_domain", ""
                     ),
@@ -316,23 +321,23 @@ class DataScanServiceAsyncClient:
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
-                    "serviceName": "google.cloud.dataplex.v1.DataScanService",
+                    "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                     "credentialsType": None,
                 },
             )
 
-    async def create_data_scan(
+    async def create_glossary(
         self,
-        request: Optional[Union[datascans.CreateDataScanRequest, dict]] = None,
+        request: Optional[Union[business_glossary.CreateGlossaryRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        data_scan: Optional[datascans.DataScan] = None,
-        data_scan_id: Optional[str] = None,
+        glossary: Optional[business_glossary.Glossary] = None,
+        glossary_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a DataScan resource.
+        r"""Creates a new Glossary resource.
 
         .. code-block:: python
 
@@ -345,23 +350,18 @@ class DataScanServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            async def sample_create_data_scan():
+            async def sample_create_glossary():
                 # Create a client
-                client = dataplex_v1.DataScanServiceAsyncClient()
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
 
                 # Initialize request argument(s)
-                data_scan = dataplex_v1.DataScan()
-                data_scan.data_quality_spec.rules.dimension = "dimension_value"
-                data_scan.data.entity = "entity_value"
-
-                request = dataplex_v1.CreateDataScanRequest(
+                request = dataplex_v1.CreateGlossaryRequest(
                     parent="parent_value",
-                    data_scan=data_scan,
-                    data_scan_id="data_scan_id_value",
+                    glossary_id="glossary_id_value",
                 )
 
                 # Make the request
-                operation = client.create_data_scan(request=request)
+                operation = client.create_glossary(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -371,33 +371,27 @@ class DataScanServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dataplex_v1.types.CreateDataScanRequest, dict]]):
-                The request object. Create dataScan request.
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateGlossaryRequest, dict]]):
+                The request object. Create Glossary Request
             parent (:class:`str`):
-                Required. The resource name of the parent location:
-                ``projects/{project}/locations/{location_id}`` where
-                ``project`` refers to a *project_id* or *project_number*
-                and ``location_id`` refers to a Google Cloud region.
+                Required. The parent resource where this Glossary will
+                be created. Format:
+                projects/{project_id_or_number}/locations/{location_id}
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data_scan (:class:`google.cloud.dataplex_v1.types.DataScan`):
-                Required. DataScan resource.
-                This corresponds to the ``data_scan`` field
+            glossary (:class:`google.cloud.dataplex_v1.types.Glossary`):
+                Required. The Glossary to create.
+                This corresponds to the ``glossary`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data_scan_id (:class:`str`):
-                Required. DataScan identifier.
+            glossary_id (:class:`str`):
+                Required. Glossary ID: Glossary
+                identifier.
 
-                - Must contain only lowercase letters, numbers and
-                  hyphens.
-                - Must start with a letter.
-                - Must end with a number or a letter.
-                - Must be between 1-63 characters.
-                - Must be unique within the customer project / location.
-
-                This corresponds to the ``data_scan_id`` field
+                This corresponds to the ``glossary_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -412,33 +406,16 @@ class DataScanServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.DataScan` Represents a user-visible job which provides the insights for the related
-                   data source.
-
-                   For example:
-
-                   - Data quality: generates queries based on the rules
-                     and runs against the data to get data quality check
-                     results. For more information, see [Auto data
-                     quality
-                     overview](https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
-                   - Data profile: analyzes the data in tables and
-                     generates insights about the structure, content and
-                     relationships (such as null percent, cardinality,
-                     min/max/mean, etc). For more information, see
-                     [About data
-                     profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview).
-                   - Data discovery: scans data in Cloud Storage buckets
-                     to extract and then catalog metadata. For more
-                     information, see [Discover and catalog Cloud
-                     Storage
-                     data](https://cloud.google.com/bigquery/docs/automatic-discovery).
+                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.Glossary` A Glossary represents a collection of GlossaryCategories and GlossaryTerms
+                   defined by the user. Glossary is a top level resource
+                   and is the Google Cloud parent resource of all the
+                   GlossaryCategories and GlossaryTerms within it.
 
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, data_scan, data_scan_id]
+        flattened_params = [parent, glossary, glossary_id]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -450,22 +427,22 @@ class DataScanServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, datascans.CreateDataScanRequest):
-            request = datascans.CreateDataScanRequest(request)
+        if not isinstance(request, business_glossary.CreateGlossaryRequest):
+            request = business_glossary.CreateGlossaryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if parent is not None:
             request.parent = parent
-        if data_scan is not None:
-            request.data_scan = data_scan
-        if data_scan_id is not None:
-            request.data_scan_id = data_scan_id
+        if glossary is not None:
+            request.glossary = glossary
+        if glossary_id is not None:
+            request.glossary_id = glossary_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_data_scan
+            self._client._transport.create_glossary
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -489,24 +466,24 @@ class DataScanServiceAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            datascans.DataScan,
+            business_glossary.Glossary,
             metadata_type=service.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
-    async def update_data_scan(
+    async def update_glossary(
         self,
-        request: Optional[Union[datascans.UpdateDataScanRequest, dict]] = None,
+        request: Optional[Union[business_glossary.UpdateGlossaryRequest, dict]] = None,
         *,
-        data_scan: Optional[datascans.DataScan] = None,
+        glossary: Optional[business_glossary.Glossary] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates a DataScan resource.
+        r"""Updates a Glossary resource.
 
         .. code-block:: python
 
@@ -519,21 +496,16 @@ class DataScanServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            async def sample_update_data_scan():
+            async def sample_update_glossary():
                 # Create a client
-                client = dataplex_v1.DataScanServiceAsyncClient()
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
 
                 # Initialize request argument(s)
-                data_scan = dataplex_v1.DataScan()
-                data_scan.data_quality_spec.rules.dimension = "dimension_value"
-                data_scan.data.entity = "entity_value"
-
-                request = dataplex_v1.UpdateDataScanRequest(
-                    data_scan=data_scan,
+                request = dataplex_v1.UpdateGlossaryRequest(
                 )
 
                 # Make the request
-                operation = client.update_data_scan(request=request)
+                operation = client.update_glossary(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -543,18 +515,21 @@ class DataScanServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateDataScanRequest, dict]]):
-                The request object. Update dataScan request.
-            data_scan (:class:`google.cloud.dataplex_v1.types.DataScan`):
-                Required. DataScan resource to be updated.
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateGlossaryRequest, dict]]):
+                The request object. Update Glossary Request
+            glossary (:class:`google.cloud.dataplex_v1.types.Glossary`):
+                Required. The Glossary to update. The Glossary's
+                ``name`` field is used to identify the Glossary to
+                update. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
-                Only fields specified in ``update_mask`` are updated.
-
-                This corresponds to the ``data_scan`` field
+                This corresponds to the ``glossary`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Mask of fields to update.
+                Required. The list of fields to
+                update.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -570,33 +545,16 @@ class DataScanServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.DataScan` Represents a user-visible job which provides the insights for the related
-                   data source.
-
-                   For example:
-
-                   - Data quality: generates queries based on the rules
-                     and runs against the data to get data quality check
-                     results. For more information, see [Auto data
-                     quality
-                     overview](https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
-                   - Data profile: analyzes the data in tables and
-                     generates insights about the structure, content and
-                     relationships (such as null percent, cardinality,
-                     min/max/mean, etc). For more information, see
-                     [About data
-                     profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview).
-                   - Data discovery: scans data in Cloud Storage buckets
-                     to extract and then catalog metadata. For more
-                     information, see [Discover and catalog Cloud
-                     Storage
-                     data](https://cloud.google.com/bigquery/docs/automatic-discovery).
+                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.Glossary` A Glossary represents a collection of GlossaryCategories and GlossaryTerms
+                   defined by the user. Glossary is a top level resource
+                   and is the Google Cloud parent resource of all the
+                   GlossaryCategories and GlossaryTerms within it.
 
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [data_scan, update_mask]
+        flattened_params = [glossary, update_mask]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -608,27 +566,27 @@ class DataScanServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, datascans.UpdateDataScanRequest):
-            request = datascans.UpdateDataScanRequest(request)
+        if not isinstance(request, business_glossary.UpdateGlossaryRequest):
+            request = business_glossary.UpdateGlossaryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if data_scan is not None:
-            request.data_scan = data_scan
+        if glossary is not None:
+            request.glossary = glossary
         if update_mask is not None:
             request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_data_scan
+            self._client._transport.update_glossary
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("data_scan.name", request.data_scan.name),)
+                (("glossary.name", request.glossary.name),)
             ),
         )
 
@@ -647,23 +605,25 @@ class DataScanServiceAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            datascans.DataScan,
+            business_glossary.Glossary,
             metadata_type=service.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
-    async def delete_data_scan(
+    async def delete_glossary(
         self,
-        request: Optional[Union[datascans.DeleteDataScanRequest, dict]] = None,
+        request: Optional[Union[business_glossary.DeleteGlossaryRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes a DataScan resource.
+        r"""Deletes a Glossary resource. All the categories and
+        terms within the Glossary must be deleted before the
+        Glossary can be deleted.
 
         .. code-block:: python
 
@@ -676,17 +636,17 @@ class DataScanServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            async def sample_delete_data_scan():
+            async def sample_delete_glossary():
                 # Create a client
-                client = dataplex_v1.DataScanServiceAsyncClient()
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.DeleteDataScanRequest(
+                request = dataplex_v1.DeleteGlossaryRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                operation = client.delete_data_scan(request=request)
+                operation = client.delete_glossary(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -696,14 +656,11 @@ class DataScanServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteDataScanRequest, dict]]):
-                The request object. Delete dataScan request.
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteGlossaryRequest, dict]]):
+                The request object. Delete Glossary Request
             name (:class:`str`):
-                Required. The resource name of the dataScan:
-                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
-                where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a Google
-                Cloud region.
+                Required. The name of the Glossary to delete. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -747,8 +704,8 @@ class DataScanServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, datascans.DeleteDataScanRequest):
-            request = datascans.DeleteDataScanRequest(request)
+        if not isinstance(request, business_glossary.DeleteGlossaryRequest):
+            request = business_glossary.DeleteGlossaryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -758,7 +715,7 @@ class DataScanServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_data_scan
+            self._client._transport.delete_glossary
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -789,16 +746,16 @@ class DataScanServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_data_scan(
+    async def get_glossary(
         self,
-        request: Optional[Union[datascans.GetDataScanRequest, dict]] = None,
+        request: Optional[Union[business_glossary.GetGlossaryRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> datascans.DataScan:
-        r"""Gets a DataScan resource.
+    ) -> business_glossary.Glossary:
+        r"""Gets a Glossary resource.
 
         .. code-block:: python
 
@@ -811,30 +768,27 @@ class DataScanServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            async def sample_get_data_scan():
+            async def sample_get_glossary():
                 # Create a client
-                client = dataplex_v1.DataScanServiceAsyncClient()
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.GetDataScanRequest(
+                request = dataplex_v1.GetGlossaryRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = await client.get_data_scan(request=request)
+                response = await client.get_glossary(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dataplex_v1.types.GetDataScanRequest, dict]]):
-                The request object. Get dataScan request.
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetGlossaryRequest, dict]]):
+                The request object. Get Glossary Request
             name (:class:`str`):
-                Required. The resource name of the dataScan:
-                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
-                where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a Google
-                Cloud region.
+                Required. The name of the Glossary to retrieve. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -848,28 +802,14 @@ class DataScanServiceAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.dataplex_v1.types.DataScan:
-                Represents a user-visible job which provides the insights for the related
-                   data source.
-
-                   For example:
-
-                   - Data quality: generates queries based on the rules
-                     and runs against the data to get data quality check
-                     results. For more information, see [Auto data
-                     quality
-                     overview](https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
-                   - Data profile: analyzes the data in tables and
-                     generates insights about the structure, content and
-                     relationships (such as null percent, cardinality,
-                     min/max/mean, etc). For more information, see
-                     [About data
-                     profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview).
-                   - Data discovery: scans data in Cloud Storage buckets
-                     to extract and then catalog metadata. For more
-                     information, see [Discover and catalog Cloud
-                     Storage
-                     data](https://cloud.google.com/bigquery/docs/automatic-discovery).
+            google.cloud.dataplex_v1.types.Glossary:
+                A Glossary represents a collection of
+                GlossaryCategories and GlossaryTerms
+                defined by the user. Glossary is a top
+                level resource and is the Google Cloud
+                parent resource of all the
+                GlossaryCategories and GlossaryTerms
+                within it.
 
         """
         # Create or coerce a protobuf request object.
@@ -887,8 +827,8 @@ class DataScanServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, datascans.GetDataScanRequest):
-            request = datascans.GetDataScanRequest(request)
+        if not isinstance(request, business_glossary.GetGlossaryRequest):
+            request = business_glossary.GetGlossaryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -898,7 +838,7 @@ class DataScanServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_scan
+            self._client._transport.get_glossary
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -921,16 +861,16 @@ class DataScanServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_data_scans(
+    async def list_glossaries(
         self,
-        request: Optional[Union[datascans.ListDataScansRequest, dict]] = None,
+        request: Optional[Union[business_glossary.ListGlossariesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListDataScansAsyncPager:
-        r"""Lists DataScans.
+    ) -> pagers.ListGlossariesAsyncPager:
+        r"""Lists Glossary resources in a project and location.
 
         .. code-block:: python
 
@@ -943,30 +883,30 @@ class DataScanServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            async def sample_list_data_scans():
+            async def sample_list_glossaries():
                 # Create a client
-                client = dataplex_v1.DataScanServiceAsyncClient()
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.ListDataScansRequest(
+                request = dataplex_v1.ListGlossariesRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_data_scans(request=request)
+                page_result = client.list_glossaries(request=request)
 
                 # Handle the response
                 async for response in page_result:
                     print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dataplex_v1.types.ListDataScansRequest, dict]]):
-                The request object. List dataScans request.
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListGlossariesRequest, dict]]):
+                The request object. List Glossaries Request
             parent (:class:`str`):
-                Required. The resource name of the parent location:
-                ``projects/{project}/locations/{location_id}`` where
-                ``project`` refers to a *project_id* or *project_number*
-                and ``location_id`` refers to a Google Cloud region.
+                Required. The parent, which has this collection of
+                Glossaries. Format:
+                projects/{project_id_or_number}/locations/{location_id}
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -980,8 +920,8 @@ class DataScanServiceAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.dataplex_v1.services.data_scan_service.pagers.ListDataScansAsyncPager:
-                List dataScans response.
+            google.cloud.dataplex_v1.services.business_glossary_service.pagers.ListGlossariesAsyncPager:
+                List Glossaries Response
 
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -1003,8 +943,8 @@ class DataScanServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, datascans.ListDataScansRequest):
-            request = datascans.ListDataScansRequest(request)
+        if not isinstance(request, business_glossary.ListGlossariesRequest):
+            request = business_glossary.ListGlossariesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1014,7 +954,7 @@ class DataScanServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_data_scans
+            self._client._transport.list_glossaries
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -1036,7 +976,7 @@ class DataScanServiceAsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers.ListDataScansAsyncPager(
+        response = pagers.ListGlossariesAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -1048,376 +988,294 @@ class DataScanServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def run_data_scan(
-        self,
-        request: Optional[Union[datascans.RunDataScanRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> datascans.RunDataScanResponse:
-        r"""Runs an on-demand execution of a DataScan
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dataplex_v1
-
-            async def sample_run_data_scan():
-                # Create a client
-                client = dataplex_v1.DataScanServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = dataplex_v1.RunDataScanRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.run_data_scan(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dataplex_v1.types.RunDataScanRequest, dict]]):
-                The request object. Run DataScan Request
-            name (:class:`str`):
-                Required. The resource name of the DataScan:
-                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``.
-                where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a Google
-                Cloud region.
-
-                Only **OnDemand** data scans are allowed.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.dataplex_v1.types.RunDataScanResponse:
-                Run DataScan Response.
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, datascans.RunDataScanRequest):
-            request = datascans.RunDataScanRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.run_data_scan
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_data_scan_job(
-        self,
-        request: Optional[Union[datascans.GetDataScanJobRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> datascans.DataScanJob:
-        r"""Gets a DataScanJob resource.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dataplex_v1
-
-            async def sample_get_data_scan_job():
-                # Create a client
-                client = dataplex_v1.DataScanServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = dataplex_v1.GetDataScanJobRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_data_scan_job(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dataplex_v1.types.GetDataScanJobRequest, dict]]):
-                The request object. Get DataScanJob request.
-            name (:class:`str`):
-                Required. The resource name of the DataScanJob:
-                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}``
-                where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a Google
-                Cloud region.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.dataplex_v1.types.DataScanJob:
-                A DataScanJob represents an instance
-                of DataScan execution.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, datascans.GetDataScanJobRequest):
-            request = datascans.GetDataScanJobRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_scan_job
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_data_scan_jobs(
-        self,
-        request: Optional[Union[datascans.ListDataScanJobsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListDataScanJobsAsyncPager:
-        r"""Lists DataScanJobs under the given DataScan.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dataplex_v1
-
-            async def sample_list_data_scan_jobs():
-                # Create a client
-                client = dataplex_v1.DataScanServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = dataplex_v1.ListDataScanJobsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_data_scan_jobs(request=request)
-
-                # Handle the response
-                async for response in page_result:
-                    print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.dataplex_v1.types.ListDataScanJobsRequest, dict]]):
-                The request object. List DataScanJobs request.
-            parent (:class:`str`):
-                Required. The resource name of the parent environment:
-                ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
-                where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a Google
-                Cloud region.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.dataplex_v1.services.data_scan_service.pagers.ListDataScanJobsAsyncPager:
-                List DataScanJobs response.
-
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, datascans.ListDataScanJobsRequest):
-            request = datascans.ListDataScanJobsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_data_scan_jobs
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListDataScanJobsAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def generate_data_quality_rules(
+    async def create_glossary_category(
         self,
         request: Optional[
-            Union[datascans.GenerateDataQualityRulesRequest, dict]
+            Union[business_glossary.CreateGlossaryCategoryRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        category: Optional[business_glossary.GlossaryCategory] = None,
+        category_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> business_glossary.GlossaryCategory:
+        r"""Creates a new GlossaryCategory resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_create_glossary_category():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
+
+                # Initialize request argument(s)
+                category = dataplex_v1.GlossaryCategory()
+                category.parent = "parent_value"
+
+                request = dataplex_v1.CreateGlossaryCategoryRequest(
+                    parent="parent_value",
+                    category_id="category_id_value",
+                    category=category,
+                )
+
+                # Make the request
+                response = await client.create_glossary_category(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateGlossaryCategoryRequest, dict]]):
+                The request object. Creates a new GlossaryCategory under
+                the specified Glossary.
+            parent (:class:`str`):
+                Required. The parent resource where this
+                GlossaryCategory will be created. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+                where ``locationId`` refers to a Google Cloud region.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            category (:class:`google.cloud.dataplex_v1.types.GlossaryCategory`):
+                Required. The GlossaryCategory to
+                create.
+
+                This corresponds to the ``category`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            category_id (:class:`str`):
+                Required. GlossaryCategory
+                identifier.
+
+                This corresponds to the ``category_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.GlossaryCategory:
+                A GlossaryCategory represents a
+                collection of GlossaryCategories and
+                GlossaryTerms within a Glossary that are
+                related to each other.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, category, category_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.CreateGlossaryCategoryRequest):
+            request = business_glossary.CreateGlossaryCategoryRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if category is not None:
+            request.category = category
+        if category_id is not None:
+            request.category_id = category_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_glossary_category
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_glossary_category(
+        self,
+        request: Optional[
+            Union[business_glossary.UpdateGlossaryCategoryRequest, dict]
+        ] = None,
+        *,
+        category: Optional[business_glossary.GlossaryCategory] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> business_glossary.GlossaryCategory:
+        r"""Updates a GlossaryCategory resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_update_glossary_category():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
+
+                # Initialize request argument(s)
+                category = dataplex_v1.GlossaryCategory()
+                category.parent = "parent_value"
+
+                request = dataplex_v1.UpdateGlossaryCategoryRequest(
+                    category=category,
+                )
+
+                # Make the request
+                response = await client.update_glossary_category(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateGlossaryCategoryRequest, dict]]):
+                The request object. Update GlossaryCategory Request
+            category (:class:`google.cloud.dataplex_v1.types.GlossaryCategory`):
+                Required. The GlossaryCategory to update. The
+                GlossaryCategory's ``name`` field is used to identify
+                the GlossaryCategory to update. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+
+                This corresponds to the ``category`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.GlossaryCategory:
+                A GlossaryCategory represents a
+                collection of GlossaryCategories and
+                GlossaryTerms within a Glossary that are
+                related to each other.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [category, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.UpdateGlossaryCategoryRequest):
+            request = business_glossary.UpdateGlossaryCategoryRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if category is not None:
+            request.category = category
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_glossary_category
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("category.name", request.category.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_glossary_category(
+        self,
+        request: Optional[
+            Union[business_glossary.DeleteGlossaryCategoryRequest, dict]
         ] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> datascans.GenerateDataQualityRulesResponse:
-        r"""Generates recommended data quality rules based on the
-        results of a data profiling scan.
-
-        Use the recommendations to build rules for a data
-        quality scan.
+    ) -> None:
+        r"""Deletes a GlossaryCategory resource. All the
+        GlossaryCategories and GlossaryTerms nested directly
+        under the specified GlossaryCategory will be moved one
+        level up to the parent in the hierarchy.
 
         .. code-block:: python
 
@@ -1430,32 +1288,129 @@ class DataScanServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            async def sample_generate_data_quality_rules():
+            async def sample_delete_glossary_category():
                 # Create a client
-                client = dataplex_v1.DataScanServiceAsyncClient()
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.GenerateDataQualityRulesRequest(
+                request = dataplex_v1.DeleteGlossaryCategoryRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = await client.generate_data_quality_rules(request=request)
+                await client.delete_glossary_category(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteGlossaryCategoryRequest, dict]]):
+                The request object. Delete GlossaryCategory Request
+            name (:class:`str`):
+                Required. The name of the GlossaryCategory to delete.
+                Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.DeleteGlossaryCategoryRequest):
+            request = business_glossary.DeleteGlossaryCategoryRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_glossary_category
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def get_glossary_category(
+        self,
+        request: Optional[
+            Union[business_glossary.GetGlossaryCategoryRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> business_glossary.GlossaryCategory:
+        r"""Gets a GlossaryCategory resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_get_glossary_category():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetGlossaryCategoryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_glossary_category(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dataplex_v1.types.GenerateDataQualityRulesRequest, dict]]):
-                The request object. Request details for generating data
-                quality rule recommendations.
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetGlossaryCategoryRequest, dict]]):
+                The request object. Get GlossaryCategory Request
             name (:class:`str`):
-                Required. The name must be one of the following:
-
-                - The name of a data scan with at least one successful,
-                  completed data profiling job
-                - The name of a successful, completed data profiling job
-                  (a data scan job where the job type is data profiling)
+                Required. The name of the GlossaryCategory to retrieve.
+                Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1469,9 +1424,11 @@ class DataScanServiceAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.dataplex_v1.types.GenerateDataQualityRulesResponse:
-                Response details for data quality
-                rule recommendations.
+            google.cloud.dataplex_v1.types.GlossaryCategory:
+                A GlossaryCategory represents a
+                collection of GlossaryCategories and
+                GlossaryTerms within a Glossary that are
+                related to each other.
 
         """
         # Create or coerce a protobuf request object.
@@ -1489,8 +1446,8 @@ class DataScanServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, datascans.GenerateDataQualityRulesRequest):
-            request = datascans.GenerateDataQualityRulesRequest(request)
+        if not isinstance(request, business_glossary.GetGlossaryCategoryRequest):
+            request = business_glossary.GetGlossaryCategoryRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1500,7 +1457,7 @@ class DataScanServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.generate_data_quality_rules
+            self._client._transport.get_glossary_category
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -1515,6 +1472,750 @@ class DataScanServiceAsyncClient:
         # Send the request.
         response = await rpc(
             request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_glossary_categories(
+        self,
+        request: Optional[
+            Union[business_glossary.ListGlossaryCategoriesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListGlossaryCategoriesAsyncPager:
+        r"""Lists GlossaryCategory resources in a Glossary.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_list_glossary_categories():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListGlossaryCategoriesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_glossary_categories(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListGlossaryCategoriesRequest, dict]]):
+                The request object. List GlossaryCategories Request
+            parent (:class:`str`):
+                Required. The parent, which has this collection of
+                GlossaryCategories. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+                Location is the Google Cloud region.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.services.business_glossary_service.pagers.ListGlossaryCategoriesAsyncPager:
+                List GlossaryCategories Response
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.ListGlossaryCategoriesRequest):
+            request = business_glossary.ListGlossaryCategoriesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_glossary_categories
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListGlossaryCategoriesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_glossary_term(
+        self,
+        request: Optional[
+            Union[business_glossary.CreateGlossaryTermRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        term: Optional[business_glossary.GlossaryTerm] = None,
+        term_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> business_glossary.GlossaryTerm:
+        r"""Creates a new GlossaryTerm resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_create_glossary_term():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
+
+                # Initialize request argument(s)
+                term = dataplex_v1.GlossaryTerm()
+                term.parent = "parent_value"
+
+                request = dataplex_v1.CreateGlossaryTermRequest(
+                    parent="parent_value",
+                    term_id="term_id_value",
+                    term=term,
+                )
+
+                # Make the request
+                response = await client.create_glossary_term(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.CreateGlossaryTermRequest, dict]]):
+                The request object. Creates a new GlossaryTerm under the
+                specified Glossary.
+            parent (:class:`str`):
+                Required. The parent resource where the GlossaryTerm
+                will be created. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+                where ``location_id`` refers to a Google Cloud region.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            term (:class:`google.cloud.dataplex_v1.types.GlossaryTerm`):
+                Required. The GlossaryTerm to create.
+                This corresponds to the ``term`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            term_id (:class:`str`):
+                Required. GlossaryTerm identifier.
+                This corresponds to the ``term_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.GlossaryTerm:
+                GlossaryTerms are the core of
+                Glossary. A GlossaryTerm holds a rich
+                text description that can be attached to
+                Entries or specific columns to enrich
+                them.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, term, term_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.CreateGlossaryTermRequest):
+            request = business_glossary.CreateGlossaryTermRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if term is not None:
+            request.term = term
+        if term_id is not None:
+            request.term_id = term_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_glossary_term
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_glossary_term(
+        self,
+        request: Optional[
+            Union[business_glossary.UpdateGlossaryTermRequest, dict]
+        ] = None,
+        *,
+        term: Optional[business_glossary.GlossaryTerm] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> business_glossary.GlossaryTerm:
+        r"""Updates a GlossaryTerm resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_update_glossary_term():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
+
+                # Initialize request argument(s)
+                term = dataplex_v1.GlossaryTerm()
+                term.parent = "parent_value"
+
+                request = dataplex_v1.UpdateGlossaryTermRequest(
+                    term=term,
+                )
+
+                # Make the request
+                response = await client.update_glossary_term(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.UpdateGlossaryTermRequest, dict]]):
+                The request object. Update GlossaryTerm Request
+            term (:class:`google.cloud.dataplex_v1.types.GlossaryTerm`):
+                Required. The GlossaryTerm to update. The GlossaryTerm's
+                ``name`` field is used to identify the GlossaryTerm to
+                update. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
+
+                This corresponds to the ``term`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.GlossaryTerm:
+                GlossaryTerms are the core of
+                Glossary. A GlossaryTerm holds a rich
+                text description that can be attached to
+                Entries or specific columns to enrich
+                them.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [term, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.UpdateGlossaryTermRequest):
+            request = business_glossary.UpdateGlossaryTermRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if term is not None:
+            request.term = term
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_glossary_term
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("term.name", request.term.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_glossary_term(
+        self,
+        request: Optional[
+            Union[business_glossary.DeleteGlossaryTermRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes a GlossaryTerm resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_delete_glossary_term():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeleteGlossaryTermRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_glossary_term(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.DeleteGlossaryTermRequest, dict]]):
+                The request object. Delete GlossaryTerm Request
+            name (:class:`str`):
+                Required. The name of the GlossaryTerm to delete.
+                Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.DeleteGlossaryTermRequest):
+            request = business_glossary.DeleteGlossaryTermRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_glossary_term
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def get_glossary_term(
+        self,
+        request: Optional[Union[business_glossary.GetGlossaryTermRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> business_glossary.GlossaryTerm:
+        r"""Gets a GlossaryTerm resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_get_glossary_term():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetGlossaryTermRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_glossary_term(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.GetGlossaryTermRequest, dict]]):
+                The request object. Get GlossaryTerm Request
+            name (:class:`str`):
+                Required. The name of the GlossaryTerm to retrieve.
+                Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.GlossaryTerm:
+                GlossaryTerms are the core of
+                Glossary. A GlossaryTerm holds a rich
+                text description that can be attached to
+                Entries or specific columns to enrich
+                them.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.GetGlossaryTermRequest):
+            request = business_glossary.GetGlossaryTermRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_glossary_term
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_glossary_terms(
+        self,
+        request: Optional[
+            Union[business_glossary.ListGlossaryTermsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListGlossaryTermsAsyncPager:
+        r"""Lists GlossaryTerm resources in a Glossary.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_list_glossary_terms():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListGlossaryTermsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_glossary_terms(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.ListGlossaryTermsRequest, dict]]):
+                The request object. List GlossaryTerms Request
+            parent (:class:`str`):
+                Required. The parent, which has this collection of
+                GlossaryTerms. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+                where ``location_id`` refers to a Google Cloud region.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.services.business_glossary_service.pagers.ListGlossaryTermsAsyncPager:
+                List GlossaryTerms Response
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.ListGlossaryTermsRequest):
+            request = business_glossary.ListGlossaryTermsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_glossary_terms
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListGlossaryTermsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -1854,7 +2555,7 @@ class DataScanServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "DataScanServiceAsyncClient":
+    async def __aenter__(self) -> "BusinessGlossaryServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -1869,4 +2570,4 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("DataScanServiceAsyncClient",)
+__all__ = ("BusinessGlossaryServiceAsyncClient",)

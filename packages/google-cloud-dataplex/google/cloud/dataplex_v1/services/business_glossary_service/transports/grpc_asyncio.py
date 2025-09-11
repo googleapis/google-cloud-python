@@ -29,16 +29,17 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dataplex_v1.types import cmek
+from google.cloud.dataplex_v1.types import business_glossary
 
-from .base import DEFAULT_CLIENT_INFO, CmekServiceTransport
-from .grpc import CmekServiceGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, BusinessGlossaryServiceTransport
+from .grpc import BusinessGlossaryServiceGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -78,7 +79,7 @@ class _LoggingClientAIOInterceptor(
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.cloud.dataplex.v1.CmekService",
+                    "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
@@ -108,7 +109,7 @@ class _LoggingClientAIOInterceptor(
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.cloud.dataplex.v1.CmekService",
+                    "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
@@ -117,11 +118,16 @@ class _LoggingClientAIOInterceptor(
         return response
 
 
-class CmekServiceGrpcAsyncIOTransport(CmekServiceTransport):
-    """gRPC AsyncIO backend transport for CmekService.
+class BusinessGlossaryServiceGrpcAsyncIOTransport(BusinessGlossaryServiceTransport):
+    """gRPC AsyncIO backend transport for BusinessGlossaryService.
 
-    Dataplex Universal Catalog Customer Managed Encryption Keys
-    (CMEK) Service
+    BusinessGlossaryService provides APIs for managing business
+    glossary resources for enterprise customers.
+    The resources currently supported in Business Glossary are:
+
+    1. Glossary
+    2. GlossaryCategory
+    3. GlossaryTerm
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -350,17 +356,17 @@ class CmekServiceGrpcAsyncIOTransport(CmekServiceTransport):
         return self._operations_client
 
     @property
-    def create_encryption_config(
+    def create_glossary(
         self,
     ) -> Callable[
-        [cmek.CreateEncryptionConfigRequest], Awaitable[operations_pb2.Operation]
+        [business_glossary.CreateGlossaryRequest], Awaitable[operations_pb2.Operation]
     ]:
-        r"""Return a callable for the create encryption config method over gRPC.
+        r"""Return a callable for the create glossary method over gRPC.
 
-        Create an EncryptionConfig.
+        Creates a new Glossary resource.
 
         Returns:
-            Callable[[~.CreateEncryptionConfigRequest],
+            Callable[[~.CreateGlossaryRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -369,26 +375,26 @@ class CmekServiceGrpcAsyncIOTransport(CmekServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_encryption_config" not in self._stubs:
-            self._stubs["create_encryption_config"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CmekService/CreateEncryptionConfig",
-                request_serializer=cmek.CreateEncryptionConfigRequest.serialize,
+        if "create_glossary" not in self._stubs:
+            self._stubs["create_glossary"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/CreateGlossary",
+                request_serializer=business_glossary.CreateGlossaryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_encryption_config"]
+        return self._stubs["create_glossary"]
 
     @property
-    def update_encryption_config(
+    def update_glossary(
         self,
     ) -> Callable[
-        [cmek.UpdateEncryptionConfigRequest], Awaitable[operations_pb2.Operation]
+        [business_glossary.UpdateGlossaryRequest], Awaitable[operations_pb2.Operation]
     ]:
-        r"""Return a callable for the update encryption config method over gRPC.
+        r"""Return a callable for the update glossary method over gRPC.
 
-        Update an EncryptionConfig.
+        Updates a Glossary resource.
 
         Returns:
-            Callable[[~.UpdateEncryptionConfigRequest],
+            Callable[[~.UpdateGlossaryRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -397,26 +403,28 @@ class CmekServiceGrpcAsyncIOTransport(CmekServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_encryption_config" not in self._stubs:
-            self._stubs["update_encryption_config"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CmekService/UpdateEncryptionConfig",
-                request_serializer=cmek.UpdateEncryptionConfigRequest.serialize,
+        if "update_glossary" not in self._stubs:
+            self._stubs["update_glossary"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/UpdateGlossary",
+                request_serializer=business_glossary.UpdateGlossaryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["update_encryption_config"]
+        return self._stubs["update_glossary"]
 
     @property
-    def delete_encryption_config(
+    def delete_glossary(
         self,
     ) -> Callable[
-        [cmek.DeleteEncryptionConfigRequest], Awaitable[operations_pb2.Operation]
+        [business_glossary.DeleteGlossaryRequest], Awaitable[operations_pb2.Operation]
     ]:
-        r"""Return a callable for the delete encryption config method over gRPC.
+        r"""Return a callable for the delete glossary method over gRPC.
 
-        Delete an EncryptionConfig.
+        Deletes a Glossary resource. All the categories and
+        terms within the Glossary must be deleted before the
+        Glossary can be deleted.
 
         Returns:
-            Callable[[~.DeleteEncryptionConfigRequest],
+            Callable[[~.DeleteGlossaryRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -425,28 +433,27 @@ class CmekServiceGrpcAsyncIOTransport(CmekServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_encryption_config" not in self._stubs:
-            self._stubs["delete_encryption_config"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CmekService/DeleteEncryptionConfig",
-                request_serializer=cmek.DeleteEncryptionConfigRequest.serialize,
+        if "delete_glossary" not in self._stubs:
+            self._stubs["delete_glossary"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/DeleteGlossary",
+                request_serializer=business_glossary.DeleteGlossaryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["delete_encryption_config"]
+        return self._stubs["delete_glossary"]
 
     @property
-    def list_encryption_configs(
+    def get_glossary(
         self,
     ) -> Callable[
-        [cmek.ListEncryptionConfigsRequest],
-        Awaitable[cmek.ListEncryptionConfigsResponse],
+        [business_glossary.GetGlossaryRequest], Awaitable[business_glossary.Glossary]
     ]:
-        r"""Return a callable for the list encryption configs method over gRPC.
+        r"""Return a callable for the get glossary method over gRPC.
 
-        List EncryptionConfigs.
+        Gets a Glossary resource.
 
         Returns:
-            Callable[[~.ListEncryptionConfigsRequest],
-                    Awaitable[~.ListEncryptionConfigsResponse]]:
+            Callable[[~.GetGlossaryRequest],
+                    Awaitable[~.Glossary]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -454,25 +461,28 @@ class CmekServiceGrpcAsyncIOTransport(CmekServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_encryption_configs" not in self._stubs:
-            self._stubs["list_encryption_configs"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CmekService/ListEncryptionConfigs",
-                request_serializer=cmek.ListEncryptionConfigsRequest.serialize,
-                response_deserializer=cmek.ListEncryptionConfigsResponse.deserialize,
+        if "get_glossary" not in self._stubs:
+            self._stubs["get_glossary"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/GetGlossary",
+                request_serializer=business_glossary.GetGlossaryRequest.serialize,
+                response_deserializer=business_glossary.Glossary.deserialize,
             )
-        return self._stubs["list_encryption_configs"]
+        return self._stubs["get_glossary"]
 
     @property
-    def get_encryption_config(
+    def list_glossaries(
         self,
-    ) -> Callable[[cmek.GetEncryptionConfigRequest], Awaitable[cmek.EncryptionConfig]]:
-        r"""Return a callable for the get encryption config method over gRPC.
+    ) -> Callable[
+        [business_glossary.ListGlossariesRequest],
+        Awaitable[business_glossary.ListGlossariesResponse],
+    ]:
+        r"""Return a callable for the list glossaries method over gRPC.
 
-        Get an EncryptionConfig.
+        Lists Glossary resources in a project and location.
 
         Returns:
-            Callable[[~.GetEncryptionConfigRequest],
-                    Awaitable[~.EncryptionConfig]]:
+            Callable[[~.ListGlossariesRequest],
+                    Awaitable[~.ListGlossariesResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -480,39 +490,380 @@ class CmekServiceGrpcAsyncIOTransport(CmekServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_encryption_config" not in self._stubs:
-            self._stubs["get_encryption_config"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CmekService/GetEncryptionConfig",
-                request_serializer=cmek.GetEncryptionConfigRequest.serialize,
-                response_deserializer=cmek.EncryptionConfig.deserialize,
+        if "list_glossaries" not in self._stubs:
+            self._stubs["list_glossaries"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/ListGlossaries",
+                request_serializer=business_glossary.ListGlossariesRequest.serialize,
+                response_deserializer=business_glossary.ListGlossariesResponse.deserialize,
             )
-        return self._stubs["get_encryption_config"]
+        return self._stubs["list_glossaries"]
+
+    @property
+    def create_glossary_category(
+        self,
+    ) -> Callable[
+        [business_glossary.CreateGlossaryCategoryRequest],
+        Awaitable[business_glossary.GlossaryCategory],
+    ]:
+        r"""Return a callable for the create glossary category method over gRPC.
+
+        Creates a new GlossaryCategory resource.
+
+        Returns:
+            Callable[[~.CreateGlossaryCategoryRequest],
+                    Awaitable[~.GlossaryCategory]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_glossary_category" not in self._stubs:
+            self._stubs["create_glossary_category"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/CreateGlossaryCategory",
+                request_serializer=business_glossary.CreateGlossaryCategoryRequest.serialize,
+                response_deserializer=business_glossary.GlossaryCategory.deserialize,
+            )
+        return self._stubs["create_glossary_category"]
+
+    @property
+    def update_glossary_category(
+        self,
+    ) -> Callable[
+        [business_glossary.UpdateGlossaryCategoryRequest],
+        Awaitable[business_glossary.GlossaryCategory],
+    ]:
+        r"""Return a callable for the update glossary category method over gRPC.
+
+        Updates a GlossaryCategory resource.
+
+        Returns:
+            Callable[[~.UpdateGlossaryCategoryRequest],
+                    Awaitable[~.GlossaryCategory]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_glossary_category" not in self._stubs:
+            self._stubs["update_glossary_category"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/UpdateGlossaryCategory",
+                request_serializer=business_glossary.UpdateGlossaryCategoryRequest.serialize,
+                response_deserializer=business_glossary.GlossaryCategory.deserialize,
+            )
+        return self._stubs["update_glossary_category"]
+
+    @property
+    def delete_glossary_category(
+        self,
+    ) -> Callable[
+        [business_glossary.DeleteGlossaryCategoryRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete glossary category method over gRPC.
+
+        Deletes a GlossaryCategory resource. All the
+        GlossaryCategories and GlossaryTerms nested directly
+        under the specified GlossaryCategory will be moved one
+        level up to the parent in the hierarchy.
+
+        Returns:
+            Callable[[~.DeleteGlossaryCategoryRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_glossary_category" not in self._stubs:
+            self._stubs["delete_glossary_category"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/DeleteGlossaryCategory",
+                request_serializer=business_glossary.DeleteGlossaryCategoryRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_glossary_category"]
+
+    @property
+    def get_glossary_category(
+        self,
+    ) -> Callable[
+        [business_glossary.GetGlossaryCategoryRequest],
+        Awaitable[business_glossary.GlossaryCategory],
+    ]:
+        r"""Return a callable for the get glossary category method over gRPC.
+
+        Gets a GlossaryCategory resource.
+
+        Returns:
+            Callable[[~.GetGlossaryCategoryRequest],
+                    Awaitable[~.GlossaryCategory]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_glossary_category" not in self._stubs:
+            self._stubs["get_glossary_category"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/GetGlossaryCategory",
+                request_serializer=business_glossary.GetGlossaryCategoryRequest.serialize,
+                response_deserializer=business_glossary.GlossaryCategory.deserialize,
+            )
+        return self._stubs["get_glossary_category"]
+
+    @property
+    def list_glossary_categories(
+        self,
+    ) -> Callable[
+        [business_glossary.ListGlossaryCategoriesRequest],
+        Awaitable[business_glossary.ListGlossaryCategoriesResponse],
+    ]:
+        r"""Return a callable for the list glossary categories method over gRPC.
+
+        Lists GlossaryCategory resources in a Glossary.
+
+        Returns:
+            Callable[[~.ListGlossaryCategoriesRequest],
+                    Awaitable[~.ListGlossaryCategoriesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_glossary_categories" not in self._stubs:
+            self._stubs["list_glossary_categories"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/ListGlossaryCategories",
+                request_serializer=business_glossary.ListGlossaryCategoriesRequest.serialize,
+                response_deserializer=business_glossary.ListGlossaryCategoriesResponse.deserialize,
+            )
+        return self._stubs["list_glossary_categories"]
+
+    @property
+    def create_glossary_term(
+        self,
+    ) -> Callable[
+        [business_glossary.CreateGlossaryTermRequest],
+        Awaitable[business_glossary.GlossaryTerm],
+    ]:
+        r"""Return a callable for the create glossary term method over gRPC.
+
+        Creates a new GlossaryTerm resource.
+
+        Returns:
+            Callable[[~.CreateGlossaryTermRequest],
+                    Awaitable[~.GlossaryTerm]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_glossary_term" not in self._stubs:
+            self._stubs["create_glossary_term"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/CreateGlossaryTerm",
+                request_serializer=business_glossary.CreateGlossaryTermRequest.serialize,
+                response_deserializer=business_glossary.GlossaryTerm.deserialize,
+            )
+        return self._stubs["create_glossary_term"]
+
+    @property
+    def update_glossary_term(
+        self,
+    ) -> Callable[
+        [business_glossary.UpdateGlossaryTermRequest],
+        Awaitable[business_glossary.GlossaryTerm],
+    ]:
+        r"""Return a callable for the update glossary term method over gRPC.
+
+        Updates a GlossaryTerm resource.
+
+        Returns:
+            Callable[[~.UpdateGlossaryTermRequest],
+                    Awaitable[~.GlossaryTerm]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_glossary_term" not in self._stubs:
+            self._stubs["update_glossary_term"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/UpdateGlossaryTerm",
+                request_serializer=business_glossary.UpdateGlossaryTermRequest.serialize,
+                response_deserializer=business_glossary.GlossaryTerm.deserialize,
+            )
+        return self._stubs["update_glossary_term"]
+
+    @property
+    def delete_glossary_term(
+        self,
+    ) -> Callable[
+        [business_glossary.DeleteGlossaryTermRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete glossary term method over gRPC.
+
+        Deletes a GlossaryTerm resource.
+
+        Returns:
+            Callable[[~.DeleteGlossaryTermRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_glossary_term" not in self._stubs:
+            self._stubs["delete_glossary_term"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/DeleteGlossaryTerm",
+                request_serializer=business_glossary.DeleteGlossaryTermRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_glossary_term"]
+
+    @property
+    def get_glossary_term(
+        self,
+    ) -> Callable[
+        [business_glossary.GetGlossaryTermRequest],
+        Awaitable[business_glossary.GlossaryTerm],
+    ]:
+        r"""Return a callable for the get glossary term method over gRPC.
+
+        Gets a GlossaryTerm resource.
+
+        Returns:
+            Callable[[~.GetGlossaryTermRequest],
+                    Awaitable[~.GlossaryTerm]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_glossary_term" not in self._stubs:
+            self._stubs["get_glossary_term"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/GetGlossaryTerm",
+                request_serializer=business_glossary.GetGlossaryTermRequest.serialize,
+                response_deserializer=business_glossary.GlossaryTerm.deserialize,
+            )
+        return self._stubs["get_glossary_term"]
+
+    @property
+    def list_glossary_terms(
+        self,
+    ) -> Callable[
+        [business_glossary.ListGlossaryTermsRequest],
+        Awaitable[business_glossary.ListGlossaryTermsResponse],
+    ]:
+        r"""Return a callable for the list glossary terms method over gRPC.
+
+        Lists GlossaryTerm resources in a Glossary.
+
+        Returns:
+            Callable[[~.ListGlossaryTermsRequest],
+                    Awaitable[~.ListGlossaryTermsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_glossary_terms" not in self._stubs:
+            self._stubs["list_glossary_terms"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/ListGlossaryTerms",
+                request_serializer=business_glossary.ListGlossaryTermsRequest.serialize,
+                response_deserializer=business_glossary.ListGlossaryTermsResponse.deserialize,
+            )
+        return self._stubs["list_glossary_terms"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_encryption_config: self._wrap_method(
-                self.create_encryption_config,
+            self.create_glossary: self._wrap_method(
+                self.create_glossary,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_encryption_config: self._wrap_method(
-                self.update_encryption_config,
+            self.update_glossary: self._wrap_method(
+                self.update_glossary,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_encryption_config: self._wrap_method(
-                self.delete_encryption_config,
+            self.delete_glossary: self._wrap_method(
+                self.delete_glossary,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_encryption_configs: self._wrap_method(
-                self.list_encryption_configs,
+            self.get_glossary: self._wrap_method(
+                self.get_glossary,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_encryption_config: self._wrap_method(
-                self.get_encryption_config,
+            self.list_glossaries: self._wrap_method(
+                self.list_glossaries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_glossary_category: self._wrap_method(
+                self.create_glossary_category,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_glossary_category: self._wrap_method(
+                self.update_glossary_category,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_glossary_category: self._wrap_method(
+                self.delete_glossary_category,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_glossary_category: self._wrap_method(
+                self.get_glossary_category,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_glossary_categories: self._wrap_method(
+                self.list_glossary_categories,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_glossary_term: self._wrap_method(
+                self.create_glossary_term,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_glossary_term: self._wrap_method(
+                self.update_glossary_term,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_glossary_term: self._wrap_method(
+                self.delete_glossary_term,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_glossary_term: self._wrap_method(
+                self.get_glossary_term,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_glossary_terms: self._wrap_method(
+                self.list_glossary_terms,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -667,4 +1018,4 @@ class CmekServiceGrpcAsyncIOTransport(CmekServiceTransport):
         return self._stubs["get_location"]
 
 
-__all__ = ("CmekServiceGrpcAsyncIOTransport",)
+__all__ = ("BusinessGlossaryServiceGrpcAsyncIOTransport",)

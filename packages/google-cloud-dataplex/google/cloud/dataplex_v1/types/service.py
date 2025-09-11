@@ -81,7 +81,7 @@ class CreateLakeRequest(proto.Message):
         parent (str):
             Required. The resource name of the lake location, of the
             form: projects/{project_number}/locations/{location_id}
-            where ``location_id`` refers to a GCP region.
+            where ``location_id`` refers to a Google Cloud region.
         lake_id (str):
             Required. Lake identifier. This ID will be used to generate
             names such as database and dataset names when publishing
@@ -170,7 +170,7 @@ class ListLakesRequest(proto.Message):
         parent (str):
             Required. The resource name of the lake location, of the
             form: ``projects/{project_number}/locations/{location_id}``
-            where ``location_id`` refers to a GCP region.
+            where ``location_id`` refers to a Google Cloud region.
         page_size (int):
             Optional. Maximum number of Lakes to return.
             The service may return fewer than this value. If

@@ -377,6 +377,21 @@ class CatalogServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_entry_link: gapic_v1.method.wrap_method(
+                self.create_entry_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_entry_link: gapic_v1.method.wrap_method(
+                self.delete_entry_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_entry_link: gapic_v1.method.wrap_method(
+                self.get_entry_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -658,6 +673,33 @@ class CatalogServiceTransport(abc.ABC):
     ) -> Callable[
         [catalog.CancelMetadataJobRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_entry_link(
+        self,
+    ) -> Callable[
+        [catalog.CreateEntryLinkRequest],
+        Union[catalog.EntryLink, Awaitable[catalog.EntryLink]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_entry_link(
+        self,
+    ) -> Callable[
+        [catalog.DeleteEntryLinkRequest],
+        Union[catalog.EntryLink, Awaitable[catalog.EntryLink]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_entry_link(
+        self,
+    ) -> Callable[
+        [catalog.GetEntryLinkRequest],
+        Union[catalog.EntryLink, Awaitable[catalog.EntryLink]],
     ]:
         raise NotImplementedError()
 
