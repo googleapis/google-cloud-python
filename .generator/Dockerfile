@@ -61,13 +61,17 @@ RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/ge
 RUN /usr/local/bin/python3.9 -m venv bazel_env
 RUN . bazel_env/bin/activate
 
-# Download/install protoc
+# Download/extract protoc
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
 RUN unzip protoc-25.3-linux-x86_64.zip -d protoc
 
-# Download/install pandoc
+# Download/extract pandoc
+# Pandoc is required by gapic-generator-python for parsing documentation
 RUN wget https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-linux-amd64.tar.gz
 RUN tar -xvf pandoc-3.7.0.2-linux-amd64.tar.gz
+
+# Download synthtool
+RUN git clone --depth 1 https://github.com/googleapis/synthtool.git synthtool
 
 # --- Final Stage ---
 # This stage creates the lightweight final image, copying only the
@@ -78,8 +82,6 @@ FROM marketplace.gcr.io/google/ubuntu2404
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    ca-certificates \
-    git \
     libsqlite3-0 \
     pandoc \
     wget \
@@ -92,8 +94,8 @@ RUN apt-get update && \
 COPY --from=builder protoc/bin /usr/local/bin
 COPY --from=builder protoc/include /usr/local/include
 
-# Pandoc is required by gapic-generator-python for parsing documentation
 COPY --from=builder pandoc-3.7.0.2/bin /usr/local/bin
+COPY --from=builder synthtool /synthtool
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
@@ -111,9 +113,7 @@ WORKDIR /app
 
 COPY .generator/requirements.in .
 RUN python3.9 -m pip install -r requirements.in
-
-RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
-python3.9 -m pip install /tmp/synthtool
+RUN python3.9 -m pip install /synthtool
 
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
@@ -127,7 +127,7 @@ RUN find /.cache -type d -exec chmod a+x {} \;
 
 # Tell synthtool to pull templates from this docker image instead of from
 # the live repo.
-ENV SYNTHTOOL_TEMPLATES="/tmp/synthtool/synthtool/gcp/templates"
+ENV SYNTHTOOL_TEMPLATES="/synthtool/synthtool/gcp/templates"
 
 
 ENTRYPOINT ["python3.9", "./cli.py"]
