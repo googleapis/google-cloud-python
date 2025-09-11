@@ -20,10 +20,11 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     # Essential for compiling C code
     build-essential \
-    # For downloading secure files
+    # For downloading and extracting secure files
     git \
     wget \
     ca-certificates \
+    unzip \
     # --- Critical libraries for a complete Python build ---
     libssl-dev \
     zlib1g-dev \
@@ -60,6 +61,10 @@ RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/ge
 RUN /usr/local/bin/python3.9 -m venv bazel_env
 RUN . bazel_env/bin/activate
 
+# Download/install protoc
+RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
+RUN unzip protoc-25.3-linux-x86_64.zip -d protoc
+
 # --- Final Stage ---
 # This stage creates the lightweight final image, copying only the
 # necessary artifacts from the builder stage.
@@ -74,12 +79,15 @@ RUN apt-get update && \
     libsqlite3-0 \
     pandoc \
     wget \
-    unzip \
     zip \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
     && rm -f /var/cache/apt/archives/*.deb
+
+COPY --from=builder protoc/bin /usr/local/bin
+COPY --from=builder protoc/include /usr/local/include
+COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
@@ -91,14 +99,6 @@ COPY --from=builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
 
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
-
-# Download/install protoc
-RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
-RUN unzip protoc-25.3-linux-x86_64.zip -d protoc
-RUN mv protoc/bin/* /usr/local/bin/
-RUN mv protoc/include/* /usr/local/include/
-RUN chmod +x /usr/local/bin/protoc
-ENV PATH="/usr/bin:${PATH}"
 
 # Set the working directory in the container.
 WORKDIR /app
