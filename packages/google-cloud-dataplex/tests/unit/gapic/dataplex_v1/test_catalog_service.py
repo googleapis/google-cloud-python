@@ -11218,6 +11218,1029 @@ async def test_cancel_metadata_job_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CreateEntryLinkRequest,
+        dict,
+    ],
+)
+def test_create_entry_link(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.EntryLink(
+            name="name_value",
+            entry_link_type="entry_link_type_value",
+        )
+        response = client.create_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = catalog.CreateEntryLinkRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.EntryLink)
+    assert response.name == "name_value"
+    assert response.entry_link_type == "entry_link_type_value"
+
+
+def test_create_entry_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog.CreateEntryLinkRequest(
+        parent="parent_value",
+        entry_link_id="entry_link_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_entry_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog.CreateEntryLinkRequest(
+            parent="parent_value",
+            entry_link_id="entry_link_id_value",
+        )
+
+
+def test_create_entry_link_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CatalogServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_entry_link in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_entry_link
+        ] = mock_rpc
+        request = {}
+        client.create_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_entry_link(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_entry_link_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CatalogServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_entry_link
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_entry_link
+        ] = mock_rpc
+
+        request = {}
+        await client.create_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_entry_link(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_entry_link_async(
+    transport: str = "grpc_asyncio", request_type=catalog.CreateEntryLinkRequest
+):
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.EntryLink(
+                name="name_value",
+                entry_link_type="entry_link_type_value",
+            )
+        )
+        response = await client.create_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = catalog.CreateEntryLinkRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.EntryLink)
+    assert response.name == "name_value"
+    assert response.entry_link_type == "entry_link_type_value"
+
+
+@pytest.mark.asyncio
+async def test_create_entry_link_async_from_dict():
+    await test_create_entry_link_async(request_type=dict)
+
+
+def test_create_entry_link_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog.CreateEntryLinkRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        call.return_value = catalog.EntryLink()
+        client.create_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_entry_link_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog.CreateEntryLinkRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(catalog.EntryLink())
+        await client.create_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_entry_link_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.EntryLink()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_entry_link(
+            parent="parent_value",
+            entry_link=catalog.EntryLink(name="name_value"),
+            entry_link_id="entry_link_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].entry_link
+        mock_val = catalog.EntryLink(name="name_value")
+        assert arg == mock_val
+        arg = args[0].entry_link_id
+        mock_val = "entry_link_id_value"
+        assert arg == mock_val
+
+
+def test_create_entry_link_flattened_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_entry_link(
+            catalog.CreateEntryLinkRequest(),
+            parent="parent_value",
+            entry_link=catalog.EntryLink(name="name_value"),
+            entry_link_id="entry_link_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_entry_link_flattened_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.EntryLink()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(catalog.EntryLink())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_entry_link(
+            parent="parent_value",
+            entry_link=catalog.EntryLink(name="name_value"),
+            entry_link_id="entry_link_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].entry_link
+        mock_val = catalog.EntryLink(name="name_value")
+        assert arg == mock_val
+        arg = args[0].entry_link_id
+        mock_val = "entry_link_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_entry_link_flattened_error_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_entry_link(
+            catalog.CreateEntryLinkRequest(),
+            parent="parent_value",
+            entry_link=catalog.EntryLink(name="name_value"),
+            entry_link_id="entry_link_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.DeleteEntryLinkRequest,
+        dict,
+    ],
+)
+def test_delete_entry_link(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.EntryLink(
+            name="name_value",
+            entry_link_type="entry_link_type_value",
+        )
+        response = client.delete_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = catalog.DeleteEntryLinkRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.EntryLink)
+    assert response.name == "name_value"
+    assert response.entry_link_type == "entry_link_type_value"
+
+
+def test_delete_entry_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog.DeleteEntryLinkRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_entry_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog.DeleteEntryLinkRequest(
+            name="name_value",
+        )
+
+
+def test_delete_entry_link_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CatalogServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_entry_link in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_entry_link
+        ] = mock_rpc
+        request = {}
+        client.delete_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_entry_link(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_link_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CatalogServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_entry_link
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_entry_link
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.delete_entry_link(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_link_async(
+    transport: str = "grpc_asyncio", request_type=catalog.DeleteEntryLinkRequest
+):
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.EntryLink(
+                name="name_value",
+                entry_link_type="entry_link_type_value",
+            )
+        )
+        response = await client.delete_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = catalog.DeleteEntryLinkRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.EntryLink)
+    assert response.name == "name_value"
+    assert response.entry_link_type == "entry_link_type_value"
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_link_async_from_dict():
+    await test_delete_entry_link_async(request_type=dict)
+
+
+def test_delete_entry_link_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog.DeleteEntryLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        call.return_value = catalog.EntryLink()
+        client.delete_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_link_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog.DeleteEntryLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(catalog.EntryLink())
+        await client.delete_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_entry_link_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.EntryLink()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_entry_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_entry_link_flattened_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_entry_link(
+            catalog.DeleteEntryLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_link_flattened_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.EntryLink()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(catalog.EntryLink())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_entry_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_link_flattened_error_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_entry_link(
+            catalog.DeleteEntryLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.GetEntryLinkRequest,
+        dict,
+    ],
+)
+def test_get_entry_link(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.EntryLink(
+            name="name_value",
+            entry_link_type="entry_link_type_value",
+        )
+        response = client.get_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = catalog.GetEntryLinkRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.EntryLink)
+    assert response.name == "name_value"
+    assert response.entry_link_type == "entry_link_type_value"
+
+
+def test_get_entry_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog.GetEntryLinkRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_entry_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog.GetEntryLinkRequest(
+            name="name_value",
+        )
+
+
+def test_get_entry_link_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CatalogServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_entry_link in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_entry_link] = mock_rpc
+        request = {}
+        client.get_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_entry_link(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_entry_link_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CatalogServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_entry_link
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_entry_link
+        ] = mock_rpc
+
+        request = {}
+        await client.get_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_entry_link(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_entry_link_async(
+    transport: str = "grpc_asyncio", request_type=catalog.GetEntryLinkRequest
+):
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.EntryLink(
+                name="name_value",
+                entry_link_type="entry_link_type_value",
+            )
+        )
+        response = await client.get_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = catalog.GetEntryLinkRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.EntryLink)
+    assert response.name == "name_value"
+    assert response.entry_link_type == "entry_link_type_value"
+
+
+@pytest.mark.asyncio
+async def test_get_entry_link_async_from_dict():
+    await test_get_entry_link_async(request_type=dict)
+
+
+def test_get_entry_link_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog.GetEntryLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        call.return_value = catalog.EntryLink()
+        client.get_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_entry_link_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog.GetEntryLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(catalog.EntryLink())
+        await client.get_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_entry_link_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.EntryLink()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_entry_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_entry_link_flattened_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_entry_link(
+            catalog.GetEntryLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_entry_link_flattened_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.EntryLink()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(catalog.EntryLink())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_entry_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_entry_link_flattened_error_async():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_entry_link(
+            catalog.GetEntryLinkRequest(),
+            name="name_value",
+        )
+
+
 def test_create_entry_type_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -16650,6 +17673,577 @@ def test_cancel_metadata_job_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_create_entry_link_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CatalogServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_entry_link in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_entry_link
+        ] = mock_rpc
+
+        request = {}
+        client.create_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_entry_link(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_entry_link_rest_required_fields(
+    request_type=catalog.CreateEntryLinkRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["entry_link_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "entryLinkId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_entry_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "entryLinkId" in jsonified_request
+    assert jsonified_request["entryLinkId"] == request_init["entry_link_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["entryLinkId"] = "entry_link_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_entry_link._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("entry_link_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "entryLinkId" in jsonified_request
+    assert jsonified_request["entryLinkId"] == "entry_link_id_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.EntryLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = catalog.EntryLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_entry_link(request)
+
+            expected_params = [
+                (
+                    "entryLinkId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_entry_link_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_entry_link._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("entryLinkId",))
+        & set(
+            (
+                "parent",
+                "entryLinkId",
+                "entryLink",
+            )
+        )
+    )
+
+
+def test_create_entry_link_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.EntryLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/entryGroups/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            entry_link=catalog.EntryLink(name="name_value"),
+            entry_link_id="entry_link_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = catalog.EntryLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_entry_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/entryGroups/*}/entryLinks"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_entry_link_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_entry_link(
+            catalog.CreateEntryLinkRequest(),
+            parent="parent_value",
+            entry_link=catalog.EntryLink(name="name_value"),
+            entry_link_id="entry_link_id_value",
+        )
+
+
+def test_delete_entry_link_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CatalogServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_entry_link in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_entry_link
+        ] = mock_rpc
+
+        request = {}
+        client.delete_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_entry_link(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_entry_link_rest_required_fields(
+    request_type=catalog.DeleteEntryLinkRequest,
+):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_entry_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_entry_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.EntryLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = catalog.EntryLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_entry_link(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_entry_link_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_entry_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_entry_link_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.EntryLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/entryGroups/sample3/entryLinks/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = catalog.EntryLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_entry_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/entryGroups/*/entryLinks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_entry_link_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_entry_link(
+            catalog.DeleteEntryLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_get_entry_link_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CatalogServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_entry_link in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_entry_link] = mock_rpc
+
+        request = {}
+        client.get_entry_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_entry_link(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_entry_link_rest_required_fields(request_type=catalog.GetEntryLinkRequest):
+    transport_class = transports.CatalogServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_entry_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_entry_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = catalog.EntryLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = catalog.EntryLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_entry_link(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_entry_link_rest_unset_required_fields():
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_entry_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_entry_link_rest_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.EntryLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/entryGroups/sample3/entryLinks/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = catalog.EntryLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_entry_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/entryGroups/*/entryLinks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_entry_link_rest_flattened_error(transport: str = "rest"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_entry_link(
+            catalog.GetEntryLinkRequest(),
+            name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CatalogServiceGrpcTransport(
@@ -17326,6 +18920,73 @@ def test_cancel_metadata_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CancelMetadataJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_entry_link_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        call.return_value = catalog.EntryLink()
+        client.create_entry_link(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateEntryLinkRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_entry_link_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        call.return_value = catalog.EntryLink()
+        client.delete_entry_link(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteEntryLinkRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_entry_link_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        call.return_value = catalog.EntryLink()
+        client.get_entry_link(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetEntryLinkRequest()
 
         assert args[0] == request_msg
 
@@ -18086,6 +19747,94 @@ async def test_cancel_metadata_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = catalog.CancelMetadataJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_entry_link_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.EntryLink(
+                name="name_value",
+                entry_link_type="entry_link_type_value",
+            )
+        )
+        await client.create_entry_link(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateEntryLinkRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_entry_link_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.EntryLink(
+                name="name_value",
+                entry_link_type="entry_link_type_value",
+            )
+        )
+        await client.delete_entry_link(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteEntryLinkRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_entry_link_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.EntryLink(
+                name="name_value",
+                entry_link_type="entry_link_type_value",
+            )
+        )
+        await client.get_entry_link(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetEntryLinkRequest()
 
         assert args[0] == request_msg
 
@@ -21678,6 +23427,15 @@ def test_create_metadata_job_rest_call_success(request_type):
                 "entry_groups": ["entry_groups_value1", "entry_groups_value2"],
                 "entry_types": ["entry_types_value1", "entry_types_value2"],
                 "aspect_types": ["aspect_types_value1", "aspect_types_value2"],
+                "glossaries": ["glossaries_value1", "glossaries_value2"],
+                "entry_link_types": [
+                    "entry_link_types_value1",
+                    "entry_link_types_value2",
+                ],
+                "referenced_entry_scopes": [
+                    "referenced_entry_scopes_value1",
+                    "referenced_entry_scopes_value2",
+                ],
             },
             "entry_sync_mode": 1,
             "aspect_sync_mode": 1,
@@ -21700,6 +23458,9 @@ def test_create_metadata_job_rest_call_success(request_type):
             "unchanged_entries": 1798,
             "recreated_entries": 1800,
             "update_time": {},
+            "deleted_entry_links": 2024,
+            "created_entry_links": 2025,
+            "unchanged_entry_links": 2238,
         },
         "export_result": {
             "exported_entries": 1732,
@@ -22230,6 +23991,467 @@ def test_cancel_metadata_job_rest_interceptors(null_interceptor):
         )
 
         pre.assert_called_once()
+
+
+def test_create_entry_link_rest_bad_request(
+    request_type=catalog.CreateEntryLinkRequest,
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/entryGroups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_entry_link(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.CreateEntryLinkRequest,
+        dict,
+    ],
+)
+def test_create_entry_link_rest_call_success(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/entryGroups/sample3"}
+    request_init["entry_link"] = {
+        "name": "name_value",
+        "entry_link_type": "entry_link_type_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "entry_references": [{"name": "name_value", "path": "path_value", "type_": 2}],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = catalog.CreateEntryLinkRequest.meta.fields["entry_link"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["entry_link"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["entry_link"][field])):
+                    del request_init["entry_link"][field][i][subfield]
+            else:
+                del request_init["entry_link"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.EntryLink(
+            name="name_value",
+            entry_link_type="entry_link_type_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = catalog.EntryLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_entry_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.EntryLink)
+    assert response.name == "name_value"
+    assert response.entry_link_type == "entry_link_type_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_entry_link_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_create_entry_link"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_create_entry_link_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_create_entry_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = catalog.CreateEntryLinkRequest.pb(catalog.CreateEntryLinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = catalog.EntryLink.to_json(catalog.EntryLink())
+        req.return_value.content = return_value
+
+        request = catalog.CreateEntryLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.EntryLink()
+        post_with_metadata.return_value = catalog.EntryLink(), metadata
+
+        client.create_entry_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_delete_entry_link_rest_bad_request(
+    request_type=catalog.DeleteEntryLinkRequest,
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/entryGroups/sample3/entryLinks/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_entry_link(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.DeleteEntryLinkRequest,
+        dict,
+    ],
+)
+def test_delete_entry_link_rest_call_success(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/entryGroups/sample3/entryLinks/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.EntryLink(
+            name="name_value",
+            entry_link_type="entry_link_type_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = catalog.EntryLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_entry_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.EntryLink)
+    assert response.name == "name_value"
+    assert response.entry_link_type == "entry_link_type_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_entry_link_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_delete_entry_link"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_delete_entry_link_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_delete_entry_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = catalog.DeleteEntryLinkRequest.pb(catalog.DeleteEntryLinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = catalog.EntryLink.to_json(catalog.EntryLink())
+        req.return_value.content = return_value
+
+        request = catalog.DeleteEntryLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.EntryLink()
+        post_with_metadata.return_value = catalog.EntryLink(), metadata
+
+        client.delete_entry_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_entry_link_rest_bad_request(request_type=catalog.GetEntryLinkRequest):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/entryGroups/sample3/entryLinks/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_entry_link(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog.GetEntryLinkRequest,
+        dict,
+    ],
+)
+def test_get_entry_link_rest_call_success(request_type):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/entryGroups/sample3/entryLinks/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = catalog.EntryLink(
+            name="name_value",
+            entry_link_type="entry_link_type_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = catalog.EntryLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_entry_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.EntryLink)
+    assert response.name == "name_value"
+    assert response.entry_link_type == "entry_link_type_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_entry_link_rest_interceptors(null_interceptor):
+    transport = transports.CatalogServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CatalogServiceRestInterceptor(),
+    )
+    client = CatalogServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_get_entry_link"
+    ) as post, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "post_get_entry_link_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.CatalogServiceRestInterceptor, "pre_get_entry_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = catalog.GetEntryLinkRequest.pb(catalog.GetEntryLinkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = catalog.EntryLink.to_json(catalog.EntryLink())
+        req.return_value.content = return_value
+
+        request = catalog.GetEntryLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = catalog.EntryLink()
+        post_with_metadata.return_value = catalog.EntryLink(), metadata
+
+        client.get_entry_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
@@ -23155,6 +25377,70 @@ def test_cancel_metadata_job_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_entry_link_empty_call_rest():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_link), "__call__"
+    ) as call:
+        client.create_entry_link(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateEntryLinkRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_entry_link_empty_call_rest():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_link), "__call__"
+    ) as call:
+        client.delete_entry_link(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteEntryLinkRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_entry_link_empty_call_rest():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_link), "__call__") as call:
+        client.get_entry_link(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetEntryLinkRequest()
+
+        assert args[0] == request_msg
+
+
 def test_catalog_service_rest_lro_client():
     client = CatalogServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -23231,6 +25517,9 @@ def test_catalog_service_base_transport():
         "get_metadata_job",
         "list_metadata_jobs",
         "cancel_metadata_job",
+        "create_entry_link",
+        "delete_entry_link",
+        "get_entry_link",
         "get_location",
         "list_locations",
         "get_operation",
@@ -23578,6 +25867,15 @@ def test_catalog_service_client_transport_session_collision(transport_name):
     session1 = client1.transport.cancel_metadata_job._session
     session2 = client2.transport.cancel_metadata_job._session
     assert session1 != session2
+    session1 = client1.transport.create_entry_link._session
+    session2 = client2.transport.create_entry_link._session
+    assert session1 != session2
+    session1 = client1.transport.delete_entry_link._session
+    session2 = client2.transport.delete_entry_link._session
+    assert session1 != session2
+    session1 = client1.transport.get_entry_link._session
+    session2 = client2.transport.get_entry_link._session
+    assert session1 != session2
 
 
 def test_catalog_service_grpc_transport_channel():
@@ -23825,10 +26123,41 @@ def test_parse_entry_group_path():
     assert expected == actual
 
 
-def test_entry_type_path():
+def test_entry_link_path():
     project = "winkle"
     location = "nautilus"
-    entry_type = "scallop"
+    entry_group = "scallop"
+    entry_link = "abalone"
+    expected = "projects/{project}/locations/{location}/entryGroups/{entry_group}/entryLinks/{entry_link}".format(
+        project=project,
+        location=location,
+        entry_group=entry_group,
+        entry_link=entry_link,
+    )
+    actual = CatalogServiceClient.entry_link_path(
+        project, location, entry_group, entry_link
+    )
+    assert expected == actual
+
+
+def test_parse_entry_link_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "entry_group": "whelk",
+        "entry_link": "octopus",
+    }
+    path = CatalogServiceClient.entry_link_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CatalogServiceClient.parse_entry_link_path(path)
+    assert expected == actual
+
+
+def test_entry_type_path():
+    project = "oyster"
+    location = "nudibranch"
+    entry_type = "cuttlefish"
     expected = "projects/{project}/locations/{location}/entryTypes/{entry_type}".format(
         project=project,
         location=location,
@@ -23840,9 +26169,9 @@ def test_entry_type_path():
 
 def test_parse_entry_type_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "entry_type": "clam",
+        "project": "mussel",
+        "location": "winkle",
+        "entry_type": "nautilus",
     }
     path = CatalogServiceClient.entry_type_path(**expected)
 
@@ -23851,10 +26180,36 @@ def test_parse_entry_type_path():
     assert expected == actual
 
 
+def test_glossary_path():
+    project = "scallop"
+    location = "abalone"
+    glossary = "squid"
+    expected = "projects/{project}/locations/{location}/glossaries/{glossary}".format(
+        project=project,
+        location=location,
+        glossary=glossary,
+    )
+    actual = CatalogServiceClient.glossary_path(project, location, glossary)
+    assert expected == actual
+
+
+def test_parse_glossary_path():
+    expected = {
+        "project": "clam",
+        "location": "whelk",
+        "glossary": "octopus",
+    }
+    path = CatalogServiceClient.glossary_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CatalogServiceClient.parse_glossary_path(path)
+    assert expected == actual
+
+
 def test_metadata_job_path():
-    project = "whelk"
-    location = "octopus"
-    metadataJob = "oyster"
+    project = "oyster"
+    location = "nudibranch"
+    metadataJob = "cuttlefish"
     expected = (
         "projects/{project}/locations/{location}/metadataJobs/{metadataJob}".format(
             project=project,
@@ -23868,9 +26223,9 @@ def test_metadata_job_path():
 
 def test_parse_metadata_job_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "metadataJob": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "metadataJob": "nautilus",
     }
     path = CatalogServiceClient.metadata_job_path(**expected)
 
@@ -23880,7 +26235,7 @@ def test_parse_metadata_job_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -23890,7 +26245,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "abalone",
     }
     path = CatalogServiceClient.common_billing_account_path(**expected)
 
@@ -23900,7 +26255,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -23910,7 +26265,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "clam",
     }
     path = CatalogServiceClient.common_folder_path(**expected)
 
@@ -23920,7 +26275,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -23930,7 +26285,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "octopus",
     }
     path = CatalogServiceClient.common_organization_path(**expected)
 
@@ -23940,7 +26295,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -23950,7 +26305,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nudibranch",
     }
     path = CatalogServiceClient.common_project_path(**expected)
 
@@ -23960,8 +26315,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -23972,8 +26327,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = CatalogServiceClient.common_location_path(**expected)
 

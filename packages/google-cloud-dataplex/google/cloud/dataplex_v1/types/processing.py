@@ -103,15 +103,19 @@ class DataSource(proto.Message):
 
     Attributes:
         entity (str):
-            Immutable. The Dataplex entity that represents the data
-            source (e.g. BigQuery table) for DataScan, of the form:
+            Immutable. The Dataplex Universal Catalog entity that
+            represents the data source (e.g. BigQuery table) for
+            DataScan, of the form:
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}``.
 
             This field is a member of `oneof`_ ``source``.
         resource (str):
             Immutable. The service-qualified full resource name of the
             cloud resource for a DataScan job to scan against. The field
-            could be: BigQuery table of type "TABLE" for
+            could either be: Cloud Storage bucket for DataDiscoveryScan
+            Format:
+            //storage.googleapis.com/projects/PROJECT_ID/buckets/BUCKET_ID
+            or BigQuery table of type "TABLE" for
             DataProfileScan/DataQualityScan Format:
             //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
 
@@ -151,13 +155,15 @@ class ScannedData(proto.Message):
 
         Attributes:
             field (str):
-                The field that contains values which
-                monotonically increases over time (e.g. a
+                Output only. The field that contains values
+                which monotonically increases over time (e.g. a
                 timestamp column).
             start (str):
-                Value that marks the start of the range.
+                Output only. Value that marks the start of
+                the range.
             end (str):
-                Value that marks the end of the range.
+                Output only. Value that marks the end of the
+                range.
         """
 
         field: str = proto.Field(
