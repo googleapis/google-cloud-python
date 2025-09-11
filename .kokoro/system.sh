@@ -45,11 +45,18 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
   # Get the path to the package by removing the suffix /tests/system
   package=$(echo $dir | cut -f -2 -d '/')
   should_test=false
-  echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${package}/CHANGELOG.md'"
+
+  if [[ $package = @(*google-cloud-bigquery-storage*) ]]; then
+    files_to_check=${package}
+  else
+    files_to_check=${package}/CHANGELOG.md
+  fi
+
+  echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check}'"
   set +e
-  changelog_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${package}/CHANGELOG.md | wc -l)
+  package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check} | wc -l)
   set -e
-  if [[ "${changelog_modified}" -eq 0 ]]; then
+  if [[ "${package_modified}" -eq 0 ]]; then
       echo "no change detected in ${package}, skipping"
   else
       echo "change detected in ${package}"
