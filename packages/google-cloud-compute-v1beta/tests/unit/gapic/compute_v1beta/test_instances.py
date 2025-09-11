@@ -26473,7 +26473,10 @@ def test_insert_rest_call_success(request_type):
         "network_performance_config": {
             "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
         },
-        "params": {"resource_manager_tags": {}},
+        "params": {
+            "request_valid_for_duration": {"nanos": 543, "seconds": 751},
+            "resource_manager_tags": {},
+        },
         "partner_metadata": {},
         "post_key_revocation_action_type": "post_key_revocation_action_type_value",
         "private_ipv6_google_access": "private_ipv6_google_access_value",
@@ -26506,7 +26509,7 @@ def test_insert_rest_call_success(request_type):
                 "termination_timestamp": "termination_timestamp_value",
             },
             "shutdown_details": {
-                "max_duration": {"nanos": 543, "seconds": 751},
+                "max_duration": {},
                 "request_timestamp": "request_timestamp_value",
                 "stop_state": "stop_state_value",
                 "target_state": "target_state_value",
@@ -33380,7 +33383,10 @@ def test_update_rest_call_success(request_type):
         "network_performance_config": {
             "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
         },
-        "params": {"resource_manager_tags": {}},
+        "params": {
+            "request_valid_for_duration": {"nanos": 543, "seconds": 751},
+            "resource_manager_tags": {},
+        },
         "partner_metadata": {},
         "post_key_revocation_action_type": "post_key_revocation_action_type_value",
         "private_ipv6_google_access": "private_ipv6_google_access_value",
@@ -33413,7 +33419,7 @@ def test_update_rest_call_success(request_type):
                 "termination_timestamp": "termination_timestamp_value",
             },
             "shutdown_details": {
-                "max_duration": {"nanos": 543, "seconds": 751},
+                "max_duration": {},
                 "request_timestamp": "request_timestamp_value",
                 "stop_state": "stop_state_value",
                 "target_state": "target_state_value",

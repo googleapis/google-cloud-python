@@ -1606,6 +1606,7 @@ def test_get_rest_call_success(request_type):
             lacp="lacp_value",
             max_lag_size100_gbps=1935,
             max_lag_size10_gbps=1887,
+            max_lag_size400_gbps=1938,
             name="name_value",
             peeringdb_facility_id="peeringdb_facility_id_value",
             remote_service="remote_service_value",
@@ -1641,6 +1642,7 @@ def test_get_rest_call_success(request_type):
     assert response.lacp == "lacp_value"
     assert response.max_lag_size100_gbps == 1935
     assert response.max_lag_size10_gbps == 1887
+    assert response.max_lag_size400_gbps == 1938
     assert response.name == "name_value"
     assert response.peeringdb_facility_id == "peeringdb_facility_id_value"
     assert response.remote_service == "remote_service_value"
