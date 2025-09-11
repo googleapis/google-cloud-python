@@ -83,7 +83,6 @@
     "packages/google-cloud-dialogflow": "2.41.2",
     "packages/google-cloud-dialogflow-cx": "1.42.0",
     "packages/google-cloud-discoveryengine": "0.13.11",
-    "packages/google-cloud-dlp": "3.31.0",
     "packages/google-cloud-dms": "1.12.4",
     "packages/google-cloud-documentai": "3.6.0",
     "packages/google-cloud-domains": "1.10.2",
