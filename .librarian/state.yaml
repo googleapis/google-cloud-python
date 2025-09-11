@@ -1,24 +1,25 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
 libraries:
-- id: google-cloud-dlp
-  version: 3.31.0
-  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-  apis:
-  - path: google/privacy/dlp/v2
-  source_roots:
-  - packages/google-cloud-dlp
-  preserve_regex:
-  - .OwlBot.yaml
-  - packages/google-cloud-dlp/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-cloud-dlp
-  tag_format: '{id}-v{version}'
+    - id: google-cloud-dlp
+      version: 3.31.0
+      last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+      apis:
+        - path: google/privacy/dlp/v2
+          service_config: ""
+      source_roots:
+        - packages/google-cloud-dlp
+      preserve_regex:
+        - .OwlBot.yaml
+        - packages/google-cloud-dlp/CHANGELOG.md
+        - docs/CHANGELOG.md
+        - docs/README.rst
+        - samples/README.txt
+        - tar.gz
+        - gapic_version.py
+        - samples/generated_samples/snippet_metadata_
+        - scripts/client-post-processing
+        - samples/snippets/README.rst
+        - tests/system
+      remove_regex:
+        - packages/google-cloud-dlp
+      tag_format: '{id}-v{version}'
