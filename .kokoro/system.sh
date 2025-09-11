@@ -38,6 +38,8 @@ pwd
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
 
+git config --global --add safe.directory $(realpath .)
+
 # Run system tests for each package with directory packages/*/tests/system
 for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
   # Get the path to the package by removing the suffix /tests/system
