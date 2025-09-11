@@ -47,12 +47,12 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
   should_test=false
   echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${package}/CHANGELOG.md'"
   set +e
-  changelog_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${package}/gapic_version.py | wc -l)
+  changelog_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${package}/CHANGELOG.md | wc -l)
   set -e
   if [[ "${changelog_modified}" -eq 0 ]]; then
-      echo "no change detected in ${dir}, skipping"
+      echo "no change detected in ${package}, skipping"
   else
-      echo "change detected in ${dir}"
+      echo "change detected in ${package}"
       should_test=true
   fi
   if [ "${should_test}" = true ]; then
