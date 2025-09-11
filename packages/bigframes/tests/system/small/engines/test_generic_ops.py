@@ -276,6 +276,29 @@ def test_engines_astype_from_json(scalars_array_value: array_value.ArrayValue, e
 
 
 @pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+def test_engines_astype_to_json(scalars_array_value: array_value.ArrayValue, engine):
+    exprs = [
+        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
+            expression.deref("int64_col")
+        ),
+        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
+            # Use a const since float to json has precision issues
+            expression.const(5.2, bigframes.dtypes.FLOAT_DTYPE)
+        ),
+        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
+            expression.deref("bool_col")
+        ),
+        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
+            # Use a const since "str_col" has special chars.
+            expression.const('"hello world"', bigframes.dtypes.STRING_DTYPE)
+        ),
+    ]
+    arr, _ = scalars_array_value.compute_values(exprs)
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
 def test_engines_astype_timedelta(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value,
