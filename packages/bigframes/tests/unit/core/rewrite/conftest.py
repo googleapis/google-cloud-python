@@ -34,7 +34,32 @@ type(FAKE_SESSION)._strictly_ordered = mock.PropertyMock(return_value=True)
 
 @pytest.fixture
 def table():
-    return TABLE
+    table_ref = google.cloud.bigquery.TableReference.from_string(
+        "project.dataset.table"
+    )
+    schema = (
+        google.cloud.bigquery.SchemaField("col_a", "INTEGER"),
+        google.cloud.bigquery.SchemaField("col_b", "INTEGER"),
+    )
+    return google.cloud.bigquery.Table(
+        table_ref=table_ref,
+        schema=schema,
+    )
+
+
+@pytest.fixture
+def table_too():
+    table_ref = google.cloud.bigquery.TableReference.from_string(
+        "project.dataset.table_too"
+    )
+    schema = (
+        google.cloud.bigquery.SchemaField("col_a", "INTEGER"),
+        google.cloud.bigquery.SchemaField("col_c", "INTEGER"),
+    )
+    return google.cloud.bigquery.Table(
+        table_ref=table_ref,
+        schema=schema,
+    )
 
 
 @pytest.fixture
@@ -48,4 +73,13 @@ def leaf(fake_session, table):
         session=fake_session,
         table=table,
         schema=bigframes.core.schema.ArraySchema.from_bq_table(table),
+    ).node
+
+
+@pytest.fixture
+def leaf_too(fake_session, table_too):
+    return core.ArrayValue.from_table(
+        session=fake_session,
+        table=table_too,
+        schema=bigframes.core.schema.ArraySchema.from_bq_table(table_too),
     ).node

@@ -300,7 +300,15 @@ class InNode(BigFrameNode, AdditiveNode):
     def remap_refs(
         self, mappings: Mapping[identifiers.ColumnId, identifiers.ColumnId]
     ) -> InNode:
-        return dataclasses.replace(self, left_col=self.left_col.remap_column_refs(mappings, allow_partial_bindings=True), right_col=self.right_col.remap_column_refs(mappings, allow_partial_bindings=True))  # type: ignore
+        return dataclasses.replace(
+            self,
+            left_col=self.left_col.remap_column_refs(
+                mappings, allow_partial_bindings=True
+            ),
+            right_col=self.right_col.remap_column_refs(
+                mappings, allow_partial_bindings=True
+            ),
+        )  # type: ignore
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
