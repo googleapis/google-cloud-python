@@ -8,7 +8,6 @@ libraries:
   source_roots:
   - packages/google-cloud-dlp
   preserve_regex:
-  - .OwlBot.yaml
   - packages/google-cloud-dlp/CHANGELOG.md
   - docs/CHANGELOG.md
   - docs/README.rst
