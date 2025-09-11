@@ -26,6 +26,8 @@ __protobuf__ = proto.module(
         "LintState",
         "Linter",
         "Severity",
+        "AuthType",
+        "PluginCategory",
         "Api",
         "Version",
         "Spec",
@@ -53,6 +55,16 @@ __protobuf__ = proto.module(
         "OperationMetadata",
         "ApiHubInstance",
         "ExternalApi",
+        "ConfigValueOption",
+        "Secret",
+        "ConfigVariableTemplate",
+        "ConfigVariable",
+        "GoogleServiceAccountConfig",
+        "AuthConfig",
+        "SourceMetadata",
+        "DiscoveredApiObservation",
+        "DiscoveredApiOperation",
+        "HttpOperationDetails",
     },
 )
 
@@ -109,6 +121,50 @@ class Severity(proto.Enum):
     SEVERITY_WARNING = 2
     SEVERITY_INFO = 3
     SEVERITY_HINT = 4
+
+
+class AuthType(proto.Enum):
+    r"""AuthType represents the authentication type.
+
+    Values:
+        AUTH_TYPE_UNSPECIFIED (0):
+            Authentication type not specified.
+        NO_AUTH (1):
+            No authentication.
+        GOOGLE_SERVICE_ACCOUNT (2):
+            Google service account authentication.
+        USER_PASSWORD (3):
+            Username and password authentication.
+        API_KEY (4):
+            API Key authentication.
+        OAUTH2_CLIENT_CREDENTIALS (5):
+            Oauth 2.0 client credentials grant
+            authentication.
+    """
+    AUTH_TYPE_UNSPECIFIED = 0
+    NO_AUTH = 1
+    GOOGLE_SERVICE_ACCOUNT = 2
+    USER_PASSWORD = 3
+    API_KEY = 4
+    OAUTH2_CLIENT_CREDENTIALS = 5
+
+
+class PluginCategory(proto.Enum):
+    r"""Enum for the plugin category.
+
+    Values:
+        PLUGIN_CATEGORY_UNSPECIFIED (0):
+            Default unspecified plugin type.
+        API_GATEWAY (1):
+            API_GATEWAY plugins represent plugins built for API Gateways
+            like Apigee.
+        API_PRODUCER (2):
+            API_PRODUCER plugins represent plugins built for API
+            Producers like Cloud Run, Application Integration etc.
+    """
+    PLUGIN_CATEGORY_UNSPECIFIED = 0
+    API_GATEWAY = 1
+    API_PRODUCER = 2
 
 
 class Api(proto.Message):
@@ -194,6 +250,35 @@ class Api(proto.Message):
             be used when special handling is needed on client side for
             particular version of the API. Format is
             ``projects/{project}/locations/{location}/apis/{api}/versions/{version}``
+        api_requirements (google.cloud.apihub_v1.types.AttributeValues):
+            Optional. The api requirement doc associated with the API
+            resource. Carinality is 1 for this attribute. This maps to
+            the following system defined attribute:
+            ``projects/{project}/locations/{location}/attributes/system-api-requirements``
+            attribute. The value of the attribute should be a proper
+            URI, and in case of Cloud Storage URI, it should point to a
+            Cloud Storage object, not a directory.
+        fingerprint (str):
+            Optional. Fingerprint of the API resource.
+        source_metadata (MutableSequence[google.cloud.apihub_v1.types.SourceMetadata]):
+            Output only. The list of sources and metadata
+            from the sources of the API resource.
+        api_functional_requirements (google.cloud.apihub_v1.types.AttributeValues):
+            Optional. The api functional requirements associated with
+            the API resource. Carinality is 1 for this attribute. This
+            maps to the following system defined attribute:
+            ``projects/{project}/locations/{location}/attributes/system-api-functional-requirements``
+            attribute. The value of the attribute should be a proper
+            URI, and in case of Cloud Storage URI, it should point to a
+            Cloud Storage object, not a directory.
+        api_technical_requirements (google.cloud.apihub_v1.types.AttributeValues):
+            Optional. The api technical requirements associated with the
+            API resource. Carinality is 1 for this attribute. This maps
+            to the following system defined attribute:
+            ``projects/{project}/locations/{location}/attributes/system-api-technical-requirements``
+            attribute. The value of the attribute should be a proper
+            URI, and in case of Cloud Storage URI, it should point to a
+            Cloud Storage object, not a directory.
     """
 
     name: str = proto.Field(
@@ -266,6 +351,30 @@ class Api(proto.Message):
     selected_version: str = proto.Field(
         proto.STRING,
         number=15,
+    )
+    api_requirements: "AttributeValues" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="AttributeValues",
+    )
+    fingerprint: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    source_metadata: MutableSequence["SourceMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=18,
+        message="SourceMetadata",
+    )
+    api_functional_requirements: "AttributeValues" = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message="AttributeValues",
+    )
+    api_technical_requirements: "AttributeValues" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message="AttributeValues",
     )
 
 
@@ -350,6 +459,9 @@ class Version(proto.Message):
             side for a particular deployment linked to the version.
             Format is
             ``projects/{project}/locations/{location}/deployments/{deployment}``
+        source_metadata (MutableSequence[google.cloud.apihub_v1.types.SourceMetadata]):
+            Output only. The list of sources and metadata
+            from the sources of the version.
     """
 
     name: str = proto.Field(
@@ -420,6 +532,11 @@ class Version(proto.Message):
         proto.STRING,
         number=16,
     )
+    source_metadata: MutableSequence["SourceMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=17,
+        message="SourceMetadata",
+    )
 
 
 class Spec(proto.Message):
@@ -477,6 +594,9 @@ class Spec(proto.Message):
             Optional. Input only. Enum specifying the
             parsing mode for OpenAPI Specification (OAS)
             parsing.
+        source_metadata (MutableSequence[google.cloud.apihub_v1.types.SourceMetadata]):
+            Output only. The list of sources and metadata
+            from the sources of the spec.
     """
 
     class ParsingMode(proto.Enum):
@@ -563,6 +683,11 @@ class Spec(proto.Message):
         number=12,
         enum=ParsingMode,
     )
+    source_metadata: MutableSequence["SourceMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message="SourceMetadata",
+    )
 
 
 class Deployment(proto.Message):
@@ -594,10 +719,13 @@ class Deployment(proto.Message):
             retrieved via GetAttribute API. All values should be from
             the list of allowed values defined for the attribute.
         resource_uri (str):
-            Required. A URI to the runtime resource. This URI can be
-            used to manage the resource. For example, if the runtime
-            resource is of type APIGEE_PROXY, then this field will
-            contain the URI to the management UI of the proxy.
+            Required. The resource URI identifies the deployment within
+            its gateway. For Apigee gateways, its recommended to use the
+            format: organizations/{org}/environments/{env}/apis/{api}.
+            For ex: if a proxy with name ``orders`` is deployed in
+            ``staging`` environment of ``cymbal`` organization, the
+            resource URI would be:
+            ``organizations/cymbal/environments/staging/apis/orders``.
         endpoints (MutableSequence[str]):
             Required. The endpoints at which this
             deployment resource is listening for API
@@ -637,6 +765,38 @@ class Deployment(proto.Message):
             ``projects/{project}/locations/{location}/attributes/{attribute}``.
             The value is the attribute values associated with the
             resource.
+        source_metadata (MutableSequence[google.cloud.apihub_v1.types.SourceMetadata]):
+            Output only. The list of sources and metadata
+            from the sources of the deployment.
+        management_url (google.cloud.apihub_v1.types.AttributeValues):
+            Optional. The uri where users can navigate to for the
+            management of the deployment. This maps to the following
+            system defined attribute:
+            ``projects/{project}/locations/{location}/attributes/system-management-url``
+            The number of values for this attribute will be based on the
+            cardinality of the attribute. The same can be retrieved via
+            GetAttribute API. The value of the attribute should be a
+            valid URL.
+        source_uri (google.cloud.apihub_v1.types.AttributeValues):
+            Optional. The uri where additional source specific
+            information for this deployment can be found. This maps to
+            the following system defined attribute:
+            ``projects/{project}/locations/{location}/attributes/system-source-uri``
+            The number of values for this attribute will be based on the
+            cardinality of the attribute. The same can be retrieved via
+            GetAttribute API. The value of the attribute should be a
+            valid URI, and in case of Cloud Storage URI, it should point
+            to a Cloud Storage object, not a directory.
+        source_project (str):
+            Optional. The project to which the deployment
+            belongs. For GCP gateways, this will refer to
+            the project identifier. For others like
+            Edge/OPDK, this will refer to the org
+            identifier.
+        source_environment (str):
+            Optional. The environment at source for the
+            deployment. For example: prod, dev, staging,
+            etc.
     """
 
     name: str = proto.Field(
@@ -699,6 +859,29 @@ class Deployment(proto.Message):
         number=13,
         message="AttributeValues",
     )
+    source_metadata: MutableSequence["SourceMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message="SourceMetadata",
+    )
+    management_url: "AttributeValues" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="AttributeValues",
+    )
+    source_uri: "AttributeValues" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="AttributeValues",
+    )
+    source_project: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    source_environment: str = proto.Field(
+        proto.STRING,
+        number=18,
+    )
 
 
 class ApiOperation(proto.Message):
@@ -708,6 +891,10 @@ class ApiOperation(proto.Message):
     in a version. Currently, an operation will be created only
     corresponding to OpenAPI spec as parsing is supported for
     OpenAPI spec.
+    Alternatively operations can be managed via create,update and
+    delete APIs, creation of apiOperation can be possible only for
+    version with no parsed operations and update/delete can be
+    possible only for operations created via create API.
 
     Attributes:
         name (str):
@@ -716,11 +903,17 @@ class ApiOperation(proto.Message):
             Format:
             ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}``
         spec (str):
-            Output only. The name of the spec from where the operation
-            was parsed. Format is
+            Output only. The name of the spec will be of the format:
             ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}``
+            Note:The name of the spec will be empty if the operation is
+            created via
+            [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+            API.
         details (google.cloud.apihub_v1.types.OperationDetails):
-            Output only. Operation details.
+            Optional. Operation details. Note: Even though this field is
+            optional, it is required for
+            [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+            API and we will fail the request if not provided.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the operation
             was created.
@@ -734,6 +927,9 @@ class ApiOperation(proto.Message):
             ``projects/{project}/locations/{location}/attributes/{attribute}``.
             The value is the attribute values associated with the
             resource.
+        source_metadata (MutableSequence[google.cloud.apihub_v1.types.SourceMetadata]):
+            Output only. The list of sources and metadata
+            from the sources of the API operation.
     """
 
     name: str = proto.Field(
@@ -764,6 +960,11 @@ class ApiOperation(proto.Message):
         proto.MESSAGE,
         number=6,
         message="AttributeValues",
+    )
+    source_metadata: MutableSequence["SourceMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="SourceMetadata",
     )
 
 
@@ -979,11 +1180,14 @@ class Attribute(proto.Message):
                 Attribute's value is of type json.
             STRING (3):
                 Attribute's value is of type string.
+            URI (4):
+                Attribute's value is of type uri.
         """
         DATA_TYPE_UNSPECIFIED = 0
         ENUM = 1
         JSON = 2
         STRING = 3
+        URI = 4
 
     class AllowedValue(proto.Message):
         r"""The value that can be assigned to the attribute when the data
@@ -1200,16 +1404,16 @@ class OperationDetails(proto.Message):
 
             This field is a member of `oneof`_ ``operation``.
         description (str):
-            Output only. Description of the operation behavior. For
-            OpenAPI spec, this will map to ``operation.description`` in
-            the spec, in case description is empty,
-            ``operation.summary`` will be used.
+            Optional. Description of the operation behavior. For OpenAPI
+            spec, this will map to ``operation.description`` in the
+            spec, in case description is empty, ``operation.summary``
+            will be used.
         documentation (google.cloud.apihub_v1.types.Documentation):
-            Output only. Additional external documentation for this
+            Optional. Additional external documentation for this
             operation. For OpenAPI spec, this will map to
             ``operation.documentation`` in the spec.
         deprecated (bool):
-            Output only. For OpenAPI spec, this will be set if
+            Optional. For OpenAPI spec, this will be set if
             ``operation.deprecated``\ is marked as ``true`` in the spec.
     """
 
@@ -1239,10 +1443,15 @@ class HttpOperation(proto.Message):
 
     Attributes:
         path (google.cloud.apihub_v1.types.Path):
-            Output only. The path details for the
-            Operation.
+            Optional. The path details for the Operation. Note: Even
+            though this field is optional, it is required for
+            [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+            API and we will fail the request if not provided.
         method (google.cloud.apihub_v1.types.HttpOperation.Method):
-            Output only. Operation method
+            Optional. Operation method Note: Even though this field is
+            optional, it is required for
+            [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+            API and we will fail the request if not provided.
     """
 
     class Method(proto.Enum):
@@ -1295,10 +1504,12 @@ class Path(proto.Message):
 
     Attributes:
         path (str):
-            Output only. Complete path relative to server
-            endpoint.
+            Optional. Complete path relative to server endpoint. Note:
+            Even though this field is optional, it is required for
+            [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+            API and we will fail the request if not provided.
         description (str):
-            Output only. A short description for the path
+            Optional. A short description for the path
             applicable to all operations.
     """
 
@@ -1401,6 +1612,12 @@ class AttributeValues(proto.Message):
             resource in case attribute data type is JSON.
 
             This field is a member of `oneof`_ ``Value``.
+        uri_values (google.cloud.apihub_v1.types.AttributeValues.StringAttributeValues):
+            The attribute values associated with a
+            resource in case attribute data type is URL, URI
+            or IP, like gs://bucket-name/object-name.
+
+            This field is a member of `oneof`_ ``Value``.
         attribute (str):
             Output only. The name of the attribute.
             Format:
@@ -1454,6 +1671,12 @@ class AttributeValues(proto.Message):
         oneof="Value",
         message=StringAttributeValues,
     )
+    uri_values: StringAttributeValues = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="Value",
+        message=StringAttributeValues,
+    )
     attribute: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1463,9 +1686,10 @@ class AttributeValues(proto.Message):
 class Dependency(proto.Message):
     r"""A dependency resource defined in the API hub describes a dependency
     directed from a consumer to a supplier entity. A dependency can be
-    defined between two [Operations][google.cloud.apihub.v1.Operation]
-    or between an [Operation][google.cloud.apihub.v1.Operation] and
-    [External API][google.cloud.apihub.v1.ExternalApi].
+    defined between two
+    [Operations][google.cloud.apihub.v1.ApiOperation] or between an
+    [Operation][google.cloud.apihub.v1.ApiOperation] and [External
+    API][google.cloud.apihub.v1.ExternalApi].
 
     Attributes:
         name (str):
@@ -1858,9 +2082,10 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have been
-            cancelled successfully have [Operation.error][] value with a
-            [google.rpc.Status.code][google.rpc.Status.code] of 1,
-            corresponding to ``Code.CANCELLED``.
+            cancelled successfully have
+            [Operation.error][google.longrunning.Operation.error] value
+            with a [google.rpc.Status.code][google.rpc.Status.code] of
+            1, corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.
@@ -1965,16 +2190,59 @@ class ApiHubInstance(proto.Message):
 
         Attributes:
             cmek_key_name (str):
-                Required. The Customer Managed Encryption Key (CMEK) used
+                Optional. The Customer Managed Encryption Key (CMEK) used
                 for data encryption. The CMEK name should follow the format
                 of
                 ``projects/([^/]+)/locations/([^/]+)/keyRings/([^/]+)/cryptoKeys/([^/]+)``,
-                where the location must match the instance location.
+                where the location must match the instance location. If the
+                CMEK is not provided, a GMEK will be created for the
+                instance.
+            disable_search (bool):
+                Optional. If true, the search will be
+                disabled for the instance. The default value is
+                false.
+            vertex_location (str):
+                Optional. The name of the Vertex AI location
+                where the data store is stored.
+            encryption_type (google.cloud.apihub_v1.types.ApiHubInstance.Config.EncryptionType):
+                Optional. Encryption type for the region. If the encryption
+                type is CMEK, the cmek_key_name must be provided. If no
+                encryption type is provided, GMEK will be used.
         """
+
+        class EncryptionType(proto.Enum):
+            r"""Types of data encryption.
+
+            Values:
+                ENCRYPTION_TYPE_UNSPECIFIED (0):
+                    Encryption type unspecified.
+                GMEK (1):
+                    Default encryption using Google managed
+                    encryption key.
+                CMEK (2):
+                    Encryption using customer managed encryption
+                    key.
+            """
+            ENCRYPTION_TYPE_UNSPECIFIED = 0
+            GMEK = 1
+            CMEK = 2
 
         cmek_key_name: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        disable_search: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        vertex_location: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        encryption_type: "ApiHubInstance.Config.EncryptionType" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="ApiHubInstance.Config.EncryptionType",
         )
 
     name: str = proto.Field(
@@ -2093,6 +2361,1034 @@ class ExternalApi(proto.Message):
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class ConfigValueOption(proto.Message):
+    r"""ConfigValueOption represents an option for a config variable
+    of type enum or multi select.
+
+    Attributes:
+        id (str):
+            Required. Id of the option.
+        display_name (str):
+            Required. Display name of the option.
+        description (str):
+            Optional. Description of the option.
+    """
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class Secret(proto.Message):
+    r"""Secret provides a reference to entries in Secret Manager.
+
+    Attributes:
+        secret_version (str):
+            Required. The resource name of the secret version in the
+            format, format as: ``projects/*/secrets/*/versions/*``.
+    """
+
+    secret_version: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ConfigVariableTemplate(proto.Message):
+    r"""ConfigVariableTemplate represents a configuration variable
+    template present in a Plugin Config.
+
+    Attributes:
+        id (str):
+            Required. ID of the config variable. Must be
+            unique within the configuration.
+        value_type (google.cloud.apihub_v1.types.ConfigVariableTemplate.ValueType):
+            Required. Type of the parameter: string, int,
+            bool etc.
+        description (str):
+            Optional. Description.
+        validation_regex (str):
+            Optional. Regular expression in RE2 syntax used for
+            validating the ``value`` of a ``ConfigVariable``.
+        required (bool):
+            Optional. Flag represents that this ``ConfigVariable`` must
+            be provided for a PluginInstance.
+        enum_options (MutableSequence[google.cloud.apihub_v1.types.ConfigValueOption]):
+            Optional. Enum options. To be populated if ``ValueType`` is
+            ``ENUM``.
+        multi_select_options (MutableSequence[google.cloud.apihub_v1.types.ConfigValueOption]):
+            Optional. Multi select options. To be populated if
+            ``ValueType`` is ``MULTI_SELECT``.
+    """
+
+    class ValueType(proto.Enum):
+        r"""ValueType indicates the data type of the value.
+
+        Values:
+            VALUE_TYPE_UNSPECIFIED (0):
+                Value type is not specified.
+            STRING (1):
+                Value type is string.
+            INT (2):
+                Value type is integer.
+            BOOL (3):
+                Value type is boolean.
+            SECRET (4):
+                Value type is secret.
+            ENUM (5):
+                Value type is enum.
+            MULTI_SELECT (6):
+                Value type is multi select.
+            MULTI_STRING (7):
+                Value type is multi string.
+            MULTI_INT (8):
+                Value type is multi int.
+        """
+        VALUE_TYPE_UNSPECIFIED = 0
+        STRING = 1
+        INT = 2
+        BOOL = 3
+        SECRET = 4
+        ENUM = 5
+        MULTI_SELECT = 6
+        MULTI_STRING = 7
+        MULTI_INT = 8
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value_type: ValueType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ValueType,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validation_regex: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    required: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    enum_options: MutableSequence["ConfigValueOption"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="ConfigValueOption",
+    )
+    multi_select_options: MutableSequence["ConfigValueOption"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="ConfigValueOption",
+    )
+
+
+class ConfigVariable(proto.Message):
+    r"""ConfigVariable represents a additional configuration variable
+    present in a PluginInstance Config or AuthConfig, based on a
+    ConfigVariableTemplate.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        string_value (str):
+            Optional. The config variable value in case
+            of config variable of type string.
+
+            This field is a member of `oneof`_ ``value``.
+        int_value (int):
+            Optional. The config variable value in case
+            of config variable of type integer.
+
+            This field is a member of `oneof`_ ``value``.
+        bool_value (bool):
+            Optional. The config variable value in case
+            of config variable of type boolean.
+
+            This field is a member of `oneof`_ ``value``.
+        secret_value (google.cloud.apihub_v1.types.Secret):
+            Optional. The config variable value in case
+            of config variable of type secret.
+
+            This field is a member of `oneof`_ ``value``.
+        enum_value (google.cloud.apihub_v1.types.ConfigValueOption):
+            Optional. The config variable value in case
+            of config variable of type enum.
+
+            This field is a member of `oneof`_ ``value``.
+        multi_select_values (google.cloud.apihub_v1.types.ConfigVariable.MultiSelectValues):
+            Optional. The config variable value in case
+            of config variable of type multi select.
+
+            This field is a member of `oneof`_ ``value``.
+        multi_string_values (google.cloud.apihub_v1.types.ConfigVariable.MultiStringValues):
+            Optional. The config variable value in case
+            of config variable of type multi string.
+
+            This field is a member of `oneof`_ ``value``.
+        multi_int_values (google.cloud.apihub_v1.types.ConfigVariable.MultiIntValues):
+            Optional. The config variable value in case
+            of config variable of type multi integer.
+
+            This field is a member of `oneof`_ ``value``.
+        key (str):
+            Output only. Key will be the
+            [id][google.cloud.apihub.v1.ConfigVariableTemplate.id] to
+            uniquely identify the config variable.
+    """
+
+    class MultiSelectValues(proto.Message):
+        r"""The config variable value of data type multi select.
+
+        Attributes:
+            values (MutableSequence[google.cloud.apihub_v1.types.ConfigValueOption]):
+                Optional. The config variable value of data
+                type multi select.
+        """
+
+        values: MutableSequence["ConfigValueOption"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ConfigValueOption",
+        )
+
+    class MultiStringValues(proto.Message):
+        r"""The config variable value of data type multi string.
+
+        Attributes:
+            values (MutableSequence[str]):
+                Optional. The config variable value of data
+                type multi string.
+        """
+
+        values: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    class MultiIntValues(proto.Message):
+        r"""The config variable value of data type multi int.
+
+        Attributes:
+            values (MutableSequence[int]):
+                Optional. The config variable value of data
+                type multi int.
+        """
+
+        values: MutableSequence[int] = proto.RepeatedField(
+            proto.INT32,
+            number=1,
+        )
+
+    string_value: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="value",
+    )
+    int_value: int = proto.Field(
+        proto.INT64,
+        number=3,
+        oneof="value",
+    )
+    bool_value: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+        oneof="value",
+    )
+    secret_value: "Secret" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="value",
+        message="Secret",
+    )
+    enum_value: "ConfigValueOption" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="value",
+        message="ConfigValueOption",
+    )
+    multi_select_values: MultiSelectValues = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="value",
+        message=MultiSelectValues,
+    )
+    multi_string_values: MultiStringValues = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="value",
+        message=MultiStringValues,
+    )
+    multi_int_values: MultiIntValues = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="value",
+        message=MultiIntValues,
+    )
+    key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GoogleServiceAccountConfig(proto.Message):
+    r"""Config for Google service account authentication.
+
+    Attributes:
+        service_account (str):
+            Required. The service account to be used for authenticating
+            request.
+
+            The ``iam.serviceAccounts.getAccessToken`` permission should
+            be granted on this service account to the impersonator
+            service account.
+    """
+
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AuthConfig(proto.Message):
+    r"""AuthConfig represents the authentication information.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        google_service_account_config (google.cloud.apihub_v1.types.GoogleServiceAccountConfig):
+            Google Service Account.
+
+            This field is a member of `oneof`_ ``config``.
+        user_password_config (google.cloud.apihub_v1.types.AuthConfig.UserPasswordConfig):
+            User Password.
+
+            This field is a member of `oneof`_ ``config``.
+        api_key_config (google.cloud.apihub_v1.types.AuthConfig.ApiKeyConfig):
+            Api Key Config.
+
+            This field is a member of `oneof`_ ``config``.
+        oauth2_client_credentials_config (google.cloud.apihub_v1.types.AuthConfig.Oauth2ClientCredentialsConfig):
+            Oauth2.0 Client Credentials.
+
+            This field is a member of `oneof`_ ``config``.
+        auth_type (google.cloud.apihub_v1.types.AuthType):
+            Required. The authentication type.
+    """
+
+    class UserPasswordConfig(proto.Message):
+        r"""Parameters to support Username and Password Authentication.
+
+        Attributes:
+            username (str):
+                Required. Username.
+            password (google.cloud.apihub_v1.types.Secret):
+                Required. Secret version reference containing the password.
+                The ``secretmanager.versions.access`` permission should be
+                granted to the service account accessing the secret.
+        """
+
+        username: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        password: "Secret" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Secret",
+        )
+
+    class Oauth2ClientCredentialsConfig(proto.Message):
+        r"""Parameters to support Oauth 2.0 client credentials grant
+        authentication. See
+        https://tools.ietf.org/html/rfc6749#section-1.3.4 for more
+        details.
+
+        Attributes:
+            client_id (str):
+                Required. The client identifier.
+            client_secret (google.cloud.apihub_v1.types.Secret):
+                Required. Secret version reference containing the client
+                secret. The ``secretmanager.versions.access`` permission
+                should be granted to the service account accessing the
+                secret.
+        """
+
+        client_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        client_secret: "Secret" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Secret",
+        )
+
+    class ApiKeyConfig(proto.Message):
+        r"""Config for authentication with API key.
+
+        Attributes:
+            name (str):
+                Required. The parameter name of the API key. E.g. If the API
+                request is "https://example.com/act?api_key=", "api_key"
+                would be the parameter name.
+            api_key (google.cloud.apihub_v1.types.Secret):
+                Required. The name of the SecretManager secret version
+                resource storing the API key. Format:
+                ``projects/{project}/secrets/{secrete}/versions/{version}``.
+                The ``secretmanager.versions.access`` permission should be
+                granted to the service account accessing the secret.
+            http_element_location (google.cloud.apihub_v1.types.AuthConfig.ApiKeyConfig.HttpElementLocation):
+                Required. The location of the API key.
+                The default value is QUERY.
+        """
+
+        class HttpElementLocation(proto.Enum):
+            r"""Enum of location an HTTP element can be.
+
+            Values:
+                HTTP_ELEMENT_LOCATION_UNSPECIFIED (0):
+                    HTTP element location not specified.
+                QUERY (1):
+                    Element is in the HTTP request query.
+                HEADER (2):
+                    Element is in the HTTP request header.
+                PATH (3):
+                    Element is in the HTTP request path.
+                BODY (4):
+                    Element is in the HTTP request body.
+                COOKIE (5):
+                    Element is in the HTTP request cookie.
+            """
+            HTTP_ELEMENT_LOCATION_UNSPECIFIED = 0
+            QUERY = 1
+            HEADER = 2
+            PATH = 3
+            BODY = 4
+            COOKIE = 5
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        api_key: "Secret" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Secret",
+        )
+        http_element_location: "AuthConfig.ApiKeyConfig.HttpElementLocation" = (
+            proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="AuthConfig.ApiKeyConfig.HttpElementLocation",
+            )
+        )
+
+    google_service_account_config: "GoogleServiceAccountConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="config",
+        message="GoogleServiceAccountConfig",
+    )
+    user_password_config: UserPasswordConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="config",
+        message=UserPasswordConfig,
+    )
+    api_key_config: ApiKeyConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="config",
+        message=ApiKeyConfig,
+    )
+    oauth2_client_credentials_config: Oauth2ClientCredentialsConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="config",
+        message=Oauth2ClientCredentialsConfig,
+    )
+    auth_type: "AuthType" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="AuthType",
+    )
+
+
+class SourceMetadata(proto.Message):
+    r"""SourceMetadata represents the metadata for a resource at the
+    source.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        plugin_instance_action_source (google.cloud.apihub_v1.types.SourceMetadata.PluginInstanceActionSource):
+            Output only. The source of the resource is a
+            plugin instance action.
+
+            This field is a member of `oneof`_ ``source``.
+        source_type (google.cloud.apihub_v1.types.SourceMetadata.SourceType):
+            Output only. The type of the source.
+        original_resource_id (str):
+            Output only. The unique identifier of the
+            resource at the source.
+        original_resource_create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the resource
+            was created at the source.
+        original_resource_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the resource
+            was last updated at the source.
+    """
+
+    class SourceType(proto.Enum):
+        r"""The possible types of the source.
+
+        Values:
+            SOURCE_TYPE_UNSPECIFIED (0):
+                Source type not specified.
+            PLUGIN (1):
+                Source type plugin.
+        """
+        SOURCE_TYPE_UNSPECIFIED = 0
+        PLUGIN = 1
+
+    class PluginInstanceActionSource(proto.Message):
+        r"""PluginInstanceActionSource represents the plugin instance
+        action source.
+
+        Attributes:
+            plugin_instance (str):
+                Output only. The resource name of the source plugin
+                instance. Format is
+                ``projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}``
+            action_id (str):
+                Output only. The id of the plugin instance
+                action.
+        """
+
+        plugin_instance: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        action_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    plugin_instance_action_source: PluginInstanceActionSource = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message=PluginInstanceActionSource,
+    )
+    source_type: SourceType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=SourceType,
+    )
+    original_resource_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    original_resource_create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    original_resource_update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class DiscoveredApiObservation(proto.Message):
+    r"""Respresents an API Observation observed in one of the
+    sources.
+
+    Attributes:
+        name (str):
+            Identifier. The name of the discovered API Observation.
+
+            Format:
+            ``projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}``
+        style (google.cloud.apihub_v1.types.DiscoveredApiObservation.Style):
+            Optional. Style of ApiObservation
+        server_ips (MutableSequence[str]):
+            Optional. The IP address (IPv4 or IPv6) of the origin server
+            that the request was sent to. This field can include port
+            information. Examples: ``"192.168.1.1"``, ``"10.0.0.1:80"``,
+            ``"FE80::0202:B3FF:FE1E:8329"``.
+        hostname (str):
+            Optional. The hostname of requests processed
+            for this Observation.
+        last_event_detected_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Last event detected time stamp
+        source_locations (MutableSequence[str]):
+            Optional. The location of the observation
+            source.
+        api_operation_count (int):
+            Optional. The number of observed API
+            Operations.
+        origin (str):
+            Optional. For an observation pushed from a
+            gcp resource, this would be the gcp project id.
+        source_types (MutableSequence[google.cloud.apihub_v1.types.DiscoveredApiObservation.SourceType]):
+            Optional. The type of the source from which
+            the observation was collected.
+        known_operations_count (int):
+            Output only. The number of known API
+            Operations.
+        unknown_operations_count (int):
+            Output only. The number of unknown API
+            Operations.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Create time stamp of the
+            observation in API Hub.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Update time stamp of the
+            observation in API Hub.
+        source_metadata (google.cloud.apihub_v1.types.SourceMetadata):
+            Output only. The metadata of the source from
+            which the observation was collected.
+    """
+
+    class Style(proto.Enum):
+        r"""DiscoveredApiObservation protocol style
+
+        Values:
+            STYLE_UNSPECIFIED (0):
+                Unknown style
+            REST (1):
+                Style is Rest API
+            GRPC (2):
+                Style is Grpc API
+            GRAPHQL (3):
+                Style is GraphQL API
+        """
+        STYLE_UNSPECIFIED = 0
+        REST = 1
+        GRPC = 2
+        GRAPHQL = 3
+
+    class SourceType(proto.Enum):
+        r"""The possible types of the source from which the observation
+        was collected.
+
+        Values:
+            SOURCE_TYPE_UNSPECIFIED (0):
+                Source type not specified.
+            GCP_XLB (1):
+                GCP external load balancer.
+            GCP_ILB (2):
+                GCP internal load balancer.
+        """
+        SOURCE_TYPE_UNSPECIFIED = 0
+        GCP_XLB = 1
+        GCP_ILB = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    style: Style = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Style,
+    )
+    server_ips: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    hostname: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    last_event_detected_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    source_locations: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    api_operation_count: int = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    origin: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    source_types: MutableSequence[SourceType] = proto.RepeatedField(
+        proto.ENUM,
+        number=9,
+        enum=SourceType,
+    )
+    known_operations_count: int = proto.Field(
+        proto.INT64,
+        number=10,
+    )
+    unknown_operations_count: int = proto.Field(
+        proto.INT64,
+        number=11,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=timestamp_pb2.Timestamp,
+    )
+    source_metadata: "SourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="SourceMetadata",
+    )
+
+
+class DiscoveredApiOperation(proto.Message):
+    r"""DiscoveredApiOperation represents an API Operation observed
+    in one of the sources.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        http_operation (google.cloud.apihub_v1.types.HttpOperationDetails):
+            Optional. An HTTP Operation.
+
+            This field is a member of `oneof`_ ``operation``.
+        name (str):
+            Identifier. The name of the discovered API Operation.
+
+            Format:
+            ``projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}/discoveredApiOperations/{discovered_api_operation}``
+        first_seen_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. First seen time stamp
+        last_seen_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Last seen time stamp
+        count (int):
+            Optional. The number of occurrences of this
+            API Operation.
+        classification (google.cloud.apihub_v1.types.DiscoveredApiOperation.Classification):
+            Output only. The classification of the
+            discovered API operation.
+        match_results (MutableSequence[google.cloud.apihub_v1.types.DiscoveredApiOperation.MatchResult]):
+            Output only. The list of matched results for
+            the discovered API operation. This will be
+            populated only if the classification is known.
+            The current usecase is for a single match.
+            Keeping it repeated to support multiple matches
+            in future.
+        source_metadata (google.cloud.apihub_v1.types.SourceMetadata):
+            Output only. The metadata of the source from
+            which the api operation was collected.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Create time stamp of the
+            discovered API operation in API Hub.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Update time stamp of the
+            discovered API operation in API Hub.
+    """
+
+    class Classification(proto.Enum):
+        r"""The classification of the discovered API operation.
+
+        Values:
+            CLASSIFICATION_UNSPECIFIED (0):
+                Operation is not classified as known or
+                unknown.
+            KNOWN (1):
+                Operation has a matched catalog operation.
+            UNKNOWN (2):
+                Operation does not have a matched catalog
+                operation.
+        """
+        CLASSIFICATION_UNSPECIFIED = 0
+        KNOWN = 1
+        UNKNOWN = 2
+
+    class MatchResult(proto.Message):
+        r"""MatchResult represents the result of matching a discovered
+        API operation with a catalog API operation.
+
+        Attributes:
+            name (str):
+                Output only. The name of the matched API Operation.
+
+                Format:
+                ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}``
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    http_operation: "HttpOperationDetails" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="operation",
+        message="HttpOperationDetails",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    first_seen_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    last_seen_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    count: int = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+    classification: Classification = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Classification,
+    )
+    match_results: MutableSequence[MatchResult] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=MatchResult,
+    )
+    source_metadata: "SourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="SourceMetadata",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class HttpOperationDetails(proto.Message):
+    r"""An HTTP-based API Operation, sometimes called a "REST"
+    Operation.
+
+    Attributes:
+        http_operation (google.cloud.apihub_v1.types.HttpOperation):
+            Required. An HTTP Operation.
+        path_params (MutableSequence[google.cloud.apihub_v1.types.HttpOperationDetails.PathParam]):
+            Optional. Path params of HttpOperation
+        query_params (MutableMapping[str, google.cloud.apihub_v1.types.HttpOperationDetails.QueryParam]):
+            Optional. Query params of HttpOperation
+        request (google.cloud.apihub_v1.types.HttpOperationDetails.HttpRequest):
+            Optional. Request metadata.
+        response (google.cloud.apihub_v1.types.HttpOperationDetails.HttpResponse):
+            Optional. Response metadata.
+    """
+
+    class DataType(proto.Enum):
+        r"""Type of data
+
+        Values:
+            DATA_TYPE_UNSPECIFIED (0):
+                Unspecified data type
+            BOOL (1):
+                Boolean data type
+            INTEGER (2):
+                Integer data type
+            FLOAT (3):
+                Float data type
+            STRING (4):
+                String data type
+            UUID (5):
+                UUID data type
+        """
+        DATA_TYPE_UNSPECIFIED = 0
+        BOOL = 1
+        INTEGER = 2
+        FLOAT = 3
+        STRING = 4
+        UUID = 5
+
+    class PathParam(proto.Message):
+        r"""HTTP Path parameter.
+
+        Attributes:
+            position (int):
+                Optional. Segment location in the path,
+                1-indexed
+            data_type (google.cloud.apihub_v1.types.HttpOperationDetails.DataType):
+                Optional. Data type of path param
+        """
+
+        position: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        data_type: "HttpOperationDetails.DataType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="HttpOperationDetails.DataType",
+        )
+
+    class QueryParam(proto.Message):
+        r"""An aggregation of HTTP query parameter occurrences.
+
+        Attributes:
+            name (str):
+                Required. Name of query param
+            count (int):
+                Optional. The number of occurrences of this
+                query parameter across transactions.
+            data_type (google.cloud.apihub_v1.types.HttpOperationDetails.DataType):
+                Optional. Data type of path param
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        data_type: "HttpOperationDetails.DataType" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="HttpOperationDetails.DataType",
+        )
+
+    class Header(proto.Message):
+        r"""An aggregation of HTTP header occurrences.
+
+        Attributes:
+            name (str):
+                Header name.
+            count (int):
+                The number of occurrences of this Header
+                across transactions.
+            data_type (google.cloud.apihub_v1.types.HttpOperationDetails.DataType):
+                Data type of header
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        data_type: "HttpOperationDetails.DataType" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="HttpOperationDetails.DataType",
+        )
+
+    class HttpRequest(proto.Message):
+        r"""An aggregation of HTTP requests.
+
+        Attributes:
+            headers (MutableMapping[str, google.cloud.apihub_v1.types.HttpOperationDetails.Header]):
+                Optional. Unordered map from header name to
+                header metadata
+        """
+
+        headers: MutableMapping[str, "HttpOperationDetails.Header"] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=1,
+            message="HttpOperationDetails.Header",
+        )
+
+    class HttpResponse(proto.Message):
+        r"""An aggregation of HTTP responses.
+
+        Attributes:
+            headers (MutableMapping[str, google.cloud.apihub_v1.types.HttpOperationDetails.Header]):
+                Optional. Unordered map from header name to
+                header metadata
+            response_codes (MutableMapping[int, int]):
+                Optional. Map of status code to observed
+                count
+        """
+
+        headers: MutableMapping[str, "HttpOperationDetails.Header"] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=1,
+            message="HttpOperationDetails.Header",
+        )
+        response_codes: MutableMapping[int, int] = proto.MapField(
+            proto.INT32,
+            proto.INT64,
+            number=2,
+        )
+
+    http_operation: "HttpOperation" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="HttpOperation",
+    )
+    path_params: MutableSequence[PathParam] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=PathParam,
+    )
+    query_params: MutableMapping[str, QueryParam] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message=QueryParam,
+    )
+    request: HttpRequest = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=HttpRequest,
+    )
+    response: HttpResponse = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=HttpResponse,
     )
 
 
