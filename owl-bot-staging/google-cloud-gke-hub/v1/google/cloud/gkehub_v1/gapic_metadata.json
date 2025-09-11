@@ -1,0 +1,193 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.gkehub_v1",
+  "protoPackage": "google.cloud.gkehub.v1",
+  "schema": "1.0",
+  "services": {
+    "GkeHub": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GkeHubClient",
+          "rpcs": {
+            "CreateFeature": {
+              "methods": [
+                "create_feature"
+              ]
+            },
+            "CreateMembership": {
+              "methods": [
+                "create_membership"
+              ]
+            },
+            "DeleteFeature": {
+              "methods": [
+                "delete_feature"
+              ]
+            },
+            "DeleteMembership": {
+              "methods": [
+                "delete_membership"
+              ]
+            },
+            "GenerateConnectManifest": {
+              "methods": [
+                "generate_connect_manifest"
+              ]
+            },
+            "GetFeature": {
+              "methods": [
+                "get_feature"
+              ]
+            },
+            "GetMembership": {
+              "methods": [
+                "get_membership"
+              ]
+            },
+            "ListFeatures": {
+              "methods": [
+                "list_features"
+              ]
+            },
+            "ListMemberships": {
+              "methods": [
+                "list_memberships"
+              ]
+            },
+            "UpdateFeature": {
+              "methods": [
+                "update_feature"
+              ]
+            },
+            "UpdateMembership": {
+              "methods": [
+                "update_membership"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GkeHubAsyncClient",
+          "rpcs": {
+            "CreateFeature": {
+              "methods": [
+                "create_feature"
+              ]
+            },
+            "CreateMembership": {
+              "methods": [
+                "create_membership"
+              ]
+            },
+            "DeleteFeature": {
+              "methods": [
+                "delete_feature"
+              ]
+            },
+            "DeleteMembership": {
+              "methods": [
+                "delete_membership"
+              ]
+            },
+            "GenerateConnectManifest": {
+              "methods": [
+                "generate_connect_manifest"
+              ]
+            },
+            "GetFeature": {
+              "methods": [
+                "get_feature"
+              ]
+            },
+            "GetMembership": {
+              "methods": [
+                "get_membership"
+              ]
+            },
+            "ListFeatures": {
+              "methods": [
+                "list_features"
+              ]
+            },
+            "ListMemberships": {
+              "methods": [
+                "list_memberships"
+              ]
+            },
+            "UpdateFeature": {
+              "methods": [
+                "update_feature"
+              ]
+            },
+            "UpdateMembership": {
+              "methods": [
+                "update_membership"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "GkeHubClient",
+          "rpcs": {
+            "CreateFeature": {
+              "methods": [
+                "create_feature"
+              ]
+            },
+            "CreateMembership": {
+              "methods": [
+                "create_membership"
+              ]
+            },
+            "DeleteFeature": {
+              "methods": [
+                "delete_feature"
+              ]
+            },
+            "DeleteMembership": {
+              "methods": [
+                "delete_membership"
+              ]
+            },
+            "GenerateConnectManifest": {
+              "methods": [
+                "generate_connect_manifest"
+              ]
+            },
+            "GetFeature": {
+              "methods": [
+                "get_feature"
+              ]
+            },
+            "GetMembership": {
+              "methods": [
+                "get_membership"
+              ]
+            },
+            "ListFeatures": {
+              "methods": [
+                "list_features"
+              ]
+            },
+            "ListMemberships": {
+              "methods": [
+                "list_memberships"
+              ]
+            },
+            "UpdateFeature": {
+              "methods": [
+                "update_feature"
+              ]
+            },
+            "UpdateMembership": {
+              "methods": [
+                "update_membership"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
