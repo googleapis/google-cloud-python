@@ -418,10 +418,15 @@ class ResourceOptions(proto.Message):
             This option should be set for clusters with Kubernetes
             apiserver versions <1.16.
         k8s_version (str):
-            Optional. Major version of the Kubernetes cluster. This is
-            only used to determine which version to use for the
+            Optional. Major and minor version of the Kubernetes cluster.
+            This is only used to determine which version to use for the
             CustomResourceDefinition resources,
             ``apiextensions/v1beta1`` or\ ``apiextensions/v1``.
+        k8s_git_version (str):
+            Optional. Git version of the Kubernetes
+            cluster. This is only used to gate the Connect
+            Agent migration to svc.id.goog on GDC-SO
+            1.33.100 patch and above.
     """
 
     connect_version: str = proto.Field(
@@ -435,6 +440,10 @@ class ResourceOptions(proto.Message):
     k8s_version: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    k8s_git_version: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
