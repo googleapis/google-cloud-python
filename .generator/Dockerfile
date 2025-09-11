@@ -83,7 +83,6 @@ FROM marketplace.gcr.io/google/ubuntu2404
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libsqlite3-0 \
-    pandoc \
     wget \
     zip \
     && apt-get clean autoclean \
