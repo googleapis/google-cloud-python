@@ -324,8 +324,6 @@ def _valid_cast(src: dtypes.Dtype, dst: dtypes.Dtype):
             if not _valid_cast(src_dtype, dst_dtype):
                 return False
         return True
-    if dtypes.is_struct_like(src) and dst == dtypes.JSON_DTYPE:
-        return True
 
     return _valid_scalar_cast(src, dst)
 

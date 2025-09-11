@@ -1023,8 +1023,6 @@ def astype_op_impl(x: ibis_types.Value, op: ops.AsTypeOp):
                 x, ibis_dtypes.string, safe=op.safe
             )
             return parse_json_in_safe(x_str) if op.safe else parse_json(x_str)
-        if x.type().is_struct():
-            return to_json_string(typing.cast(ibis_types.StructValue, x))
 
     if x.type() == ibis_dtypes.json:
         if to_type == ibis_dtypes.int64:
@@ -2071,7 +2069,7 @@ def json_extract_string_array(  # type: ignore[empty-body]
 
 @ibis_udf.scalar.builtin(name="to_json_string")
 def to_json_string(  # type: ignore[empty-body]
-    json_obj,
+    json_obj: ibis_dtypes.JSON,
 ) -> ibis_dtypes.String:
     """Convert JSON to STRING."""
 
