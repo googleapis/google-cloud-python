@@ -65,6 +65,10 @@ RUN . bazel_env/bin/activate
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
 RUN unzip protoc-25.3-linux-x86_64.zip -d protoc
 
+# Download/install pandoc
+RUN wget https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-linux-amd64.tar.gz
+RUN tar -xvf pandoc-3.7.0.2-linux-amd64.tar.gz
+
 # --- Final Stage ---
 # This stage creates the lightweight final image, copying only the
 # necessary artifacts from the builder stage.
@@ -87,7 +91,9 @@ RUN apt-get update && \
 
 COPY --from=builder protoc/bin /usr/local/bin
 COPY --from=builder protoc/include /usr/local/include
-COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
+
+# Pandoc is required by gapic-generator-python for parsing documentation
+COPY --from=builder pandoc-3.7.0.2/bin /usr/local/bin
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
@@ -108,11 +114,6 @@ RUN python3.9 -m pip install -r requirements.in
 
 RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
 python3.9 -m pip install /tmp/synthtool
-
-# Download/install pandoc
-RUN wget https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-linux-amd64.tar.gz
-RUN tar -xvf pandoc-3.7.0.2-linux-amd64.tar.gz
-RUN mv pandoc-3.7.0.2/bin/* /usr/local/bin/
 
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
