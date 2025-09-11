@@ -69,7 +69,6 @@ def configure_state_yaml() -> None:
                 "apis": api_paths,
                 "source_roots": [f"packages/{package_path.name}"],
                 "preserve_regex": [
-                    ".OwlBot.yaml",
                     # Use the full path to avoid ambiguity with the root CHANGELOG.md
                     f"packages/{package_path.name}/CHANGELOG.md",
                     "docs/CHANGELOG.md",
