@@ -4054,6 +4054,205 @@ def test_delete_spec_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_create_api_operation_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ApiHubClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_api_operation in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_api_operation
+        ] = mock_rpc
+
+        request = {}
+        client.create_api_operation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_api_operation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_api_operation_rest_required_fields(
+    request_type=apihub_service.CreateApiOperationRequest,
+):
+    transport_class = transports.ApiHubRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api_operation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_api_operation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("api_operation_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = common_fields.ApiOperation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = common_fields.ApiOperation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_api_operation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_api_operation_rest_unset_required_fields():
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_api_operation._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("apiOperationId",))
+        & set(
+            (
+                "parent",
+                "apiOperation",
+            )
+        )
+    )
+
+
+def test_create_api_operation_rest_flattened():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.ApiOperation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            api_operation=common_fields.ApiOperation(name="name_value"),
+            api_operation_id="api_operation_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = common_fields.ApiOperation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_api_operation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/apis/*/versions/*}/operations"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_api_operation_rest_flattened_error(transport: str = "rest"):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_api_operation(
+            apihub_service.CreateApiOperationRequest(),
+            parent="parent_value",
+            api_operation=common_fields.ApiOperation(name="name_value"),
+            api_operation_id="api_operation_id_value",
+        )
+
+
 def test_get_api_operation_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4500,6 +4699,379 @@ def test_list_api_operations_rest_pager(transport: str = "rest"):
         pages = list(client.list_api_operations(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
+
+
+def test_update_api_operation_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ApiHubClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_api_operation in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_api_operation
+        ] = mock_rpc
+
+        request = {}
+        client.update_api_operation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_api_operation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_api_operation_rest_required_fields(
+    request_type=apihub_service.UpdateApiOperationRequest,
+):
+    transport_class = transports.ApiHubRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api_operation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_api_operation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = common_fields.ApiOperation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = common_fields.ApiOperation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_api_operation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_api_operation_rest_unset_required_fields():
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_api_operation._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "apiOperation",
+                "updateMask",
+            )
+        )
+    )
+
+
+def test_update_api_operation_rest_flattened():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.ApiOperation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "api_operation": {
+                "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            api_operation=common_fields.ApiOperation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = common_fields.ApiOperation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_api_operation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{api_operation.name=projects/*/locations/*/apis/*/versions/*/operations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_api_operation_rest_flattened_error(transport: str = "rest"):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_api_operation(
+            apihub_service.UpdateApiOperationRequest(),
+            api_operation=common_fields.ApiOperation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_delete_api_operation_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ApiHubClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_api_operation in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_api_operation
+        ] = mock_rpc
+
+        request = {}
+        client.delete_api_operation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_api_operation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_api_operation_rest_required_fields(
+    request_type=apihub_service.DeleteApiOperationRequest,
+):
+    transport_class = transports.ApiHubRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_operation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_api_operation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_api_operation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_api_operation_rest_unset_required_fields():
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_api_operation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_api_operation_rest_flattened():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_api_operation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/apis/*/versions/*/operations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_api_operation_rest_flattened_error(transport: str = "rest"):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_api_operation(
+            apihub_service.DeleteApiOperationRequest(),
+            name="name_value",
+        )
 
 
 def test_get_definition_rest_use_cached_wrapped_rpc():
@@ -8095,6 +8667,7 @@ def test_create_api_rest_call_success(request_type):
             },
             "string_values": {"values": ["values_value1", "values_value2"]},
             "json_values": {},
+            "uri_values": {},
             "attribute": "attribute_value",
         },
         "team": {},
@@ -8103,6 +8676,22 @@ def test_create_api_rest_call_success(request_type):
         "attributes": {},
         "api_style": {},
         "selected_version": "selected_version_value",
+        "api_requirements": {},
+        "fingerprint": "fingerprint_value",
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
+        "api_functional_requirements": {},
+        "api_technical_requirements": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8182,6 +8771,7 @@ def test_create_api_rest_call_success(request_type):
             description="description_value",
             versions=["versions_value"],
             selected_version="selected_version_value",
+            fingerprint="fingerprint_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8203,6 +8793,7 @@ def test_create_api_rest_call_success(request_type):
     assert response.description == "description_value"
     assert response.versions == ["versions_value"]
     assert response.selected_version == "selected_version_value"
+    assert response.fingerprint == "fingerprint_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8313,6 +8904,7 @@ def test_get_api_rest_call_success(request_type):
             description="description_value",
             versions=["versions_value"],
             selected_version="selected_version_value",
+            fingerprint="fingerprint_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8334,6 +8926,7 @@ def test_get_api_rest_call_success(request_type):
     assert response.description == "description_value"
     assert response.versions == ["versions_value"]
     assert response.selected_version == "selected_version_value"
+    assert response.fingerprint == "fingerprint_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8576,6 +9169,7 @@ def test_update_api_rest_call_success(request_type):
             },
             "string_values": {"values": ["values_value1", "values_value2"]},
             "json_values": {},
+            "uri_values": {},
             "attribute": "attribute_value",
         },
         "team": {},
@@ -8584,6 +9178,22 @@ def test_update_api_rest_call_success(request_type):
         "attributes": {},
         "api_style": {},
         "selected_version": "selected_version_value",
+        "api_requirements": {},
+        "fingerprint": "fingerprint_value",
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
+        "api_functional_requirements": {},
+        "api_technical_requirements": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8663,6 +9273,7 @@ def test_update_api_rest_call_success(request_type):
             description="description_value",
             versions=["versions_value"],
             selected_version="selected_version_value",
+            fingerprint="fingerprint_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8684,6 +9295,7 @@ def test_update_api_rest_call_success(request_type):
     assert response.description == "description_value"
     assert response.versions == ["versions_value"]
     assert response.selected_version == "selected_version_value"
+    assert response.fingerprint == "fingerprint_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8914,12 +9526,25 @@ def test_create_version_rest_call_success(request_type):
             },
             "string_values": {"values": ["values_value1", "values_value2"]},
             "json_values": {},
+            "uri_values": {},
             "attribute": "attribute_value",
         },
         "compliance": {},
         "accreditation": {},
         "attributes": {},
         "selected_deployment": "selected_deployment_value",
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9430,12 +10055,25 @@ def test_update_version_rest_call_success(request_type):
             },
             "string_values": {"values": ["values_value1", "values_value2"]},
             "json_values": {},
+            "uri_values": {},
             "attribute": "attribute_value",
         },
         "compliance": {},
         "accreditation": {},
         "attributes": {},
         "selected_deployment": "selected_deployment_value",
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9772,6 +10410,7 @@ def test_create_spec_rest_call_success(request_type):
             },
             "string_values": {"values": ["values_value1", "values_value2"]},
             "json_values": {},
+            "uri_values": {},
             "attribute": "attribute_value",
         },
         "contents": {"contents": b"contents_blob", "mime_type": "mime_type_value"},
@@ -9805,6 +10444,18 @@ def test_create_spec_rest_call_success(request_type):
         "attributes": {},
         "documentation": {"external_uri": "external_uri_value"},
         "parsing_mode": 1,
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10417,6 +11068,7 @@ def test_update_spec_rest_call_success(request_type):
             },
             "string_values": {"values": ["values_value1", "values_value2"]},
             "json_values": {},
+            "uri_values": {},
             "attribute": "attribute_value",
         },
         "contents": {"contents": b"contents_blob", "mime_type": "mime_type_value"},
@@ -10450,6 +11102,18 @@ def test_update_spec_rest_call_success(request_type):
         "attributes": {},
         "documentation": {"external_uri": "external_uri_value"},
         "parsing_mode": 1,
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10719,6 +11383,232 @@ def test_delete_spec_rest_interceptors(null_interceptor):
         pre.assert_called_once()
 
 
+def test_create_api_operation_rest_bad_request(
+    request_type=apihub_service.CreateApiOperationRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_api_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.CreateApiOperationRequest,
+        dict,
+    ],
+)
+def test_create_api_operation_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request_init["api_operation"] = {
+        "name": "name_value",
+        "spec": "spec_value",
+        "details": {
+            "http_operation": {
+                "path": {"path": "path_value", "description": "description_value"},
+                "method": 1,
+            },
+            "description": "description_value",
+            "documentation": {"external_uri": "external_uri_value"},
+            "deprecated": True,
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "attributes": {},
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.CreateApiOperationRequest.meta.fields["api_operation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["api_operation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["api_operation"][field])):
+                    del request_init["api_operation"][field][i][subfield]
+            else:
+                del request_init["api_operation"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.ApiOperation(
+            name="name_value",
+            spec="spec_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.ApiOperation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_api_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.ApiOperation)
+    assert response.name == "name_value"
+    assert response.spec == "spec_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_api_operation_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_api_operation"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_api_operation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_create_api_operation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = apihub_service.CreateApiOperationRequest.pb(
+            apihub_service.CreateApiOperationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = common_fields.ApiOperation.to_json(common_fields.ApiOperation())
+        req.return_value.content = return_value
+
+        request = apihub_service.CreateApiOperationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.ApiOperation()
+        post_with_metadata.return_value = common_fields.ApiOperation(), metadata
+
+        client.create_api_operation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_api_operation_rest_bad_request(
     request_type=apihub_service.GetApiOperationRequest,
 ):
@@ -10984,6 +11874,347 @@ def test_list_api_operations_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_update_api_operation_rest_bad_request(
+    request_type=apihub_service.UpdateApiOperationRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_operation": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_api_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.UpdateApiOperationRequest,
+        dict,
+    ],
+)
+def test_update_api_operation_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_operation": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
+        }
+    }
+    request_init["api_operation"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5",
+        "spec": "spec_value",
+        "details": {
+            "http_operation": {
+                "path": {"path": "path_value", "description": "description_value"},
+                "method": 1,
+            },
+            "description": "description_value",
+            "documentation": {"external_uri": "external_uri_value"},
+            "deprecated": True,
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "attributes": {},
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.UpdateApiOperationRequest.meta.fields["api_operation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["api_operation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["api_operation"][field])):
+                    del request_init["api_operation"][field][i][subfield]
+            else:
+                del request_init["api_operation"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.ApiOperation(
+            name="name_value",
+            spec="spec_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.ApiOperation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_api_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.ApiOperation)
+    assert response.name == "name_value"
+    assert response.spec == "spec_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_api_operation_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_api_operation"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_api_operation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_update_api_operation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = apihub_service.UpdateApiOperationRequest.pb(
+            apihub_service.UpdateApiOperationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = common_fields.ApiOperation.to_json(common_fields.ApiOperation())
+        req.return_value.content = return_value
+
+        request = apihub_service.UpdateApiOperationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.ApiOperation()
+        post_with_metadata.return_value = common_fields.ApiOperation(), metadata
+
+        client.update_api_operation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_delete_api_operation_rest_bad_request(
+    request_type=apihub_service.DeleteApiOperationRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_api_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.DeleteApiOperationRequest,
+        dict,
+    ],
+)
+def test_delete_api_operation_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_api_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_operation_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_delete_api_operation"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = apihub_service.DeleteApiOperationRequest.pb(
+            apihub_service.DeleteApiOperationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        request = apihub_service.DeleteApiOperationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_api_operation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
 def test_get_definition_rest_bad_request(
     request_type=apihub_service.GetDefinitionRequest,
 ):
@@ -11174,6 +12405,7 @@ def test_create_deployment_rest_call_success(request_type):
             },
             "string_values": {"values": ["values_value1", "values_value2"]},
             "json_values": {},
+            "uri_values": {},
             "attribute": "attribute_value",
         },
         "resource_uri": "resource_uri_value",
@@ -11184,6 +12416,22 @@ def test_create_deployment_rest_call_success(request_type):
         "slo": {},
         "environment": {},
         "attributes": {},
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
+        "management_url": {},
+        "source_uri": {},
+        "source_project": "source_project_value",
+        "source_environment": "source_environment_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11264,6 +12512,8 @@ def test_create_deployment_rest_call_success(request_type):
             resource_uri="resource_uri_value",
             endpoints=["endpoints_value"],
             api_versions=["api_versions_value"],
+            source_project="source_project_value",
+            source_environment="source_environment_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -11286,6 +12536,8 @@ def test_create_deployment_rest_call_success(request_type):
     assert response.resource_uri == "resource_uri_value"
     assert response.endpoints == ["endpoints_value"]
     assert response.api_versions == ["api_versions_value"]
+    assert response.source_project == "source_project_value"
+    assert response.source_environment == "source_environment_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -11399,6 +12651,8 @@ def test_get_deployment_rest_call_success(request_type):
             resource_uri="resource_uri_value",
             endpoints=["endpoints_value"],
             api_versions=["api_versions_value"],
+            source_project="source_project_value",
+            source_environment="source_environment_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -11421,6 +12675,8 @@ def test_get_deployment_rest_call_success(request_type):
     assert response.resource_uri == "resource_uri_value"
     assert response.endpoints == ["endpoints_value"]
     assert response.api_versions == ["api_versions_value"]
+    assert response.source_project == "source_project_value"
+    assert response.source_environment == "source_environment_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -11674,6 +12930,7 @@ def test_update_deployment_rest_call_success(request_type):
             },
             "string_values": {"values": ["values_value1", "values_value2"]},
             "json_values": {},
+            "uri_values": {},
             "attribute": "attribute_value",
         },
         "resource_uri": "resource_uri_value",
@@ -11684,6 +12941,22 @@ def test_update_deployment_rest_call_success(request_type):
         "slo": {},
         "environment": {},
         "attributes": {},
+        "source_metadata": [
+            {
+                "plugin_instance_action_source": {
+                    "plugin_instance": "plugin_instance_value",
+                    "action_id": "action_id_value",
+                },
+                "source_type": 1,
+                "original_resource_id": "original_resource_id_value",
+                "original_resource_create_time": {},
+                "original_resource_update_time": {},
+            }
+        ],
+        "management_url": {},
+        "source_uri": {},
+        "source_project": "source_project_value",
+        "source_environment": "source_environment_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11764,6 +13037,8 @@ def test_update_deployment_rest_call_success(request_type):
             resource_uri="resource_uri_value",
             endpoints=["endpoints_value"],
             api_versions=["api_versions_value"],
+            source_project="source_project_value",
+            source_environment="source_environment_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -11786,6 +13061,8 @@ def test_update_deployment_rest_call_success(request_type):
     assert response.resource_uri == "resource_uri_value"
     assert response.endpoints == ["endpoints_value"]
     assert response.api_versions == ["api_versions_value"]
+    assert response.source_project == "source_project_value"
+    assert response.source_environment == "source_environment_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14425,6 +15702,28 @@ def test_delete_spec_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_create_api_operation_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_api_operation), "__call__"
+    ) as call:
+        client.create_api_operation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.CreateApiOperationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_api_operation_empty_call_rest():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14463,6 +15762,50 @@ def test_list_api_operations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.ListApiOperationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_api_operation_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_api_operation), "__call__"
+    ) as call:
+        client.update_api_operation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.UpdateApiOperationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_api_operation_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_operation), "__call__"
+    ) as call:
+        client.delete_api_operation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.DeleteApiOperationRequest()
 
         assert args[0] == request_msg
 
@@ -14859,8 +16202,11 @@ def test_api_hub_base_transport():
         "list_specs",
         "update_spec",
         "delete_spec",
+        "create_api_operation",
         "get_api_operation",
         "list_api_operations",
+        "update_api_operation",
+        "delete_api_operation",
         "get_definition",
         "create_deployment",
         "get_deployment",
@@ -15063,11 +16409,20 @@ def test_api_hub_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_spec._session
     session2 = client2.transport.delete_spec._session
     assert session1 != session2
+    session1 = client1.transport.create_api_operation._session
+    session2 = client2.transport.create_api_operation._session
+    assert session1 != session2
     session1 = client1.transport.get_api_operation._session
     session2 = client2.transport.get_api_operation._session
     assert session1 != session2
     session1 = client1.transport.list_api_operations._session
     session2 = client2.transport.list_api_operations._session
+    assert session1 != session2
+    session1 = client1.transport.update_api_operation._session
+    session2 = client2.transport.update_api_operation._session
+    assert session1 != session2
+    session1 = client1.transport.delete_api_operation._session
+    session2 = client2.transport.delete_api_operation._session
     assert session1 != session2
     session1 = client1.transport.get_definition._session
     session2 = client2.transport.get_definition._session
@@ -15294,12 +16649,41 @@ def test_parse_external_api_path():
     assert expected == actual
 
 
-def test_spec_path():
+def test_plugin_instance_path():
     project = "winkle"
     location = "nautilus"
-    api = "scallop"
-    version = "abalone"
-    spec = "squid"
+    plugin = "scallop"
+    instance = "abalone"
+    expected = "projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}".format(
+        project=project,
+        location=location,
+        plugin=plugin,
+        instance=instance,
+    )
+    actual = ApiHubClient.plugin_instance_path(project, location, plugin, instance)
+    assert expected == actual
+
+
+def test_parse_plugin_instance_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "plugin": "whelk",
+        "instance": "octopus",
+    }
+    path = ApiHubClient.plugin_instance_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ApiHubClient.parse_plugin_instance_path(path)
+    assert expected == actual
+
+
+def test_spec_path():
+    project = "oyster"
+    location = "nudibranch"
+    api = "cuttlefish"
+    version = "mussel"
+    spec = "winkle"
     expected = "projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}".format(
         project=project,
         location=location,
@@ -15313,11 +16697,11 @@ def test_spec_path():
 
 def test_parse_spec_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "api": "octopus",
-        "version": "oyster",
-        "spec": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "api": "abalone",
+        "version": "squid",
+        "spec": "clam",
     }
     path = ApiHubClient.spec_path(**expected)
 
@@ -15327,10 +16711,10 @@ def test_parse_spec_path():
 
 
 def test_version_path():
-    project = "cuttlefish"
-    location = "mussel"
-    api = "winkle"
-    version = "nautilus"
+    project = "whelk"
+    location = "octopus"
+    api = "oyster"
+    version = "nudibranch"
     expected = (
         "projects/{project}/locations/{location}/apis/{api}/versions/{version}".format(
             project=project,
@@ -15345,10 +16729,10 @@ def test_version_path():
 
 def test_parse_version_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "api": "squid",
-        "version": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "api": "winkle",
+        "version": "nautilus",
     }
     path = ApiHubClient.version_path(**expected)
 
@@ -15358,7 +16742,7 @@ def test_parse_version_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -15368,7 +16752,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "abalone",
     }
     path = ApiHubClient.common_billing_account_path(**expected)
 
@@ -15378,7 +16762,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -15388,7 +16772,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "clam",
     }
     path = ApiHubClient.common_folder_path(**expected)
 
@@ -15398,7 +16782,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -15408,7 +16792,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "octopus",
     }
     path = ApiHubClient.common_organization_path(**expected)
 
@@ -15418,7 +16802,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -15428,7 +16812,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "nudibranch",
     }
     path = ApiHubClient.common_project_path(**expected)
 
@@ -15438,8 +16822,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -15450,8 +16834,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = ApiHubClient.common_location_path(**expected)
 

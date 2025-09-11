@@ -44,7 +44,10 @@ __protobuf__ = proto.module(
         "ListSpecsRequest",
         "ListSpecsResponse",
         "GetSpecContentsRequest",
+        "CreateApiOperationRequest",
         "GetApiOperationRequest",
+        "UpdateApiOperationRequest",
+        "DeleteApiOperationRequest",
         "ListApiOperationsRequest",
         "ListApiOperationsResponse",
         "GetDefinitionRequest",
@@ -249,6 +252,41 @@ class ListApisRequest(proto.Message):
               allowed value display name of the api style attribute
               associated with the ApiResource. Allowed comparison
               operator is ``:``.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.id``
+              - The allowed value id of the user defined enum attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-enum-id is a
+              placeholder that can be replaced with any user defined
+              enum attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.display_name``
+
+            - The allowed value display name of the user defined enum
+              attribute associated with the Resource. Allowed comparison
+              operator is ``:``. Here
+              user-defined-attribute-enum-display-name is a placeholder
+              that can be replaced with any user defined enum attribute
+              enum name.
+
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.string_values.values``
+              - The allowed value of the user defined string attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-string is a
+              placeholder that can be replaced with any user defined
+              string attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.json_values.values``
+              - The allowed value of the user defined JSON attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-json is a
+              placeholder that can be replaced with any user defined
+              JSON attribute name.
+
+            A filter function is also supported in the filter string.
+            The filter function is ``id(name)``. The ``id(name)``
+            function returns the id of the resource name. For example,
+            ``id(name) = \"api-1\"`` is equivalent to
+            ``name = \"projects/test-project-id/locations/test-location-id/apis/api-1\"``
+            provided the parent is
+            ``projects/test-project-id/locations/test-location-id``.
 
             Expressions are combined with either ``AND`` logic operator
             or ``OR`` logical operator but not both of them together
@@ -277,6 +315,12 @@ class ListApisRequest(proto.Message):
               team email is *apihub@google.com* or the display name of
               the allowed value associated with the team attribute is
               ``ApiHub Team``.
+            - ``owner.email = \"apihub@google.com\" AND attributes.projects/test-project-id/locations/test-location-id/ attributes/17650f90-4a29-4971-b3c0-d5532da3764b.enum_values.values.id: test_enum_id AND attributes.projects/test-project-id/locations/test-location-id/ attributes/1765\0f90-4a29-5431-b3d0-d5532da3764c.string_values.values: test_string_value``
+              - The filter string specifies the APIs where the owner
+              team email is *apihub@google.com* and the id of the
+              allowed value associated with the user defined attribute
+              of type enum is *test_enum_id* and the value of the user
+              defined attribute of type string is *test*..
         page_size (int):
             Optional. The maximum number of API resources
             to return. The service may return fewer than
@@ -357,7 +401,10 @@ class CreateVersionRequest(proto.Message):
               version in the API resource.
             - If not provided, a system generated id will be used.
 
-            This value should be 4-500 characters, and valid characters
+            This value should be 4-500 characters, overall resource name
+            which will be of format
+            ``projects/{project}/locations/{location}/apis/{api}/versions/{version}``,
+            its length is limited to 700 characters and valid characters
             are /[a-z][A-Z][0-9]-\_/.
         version (google.cloud.apihub_v1.types.Version):
             Required. The version to create.
@@ -494,6 +541,33 @@ class ListVersionsRequest(proto.Message):
               allowed value display name of the accreditations attribute
               associated with the Version. Allowed comparison operators:
               ``:``.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.id``
+              - The allowed value id of the user defined enum attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-enum-id is a
+              placeholder that can be replaced with any user defined
+              enum attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.display_name``
+
+            - The allowed value display name of the user defined enum
+              attribute associated with the Resource. Allowed comparison
+              operator is ``:``. Here
+              user-defined-attribute-enum-display-name is a placeholder
+              that can be replaced with any user defined enum attribute
+              enum name.
+
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.string_values.values``
+              - The allowed value of the user defined string attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-string is a
+              placeholder that can be replaced with any user defined
+              string attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.json_values.values``
+              - The allowed value of the user defined JSON attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-json is a
+              placeholder that can be replaced with any user defined
+              JSON attribute name.
 
             Expressions are combined with either ``AND`` logic operator
             or ``OR`` logical operator but not both of them together
@@ -523,6 +597,12 @@ class ListVersionsRequest(proto.Message):
 
             - The id of the allowed value associated with the compliance
               attribute is *gdpr-id* or *pci-dss-id*.
+
+            - ``lifecycle.enum_values.values.id: preview-id AND attributes.projects/test-project-id/locations/test-location-id/ attributes/17650f90-4a29-4971-b3c0-d5532da3764b.string_values.values: test``
+              - The filter string specifies that the id of the allowed
+              value associated with the lifecycle attribute of the
+              Version is *preview-id* and the value of the user defined
+              attribute of type string is *test*.
         page_size (int):
             Optional. The maximum number of versions to
             return. The service may return fewer than this
@@ -603,8 +683,11 @@ class CreateSpecRequest(proto.Message):
               spec in the API resource.
             - If not provided, a system generated id will be used.
 
-            This value should be 4-500 characters, and valid characters
-            are /[a-z][A-Z][0-9]-\_/.
+            This value should be 4-500 characters, overall resource name
+            which will be of format
+            ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}``,
+            its length is limited to 1000 characters and valid
+            characters are /[a-z][A-Z][0-9]-\_/.
         spec (google.cloud.apihub_v1.types.Spec):
             Required. The spec to create.
     """
@@ -720,6 +803,33 @@ class ListSpecsRequest(proto.Message):
               Allowed comparison operators: ``:``.
             - ``mime_type`` - The MIME type of the Spec. Allowed
               comparison operators: ``=``.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.id``
+              - The allowed value id of the user defined enum attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-enum-id is a
+              placeholder that can be replaced with any user defined
+              enum attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.display_name``
+
+            - The allowed value display name of the user defined enum
+              attribute associated with the Resource. Allowed comparison
+              operator is ``:``. Here
+              user-defined-attribute-enum-display-name is a placeholder
+              that can be replaced with any user defined enum attribute
+              enum name.
+
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.string_values.values``
+              - The allowed value of the user defined string attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-string is a
+              placeholder that can be replaced with any user defined
+              string attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.json_values.values``
+              - The allowed value of the user defined JSON attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-json is a
+              placeholder that can be replaced with any user defined
+              JSON attribute name.
 
             Expressions are combined with either ``AND`` logic operator
             or ``OR`` logical operator but not both of them together
@@ -748,6 +858,12 @@ class ListSpecsRequest(proto.Message):
 
             - The id of the allowed value associated with the spec_type
               attribute is *rest-id* or *grpc-id*.
+
+            - ``spec_type.enum_values.values.id: rest-id AND attributes.projects/test-project-id/locations/test-location-id/ attributes/17650f90-4a29-4971-b3c0-d5532da3764b.enum_values.values.id: test``
+              - The filter string specifies that the id of the allowed
+              value associated with the spec_type attribute is *rest-id*
+              and the id of the allowed value associated with the user
+              defined attribute of type enum is *test*.
         page_size (int):
             Optional. The maximum number of specs to
             return. The service may return fewer than this
@@ -788,7 +904,7 @@ class ListSpecsResponse(proto.Message):
 
     Attributes:
         specs (MutableSequence[google.cloud.apihub_v1.types.Spec]):
-            The specs corresponding to an API.
+            The specs corresponding to an API Version.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
@@ -827,6 +943,50 @@ class GetSpecContentsRequest(proto.Message):
     )
 
 
+class CreateApiOperationRequest(proto.Message):
+    r"""The
+    [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+    method's request.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource for the operation resource.
+            Format:
+            ``projects/{project}/locations/{location}/apis/{api}/versions/{version}``
+        api_operation_id (str):
+            Optional. The ID to use for the operation resource, which
+            will become the final component of the operation's resource
+            name. This field is optional.
+
+            - If provided, the same will be used. The service will throw
+              an error if the specified id is already used by another
+              operation resource in the API hub.
+            - If not provided, a system generated id will be used.
+
+            This value should be 4-500 characters, overall resource name
+            which will be of format
+            ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}``,
+            its length is limited to 700 characters, and valid
+            characters are /[a-z][A-Z][0-9]-\_/.
+        api_operation (google.cloud.apihub_v1.types.ApiOperation):
+            Required. The operation resource to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    api_operation_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    api_operation: common_fields.ApiOperation = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common_fields.ApiOperation,
+    )
+
+
 class GetApiOperationRequest(proto.Message):
     r"""The [GetApiOperation][google.cloud.apihub.v1.ApiHub.GetApiOperation]
     method's request.
@@ -834,6 +994,52 @@ class GetApiOperationRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the operation to retrieve. Format:
+            ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateApiOperationRequest(proto.Message):
+    r"""The
+    [UpdateApiOperation][google.cloud.apihub.v1.ApiHub.UpdateApiOperation]
+    method's request.
+
+    Attributes:
+        api_operation (google.cloud.apihub_v1.types.ApiOperation):
+            Required. The apiOperation resource to update.
+
+            The operation resource's ``name`` field is used to identify
+            the operation resource to update. Format:
+            ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}``
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to update.
+    """
+
+    api_operation: common_fields.ApiOperation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common_fields.ApiOperation,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteApiOperationRequest(proto.Message):
+    r"""The
+    [DeleteApiOperation][google.cloud.apihub.v1.ApiHub.DeleteApiOperation]
+    method's request.
+
+    Attributes:
+        name (str):
+            Required. The name of the operation resource to delete.
+            Format:
             ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}``
     """
 
@@ -880,6 +1086,33 @@ class ListApiOperationsRequest(proto.Message):
               created. The value should be in the
               (RFC3339)[https://tools.ietf.org/html/rfc3339] format.
               Allowed comparison operators: ``>`` and ``<``.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.id``
+              - The allowed value id of the user defined enum attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-enum-id is a
+              placeholder that can be replaced with any user defined
+              enum attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.display_name``
+
+            - The allowed value display name of the user defined enum
+              attribute associated with the Resource. Allowed comparison
+              operator is ``:``. Here
+              user-defined-attribute-enum-display-name is a placeholder
+              that can be replaced with any user defined enum attribute
+              enum name.
+
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.string_values.values``
+              - The allowed value of the user defined string attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-string is a
+              placeholder that can be replaced with any user defined
+              string attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.json_values.values``
+              - The allowed value of the user defined JSON attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-json is a
+              placeholder that can be replaced with any user defined
+              JSON attribute name.
 
             Expressions are combined with either ``AND`` logic operator
             or ``OR`` logical operator but not both of them together
@@ -901,6 +1134,10 @@ class ListApiOperationsRequest(proto.Message):
             - ``details.http_operation.method = GET OR details.http_operation.method = POST``.
               - The http operation of the method of ApiOperation is
               *GET* or *POST*.
+            - ``details.deprecated = True AND attributes.projects/test-project-id/locations/test-location-id/ attributes/17650f90-4a29-4971-b3c0-d5532da3764b.string_values.values: test``
+              - The filter string specifies that the ApiOperation is
+              deprecated and the value of the user defined attribute of
+              type string is *test*.
         page_size (int):
             Optional. The maximum number of operations to
             return. The service may return fewer than this
@@ -942,11 +1179,8 @@ class ListApiOperationsResponse(proto.Message):
 
     Attributes:
         api_operations (MutableSequence[google.cloud.apihub_v1.types.ApiOperation]):
-            The operations corresponding to an API version. Only
-            following field will be populated in the response: name,
-            spec, details.deprecated, details.http_operation.path.path,
-            details.http_operation.method and
-            details.documentation.external_uri.
+            The operations corresponding to an API
+            version.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
@@ -1118,6 +1352,10 @@ class ListDeploymentsRequest(proto.Message):
               Allowed comparison operators: ``=``.
             - ``api_versions`` - The API versions linked to this
               deployment. Allowed comparison operators: ``:``.
+            - ``source_project`` - The project/organization at source
+              for the deployment. Allowed comparison operators: ``=``.
+            - ``source_environment`` - The environment at source for the
+              deployment. Allowed comparison operators: ``=``.
             - ``deployment_type.enum_values.values.id`` - The allowed
               value id of the deployment_type attribute associated with
               the Deployment. Allowed comparison operators: ``:``.
@@ -1135,6 +1373,41 @@ class ListDeploymentsRequest(proto.Message):
               allowed value display name of the environment attribute
               associated with the deployment. Allowed comparison
               operators: ``:``.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.id``
+              - The allowed value id of the user defined enum attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-enum-id is a
+              placeholder that can be replaced with any user defined
+              enum attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.enum_values.values.display_name``
+
+            - The allowed value display name of the user defined enum
+              attribute associated with the Resource. Allowed comparison
+              operator is ``:``. Here
+              user-defined-attribute-enum-display-name is a placeholder
+              that can be replaced with any user defined enum attribute
+              enum name.
+
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.string_values.values``
+              - The allowed value of the user defined string attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-string is a
+              placeholder that can be replaced with any user defined
+              string attribute name.
+            - ``attributes.projects/test-project-id/locations/test-location-id/ attributes/user-defined-attribute-id.json_values.values``
+              - The allowed value of the user defined JSON attribute
+              associated with the Resource. Allowed comparison operator
+              is ``:``. Here user-defined-attribute-json is a
+              placeholder that can be replaced with any user defined
+              JSON attribute name.
+
+            A filter function is also supported in the filter string.
+            The filter function is ``id(name)``. The ``id(name)``
+            function returns the id of the resource name. For example,
+            ``id(name) = \"deployment-1\"`` is equivalent to
+            ``name = \"projects/test-project-id/locations/test-location-id/deployments/deployment-1\"``
+            provided the parent is
+            ``projects/test-project-id/locations/test-location-id``.
 
             Expressions are combined with either ``AND`` logic operator
             or ``OR`` logical operator but not both of them together
@@ -1164,6 +1437,12 @@ class ListDeploymentsRequest(proto.Message):
             - The allowed value id of the environment attribute
               Deployment is *production-id* or string value of the slo
               attribute is *99.99%*.
+
+            - ``environment.enum_values.values.id: staging-id AND attributes.projects/test-project-id/locations/test-location-id/ attributes/17650f90-4a29-4971-b3c0-d5532da3764b.string_values.values: test``
+              - The filter string specifies that the allowed value id of
+              the environment attribute associated with the Deployment
+              is *staging-id* and the value of the user defined
+              attribute of type string is *test*.
         page_size (int):
             Optional. The maximum number of deployment
             resources to return. The service may return
@@ -1543,20 +1822,20 @@ class ApiHubResource(proto.Message):
             This field is a member of `oneof`_ ``resource``.
         operation (google.cloud.apihub_v1.types.ApiOperation):
             This represents ApiOperation resource in
-            search results. Only name, and description
-            fields are populated in search results.
+            search results. Only name, description, spec and
+            details fields are populated in search results.
 
             This field is a member of `oneof`_ ``resource``.
         deployment (google.cloud.apihub_v1.types.Deployment):
             This represents Deployment resource in search results. Only
-            name, display_name and description fields are populated in
-            search results.
+            name, display_name, description, deployment_type and
+            api_versions fields are populated in search results.
 
             This field is a member of `oneof`_ ``resource``.
         spec (google.cloud.apihub_v1.types.Spec):
             This represents Spec resource in search results. Only name,
-            display_name and description fields are populated in search
-            results.
+            display_name, description, spec_type and documentation
+            fields are populated in search results.
 
             This field is a member of `oneof`_ ``resource``.
         definition (google.cloud.apihub_v1.types.Definition):
@@ -1567,8 +1846,8 @@ class ApiHubResource(proto.Message):
             This field is a member of `oneof`_ ``resource``.
         version (google.cloud.apihub_v1.types.Version):
             This represents Version resource in search results. Only
-            name, display_name and description fields are populated in
-            search results.
+            name, display_name, description, lifecycle, compliance and
+            accreditation fields are populated in search results.
 
             This field is a member of `oneof`_ ``resource``.
     """
@@ -1855,8 +2134,7 @@ class ListDependenciesResponse(proto.Message):
     Attributes:
         dependencies (MutableSequence[google.cloud.apihub_v1.types.Dependency]):
             The dependency resources present in the API
-            hub. Only following field will be populated in
-            the response: name.
+            hub.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
@@ -2030,9 +2308,8 @@ class ListExternalApisResponse(proto.Message):
 
     Attributes:
         external_apis (MutableSequence[google.cloud.apihub_v1.types.ExternalApi]):
-            The External API resources present in the API hub. Only
-            following fields will be populated in the response: name,
-            display_name, documentation.external_uri.
+            The External API resources present in the API
+            hub.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent

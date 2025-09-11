@@ -175,7 +175,7 @@ class ApiHubTransport(abc.ABC):
             ),
             self.delete_api: gapic_v1.method.wrap_method(
                 self.delete_api,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.create_version: gapic_v1.method.wrap_method(
@@ -218,7 +218,7 @@ class ApiHubTransport(abc.ABC):
             ),
             self.delete_version: gapic_v1.method.wrap_method(
                 self.delete_version,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.create_spec: gapic_v1.method.wrap_method(
@@ -275,7 +275,12 @@ class ApiHubTransport(abc.ABC):
             ),
             self.delete_spec: gapic_v1.method.wrap_method(
                 self.delete_spec,
-                default_timeout=60.0,
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.create_api_operation: gapic_v1.method.wrap_method(
+                self.create_api_operation,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_api_operation: gapic_v1.method.wrap_method(
@@ -304,6 +309,16 @@ class ApiHubTransport(abc.ABC):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_api_operation: gapic_v1.method.wrap_method(
+                self.update_api_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_api_operation: gapic_v1.method.wrap_method(
+                self.delete_api_operation,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_definition: gapic_v1.method.wrap_method(
@@ -657,6 +672,15 @@ class ApiHubTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def create_api_operation(
+        self,
+    ) -> Callable[
+        [apihub_service.CreateApiOperationRequest],
+        Union[common_fields.ApiOperation, Awaitable[common_fields.ApiOperation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_api_operation(
         self,
     ) -> Callable[
@@ -674,6 +698,24 @@ class ApiHubTransport(abc.ABC):
             apihub_service.ListApiOperationsResponse,
             Awaitable[apihub_service.ListApiOperationsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_api_operation(
+        self,
+    ) -> Callable[
+        [apihub_service.UpdateApiOperationRequest],
+        Union[common_fields.ApiOperation, Awaitable[common_fields.ApiOperation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_api_operation(
+        self,
+    ) -> Callable[
+        [apihub_service.DeleteApiOperationRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

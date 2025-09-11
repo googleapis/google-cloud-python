@@ -36,7 +36,9 @@ __protobuf__ = proto.module(
 
 
 class GetStyleGuideRequest(proto.Message):
-    r"""The [GetStyleGuide][ApiHub.GetStyleGuide] method's request.
+    r"""The
+    [GetStyleGuide][google.cloud.apihub.v1.LintingService.GetStyleGuide]
+    method's request.
 
     Attributes:
         name (str):
@@ -51,7 +53,9 @@ class GetStyleGuideRequest(proto.Message):
 
 
 class UpdateStyleGuideRequest(proto.Message):
-    r"""The [UpdateStyleGuide][ApiHub.UpdateStyleGuide] method's request.
+    r"""The
+    [UpdateStyleGuide][google.cloud.apihub.v1.LintingService.UpdateStyleGuide]
+    method's request.
 
     Attributes:
         style_guide (google.cloud.apihub_v1.types.StyleGuide):
@@ -73,8 +77,9 @@ class UpdateStyleGuideRequest(proto.Message):
 
 
 class GetStyleGuideContentsRequest(proto.Message):
-    r"""The [GetStyleGuideContents][ApiHub.GetStyleGuideContents] method's
-    request.
+    r"""The
+    [GetStyleGuideContents][google.cloud.apihub.v1.LintingService.GetStyleGuideContents]
+    method's request.
 
     Attributes:
         name (str):
@@ -91,7 +96,8 @@ class GetStyleGuideContentsRequest(proto.Message):
 
 
 class LintSpecRequest(proto.Message):
-    r"""The [LintSpec][ApiHub.LintSpec] method's request.
+    r"""The [LintSpec][google.cloud.apihub.v1.LintingService.LintSpec]
+    method's request.
 
     Attributes:
         name (str):

@@ -139,6 +139,11 @@ class ProvisioningTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.delete_api_hub_instance: gapic_v1.method.wrap_method(
+                self.delete_api_hub_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_api_hub_instance: gapic_v1.method.wrap_method(
                 self.get_api_hub_instance,
                 default_retry=retries.Retry(
@@ -218,6 +223,15 @@ class ProvisioningTransport(abc.ABC):
         self,
     ) -> Callable[
         [provisioning_service.CreateApiHubInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_api_hub_instance(
+        self,
+    ) -> Callable[
+        [provisioning_service.DeleteApiHubInstanceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

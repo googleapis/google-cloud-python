@@ -42,7 +42,7 @@ def sample_update_attribute():
     attribute = apihub_v1.Attribute()
     attribute.display_name = "display_name_value"
     attribute.scope = "PLUGIN"
-    attribute.data_type = "STRING"
+    attribute.data_type = "URI"
 
     request = apihub_v1.UpdateAttributeRequest(
         attribute=attribute,

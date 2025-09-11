@@ -543,8 +543,9 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             Args:
                 request (~.linting_service.GetStyleGuideRequest):
-                    The request object. The [GetStyleGuide][ApiHub.GetStyleGuide] method's
-                request.
+                    The request object. The
+                [GetStyleGuide][google.cloud.apihub.v1.LintingService.GetStyleGuide]
+                method's request.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -693,7 +694,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
             Args:
                 request (~.linting_service.GetStyleGuideContentsRequest):
                     The request object. The
-                [GetStyleGuideContents][ApiHub.GetStyleGuideContents]
+                [GetStyleGuideContents][google.cloud.apihub.v1.LintingService.GetStyleGuideContents]
                 method's request.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -843,7 +844,9 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             Args:
                 request (~.linting_service.LintSpecRequest):
-                    The request object. The [LintSpec][ApiHub.LintSpec] method's request.
+                    The request object. The
+                [LintSpec][google.cloud.apihub.v1.LintingService.LintSpec]
+                method's request.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -961,8 +964,9 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             Args:
                 request (~.linting_service.UpdateStyleGuideRequest):
-                    The request object. The [UpdateStyleGuide][ApiHub.UpdateStyleGuide] method's
-                request.
+                    The request object. The
+                [UpdateStyleGuide][google.cloud.apihub.v1.LintingService.UpdateStyleGuide]
+                method's request.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

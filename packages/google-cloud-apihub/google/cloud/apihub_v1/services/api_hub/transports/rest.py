@@ -83,6 +83,14 @@ class ApiHubRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_api_operation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_api_operation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_attribute(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -124,6 +132,10 @@ class ApiHubRestInterceptor:
                 return response
 
             def pre_delete_api(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_api_operation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -291,6 +303,14 @@ class ApiHubRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_api_operation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_api_operation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_attribute(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -380,6 +400,55 @@ class ApiHubRestInterceptor:
         `post_create_api` interceptor. The (possibly modified) response returned by
         `post_create_api` will be passed to
         `post_create_api_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_api_operation(
+        self,
+        request: apihub_service.CreateApiOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.CreateApiOperationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_api_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHub server.
+        """
+        return request, metadata
+
+    def post_create_api_operation(
+        self, response: common_fields.ApiOperation
+    ) -> common_fields.ApiOperation:
+        """Post-rpc interceptor for create_api_operation
+
+        DEPRECATED. Please use the `post_create_api_operation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHub server but before
+        it is returned to user code. This `post_create_api_operation` interceptor runs
+        before the `post_create_api_operation_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_api_operation_with_metadata(
+        self,
+        response: common_fields.ApiOperation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.ApiOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_api_operation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_api_operation_with_metadata`
+        interceptor in new development instead of the `post_create_api_operation` interceptor.
+        When both interceptors are used, this `post_create_api_operation_with_metadata` interceptor runs after the
+        `post_create_api_operation` interceptor. The (possibly modified) response returned by
+        `post_create_api_operation` will be passed to
+        `post_create_api_operation_with_metadata`.
         """
         return response, metadata
 
@@ -629,6 +698,21 @@ class ApiHubRestInterceptor:
         apihub_service.DeleteApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for delete_api
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHub server.
+        """
+        return request, metadata
+
+    def pre_delete_api_operation(
+        self,
+        request: apihub_service.DeleteApiOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.DeleteApiOperationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_api_operation
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the ApiHub server.
@@ -1574,6 +1658,55 @@ class ApiHubRestInterceptor:
         """
         return response, metadata
 
+    def pre_update_api_operation(
+        self,
+        request: apihub_service.UpdateApiOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.UpdateApiOperationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_api_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHub server.
+        """
+        return request, metadata
+
+    def post_update_api_operation(
+        self, response: common_fields.ApiOperation
+    ) -> common_fields.ApiOperation:
+        """Post-rpc interceptor for update_api_operation
+
+        DEPRECATED. Please use the `post_update_api_operation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHub server but before
+        it is returned to user code. This `post_update_api_operation` interceptor runs
+        before the `post_update_api_operation_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_api_operation_with_metadata(
+        self,
+        response: common_fields.ApiOperation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.ApiOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_api_operation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_api_operation_with_metadata`
+        interceptor in new development instead of the `post_update_api_operation` interceptor.
+        When both interceptors are used, this `post_update_api_operation_with_metadata` interceptor runs after the
+        `post_update_api_operation` interceptor. The (possibly modified) response returned by
+        `post_update_api_operation` will be passed to
+        `post_update_api_operation_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_attribute(
         self,
         request: apihub_service.UpdateAttributeRequest,
@@ -2190,6 +2323,180 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     extra={
                         "serviceName": "google.cloud.apihub.v1.ApiHub",
                         "rpcName": "CreateApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateApiOperation(
+        _BaseApiHubRestTransport._BaseCreateApiOperation, ApiHubRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubRestTransport.CreateApiOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: apihub_service.CreateApiOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> common_fields.ApiOperation:
+            r"""Call the create api operation method over HTTP.
+
+            Args:
+                request (~.apihub_service.CreateApiOperationRequest):
+                    The request object. The
+                [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.common_fields.ApiOperation:
+                    Represents an operation contained in
+                an API version in the API Hub. An
+                operation is added/updated/deleted in an
+                API version when a new spec is added or
+                an existing spec is updated/deleted in a
+                version. Currently, an operation will be
+                created only corresponding to OpenAPI
+                spec as parsing is supported for OpenAPI
+                spec.
+                Alternatively operations can be managed
+                via create,update and delete APIs,
+                creation of apiOperation can be possible
+                only for version with no parsed
+                operations and update/delete can be
+                possible only for operations created via
+                create API.
+
+            """
+
+            http_options = (
+                _BaseApiHubRestTransport._BaseCreateApiOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_api_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubRestTransport._BaseCreateApiOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseApiHubRestTransport._BaseCreateApiOperation._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseApiHubRestTransport._BaseCreateApiOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.CreateApiOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateApiOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubRestTransport._CreateApiOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = common_fields.ApiOperation()
+            pb_resp = common_fields.ApiOperation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_api_operation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_api_operation_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.ApiOperation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.create_api_operation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateApiOperation",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3113,6 +3420,118 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteApiOperation(
+        _BaseApiHubRestTransport._BaseDeleteApiOperation, ApiHubRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubRestTransport.DeleteApiOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: apihub_service.DeleteApiOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete api operation method over HTTP.
+
+            Args:
+                request (~.apihub_service.DeleteApiOperationRequest):
+                    The request object. The
+                [DeleteApiOperation][google.cloud.apihub.v1.ApiHub.DeleteApiOperation]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseApiHubRestTransport._BaseDeleteApiOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_api_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubRestTransport._BaseDeleteApiOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseApiHubRestTransport._BaseDeleteApiOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.DeleteApiOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "DeleteApiOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubRestTransport._DeleteApiOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteAttribute(
         _BaseApiHubRestTransport._BaseDeleteAttribute, ApiHubRestStub
     ):
@@ -3878,6 +4297,13 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 created only corresponding to OpenAPI
                 spec as parsing is supported for OpenAPI
                 spec.
+                Alternatively operations can be managed
+                via create,update and delete APIs,
+                creation of apiOperation can be possible
+                only for version with no parsed
+                operations and update/delete can be
+                possible only for operations created via
+                create API.
 
             """
 
@@ -6432,6 +6858,180 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             return resp
 
+    class _UpdateApiOperation(
+        _BaseApiHubRestTransport._BaseUpdateApiOperation, ApiHubRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubRestTransport.UpdateApiOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: apihub_service.UpdateApiOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> common_fields.ApiOperation:
+            r"""Call the update api operation method over HTTP.
+
+            Args:
+                request (~.apihub_service.UpdateApiOperationRequest):
+                    The request object. The
+                [UpdateApiOperation][google.cloud.apihub.v1.ApiHub.UpdateApiOperation]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.common_fields.ApiOperation:
+                    Represents an operation contained in
+                an API version in the API Hub. An
+                operation is added/updated/deleted in an
+                API version when a new spec is added or
+                an existing spec is updated/deleted in a
+                version. Currently, an operation will be
+                created only corresponding to OpenAPI
+                spec as parsing is supported for OpenAPI
+                spec.
+                Alternatively operations can be managed
+                via create,update and delete APIs,
+                creation of apiOperation can be possible
+                only for version with no parsed
+                operations and update/delete can be
+                possible only for operations created via
+                create API.
+
+            """
+
+            http_options = (
+                _BaseApiHubRestTransport._BaseUpdateApiOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_api_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubRestTransport._BaseUpdateApiOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseApiHubRestTransport._BaseUpdateApiOperation._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseApiHubRestTransport._BaseUpdateApiOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.UpdateApiOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateApiOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubRestTransport._UpdateApiOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = common_fields.ApiOperation()
+            pb_resp = common_fields.ApiOperation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_api_operation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_api_operation_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.ApiOperation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.update_api_operation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateApiOperation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateAttribute(
         _BaseApiHubRestTransport._BaseUpdateAttribute, ApiHubRestStub
     ):
@@ -7251,6 +7851,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
         return self._CreateApi(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_api_operation(
+        self,
+    ) -> Callable[
+        [apihub_service.CreateApiOperationRequest], common_fields.ApiOperation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateApiOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_attribute(
         self,
     ) -> Callable[[apihub_service.CreateAttributeRequest], common_fields.Attribute]:
@@ -7297,6 +7907,14 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteApi(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_api_operation(
+        self,
+    ) -> Callable[[apihub_service.DeleteApiOperationRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteApiOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_attribute(
@@ -7491,6 +8109,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateApi(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_api_operation(
+        self,
+    ) -> Callable[
+        [apihub_service.UpdateApiOperationRequest], common_fields.ApiOperation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateApiOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_attribute(

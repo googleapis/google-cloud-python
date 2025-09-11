@@ -19,8 +19,8 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
@@ -74,11 +74,51 @@ class ApiHubPluginRestInterceptor:
 
     .. code-block:: python
         class MyCustomApiHubPluginInterceptor(ApiHubPluginRestInterceptor):
+            def pre_create_plugin(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_plugin(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_plugin_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_plugin_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_plugin(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_plugin(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_plugin_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_plugin_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_disable_plugin(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_disable_plugin(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_disable_plugin_instance_action(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_disable_plugin_instance_action(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -90,6 +130,22 @@ class ApiHubPluginRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_enable_plugin_instance_action(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_enable_plugin_instance_action(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_execute_plugin_instance_action(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_execute_plugin_instance_action(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_plugin(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -98,11 +154,237 @@ class ApiHubPluginRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_plugin_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_plugin_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_plugin_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_plugin_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_plugins(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_plugins(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_plugin_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_plugin_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = ApiHubPluginRestTransport(interceptor=MyCustomApiHubPluginInterceptor())
         client = ApiHubPluginClient(transport=transport)
 
 
     """
+
+    def pre_create_plugin(
+        self,
+        request: plugin_service.CreatePluginRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.CreatePluginRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_plugin
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_create_plugin(
+        self, response: plugin_service.Plugin
+    ) -> plugin_service.Plugin:
+        """Post-rpc interceptor for create_plugin
+
+        DEPRECATED. Please use the `post_create_plugin_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_create_plugin` interceptor runs
+        before the `post_create_plugin_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_plugin_with_metadata(
+        self,
+        response: plugin_service.Plugin,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[plugin_service.Plugin, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_plugin
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_create_plugin_with_metadata`
+        interceptor in new development instead of the `post_create_plugin` interceptor.
+        When both interceptors are used, this `post_create_plugin_with_metadata` interceptor runs after the
+        `post_create_plugin` interceptor. The (possibly modified) response returned by
+        `post_create_plugin` will be passed to
+        `post_create_plugin_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_plugin_instance(
+        self,
+        request: plugin_service.CreatePluginInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.CreatePluginInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_plugin_instance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_create_plugin_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_plugin_instance
+
+        DEPRECATED. Please use the `post_create_plugin_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_create_plugin_instance` interceptor runs
+        before the `post_create_plugin_instance_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_plugin_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_plugin_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_create_plugin_instance_with_metadata`
+        interceptor in new development instead of the `post_create_plugin_instance` interceptor.
+        When both interceptors are used, this `post_create_plugin_instance_with_metadata` interceptor runs after the
+        `post_create_plugin_instance` interceptor. The (possibly modified) response returned by
+        `post_create_plugin_instance` will be passed to
+        `post_create_plugin_instance_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_plugin(
+        self,
+        request: plugin_service.DeletePluginRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.DeletePluginRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_plugin
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_delete_plugin(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_plugin
+
+        DEPRECATED. Please use the `post_delete_plugin_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_delete_plugin` interceptor runs
+        before the `post_delete_plugin_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_plugin_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_plugin
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_delete_plugin_with_metadata`
+        interceptor in new development instead of the `post_delete_plugin` interceptor.
+        When both interceptors are used, this `post_delete_plugin_with_metadata` interceptor runs after the
+        `post_delete_plugin` interceptor. The (possibly modified) response returned by
+        `post_delete_plugin` will be passed to
+        `post_delete_plugin_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_plugin_instance(
+        self,
+        request: plugin_service.DeletePluginInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.DeletePluginInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_plugin_instance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_delete_plugin_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_plugin_instance
+
+        DEPRECATED. Please use the `post_delete_plugin_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_delete_plugin_instance` interceptor runs
+        before the `post_delete_plugin_instance_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_plugin_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_plugin_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_delete_plugin_instance_with_metadata`
+        interceptor in new development instead of the `post_delete_plugin_instance` interceptor.
+        When both interceptors are used, this `post_delete_plugin_instance_with_metadata` interceptor runs after the
+        `post_delete_plugin_instance` interceptor. The (possibly modified) response returned by
+        `post_delete_plugin_instance` will be passed to
+        `post_delete_plugin_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_disable_plugin(
         self,
@@ -149,6 +431,55 @@ class ApiHubPluginRestInterceptor:
         `post_disable_plugin` interceptor. The (possibly modified) response returned by
         `post_disable_plugin` will be passed to
         `post_disable_plugin_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_disable_plugin_instance_action(
+        self,
+        request: plugin_service.DisablePluginInstanceActionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.DisablePluginInstanceActionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for disable_plugin_instance_action
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_disable_plugin_instance_action(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for disable_plugin_instance_action
+
+        DEPRECATED. Please use the `post_disable_plugin_instance_action_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_disable_plugin_instance_action` interceptor runs
+        before the `post_disable_plugin_instance_action_with_metadata` interceptor.
+        """
+        return response
+
+    def post_disable_plugin_instance_action_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for disable_plugin_instance_action
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_disable_plugin_instance_action_with_metadata`
+        interceptor in new development instead of the `post_disable_plugin_instance_action` interceptor.
+        When both interceptors are used, this `post_disable_plugin_instance_action_with_metadata` interceptor runs after the
+        `post_disable_plugin_instance_action` interceptor. The (possibly modified) response returned by
+        `post_disable_plugin_instance_action` will be passed to
+        `post_disable_plugin_instance_action_with_metadata`.
         """
         return response, metadata
 
@@ -200,6 +531,104 @@ class ApiHubPluginRestInterceptor:
         """
         return response, metadata
 
+    def pre_enable_plugin_instance_action(
+        self,
+        request: plugin_service.EnablePluginInstanceActionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.EnablePluginInstanceActionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for enable_plugin_instance_action
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_enable_plugin_instance_action(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for enable_plugin_instance_action
+
+        DEPRECATED. Please use the `post_enable_plugin_instance_action_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_enable_plugin_instance_action` interceptor runs
+        before the `post_enable_plugin_instance_action_with_metadata` interceptor.
+        """
+        return response
+
+    def post_enable_plugin_instance_action_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for enable_plugin_instance_action
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_enable_plugin_instance_action_with_metadata`
+        interceptor in new development instead of the `post_enable_plugin_instance_action` interceptor.
+        When both interceptors are used, this `post_enable_plugin_instance_action_with_metadata` interceptor runs after the
+        `post_enable_plugin_instance_action` interceptor. The (possibly modified) response returned by
+        `post_enable_plugin_instance_action` will be passed to
+        `post_enable_plugin_instance_action_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_execute_plugin_instance_action(
+        self,
+        request: plugin_service.ExecutePluginInstanceActionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.ExecutePluginInstanceActionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for execute_plugin_instance_action
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_execute_plugin_instance_action(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for execute_plugin_instance_action
+
+        DEPRECATED. Please use the `post_execute_plugin_instance_action_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_execute_plugin_instance_action` interceptor runs
+        before the `post_execute_plugin_instance_action_with_metadata` interceptor.
+        """
+        return response
+
+    def post_execute_plugin_instance_action_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for execute_plugin_instance_action
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_execute_plugin_instance_action_with_metadata`
+        interceptor in new development instead of the `post_execute_plugin_instance_action` interceptor.
+        When both interceptors are used, this `post_execute_plugin_instance_action_with_metadata` interceptor runs after the
+        `post_execute_plugin_instance_action` interceptor. The (possibly modified) response returned by
+        `post_execute_plugin_instance_action` will be passed to
+        `post_execute_plugin_instance_action_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_plugin(
         self,
         request: plugin_service.GetPluginRequest,
@@ -243,6 +672,205 @@ class ApiHubPluginRestInterceptor:
         `post_get_plugin` interceptor. The (possibly modified) response returned by
         `post_get_plugin` will be passed to
         `post_get_plugin_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_plugin_instance(
+        self,
+        request: plugin_service.GetPluginInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.GetPluginInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_plugin_instance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_get_plugin_instance(
+        self, response: plugin_service.PluginInstance
+    ) -> plugin_service.PluginInstance:
+        """Post-rpc interceptor for get_plugin_instance
+
+        DEPRECATED. Please use the `post_get_plugin_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_get_plugin_instance` interceptor runs
+        before the `post_get_plugin_instance_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_plugin_instance_with_metadata(
+        self,
+        response: plugin_service.PluginInstance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[plugin_service.PluginInstance, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_plugin_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_get_plugin_instance_with_metadata`
+        interceptor in new development instead of the `post_get_plugin_instance` interceptor.
+        When both interceptors are used, this `post_get_plugin_instance_with_metadata` interceptor runs after the
+        `post_get_plugin_instance` interceptor. The (possibly modified) response returned by
+        `post_get_plugin_instance` will be passed to
+        `post_get_plugin_instance_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_plugin_instances(
+        self,
+        request: plugin_service.ListPluginInstancesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.ListPluginInstancesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_plugin_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_list_plugin_instances(
+        self, response: plugin_service.ListPluginInstancesResponse
+    ) -> plugin_service.ListPluginInstancesResponse:
+        """Post-rpc interceptor for list_plugin_instances
+
+        DEPRECATED. Please use the `post_list_plugin_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_list_plugin_instances` interceptor runs
+        before the `post_list_plugin_instances_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_plugin_instances_with_metadata(
+        self,
+        response: plugin_service.ListPluginInstancesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.ListPluginInstancesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_plugin_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_list_plugin_instances_with_metadata`
+        interceptor in new development instead of the `post_list_plugin_instances` interceptor.
+        When both interceptors are used, this `post_list_plugin_instances_with_metadata` interceptor runs after the
+        `post_list_plugin_instances` interceptor. The (possibly modified) response returned by
+        `post_list_plugin_instances` will be passed to
+        `post_list_plugin_instances_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_plugins(
+        self,
+        request: plugin_service.ListPluginsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.ListPluginsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_plugins
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_list_plugins(
+        self, response: plugin_service.ListPluginsResponse
+    ) -> plugin_service.ListPluginsResponse:
+        """Post-rpc interceptor for list_plugins
+
+        DEPRECATED. Please use the `post_list_plugins_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_list_plugins` interceptor runs
+        before the `post_list_plugins_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_plugins_with_metadata(
+        self,
+        response: plugin_service.ListPluginsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.ListPluginsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_plugins
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_list_plugins_with_metadata`
+        interceptor in new development instead of the `post_list_plugins` interceptor.
+        When both interceptors are used, this `post_list_plugins_with_metadata` interceptor runs after the
+        `post_list_plugins` interceptor. The (possibly modified) response returned by
+        `post_list_plugins` will be passed to
+        `post_list_plugins_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_plugin_instance(
+        self,
+        request: plugin_service.UpdatePluginInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        plugin_service.UpdatePluginInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_plugin_instance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ApiHubPlugin server.
+        """
+        return request, metadata
+
+    def post_update_plugin_instance(
+        self, response: plugin_service.PluginInstance
+    ) -> plugin_service.PluginInstance:
+        """Post-rpc interceptor for update_plugin_instance
+
+        DEPRECATED. Please use the `post_update_plugin_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ApiHubPlugin server but before
+        it is returned to user code. This `post_update_plugin_instance` interceptor runs
+        before the `post_update_plugin_instance_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_plugin_instance_with_metadata(
+        self,
+        response: plugin_service.PluginInstance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[plugin_service.PluginInstance, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_plugin_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubPlugin server but before it is returned to user code.
+
+        We recommend only using this `post_update_plugin_instance_with_metadata`
+        interceptor in new development instead of the `post_update_plugin_instance` interceptor.
+        When both interceptors are used, this `post_update_plugin_instance_with_metadata` interceptor runs after the
+        `post_update_plugin_instance` interceptor. The (possibly modified) response returned by
+        `post_update_plugin_instance` will be passed to
+        `post_update_plugin_instance_with_metadata`.
         """
         return response, metadata
 
@@ -474,10 +1102,672 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
+        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ApiHubPluginRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    @property
+    def operations_client(self) -> operations_v1.AbstractOperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.CancelOperation": [
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
+                        "body": "*",
+                    },
+                ],
+                "google.longrunning.Operations.DeleteOperation": [
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.GetOperation": [
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*}/operations",
+                    },
+                ],
+            }
+
+            rest_transport = operations_v1.OperationsRestTransport(
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,
+                scopes=self._scopes,
+                http_options=http_options,
+                path_prefix="v1",
+            )
+
+            self._operations_client = operations_v1.AbstractOperationsClient(
+                transport=rest_transport
+            )
+
+        # Return the client from cache.
+        return self._operations_client
+
+    class _CreatePlugin(
+        _BaseApiHubPluginRestTransport._BaseCreatePlugin, ApiHubPluginRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.CreatePlugin")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.CreatePluginRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> plugin_service.Plugin:
+            r"""Call the create plugin method over HTTP.
+
+            Args:
+                request (~.plugin_service.CreatePluginRequest):
+                    The request object. The
+                [CreatePlugin][google.cloud.apihub.v1.ApiHubPlugin.CreatePlugin]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.plugin_service.Plugin:
+                    A plugin resource in the API Hub.
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseCreatePlugin._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_plugin(request, metadata)
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseCreatePlugin._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseApiHubPluginRestTransport._BaseCreatePlugin._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseApiHubPluginRestTransport._BaseCreatePlugin._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.CreatePlugin",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "CreatePlugin",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubPluginRestTransport._CreatePlugin._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = plugin_service.Plugin()
+            pb_resp = plugin_service.Plugin.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_plugin(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_plugin_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = plugin_service.Plugin.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.create_plugin",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "CreatePlugin",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreatePluginInstance(
+        _BaseApiHubPluginRestTransport._BaseCreatePluginInstance, ApiHubPluginRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.CreatePluginInstance")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.CreatePluginInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create plugin instance method over HTTP.
+
+            Args:
+                request (~.plugin_service.CreatePluginInstanceRequest):
+                    The request object. The
+                [CreatePluginInstance][google.cloud.apihub.v1.ApiHubPlugin.CreatePluginInstance]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseCreatePluginInstance._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_plugin_instance(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseCreatePluginInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApiHubPluginRestTransport._BaseCreatePluginInstance._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApiHubPluginRestTransport._BaseCreatePluginInstance._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.CreatePluginInstance",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "CreatePluginInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubPluginRestTransport._CreatePluginInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_plugin_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_plugin_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.create_plugin_instance",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "CreatePluginInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeletePlugin(
+        _BaseApiHubPluginRestTransport._BaseDeletePlugin, ApiHubPluginRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.DeletePlugin")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.DeletePluginRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete plugin method over HTTP.
+
+            Args:
+                request (~.plugin_service.DeletePluginRequest):
+                    The request object. The [DeletePlugin][ApiHub.DeletePlugin] method's
+                request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseDeletePlugin._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_plugin(request, metadata)
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseDeletePlugin._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseApiHubPluginRestTransport._BaseDeletePlugin._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.DeletePlugin",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "DeletePlugin",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubPluginRestTransport._DeletePlugin._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_plugin(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_plugin_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.delete_plugin",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "DeletePlugin",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeletePluginInstance(
+        _BaseApiHubPluginRestTransport._BaseDeletePluginInstance, ApiHubPluginRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.DeletePluginInstance")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.DeletePluginInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete plugin instance method over HTTP.
+
+            Args:
+                request (~.plugin_service.DeletePluginInstanceRequest):
+                    The request object. The
+                [DeletePluginInstance][google.cloud.apihub.v1.ApiHubPlugin.DeletePluginInstance]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseDeletePluginInstance._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_plugin_instance(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseDeletePluginInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApiHubPluginRestTransport._BaseDeletePluginInstance._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.DeletePluginInstance",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "DeletePluginInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubPluginRestTransport._DeletePluginInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_plugin_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_plugin_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.delete_plugin_instance",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "DeletePluginInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _DisablePlugin(
         _BaseApiHubPluginRestTransport._BaseDisablePlugin, ApiHubPluginRestStub
@@ -625,6 +1915,168 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
                     extra={
                         "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
                         "rpcName": "DisablePlugin",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DisablePluginInstanceAction(
+        _BaseApiHubPluginRestTransport._BaseDisablePluginInstanceAction,
+        ApiHubPluginRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.DisablePluginInstanceAction")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.DisablePluginInstanceActionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the disable plugin instance
+            action method over HTTP.
+
+                Args:
+                    request (~.plugin_service.DisablePluginInstanceActionRequest):
+                        The request object. The
+                    [DisablePluginInstanceAction][google.cloud.apihub.v1.ApiHubPlugin.DisablePluginInstanceAction]
+                    method's request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseDisablePluginInstanceAction._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_disable_plugin_instance_action(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseDisablePluginInstanceAction._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApiHubPluginRestTransport._BaseDisablePluginInstanceAction._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApiHubPluginRestTransport._BaseDisablePluginInstanceAction._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.DisablePluginInstanceAction",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "DisablePluginInstanceAction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ApiHubPluginRestTransport._DisablePluginInstanceAction._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_disable_plugin_instance_action(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_disable_plugin_instance_action_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.disable_plugin_instance_action",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "DisablePluginInstanceAction",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -787,6 +2239,330 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
                 )
             return resp
 
+    class _EnablePluginInstanceAction(
+        _BaseApiHubPluginRestTransport._BaseEnablePluginInstanceAction,
+        ApiHubPluginRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.EnablePluginInstanceAction")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.EnablePluginInstanceActionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the enable plugin instance
+            action method over HTTP.
+
+                Args:
+                    request (~.plugin_service.EnablePluginInstanceActionRequest):
+                        The request object. The
+                    [EnablePluginInstanceAction][google.cloud.apihub.v1.ApiHubPlugin.EnablePluginInstanceAction]
+                    method's request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseEnablePluginInstanceAction._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_enable_plugin_instance_action(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseEnablePluginInstanceAction._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApiHubPluginRestTransport._BaseEnablePluginInstanceAction._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApiHubPluginRestTransport._BaseEnablePluginInstanceAction._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.EnablePluginInstanceAction",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "EnablePluginInstanceAction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ApiHubPluginRestTransport._EnablePluginInstanceAction._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_enable_plugin_instance_action(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_enable_plugin_instance_action_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.enable_plugin_instance_action",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "EnablePluginInstanceAction",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ExecutePluginInstanceAction(
+        _BaseApiHubPluginRestTransport._BaseExecutePluginInstanceAction,
+        ApiHubPluginRestStub,
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.ExecutePluginInstanceAction")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.ExecutePluginInstanceActionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the execute plugin instance
+            action method over HTTP.
+
+                Args:
+                    request (~.plugin_service.ExecutePluginInstanceActionRequest):
+                        The request object. The
+                    [ExecutePluginInstanceAction][google.cloud.apihub.v1.ApiHubPlugin.ExecutePluginInstanceAction]
+                    method's request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseExecutePluginInstanceAction._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_execute_plugin_instance_action(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseExecutePluginInstanceAction._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApiHubPluginRestTransport._BaseExecutePluginInstanceAction._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApiHubPluginRestTransport._BaseExecutePluginInstanceAction._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.ExecutePluginInstanceAction",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "ExecutePluginInstanceAction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ApiHubPluginRestTransport._ExecutePluginInstanceAction._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_execute_plugin_instance_action(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_execute_plugin_instance_action_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.execute_plugin_instance_action",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "ExecutePluginInstanceAction",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetPlugin(
         _BaseApiHubPluginRestTransport._BaseGetPlugin, ApiHubPluginRestStub
     ):
@@ -937,6 +2713,662 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
                 )
             return resp
 
+    class _GetPluginInstance(
+        _BaseApiHubPluginRestTransport._BaseGetPluginInstance, ApiHubPluginRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.GetPluginInstance")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.GetPluginInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> plugin_service.PluginInstance:
+            r"""Call the get plugin instance method over HTTP.
+
+            Args:
+                request (~.plugin_service.GetPluginInstanceRequest):
+                    The request object. The
+                [GetPluginInstance][google.cloud.apihub.v1.ApiHubPlugin.GetPluginInstance]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.plugin_service.PluginInstance:
+                    Represents a plugin instance resource
+                in the API Hub. A PluginInstance is a
+                specific instance of a hub plugin with
+                its own configuration, state, and
+                execution details.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseGetPluginInstance._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_plugin_instance(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseGetPluginInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApiHubPluginRestTransport._BaseGetPluginInstance._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.GetPluginInstance",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "GetPluginInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubPluginRestTransport._GetPluginInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = plugin_service.PluginInstance()
+            pb_resp = plugin_service.PluginInstance.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_plugin_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_plugin_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = plugin_service.PluginInstance.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.get_plugin_instance",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "GetPluginInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListPluginInstances(
+        _BaseApiHubPluginRestTransport._BaseListPluginInstances, ApiHubPluginRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.ListPluginInstances")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.ListPluginInstancesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> plugin_service.ListPluginInstancesResponse:
+            r"""Call the list plugin instances method over HTTP.
+
+            Args:
+                request (~.plugin_service.ListPluginInstancesRequest):
+                    The request object. The
+                [ListPluginInstances][google.cloud.apihub.v1.ApiHubPlugin.ListPluginInstances]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.plugin_service.ListPluginInstancesResponse:
+                    The
+                [ListPluginInstances][google.cloud.apihub.v1.ApiHubPlugin.ListPluginInstances]
+                method's response.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseListPluginInstances._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_plugin_instances(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseListPluginInstances._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApiHubPluginRestTransport._BaseListPluginInstances._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.ListPluginInstances",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "ListPluginInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubPluginRestTransport._ListPluginInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = plugin_service.ListPluginInstancesResponse()
+            pb_resp = plugin_service.ListPluginInstancesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_plugin_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_plugin_instances_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        plugin_service.ListPluginInstancesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.list_plugin_instances",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "ListPluginInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListPlugins(
+        _BaseApiHubPluginRestTransport._BaseListPlugins, ApiHubPluginRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.ListPlugins")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.ListPluginsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> plugin_service.ListPluginsResponse:
+            r"""Call the list plugins method over HTTP.
+
+            Args:
+                request (~.plugin_service.ListPluginsRequest):
+                    The request object. The
+                [ListPlugins][google.cloud.apihub.v1.ApiHubPlugin.ListPlugins]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.plugin_service.ListPluginsResponse:
+                    The
+                [ListPlugins][google.cloud.apihub.v1.ApiHubPlugin.ListPlugins]
+                method's response.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseListPlugins._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_plugins(request, metadata)
+            transcoded_request = (
+                _BaseApiHubPluginRestTransport._BaseListPlugins._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseApiHubPluginRestTransport._BaseListPlugins._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.ListPlugins",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "ListPlugins",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubPluginRestTransport._ListPlugins._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = plugin_service.ListPluginsResponse()
+            pb_resp = plugin_service.ListPluginsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_plugins(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_plugins_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = plugin_service.ListPluginsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.list_plugins",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "ListPlugins",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdatePluginInstance(
+        _BaseApiHubPluginRestTransport._BaseUpdatePluginInstance, ApiHubPluginRestStub
+    ):
+        def __hash__(self):
+            return hash("ApiHubPluginRestTransport.UpdatePluginInstance")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: plugin_service.UpdatePluginInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> plugin_service.PluginInstance:
+            r"""Call the update plugin instance method over HTTP.
+
+            Args:
+                request (~.plugin_service.UpdatePluginInstanceRequest):
+                    The request object. The
+                [UpdatePluginInstance][google.cloud.apihub.v1.ApiHubPlugin.UpdatePluginInstance]
+                method's request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.plugin_service.PluginInstance:
+                    Represents a plugin instance resource
+                in the API Hub. A PluginInstance is a
+                specific instance of a hub plugin with
+                its own configuration, state, and
+                execution details.
+
+            """
+
+            http_options = (
+                _BaseApiHubPluginRestTransport._BaseUpdatePluginInstance._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_plugin_instance(
+                request, metadata
+            )
+            transcoded_request = _BaseApiHubPluginRestTransport._BaseUpdatePluginInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApiHubPluginRestTransport._BaseUpdatePluginInstance._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseApiHubPluginRestTransport._BaseUpdatePluginInstance._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubPluginClient.UpdatePluginInstance",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "UpdatePluginInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ApiHubPluginRestTransport._UpdatePluginInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = plugin_service.PluginInstance()
+            pb_resp = plugin_service.PluginInstance.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_plugin_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_plugin_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = plugin_service.PluginInstance.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubPluginClient.update_plugin_instance",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHubPlugin",
+                        "rpcName": "UpdatePluginInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    @property
+    def create_plugin(
+        self,
+    ) -> Callable[[plugin_service.CreatePluginRequest], plugin_service.Plugin]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreatePlugin(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_plugin_instance(
+        self,
+    ) -> Callable[
+        [plugin_service.CreatePluginInstanceRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreatePluginInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_plugin(
+        self,
+    ) -> Callable[[plugin_service.DeletePluginRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeletePlugin(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_plugin_instance(
+        self,
+    ) -> Callable[
+        [plugin_service.DeletePluginInstanceRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeletePluginInstance(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def disable_plugin(
         self,
@@ -944,6 +3376,16 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DisablePlugin(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def disable_plugin_instance_action(
+        self,
+    ) -> Callable[
+        [plugin_service.DisablePluginInstanceActionRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DisablePluginInstanceAction(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def enable_plugin(
@@ -954,12 +3396,73 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
         return self._EnablePlugin(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def enable_plugin_instance_action(
+        self,
+    ) -> Callable[
+        [plugin_service.EnablePluginInstanceActionRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._EnablePluginInstanceAction(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def execute_plugin_instance_action(
+        self,
+    ) -> Callable[
+        [plugin_service.ExecutePluginInstanceActionRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExecutePluginInstanceAction(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_plugin(
         self,
     ) -> Callable[[plugin_service.GetPluginRequest], plugin_service.Plugin]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPlugin(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_plugin_instance(
+        self,
+    ) -> Callable[
+        [plugin_service.GetPluginInstanceRequest], plugin_service.PluginInstance
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPluginInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_plugin_instances(
+        self,
+    ) -> Callable[
+        [plugin_service.ListPluginInstancesRequest],
+        plugin_service.ListPluginInstancesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListPluginInstances(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_plugins(
+        self,
+    ) -> Callable[
+        [plugin_service.ListPluginsRequest], plugin_service.ListPluginsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListPlugins(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_plugin_instance(
+        self,
+    ) -> Callable[
+        [plugin_service.UpdatePluginInstanceRequest], plugin_service.PluginInstance
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdatePluginInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):

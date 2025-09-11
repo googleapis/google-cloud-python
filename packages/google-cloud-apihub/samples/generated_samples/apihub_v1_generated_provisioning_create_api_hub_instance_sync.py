@@ -39,12 +39,8 @@ def sample_create_api_hub_instance():
     client = apihub_v1.ProvisioningClient()
 
     # Initialize request argument(s)
-    api_hub_instance = apihub_v1.ApiHubInstance()
-    api_hub_instance.config.cmek_key_name = "cmek_key_name_value"
-
     request = apihub_v1.CreateApiHubInstanceRequest(
         parent="parent_value",
-        api_hub_instance=api_hub_instance,
     )
 
     # Make the request
