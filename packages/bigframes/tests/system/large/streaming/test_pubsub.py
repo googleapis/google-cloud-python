@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from concurrent import futures
+from datetime import datetime, timedelta
 from typing import Generator
 import uuid
 
@@ -99,11 +100,12 @@ def test_streaming_df_to_pubsub(
             service_account_email="streaming-testing@bigframes-load-testing.iam.gserviceaccount.com",
             job_id=None,
             job_id_prefix=job_id_prefix,
+            start_timestamp=datetime.now() - timedelta(days=1),
         )
         try:
-            # wait 100 seconds in order to ensure the query doesn't stop
+            # wait 200 seconds in order to ensure the query doesn't stop
             # (i.e. it is continuous)
-            future.result(timeout=100)
+            future.result(timeout=200)
         except futures.TimeoutError:
             future.cancel()
         assert query_job.running()

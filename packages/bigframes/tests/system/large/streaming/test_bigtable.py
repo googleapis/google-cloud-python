@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime, timedelta
 import time
 from typing import Generator
 import uuid
@@ -91,11 +92,12 @@ def test_streaming_df_to_bigtable(
             bigtable_options={},
             job_id=None,
             job_id_prefix=job_id_prefix,
+            start_timestamp=datetime.now() - timedelta(days=1),
         )
 
-        # wait 100 seconds in order to ensure the query doesn't stop
+        # wait 200 seconds in order to ensure the query doesn't stop
         # (i.e. it is continuous)
-        time.sleep(100)
+        time.sleep(200)
         assert query_job.running()
         assert query_job.error_result is None
         assert str(query_job.job_id).startswith(job_id_prefix)
