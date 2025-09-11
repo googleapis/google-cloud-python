@@ -507,12 +507,49 @@ def test_handle_release_init_success(mocker, mock_release_init_request_file):
     handle_release_init()
 
 
-def test_handle_release_init_fail():
+def test_handle_release_init_fail_value_error_file():
     """
     Tests that handle_release_init fails to read `librarian/release-init-request.json`.
     """
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="No such file or directory"):
         handle_release_init()
+
+
+def test_handle_release_init_fail_value_error_version(mocker):
+    m = mock_open()
+
+    mock_release_init_request_content = {
+        "libraries": [
+            {
+                "id": "google-cloud-another-library",
+                "apis": [{"path": "google/cloud/another/library/v1"}],
+                "release_triggered": False,
+                "version": "1.2.3",
+                "changes": [],
+            },
+            {
+                "id": "google-cloud-language",
+                "apis": [{"path": "google/cloud/language/v1"}],
+                "release_triggered": True,
+                "version": "1.2.2",
+                "changes": [],
+            },
+        ]
+    }
+    with unittest.mock.patch("cli.open", m):
+        mocker.patch(
+            "cli._get_libraries_to_prepare_for_release",
+            return_value=mock_release_init_request_content["libraries"],
+        )
+        mocker.patch("cli._get_previous_version", return_value="1.2.2")
+        mocker.patch("cli._process_changelog", return_value=None)
+        mocker.patch(
+            "cli._read_json_file", return_value=mock_release_init_request_content
+        )
+        with pytest.raises(
+            ValueError, match="is the same as the version in state.yaml"
+        ):
+            handle_release_init()
 
 
 def test_read_valid_text_file(mocker):
