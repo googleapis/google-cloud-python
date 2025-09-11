@@ -91,6 +91,7 @@ replacements:
               for name in samples_tests:
                   _run_samples_test(session, name)
 
+
       # Maunally added samples tests helper function.
       # TODO(https://github.com/googleapis/google-cloud-python/issues/14417): remove tests after samples are migrated to https://github.com/GoogleCloudPlatform/python-docs-samples
       def _run_samples_test(session, name):
