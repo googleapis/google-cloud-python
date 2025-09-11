@@ -82,7 +82,6 @@ FROM marketplace.gcr.io/google/ubuntu2404
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    libsqlite3-0 \
     wget \
     zip \
     && apt-get clean autoclean \
