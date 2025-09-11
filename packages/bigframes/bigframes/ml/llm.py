@@ -849,10 +849,14 @@ class Claude3TextGenerator(base.RetriableRemotePredictor):
 
         The models only available in specific regions. Check https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude#regions for details.
 
+    .. note::
+
+        claude-3-sonnet model is deprecated. Use other models instead.
+
     Args:
         model_name (str, Default to "claude-3-sonnet"):
             The model for natural language tasks. Possible values are "claude-3-sonnet", "claude-3-haiku", "claude-3-5-sonnet" and "claude-3-opus".
-            "claude-3-sonnet" is Anthropic's dependable combination of skills and speed. It is engineered to be dependable for scaled AI deployments across a variety of use cases.
+            "claude-3-sonnet" (deprecated) is Anthropic's dependable combination of skills and speed. It is engineered to be dependable for scaled AI deployments across a variety of use cases.
             "claude-3-haiku" is Anthropic's fastest, most compact vision and text model for near-instant responses to simple queries, meant for seamless AI experiences mimicking human interactions.
             "claude-3-5-sonnet" is Anthropic's most powerful AI model and maintains the speed and cost of Claude 3 Sonnet, which is a mid-tier model.
             "claude-3-opus" is Anthropic's second-most powerful AI model, with strong performance on highly complex tasks.
