@@ -38,21 +38,37 @@ pwd
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
 
+git config --global --add safe.directory $(realpath .)
+
 # Run system tests for each package with directory packages/*/tests/system
 for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
   # Get the path to the package by removing the suffix /tests/system
   package=$(echo $dir | cut -f -2 -d '/')
-  echo "Running system tests for ${package}"
-  pushd ${package}
-  # Temporarily allow failure.
+  should_test=false
+  echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${package}/CHANGELOG.md'"
   set +e
-  ${system_test_script}
-  ret=$?
+  changelog_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${package}/CHANGELOG.md | wc -l)
   set -e
-  if [ ${ret} -ne 0 ]; then
-      RETVAL=${ret}
+  if [[ "${changelog_modified}" -eq 0 ]]; then
+      echo "no change detected in ${package}, skipping"
+  else
+      echo "change detected in ${package}"
+      should_test=true
   fi
-  popd
+  if [ "${should_test}" = true ]; then
+      echo "Running system tests for ${package}"
+
+      pushd ${package}
+      # Temporarily allow failure.
+      set +e
+      ${system_test_script}
+      ret=$?
+      set -e
+      if [ ${ret} -ne 0 ]; then
+          RETVAL=${ret}
+      fi
+      popd
+  fi
 done
 
 exit ${RETVAL}
