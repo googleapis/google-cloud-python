@@ -799,6 +799,49 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-bigquery-storage": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-bigquery-storage",
+            "extra-files": [
+                "google/cloud/bigquery_storage/gapic_version.py",
+                "google/cloud/bigquery_storage_v1/gapic_version.py",
+                "google/cloud/bigquery_storage_v1alpha/gapic_version.py",
+                "google/cloud/bigquery_storage_v1beta/gapic_version.py",
+                "google/cloud/bigquery_storage_v1beta2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.storage.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.storage.v1alpha.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.storage.v1beta.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.storage.v1beta2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/snippets/customer_record_schema.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/snippets/sample_data_schema.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-billing": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

@@ -46,6 +46,7 @@
     "packages/google-cloud-bigquery-logging": "1.6.3",
     "packages/google-cloud-bigquery-migration": "0.11.15",
     "packages/google-cloud-bigquery-reservation": "1.19.0",
+    "packages/google-cloud-bigquery-storage": "0.0.0",
     "packages/google-cloud-billing": "1.16.3",
     "packages/google-cloud-billing-budgets": "1.17.2",
     "packages/google-cloud-binary-authorization": "1.13.2",
