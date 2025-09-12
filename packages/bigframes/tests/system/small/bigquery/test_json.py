@@ -384,3 +384,28 @@ def test_parse_json_w_invalid_series_type():
     s = bpd.Series([1, 2])
     with pytest.raises(TypeError):
         bbq.parse_json(s)
+
+
+def test_to_json_string_from_int():
+    s = bpd.Series([1, 2, None, 3])
+    actual = bbq.to_json_string(s)
+    expected = bpd.Series(["1", "2", "null", "3"], dtype=dtypes.STRING_DTYPE)
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
+
+
+def test_to_json_string_from_struct():
+    s = bpd.Series(
+        [
+            {"version": 1, "project": "pandas"},
+            {"version": 2, "project": "numpy"},
+        ]
+    )
+    assert dtypes.is_struct_like(s.dtype)
+
+    actual = bbq.to_json_string(s)
+    expected = bpd.Series(
+        ['{"project":"pandas","version":1}', '{"project":"numpy","version":2}'],
+        dtype=dtypes.STRING_DTYPE,
+    )
+
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())

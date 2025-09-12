@@ -2068,9 +2068,7 @@ def json_extract_string_array(  # type: ignore[empty-body]
 
 
 @ibis_udf.scalar.builtin(name="to_json_string")
-def to_json_string(  # type: ignore[empty-body]
-    value,
-) -> ibis_dtypes.String:
+def to_json_string(value) -> ibis_dtypes.String:  # type: ignore[empty-body]
     """Convert value to JSON-formatted string."""
 
 
