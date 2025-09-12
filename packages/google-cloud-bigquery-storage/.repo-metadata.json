@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_COMBO",
-    "repo": "googleapis/python-bigquery-storage",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-bigquery-storage",
     "api_id": "bigquerystorage.googleapis.com",
     "requires_billing": true,
