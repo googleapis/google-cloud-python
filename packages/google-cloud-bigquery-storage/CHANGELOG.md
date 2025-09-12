@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## 0.1.0 (2025-09-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove `location` from http annotations in all of the service requests
+
+### Features
+
+* Add BigQuery Metastore Partition Service API version v1beta ([#941](https://github.com/googleapis/google-cloud-python/issues/941)) ([5cb7b6b](https://github.com/googleapis/google-cloud-python/commit/5cb7b6b33d8580808fcf57b610a65ad8a983ab04))
+* Add support for CMEK, runtime controls, and PSC-I to Reasoning Engine protos ([#968](https://github.com/googleapis/google-cloud-python/issues/968)) ([e8026f9](https://github.com/googleapis/google-cloud-python/commit/e8026f9941a441c385c95b3dc599042d1cc84d0a))
+* add support for Python 3.13 ([#964](https://github.com/googleapis/google-cloud-python/issues/964)) ([b4ad3ca](https://github.com/googleapis/google-cloud-python/commit/b4ad3ca307d5fffe48ac3782e521e9a8c62d3584))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core &gt;= 1.34.1 ([#978](https://github.com/googleapis/google-cloud-python/issues/978)) ([a725155](https://github.com/googleapis/google-cloud-python/commit/a725155f19bdce9df2f2c5d691b45c618e9d742f))
+* separate create_stream() in pyarrow sample ([#946](https://github.com/googleapis/google-cloud-python/issues/946)) ([7c8e969](https://github.com/googleapis/google-cloud-python/commit/7c8e969ca087be49149e8aff39b4afc41ff82efd))
+
+
+### Documentation
+
+* updated the number of partitions (from 100 to 900) can be inserted, updated and deleted in a single request ([31d2d02](https://github.com/googleapis/google-cloud-python/commit/31d2d02fe7665aae9356fd66d56910fb79881876))
+
 ## [2.33.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.33.0...v2.33.1) (2025-09-08)
 
 
