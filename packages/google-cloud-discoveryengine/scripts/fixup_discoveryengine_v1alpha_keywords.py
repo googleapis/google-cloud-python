@@ -124,7 +124,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'recrawl_uris': ('site_search_engine', 'uris', ),
         'report_consent_change': ('consent_change_action', 'project', 'service_term_id', 'service_term_version', ),
         'resume_engine': ('name', ),
-        'search': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'language_code', 'region_code', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'embedding_spec', 'ranking_expression', 'safe_search', 'user_labels', 'natural_language_query_understanding_spec', 'search_as_you_type_spec', 'custom_fine_tuning_spec', 'session', 'session_spec', 'relevance_threshold', ),
+        'search': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'language_code', 'region_code', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'embedding_spec', 'ranking_expression', 'ranking_expression_backend', 'safe_search', 'user_labels', 'natural_language_query_understanding_spec', 'search_as_you_type_spec', 'custom_fine_tuning_spec', 'session', 'session_spec', 'relevance_threshold', ),
         'set_uri_pattern_document_data': ('site_search_engine', 'document_data_map', 'empty_document_data_map', 'schema', ),
         'train_custom_model': ('data_store', 'gcs_training_input', 'model_type', 'error_config', 'model_id', ),
         'tune_engine': ('name', ),

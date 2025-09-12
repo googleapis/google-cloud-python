@@ -1175,6 +1175,7 @@ def test_search_non_empty_request_with_auto_populated_field():
         language_code="language_code_value",
         user_pseudo_id="user_pseudo_id_value",
         session="session_value",
+        ranking_expression="ranking_expression_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1196,6 +1197,7 @@ def test_search_non_empty_request_with_auto_populated_field():
             language_code="language_code_value",
             user_pseudo_id="user_pseudo_id_value",
             session="session_value",
+            ranking_expression="ranking_expression_value",
         )
 
 
@@ -1644,6 +1646,7 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
         language_code="language_code_value",
         user_pseudo_id="user_pseudo_id_value",
         session="session_value",
+        ranking_expression="ranking_expression_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1665,6 +1668,7 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
             language_code="language_code_value",
             user_pseudo_id="user_pseudo_id_value",
             session="session_value",
+            ranking_expression="ranking_expression_value",
         )
 
 
