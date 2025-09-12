@@ -849,8 +849,8 @@ def handle_release_init(
 
     Raises:
         ValueError: if the version in `release-init-request.json` is
-            the same as the version in state.yaml
-        ValueError: if the `release-init-request.json` file in the given
+            the same as the version in state.yaml or if the
+            `release-init-request.json` file in the given
             librarian directory cannot be read.
     """
 
@@ -880,8 +880,7 @@ def handle_release_init(
             if previous_version == version:
                 raise ValueError(
                     f"The version in {RELEASE_INIT_REQUEST_FILE} is the same as the version in {STATE_YAML_FILE}\n"
-                    f"{library_id} previous released version: {previous_version}\n"
-                    f"{library_id} current version: {version}\n"
+                    f"{library_id} version: {previous_version}\n"
                 )
 
             _update_version_for_library(repo, output, path_to_library, version)
