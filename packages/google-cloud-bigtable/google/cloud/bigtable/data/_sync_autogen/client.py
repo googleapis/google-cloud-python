@@ -49,6 +49,8 @@ from google.api_core import retry as retries
 from google.api_core.exceptions import DeadlineExceeded
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import Aborted
+from google.protobuf.message import Message
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 import google.auth.credentials
 import google.auth._default
 from google.api_core import client_options as client_options_lib
@@ -508,6 +510,7 @@ class BigtableDataClient(ClientWithProject):
             DeadlineExceeded,
             ServiceUnavailable,
         ),
+        column_info: dict[str, Message | EnumTypeWrapper] | None = None,
     ) -> "ExecuteQueryIterator":
         """Executes an SQL query on an instance.
         Returns an iterator to asynchronously stream back columns from selected rows.
@@ -555,6 +558,62 @@ class BigtableDataClient(ClientWithProject):
                 If None, defaults to prepare_operation_timeout.
             prepare_retryable_errors: a list of errors that will be retried if encountered during prepareQuery.
                 Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+            column_info: (Optional) A dictionary mapping column names to Protobuf message classes or EnumTypeWrapper objects.
+                This dictionary provides the necessary type information for deserializing PROTO and
+                ENUM column values from the query results. When an entry is provided
+                for a PROTO or ENUM column, the client library will attempt to deserialize the raw data.
+
+                    - For PROTO columns: The value in the dictionary should be the
+                      Protobuf Message class (e.g., ``my_pb2.MyMessage``).
+                    - For ENUM columns: The value should be the Protobuf EnumTypeWrapper
+                      object (e.g., ``my_pb2.MyEnum``).
+
+                Example::
+
+                    import my_pb2
+
+                    column_info = {
+                        "my_proto_column": my_pb2.MyMessage,
+                        "my_enum_column": my_pb2.MyEnum
+                    }
+
+                If ``column_info`` is not provided, or if a specific column name is not found
+                in the dictionary:
+
+                    - PROTO columns will be returned as raw bytes.
+                    - ENUM columns will be returned as integers.
+
+                Note for Nested PROTO or ENUM Fields:
+
+                    To specify types for PROTO or ENUM fields within STRUCTs or MAPs, use a dot-separated
+                    path from the top-level column name.
+
+                        - For STRUCTs: ``struct_column_name.field_name``
+                        - For MAPs: ``map_column_name.key`` or ``map_column_name.value`` to specify types
+                          for the map keys or values, respectively.
+
+                    Example::
+
+                        import my_pb2
+
+                        column_info = {
+                            # Top-level column
+                            "my_proto_column": my_pb2.MyMessage,
+                            "my_enum_column": my_pb2.MyEnum,
+
+                            # Nested field in a STRUCT column named 'my_struct'
+                            "my_struct.nested_proto_field": my_pb2.OtherMessage,
+                            "my_struct.nested_enum_field": my_pb2.AnotherEnum,
+
+                            # Nested field in a MAP column named 'my_map'
+                            "my_map.key": my_pb2.MapKeyEnum, # If map keys were enums
+                            "my_map.value": my_pb2.MapValueMessage,
+
+                            # PROTO field inside a STRUCT, where the STRUCT is the value in a MAP column
+                            "struct_map.value.nested_proto_field": my_pb2.DeeplyNestedProto,
+                            "struct_map.value.nested_enum_field": my_pb2.DeeplyNestedEnum
+                        }
+
         Returns:
             ExecuteQueryIterator: an asynchronous iterator that yields rows returned by the query
         Raises:
@@ -564,6 +623,7 @@ class BigtableDataClient(ClientWithProject):
             google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error
             google.cloud.bigtable.data.exceptions.ParameterTypeInferenceFailed: Raised if
                 a parameter is passed without an explicit type, and the type cannot be infered
+            google.protobuf.message.DecodeError: raised if the deserialization of a PROTO/ENUM value fails.
         """
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
         converted_param_types = _to_param_types(parameters, parameter_types)
@@ -615,6 +675,7 @@ class BigtableDataClient(ClientWithProject):
             attempt_timeout,
             operation_timeout,
             retryable_excs=retryable_excs,
+            column_info=column_info,
         )
 
     def __enter__(self):

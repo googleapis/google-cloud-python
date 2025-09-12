@@ -25,6 +25,7 @@ from google.cloud.bigtable.data.execute_query._parameters_formatting import (
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.execute_query.values import Struct
 from google.protobuf import timestamp_pb2
+from samples.testdata import singer_pb2
 
 timestamp = int(
     datetime.datetime(2024, 5, 12, 17, 44, 12, tzinfo=datetime.timezone.utc).timestamp()
@@ -265,6 +266,18 @@ def test_execute_query_parameters_not_supported_types():
         _format_execute_query_params(
             {"test1": Struct([("field1", 1)])},
             {"test1": SqlType.Struct([("field1", SqlType.Int64())])},
+        )
+
+    with pytest.raises(NotImplementedError, match="not supported"):
+        _format_execute_query_params(
+            {"test1": singer_pb2.Singer()},
+            {"test1": SqlType.Proto()},
+        )
+
+    with pytest.raises(NotImplementedError, match="not supported"):
+        _format_execute_query_params(
+            {"test1": singer_pb2.Genre.ROCK},
+            {"test1": SqlType.Enum()},
         )
 
 

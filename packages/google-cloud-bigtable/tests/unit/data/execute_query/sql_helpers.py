@@ -204,6 +204,18 @@ def date_type() -> Type:
     return t
 
 
+def proto_type() -> Type:
+    t = Type()
+    t.proto_type = {}
+    return t
+
+
+def enum_type() -> Type:
+    t = Type()
+    t.enum_type = {}
+    return t
+
+
 def array_type(elem_type: Type) -> Type:
     t = Type()
     arr_type = Type.Array()
