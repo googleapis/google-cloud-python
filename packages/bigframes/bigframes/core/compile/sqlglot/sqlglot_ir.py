@@ -336,6 +336,68 @@ class SQLGlotIR:
 
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
+    def isin_join(
+        self,
+        right: SQLGlotIR,
+        indicator_col: str,
+        conditions: tuple[typed_expr.TypedExpr, typed_expr.TypedExpr],
+        joins_nulls: bool = True,
+    ) -> SQLGlotIR:
+        """Joins the current query with another SQLGlotIR instance."""
+        left_cte_name = sge.to_identifier(
+            next(self.uid_gen.get_uid_stream("bfcte_")), quoted=self.quoted
+        )
+
+        left_select = _select_to_cte(self.expr, left_cte_name)
+        # Prefer subquery over CTE for the IN clause's right side to improve SQL readability.
+        right_select = right.expr
+
+        left_ctes = left_select.args.pop("with", [])
+        right_ctes = right_select.args.pop("with", [])
+        merged_ctes = [*left_ctes, *right_ctes]
+
+        left_condition = typed_expr.TypedExpr(
+            sge.Column(this=conditions[0].expr, table=left_cte_name),
+            conditions[0].dtype,
+        )
+
+        new_column: sge.Expression
+        if joins_nulls:
+            right_table_name = sge.to_identifier(
+                next(self.uid_gen.get_uid_stream("bft_")), quoted=self.quoted
+            )
+            right_condition = typed_expr.TypedExpr(
+                sge.Column(this=conditions[1].expr, table=right_table_name),
+                conditions[1].dtype,
+            )
+            new_column = sge.Exists(
+                this=sge.Select()
+                .select(sge.convert(1))
+                .from_(sge.Alias(this=right_select.subquery(), alias=right_table_name))
+                .where(
+                    _join_condition(left_condition, right_condition, joins_nulls=True)
+                )
+            )
+        else:
+            new_column = sge.In(
+                this=left_condition.expr,
+                expressions=[right_select.subquery()],
+            )
+
+        new_column = sge.Alias(
+            this=new_column,
+            alias=sge.to_identifier(indicator_col, quoted=self.quoted),
+        )
+
+        new_expr = (
+            sge.Select()
+            .select(sge.Column(this=sge.Star(), table=left_cte_name), new_column)
+            .from_(sge.Table(this=left_cte_name))
+        )
+        new_expr.set("with", sge.With(expressions=merged_ctes))
+
+        return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
+
     def explode(
         self,
         column_names: tuple[str, ...],
