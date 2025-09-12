@@ -1166,7 +1166,7 @@ def test_managed_function_df_where_mask_series(session, dataset_id, scalars_dfs)
         pd_int64_df_filtered = pd_int64_df.dropna()
 
         # Test callable condition in dataframe.where method.
-        bf_result = bf_int64_df_filtered.where(is_sum_positive_series).to_pandas()
+        bf_result = bf_int64_df_filtered.where(is_sum_positive_series_mf).to_pandas()
         pd_result = pd_int64_df_filtered.where(is_sum_positive_series)
 
         # Ignore any dtype difference.

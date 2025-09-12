@@ -3072,7 +3072,7 @@ def test_remote_function_df_where_mask_series(session, dataset_id, scalars_dfs):
 
         # Test callable condition in dataframe.where method.
         bf_result = bf_int64_df_filtered.where(
-            is_sum_positive_series, func_for_other
+            is_sum_positive_series_mf, func_for_other
         ).to_pandas()
         pd_result = pd_int64_df_filtered.where(is_sum_positive_series, func_for_other)
 
