@@ -43,7 +43,7 @@ class StructFieldOp(base_ops.UnaryOp):
 @dataclasses.dataclass(frozen=True)
 class StructOp(base_ops.NaryOp):
     name: typing.ClassVar[str] = "struct"
-    column_names: tuple[str]
+    column_names: tuple[str, ...]
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         num_input_types = len(input_types)

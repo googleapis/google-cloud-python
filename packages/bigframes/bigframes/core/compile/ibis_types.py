@@ -386,10 +386,6 @@ def literal_to_ibis_scalar(
     ibis_dtype = bigframes_dtype_to_ibis_dtype(force_dtype) if force_dtype else None
 
     if pd.api.types.is_list_like(literal):
-        if validate:
-            raise ValueError(
-                f"List types can't be stored in BigQuery DataFrames. {constants.FEEDBACK_LINK}"
-            )
         # "correct" way would be to use ibis.array, but this produces invalid BQ SQL syntax
         return tuple(literal)
 

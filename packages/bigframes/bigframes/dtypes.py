@@ -671,8 +671,7 @@ def infer_literal_type(literal) -> typing.Optional[Dtype]:
     if pd.api.types.is_list_like(literal):
         element_types = [infer_literal_type(i) for i in literal]
         common_type = lcd_type(*element_types)
-        as_arrow = bigframes_dtype_to_arrow_dtype(common_type)
-        return pd.ArrowDtype(as_arrow)
+        return list_type(common_type)
     if pd.api.types.is_dict_like(literal):
         fields = []
         for key in literal.keys():

@@ -267,13 +267,6 @@ def test_literal_to_ibis_scalar_converts(literal, ibis_scalar):
     )
 
 
-def test_literal_to_ibis_scalar_throws_on_incompatible_literal():
-    with pytest.raises(
-        ValueError,
-    ):
-        bigframes.core.compile.ibis_types.literal_to_ibis_scalar({"mykey": "myval"})
-
-
 @pytest.mark.parametrize(
     ["scalar", "expected_dtype"],
     [
