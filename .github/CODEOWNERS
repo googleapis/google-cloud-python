@@ -1,7 +1,11 @@
 # Code owners file.
 # This file controls who is tagged for review for any given pull request.
 
-*                         @googleapis/python-core-client-libraries
+# Default owner for all directories not owned by others
+*                                               @googleapis/python-core-client-libraries
 
-/.generator/ @googleapis/cloud-sdk-librarian-team
-/.librarian/ @googleapis/cloud-sdk-librarian-team
+/packages/google-cloud-bigquery-storage/        @googleapis/api-bigquery
+
+# Owner for the librarian automation
+/.generator/                                    @googleapis/cloud-sdk-librarian-team
+/.librarian/                                    @googleapis/cloud-sdk-librarian-team
