@@ -296,6 +296,28 @@ class SqlType:
                 )
             }
 
+    class Proto(Type):
+        """Proto SQL type."""
+
+        type_field_name = "proto_type"
+
+        def _to_value_pb_dict(self, value: Any):
+            raise NotImplementedError("Proto is not supported as a query parameter")
+
+        def _to_type_pb_dict(self) -> Dict[str, Any]:
+            raise NotImplementedError("Proto is not supported as a query parameter")
+
+    class Enum(Type):
+        """Enum SQL type."""
+
+        type_field_name = "enum_type"
+
+        def _to_value_pb_dict(self, value: Any):
+            raise NotImplementedError("Enum is not supported as a query parameter")
+
+        def _to_type_pb_dict(self) -> Dict[str, Any]:
+            raise NotImplementedError("Enum is not supported as a query parameter")
+
 
 class Metadata:
     """
@@ -388,6 +410,8 @@ _PROTO_TYPE_TO_METADATA_TYPE_FACTORY: Dict[str, Type[SqlType.Type]] = {
     "bool_type": SqlType.Bool,
     "timestamp_type": SqlType.Timestamp,
     "date_type": SqlType.Date,
+    "proto_type": SqlType.Proto,
+    "enum_type": SqlType.Enum,
     "struct_type": SqlType.Struct,
     "array_type": SqlType.Array,
     "map_type": SqlType.Map,

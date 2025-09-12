@@ -32,7 +32,9 @@ from tests.unit.data.execute_query.sql_helpers import (
     metadata,
     proto_rows_bytes,
     str_val,
+    bytes_val,
 )
+from samples.testdata import singer_pb2
 
 
 class TestQueryResultRowReader:
@@ -116,8 +118,8 @@ class TestQueryResultRowReader:
             reader.consume([proto_rows_bytes(int_val(1), int_val(2))], metadata)
             parse_mock.assert_has_calls(
                 [
-                    mock.call(PBValue(int_val(1)), SqlType.Int64()),
-                    mock.call(PBValue(int_val(2)), SqlType.Int64()),
+                    mock.call(PBValue(int_val(1)), SqlType.Int64(), "test1", None),
+                    mock.call(PBValue(int_val(2)), SqlType.Int64(), "test2", None),
                 ]
             )
 
@@ -137,7 +139,7 @@ class TestQueryResultRowReader:
 
             parse_mock.assert_has_calls(
                 [
-                    mock.call(PBValue(values[0]), SqlType.Int64()),
+                    mock.call(PBValue(values[0]), SqlType.Int64(), "test1", None),
                 ]
             )
 
@@ -242,6 +244,40 @@ class TestQueryResultRowReader:
         assert row3["test2"] == 6
         assert row4["test1"] == 7
         assert row4["test2"] == 8
+
+    def test_multiple_batches_with_proto_and_enum_types(self):
+        singer1 = singer_pb2.Singer(name="John")
+        singer2 = singer_pb2.Singer(name="Taylor")
+        singer3 = singer_pb2.Singer(name="Jay")
+        singer4 = singer_pb2.Singer(name="Eric")
+
+        reader = _QueryResultRowReader()
+        batches = [
+            proto_rows_bytes(
+                bytes_val(singer1.SerializeToString()),
+                int_val(0),
+                bytes_val(singer2.SerializeToString()),
+                int_val(1),
+            ),
+            proto_rows_bytes(bytes_val(singer3.SerializeToString()), int_val(2)),
+            proto_rows_bytes(bytes_val(singer4.SerializeToString()), int_val(3)),
+        ]
+
+        results = reader.consume(
+            batches,
+            Metadata([("singer", SqlType.Proto()), ("genre", SqlType.Enum())]),
+            {"singer": singer_pb2.Singer(), "genre": singer_pb2.Genre},
+        )
+        assert len(results) == 4
+        [row1, row2, row3, row4] = results
+        assert row1["singer"] == singer1
+        assert row1["genre"] == "POP"
+        assert row2["singer"] == singer2
+        assert row2["genre"] == "JAZZ"
+        assert row3["singer"] == singer3
+        assert row3["genre"] == "FOLK"
+        assert row4["singer"] == singer4
+        assert row4["genre"] == "ROCK"
 
 
 class TestMetadata:
