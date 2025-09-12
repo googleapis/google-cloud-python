@@ -464,6 +464,8 @@ def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
         "lint",
         "lint_setup_py",
         "mypy-3.13",
+        "system-3.9",
+        "system-3.13",
     ]
     _run_nox_sessions("mock-library", "repo")
 
@@ -476,6 +478,8 @@ def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
             mocker.call("lint", "mock-library", "repo"),
             mocker.call("lint_setup_py", "mock-library", "repo"),
             mocker.call("mypy-3.13", "mock-library", "repo"),
+            mocker.call("system-3.9", "mock-library", "repo"),
+            mocker.call("system-3.13", "mock-library", "repo"),
         ]
     )
 
