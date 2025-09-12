@@ -434,6 +434,8 @@ def _run_nox_sessions(library_id: str, repo: str):
         "lint",
         "lint_setup_py",
         "mypy-3.13",
+        "system-3.9",
+        "system-3.13",
     ]
     current_session = None
     try:
