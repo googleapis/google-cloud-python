@@ -17,8 +17,9 @@ from __future__ import annotations
 import abc
 import dataclasses
 import typing
-from typing import ClassVar, Iterable, Optional, TYPE_CHECKING
+from typing import Callable, ClassVar, Iterable, Optional, TYPE_CHECKING
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 
@@ -678,7 +679,7 @@ first_op = FirstOp()
 
 
 # TODO: Alternative names and lookup from numpy function objects
-_AGGREGATIONS_LOOKUP: typing.Dict[
+_STRING_TO_AGG_OP: typing.Dict[
     str, typing.Union[UnaryAggregateOp, NullaryAggregateOp]
 ] = {
     op.name: op
@@ -705,17 +706,32 @@ _AGGREGATIONS_LOOKUP: typing.Dict[
     ]
 }
 
+_CALLABLE_TO_AGG_OP: typing.Dict[
+    Callable, typing.Union[UnaryAggregateOp, NullaryAggregateOp]
+] = {
+    np.sum: sum_op,
+    np.mean: mean_op,
+    np.median: median_op,
+    np.prod: product_op,
+    np.max: max_op,
+    np.min: min_op,
+    np.std: std_op,
+    np.var: var_op,
+    np.all: all_op,
+    np.any: any_op,
+    np.unique: nunique_op,
+    # TODO(b/443252872): Solve
+    # list: ArrayAggOp(),
+    np.size: size_op,
+}
 
-def lookup_agg_func(key: str) -> typing.Union[UnaryAggregateOp, NullaryAggregateOp]:
-    if callable(key):
-        raise NotImplementedError(
-            "Aggregating with callable object not supported, pass method name as string instead (eg. 'sum' instead of np.sum)."
-        )
-    if not isinstance(key, str):
-        raise ValueError(
-            f"Cannot aggregate using object of type: {type(key)}. Use string method name (eg. 'sum')"
-        )
-    if key in _AGGREGATIONS_LOOKUP:
-        return _AGGREGATIONS_LOOKUP[key]
+
+def lookup_agg_func(
+    key,
+) -> tuple[typing.Union[UnaryAggregateOp, NullaryAggregateOp], str]:
+    if key in _STRING_TO_AGG_OP:
+        return (_STRING_TO_AGG_OP[key], key)
+    if key in _CALLABLE_TO_AGG_OP:
+        return (_CALLABLE_TO_AGG_OP[key], key.__name__)
     else:
         raise ValueError(f"Unrecognize aggregate function: {key}")

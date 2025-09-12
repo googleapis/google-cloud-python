@@ -461,23 +461,19 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
     def agg(self, func=None, **kwargs) -> typing.Union[df.DataFrame, series.Series]:
         if func:
-            if isinstance(func, str):
-                return self.size() if func == "size" else self._agg_string(func)
-            elif utils.is_dict_like(func):
+            if utils.is_dict_like(func):
                 return self._agg_dict(func)
             elif utils.is_list_like(func):
                 return self._agg_list(func)
             else:
-                raise NotImplementedError(
-                    f"Aggregate with {func} not supported. {constants.FEEDBACK_LINK}"
-                )
+                return self.size() if func == "size" else self._agg_func(func)
         else:
             return self._agg_named(**kwargs)
 
-    def _agg_string(self, func: str) -> df.DataFrame:
+    def _agg_func(self, func) -> df.DataFrame:
         ids, labels = self._aggregated_columns()
         aggregations = [
-            aggs.agg(col_id, agg_ops.lookup_agg_func(func)) for col_id in ids
+            aggs.agg(col_id, agg_ops.lookup_agg_func(func)[0]) for col_id in ids
         ]
         agg_block, _ = self._block.aggregate(
             by_column_ids=self._by_col_ids,
@@ -500,7 +496,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 funcs_for_id if utils.is_list_like(funcs_for_id) else [funcs_for_id]
             )
             for f in func_list:
-                aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(f)))
+                aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(f)[0]))
                 column_labels.append(label)
         agg_block, _ = self._block.aggregate(
             by_column_ids=self._by_col_ids,
@@ -525,19 +521,23 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     def _agg_list(self, func: typing.Sequence) -> df.DataFrame:
         ids, labels = self._aggregated_columns()
         aggregations = [
-            aggs.agg(col_id, agg_ops.lookup_agg_func(f)) for col_id in ids for f in func
+            aggs.agg(col_id, agg_ops.lookup_agg_func(f)[0])
+            for col_id in ids
+            for f in func
         ]
 
         if self._block.column_labels.nlevels > 1:
             # Restructure MultiIndex for proper format: (idx1, idx2, func)
             # rather than ((idx1, idx2), func).
             column_labels = [
-                tuple(label) + (f,)
+                tuple(label) + (agg_ops.lookup_agg_func(f)[1],)
                 for label in labels.to_frame(index=False).to_numpy()
                 for f in func
             ]
         else:  # Single-level index
-            column_labels = [(label, f) for label in labels for f in func]
+            column_labels = [
+                (label, agg_ops.lookup_agg_func(f)[1]) for label in labels for f in func
+            ]
 
         agg_block, _ = self._block.aggregate(
             by_column_ids=self._by_col_ids,
@@ -563,7 +563,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             if not isinstance(v, tuple) or (len(v) != 2):
                 raise TypeError("kwargs values must be 2-tuples of column, aggfunc")
             col_id = self._resolve_label(v[0])
-            aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(v[1])))
+            aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(v[1])[0]))
             column_labels.append(k)
         agg_block, _ = self._block.aggregate(
             by_column_ids=self._by_col_ids,

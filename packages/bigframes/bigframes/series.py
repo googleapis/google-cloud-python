@@ -1330,7 +1330,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 raise NotImplementedError(
                     f"Multiple aggregations only supported on numeric series. {constants.FEEDBACK_LINK}"
                 )
-            aggregations = [agg_ops.lookup_agg_func(f) for f in func]
+            aggregations = [agg_ops.lookup_agg_func(f)[0] for f in func]
             return Series(
                 self._block.summarize(
                     [self._value_column],
@@ -1338,9 +1338,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 )
             )
         else:
-            return self._apply_aggregation(
-                agg_ops.lookup_agg_func(typing.cast(str, func))
-            )
+            return self._apply_aggregation(agg_ops.lookup_agg_func(func)[0])
 
     aggregate = agg
     aggregate.__doc__ = inspect.getdoc(vendored_pandas_series.Series.agg)
