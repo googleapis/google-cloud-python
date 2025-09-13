@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from .helpers import _Base
+import datetime
 
 
 class TestBiEngineStats:
@@ -520,3 +521,63 @@ class TestTimelineEntry(_Base):
         self.assertEqual(entry.pending_units, self.PENDING_UNITS)
         self.assertEqual(entry.completed_units, self.COMPLETED_UNITS)
         self.assertEqual(entry.slot_millis, self.SLOT_MILLIS)
+
+
+class TestIncrementalResultStats:
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import IncrementalResultStats
+
+        return IncrementalResultStats
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        stats = self._make_one()
+        assert stats.disabled_reason is None
+        assert stats.result_set_last_replace_time is None
+        assert stats.result_set_last_modify_time is None
+
+    def test_from_api_repr_partial_stats(self):
+        klass = self._get_target_class()
+        stats = klass.from_api_repr({"disabledReason": "FOO"})
+
+        assert isinstance(stats, klass)
+        assert stats.disabled_reason == "FOO"
+        assert stats.result_set_last_replace_time is None
+        assert stats.result_set_last_modify_time is None
+
+    def test_from_api_repr_full_stats(self):
+        klass = self._get_target_class()
+        stats = klass.from_api_repr(
+            {
+                "disabledReason": "BAR",
+                "resultSetLastReplaceTime": "2025-01-02T03:04:05.06Z",
+                "resultSetLastModifyTime": "2025-02-02T02:02:02.02Z",
+            }
+        )
+
+        assert isinstance(stats, klass)
+        assert stats.disabled_reason == "BAR"
+        assert stats.result_set_last_replace_time == datetime.datetime(
+            2025, 1, 2, 3, 4, 5, 60000, tzinfo=datetime.timezone.utc
+        )
+        assert stats.result_set_last_modify_time == datetime.datetime(
+            2025, 2, 2, 2, 2, 2, 20000, tzinfo=datetime.timezone.utc
+        )
+
+    def test_from_api_repr_invalid_stats(self):
+        klass = self._get_target_class()
+        stats = klass.from_api_repr(
+            {
+                "disabledReason": "BAR",
+                "resultSetLastReplaceTime": "xxx",
+                "resultSetLastModifyTime": "yyy",
+            }
+        )
+
+        assert isinstance(stats, klass)
+        assert stats.disabled_reason == "BAR"
+        assert stats.result_set_last_replace_time is None
+        assert stats.result_set_last_modify_time is None

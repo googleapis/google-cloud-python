@@ -838,6 +838,23 @@ class TestQueryJob(_Base):
         assert isinstance(job.search_stats, SearchStats)
         assert job.search_stats.mode == "INDEX_USAGE_MODE_UNSPECIFIED"
 
+    def test_incremental_result_stats(self):
+        from google.cloud.bigquery.job.query import IncrementalResultStats
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        assert job.incremental_result_stats is None
+
+        statistics = job._properties["statistics"] = {}
+        assert job.incremental_result_stats is None
+
+        query_stats = statistics["query"] = {}
+        assert job.incremental_result_stats is None
+
+        query_stats["incrementalResultStats"] = {"disabledReason": "BAZ"}
+        assert isinstance(job.incremental_result_stats, IncrementalResultStats)
+        assert job.incremental_result_stats.disabled_reason == "BAZ"
+
     def test_reload_query_results_uses_transport_timeout(self):
         conn = make_connection({})
         client = _make_client(self.PROJECT, connection=conn)
