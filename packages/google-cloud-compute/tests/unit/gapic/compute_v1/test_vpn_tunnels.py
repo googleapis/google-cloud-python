@@ -1972,7 +1972,9 @@ def test_insert_rest_flattened():
             project="project_value",
             region="region_value",
             vpn_tunnel_resource=compute.VpnTunnel(
-                creation_timestamp="creation_timestamp_value"
+                cipher_suite=compute.VpnTunnelCipherSuite(
+                    phase1=compute.VpnTunnelPhase1Algorithms(dh=["dh_value"])
+                )
             ),
         )
         mock_args.update(sample_request)
@@ -2014,7 +2016,9 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             vpn_tunnel_resource=compute.VpnTunnel(
-                creation_timestamp="creation_timestamp_value"
+                cipher_suite=compute.VpnTunnelCipherSuite(
+                    phase1=compute.VpnTunnelPhase1Algorithms(dh=["dh_value"])
+                )
             ),
         )
 
@@ -2176,7 +2180,9 @@ def test_insert_unary_rest_flattened():
             project="project_value",
             region="region_value",
             vpn_tunnel_resource=compute.VpnTunnel(
-                creation_timestamp="creation_timestamp_value"
+                cipher_suite=compute.VpnTunnelCipherSuite(
+                    phase1=compute.VpnTunnelPhase1Algorithms(dh=["dh_value"])
+                )
             ),
         )
         mock_args.update(sample_request)
@@ -2218,7 +2224,9 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             vpn_tunnel_resource=compute.VpnTunnel(
-                creation_timestamp="creation_timestamp_value"
+                cipher_suite=compute.VpnTunnelCipherSuite(
+                    phase1=compute.VpnTunnelPhase1Algorithms(dh=["dh_value"])
+                )
             ),
         )
 
@@ -3515,6 +3523,19 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["vpn_tunnel_resource"] = {
+        "cipher_suite": {
+            "phase1": {
+                "dh": ["dh_value1", "dh_value2"],
+                "encryption": ["encryption_value1", "encryption_value2"],
+                "integrity": ["integrity_value1", "integrity_value2"],
+                "prf": ["prf_value1", "prf_value2"],
+            },
+            "phase2": {
+                "encryption": ["encryption_value1", "encryption_value2"],
+                "integrity": ["integrity_value1", "integrity_value2"],
+                "pfs": ["pfs_value1", "pfs_value2"],
+            },
+        },
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "detailed_status": "detailed_status_value",
