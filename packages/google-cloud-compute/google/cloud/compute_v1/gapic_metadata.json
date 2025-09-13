@@ -68,6 +68,11 @@
               "methods": [
                 "set_labels"
               ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
             }
           }
         }
@@ -663,6 +668,11 @@
               "methods": [
                 "set_labels"
               ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
             }
           }
         }
@@ -1182,6 +1192,11 @@
               "methods": [
                 "set_named_ports"
               ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
             }
           }
         }
@@ -1265,6 +1280,11 @@
                 "add_access_config"
               ]
             },
+            "AddNetworkInterface": {
+              "methods": [
+                "add_network_interface"
+              ]
+            },
             "AddResourcePolicies": {
               "methods": [
                 "add_resource_policies"
@@ -1293,6 +1313,11 @@
             "DeleteAccessConfig": {
               "methods": [
                 "delete_access_config"
+              ]
+            },
+            "DeleteNetworkInterface": {
+              "methods": [
+                "delete_network_interface"
               ]
             },
             "DetachDisk": {
@@ -3141,6 +3166,11 @@
               "methods": [
                 "set_named_ports"
               ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
             }
           }
         }
@@ -4631,6 +4661,11 @@
               "methods": [
                 "set_security_policy"
               ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
             }
           }
         }
@@ -4699,6 +4734,11 @@
             "SetSecurityPolicy": {
               "methods": [
                 "set_security_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             }
           }

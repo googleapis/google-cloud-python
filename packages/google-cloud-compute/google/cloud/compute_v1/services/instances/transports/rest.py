@@ -80,6 +80,14 @@ class InstancesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_add_network_interface(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_network_interface(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_add_resource_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -125,6 +133,14 @@ class InstancesRestInterceptor:
                 return request, metadata
 
             def post_delete_access_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_network_interface(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_network_interface(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -516,6 +532,55 @@ class InstancesRestInterceptor:
         """
         return response, metadata
 
+    def pre_add_network_interface(
+        self,
+        request: compute.AddNetworkInterfaceInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AddNetworkInterfaceInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for add_network_interface
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Instances server.
+        """
+        return request, metadata
+
+    def post_add_network_interface(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for add_network_interface
+
+        DEPRECATED. Please use the `post_add_network_interface_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Instances server but before
+        it is returned to user code. This `post_add_network_interface` interceptor runs
+        before the `post_add_network_interface_with_metadata` interceptor.
+        """
+        return response
+
+    def post_add_network_interface_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_network_interface
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_add_network_interface_with_metadata`
+        interceptor in new development instead of the `post_add_network_interface` interceptor.
+        When both interceptors are used, this `post_add_network_interface_with_metadata` interceptor runs after the
+        `post_add_network_interface` interceptor. The (possibly modified) response returned by
+        `post_add_network_interface` will be passed to
+        `post_add_network_interface_with_metadata`.
+        """
+        return response, metadata
+
     def pre_add_resource_policies(
         self,
         request: compute.AddResourcePoliciesInstanceRequest,
@@ -795,6 +860,55 @@ class InstancesRestInterceptor:
         `post_delete_access_config` interceptor. The (possibly modified) response returned by
         `post_delete_access_config` will be passed to
         `post_delete_access_config_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_network_interface(
+        self,
+        request: compute.DeleteNetworkInterfaceInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteNetworkInterfaceInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_network_interface
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Instances server.
+        """
+        return request, metadata
+
+    def post_delete_network_interface(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for delete_network_interface
+
+        DEPRECATED. Please use the `post_delete_network_interface_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Instances server but before
+        it is returned to user code. This `post_delete_network_interface` interceptor runs
+        before the `post_delete_network_interface_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_network_interface_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_network_interface
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_delete_network_interface_with_metadata`
+        interceptor in new development instead of the `post_delete_network_interface` interceptor.
+        When both interceptors are used, this `post_delete_network_interface_with_metadata` interceptor runs after the
+        `post_delete_network_interface` interceptor. The (possibly modified) response returned by
+        `post_delete_network_interface` will be passed to
+        `post_delete_network_interface_with_metadata`.
         """
         return response, metadata
 
@@ -3052,6 +3166,177 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 )
             return resp
 
+    class _AddNetworkInterface(
+        _BaseInstancesRestTransport._BaseAddNetworkInterface, InstancesRestStub
+    ):
+        def __hash__(self):
+            return hash("InstancesRestTransport.AddNetworkInterface")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.AddNetworkInterfaceInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the add network interface method over HTTP.
+
+            Args:
+                request (~.compute.AddNetworkInterfaceInstanceRequest):
+                    The request object. A request message for
+                Instances.AddNetworkInterface. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseInstancesRestTransport._BaseAddNetworkInterface._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_add_network_interface(
+                request, metadata
+            )
+            transcoded_request = _BaseInstancesRestTransport._BaseAddNetworkInterface._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseInstancesRestTransport._BaseAddNetworkInterface._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstancesRestTransport._BaseAddNetworkInterface._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InstancesClient.AddNetworkInterface",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Instances",
+                        "rpcName": "AddNetworkInterface",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = InstancesRestTransport._AddNetworkInterface._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_add_network_interface(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_network_interface_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InstancesClient.add_network_interface",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Instances",
+                        "rpcName": "AddNetworkInterface",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _AddResourcePolicies(
         _BaseInstancesRestTransport._BaseAddResourcePolicies, InstancesRestStub
     ):
@@ -4037,6 +4322,171 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                     extra={
                         "serviceName": "google.cloud.compute.v1.Instances",
                         "rpcName": "DeleteAccessConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteNetworkInterface(
+        _BaseInstancesRestTransport._BaseDeleteNetworkInterface, InstancesRestStub
+    ):
+        def __hash__(self):
+            return hash("InstancesRestTransport.DeleteNetworkInterface")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.DeleteNetworkInterfaceInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the delete network interface method over HTTP.
+
+            Args:
+                request (~.compute.DeleteNetworkInterfaceInstanceRequest):
+                    The request object. A request message for
+                Instances.DeleteNetworkInterface. See
+                the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseInstancesRestTransport._BaseDeleteNetworkInterface._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_network_interface(
+                request, metadata
+            )
+            transcoded_request = _BaseInstancesRestTransport._BaseDeleteNetworkInterface._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstancesRestTransport._BaseDeleteNetworkInterface._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InstancesClient.DeleteNetworkInterface",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Instances",
+                        "rpcName": "DeleteNetworkInterface",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = InstancesRestTransport._DeleteNetworkInterface._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_network_interface(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_network_interface_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InstancesClient.delete_network_interface",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Instances",
+                        "rpcName": "DeleteNetworkInterface",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -10976,6 +11426,14 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
         return self._AddAccessConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def add_network_interface(
+        self,
+    ) -> Callable[[compute.AddNetworkInterfaceInstanceRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AddNetworkInterface(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def add_resource_policies(
         self,
     ) -> Callable[[compute.AddResourcePoliciesInstanceRequest], compute.Operation]:
@@ -11022,6 +11480,14 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAccessConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_network_interface(
+        self,
+    ) -> Callable[[compute.DeleteNetworkInterfaceInstanceRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteNetworkInterface(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def detach_disk(
