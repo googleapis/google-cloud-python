@@ -57,6 +57,8 @@ class ChannelConnection(proto.Message):
             ChannelConnection to bind the channel with the
             provider project. This field will not be stored
             in the provider resource.
+        labels (MutableMapping[str, str]):
+            Optional. Resource labels.
     """
 
     name: str = proto.Field(
@@ -84,6 +86,11 @@ class ChannelConnection(proto.Message):
     activation_token: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
     )
 
 

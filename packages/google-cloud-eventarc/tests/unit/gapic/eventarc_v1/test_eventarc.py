@@ -12556,6 +12556,7 @@ def test_get_pipeline(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             crypto_key_name="crypto_key_name_value",
             etag="etag_value",
+            satisfies_pzs=True,
         )
         response = client.get_pipeline(request)
 
@@ -12572,6 +12573,7 @@ def test_get_pipeline(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.crypto_key_name == "crypto_key_name_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
 
 
 def test_get_pipeline_non_empty_request_with_auto_populated_field():
@@ -12702,6 +12704,7 @@ async def test_get_pipeline_async(
                 display_name="display_name_value",
                 crypto_key_name="crypto_key_name_value",
                 etag="etag_value",
+                satisfies_pzs=True,
             )
         )
         response = await client.get_pipeline(request)
@@ -12719,6 +12722,7 @@ async def test_get_pipeline_async(
     assert response.display_name == "display_name_value"
     assert response.crypto_key_name == "crypto_key_name_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio
@@ -26247,6 +26251,7 @@ async def test_get_pipeline_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 crypto_key_name="crypto_key_name_value",
                 etag="etag_value",
+                satisfies_pzs=True,
             )
         )
         await client.get_pipeline(request=None)
@@ -27650,6 +27655,7 @@ def test_create_channel_rest_call_success(request_type):
         "activation_token": "activation_token_value",
         "crypto_key_name": "crypto_key_name_value",
         "satisfies_pzs": True,
+        "labels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -27850,6 +27856,7 @@ def test_update_channel_rest_call_success(request_type):
         "activation_token": "activation_token_value",
         "crypto_key_name": "crypto_key_name_value",
         "satisfies_pzs": True,
+        "labels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -28682,6 +28689,7 @@ def test_create_channel_connection_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "activation_token": "activation_token_value",
+        "labels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -29145,6 +29153,7 @@ def test_update_google_channel_config_rest_call_success(request_type):
         "name": "projects/sample1/locations/sample2/googleChannelConfig",
         "update_time": {"seconds": 751, "nanos": 543},
         "crypto_key_name": "crypto_key_name_value",
+        "labels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -31070,6 +31079,7 @@ def test_get_pipeline_rest_call_success(request_type):
             display_name="display_name_value",
             crypto_key_name="crypto_key_name_value",
             etag="etag_value",
+            satisfies_pzs=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -31091,6 +31101,7 @@ def test_get_pipeline_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.crypto_key_name == "crypto_key_name_value"
     assert response.etag == "etag_value"
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -31364,6 +31375,7 @@ def test_create_pipeline_rest_call_success(request_type):
             "max_retry_delay": {},
         },
         "etag": "etag_value",
+        "satisfies_pzs": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -31604,6 +31616,7 @@ def test_update_pipeline_rest_call_success(request_type):
             "max_retry_delay": {},
         },
         "etag": "etag_value",
+        "satisfies_pzs": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -776,7 +776,7 @@ class ListMessageBusesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent collection to list
-            triggers on.
+            message buses on.
         page_size (int):
             Optional. The maximum number of results to
             return on each page.
@@ -935,7 +935,7 @@ class CreateMessageBusRequest(proto.Message):
         message_bus_id (str):
             Required. The user-provided ID to be assigned to the
             MessageBus. It should match the format
-            (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$)
+            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
         validate_only (bool):
             Optional. If set, validate the request and
             preview the review, but do not post it.
@@ -1150,7 +1150,7 @@ class CreateEnrollmentRequest(proto.Message):
         enrollment_id (str):
             Required. The user-provided ID to be assigned to the
             Enrollment. It should match the format
-            (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
         validate_only (bool):
             Optional. If set, validate the request and
             preview the review, but do not post it.
@@ -1363,8 +1363,9 @@ class CreatePipelineRequest(proto.Message):
         pipeline (google.cloud.eventarc_v1.types.Pipeline):
             Required. The pipeline to create.
         pipeline_id (str):
-            Required. The user-provided ID to be assigned
-            to the Pipeline.
+            Required. The user-provided ID to be assigned to the
+            Pipeline. It should match the format
+            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
         validate_only (bool):
             Optional. If set, validate the request and
             preview the review, but do not post it.
@@ -1582,7 +1583,7 @@ class CreateGoogleApiSourceRequest(proto.Message):
         google_api_source_id (str):
             Required. The user-provided ID to be assigned to the
             GoogleApiSource. It should match the format
-            (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
         validate_only (bool):
             Optional. If set, validate the request and
             preview the review, but do not post it.

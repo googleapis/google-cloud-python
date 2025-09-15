@@ -106,6 +106,10 @@ class Pipeline(proto.Message):
             might be sent only on create requests to ensure
             that the client has an up-to-date value before
             proceeding.
+        satisfies_pzs (bool):
+            Output only. Whether or not this Pipeline
+            satisfies the requirements of physical zone
+            separation
     """
 
     class MessagePayloadFormat(proto.Message):
@@ -231,11 +235,11 @@ class Pipeline(proto.Message):
                 Optional. An authentication config used to
                 authenticate message requests, such that
                 destinations can verify the source. For example,
-                this can be used with private GCP destinations
-                that require GCP credentials to access like
-                Cloud Run. This field is optional and should be
-                set only by users interested in authenticated
-                push
+                this can be used with private Google Cloud
+                destinations that require Google Cloud
+                credentials for access like Cloud Run. This
+                field is optional and should be set only by
+                users interested in authenticated push.
             output_payload_format (google.cloud.eventarc_v1.types.Pipeline.MessagePayloadFormat):
                 Optional. The message format before it is delivered to the
                 destination. If not set, the message will be delivered in
@@ -265,7 +269,7 @@ class Pipeline(proto.Message):
 
             Attributes:
                 uri (str):
-                    Required. The URI of the HTTP enpdoint.
+                    Required. The URI of the HTTP endpoint.
 
                     The value must be a RFC2396 URI string. Examples:
                     ``https://svc.us-central1.p.local:8080/route``. Only the
@@ -277,9 +281,11 @@ class Pipeline(proto.Message):
                     If a binding expression is not specified here, the message
                     is treated as a CloudEvent and is mapped to the HTTP request
                     according to the CloudEvent HTTP Protocol Binding Binary
-                    Content Mode. In this representation, all fields except the
-                    ``data`` and ``datacontenttype`` field on the message are
-                    mapped to HTTP request headers with a prefix of ``ce-``.
+                    Content Mode
+                    (https://github.com/cloudevents/spec/blob/main/cloudevents/bindings/http-protocol-binding.md#31-binary-content-mode).
+                    In this representation, all fields except the ``data`` and
+                    ``datacontenttype`` field on the message are mapped to HTTP
+                    request headers with a prefix of ``ce-``.
 
                     To construct the HTTP request payload and the value of the
                     content-type HTTP header, the payload format is defined as
@@ -315,8 +321,8 @@ class Pipeline(proto.Message):
                     - If a map named ``headers`` exists on the result of the
                       expression, then its key/value pairs are directly mapped
                       to the HTTP request headers. The headers values are
-                      constructed from the corresponding value type’s canonical
-                      representation. If the ``headers`` field doesn’t exist
+                      constructed from the corresponding value type's canonical
+                      representation. If the ``headers`` field doesn't exist
                       then the resulting HTTP request will be the headers of the
                       CloudEvent HTTP Binding Binary Content Mode representation
                       of the final message. Note: If the specified binding
@@ -365,6 +371,14 @@ class Pipeline(proto.Message):
                          "headers": headers.merge({"new-header-key": "new-header-value"}),
                          "body": "new-body"
                        }
+
+                    - The default binding for the message payload can be
+                      accessed using the ``body`` variable. It conatins a string
+                      representation of the message payload in the format
+                      specified by the ``output_payload_format`` field. If the
+                      ``input_payload_format`` field is not set, the ``body``
+                      variable contains the same message payload bytes that were
+                      published.
 
                     Additionally, the following CEL extension functions are
                     provided for use in this CEL expression:
@@ -420,40 +434,31 @@ class Pipeline(proto.Message):
 
                       - Converts a CEL list of CEL maps to a single CEL map
 
-                    - toDestinationPayloadFormat():
-                      message.data.toDestinationPayloadFormat() -> string or
-                      bytes
-
-                      - Converts the message data to the destination payload
-                        format specified in
-                        Pipeline.Destination.output_payload_format
-                      - This function is meant to be applied to the message.data
-                        field.
-                      - If the destination payload format is not set, the
-                        function will return the message data unchanged.
-
                     - toCloudEventJsonWithPayloadFormat:
                       message.toCloudEventJsonWithPayloadFormat() -> map
 
                       - Converts a message to the corresponding structure of
-                        JSON format for CloudEvents
-                      - This function applies toDestinationPayloadFormat() to
-                        the message data. It also sets the corresponding
-                        datacontenttype of the CloudEvent, as indicated by
-                        Pipeline.Destination.output_payload_format. If no
-                        output_payload_format is set it will use the existing
-                        datacontenttype on the CloudEvent if present, else leave
-                        datacontenttype absent.
+                        JSON format for CloudEvents.
+                      - It converts ``data`` to destination payload format
+                        specified in ``output_payload_format``. If
+                        ``output_payload_format`` is not set, the data will
+                        remain unchanged.
+                      - It also sets the corresponding datacontenttype of the
+                        CloudEvent, as indicated by ``output_payload_format``.
+                        If no ``output_payload_format`` is set it will use the
+                        value of the "datacontenttype" attribute on the
+                        CloudEvent if present, else remove "datacontenttype"
+                        attribute.
                       - This function expects that the content of the message
                         will adhere to the standard CloudEvent format. If it
-                        doesn’t then this function will fail.
+                        doesn't then this function will fail.
                       - The result is a CEL map that corresponds to the JSON
                         representation of the CloudEvent. To convert that data
                         to a JSON string it can be chained with the toJsonString
                         function.
 
                     The Pipeline expects that the message it receives adheres to
-                    the standard CloudEvent format. If it doesn’t then the
+                    the standard CloudEvent format. If it doesn't then the
                     outgoing message request may fail with a persistent error.
             """
 
@@ -479,8 +484,8 @@ class Pipeline(proto.Message):
             Attributes:
                 google_oidc (google.cloud.eventarc_v1.types.Pipeline.Destination.AuthenticationConfig.OidcToken):
                     Optional. This authenticate method will apply
-                    Google OIDC tokens signed by a GCP service
-                    account to the requests.
+                    Google OIDC tokens signed by a Google Cloud
+                    service account to the requests.
 
                     This field is a member of `oneof`_ ``authentication_method_descriptor``.
                 oauth_token (google.cloud.eventarc_v1.types.Pipeline.Destination.AuthenticationConfig.OAuthToken):
@@ -497,20 +502,23 @@ class Pipeline(proto.Message):
 
             class OidcToken(proto.Message):
                 r"""Represents a config used to authenticate with a Google OIDC
-                token using a GCP service account. Use this authentication
-                method to invoke your Cloud Run and Cloud Functions destinations
-                or HTTP endpoints that support Google OIDC.
+                token using a Google Cloud service account. Use this
+                authentication method to invoke your Cloud Run and Cloud
+                Functions destinations or HTTP endpoints that support Google
+                OIDC.
 
                 Attributes:
                     service_account (str):
-                        Required. Service account email used to generate the OIDC
-                        Token. The principal who calls this API must have
-                        iam.serviceAccounts.actAs permission in the service account.
-                        See
-                        https://cloud.google.com/iam/docs/understanding-service-accounts?hl=en#sa_common
-                        for more information. Eventarc service agents must have
-                        roles/roles/iam.serviceAccountTokenCreator role to allow the
-                        Pipeline to create OpenID tokens for authenticated requests.
+                        Required. Service account email used to
+                        generate the OIDC Token. The principal who calls
+                        this API must have iam.serviceAccounts.actAs
+                        permission in the service account. See
+                        https://cloud.google.com/iam/docs/understanding-service-accounts
+                        for more information. Eventarc service agents
+                        must have
+                        roles/roles/iam.serviceAccountTokenCreator role
+                        to allow the Pipeline to create OpenID tokens
+                        for authenticated requests.
                     audience (str):
                         Optional. Audience to be used to generate the
                         OIDC Token. The audience claim identifies the
@@ -540,7 +548,7 @@ class Pipeline(proto.Message):
                         The principal who calls this API must have
                         iam.serviceAccounts.actAs permission in the service account.
                         See
-                        https://cloud.google.com/iam/docs/understanding-service-accounts?hl=en#sa_common
+                        https://cloud.google.com/iam/docs/understanding-service-accounts
                         for more information. Eventarc service agents must have
                         roles/roles/iam.serviceAccountTokenCreator role to allow
                         Pipeline to create OAuth2 tokens for authenticated requests.
@@ -708,7 +716,7 @@ class Pipeline(proto.Message):
                         datacontenttype absent.
                       - This function expects that the content of the message
                         will adhere to the standard CloudEvent format. If it
-                        doesn’t then this function will fail.
+                        doesn't then this function will fail.
                       - The result is a CEL map that corresponds to the JSON
                         representation of the CloudEvent. To convert that data
                         to a JSON string it can be chained with the toJsonString
@@ -834,6 +842,10 @@ class Pipeline(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=99,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=14,
     )
 
 
