@@ -665,7 +665,7 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
     session.install(
         "--upgrade",
         "-e",
-        "git+https://github.com/googleapis/python-bigquery-storage.git#egg=google-cloud-bigquery-storage",
+        "git+https://github.com/googleapis/google-cloud-python.git#egg=google-cloud-bigquery-storage&subdirectory=packages/google-cloud-bigquery-storage",
     )
     already_installed.add("google-cloud-bigquery-storage")
     session.install(
