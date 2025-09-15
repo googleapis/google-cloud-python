@@ -25,9 +25,11 @@ import tempfile
 import textwrap
 import types
 from typing import Any, cast, Optional, Sequence, Tuple, TYPE_CHECKING
+import warnings
 
 import requests
 
+import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
 import bigframes.functions.function_template as bff_template
 
@@ -482,10 +484,16 @@ class FunctionClient:
                 function.service_config.max_instance_count = max_instance_count
             if vpc_connector is not None:
                 function.service_config.vpc_connector = vpc_connector
+                if vpc_connector_egress_settings is None:
+                    msg = bfe.format_message(
+                        "The 'vpc_connector_egress_settings' was not specified. Defaulting to 'private-ranges-only'.",
+                    )
+                    warnings.warn(msg, category=UserWarning)
+                    vpc_connector_egress_settings = "private-ranges-only"
                 if vpc_connector_egress_settings not in _VPC_EGRESS_SETTINGS_MAP:
                     raise bf_formatting.create_exception_with_feedback_link(
                         ValueError,
-                        f"'{vpc_connector_egress_settings}' not one of the supported vpc egress settings values: {list(_VPC_EGRESS_SETTINGS_MAP)}",
+                        f"'{vpc_connector_egress_settings}' is not one of the supported vpc egress settings values: {list(_VPC_EGRESS_SETTINGS_MAP)}",
                     )
                 function.service_config.vpc_connector_egress_settings = cast(
                     functions_v2.ServiceConfig.VpcConnectorEgressSettings,

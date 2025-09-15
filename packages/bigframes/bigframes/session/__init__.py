@@ -1509,9 +1509,9 @@ class Session(
         cloud_function_timeout: Optional[int] = 600,
         cloud_function_max_instances: Optional[int] = None,
         cloud_function_vpc_connector: Optional[str] = None,
-        cloud_function_vpc_connector_egress_settings: Literal[
-            "all", "private-ranges-only", "unspecified"
-        ] = "private-ranges-only",
+        cloud_function_vpc_connector_egress_settings: Optional[
+            Literal["all", "private-ranges-only", "unspecified"]
+        ] = None,
         cloud_function_memory_mib: Optional[int] = 1024,
         cloud_function_ingress_settings: Literal[
             "all", "internal-only", "internal-and-gclb"

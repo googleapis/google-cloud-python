@@ -1512,6 +1512,46 @@ def test_remote_function_via_session_vpc(scalars_dfs):
         )
 
 
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_no_vpc_connector(session):
+    def foo(x):
+        return x
+
+    with pytest.raises(
+        ValueError,
+        match="^cloud_function_vpc_connector must be specified before cloud_function_vpc_connector_egress_settings",
+    ):
+        session.remote_function(
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+            cloud_function_vpc_connector=None,
+            cloud_function_vpc_connector_egress_settings="all",
+            cloud_function_ingress_settings="all",
+        )(foo)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_wrong_vpc_egress_value(session):
+    def foo(x):
+        return x
+
+    with pytest.raises(
+        ValueError,
+        match="^'wrong-egress-value' is not one of the supported vpc egress settings values:",
+    ):
+        session.remote_function(
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+            cloud_function_vpc_connector="dummy-value",
+            cloud_function_vpc_connector_egress_settings="wrong-egress-value",
+            cloud_function_ingress_settings="all",
+        )(foo)
+
+
 @pytest.mark.parametrize(
     ("max_batching_rows"),
     [

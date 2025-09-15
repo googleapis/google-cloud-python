@@ -245,9 +245,9 @@ class FunctionSession:
         cloud_function_timeout: Optional[int] = 600,
         cloud_function_max_instances: Optional[int] = None,
         cloud_function_vpc_connector: Optional[str] = None,
-        cloud_function_vpc_connector_egress_settings: Literal[
-            "all", "private-ranges-only", "unspecified"
-        ] = "private-ranges-only",
+        cloud_function_vpc_connector_egress_settings: Optional[
+            Literal["all", "private-ranges-only", "unspecified"]
+        ] = None,
         cloud_function_memory_mib: Optional[int] = 1024,
         cloud_function_ingress_settings: Literal[
             "all", "internal-only", "internal-and-gclb"
@@ -512,6 +512,16 @@ class FunctionSession:
                 ValueError,
                 "cloud_function_docker_repository must be specified with cloud_function_kms_key_name."
                 " For more details see https://cloud.google.com/functions/docs/securing/cmek#before_you_begin.",
+            )
+
+        # A VPC connector is required to specify VPC egress settings.
+        if (
+            cloud_function_vpc_connector_egress_settings is not None
+            and cloud_function_vpc_connector is None
+        ):
+            raise bf_formatting.create_exception_with_feedback_link(
+                ValueError,
+                "cloud_function_vpc_connector must be specified before cloud_function_vpc_connector_egress_settings.",
             )
 
         if cloud_function_ingress_settings is None:
