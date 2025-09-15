@@ -43,7 +43,7 @@ repos:
         exclude: "^third_party"
         args: ["--check-untyped-defs", "--explicit-package-bases", "--ignore-missing-imports"]
 -   repo: https://github.com/biomejs/pre-commit
-    rev: v2.0.2
+    rev: v2.2.4
     hooks:
     -   id: biome-check
         files: '\.(js|css)$'
