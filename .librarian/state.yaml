@@ -1,7 +1,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
 libraries:
     - id: google-cloud-dlp
-      version: 3.31.0
+      version: 3.32.0
       last_generated_commit: f8776fec04e336527ba7279d960105533a1c4e21
       apis:
         - path: google/privacy/dlp/v2
