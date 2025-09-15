@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.4.0](https://github.com/googleapis/python-storage/compare/v3.3.1...v3.4.0) (2025-09-15)
+
+
+### Features
+
+* **experimental:** Add async grpc client ([#1537](https://github.com/googleapis/python-storage/issues/1537)) ([ac57b8d](https://github.com/googleapis/python-storage/commit/ac57b8d819a49aef0ed0cb5bb630bf11012f43e3))
+* **experimental:** Add grpc client ([#1533](https://github.com/googleapis/python-storage/issues/1533)) ([5674587](https://github.com/googleapis/python-storage/commit/5674587f2aa347ec2787f2bc1e847eaa294bc1ca))
+
+
+### Bug Fixes
+
+* GAPIC generation failed with 'Directory not empty' ([#1542](https://github.com/googleapis/python-storage/issues/1542)) ([c80d820](https://github.com/googleapis/python-storage/commit/c80d8207a8661b84c56cd66bb34de7b5704675b8))
+
 ## [3.3.1](https://github.com/googleapis/python-storage/compare/v3.3.0...v3.3.1) (2025-08-25)
 
 
