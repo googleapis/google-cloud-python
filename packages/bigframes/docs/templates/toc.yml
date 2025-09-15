@@ -218,6 +218,8 @@
   - items:
     - name: BigQuery built-in functions
       uid: bigframes.bigquery
+    - name: BigQuery AI Functions
+      uid: bigframes.bigquery.ai
     name: bigframes.bigquery
   - items:
     - name: GeoSeries

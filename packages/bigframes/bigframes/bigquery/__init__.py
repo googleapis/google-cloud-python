@@ -18,6 +18,7 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions. "
 
 import sys
 
+from bigframes.bigquery._operations import ai
 from bigframes.bigquery._operations.approx_agg import approx_top_count
 from bigframes.bigquery._operations.array import (
     array_agg,
@@ -98,7 +99,7 @@ _functions = [
     struct,
 ]
 
-__all__ = [f.__name__ for f in _functions]
+__all__ = [f.__name__ for f in _functions] + ["ai"]
 
 _module = sys.modules[__name__]
 for f in _functions:

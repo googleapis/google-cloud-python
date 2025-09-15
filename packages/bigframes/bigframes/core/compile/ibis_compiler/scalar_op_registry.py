@@ -17,8 +17,10 @@ from __future__ import annotations
 import functools
 import typing
 
+from bigframes_vendored import ibis
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
+import bigframes_vendored.ibis.expr.operations.ai_ops as ai_ops
 import bigframes_vendored.ibis.expr.operations.generic as ibis_generic
 import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
 import bigframes_vendored.ibis.expr.types as ibis_types
@@ -1961,6 +1963,30 @@ def struct_op_impl(
         data[op.column_names[i]] = value
 
     return ibis_types.struct(data)
+
+
+@scalar_op_compiler.register_nary_op(ops.AIGenerateBool, pass_op=True)
+def ai_generate_bool(
+    *values: ibis_types.Value, op: ops.AIGenerateBool
+) -> ibis_types.StructValue:
+
+    prompt: dict[str, ibis_types.Value | str] = {}
+    column_ref_idx = 0
+
+    for idx, elem in enumerate(op.prompt_context):
+        if elem is None:
+            prompt[f"_field_{idx + 1}"] = values[column_ref_idx]
+            column_ref_idx += 1
+        else:
+            prompt[f"_field_{idx + 1}"] = elem
+
+    return ai_ops.AIGenerateBool(
+        ibis.struct(prompt),  # type: ignore
+        op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.request_type.upper(),  # type: ignore
+        op.model_params,  # type: ignore
+    ).to_expr()
 
 
 @scalar_op_compiler.register_nary_op(ops.RowKey, pass_op=True)
