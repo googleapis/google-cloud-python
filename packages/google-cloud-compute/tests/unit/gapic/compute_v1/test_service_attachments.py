@@ -1745,6 +1745,8 @@ def test_get_rest_required_fields(request_type=compute.GetServiceAttachmentReque
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("show_nat_ips",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1804,7 +1806,7 @@ def test_get_rest_unset_required_fields():
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("showNatIps",))
         & set(
             (
                 "project",
@@ -4394,6 +4396,7 @@ def test_insert_rest_call_success(request_type):
             {
                 "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "propagated_connection_count": 2878,
                 "psc_connection_id": 1793,
                 "status": "status_value",
@@ -4815,6 +4818,7 @@ def test_patch_rest_call_success(request_type):
             {
                 "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "propagated_connection_count": 2878,
                 "psc_connection_id": 1793,
                 "status": "status_value",
