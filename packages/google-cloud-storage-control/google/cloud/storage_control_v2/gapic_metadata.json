@@ -55,6 +55,11 @@
                 "get_folder_intelligence_config"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "GetManagedFolder": {
               "methods": [
                 "get_managed_folder"
@@ -103,6 +108,16 @@
             "ResumeAnywhereCache": {
               "methods": [
                 "resume_anywhere_cache"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             },
             "UpdateAnywhereCache": {
@@ -175,6 +190,11 @@
                 "get_folder_intelligence_config"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "GetManagedFolder": {
               "methods": [
                 "get_managed_folder"
@@ -223,6 +243,16 @@
             "ResumeAnywhereCache": {
               "methods": [
                 "resume_anywhere_cache"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             },
             "UpdateAnywhereCache": {
@@ -295,6 +325,11 @@
                 "get_folder_intelligence_config"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "GetManagedFolder": {
               "methods": [
                 "get_managed_folder"
@@ -343,6 +378,16 @@
             "ResumeAnywhereCache": {
               "methods": [
                 "resume_anywhere_cache"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             },
             "UpdateAnywhereCache": {

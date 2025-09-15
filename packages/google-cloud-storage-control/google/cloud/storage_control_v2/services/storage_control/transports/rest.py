@@ -24,6 +24,8 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
@@ -138,6 +140,14 @@ class StorageControlRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_iam_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_iam_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_managed_folder(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -215,6 +225,22 @@ class StorageControlRestInterceptor:
                 return request, metadata
 
             def post_resume_anywhere_cache(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_set_iam_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_iam_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_test_iam_permissions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -990,6 +1016,24 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
                 )
             return resp
 
+    class _GetIamPolicy(
+        _BaseStorageControlRestTransport._BaseGetIamPolicy, StorageControlRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.GetIamPolicy")
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            raise NotImplementedError(
+                "Method GetIamPolicy is not available over REST transport"
+            )
+
     class _GetManagedFolder(
         _BaseStorageControlRestTransport._BaseGetManagedFolder, StorageControlRestStub
     ):
@@ -1462,6 +1506,42 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         ) -> storage_control.AnywhereCache:
             raise NotImplementedError(
                 "Method ResumeAnywhereCache is not available over REST transport"
+            )
+
+    class _SetIamPolicy(
+        _BaseStorageControlRestTransport._BaseSetIamPolicy, StorageControlRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.SetIamPolicy")
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            raise NotImplementedError(
+                "Method SetIamPolicy is not available over REST transport"
+            )
+
+    class _TestIamPermissions(
+        _BaseStorageControlRestTransport._BaseTestIamPermissions, StorageControlRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.TestIamPermissions")
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
+            raise NotImplementedError(
+                "Method TestIamPermissions is not available over REST transport"
             )
 
     class _UpdateAnywhereCache(
@@ -2079,6 +2159,14 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         return self._GetFolderIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_managed_folder(
         self,
     ) -> Callable[
@@ -2179,6 +2267,25 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumeAnywhereCache(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_anywhere_cache(
