@@ -20,19 +20,16 @@ import sqlglot.expressions as sge
 from bigframes import dtypes
 from bigframes import operations as ops
 import bigframes.core.compile.sqlglot.expressions.constants as constants
-from bigframes.core.compile.sqlglot.expressions.op_registration import OpRegistration
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
+import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
-BINARY_OP_REGISTRATION = OpRegistration()
-
-
-def compile(op: ops.BinaryOp, left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    return BINARY_OP_REGISTRATION[op](op, left, right)
-
+register_binary_op = scalar_compiler.scalar_op_compiler.register_binary_op
 
 # TODO: add parenthesize for operators
-@BINARY_OP_REGISTRATION.register(ops.add_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+
+
+@register_binary_op(ops.add_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     if left.dtype == dtypes.STRING_DTYPE and right.dtype == dtypes.STRING_DTYPE:
         # String addition
         return sge.Concat(expressions=[left.expr, right.expr])
@@ -66,15 +63,15 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     )
 
 
-@BINARY_OP_REGISTRATION.register(ops.eq_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.eq_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.EQ(this=left_expr, expression=right_expr)
 
 
-@BINARY_OP_REGISTRATION.register(ops.eq_null_match_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.eq_null_match_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = left.expr
     if right.dtype != dtypes.BOOL_DTYPE:
         left_expr = _coerce_bool_to_int(left)
@@ -93,8 +90,8 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.EQ(this=left_coalesce, expression=right_coalesce)
 
 
-@BINARY_OP_REGISTRATION.register(ops.div_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.div_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
 
@@ -105,8 +102,8 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
         return result
 
 
-@BINARY_OP_REGISTRATION.register(ops.floordiv_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.floordiv_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
 
@@ -138,41 +135,41 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return result
 
 
-@BINARY_OP_REGISTRATION.register(ops.ge_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.ge_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.GTE(this=left_expr, expression=right_expr)
 
 
-@BINARY_OP_REGISTRATION.register(ops.gt_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.gt_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.GT(this=left_expr, expression=right_expr)
 
 
-@BINARY_OP_REGISTRATION.register(ops.JSONSet)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.JSONSet, pass_op=True)
+def _(left: TypedExpr, right: TypedExpr, op) -> sge.Expression:
     return sge.func("JSON_SET", left.expr, sge.convert(op.json_path), right.expr)
 
 
-@BINARY_OP_REGISTRATION.register(ops.lt_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.lt_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.LT(this=left_expr, expression=right_expr)
 
 
-@BINARY_OP_REGISTRATION.register(ops.le_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.le_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.LTE(this=left_expr, expression=right_expr)
 
 
-@BINARY_OP_REGISTRATION.register(ops.mul_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.mul_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
 
@@ -186,20 +183,20 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
         return result
 
 
-@BINARY_OP_REGISTRATION.register(ops.ne_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.ne_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.NEQ(this=left_expr, expression=right_expr)
 
 
-@BINARY_OP_REGISTRATION.register(ops.obj_make_ref_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.obj_make_ref_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.func("OBJ.MAKE_REF", left.expr, right.expr)
 
 
-@BINARY_OP_REGISTRATION.register(ops.sub_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+@register_binary_op(ops.sub_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     if dtypes.is_numeric(left.dtype) and dtypes.is_numeric(right.dtype):
         left_expr = _coerce_bool_to_int(left)
         right_expr = _coerce_bool_to_int(right)

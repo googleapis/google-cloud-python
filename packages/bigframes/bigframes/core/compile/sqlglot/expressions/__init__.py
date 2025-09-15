@@ -11,3 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""Expression implementations for the SQLGlot-based compiler.
+
+This directory structure should reflect the same layout as the
+`bigframes/operations` directory where the expressions are defined.
+
+Prefer a few ops per file to keep file sizes manageable for text editors and LLMs.
+"""

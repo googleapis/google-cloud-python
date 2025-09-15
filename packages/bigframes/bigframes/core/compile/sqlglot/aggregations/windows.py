@@ -51,7 +51,10 @@ def apply_window_if_present(
     order = sge.Order(expressions=order_by) if order_by else None
 
     group_by = (
-        [scalar_compiler.compile_scalar_expression(key) for key in window.grouping_keys]
+        [
+            scalar_compiler.scalar_op_compiler.compile_expression(key)
+            for key in window.grouping_keys
+        ]
         if window.grouping_keys
         else None
     )
@@ -101,7 +104,7 @@ def get_window_order_by(
 
     order_by = []
     for ordering_spec_item in ordering:
-        expr = scalar_compiler.compile_scalar_expression(
+        expr = scalar_compiler.scalar_op_compiler.compile_expression(
             ordering_spec_item.scalar_expression
         )
         desc = not ordering_spec_item.direction.is_ascending

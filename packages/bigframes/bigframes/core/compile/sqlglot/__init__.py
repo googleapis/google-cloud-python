@@ -14,5 +14,7 @@
 from __future__ import annotations
 
 from bigframes.core.compile.sqlglot.compiler import SQLGlotCompiler
+import bigframes.core.compile.sqlglot.expressions.binary_compiler  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.unary_compiler  # noqa: F401
 
 __all__ = ["SQLGlotCompiler"]
