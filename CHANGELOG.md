@@ -84,7 +84,7 @@ Changelogs
 - [google-cloud-dialogflow-cx==1.42.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dialogflow-cx/CHANGELOG.md)
 - [google-cloud-dialogflow==2.41.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dialogflow/CHANGELOG.md)
 - [google-cloud-discoveryengine==0.13.11](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-discoveryengine/CHANGELOG.md)
-- [google-cloud-dlp==3.31.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dlp/CHANGELOG.md)
+- [google-cloud-dlp==3.32.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dlp/CHANGELOG.md)
 - [google-cloud-dms==1.12.4](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dms/CHANGELOG.md)
 - [google-cloud-documentai==3.5.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-documentai/CHANGELOG.md)
 - [google-cloud-domains==1.10.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-domains/CHANGELOG.md)
