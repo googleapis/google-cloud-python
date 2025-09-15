@@ -37,6 +37,7 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    TYPE_CHECKING,
     Union,
 )
 import warnings
@@ -68,6 +69,9 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 from bigframes.session import dry_runs, execution_spec
 from bigframes.session import executor as executors
+
+if TYPE_CHECKING:
+    from bigframes.session.executor import ExecuteResult
 
 # Type constraint for wherever column labels are used
 Label = typing.Hashable
@@ -404,13 +408,15 @@ class Block:
         col_level: Union[str, int] = 0,
         col_fill: typing.Hashable = "",
         allow_duplicates: bool = False,
+        replacement: Optional[bigframes.enums.DefaultIndexKind] = None,
     ) -> Block:
         """Reset the index of the block, promoting the old index to a value column.
 
         Arguments:
             level: the label or index level of the index levels to remove.
             name: this is the column id for the new value id derived from the old index
-            allow_duplicates:
+            allow_duplicates: if false, duplicate col labels will result in error
+            replacement: if not null, will override default index replacement type
 
         Returns:
             A new Block because dropping index columns can break references
@@ -425,23 +431,19 @@ class Block:
             level_ids = self.index_columns
 
         expr = self._expr
+        replacement_idx_type = replacement or self.session._default_index_type
         if set(self.index_columns) > set(level_ids):
             new_index_cols = [col for col in self.index_columns if col not in level_ids]
             new_index_labels = [self.col_id_to_index_name[id] for id in new_index_cols]
-        elif (
-            self.session._default_index_type
-            == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
-        ):
+        elif replacement_idx_type == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
             expr, new_index_col_id = expr.promote_offsets()
             new_index_cols = [new_index_col_id]
             new_index_labels = [None]
-        elif self.session._default_index_type == bigframes.enums.DefaultIndexKind.NULL:
+        elif replacement_idx_type == bigframes.enums.DefaultIndexKind.NULL:
             new_index_cols = []
             new_index_labels = []
         else:
-            raise ValueError(
-                f"Unrecognized default index kind: {self.session._default_index_type}"
-            )
+            raise ValueError(f"Unrecognized default index kind: {replacement_idx_type}")
 
         if drop:
             # Even though the index might be part of the ordering, keep that
@@ -630,15 +632,17 @@ class Block:
             max_download_size, sampling_method, random_state
         )
 
-        df, query_job = self._materialize_local(
+        ex_result = self._materialize_local(
             materialize_options=MaterializationOptions(
                 downsampling=sampling,
                 allow_large_results=allow_large_results,
                 ordered=ordered,
             )
         )
+        df = ex_result.to_pandas()
+        df = self._copy_index_to_pandas(df)
         df.set_axis(self.column_labels, axis=1, copy=False)
-        return df, query_job
+        return df, ex_result.query_job
 
     def _get_sampling_option(
         self,
@@ -746,7 +750,7 @@ class Block:
 
     def _materialize_local(
         self, materialize_options: MaterializationOptions = MaterializationOptions()
-    ) -> Tuple[pd.DataFrame, Optional[bigquery.QueryJob]]:
+    ) -> ExecuteResult:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
         under_10gb = (
@@ -815,8 +819,7 @@ class Block:
                 MaterializationOptions(ordered=materialize_options.ordered)
             )
         else:
-            df = execute_result.to_pandas()
-            return self._copy_index_to_pandas(df), execute_result.query_job
+            return execute_result
 
     def _downsample(
         self, total_rows: int, sampling_method: str, fraction: float, random_state

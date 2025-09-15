@@ -67,6 +67,7 @@ import bigframes.core.groupby as groupby
 import bigframes.core.guid
 import bigframes.core.indexers as indexers
 import bigframes.core.indexes as indexes
+import bigframes.core.interchange
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
@@ -1646,6 +1647,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             original_row_index=pandas.Index([None]), single_row_mode=True
         )
         return bigframes.pandas.Series(block)
+
+    def __dataframe__(
+        self, nan_as_null: bool = False, allow_copy: bool = True
+    ) -> bigframes.core.interchange.InterchangeDataFrame:
+        return bigframes.core.interchange.InterchangeDataFrame._from_bigframes(self)
 
     def to_arrow(
         self,
