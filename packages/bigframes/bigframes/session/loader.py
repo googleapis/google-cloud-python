@@ -42,6 +42,7 @@ import google.api_core.exceptions
 from google.cloud import bigquery_storage_v1
 import google.cloud.bigquery
 import google.cloud.bigquery as bigquery
+import google.cloud.bigquery.table
 from google.cloud.bigquery_storage_v1 import types as bq_storage_types
 import pandas
 import pyarrow as pa
@@ -1004,7 +1005,7 @@ class GbqDataLoader:
                 configuration=configuration,
             )
             query_job_for_metrics = query_job
-            rows = None
+            rows: Optional[google.cloud.bigquery.table.RowIterator] = None
         else:
             job_config = typing.cast(
                 bigquery.QueryJobConfig,
@@ -1037,21 +1038,14 @@ class GbqDataLoader:
                 query_job=query_job_for_metrics, row_iterator=rows
             )
 
-        # It's possible that there's no job and corresponding destination table.
-        # In this case, we must create a local node.
+        # It's possible that there's no job and therefore no corresponding
+        # destination table. In this case, we must create a local node.
         #
         # TODO(b/420984164): Tune the threshold for which we download to
         # local node. Likely there are a wide range of sizes in which it
         # makes sense to download the results beyond the first page, even if
         # there is a job and destination table available.
-        if (
-            rows is not None
-            and destination is None
-            and (
-                query_job_for_metrics is None
-                or query_job_for_metrics.statement_type == "SELECT"
-            )
-        ):
+        if query_job_for_metrics is None and rows is not None:
             return bf_read_gbq_query.create_dataframe_from_row_iterator(
                 rows,
                 session=self._session,
@@ -1059,14 +1053,35 @@ class GbqDataLoader:
                 columns=columns,
             )
 
-        # If there was no destination table and we've made it this far, that
-        # means the query must have been DDL or DML. Return some job metadata,
-        # instead.
-        if not destination:
+        # We already checked rows, so if there's no destination table, then
+        # there are no results to return.
+        if destination is None:
             return bf_read_gbq_query.create_dataframe_from_query_job_stats(
                 query_job_for_metrics,
                 session=self._session,
             )
+
+        # If the query was DDL or DML, return some job metadata. See
+        # https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.statement_type
+        # for possible statement types. Note that destination table does exist
+        # for some DDL operations such as CREATE VIEW, but we don't want to
+        # read from that. See internal issue b/444282709.
+        if (
+            query_job_for_metrics is not None
+            and not bf_read_gbq_query.should_return_query_results(query_job_for_metrics)
+        ):
+            return bf_read_gbq_query.create_dataframe_from_query_job_stats(
+                query_job_for_metrics,
+                session=self._session,
+            )
+
+        # Speed up counts by getting counts from result metadata.
+        if rows is not None:
+            n_rows = rows.total_rows
+        elif query_job_for_metrics is not None:
+            n_rows = query_job_for_metrics.result().total_rows
+        else:
+            n_rows = None
 
         return self.read_gbq_table(
             f"{destination.project}.{destination.dataset_id}.{destination.table_id}",
@@ -1074,7 +1089,7 @@ class GbqDataLoader:
             columns=columns,
             use_cache=configuration["query"]["useQueryCache"],
             force_total_order=force_total_order,
-            n_rows=query_job.result().total_rows,
+            n_rows=n_rows,
             # max_results and filters are omitted because they are already
             # handled by to_query(), above.
         )

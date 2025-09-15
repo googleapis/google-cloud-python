@@ -430,18 +430,63 @@ def test_read_gbq_w_max_results(
     assert bf_result.shape[0] == max_results
 
 
-def test_read_gbq_w_script_no_select(session, dataset_id: str):
-    ddl = f"""
-    CREATE TABLE `{dataset_id}.test_read_gbq_w_ddl` (
-        `col_a` INT64,
-        `col_b` STRING
-    );
+@pytest.mark.parametrize(
+    ("sql_template", "expected_statement_type"),
+    (
+        pytest.param(
+            """
+            CREATE OR REPLACE TABLE `{dataset_id}.test_read_gbq_w_ddl` (
+                `col_a` INT64,
+                `col_b` STRING
+            );
+            """,
+            "CREATE_TABLE",
+            id="ddl-create-table",
+        ),
+        pytest.param(
+            # From https://cloud.google.com/bigquery/docs/boosted-tree-classifier-tutorial
+            """
+            CREATE OR REPLACE VIEW `{dataset_id}.test_read_gbq_w_create_view`
+            AS
+            SELECT
+              age,
+              workclass,
+              marital_status,
+              education_num,
+              occupation,
+              hours_per_week,
+              income_bracket,
+              CASE
+                WHEN MOD(functional_weight, 10) < 8 THEN 'training'
+                WHEN MOD(functional_weight, 10) = 8 THEN 'evaluation'
+                WHEN MOD(functional_weight, 10) = 9 THEN 'prediction'
+              END AS dataframe
+            FROM
+              `bigquery-public-data.ml_datasets.census_adult_income`;
+            """,
+            "CREATE_VIEW",
+            id="ddl-create-view",
+        ),
+        pytest.param(
+            """
+            CREATE OR REPLACE TABLE `{dataset_id}.test_read_gbq_w_dml` (
+                `col_a` INT64,
+                `col_b` STRING
+            );
 
-    INSERT INTO `{dataset_id}.test_read_gbq_w_ddl`
-    VALUES (123, 'hello world');
-    """
-    df = session.read_gbq(ddl).to_pandas()
-    assert df["statement_type"][0] == "SCRIPT"
+            INSERT INTO `{dataset_id}.test_read_gbq_w_dml`
+            VALUES (123, 'hello world');
+            """,
+            "SCRIPT",
+            id="dml",
+        ),
+    ),
+)
+def test_read_gbq_w_script_no_select(
+    session, dataset_id: str, sql_template: str, expected_statement_type: str
+):
+    df = session.read_gbq(sql_template.format(dataset_id=dataset_id)).to_pandas()
+    assert df["statement_type"][0] == expected_statement_type
 
 
 def test_read_gbq_twice_with_same_timestamp(session, penguins_table_id):

@@ -32,6 +32,28 @@ import bigframes.enums
 import bigframes.session
 
 
+def should_return_query_results(query_job: bigquery.QueryJob) -> bool:
+    """Returns True if query_job is the kind of query we expect results from.
+
+    If the query was DDL or DML, return some job metadata. See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.statement_type
+    for possible statement types. Note that destination table does exist
+    for some DDL operations such as CREATE VIEW, but we don't want to
+    read from that. See internal issue b/444282709.
+    """
+
+    if query_job.statement_type == "SELECT":
+        return True
+
+    if query_job.statement_type == "SCRIPT":
+        # Try to determine if the last statement is a SELECT. Alternatively, we
+        # could do a jobs.list request using query_job as the parent job and
+        # try to determine the statement type of the last child job.
+        return query_job.destination != query_job.ddl_target_table
+
+    return False
+
+
 def create_dataframe_from_query_job_stats(
     query_job: Optional[bigquery.QueryJob], *, session: bigframes.session.Session
 ) -> dataframe.DataFrame:
