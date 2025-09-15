@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.31.0...google-cloud-dlp-v3.32.0) (2025-09-15)
+
+
+### Features
+
+* [google-cloud-dlp] add LocationSupport, Domain, DocumentFallbackLocation([09f78e3ca85671594e20c3182038238e58d3d8cb](https://github.com/googleapis/google-cloud-python/commit/09f78e3ca85671594e20c3182038238e58d3d8cb))
+
+
+### Documentation
+
+* minor doc revision ([09f78e3ca85671594e20c3182038238e58d3d8cb](https://github.com/googleapis/google-cloud-python/commit/09f78e3ca85671594e20c3182038238e58d3d8cb))
+
 ## [3.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.30.0...google-cloud-dlp-v3.31.0) (2025-06-19)
 
 
