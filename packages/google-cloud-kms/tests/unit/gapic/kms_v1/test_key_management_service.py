@@ -11365,6 +11365,263 @@ async def test_mac_verify_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.DecapsulateRequest,
+        dict,
+    ],
+)
+def test_decapsulate(request_type, transport: str = "grpc"):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.DecapsulateResponse(
+            name="name_value",
+            shared_secret=b"shared_secret_blob",
+            shared_secret_crc32c=1979,
+            verified_ciphertext_crc32c=True,
+            protection_level=resources.ProtectionLevel.SOFTWARE,
+        )
+        response = client.decapsulate(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.DecapsulateRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.DecapsulateResponse)
+    assert response.name == "name_value"
+    assert response.shared_secret == b"shared_secret_blob"
+    assert response.shared_secret_crc32c == 1979
+    assert response.verified_ciphertext_crc32c is True
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+
+
+def test_decapsulate_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.DecapsulateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.decapsulate(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DecapsulateRequest(
+            name="name_value",
+        )
+
+
+def test_decapsulate_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = KeyManagementServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.decapsulate in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.decapsulate] = mock_rpc
+        request = {}
+        client.decapsulate(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.decapsulate(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_decapsulate_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = KeyManagementServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.decapsulate
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.decapsulate
+        ] = mock_rpc
+
+        request = {}
+        await client.decapsulate(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.decapsulate(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_decapsulate_async(
+    transport: str = "grpc_asyncio", request_type=service.DecapsulateRequest
+):
+    client = KeyManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.DecapsulateResponse(
+                name="name_value",
+                shared_secret=b"shared_secret_blob",
+                shared_secret_crc32c=1979,
+                verified_ciphertext_crc32c=True,
+                protection_level=resources.ProtectionLevel.SOFTWARE,
+            )
+        )
+        response = await client.decapsulate(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.DecapsulateRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.DecapsulateResponse)
+    assert response.name == "name_value"
+    assert response.shared_secret == b"shared_secret_blob"
+    assert response.shared_secret_crc32c == 1979
+    assert response.verified_ciphertext_crc32c is True
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+
+
+@pytest.mark.asyncio
+async def test_decapsulate_async_from_dict():
+    await test_decapsulate_async(request_type=dict)
+
+
+def test_decapsulate_field_headers():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DecapsulateRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
+        call.return_value = service.DecapsulateResponse()
+        client.decapsulate(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_decapsulate_field_headers_async():
+    client = KeyManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DecapsulateRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.DecapsulateResponse()
+        )
+        await client.decapsulate(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.GenerateRandomBytesRequest,
         dict,
     ],
@@ -17040,6 +17297,137 @@ def test_mac_verify_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_decapsulate_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = KeyManagementServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.decapsulate in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.decapsulate] = mock_rpc
+
+        request = {}
+        client.decapsulate(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.decapsulate(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_decapsulate_rest_required_fields(request_type=service.DecapsulateRequest):
+    transport_class = transports.KeyManagementServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["ciphertext"] = b""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).decapsulate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["ciphertext"] = b"ciphertext_blob"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).decapsulate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "ciphertext" in jsonified_request
+    assert jsonified_request["ciphertext"] == b"ciphertext_blob"
+
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.DecapsulateResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = service.DecapsulateResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.decapsulate(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_decapsulate_rest_unset_required_fields():
+    transport = transports.KeyManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.decapsulate._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "ciphertext",
+            )
+        )
+    )
+
+
 def test_generate_random_bytes_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -17836,6 +18224,27 @@ def test_mac_verify_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.MacVerifyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_decapsulate_empty_call_grpc():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
+        call.return_value = service.DecapsulateResponse()
+        client.decapsulate(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DecapsulateRequest()
 
         assert args[0] == request_msg
 
@@ -18731,6 +19140,37 @@ async def test_mac_verify_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.MacVerifyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_decapsulate_empty_call_grpc_asyncio():
+    client = KeyManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.DecapsulateResponse(
+                name="name_value",
+                shared_secret=b"shared_secret_blob",
+                shared_secret_crc32c=1979,
+                verified_ciphertext_crc32c=True,
+                protection_level=resources.ProtectionLevel.SOFTWARE,
+            )
+        )
+        await client.decapsulate(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DecapsulateRequest()
 
         assert args[0] == request_msg
 
@@ -23133,6 +23573,143 @@ def test_mac_verify_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_decapsulate_rest_bad_request(request_type=service.DecapsulateRequest):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4/cryptoKeyVersions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.decapsulate(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DecapsulateRequest,
+        dict,
+    ],
+)
+def test_decapsulate_rest_call_success(request_type):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4/cryptoKeyVersions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.DecapsulateResponse(
+            name="name_value",
+            shared_secret=b"shared_secret_blob",
+            shared_secret_crc32c=1979,
+            verified_ciphertext_crc32c=True,
+            protection_level=resources.ProtectionLevel.SOFTWARE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.DecapsulateResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.decapsulate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.DecapsulateResponse)
+    assert response.name == "name_value"
+    assert response.shared_secret == b"shared_secret_blob"
+    assert response.shared_secret_crc32c == 1979
+    assert response.verified_ciphertext_crc32c is True
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_decapsulate_rest_interceptors(null_interceptor):
+    transport = transports.KeyManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.KeyManagementServiceRestInterceptor(),
+    )
+    client = KeyManagementServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.KeyManagementServiceRestInterceptor, "post_decapsulate"
+    ) as post, mock.patch.object(
+        transports.KeyManagementServiceRestInterceptor, "post_decapsulate_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.KeyManagementServiceRestInterceptor, "pre_decapsulate"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.DecapsulateRequest.pb(service.DecapsulateRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = service.DecapsulateResponse.to_json(
+            service.DecapsulateResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.DecapsulateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.DecapsulateResponse()
+        post_with_metadata.return_value = service.DecapsulateResponse(), metadata
+
+        client.decapsulate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_generate_random_bytes_rest_bad_request(
     request_type=service.GenerateRandomBytesRequest,
 ):
@@ -24207,6 +24784,26 @@ def test_mac_verify_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_decapsulate_empty_call_rest():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
+        client.decapsulate(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DecapsulateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_generate_random_bytes_empty_call_rest():
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24287,6 +24884,7 @@ def test_key_management_service_base_transport():
         "asymmetric_decrypt",
         "mac_sign",
         "mac_verify",
+        "decapsulate",
         "generate_random_bytes",
         "set_iam_policy",
         "get_iam_policy",
@@ -24646,6 +25244,9 @@ def test_key_management_service_client_transport_session_collision(transport_nam
     assert session1 != session2
     session1 = client1.transport.mac_verify._session
     session2 = client2.transport.mac_verify._session
+    assert session1 != session2
+    session1 = client1.transport.decapsulate._session
+    session2 = client2.transport.decapsulate._session
     assert session1 != session2
     session1 = client1.transport.generate_random_bytes._session
     session2 = client2.transport.generate_random_bytes._session
