@@ -5200,6 +5200,9 @@ def test_insert_rest_call_success(request_type):
             "reservation_operational_mode": "reservation_operational_mode_value"
         },
         "aggregate_reservation": {
+            "host_count": 1094,
+            "in_use_host_count": 1832,
+            "in_use_instance_count": 2239,
             "in_use_resources": [
                 {
                     "accelerator": {
@@ -6624,6 +6627,9 @@ def test_update_rest_call_success(request_type):
             "reservation_operational_mode": "reservation_operational_mode_value"
         },
         "aggregate_reservation": {
+            "host_count": 1094,
+            "in_use_host_count": 1832,
+            "in_use_instance_count": 2239,
             "in_use_resources": [
                 {
                     "accelerator": {
