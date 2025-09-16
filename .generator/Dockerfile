@@ -172,6 +172,10 @@ RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthto
 bazel_env/bin/python3.9 -m pip install /tmp/synthtool nox && \
 rm -rf /tmp/synthtool
 
+# Install build which is used to get the metadata of package config files.
+COPY .generator/requirements.in .
+RUN python3.9 -m pip install -r requirements.in
+
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
 RUN chmod a+rx ./cli.py

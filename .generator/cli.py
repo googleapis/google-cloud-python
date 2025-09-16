@@ -27,6 +27,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
 
+import build.util
+
 try:
     import synthtool
     from synthtool.languages import python_mono_repo
@@ -546,12 +548,54 @@ def _verify_library_namespace(library_id: str, repo: str):
             )
 
 
+def _get_library_dist_name(library_id: str, repo: str) -> str:
+    """
+    Gets the package name by programmatically building the metadata.
+
+    Args:
+        library_id: id of the library.
+        repo: This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+
+    Returns:
+        str: The library name string if found, otherwise None.
+    """
+    library_path = f"{repo}/packages/{library_id}"
+    metadata = build.util.project_wheel_metadata(library_path)
+    return metadata.get("name")
+
+
+def _verify_library_dist_name(library_id: str, repo: str):
+    """Verifies the library distribution name against its config files.
+
+    This function ensures that:
+    1. At least one of `setup.py` or `pyproject.toml` exists and is valid.
+    2. Any existing config file's 'name' property matches the `library_id`.
+
+    Args:
+        library_id: id of the library.
+        repo: This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+
+    Raises:
+        ValueError: If a name in an existing config file does not match the `library_id`.
+    """
+    dist_name = _get_library_dist_name(library_id, repo)
+    if dist_name != library_id:
+        raise ValueError(
+            f"The distribution name `{dist_name}` does not match the folder `{library_id}`."
+        )
+
+
 def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
     try:
         request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         _verify_library_namespace(library_id, repo)
+        _verify_library_dist_name(library_id, repo)
         _run_nox_sessions(library_id, repo)
     except Exception as e:
         raise ValueError("Build failed.") from e

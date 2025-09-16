@@ -17,3 +17,4 @@ pytest-cov
 pytest-mock
 gcp-synthtool @ git+https://github.com/googleapis/synthtool@5aa438a342707842d11fbbb302c6277fbf9e4655
 starlark-pyo3>=2025.1
+build
