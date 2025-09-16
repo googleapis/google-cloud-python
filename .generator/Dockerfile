@@ -16,10 +16,6 @@
 # This stage installs all build dependencies and compiles all Python versions.
 FROM marketplace.gcr.io/google/ubuntu2404 AS builder
 
-# Tell synthtool to pull templates from this docker image instead of from
-# the live repo.
-ENV SYNTHTOOL_TEMPLATES="/synthtool/synthtool/gcp/templates"
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     # Essential for compiling C code
@@ -82,6 +78,10 @@ RUN git clone --depth 1 https://github.com/googleapis/synthtool.git synthtool
 # necessary artifacts from the builder stage.
 FROM marketplace.gcr.io/google/ubuntu2404
 
+# Tell synthtool to pull templates from this docker image instead of from
+# the live repo.
+ENV SYNTHTOOL_TEMPLATES="/synthtool/synthtool/gcp/templates"
+
 # Install only the essential runtime libraries for Python.
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
@@ -129,8 +129,5 @@ RUN chmod a+rx ./cli.py
 
 COPY .generator/parse_googleapis_content.py .
 RUN chmod a+rx ./parse_googleapis_content.py
-
-RUN mkdir -p /.cache/synthtool/synthtool
-RUN find /.cache -type d -exec chmod a+x {} \;
 
 ENTRYPOINT ["python3.9", "./cli.py"]
