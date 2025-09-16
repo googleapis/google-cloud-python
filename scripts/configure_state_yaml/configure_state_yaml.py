@@ -44,10 +44,10 @@ def configure_state_yaml() -> None:
     with open(PACKAGES_TO_ONBOARD_YAML, "r") as packages_to_onboard_yaml_file:
         packages_to_onboard = yaml.safe_load(packages_to_onboard_yaml_file)
 
-    state_dict[
-        "image"
-    ] = "us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest"
-    state_dict["libraries"] = []
+    state_dict = {}
+    with open(LIBRARIAN_YAML, "r") as state_yaml_file:
+        state_dict = yaml.safe_load(state_yaml_file)
+
     for package_name in packages_to_onboard["packages_to_onboard"]:
         package_path = Path(PACKAGES_DIR / package_name).resolve()
         api_paths = []
@@ -61,30 +61,32 @@ def configure_state_yaml() -> None:
                         }
                     ]
                 )
-        state_dict["libraries"].append(
-            {
-                "id": package_name,
-                "version": release_please_manifest[f"packages/{package_name}"],
-                "last_generated_commit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
-                "apis": api_paths,
-                "source_roots": [f"packages/{package_path.name}"],
-                "preserve_regex": [
-                    # Use the full path to avoid ambiguity with the root CHANGELOG.md
-                    f"packages/{package_path.name}/CHANGELOG.md",
-                    "docs/CHANGELOG.md",
-                    "docs/README.rst",
-                    "samples/README.txt",
-                    "tar.gz",
-                    "gapic_version.py",
-                    "samples/generated_samples/snippet_metadata_",
-                    "scripts/client-post-processing",
-                    "samples/snippets/README.rst",
-                    "tests/system",
-                ],
-                "remove_regex": [f"packages/{package_path.name}"],
-                "tag_format": "{id}-v{version}",
-            }
-        )
+
+        if release_please_manifest.get(f"packages/{package_name}", None):
+            state_dict["libraries"].append(
+                {
+                    "id": package_name,
+                    "version": release_please_manifest[f"packages/{package_name}"],
+                    "last_generated_commit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+                    "apis": api_paths,
+                    "source_roots": [f"packages/{package_path.name}"],
+                    "preserve_regex": [
+                        # Use the full path to avoid ambiguity with the root CHANGELOG.md
+                        f"packages/{package_path.name}/CHANGELOG.md",
+                        "docs/CHANGELOG.md",
+                        "docs/README.rst",
+                        "samples/README.txt",
+                        "tar.gz",
+                        "gapic_version.py",
+                        "samples/generated_samples/snippet_metadata_",
+                        "scripts/client-post-processing",
+                        "samples/snippets/README.rst",
+                        "tests/system",
+                    ],
+                    "remove_regex": [f"packages/{package_path.name}"],
+                    "tag_format": "{id}-v{version}",
+                }
+            )
 
     with open(LIBRARIAN_YAML, "w") as f:
         yaml.dump(state_dict, f, sort_keys=False, indent=2)
