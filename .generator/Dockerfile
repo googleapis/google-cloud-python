@@ -107,12 +107,19 @@ RUN git clone https://github.com/googleapis/googleapis.git \
     && cd googleapis \
     && bazelisk --output_base=/bazel_cache/_bazel_ubuntu/output_base build --disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos  --incompatible_strict_action_env //google/cloud/language/v1:language-v1-py
 
+# Download synthtool
+RUN git clone --depth 1 https://github.com/googleapis/synthtool.git synthtool
+
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 
 # --- Final Stage ---
 # This stage creates the lightweight final image, copying only the
 # necessary artifacts from the builder stage.
 FROM marketplace.gcr.io/google/ubuntu2404
+
+# Tell synthtool to pull templates from this docker image instead of from
+# the live repo.
+ENV SYNTHTOOL_TEMPLATES="/synthtool/synthtool/gcp/templates"
 
 # Install only the essential runtime libraries for Python.
 # These are the non "-dev" versions of the libraries used in the builder.
@@ -151,6 +158,9 @@ COPY --from=builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
+# Copy synthtool code which is used during client library generation
+COPY --from=builder synthtool /synthtool
+
 # Copy the bazelisk executable from the builder.
 COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
 
@@ -168,9 +178,7 @@ RUN . bazel_env/bin/activate
 
 ENV PATH=/app/bazel_env/bin:$PATH
 
-RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
-bazel_env/bin/python3.9 -m pip install /tmp/synthtool nox && \
-rm -rf /tmp/synthtool
+RUN bazel_env/bin/python3.9 -m pip install synthtool nox
 
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
