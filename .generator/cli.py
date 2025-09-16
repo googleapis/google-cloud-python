@@ -26,6 +26,9 @@ import yaml
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
+from distutils.core import run_setup
+
+import tomli
 
 try:
     import synthtool
@@ -546,12 +549,48 @@ def _verify_library_namespace(library_id: str, repo: str):
             )
 
 
+def _get_setup_dist_name(library_id: str, repo: str):
+    try:
+        dist = run_setup(f"{repo}/packages/{library_id}/setup.py")
+        return dist.get_name()
+    except Exception as e:
+        return None
+
+
+def _get_toml_dist_name(library_id: str, repo: str):
+    try:
+        pyproject_toml_file = Path(f"{repo}/packages/{library_id}/pyproject.toml")
+        with open(pyproject_toml_file, "rb") as f:
+            data = tomli.load(f)
+            return data.get("project", {}).get("name")
+    except Exception as e:
+        return None
+
+
+def _verify_library_dist_name(library_id: str, repo: str):
+    setup_dist_name = _get_setup_dist_name(library_id, repo)
+    toml_dist_name = _get_toml_dist_name(library_id, repo)
+    if setup_dist_name is None and toml_dist_name is None:
+        raise ValueError(
+            f"No valid `setup.py` or `pyproject.toml found for `{library_id}`."
+        )
+    if setup_dist_name is not None and setup_dist_name != library_id:
+        raise ValueError(
+            f"The distribution name `{setup_dist_name} in `setup.py` does not match folder `{library_id}`"
+        )
+    if toml_dist_name is not None and toml_dist_name != library_id:
+        raise ValueError(
+            f"The distribution name `{toml_dist_name} in `pyproject.toml` does not match folder `{library_id}`"
+        )
+
+
 def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
     try:
         request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         _verify_library_namespace(library_id, repo)
+        _verify_library_dist_name(library_id, repo)
         _run_nox_sessions(library_id, repo)
     except Exception as e:
         raise ValueError("Build failed.") from e
