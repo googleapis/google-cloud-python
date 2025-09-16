@@ -69,7 +69,7 @@ def configure_state_yaml() -> None:
                 {
                     "id": package_name,
                     "version": release_please_manifest[f"packages/{package_name}"],
-                    "last_generated_commit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+                    "last_generated_commit": "d300b151a973ce0425ae4ad07b3de957ca31bec6",
                     "apis": api_paths,
                     "source_roots": [f"packages/{package_path.name}"],
                     "preserve_regex": [
