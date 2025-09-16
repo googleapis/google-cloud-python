@@ -18,16 +18,17 @@ import itertools
 import json
 import logging
 import os
-import parse_googleapis_content
 import re
 import shutil
 import subprocess
 import sys
-import yaml
-from datetime import datetime
 import tempfile
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
+
+import parse_googleapis_content
+import yaml
 
 try:
     import synthtool
@@ -291,7 +292,10 @@ def handle_generate(
                                 )
                     optional_arguments = result[py_gapic_entry].get("opt_args", None)
                     if optional_arguments:
-                        [generator_options.append(f"{opt_arg},") for opt_arg in optional_arguments]
+                        [
+                            generator_options.append(f"{opt_arg},")
+                            for opt_arg in optional_arguments
+                        ]
                     with tempfile.TemporaryDirectory() as tmp_dir:
                         generator_command = (
                             f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
