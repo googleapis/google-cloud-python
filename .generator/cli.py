@@ -305,9 +305,7 @@ def handle_generate(
                         staging_dir = os.path.join(
                             output, "owl-bot-staging", library_id, api_version
                         )
-                        os.makedirs(staging_dir, exist_ok=True)
-                        logger.info(f"Preparing staging directory: {staging_dir}")
-                        subprocess.run(f"cp -r {tmp_dir}/. {staging_dir}", shell=True)
+                        shutil.copytree(tmp_dir, staging_dir)
 
         _copy_files_needed_for_post_processing(output, input, library_id)
         _run_post_processor(output, library_id)
