@@ -285,15 +285,9 @@ def _read_bazel_build_py_rule(api_path: str, source: str) -> Dict:
 
     Returns:
         Dict: A dictionary containing the parsed attributes of the `_py_gapic` rule.
-
-    Raises:
-        ValueError: If the BUILD.bazel file cannot be read or a '_py_gapic' rule is not found.
     """
     build_file_path = f"{source}/{api_path}/BUILD.bazel"
-    try:
-        content = _read_text_file(build_file_path)
-    except FileNotFoundError:
-        raise ValueError(f"BUILD.bazel file not found at {build_file_path}")
+    content = _read_text_file(build_file_path)
 
     result = parse_googleapis_content.parse_content(content)
     py_gapic_entries = [key for key in result.keys() if key.endswith("_py_gapic")]

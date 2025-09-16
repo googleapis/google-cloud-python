@@ -309,13 +309,6 @@ def test_read_bazel_build_py_rule_success(mocker, mock_build_bazel_file):
     assert py_gapic_config["opt_args"] == ["python-gapic-namespace=google.cloud"]
 
 
-def test_read_bazel_build_py_rule_not_found(mocker):
-    """Tests failure when the BUILD.bazel file is missing."""
-    mocker.patch("cli._read_text_file", side_effect=FileNotFoundError)
-    with pytest.raises(ValueError, match="BUILD.bazel file not found"):
-        _read_bazel_build_py_rule("non/existent/v1", "source")
-
-
 def test_get_api_generator_options_all_options():
     """Tests option extraction when all relevant fields are present."""
     api_path = "google/cloud/language/v1"
