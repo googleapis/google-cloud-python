@@ -37,12 +37,11 @@ from cli import (
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
     _determine_bazel_rule,
+    _get_library_dist_name,
     _determine_library_namespace,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
     _get_previous_version,
-    _get_setup_dist_name,
-    _get_toml_dist_name,
     _locate_and_extract_artifact,
     _process_changelog,
     _process_version_file,
@@ -926,66 +925,22 @@ def test_determine_library_namespace_fails_not_subpath():
         _determine_library_namespace(gapic_parent_path, pkg_root_path)
 
 
-def test_get_setup_dist_name_exists(mocker):
-    """Tests that a valid library distribution name exists in `pyproject.toml`."""
-    mock_dist = MagicMock()
-    mock_dist.get_name.return_value = "my-lib"
-    mocker.patch("cli.run_setup", return_value=mock_dist)
-    assert _get_setup_dist_name("my-lib", "repo") == "my-lib"
-
-
-def test_get_setup_dist_name_file_not_found(caplog):
-    """Tests that distribution name is None if `setup.py` does not exist."""
-    caplog.set_level(logging.DEBUG)
-    assert _get_setup_dist_name("my-lib", "repo") is None
-    assert len(caplog.records) == 1
-
-
-def test_get_toml_dist_name_exists(mocker):
-    """Tests that a valid library distribution name exists in `pyproject.toml`."""
-    mock_data = {"project": {"name": "my-lib"}}
-    mocker.patch("tomli.load", return_value=mock_data)
-    mocker.patch("builtins.open", mocker.mock_open(read_data=b"fake toml data"))
-    assert _get_toml_dist_name("my-lib", "repo") == "my-lib"
-
-
-def test_get_toml_dist_name_file_not_found(caplog):
-    """Tests that distribution name is None if `pyproject.toml` does not exist."""
-    caplog.set_level(logging.DEBUG)
-    assert _get_toml_dist_name("my-lib", "repo") is None
-    assert len(caplog.records) == 1
+def test_get_library_dist_name_success(mocker):
+    mock_metadata = {"name": "my-lib", "version": "1.0.0"}
+    mocker.patch("build.util.project_wheel_metadata", return_value=mock_metadata)
+    assert _get_library_dist_name("my-lib", "repo") == "my-lib"
 
 
 def test_verify_library_dist_name_setup_success(mocker):
     """Tests success when a library distribution name in setup.py is valid."""
-    mock_setup_file = mocker.patch("cli._get_setup_dist_name", return_value="my-lib")
+    mock_setup_file = mocker.patch("cli._get_library_dist_name", return_value="my-lib")
     _verify_library_dist_name("my-lib", "repo")
     mock_setup_file.assert_called_once_with("my-lib", "repo")
 
 
-def test_verify_library_dist_name_setup_success(mocker):
-    """Tests success when a library distribution name in toml is valid."""
-    mock_toml_file = mocker.patch("cli._get_toml_dist_name", return_value="my-lib")
-    _verify_library_dist_name("my-lib", "repo")
-    mock_toml_file.assert_called_once_with("my-lib", "repo")
-
-
-def test_verify_library_dist_name_fail():
-    """Tests failure when a library does not have a `setup.py` or `pyproject.toml`."""
-    with pytest.raises(ValueError):
-        _verify_library_dist_name("my-lib", "repo")
-
-
-def test_verify_library_dist_name_setup_fail(mocker):
-    """Tests failure when a library has an invalid distribution name in `setup.py`."""
-    mocker.patch("cli._get_setup_dist_name", return_value="invalid-lib-name")
-    with pytest.raises(ValueError):
-        _verify_library_dist_name("my-lib", "repo")
-
-
-def test_verify_library_dist_name_toml_fail(mocker):
-    """Tests failure when a library has an invalid distribution name in `pyproject.toml`."""
-    mocker.patch("cli._get_toml_dist_name", return_value="invalid-lib-name")
+def test_verify_library_dist_name_fail(mocker):
+    """Tests failure when a library-id does not match the libary distribution name."""
+    mocker.patch("cli._get_library_dist_name", return_value="invalid-lib")
     with pytest.raises(ValueError):
         _verify_library_dist_name("my-lib", "repo")
 
