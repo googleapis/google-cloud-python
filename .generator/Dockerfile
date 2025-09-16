@@ -127,6 +127,7 @@ RUN python3.9 -m pip install /synthtool
 COPY .generator/cli.py .
 RUN chmod a+rx ./cli.py
 
+# Copy the script used to parse BUILD.bazel files.
 COPY .generator/parse_googleapis_content.py .
 RUN chmod a+rx ./parse_googleapis_content.py
 
