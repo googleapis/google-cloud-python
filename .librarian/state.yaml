@@ -1,45 +1,66 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
 libraries:
-  - id: google-cloud-dlp
-    version: 3.32.0
-    last_generated_commit: f8776fec04e336527ba7279d960105533a1c4e21
-    apis:
-      - path: google/privacy/dlp/v2
-        service_config: dlp_v2.yaml
-    source_roots:
-      - packages/google-cloud-dlp
-    preserve_regex:
-      - packages/google-cloud-dlp/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
-    remove_regex:
-      - packages/google-cloud-dlp
-    tag_format: '{id}-v{version}'
-  - id: google-cloud-eventarc
-    version: 1.15.3
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-    apis:
-      - path: google/cloud/eventarc/v1
-    source_roots:
-      - packages/google-cloud-eventarc
-    preserve_regex:
-      - packages/google-cloud-eventarc/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
-    remove_regex:
-      - packages/google-cloud-eventarc
-    tag_format: '{id}-v{version}'
+- id: google-cloud-dlp
+  version: 3.32.0
+  last_generated_commit: f8776fec04e336527ba7279d960105533a1c4e21
+  apis:
+  - path: google/privacy/dlp/v2
+    service_config: dlp_v2.yaml
+  source_roots:
+  - packages/google-cloud-dlp
+  preserve_regex:
+  - packages/google-cloud-dlp/CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  - samples/snippets/README.rst
+  - tests/system
+  remove_regex:
+  - packages/google-cloud-dlp
+  tag_format: '{id}-v{version}'
+- id: google-cloud-eventarc
+  version: 1.15.3
+  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+  apis:
+  - path: google/cloud/eventarc/v1
+  source_roots:
+  - packages/google-cloud-eventarc
+  preserve_regex:
+  - packages/google-cloud-eventarc/CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  - samples/snippets/README.rst
+  - tests/system
+  remove_regex:
+  - packages/google-cloud-eventarc
+  tag_format: '{id}-v{version}'
+- id: google-ads-admanager
+  version: 0.3.0
+  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+  apis:
+  - path: google/ads/admanager/v1
+  source_roots:
+  - packages/google-ads-admanager
+  preserve_regex:
+  - packages/google-ads-admanager/CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  - samples/snippets/README.rst
+  - tests/system
+  remove_regex:
+  - packages/google-ads-admanager
+  tag_format: '{id}-v{version}'
