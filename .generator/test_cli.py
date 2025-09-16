@@ -293,6 +293,7 @@ def test_handle_generate_success(
     """
     caplog.set_level(logging.INFO)
 
+    mock_run_post_processor = mocker.patch("cli._generate_api")
     mock_run_post_processor = mocker.patch("cli._run_post_processor")
     mock_copy_files_needed_for_post_processing = mocker.patch(
         "cli._copy_files_needed_for_post_processing"

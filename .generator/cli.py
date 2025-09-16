@@ -262,64 +262,156 @@ def handle_generate(
         # Read a generate-request.json file
         request_data = _read_json_file(f"{librarian}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
-        for api in request_data.get("apis", []):
+        apis_to_generate = request_data.get("apis", [])
+        for api in apis_to_generate:
             api_path = api.get("path")
             if api_path:
-                generator_options = []
-                with open(f"{source}/{api_path}/BUILD.bazel", "r") as f:
-                    content = f.read()
-                    result = parse_googleapis_content.parse_content(content)
-                    py_gapic_entry = [
-                        key for key in result.keys() if key.endswith("_py_gapic")
-                    ][0]
-
-                    config_key_map = {
-                        "grpc_service_config": "retry-config",
-                        "rest_numeric_enums": "rest-numeric-enums",
-                        "service_yaml": "service-yaml",
-                        "transport": "transport",
-                    }
-
-                    for key in config_key_map:
-                        config_value = result[py_gapic_entry].get(key, None)
-                        if config_value is not None:
-                            if key == "service_yaml" or key == "grpc_service_config":
-                                generator_options.append(
-                                    f"{config_key_map[key]}={api_path}/{config_value},"
-                                )
-                            else:
-                                generator_options.append(
-                                    f"{config_key_map[key]}={config_value},"
-                                )
-                    optional_arguments = result[py_gapic_entry].get("opt_args", None)
-                    if optional_arguments:
-                        [
-                            generator_options.append(f"{opt_arg},")
-                            for opt_arg in optional_arguments
-                        ]
-                    with tempfile.TemporaryDirectory() as tmp_dir:
-                        generator_command = (
-                            f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
-                        )
-                        if len(generator_options):
-                            generator_command += f" --python_gapic_opt=metadata,"
-                            for generator_option in generator_options:
-                                generator_command += generator_option
-                        subprocess.run([generator_command], cwd=source, shell=True)
-                        api_version = api_path.split("/")[-1]
-                        staging_dir = os.path.join(
-                            output, "owl-bot-staging", library_id, api_version
-                        )
-                        shutil.copytree(tmp_dir, staging_dir)
-
+                _generate_api(api_path, library_id, source, output)
         _copy_files_needed_for_post_processing(output, input, library_id)
         _run_post_processor(output, library_id)
         _clean_up_files_after_post_processing(output, library_id)
-
     except Exception as e:
         raise ValueError("Generation failed.") from e
-
     logger.info("'generate' command executed.")
+
+
+
+def _read_bazel_build_py_rule(api_path: str, source: str) -> Dict:
+    """
+    Reads and parses the BUILD.bazel file to find the Python GAPIC rule content.
+
+    Args:
+        api_path (str): The relative path to the API directory (e.g., 'google/cloud/language/v1').
+        source (str): Path to the directory containing API protos.
+
+    Returns:
+        Dict: A dictionary containing the parsed attributes of the `_py_gapic` rule.
+
+    Raises:
+        ValueError: If the BUILD.bazel file cannot be read or a '_py_gapic' rule is not found.
+    """
+    build_file_path = f"{source}/{api_path}/BUILD.bazel"
+    try:
+        content = _read_text_file(build_file_path)
+    except FileNotFoundError:
+        raise ValueError(f"BUILD.bazel file not found at {build_file_path}")
+
+    result = parse_googleapis_content.parse_content(content)
+    py_gapic_entries = [key for key in result.keys() if key.endswith("_py_gapic")]
+
+    if not py_gapic_entries:
+        raise ValueError(f"No '_py_gapic' rule found in {build_file_path}")
+
+    # Assuming only one _py_gapic rule per BUILD file for a given language
+    return result[py_gapic_entries[0]]
+
+
+def _get_api_generator_options(api_path: str, py_gapic_config: Dict) -> List[str]:
+    """
+    Extracts generator options from the parsed Python GAPIC rule configuration.
+
+    Args:
+        api_path (str): The relative path to the API directory.
+        py_gapic_config (Dict): The parsed attributes of the Python GAPIC rule.
+
+    Returns:
+        List[str]: A list of formatted generator options (e.g., ['retry-config=...', 'transport=...']).
+    """
+    generator_options = []
+
+    # Mapping of Bazel rule attributes to protoc-gen-python_gapic options
+    config_key_map = {
+        "grpc_service_config": "retry-config",
+        "rest_numeric_enums": "rest-numeric-enums",
+        "service_yaml": "service-yaml",
+        "transport": "transport",
+    }
+
+    for bazel_key, protoc_key in config_key_map.items():
+        config_value = py_gapic_config.get(bazel_key)
+        if config_value is not None:
+            if bazel_key in ("service_yaml", "grpc_service_config"):
+                # These paths are relative to the source root
+                generator_options.append(f"{protoc_key}={api_path}/{config_value}")
+            else:
+                # Other options use the value directly
+                generator_options.append(f"{protoc_key}={config_value}")
+
+    # Add optional arguments
+    optional_arguments = py_gapic_config.get("opt_args", None)
+    if optional_arguments:
+        # opt_args in Bazel rule is already a list of strings
+        generator_options.extend(optional_arguments)
+
+    return generator_options
+
+
+def _determine_generator_command(api_path: str, tmp_dir: str, generator_options: List[str]) -> str:
+    """
+    Constructs the full protoc command string.
+
+    Args:
+        api_path (str): The relative path to the API directory.
+        tmp_dir (str): The temporary directory for protoc output.
+        generator_options (List[str]): Extracted generator options.
+
+    Returns:
+        str: The complete protoc command string suitable for shell execution.
+    """
+    # Start with the protoc base command. The glob pattern requires shell=True.
+    command_parts = [
+        f"protoc {api_path}/*.proto",
+        f"--python_gapic_out={tmp_dir}",
+    ]
+
+    if generator_options:
+        # Protoc options are passed as a comma-separated list to --python_gapic_opt.
+        option_string = "metadata," + ",".join(generator_options)
+        command_parts.append(f"--python_gapic_opt={option_string}")
+
+    return " ".join(command_parts)
+
+
+def _run_generator_command(generator_command: str, source: str):
+    """
+    Executes the protoc generation command using subprocess.
+
+    Args:
+        generator_command (str): The complete protoc command string.
+        source (str): Path to the directory where the command should be run (API protos root).
+    """
+    # shell=True is required because the command string contains a glob pattern (*.proto)
+    subprocess.run(
+        [generator_command],
+        cwd=source,
+        shell=True,
+        check=True,
+        capture_output=True,
+        text=True
+    )
+
+
+def _generate_api(api_path: str, library_id: str, source: str, output: str):
+    """
+    Handles the generation and staging process for a single API path.
+
+    Args:
+        api_path (str): The relative path to the API directory (e.g., 'google/cloud/language/v1').
+        library_id (str): The ID of the library being generated.
+        source (str): Path to the directory containing API protos.
+        output (str): Path to the output directory where code should be staged.
+    """
+    py_gapic_config = _read_bazel_build_py_rule(api_path, source)
+    generator_options = _get_api_generator_options(api_path, py_gapic_config)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        generator_command = _determine_generator_command(api_path, tmp_dir, generator_options)
+        _run_generator_command(generator_command, source)
+        api_version = api_path.split("/")[-1]
+        staging_dir = os.path.join(
+            output, "owl-bot-staging", library_id, api_version
+        )
+        shutil.copytree(tmp_dir, staging_dir)
 
 
 def _run_nox_sessions(library_id: str, repo: str):
