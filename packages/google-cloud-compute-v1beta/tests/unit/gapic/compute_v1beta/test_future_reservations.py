@@ -2462,13 +2462,7 @@ def test_insert_rest_flattened():
             zone="zone_value",
             future_reservation_resource=compute.FutureReservation(
                 aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                    host_count=1094
                 )
             ),
         )
@@ -2512,13 +2506,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             zone="zone_value",
             future_reservation_resource=compute.FutureReservation(
                 aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                    host_count=1094
                 )
             ),
         )
@@ -2684,13 +2672,7 @@ def test_insert_unary_rest_flattened():
             zone="zone_value",
             future_reservation_resource=compute.FutureReservation(
                 aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                    host_count=1094
                 )
             ),
         )
@@ -2734,13 +2716,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             zone="zone_value",
             future_reservation_resource=compute.FutureReservation(
                 aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                    host_count=1094
                 )
             ),
         )
@@ -3197,13 +3173,7 @@ def test_update_rest_flattened():
             future_reservation="future_reservation_value",
             future_reservation_resource=compute.FutureReservation(
                 aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                    host_count=1094
                 )
             ),
         )
@@ -3248,13 +3218,7 @@ def test_update_rest_flattened_error(transport: str = "rest"):
             future_reservation="future_reservation_value",
             future_reservation_resource=compute.FutureReservation(
                 aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                    host_count=1094
                 )
             ),
         )
@@ -3440,13 +3404,7 @@ def test_update_unary_rest_flattened():
             future_reservation="future_reservation_value",
             future_reservation_resource=compute.FutureReservation(
                 aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                    host_count=1094
                 )
             ),
         )
@@ -3491,13 +3449,7 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
             future_reservation="future_reservation_value",
             future_reservation_resource=compute.FutureReservation(
                 aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                    host_count=1094
                 )
             ),
         )
@@ -4140,6 +4092,7 @@ def test_get_rest_call_success(request_type):
             name="name_value",
             name_prefix="name_prefix_value",
             planning_status="planning_status_value",
+            protection_tier="protection_tier_value",
             reservation_mode="reservation_mode_value",
             reservation_name="reservation_name_value",
             scheduling_type="scheduling_type_value",
@@ -4177,6 +4130,7 @@ def test_get_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.name_prefix == "name_prefix_value"
     assert response.planning_status == "planning_status_value"
+    assert response.protection_tier == "protection_tier_value"
     assert response.reservation_mode == "reservation_mode_value"
     assert response.reservation_name == "reservation_name_value"
     assert response.scheduling_type == "scheduling_type_value"
@@ -4287,6 +4241,9 @@ def test_insert_rest_call_success(request_type):
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["future_reservation_resource"] = {
         "aggregate_reservation": {
+            "host_count": 1094,
+            "in_use_host_count": 1832,
+            "in_use_instance_count": 2239,
             "in_use_resources": [
                 {
                     "accelerator": {
@@ -4316,6 +4273,7 @@ def test_insert_rest_call_success(request_type):
         "name": "name_value",
         "name_prefix": "name_prefix_value",
         "planning_status": "planning_status_value",
+        "protection_tier": "protection_tier_value",
         "reservation_mode": "reservation_mode_value",
         "reservation_name": "reservation_name_value",
         "scheduling_type": "scheduling_type_value",
@@ -4771,6 +4729,9 @@ def test_update_rest_call_success(request_type):
     }
     request_init["future_reservation_resource"] = {
         "aggregate_reservation": {
+            "host_count": 1094,
+            "in_use_host_count": 1832,
+            "in_use_instance_count": 2239,
             "in_use_resources": [
                 {
                     "accelerator": {
@@ -4800,6 +4761,7 @@ def test_update_rest_call_success(request_type):
         "name": "name_value",
         "name_prefix": "name_prefix_value",
         "planning_status": "planning_status_value",
+        "protection_tier": "protection_tier_value",
         "reservation_mode": "reservation_mode_value",
         "reservation_name": "reservation_name_value",
         "scheduling_type": "scheduling_type_value",

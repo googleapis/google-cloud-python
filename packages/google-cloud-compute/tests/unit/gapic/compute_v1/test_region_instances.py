@@ -1624,9 +1624,11 @@ def test_bulk_insert_rest_call_success(request_type):
                     "network_attachment": "network_attachment_value",
                     "network_i_p": "network_i_p_value",
                     "nic_type": "nic_type_value",
+                    "parent_nic_name": "parent_nic_name_value",
                     "queue_count": 1197,
                     "stack_type": "stack_type_value",
                     "subnetwork": "subnetwork_value",
+                    "vlan": 433,
                 }
             ],
             "network_performance_config": {
@@ -1663,6 +1665,7 @@ def test_bulk_insert_rest_call_success(request_type):
                 "on_instance_stop_action": {"discard_local_ssd": True},
                 "preemptible": True,
                 "provisioning_model": "provisioning_model_value",
+                "skip_guest_os_shutdown": True,
                 "termination_time": "termination_time_value",
             },
             "service_accounts": [

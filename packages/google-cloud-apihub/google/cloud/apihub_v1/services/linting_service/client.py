@@ -774,8 +774,9 @@ class LintingServiceClient(metaclass=LintingServiceClientMeta):
 
         Args:
             request (Union[google.cloud.apihub_v1.types.GetStyleGuideRequest, dict]):
-                The request object. The [GetStyleGuide][ApiHub.GetStyleGuide] method's
-                request.
+                The request object. The
+                [GetStyleGuide][google.cloud.apihub.v1.LintingService.GetStyleGuide]
+                method's request.
             name (str):
                 Required. The name of the spec to retrieve. Format:
                 ``projects/{project}/locations/{location}/plugins/{plugin}/styleGuide``.
@@ -890,8 +891,9 @@ class LintingServiceClient(metaclass=LintingServiceClientMeta):
 
         Args:
             request (Union[google.cloud.apihub_v1.types.UpdateStyleGuideRequest, dict]):
-                The request object. The [UpdateStyleGuide][ApiHub.UpdateStyleGuide] method's
-                request.
+                The request object. The
+                [UpdateStyleGuide][google.cloud.apihub.v1.LintingService.UpdateStyleGuide]
+                method's request.
             style_guide (google.cloud.apihub_v1.types.StyleGuide):
                 Required. The Style guide resource to
                 update.
@@ -1013,7 +1015,7 @@ class LintingServiceClient(metaclass=LintingServiceClientMeta):
         Args:
             request (Union[google.cloud.apihub_v1.types.GetStyleGuideContentsRequest, dict]):
                 The request object. The
-                [GetStyleGuideContents][ApiHub.GetStyleGuideContents]
+                [GetStyleGuideContents][google.cloud.apihub.v1.LintingService.GetStyleGuideContents]
                 method's request.
             name (str):
                 Required. The name of the StyleGuide whose contents need
@@ -1121,7 +1123,9 @@ class LintingServiceClient(metaclass=LintingServiceClientMeta):
 
         Args:
             request (Union[google.cloud.apihub_v1.types.LintSpecRequest, dict]):
-                The request object. The [LintSpec][ApiHub.LintSpec] method's request.
+                The request object. The
+                [LintSpec][google.cloud.apihub.v1.LintingService.LintSpec]
+                method's request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

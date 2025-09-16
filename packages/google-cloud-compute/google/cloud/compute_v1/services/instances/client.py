@@ -1028,6 +1028,325 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
+    def add_network_interface_unary(
+        self,
+        request: Optional[
+            Union[compute.AddNetworkInterfaceInstanceRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface_resource: Optional[compute.NetworkInterface] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> compute.Operation:
+        r"""Adds one dynamic network interface to an active
+        instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_network_interface():
+                # Create a client
+                client = compute_v1.InstancesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddNetworkInterfaceInstanceRequest(
+                    instance="instance_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.add_network_interface(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.AddNetworkInterfaceInstanceRequest, dict]):
+                The request object. A request message for
+                Instances.AddNetworkInterface. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance (str):
+                The instance name for this request stored as
+                resource_id. Name should conform to RFC1035 or be an
+                unsigned long integer.
+
+                This corresponds to the ``instance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_interface_resource (google.cloud.compute_v1.types.NetworkInterface):
+                The body resource for this request
+                This corresponds to the ``network_interface_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [project, zone, instance, network_interface_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, compute.AddNetworkInterfaceInstanceRequest):
+            request = compute.AddNetworkInterfaceInstanceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if instance is not None:
+                request.instance = instance
+            if network_interface_resource is not None:
+                request.network_interface_resource = network_interface_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.add_network_interface]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("instance", request.instance),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def add_network_interface(
+        self,
+        request: Optional[
+            Union[compute.AddNetworkInterfaceInstanceRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface_resource: Optional[compute.NetworkInterface] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Adds one dynamic network interface to an active
+        instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_network_interface():
+                # Create a client
+                client = compute_v1.InstancesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddNetworkInterfaceInstanceRequest(
+                    instance="instance_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.add_network_interface(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.AddNetworkInterfaceInstanceRequest, dict]):
+                The request object. A request message for
+                Instances.AddNetworkInterface. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance (str):
+                The instance name for this request stored as
+                resource_id. Name should conform to RFC1035 or be an
+                unsigned long integer.
+
+                This corresponds to the ``instance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_interface_resource (google.cloud.compute_v1.types.NetworkInterface):
+                The body resource for this request
+                This corresponds to the ``network_interface_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [project, zone, instance, network_interface_resource]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, compute.AddNetworkInterfaceInstanceRequest):
+            request = compute.AddNetworkInterfaceInstanceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if instance is not None:
+                request.instance = instance
+            if network_interface_resource is not None:
+                request.network_interface_resource = network_interface_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.add_network_interface]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("instance", request.instance),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def add_resource_policies_unary(
         self,
         request: Optional[
@@ -2682,6 +3001,339 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_access_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("instance", request.instance),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
+    def delete_network_interface_unary(
+        self,
+        request: Optional[
+            Union[compute.DeleteNetworkInterfaceInstanceRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> compute.Operation:
+        r"""Deletes one dynamic network interface from an active instance.
+        InstancesDeleteNetworkInterfaceRequest indicates: - instance
+        from which to delete, using project+zone+resource_id fields; -
+        dynamic network interface to be deleted, using
+        network_interface_name field;
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete_network_interface():
+                # Create a client
+                client = compute_v1.InstancesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteNetworkInterfaceInstanceRequest(
+                    instance="instance_value",
+                    network_interface_name="network_interface_name_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete_network_interface(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeleteNetworkInterfaceInstanceRequest, dict]):
+                The request object. A request message for
+                Instances.DeleteNetworkInterface. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance (str):
+                The instance name for this request stored as
+                resource_id. Name should conform to RFC1035 or be an
+                unsigned long integer.
+
+                This corresponds to the ``instance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_interface_name (str):
+                The name of the dynamic network
+                interface to be deleted from the
+                instance.
+
+                This corresponds to the ``network_interface_name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [project, zone, instance, network_interface_name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, compute.DeleteNetworkInterfaceInstanceRequest):
+            request = compute.DeleteNetworkInterfaceInstanceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if instance is not None:
+                request.instance = instance
+            if network_interface_name is not None:
+                request.network_interface_name = network_interface_name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_network_interface]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("instance", request.instance),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_network_interface(
+        self,
+        request: Optional[
+            Union[compute.DeleteNetworkInterfaceInstanceRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        instance: Optional[str] = None,
+        network_interface_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Deletes one dynamic network interface from an active instance.
+        InstancesDeleteNetworkInterfaceRequest indicates: - instance
+        from which to delete, using project+zone+resource_id fields; -
+        dynamic network interface to be deleted, using
+        network_interface_name field;
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete_network_interface():
+                # Create a client
+                client = compute_v1.InstancesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteNetworkInterfaceInstanceRequest(
+                    instance="instance_value",
+                    network_interface_name="network_interface_name_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete_network_interface(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeleteNetworkInterfaceInstanceRequest, dict]):
+                The request object. A request message for
+                Instances.DeleteNetworkInterface. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance (str):
+                The instance name for this request stored as
+                resource_id. Name should conform to RFC1035 or be an
+                unsigned long integer.
+
+                This corresponds to the ``instance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_interface_name (str):
+                The name of the dynamic network
+                interface to be deleted from the
+                instance.
+
+                This corresponds to the ``network_interface_name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [project, zone, instance, network_interface_name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, compute.DeleteNetworkInterfaceInstanceRequest):
+            request = compute.DeleteNetworkInterfaceInstanceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if instance is not None:
+                request.instance = instance
+            if network_interface_name is not None:
+                request.network_interface_name = network_interface_name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_network_interface]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

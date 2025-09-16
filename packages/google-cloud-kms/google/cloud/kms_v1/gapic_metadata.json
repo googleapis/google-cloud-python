@@ -292,6 +292,11 @@
                 "create_key_ring"
               ]
             },
+            "Decapsulate": {
+              "methods": [
+                "decapsulate"
+              ]
+            },
             "Decrypt": {
               "methods": [
                 "decrypt"
@@ -437,6 +442,11 @@
                 "create_key_ring"
               ]
             },
+            "Decapsulate": {
+              "methods": [
+                "decapsulate"
+              ]
+            },
             "Decrypt": {
               "methods": [
                 "decrypt"
@@ -580,6 +590,11 @@
             "CreateKeyRing": {
               "methods": [
                 "create_key_ring"
+              ]
+            },
+            "Decapsulate": {
+              "methods": [
+                "decapsulate"
               ]
             },
             "Decrypt": {

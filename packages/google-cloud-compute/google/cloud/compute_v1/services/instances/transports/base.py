@@ -142,6 +142,11 @@ class InstancesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.add_network_interface: gapic_v1.method.wrap_method(
+                self.add_network_interface,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.add_resource_policies: gapic_v1.method.wrap_method(
                 self.add_resource_policies,
                 default_timeout=None,
@@ -169,6 +174,11 @@ class InstancesTransport(abc.ABC):
             ),
             self.delete_access_config: gapic_v1.method.wrap_method(
                 self.delete_access_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_network_interface: gapic_v1.method.wrap_method(
+                self.delete_network_interface,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -403,6 +413,15 @@ class InstancesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def add_network_interface(
+        self,
+    ) -> Callable[
+        [compute.AddNetworkInterfaceInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def add_resource_policies(
         self,
     ) -> Callable[
@@ -454,6 +473,15 @@ class InstancesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.DeleteAccessConfigInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_network_interface(
+        self,
+    ) -> Callable[
+        [compute.DeleteNetworkInterfaceInstanceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

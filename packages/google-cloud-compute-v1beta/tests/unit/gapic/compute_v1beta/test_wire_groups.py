@@ -3127,6 +3127,7 @@ def test_insert_rest_call_success(request_type):
         "topology": {"endpoints": [{"city": "city_value", "label": "label_value"}]},
         "wire_group_properties": {"type_": "type__value"},
         "wire_properties": {
+            "bandwidth_allocation": "bandwidth_allocation_value",
             "bandwidth_unmetered": 2013,
             "fault_response": "fault_response_value",
         },
@@ -3525,6 +3526,7 @@ def test_patch_rest_call_success(request_type):
         "topology": {"endpoints": [{"city": "city_value", "label": "label_value"}]},
         "wire_group_properties": {"type_": "type__value"},
         "wire_properties": {
+            "bandwidth_allocation": "bandwidth_allocation_value",
             "bandwidth_unmetered": 2013,
             "fault_response": "fault_response_value",
         },

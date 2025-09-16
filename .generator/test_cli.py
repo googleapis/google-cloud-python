@@ -36,6 +36,7 @@ from cli import (
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
+    _get_library_dist_name,
     _determine_library_namespace,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
@@ -50,6 +51,7 @@ from cli import (
     _update_changelog_for_library,
     _update_global_changelog,
     _update_version_for_library,
+    _verify_library_dist_name,
     _verify_library_namespace,
     _write_json_file,
     _write_text_file,
@@ -364,7 +366,6 @@ def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
         "unit-3.9",
         "unit-3.13",
         "docs",
-        "system-3.13",
         "lint",
         "lint_setup_py",
         "mypy-3.13",
@@ -377,7 +378,6 @@ def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
             mocker.call("unit-3.9", "mock-library", "repo"),
             mocker.call("unit-3.13", "mock-library", "repo"),
             mocker.call("docs", "mock-library", "repo"),
-            mocker.call("system-3.13", "mock-library", "repo"),
             mocker.call("lint", "mock-library", "repo"),
             mocker.call("lint_setup_py", "mock-library", "repo"),
             mocker.call("mypy-3.13", "mock-library", "repo"),
@@ -430,7 +430,8 @@ def test_handle_build_success(caplog, mocker, mock_build_request_file):
     caplog.set_level(logging.INFO)
 
     mocker.patch("cli._run_nox_sessions")
-    mocker.patch("cli._verify_library_namespace", return_value=True)
+    mocker.patch("cli._verify_library_namespace")
+    mocker.patch("cli._verify_library_dist_name")
     handle_build()
 
     assert "'build' command executed." in caplog.text
@@ -507,12 +508,42 @@ def test_handle_release_init_success(mocker, mock_release_init_request_file):
     handle_release_init()
 
 
-def test_handle_release_init_fail():
+def test_handle_release_init_fail_value_error_file():
     """
     Tests that handle_release_init fails to read `librarian/release-init-request.json`.
     """
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="No such file or directory"):
         handle_release_init()
+
+
+def test_handle_release_init_fail_value_error_version(mocker):
+    m = mock_open()
+
+    mock_release_init_request_content = {
+        "libraries": [
+            {
+                "id": "google-cloud-language",
+                "apis": [{"path": "google/cloud/language/v1"}],
+                "release_triggered": True,
+                "version": "1.2.2",
+                "changes": [],
+            },
+        ]
+    }
+    with unittest.mock.patch("cli.open", m):
+        mocker.patch(
+            "cli._get_libraries_to_prepare_for_release",
+            return_value=mock_release_init_request_content["libraries"],
+        )
+        mocker.patch("cli._get_previous_version", return_value="1.2.2")
+        mocker.patch("cli._process_changelog", return_value=None)
+        mocker.patch(
+            "cli._read_json_file", return_value=mock_release_init_request_content
+        )
+        with pytest.raises(
+            ValueError, match="is the same as the version in state.yaml"
+        ):
+            handle_release_init()
 
 
 def test_read_valid_text_file(mocker):
@@ -795,6 +826,26 @@ def test_determine_library_namespace_fails_not_subpath():
 
     with pytest.raises(ValueError):
         _determine_library_namespace(gapic_parent_path, pkg_root_path)
+
+
+def test_get_library_dist_name_success(mocker):
+    mock_metadata = {"name": "my-lib", "version": "1.0.0"}
+    mocker.patch("build.util.project_wheel_metadata", return_value=mock_metadata)
+    assert _get_library_dist_name("my-lib", "repo") == "my-lib"
+
+
+def test_verify_library_dist_name_setup_success(mocker):
+    """Tests success when a library distribution name in setup.py is valid."""
+    mock_setup_file = mocker.patch("cli._get_library_dist_name", return_value="my-lib")
+    _verify_library_dist_name("my-lib", "repo")
+    mock_setup_file.assert_called_once_with("my-lib", "repo")
+
+
+def test_verify_library_dist_name_fail(mocker):
+    """Tests failure when a library-id does not match the libary distribution name."""
+    mocker.patch("cli._get_library_dist_name", return_value="invalid-lib")
+    with pytest.raises(ValueError):
+        _verify_library_dist_name("my-lib", "repo")
 
 
 def test_verify_library_namespace_success_valid(mocker, mock_path_class):

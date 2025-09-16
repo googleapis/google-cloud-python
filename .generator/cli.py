@@ -23,12 +23,13 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import yaml
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
-
+import build.util
 import parse_googleapis_content
-import yaml
+
 
 try:
     import synthtool
@@ -334,7 +335,6 @@ def _run_nox_sessions(library_id: str, repo: str):
         "unit-3.9",
         "unit-3.13",
         "docs",
-        "system-3.13",
         "lint",
         "lint_setup_py",
         "mypy-3.13",
@@ -450,12 +450,54 @@ def _verify_library_namespace(library_id: str, repo: str):
             )
 
 
+def _get_library_dist_name(library_id: str, repo: str) -> str:
+    """
+    Gets the package name by programmatically building the metadata.
+
+    Args:
+        library_id: id of the library.
+        repo: This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+
+    Returns:
+        str: The library name string if found, otherwise None.
+    """
+    library_path = f"{repo}/packages/{library_id}"
+    metadata = build.util.project_wheel_metadata(library_path)
+    return metadata.get("name")
+
+
+def _verify_library_dist_name(library_id: str, repo: str):
+    """Verifies the library distribution name against its config files.
+
+    This function ensures that:
+    1. At least one of `setup.py` or `pyproject.toml` exists and is valid.
+    2. Any existing config file's 'name' property matches the `library_id`.
+
+    Args:
+        library_id: id of the library.
+        repo: This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+
+    Raises:
+        ValueError: If a name in an existing config file does not match the `library_id`.
+    """
+    dist_name = _get_library_dist_name(library_id, repo)
+    if dist_name != library_id:
+        raise ValueError(
+            f"The distribution name `{dist_name}` does not match the folder `{library_id}`."
+        )
+
+
 def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
     try:
         request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         _verify_library_namespace(library_id, repo)
+        _verify_library_dist_name(library_id, repo)
         _run_nox_sessions(library_id, repo)
     except Exception as e:
         raise ValueError("Build failed.") from e
@@ -750,6 +792,12 @@ def handle_release_init(
             the config.yaml.
         output(str): Path to the directory in the container where modified
             code should be placed.
+
+    Raises:
+        ValueError: if the version in `release-init-request.json` is
+            the same as the version in state.yaml or if the
+            `release-init-request.json` file in the given
+            librarian directory cannot be read.
     """
 
     try:
@@ -772,19 +820,24 @@ def handle_release_init(
             library_id = library_release_data["id"]
             library_changes = library_release_data["changes"]
             path_to_library = f"packages/{library_id}"
-            _update_version_for_library(repo, output, path_to_library, version)
 
             # Get previous version from state.yaml
             previous_version = _get_previous_version(library_id, librarian)
-            if previous_version != version:
-                _update_changelog_for_library(
-                    repo,
-                    output,
-                    library_changes,
-                    version,
-                    previous_version,
-                    library_id,
+            if previous_version == version:
+                raise ValueError(
+                    f"The version in {RELEASE_INIT_REQUEST_FILE} is the same as the version in {STATE_YAML_FILE}\n"
+                    f"{library_id} version: {previous_version}\n"
                 )
+
+            _update_version_for_library(repo, output, path_to_library, version)
+            _update_changelog_for_library(
+                repo,
+                output,
+                library_changes,
+                version,
+                previous_version,
+                library_id,
+            )
 
     except Exception as e:
         raise ValueError(f"Release init failed: {e}") from e

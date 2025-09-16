@@ -4570,6 +4570,7 @@ def test_create_evaluation_rest_call_success(request_type):
                     ]
                 },
                 "ranking_expression": "ranking_expression_value",
+                "ranking_expression_backend": 3,
                 "safe_search": True,
                 "user_labels": {},
                 "natural_language_query_understanding_spec": {

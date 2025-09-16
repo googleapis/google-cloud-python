@@ -123,6 +123,10 @@ COPY .generator/requirements.in .
 RUN python3.9 -m pip install -r requirements.in
 RUN python3.9 -m pip install /synthtool
 
+# Install build which is used to get the metadata of package config files.
+COPY .generator/requirements.in .
+RUN python3.9 -m pip install -r requirements.in
+
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
 RUN chmod a+rx ./cli.py
