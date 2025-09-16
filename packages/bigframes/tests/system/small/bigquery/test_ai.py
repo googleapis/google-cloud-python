@@ -15,9 +15,10 @@
 import sys
 
 import pandas as pd
-import pandas.testing
+import pyarrow as pa
 import pytest
 
+from bigframes import series
 import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
 
@@ -27,15 +28,17 @@ def test_ai_generate_bool(session):
     s2 = bpd.Series(["fruit", "tree"], session=session)
     prompt = (s1, " is a ", s2)
 
-    result = bbq.ai.generate_bool(prompt, endpoint="gemini-2.5-flash").struct.field(
-        "result"
-    )
+    result = bbq.ai.generate_bool(prompt, endpoint="gemini-2.5-flash")
 
-    pandas.testing.assert_series_equal(
-        result.to_pandas(),
-        pd.Series([True, False], name="result"),
-        check_dtype=False,
-        check_index=False,
+    assert _contains_no_nulls(result)
+    assert result.dtype == pd.ArrowDtype(
+        pa.struct(
+            (
+                pa.field("result", pa.bool_()),
+                pa.field("full_response", pa.string()),
+                pa.field("status", pa.string()),
+            )
+        )
     )
 
 
@@ -52,11 +55,38 @@ def test_ai_generate_bool_with_model_params(session):
 
     result = bbq.ai.generate_bool(
         prompt, endpoint="gemini-2.5-flash", model_params=model_params
-    ).struct.field("result")
-
-    pandas.testing.assert_series_equal(
-        result.to_pandas(),
-        pd.Series([True, False], name="result"),
-        check_dtype=False,
-        check_index=False,
     )
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == pd.ArrowDtype(
+        pa.struct(
+            (
+                pa.field("result", pa.bool_()),
+                pa.field("full_response", pa.string()),
+                pa.field("status", pa.string()),
+            )
+        )
+    )
+
+
+def test_ai_generate_bool_multi_model(session):
+    df = session.from_glob_path(
+        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+    )
+
+    result = bbq.ai.generate_bool((df["image"], " contains an animal"))
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == pd.ArrowDtype(
+        pa.struct(
+            (
+                pa.field("result", pa.bool_()),
+                pa.field("full_response", pa.string()),
+                pa.field("status", pa.string()),
+            )
+        )
+    )
+
+
+def _contains_no_nulls(s: series.Series) -> bool:
+    return len(s) == s.count()

@@ -47,30 +47,13 @@ def generate_bool(
         ...     "col_1": ["apple", "bear", "pear"],
         ...     "col_2": ["fruit", "animal", "animal"]
         ... })
-        >>> bbq.ai_generate_bool((df["col_1"], " is a ", df["col_2"]))
+        >>> bbq.ai.generate_bool((df["col_1"], " is a ", df["col_2"]))
         0    {'result': True, 'full_response': '{"candidate...
         1    {'result': True, 'full_response': '{"candidate...
         2    {'result': False, 'full_response': '{"candidat...
         dtype: struct<result: bool, full_response: string, status: string>[pyarrow]
 
-        >>> bbq.ai_generate_bool((df["col_1"], " is a ", df["col_2"])).struct.field("result")
-        0     True
-        1     True
-        2    False
-        Name: result, dtype: boolean
-
-        >>> model_params = {
-        ...     "generation_config": {
-        ...         "thinking_config": {
-        ...             "thinking_budget": 0
-        ...         }
-        ...     }
-        ... }
-        >>> bbq.ai_generate_bool(
-        ...     (df["col_1"], " is a ", df["col_2"]),
-        ...     endpoint="gemini-2.5-pro",
-        ...     model_params=model_params,
-        ... ).struct.field("result")
+        >>> bbq.ai.generate_bool((df["col_1"], " is a ", df["col_2"])).struct.field("result")
         0     True
         1     True
         2    False
