@@ -1,4 +1,4 @@
 click
-gapic-generator
+gapic-generator @ git+https://github.com/googleapis/gapic-generator-python@run-lint-on-samples
 nox
 starlark-pyo3>=2025.1

@@ -13,7 +13,9 @@
 # limitations under the License.
 
 import starlark as sl
-
+import sys
+import json
+import glob
 
 _PY_CALLABLES = (
     "py_gapic_assembly_pkg",
@@ -97,6 +99,10 @@ _NOOP_CALLABLES = (
     "genrule",
 )
 
+_FAKE_GLOB = (
+    "exports_files",
+    "glob",
+)
 
 def parse_content(content: str) -> dict:
     """Parses content from BUILD.bazel and returns a dictionary
@@ -119,8 +125,15 @@ def parse_content(content: str) -> dict:
     def noop_bazel_rule(**args):
         pass
 
+    def fake_glob_rule(paths=[], **args):
+        return []
+
+
     for noop_callable in _NOOP_CALLABLES:
         mod.add_callable(noop_callable, noop_bazel_rule)
+
+    for fake_glob_callable in _FAKE_GLOB:
+        mod.add_callable(fake_glob_callable, fake_glob_rule)
 
     def load(name):
         mod = sl.Module()

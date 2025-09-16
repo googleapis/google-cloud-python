@@ -521,13 +521,6 @@ def test_handle_release_init_fail_value_error_version(mocker):
     mock_release_init_request_content = {
         "libraries": [
             {
-                "id": "google-cloud-another-library",
-                "apis": [{"path": "google/cloud/another/library/v1"}],
-                "release_triggered": False,
-                "version": "1.2.3",
-                "changes": [],
-            },
-            {
                 "id": "google-cloud-language",
                 "apis": [{"path": "google/cloud/language/v1"}],
                 "release_triggered": True,

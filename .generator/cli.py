@@ -289,6 +289,10 @@ def handle_generate(
                                 generator_options.append(
                                     f"{config_key_map[key]}={config_value},"
                                 )
+                    optional_arguments = result[py_gapic_entry].get("opt_args", None)
+                    if optional_arguments:
+                        [generator_options.append(f"{opt_arg},") for opt_arg in optional_arguments]
+
                     with tempfile.TemporaryDirectory() as tmp_dir:
                         generator_command = (
                             f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
@@ -747,8 +751,8 @@ def handle_release_init(
 
     Raises:
         ValueError: if the version in `release-init-request.json` is
-            the same as the version in state.yaml
-        ValueError: if the `release-init-request.json` file in the given
+            the same as the version in state.yaml or if the
+            `release-init-request.json` file in the given
             librarian directory cannot be read.
     """
 
@@ -778,8 +782,7 @@ def handle_release_init(
             if previous_version == version:
                 raise ValueError(
                     f"The version in {RELEASE_INIT_REQUEST_FILE} is the same as the version in {STATE_YAML_FILE}\n"
-                    f"{library_id} previous released version: {previous_version}\n"
-                    f"{library_id} current version: {version}\n"
+                    f"{library_id} version: {previous_version}\n"
                 )
 
             _update_version_for_library(repo, output, path_to_library, version)
