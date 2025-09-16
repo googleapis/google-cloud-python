@@ -25,7 +25,7 @@ import sys
 import yaml
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 from distutils.core import run_setup
 
 import tomli
@@ -549,25 +549,78 @@ def _verify_library_namespace(library_id: str, repo: str):
             )
 
 
-def _get_setup_dist_name(library_id: str, repo: str):
+def _get_setup_dist_name(library_id: str, repo: str) -> Optional[str]:
+    """Gets the library distribution name from a `setup.py` file.
+
+    Tries to execute `run_setup` on the file and extract the 'name'
+    property. Logs and returns None on any exception.
+
+    Args:
+        library_id(str): id of the library.
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+
+    Returns:
+        Optional[str]: The library distribution name if found and parsed, otherwise None.
+    """
     try:
         dist = run_setup(f"{repo}/packages/{library_id}/setup.py")
         return dist.get_name()
     except Exception as e:
+        logger.debug(
+            f"failed to get distribution name for `{library_id}` from `setup.py` : {e}",
+            exc_info=True,
+        )
         return None
 
 
-def _get_toml_dist_name(library_id: str, repo: str):
+def _get_toml_dist_name(library_id: str, repo: str) -> Optional[str]:
+    """Gets the library distribution name from a `pyproject.toml` file.
+
+    Parses the TOML file and safely accesses the name from the
+    [project] table using `.get()`. Logs and returns None on any
+    exception (e.g., FileNotFoundError, TOMLDecodeError).
+
+    Args:
+        library_id(str): id of the library.
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+
+    Returns:
+        Optional[str]: The library distribution name if found and parsed, otherwise None.
+    """
     try:
         pyproject_toml_file = Path(f"{repo}/packages/{library_id}/pyproject.toml")
         with open(pyproject_toml_file, "rb") as f:
             data = tomli.load(f)
             return data.get("project", {}).get("name")
     except Exception as e:
+        logger.debug(
+            f"failed to get distribution name for `{library_id}` from `pyproject.toml` : {e}",
+            exc_info=True,
+        )
         return None
 
 
 def _verify_library_dist_name(library_id: str, repo: str):
+    """Verifies the library distribution name against its config files.
+
+    This function ensures that:
+    1. At least one of `setup.py` or `pyproject.toml` exists and is valid.
+    2. Any existing config file's 'name' property matches the `library_id`.
+
+    Args:
+        library_id: id of the library.
+        repo: This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+
+    Raises:
+        ValueError: If no valid config file is found, or if a name
+            in an existing file does not match the `library_id`.
+    """
     setup_dist_name = _get_setup_dist_name(library_id, repo)
     toml_dist_name = _get_toml_dist_name(library_id, repo)
     if setup_dist_name is None and toml_dist_name is None:
