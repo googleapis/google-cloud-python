@@ -162,9 +162,6 @@ py_gapic_library(
     ],
 )"""
     build_bazel_file.write_text(build_bazel_content)
-
-    # Change the current working directory to the temp path for the test.
-    monkeypatch.chdir(tmp_path)
     return build_bazel_file
 
 
