@@ -45,7 +45,6 @@ git config --global --add safe.directory $(realpath .)
 for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
   # Get the path to the package by removing the suffix /tests/system
   package=$(echo $dir | cut -f -2 -d '/')
-  should_test=false
 
   files_to_check=${package}/CHANGELOG.md
 
@@ -57,11 +56,7 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
       echo "no change detected in ${files_to_check}, skipping"
   else
       echo "change detected in ${files_to_check}"
-      should_test=true
-  fi
-  if [ "${should_test}" = true ]; then
       echo "Running system tests for ${package}"
-
       pushd ${package}
       # Temporarily allow failure.
       set +e
