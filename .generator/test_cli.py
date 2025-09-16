@@ -159,6 +159,9 @@ py_gapic_library(
     transport = "grpc+rest",
     deps = [
     ],
+    opt_args = [
+        "python-gapic-namespace=google.cloud",
+    ],
 )"""
     build_bazel_file.write_text(build_bazel_content)
 
