@@ -1042,6 +1042,10 @@ class NDFrame(indexing.IndexingMixin):
             ascending (bool, default True):
                 Whether or not the elements should be ranked in ascending order.
 
+            pct (bool, default False):
+                Whether or not to display the returned rankings in percentile
+                form.
+
         Returns:
             bigframes.pandas.DataFrame or bigframes.pandas.Series:
                 Return a Series or DataFrame with data ranks as values.

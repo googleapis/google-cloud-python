@@ -100,7 +100,11 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         return self._aggregate(agg_ops.mean_op)
 
     def rank(
-        self, method="average", ascending: bool = True, na_option: str = "keep"
+        self,
+        method="average",
+        ascending: bool = True,
+        na_option: str = "keep",
+        pct: bool = False,
     ) -> series.Series:
         return series.Series(
             block_ops.rank(
@@ -110,6 +114,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
                 ascending,
                 grouping_cols=tuple(self._by_col_ids),
                 columns=(self._value_column,),
+                pct=pct,
             )
         )
 

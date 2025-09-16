@@ -5442,13 +5442,13 @@ def test_df_value_counts(scalars_dfs, subset, normalize, ascending, dropna):
 
 
 @pytest.mark.parametrize(
-    ("na_option", "method", "ascending", "numeric_only"),
+    ("na_option", "method", "ascending", "numeric_only", "pct"),
     [
-        ("keep", "average", True, True),
-        ("top", "min", False, False),
-        ("bottom", "max", False, False),
-        ("top", "first", False, False),
-        ("bottom", "dense", False, False),
+        ("keep", "average", True, True, True),
+        ("top", "min", False, False, False),
+        ("bottom", "max", False, False, True),
+        ("top", "first", False, False, False),
+        ("bottom", "dense", False, False, True),
     ],
 )
 def test_df_rank_with_nulls(
@@ -5458,6 +5458,7 @@ def test_df_rank_with_nulls(
     method,
     ascending,
     numeric_only,
+    pct,
 ):
     unsupported_columns = ["geography_col"]
     bf_result = (
@@ -5467,6 +5468,7 @@ def test_df_rank_with_nulls(
             method=method,
             ascending=ascending,
             numeric_only=numeric_only,
+            pct=pct,
         )
         .to_pandas()
     )
@@ -5477,6 +5479,7 @@ def test_df_rank_with_nulls(
             method=method,
             ascending=ascending,
             numeric_only=numeric_only,
+            pct=pct,
         )
         .astype(pd.Float64Dtype())
     )

@@ -4990,9 +4990,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         numeric_only=False,
         na_option: str = "keep",
         ascending=True,
+        pct: bool = False,
     ) -> DataFrame:
         df = self._drop_non_numeric() if numeric_only else self
-        return DataFrame(block_ops.rank(df._block, method, na_option, ascending))
+        return DataFrame(
+            block_ops.rank(df._block, method, na_option, ascending, pct=pct)
+        )
 
     def first_valid_index(self):
         return

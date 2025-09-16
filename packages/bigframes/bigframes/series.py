@@ -851,8 +851,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         numeric_only=False,
         na_option: str = "keep",
         ascending: bool = True,
+        pct: bool = False,
     ) -> Series:
-        return Series(block_ops.rank(self._block, method, na_option, ascending))
+        return Series(
+            block_ops.rank(self._block, method, na_option, ascending, pct=pct)
+        )
 
     def fillna(self, value=None) -> Series:
         return self._apply_binary_op(value, ops.fillna_op)

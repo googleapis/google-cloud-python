@@ -181,7 +181,11 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return self._aggregate_all(agg_ops.median_op, numeric_only=True)
 
     def rank(
-        self, method="average", ascending: bool = True, na_option: str = "keep"
+        self,
+        method="average",
+        ascending: bool = True,
+        na_option: str = "keep",
+        pct: bool = False,
     ) -> df.DataFrame:
         return df.DataFrame(
             block_ops.rank(
@@ -191,6 +195,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 ascending,
                 grouping_cols=tuple(self._by_col_ids),
                 columns=tuple(self._selected_cols),
+                pct=pct,
             )
         )
 

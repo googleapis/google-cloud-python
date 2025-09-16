@@ -428,6 +428,8 @@ class GroupBy:
                 * keep: leave NA values where they are.
                 * top: smallest rank if ascending.
                 * bottom: smallest rank if descending.
+            pct (bool, default False):
+                Compute percentage rank of data within each group
 
         Returns:
             DataFrame with ranking of values within each group

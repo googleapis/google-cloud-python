@@ -417,6 +417,7 @@ def rank(
     ascending: bool = True,
     grouping_cols: tuple[str, ...] = (),
     columns: tuple[str, ...] = (),
+    pct: bool = False,
 ):
     if method not in ["average", "min", "max", "first", "dense"]:
         raise ValueError(
@@ -459,6 +460,12 @@ def rank(
             ),
             skip_reproject_unsafe=(col != columns[-1]),
         )
+        if pct:
+            block, max_id = block.apply_window_op(
+                rownum_id, agg_ops.max_op, windows.unbound(grouping_keys=grouping_cols)
+            )
+            block, rownum_id = block.project_expr(ops.div_op.as_expr(rownum_id, max_id))
+
         rownum_col_ids.append(rownum_id)
 
     # Step 2: Apply aggregate to groups of like input values.

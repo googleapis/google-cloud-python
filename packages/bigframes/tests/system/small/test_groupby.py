@@ -96,41 +96,22 @@ def test_dataframe_groupby_quantile(scalars_df_index, scalars_pandas_df_index, q
 
 
 @pytest.mark.parametrize(
-    ("na_option", "method", "ascending"),
+    ("na_option", "method", "ascending", "pct"),
     [
         (
             "keep",
             "average",
             True,
-        ),
-        (
-            "top",
-            "min",
             False,
         ),
-        (
-            "bottom",
-            "max",
-            False,
-        ),
-        (
-            "top",
-            "first",
-            False,
-        ),
-        (
-            "bottom",
-            "dense",
-            False,
-        ),
+        ("top", "min", False, False),
+        ("bottom", "max", False, False),
+        ("top", "first", False, True),
+        ("bottom", "dense", False, True),
     ],
 )
 def test_dataframe_groupby_rank(
-    scalars_df_index,
-    scalars_pandas_df_index,
-    na_option,
-    method,
-    ascending,
+    scalars_df_index, scalars_pandas_df_index, na_option, method, ascending, pct
 ):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
     pytest.importorskip("pandas", minversion="2.0.0")
@@ -138,21 +119,13 @@ def test_dataframe_groupby_rank(
     bf_result = (
         scalars_df_index[col_names]
         .groupby("string_col")
-        .rank(
-            na_option=na_option,
-            method=method,
-            ascending=ascending,
-        )
+        .rank(na_option=na_option, method=method, ascending=ascending, pct=pct)
     ).to_pandas()
     pd_result = (
         (
             scalars_pandas_df_index[col_names]
             .groupby("string_col")
-            .rank(
-                na_option=na_option,
-                method=method,
-                ascending=ascending,
-            )
+            .rank(na_option=na_option, method=method, ascending=ascending, pct=pct)
         )
         .astype("float64")
         .astype("Float64")
@@ -737,41 +710,37 @@ def test_series_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
 
 
 @pytest.mark.parametrize(
-    ("na_option", "method", "ascending"),
+    ("na_option", "method", "ascending", "pct"),
     [
-        (
-            "keep",
-            "average",
-            True,
-        ),
+        ("keep", "average", True, False),
         (
             "top",
             "min",
             False,
+            True,
         ),
         (
             "bottom",
             "max",
             False,
+            True,
         ),
         (
             "top",
             "first",
             False,
+            True,
         ),
         (
             "bottom",
             "dense",
             False,
+            False,
         ),
     ],
 )
 def test_series_groupby_rank(
-    scalars_df_index,
-    scalars_pandas_df_index,
-    na_option,
-    method,
-    ascending,
+    scalars_df_index, scalars_pandas_df_index, na_option, method, ascending, pct
 ):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
     pytest.importorskip("pandas", minversion="2.0.0")
@@ -779,21 +748,13 @@ def test_series_groupby_rank(
     bf_result = (
         scalars_df_index[col_names]
         .groupby("string_col")["int64_col"]
-        .rank(
-            na_option=na_option,
-            method=method,
-            ascending=ascending,
-        )
+        .rank(na_option=na_option, method=method, ascending=ascending, pct=pct)
     ).to_pandas()
     pd_result = (
         (
             scalars_pandas_df_index[col_names]
             .groupby("string_col")["int64_col"]
-            .rank(
-                na_option=na_option,
-                method=method,
-                ascending=ascending,
-            )
+            .rank(na_option=na_option, method=method, ascending=ascending, pct=pct)
         )
         .astype("float64")
         .astype("Float64")
