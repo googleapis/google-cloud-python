@@ -138,7 +138,7 @@ def mock_build_bazel_file(tmp_path, monkeypatch):
     # Create the path as expected by the script: .librarian/build-request.json
     bazel_build_path = f"{SOURCE_DIR}/google/cloud/language/v1/BUILD.bazel"
     bazel_build_dir = tmp_path / Path(bazel_build_path).parent
-    os.makedirs(bazel_build_dir)
+    os.makedirs(bazel_build_dir, exist_ok=True)
     build_bazel_file = bazel_build_dir / os.path.basename(bazel_build_path)
 
     build_bazel_content = """load(
