@@ -82,9 +82,10 @@ FROM marketplace.gcr.io/google/ubuntu2404
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    # This is needed to avoid the following error:
+    # `ImportError: libsqlite3.so.0: cannot open shared object file: No such file or directory`.
+    # `libsqlite3-0` is used by the `coverage` PyPI package which is used when testing libraries
     libsqlite3-0 \
-    wget \
-    zip \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
