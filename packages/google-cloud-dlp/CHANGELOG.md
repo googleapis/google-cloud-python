@@ -2,7 +2,6 @@
 
 [PyPI History][1]
 
-
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
 ## [3.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.31.0...google-cloud-dlp-v3.32.0) (2025-09-15)
