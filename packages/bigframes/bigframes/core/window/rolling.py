@@ -108,8 +108,10 @@ class Window(vendored_pandas_rolling.Window):
         if self._window_spec.grouping_keys:
             original_index_ids = block.index_columns
             block = block.reset_index(drop=False)
+            # grouping keys will always be direct column references, but we should probably
+            # refactor this class to enforce this statically
             index_ids = (
-                *[col.id.name for col in self._window_spec.grouping_keys],
+                *[col.id.name for col in self._window_spec.grouping_keys],  # type: ignore
                 *original_index_ids,
             )
             block = block.set_index(col_ids=index_ids)

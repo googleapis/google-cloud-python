@@ -19,8 +19,11 @@ import typing
 from typing import cast, List, Optional
 
 import bigframes_vendored.constants as constants
+import bigframes_vendored.ibis
+from bigframes_vendored.ibis.expr import builders as ibis_expr_builders
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
+from bigframes_vendored.ibis.expr.operations import window as ibis_expr_window
 import bigframes_vendored.ibis.expr.operations as ibis_ops
 import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
 import bigframes_vendored.ibis.expr.types as ibis_types
@@ -30,6 +33,8 @@ from bigframes.core import agg_expressions
 from bigframes.core.compile import constants as compiler_constants
 import bigframes.core.compile.ibis_compiler.scalar_op_compiler as scalar_compilers
 import bigframes.core.compile.ibis_types as compile_ibis_types
+import bigframes.core.utils
+from bigframes.core.window_spec import RangeWindowBounds, RowsWindowBounds, WindowSpec
 import bigframes.core.window_spec as window_spec
 import bigframes.operations.aggregations as agg_ops
 
@@ -73,11 +78,12 @@ def compile_analytic(
     window: window_spec.WindowSpec,
     bindings: typing.Dict[str, ibis_types.Value],
 ) -> ibis_types.Value:
+    ibis_window = _ibis_window_from_spec(window, bindings=bindings)
     if isinstance(aggregate, agg_expressions.NullaryAggregation):
-        return compile_nullary_agg(aggregate.op, window)
+        return compile_nullary_agg(aggregate.op, ibis_window)
     elif isinstance(aggregate, agg_expressions.UnaryAggregation):
         input = scalar_compiler.compile_expression(aggregate.arg, bindings=bindings)
-        return compile_unary_agg(aggregate.op, input, window)  # type: ignore
+        return compile_unary_agg(aggregate.op, input, ibis_window)  # type: ignore
     elif isinstance(aggregate, agg_expressions.BinaryAggregation):
         raise NotImplementedError("binary analytic operations not yet supported")
     else:
@@ -727,6 +733,109 @@ def _(
 
 def _apply_window_if_present(value: ibis_types.Value, window):
     return value.over(window) if (window is not None) else value
+
+
+def _ibis_window_from_spec(
+    window_spec: WindowSpec, bindings: typing.Dict[str, ibis_types.Value]
+):
+    group_by: typing.List[ibis_types.Value] = (
+        [
+            typing.cast(
+                ibis_types.Column,
+                _as_groupable(scalar_compiler.compile_expression(column, bindings)),
+            )
+            for column in window_spec.grouping_keys
+        ]
+        if window_spec.grouping_keys
+        else []
+    )
+
+    # Construct ordering. There are basically 3 main cases
+    # 1. Order-independent op (aggregation, cut, rank) with unbound window - no ordering clause needed
+    # 2. Order-independent op (aggregation, cut, rank) with range window - use ordering clause, ties allowed
+    # 3. Order-depedenpent op (navigation functions, array_agg) or rows bounds - use total row order to break ties.
+    if window_spec.is_row_bounded:
+        if not window_spec.ordering:
+            # If window spec has following or preceding bounds, we need to apply an unambiguous ordering.
+            raise ValueError("No ordering provided for ordered analytic function")
+        order_by = scalar_compiler._convert_row_ordering_to_table_values(
+            bindings,
+            window_spec.ordering,
+        )
+
+    elif window_spec.is_range_bounded:
+        order_by = [
+            scalar_compiler._convert_range_ordering_to_table_value(
+                bindings,
+                window_spec.ordering[0],
+            )
+        ]
+    # The rest if branches are for unbounded windows
+    elif window_spec.ordering:
+        # Unbound grouping window. Suitable for aggregations but not for analytic function application.
+        order_by = scalar_compiler._convert_row_ordering_to_table_values(
+            bindings,
+            window_spec.ordering,
+        )
+    else:
+        order_by = None
+
+    window = bigframes_vendored.ibis.window(order_by=order_by, group_by=group_by)
+    if window_spec.bounds is not None:
+        return _add_boundary(window_spec.bounds, window)
+    return window
+
+
+def _as_groupable(value: ibis_types.Value):
+    from bigframes.core.compile.ibis_compiler import scalar_op_registry
+
+    # Some types need to be converted to another type to enable groupby
+    if value.type().is_float64():
+        return value.cast(ibis_dtypes.str)
+    elif value.type().is_geospatial():
+        return typing.cast(ibis_types.GeoSpatialColumn, value).as_binary()
+    elif value.type().is_json():
+        return scalar_op_registry.to_json_string(value)
+    else:
+        return value
+
+
+def _to_ibis_boundary(
+    boundary: Optional[int],
+) -> Optional[ibis_expr_window.WindowBoundary]:
+    if boundary is None:
+        return None
+    return ibis_expr_window.WindowBoundary(
+        abs(boundary), preceding=boundary <= 0  # type:ignore
+    )
+
+
+def _add_boundary(
+    bounds: typing.Union[RowsWindowBounds, RangeWindowBounds],
+    ibis_window: ibis_expr_builders.LegacyWindowBuilder,
+) -> ibis_expr_builders.LegacyWindowBuilder:
+    if isinstance(bounds, RangeWindowBounds):
+        return ibis_window.range(
+            start=_to_ibis_boundary(
+                None
+                if bounds.start is None
+                else bigframes.core.utils.timedelta_to_micros(bounds.start)
+            ),
+            end=_to_ibis_boundary(
+                None
+                if bounds.end is None
+                else bigframes.core.utils.timedelta_to_micros(bounds.end)
+            ),
+        )
+    if isinstance(bounds, RowsWindowBounds):
+        if bounds.start is not None or bounds.end is not None:
+            return ibis_window.rows(
+                start=_to_ibis_boundary(bounds.start),
+                end=_to_ibis_boundary(bounds.end),
+            )
+        return ibis_window
+    else:
+        raise ValueError(f"unrecognized window bounds {bounds}")
 
 
 def _map_to_literal(

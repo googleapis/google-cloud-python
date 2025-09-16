@@ -22,7 +22,7 @@ import typing
 from typing import Callable, Mapping, TypeVar
 
 from bigframes import dtypes
-from bigframes.core import expression
+from bigframes.core import expression, window_spec
 import bigframes.core.identifiers as ids
 import bigframes.operations.aggregations as agg_ops
 
@@ -149,3 +149,68 @@ class BinaryAggregation(Aggregation):
         self, larg: expression.Expression, rarg: expression.Expression
     ) -> BinaryAggregation:
         return BinaryAggregation(self.op, larg, rarg)
+
+
+@dataclasses.dataclass(frozen=True)
+class WindowExpression(expression.Expression):
+    analytic_expr: Aggregation
+    window: window_spec.WindowSpec
+
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return tuple(
+            itertools.chain.from_iterable(
+                map(lambda x: x.column_references, self.inputs)
+            )
+        )
+
+    @functools.cached_property
+    def is_resolved(self) -> bool:
+        return all(input.is_resolved for input in self.inputs)
+
+    @property
+    def output_type(self) -> dtypes.ExpressionType:
+        return self.analytic_expr.output_type
+
+    @property
+    def inputs(
+        self,
+    ) -> typing.Tuple[expression.Expression, ...]:
+        return (self.analytic_expr, *self.window.expressions)
+
+    @property
+    def free_variables(self) -> typing.Tuple[str, ...]:
+        return tuple(
+            itertools.chain.from_iterable(map(lambda x: x.free_variables, self.inputs))
+        )
+
+    @property
+    def is_const(self) -> bool:
+        return all(child.is_const for child in self.inputs)
+
+    def transform_children(
+        self: WindowExpression,
+        t: Callable[[expression.Expression], expression.Expression],
+    ) -> WindowExpression:
+        return WindowExpression(
+            self.analytic_expr.transform_children(t),
+            self.window.transform_exprs(t),
+        )
+
+    def bind_variables(
+        self: WindowExpression,
+        bindings: Mapping[str, expression.Expression],
+        allow_partial_bindings: bool = False,
+    ) -> WindowExpression:
+        return self.transform_children(
+            lambda x: x.bind_variables(bindings, allow_partial_bindings)
+        )
+
+    def bind_refs(
+        self: WindowExpression,
+        bindings: Mapping[ids.ColumnId, expression.Expression],
+        allow_partial_bindings: bool = False,
+    ) -> WindowExpression:
+        return self.transform_children(
+            lambda x: x.bind_refs(bindings, allow_partial_bindings)
+        )

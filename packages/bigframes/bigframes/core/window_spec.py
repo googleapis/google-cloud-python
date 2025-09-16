@@ -16,7 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 import datetime
 import itertools
-from typing import Literal, Mapping, Optional, Sequence, Set, Tuple, Union
+from typing import Callable, Literal, Mapping, Optional, Sequence, Set, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -215,13 +215,13 @@ class WindowSpec:
     Specifies a window over which aggregate and analytic function may be applied.
 
     Attributes:
-        grouping_keys: A set of column ids to group on
+        grouping_keys: A set of columns to group on
         bounds: The window boundaries
         ordering: A list of columns ids and ordering direction to override base ordering
         min_periods: The minimum number of observations in window required to have a value
     """
 
-    grouping_keys: Tuple[ex.DerefOp, ...] = tuple()
+    grouping_keys: Tuple[ex.Expression, ...] = tuple()
     ordering: Tuple[orderings.OrderingExpression, ...] = tuple()
     bounds: Union[RowsWindowBounds, RangeWindowBounds, None] = None
     min_periods: int = 0
@@ -273,7 +273,10 @@ class WindowSpec:
         ordering_vars = itertools.chain.from_iterable(
             item.scalar_expression.column_references for item in self.ordering
         )
-        return set(itertools.chain((i.id for i in self.grouping_keys), ordering_vars))
+        grouping_vars = itertools.chain.from_iterable(
+            item.column_references for item in self.grouping_keys
+        )
+        return set(itertools.chain(grouping_vars, ordering_vars))
 
     def without_order(self, force: bool = False) -> WindowSpec:
         """Removes ordering clause if ordering isn't required to define bounds."""
@@ -294,6 +297,18 @@ class WindowSpec:
             ordering=tuple(
                 order_part.remap_column_refs(mapping, allow_partial_bindings)
                 for order_part in self.ordering
+            ),
+            bounds=self.bounds,
+            min_periods=self.min_periods,
+        )
+
+    def transform_exprs(
+        self: WindowSpec, t: Callable[[ex.Expression], ex.Expression]
+    ) -> WindowSpec:
+        return WindowSpec(
+            grouping_keys=tuple(t(key) for key in self.grouping_keys),
+            ordering=tuple(
+                order_part.transform_exprs(t) for order_part in self.ordering
             ),
             bounds=self.bounds,
             min_periods=self.min_periods,

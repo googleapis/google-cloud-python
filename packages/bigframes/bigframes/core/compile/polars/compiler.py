@@ -828,7 +828,10 @@ class PolarsCompiler:
             # polars will automatically broadcast the aggregate to the matching input rows
             agg_pl = self.agg_compiler.compile_agg_expr(node.expression)
             if window.grouping_keys:
-                agg_pl = agg_pl.over(id.id.sql for id in window.grouping_keys)
+                agg_pl = agg_pl.over(
+                    self.expr_compiler.compile_expression(key)
+                    for key in window.grouping_keys
+                )
             result = df.with_columns(agg_pl.alias(node.output_name.sql))
         else:  # row-bounded window
             window_result = self._calc_row_analytic_func(

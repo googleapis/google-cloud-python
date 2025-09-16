@@ -21,15 +21,13 @@ from typing import Literal, Optional, Sequence
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.backends.bigquery.backend as ibis_bigquery
 import bigframes_vendored.ibis.common.deferred as ibis_deferred  # type: ignore
-from bigframes_vendored.ibis.expr import builders as ibis_expr_builders
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
-from bigframes_vendored.ibis.expr.operations import window as ibis_expr_window
 import bigframes_vendored.ibis.expr.operations as ibis_ops
 import bigframes_vendored.ibis.expr.types as ibis_types
 from google.cloud import bigquery
 import pyarrow as pa
 
-from bigframes.core import utils
+from bigframes.core import agg_expressions
 import bigframes.core.agg_expressions as ex_types
 import bigframes.core.compile.googlesql
 import bigframes.core.compile.ibis_compiler.aggregate_compiler as agg_compiler
@@ -38,8 +36,9 @@ import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
 from bigframes.core.ordering import OrderingExpression
 import bigframes.core.sql
-from bigframes.core.window_spec import RangeWindowBounds, RowsWindowBounds, WindowSpec
+from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
+import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 
 op_compiler = op_compilers.scalar_op_compiler
@@ -167,18 +166,6 @@ class UnorderedIR:
             bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(ibis_type),
         )
 
-    def row_count(self, name: str) -> UnorderedIR:
-        original_table = self._to_ibis_expr()
-        ibis_table = original_table.agg(
-            [
-                original_table.count().name(name),
-            ]
-        )
-        return UnorderedIR(
-            ibis_table,
-            (ibis_table[name],),
-        )
-
     def _to_ibis_expr(
         self,
         *,
@@ -237,7 +224,9 @@ class UnorderedIR:
             col_out: agg_compiler.compile_aggregate(
                 aggregate,
                 bindings,
-                order_by=_convert_row_ordering_to_table_values(table, order_by),
+                order_by=op_compiler._convert_row_ordering_to_table_values(
+                    table, order_by
+                ),
             )
             for aggregate, col_out in aggregations
         }
@@ -442,113 +431,64 @@ class UnorderedIR:
         if expression.op.order_independent and window_spec.is_unbounded:
             # notably percentile_cont does not support ordering clause
             window_spec = window_spec.without_order()
-        window = self._ibis_window_from_spec(window_spec)
-        bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
 
-        window_op = agg_compiler.compile_analytic(
-            expression,
-            window,
-            bindings=bindings,
+        # TODO: Turn this logic into a true rewriter
+        result_expr: ex.Expression = agg_expressions.WindowExpression(
+            expression, window_spec
         )
-
-        inputs = tuple(
-            typing.cast(ibis_types.Column, self._compile_expression(ex.DerefOp(column)))
-            for column in expression.column_references
-        )
-        clauses = []
+        clauses: list[tuple[ex.Expression, ex.Expression]] = []
         if expression.op.skips_nulls and not never_skip_nulls:
-            for column in inputs:
-                clauses.append((column.isnull(), ibis_types.null()))
-        if window_spec.min_periods and len(inputs) > 0:
+            for input in expression.inputs:
+                clauses.append((ops.isnull_op.as_expr(input), ex.const(None)))
+        if window_spec.min_periods and len(expression.inputs) > 0:
             if not expression.op.nulls_count_for_min_values:
+                is_observation = ops.notnull_op.as_expr()
+
                 # Most operations do not count NULL values towards min_periods
-                per_col_does_count = (column.notnull() for column in inputs)
+                per_col_does_count = (
+                    ops.notnull_op.as_expr(input) for input in expression.inputs
+                )
                 # All inputs must be non-null for observation to count
                 is_observation = functools.reduce(
-                    lambda x, y: x & y, per_col_does_count
-                ).cast(int)
-                observation_count = agg_compiler.compile_analytic(
-                    ex_types.UnaryAggregation(
-                        agg_ops.sum_op, ex.deref("_observation_count")
-                    ),
-                    window,
-                    bindings={"_observation_count": is_observation},
+                    lambda x, y: ops.and_op.as_expr(x, y), per_col_does_count
+                )
+                observation_sentinel = ops.AsTypeOp(bigframes.dtypes.INT_DTYPE).as_expr(
+                    is_observation
+                )
+                observation_count_expr = agg_expressions.WindowExpression(
+                    ex_types.UnaryAggregation(agg_ops.sum_op, observation_sentinel),
+                    window_spec,
                 )
             else:
                 # Operations like count treat even NULLs as valid observations for the sake of min_periods
                 # notnull is just used to convert null values to non-null (FALSE) values to be counted
-                is_observation = inputs[0].notnull()
-                observation_count = agg_compiler.compile_analytic(
-                    ex_types.UnaryAggregation(
-                        agg_ops.count_op, ex.deref("_observation_count")
-                    ),
-                    window,
-                    bindings={"_observation_count": is_observation},
+                is_observation = ops.notnull_op.as_expr(expression.inputs[0])
+                observation_count_expr = agg_expressions.WindowExpression(
+                    agg_ops.count_op.as_expr(is_observation),
+                    window_spec,
                 )
             clauses.append(
                 (
-                    observation_count < ibis_types.literal(window_spec.min_periods),
-                    ibis_types.null(),
+                    ops.lt_op.as_expr(
+                        observation_count_expr, ex.const(window_spec.min_periods)
+                    ),
+                    ex.const(None),
                 )
             )
         if clauses:
-            case_statement = bigframes_vendored.ibis.case()
-            for clause in clauses:
-                case_statement = case_statement.when(clause[0], clause[1])
-            case_statement = case_statement.else_(window_op).end()  # type: ignore
-            window_op = case_statement  # type: ignore
+            case_inputs = [
+                *itertools.chain.from_iterable(clauses),
+                ex.const(True),
+                result_expr,
+            ]
+            result_expr = ops.CaseWhenOp().as_expr(*case_inputs)
 
-        return UnorderedIR(self._table, (*self.columns, window_op.name(output_name)))
+        ibis_expr = op_compiler.compile_expression(result_expr, self._ibis_bindings)
+
+        return UnorderedIR(self._table, (*self.columns, ibis_expr.name(output_name)))
 
     def _compile_expression(self, expr: ex.Expression):
         return op_compiler.compile_expression(expr, self._ibis_bindings)
-
-    def _ibis_window_from_spec(self, window_spec: WindowSpec):
-        group_by: typing.List[ibis_types.Value] = (
-            [
-                typing.cast(
-                    ibis_types.Column, _as_groupable(self._compile_expression(column))
-                )
-                for column in window_spec.grouping_keys
-            ]
-            if window_spec.grouping_keys
-            else []
-        )
-
-        # Construct ordering. There are basically 3 main cases
-        # 1. Order-independent op (aggregation, cut, rank) with unbound window - no ordering clause needed
-        # 2. Order-independent op (aggregation, cut, rank) with range window - use ordering clause, ties allowed
-        # 3. Order-depedenpent op (navigation functions, array_agg) or rows bounds - use total row order to break ties.
-        if window_spec.is_row_bounded:
-            if not window_spec.ordering:
-                # If window spec has following or preceding bounds, we need to apply an unambiguous ordering.
-                raise ValueError("No ordering provided for ordered analytic function")
-            order_by = _convert_row_ordering_to_table_values(
-                self._column_names,
-                window_spec.ordering,
-            )
-
-        elif window_spec.is_range_bounded:
-            order_by = [
-                _convert_range_ordering_to_table_value(
-                    self._column_names,
-                    window_spec.ordering[0],
-                )
-            ]
-        # The rest if branches are for unbounded windows
-        elif window_spec.ordering:
-            # Unbound grouping window. Suitable for aggregations but not for analytic function application.
-            order_by = _convert_row_ordering_to_table_values(
-                self._column_names,
-                window_spec.ordering,
-            )
-        else:
-            order_by = None
-
-        window = bigframes_vendored.ibis.window(order_by=order_by, group_by=group_by)
-        if window_spec.bounds is not None:
-            return _add_boundary(window_spec.bounds, window)
-        return window
 
 
 def is_literal(column: ibis_types.Value) -> bool:
@@ -565,58 +505,6 @@ def is_window(column: ibis_types.Value) -> bool:
         )
     )
     return any(isinstance(op, ibis_ops.WindowFunction) for op in matches)
-
-
-def _convert_row_ordering_to_table_values(
-    value_lookup: typing.Mapping[str, ibis_types.Value],
-    ordering_columns: typing.Sequence[OrderingExpression],
-) -> typing.Sequence[ibis_types.Value]:
-    column_refs = ordering_columns
-    ordering_values = []
-    for ordering_col in column_refs:
-        expr = op_compiler.compile_expression(
-            ordering_col.scalar_expression, value_lookup
-        )
-        ordering_value = (
-            bigframes_vendored.ibis.asc(expr)  # type: ignore
-            if ordering_col.direction.is_ascending
-            else bigframes_vendored.ibis.desc(expr)  # type: ignore
-        )
-        # Bigquery SQL considers NULLS to be "smallest" values, but we need to override in these cases.
-        if (not ordering_col.na_last) and (not ordering_col.direction.is_ascending):
-            # Force nulls to be first
-            is_null_val = typing.cast(ibis_types.Column, expr.isnull())
-            ordering_values.append(bigframes_vendored.ibis.desc(is_null_val))
-        elif (ordering_col.na_last) and (ordering_col.direction.is_ascending):
-            # Force nulls to be last
-            is_null_val = typing.cast(ibis_types.Column, expr.isnull())
-            ordering_values.append(bigframes_vendored.ibis.asc(is_null_val))
-        ordering_values.append(ordering_value)
-    return ordering_values
-
-
-def _convert_range_ordering_to_table_value(
-    value_lookup: typing.Mapping[str, ibis_types.Value],
-    ordering_column: OrderingExpression,
-) -> ibis_types.Value:
-    """Converts the ordering for range windows to Ibis references.
-
-    Note that this method is different from `_convert_row_ordering_to_table_values` in
-    that it does not arrange null values. There are two reasons:
-    1. Manipulating null positions requires more than one ordering key, which is forbidden
-       by SQL window syntax for range rolling.
-    2. Pandas does not allow range rolling on timeseries with nulls.
-
-    Therefore, we opt for the simplest approach here: generate the simplest SQL and follow
-    the BigQuery engine behavior.
-    """
-    expr = op_compiler.compile_expression(
-        ordering_column.scalar_expression, value_lookup
-    )
-
-    if ordering_column.direction.is_ascending:
-        return bigframes_vendored.ibis.asc(expr)  # type: ignore
-    return bigframes_vendored.ibis.desc(expr)  # type: ignore
 
 
 def _string_cast_join_cond(
@@ -678,53 +566,3 @@ def _join_condition(
         else:
             return _string_cast_join_cond(lvalue, rvalue)
     return typing.cast(ibis_types.BooleanColumn, lvalue == rvalue)
-
-
-def _as_groupable(value: ibis_types.Value):
-    from bigframes.core.compile.ibis_compiler import scalar_op_registry
-
-    # Some types need to be converted to another type to enable groupby
-    if value.type().is_float64():
-        return value.cast(ibis_dtypes.str)
-    elif value.type().is_geospatial():
-        return typing.cast(ibis_types.GeoSpatialColumn, value).as_binary()
-    elif value.type().is_json():
-        return scalar_op_registry.to_json_string(value)
-    else:
-        return value
-
-
-def _to_ibis_boundary(
-    boundary: Optional[int],
-) -> Optional[ibis_expr_window.WindowBoundary]:
-    if boundary is None:
-        return None
-    return ibis_expr_window.WindowBoundary(
-        abs(boundary), preceding=boundary <= 0  # type:ignore
-    )
-
-
-def _add_boundary(
-    bounds: typing.Union[RowsWindowBounds, RangeWindowBounds],
-    ibis_window: ibis_expr_builders.LegacyWindowBuilder,
-) -> ibis_expr_builders.LegacyWindowBuilder:
-    if isinstance(bounds, RangeWindowBounds):
-        return ibis_window.range(
-            start=_to_ibis_boundary(
-                None
-                if bounds.start is None
-                else utils.timedelta_to_micros(bounds.start)
-            ),
-            end=_to_ibis_boundary(
-                None if bounds.end is None else utils.timedelta_to_micros(bounds.end)
-            ),
-        )
-    if isinstance(bounds, RowsWindowBounds):
-        if bounds.start is not None or bounds.end is not None:
-            return ibis_window.rows(
-                start=_to_ibis_boundary(bounds.start),
-                end=_to_ibis_boundary(bounds.end),
-            )
-        return ibis_window
-    else:
-        raise ValueError(f"unrecognized window bounds {bounds}")

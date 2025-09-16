@@ -20,8 +20,10 @@ import functools
 import typing
 from typing import TYPE_CHECKING
 
+import bigframes_vendored.ibis
 import bigframes_vendored.ibis.expr.types as ibis_types
 
+from bigframes.core import agg_expressions, ordering
 import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
 
@@ -29,7 +31,7 @@ if TYPE_CHECKING:
     import bigframes.operations as ops
 
 
-class ScalarOpCompiler:
+class ExpressionCompiler:
     # Mapping of operation name to implemenations
     _registry: dict[
         str,
@@ -66,6 +68,18 @@ class ScalarOpCompiler:
             raise ValueError(f"Could not resolve unbound variable {expression.id}")
         else:
             return bindings[expression.id.sql]
+
+    @compile_expression.register
+    def _(
+        self,
+        expression: agg_expressions.WindowExpression,
+        bindings: typing.Dict[str, ibis_types.Value],
+    ) -> ibis_types.Value:
+        import bigframes.core.compile.ibis_compiler.aggregate_compiler as agg_compile
+
+        return agg_compile.compile_analytic(
+            expression.analytic_expr, expression.window, bindings
+        )
 
     @compile_expression.register
     def _(
@@ -202,6 +216,54 @@ class ScalarOpCompiler:
             raise ValueError(f"Operation name {op_name} already registered")
         self._registry[op_name] = impl
 
+    def _convert_row_ordering_to_table_values(
+        self,
+        value_lookup: typing.Mapping[str, ibis_types.Value],
+        ordering_columns: typing.Sequence[ordering.OrderingExpression],
+    ) -> typing.Sequence[ibis_types.Value]:
+        column_refs = ordering_columns
+        ordering_values = []
+        for ordering_col in column_refs:
+            expr = self.compile_expression(ordering_col.scalar_expression, value_lookup)
+            ordering_value = (
+                bigframes_vendored.ibis.asc(expr)  # type: ignore
+                if ordering_col.direction.is_ascending
+                else bigframes_vendored.ibis.desc(expr)  # type: ignore
+            )
+            # Bigquery SQL considers NULLS to be "smallest" values, but we need to override in these cases.
+            if (not ordering_col.na_last) and (not ordering_col.direction.is_ascending):
+                # Force nulls to be first
+                is_null_val = typing.cast(ibis_types.Column, expr.isnull())
+                ordering_values.append(bigframes_vendored.ibis.desc(is_null_val))
+            elif (ordering_col.na_last) and (ordering_col.direction.is_ascending):
+                # Force nulls to be last
+                is_null_val = typing.cast(ibis_types.Column, expr.isnull())
+                ordering_values.append(bigframes_vendored.ibis.asc(is_null_val))
+            ordering_values.append(ordering_value)
+        return ordering_values
+
+    def _convert_range_ordering_to_table_value(
+        self,
+        value_lookup: typing.Mapping[str, ibis_types.Value],
+        ordering_column: ordering.OrderingExpression,
+    ) -> ibis_types.Value:
+        """Converts the ordering for range windows to Ibis references.
+
+        Note that this method is different from `_convert_row_ordering_to_table_values` in
+        that it does not arrange null values. There are two reasons:
+        1. Manipulating null positions requires more than one ordering key, which is forbidden
+        by SQL window syntax for range rolling.
+        2. Pandas does not allow range rolling on timeseries with nulls.
+
+        Therefore, we opt for the simplest approach here: generate the simplest SQL and follow
+        the BigQuery engine behavior.
+        """
+        expr = self.compile_expression(ordering_column.scalar_expression, value_lookup)
+
+        if ordering_column.direction.is_ascending:
+            return bigframes_vendored.ibis.asc(expr)  # type: ignore
+        return bigframes_vendored.ibis.desc(expr)  # type: ignore
+
 
 # Singleton compiler
-scalar_op_compiler = ScalarOpCompiler()
+scalar_op_compiler = ExpressionCompiler()

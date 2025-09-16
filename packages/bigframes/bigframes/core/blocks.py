@@ -1177,7 +1177,7 @@ class Block:
         block = self
         if skip_null_groups:
             for key in window.grouping_keys:
-                block = block.filter(ops.notnull_op.as_expr(key.id.name))
+                block = block.filter(ops.notnull_op.as_expr(key))
         expr, result_id = block._expr.project_window_expr(
             agg_expr,
             window,

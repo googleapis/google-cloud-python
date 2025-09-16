@@ -17,7 +17,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 import typing
-from typing import Mapping, Optional, Sequence, Set, Union
+from typing import Callable, Mapping, Optional, Sequence, Set, Union
 
 import bigframes.core.expression as expression
 import bigframes.core.identifiers as ids
@@ -80,6 +80,15 @@ class OrderingExpression:
     def with_reverse(self) -> OrderingExpression:
         return OrderingExpression(
             self.scalar_expression, self.direction.reverse(), not self.na_last
+        )
+
+    def transform_exprs(
+        self, t: Callable[[expression.Expression], expression.Expression]
+    ) -> OrderingExpression:
+        return OrderingExpression(
+            t(self.scalar_expression),
+            self.direction,
+            self.na_last,
         )
 
 
