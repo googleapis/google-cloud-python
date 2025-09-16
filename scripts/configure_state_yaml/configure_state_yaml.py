@@ -62,6 +62,8 @@ def configure_state_yaml() -> None:
                     ]
                 )
 
+        # Skip libraries which are not present in the release please manifest as
+        # these are likely libraries that have already onboarded.
         if release_please_manifest.get(f"packages/{package_name}", None):
             state_dict["libraries"].append(
                 {
