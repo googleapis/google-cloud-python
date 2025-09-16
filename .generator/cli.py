@@ -275,7 +275,6 @@ def handle_generate(
     logger.info("'generate' command executed.")
 
 
-
 def _read_bazel_build_py_rule(api_path: str, source: str) -> Dict:
     """
     Reads and parses the BUILD.bazel file to find the Python GAPIC rule content.
@@ -298,9 +297,6 @@ def _read_bazel_build_py_rule(api_path: str, source: str) -> Dict:
 
     result = parse_googleapis_content.parse_content(content)
     py_gapic_entries = [key for key in result.keys() if key.endswith("_py_gapic")]
-
-    if not py_gapic_entries:
-        raise ValueError(f"No '_py_gapic' rule found in {build_file_path}")
 
     # Assuming only one _py_gapic rule per BUILD file for a given language
     return result[py_gapic_entries[0]]
@@ -346,7 +342,9 @@ def _get_api_generator_options(api_path: str, py_gapic_config: Dict) -> List[str
     return generator_options
 
 
-def _determine_generator_command(api_path: str, tmp_dir: str, generator_options: List[str]) -> str:
+def _determine_generator_command(
+    api_path: str, tmp_dir: str, generator_options: List[str]
+) -> str:
     """
     Constructs the full protoc command string.
 
@@ -387,7 +385,7 @@ def _run_generator_command(generator_command: str, source: str):
         shell=True,
         check=True,
         capture_output=True,
-        text=True
+        text=True,
     )
 
 
@@ -405,12 +403,12 @@ def _generate_api(api_path: str, library_id: str, source: str, output: str):
     generator_options = _get_api_generator_options(api_path, py_gapic_config)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        generator_command = _determine_generator_command(api_path, tmp_dir, generator_options)
+        generator_command = _determine_generator_command(
+            api_path, tmp_dir, generator_options
+        )
         _run_generator_command(generator_command, source)
         api_version = api_path.split("/")[-1]
-        staging_dir = os.path.join(
-            output, "owl-bot-staging", library_id, api_version
-        )
+        staging_dir = os.path.join(output, "owl-bot-staging", library_id, api_version)
         shutil.copytree(tmp_dir, staging_dir)
 
 

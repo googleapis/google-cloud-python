@@ -36,16 +36,21 @@ from cli import (
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
-    _get_library_dist_name,
+    _determine_generator_command,
     _determine_library_namespace,
+    _generate_api,
+    _get_api_generator_options,
+    _get_library_dist_name,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
     _get_previous_version,
     _process_changelog,
     _process_version_file,
+    _read_bazel_build_py_rule,
     _read_json_file,
     _read_text_file,
     _run_individual_session,
+    _run_generator_command,
     _run_nox_sessions,
     _run_post_processor,
     _update_changelog_for_library,
@@ -93,6 +98,27 @@ _MOCK_LIBRARY_CHANGES = [
     },
 ]
 
+_MOCK_BAZEL_CONTENT = """load(
+    "@com_google_googleapis_imports//:imports.bzl",
+    "py_gapic_assembly_pkg",
+    "py_gapic_library",
+    "py_test",
+)
+
+py_gapic_library(
+    name = "language_py_gapic",
+    srcs = [":language_proto"],
+    grpc_service_config = "language_grpc_service_config.json",
+    rest_numeric_enums = True,
+    service_yaml = "language_v1.yaml",
+    transport = "grpc+rest",
+    deps = [
+    ],
+    opt_args = [
+        "python-gapic-namespace=google.cloud",
+    ],
+)"""
+
 
 @pytest.fixture
 def mock_generate_request_file(tmp_path, monkeypatch):
@@ -136,34 +162,13 @@ def mock_build_request_file(tmp_path, monkeypatch):
 
 @pytest.fixture
 def mock_build_bazel_file(tmp_path, monkeypatch):
-    """Creates the mock request file at the correct path inside a temp dir."""
-    # Create the path as expected by the script: .librarian/build-request.json
+    """Creates the mock BUILD.bazel file at the correct path inside a temp dir."""
     bazel_build_path = f"{SOURCE_DIR}/google/cloud/language/v1/BUILD.bazel"
     bazel_build_dir = tmp_path / Path(bazel_build_path).parent
     os.makedirs(bazel_build_dir, exist_ok=True)
     build_bazel_file = bazel_build_dir / os.path.basename(bazel_build_path)
 
-    build_bazel_content = """load(
-    "@com_google_googleapis_imports//:imports.bzl",
-    "py_gapic_assembly_pkg",
-    "py_gapic_library",
-    "py_test",
-)
-
-py_gapic_library(
-    name = "language_py_gapic",
-    srcs = [":language_proto"],
-    grpc_service_config = "language_grpc_service_config.json",
-    rest_numeric_enums = True,
-    service_yaml = "language_v1.yaml",
-    transport = "grpc+rest",
-    deps = [
-    ],
-    opt_args = [
-        "python-gapic-namespace=google.cloud",
-    ],
-)"""
-    build_bazel_file.write_text(build_bazel_content)
+    build_bazel_file.write_text(_MOCK_BAZEL_CONTENT)
     return build_bazel_file
 
 
@@ -283,6 +288,145 @@ def test_run_post_processor_success(mocker, caplog):
 
     mock_owlbot_main.assert_called_once_with("packages/google-cloud-language")
     assert "Python post-processor ran successfully." in caplog.text
+
+
+def test_read_bazel_build_py_rule_success(mocker, mock_build_bazel_file):
+    """Tests successful reading and parsing of a valid BUILD.bazel file."""
+    api_path = "google/cloud/language/v1"
+    # Use the empty string as the source path, since the fixture has set the CWD to the temporary root.
+    source_dir = "source"
+
+    mocker.patch("cli._read_text_file", return_value=_MOCK_BAZEL_CONTENT)
+    # The fixture already creates the file, so we just need to call the function
+    py_gapic_config = _read_bazel_build_py_rule(api_path, source_dir)
+
+    assert (
+        "language_py_gapic" not in py_gapic_config
+    )  # Only rule attributes should be returned
+    assert py_gapic_config["grpc_service_config"] == "language_grpc_service_config.json"
+    assert py_gapic_config["rest_numeric_enums"] is True
+    assert py_gapic_config["transport"] == "grpc+rest"
+    assert py_gapic_config["opt_args"] == ["python-gapic-namespace=google.cloud"]
+
+
+def test_read_bazel_build_py_rule_not_found(mocker):
+    """Tests failure when the BUILD.bazel file is missing."""
+    mocker.patch("cli._read_text_file", side_effect=FileNotFoundError)
+    with pytest.raises(ValueError, match="BUILD.bazel file not found"):
+        _read_bazel_build_py_rule("non/existent/v1", "source")
+
+
+def test_get_api_generator_options_all_options():
+    """Tests option extraction when all relevant fields are present."""
+    api_path = "google/cloud/language/v1"
+    py_gapic_config = {
+        "grpc_service_config": "config.json",
+        "rest_numeric_enums": True,
+        "service_yaml": "service.yaml",
+        "transport": "grpc+rest",
+        "opt_args": ["single_arg", "another_arg"],
+    }
+    options = _get_api_generator_options(api_path, py_gapic_config)
+
+    expected = [
+        "retry-config=google/cloud/language/v1/config.json",
+        "rest-numeric-enums=True",
+        "service-yaml=google/cloud/language/v1/service.yaml",
+        "transport=grpc+rest",
+        "single_arg",
+        "another_arg",
+    ]
+    assert sorted(options) == sorted(expected)
+
+
+def test_get_api_generator_options_minimal_options():
+    """Tests option extraction when only transport is present."""
+    api_path = "google/cloud/minimal/v1"
+    py_gapic_config = {
+        "transport": "grpc",
+    }
+    options = _get_api_generator_options(api_path, py_gapic_config)
+
+    expected = ["transport=grpc"]
+    assert options == expected
+
+
+def test_determine_generator_command_with_options():
+    """Tests command construction with options."""
+    api_path = "google/cloud/test/v1"
+    tmp_dir = "/tmp/output/test"
+    options = ["transport=grpc", "custom_option=foo"]
+    command = _determine_generator_command(api_path, tmp_dir, options)
+
+    expected_options = "--python_gapic_opt=metadata,transport=grpc,custom_option=foo"
+    expected_command = (
+        f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir} {expected_options}"
+    )
+    assert command == expected_command
+
+
+def test_determine_generator_command_no_options():
+    """Tests command construction without extra options."""
+    api_path = "google/cloud/test/v1"
+    tmp_dir = "/tmp/output/test"
+    options = []
+    command = _determine_generator_command(api_path, tmp_dir, options)
+
+    # Note: 'metadata' is always included if options list is empty or not
+    # only if `generator_options` is not empty. If it is empty, the result is:
+    expected_command_no_options = (
+        f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
+    )
+    assert command == expected_command_no_options
+
+
+def test_run_generator_command_success(mocker):
+    """Tests successful execution of the protoc command."""
+    mock_run = mocker.patch(
+        "cli.subprocess.run", return_value=MagicMock(stdout="ok", stderr="", check=True)
+    )
+    command = "protoc api/*.proto --python_gapic_out=/tmp/out"
+    source = "/src"
+
+    _run_generator_command(command, source)
+
+    mock_run.assert_called_once_with(
+        [command], cwd=source, shell=True, check=True, capture_output=True, text=True
+    )
+
+
+def test_run_generator_command_failure(mocker):
+    """Tests failure when protoc command returns a non-zero exit code."""
+    mock_run = mocker.patch(
+        "cli.subprocess.run",
+        side_effect=subprocess.CalledProcessError(1, "protoc", stderr="error"),
+    )
+    command = "protoc api/*.proto --python_gapic_out=/tmp/out"
+    source = "/src"
+
+    with pytest.raises(subprocess.CalledProcessError):
+        _run_generator_command(command, source)
+
+
+def test_generate_api_success(mocker, caplog):
+    caplog.set_level(logging.INFO)
+
+    API_PATH = "google/cloud/language/v1"
+    LIBRARY_ID = "google-cloud-language"
+    SOURCE = "source"
+    OUTPUT = "output"
+
+    mock_run_post_processor = mocker.patch("cli._read_bazel_build_py_rule")
+    mock_run_post_processor = mocker.patch("cli._get_api_generator_options")
+    mock_copy_files_needed_for_post_processing = mocker.patch(
+        "cli._determine_generator_command"
+    )
+    mock_copy_files_needed_for_post_processing = mocker.patch(
+        "cli._run_generator_command"
+    )
+    mock_clean_up_files_after_post_processing = mocker.patch("shutil.copytree")
+
+    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT)
 
 
 def test_handle_generate_success(
