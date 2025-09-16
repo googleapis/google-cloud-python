@@ -15,46 +15,9 @@ description: Fix formatting issues in docs
 url: https://github.com/googleapis/gapic-generator-python/issues/1829
 replacements:
   - paths: [
-      packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
-    ]
-    before: \"IT_\"
-    after: "`IT_`"
-    count: 2
-  - paths: [
-      packages/google-cloud-compute-v1beta/google/cloud/compute_v1beta/types/compute.py,
-    ]
-    before: \"IT_\"
-    after: "`IT_`"
-    count: 2
-  - paths: [
-      packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
-    ]
-    before: \"NS_\"
-    after: "`NS_`"
-    count: 2
-  - paths: [
-      packages/google-cloud-compute-v1beta/google/cloud/compute_v1beta/types/compute.py,
-    ]
-    before: \"NS_\"
-    after: "`NS_`"
-    count: 2
-  - paths: [
-      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1alpha/types/retriever.py,
-      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
-    ]
-    before: \"corpora/\*/documents/\"
-    after: "`corpora/*/documents/`"
-    count: 2
-  - paths: [
-      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
-    ]
-    before: \"corpora/\*/documents/\*/chunks/\"
-    after: "`corpora/*/documents/*/chunks/`"
-    count: 1    
-  - paths: [
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/services/permission_service/async_client.py,
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/services/permission_service/client.py
-      ]
+    ]
     before: |
       \                role's permitted operations:
       \
@@ -67,8 +30,8 @@ replacements:
     after: "                role's permitted operations:\n\n                - reader can use the resource (e.g.\n                  tuned model) for inference\n                - writer has reader's permissions and\n                  additionally can edit and share\n                - owner has writer's permissions and\n                  additionally can delete\n"
     count: 6
   - paths: [
-    packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/types/permission.py,
-      ]
+      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta3/types/permission.py,
+    ]
     before: |
       \    previous role's permitted operations:
       \
@@ -102,21 +65,6 @@ replacements:
     after: "            1000. The priority value must be from 1 to\n            65535, inclusive.\n"
     count: 1
   - paths: [
-      packages/google-cloud-retail/google/cloud/retail_v2alpha/types/project.py,
-    ]
-    before: |
-      \            resource. Format: projects/\*/loggingConfig
-    after:  "            resource. Format: `projects/*/loggingConfig`\n"
-    count: 1
-  - paths: [
-      packages/google-cloud-retail/google/cloud/retail_v2alpha/types/project.py,
-      packages/google-cloud-retail/google/cloud/retail_v2beta/types/project.py,
-    ]
-    before: |
-      \            resource. Format: projects/\*/alertConfig
-    after:  "            resource. Format: `projects/*/alertConfig`\n"
-    count: 2
-  - paths: [
       packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
       packages/google-cloud-visionai/google/cloud/visionai_v1alpha1/types/platform.py,
     ]
@@ -141,41 +89,9 @@ replacements:
       \
       \            ``SplitType=DATASET_SPLIT_TEST\|DATASET_SPLIT_TRAIN\|DATASET_SPLIT_UNASSIGNED``
       \
-      \            -  ``LabelingState=DOCUMENT_LABELED\|DOCUMENT_UNLABELED\|DOCUMENT_AUTO_LABELED``
-    after:  "\n            Currently support query strings are:\n\n            - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``\n            -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``\n"
+      \            - ``LabelingState=DOCUMENT_LABELED\|DOCUMENT_UNLABELED\|DOCUMENT_AUTO_LABELED``
+    after:  "\n            Currently support query strings are:\n\n            - ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``\n            - ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``\n"
     count: 1
-  - paths: [
-      packages/google-ads-admanager/google/ads/admanager_v1/types/report_messages.py,
-    ]
-    before: CUSTOM_DIMENSION_\\\*
-    after: "`CUSTOM_DIMENSION_*`"
-    count: 1
-  - paths: [
-      packages/google-ads-admanager/google/ads/admanager_v1/types/report_messages.py,
-    ]
-    before: ORDER_CUSTOM_FIELD_\\\*
-    after: "`ORDER_CUSTOM_FIELD_*`"
-    count: 1
-  - paths: [
-      packages/google-ads-admanager/google/ads/admanager_v1/types/report_messages.py,
-    ]
-    before: LINE_ITEM_CUSTOM_FIELD_\\\*
-    after: "`LINE_ITEM_CUSTOM_FIELD_*`"
-    count: 1
-  - paths: [
-      packages/google-ads-admanager/google/ads/admanager_v1/types/report_messages.py,
-    ]
-    before: CREATIVE_CUSTOM_FIELD_\\\*
-    after: "`CREATIVE_CUSTOM_FIELD_*`"
-    count: 1
-  - paths: [
-      packages/google-analytics-admin/google/analytics/admin_v1alpha/services/analytics_admin_service/async_client.py,
-      packages/google-analytics-admin/google/analytics/admin_v1alpha/services/analytics_admin_service/client.py,
-      packages/google-analytics-admin/google/analytics/admin_v1alpha/types/analytics_admin.py,
-    ]
-    before: \/\[a-zA-Z0-9_\]\/
-    after: "`[a-zA-Z0-9_]`"
-    count: 3
   - paths: [
       packages/google-apps-chat/google/apps/chat_v1/services/chat_service/async_client.py,
     ]
@@ -223,18 +139,6 @@ replacements:
     after: "                1024. Any integer between 256 and 4500 is\n                considered valid.\n"
     count: 3
   - paths: [
-      packages/google-cloud-dataplex/google/cloud/dataplex_v1/types/catalog.py,
-    ]
-    before: entry_type=projects\/another-project\/locations\/\*
-    after: "entry_type=projects/another-project/locations/\\*"
-    count: 1
-  - paths: [
-      packages/google-cloud-deploy/google/cloud/deploy_v1/types/cloud_deploy.py,
-    ]
-    before: \"gs:\/\/my-bucket\/dir\/configs\/\*\"
-    after: "`gs://my-bucket/dir/configs/*`"
-    count: 1
-  - paths: [
       packages/google-cloud-dms/google/cloud/clouddms_v1/types/conversionworkspace_resources.py,
     ]
     before: |
@@ -246,12 +150,6 @@ replacements:
 
                   - used only for timestamp based datatypes
                   - if not specified and relevant uses the source
-    count: 1
-  - paths: [
-      packages/google-cloud-edgecontainer/google/cloud/edgecontainer_v1/types/resources.py,
-    ]
-    before: projects\/\\ \*\/locations\/\*\/operations\/\*.
-    after: "`projects/*/locations/*/operations/*.`"
     count: 1
   - paths: [
       packages/google-cloud-enterpriseknowledgegraph/google/cloud/enterpriseknowledgegraph_v1/types/service.py,
@@ -298,13 +196,6 @@ replacements:
                     move the equipment
                   - whether a representative will be available
                     during site visits\n
-    count: 1
-  - paths: [
-      packages/google-cloud-network-management/google/cloud/network_management_v1/types/connectivity_test.py,
-    ]
-    before: |
-      \             projects\/\{project\}\/global\/forwardingRules\/\{id\}
-    after: "            projects/{project}/global/forwardingRules/{id}\n"
     count: 1
   - paths: [
       packages/google-cloud-oracledatabase/google/cloud/oracledatabase_v1/types/exadata_infra.py,
@@ -357,31 +248,23 @@ replacements:
                   - Bank Mandiri
     count: 1
   - paths: [
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/async_client.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/client.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/transports/grpc.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/transports/grpc_asyncio.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/async_client.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/client.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/transports/grpc.py,
-      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/transports/grpc_asyncio.py,
-    ]
-    before: name=accounts\/\*\/users\/me\/emailPreferences alias
-    after: "`name=accounts/*/users/me/emailPreferences` alias"
-    count: 16
-  - paths: [
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/async_client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc_asyncio.py,
+    ]
+    before: "This API defines the following resource model:\n    --------------------------------------------------------\n\n    `OnlineReturnPolicy"
+    after: "This API defines the following resource model:\n\n    - `OnlineReturnPolicy"
+    count: 4
+  - paths: [
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/async_client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/transports/grpc.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/transports/grpc_asyncio.py,
     ]
-    before: "This API defines the following resource model:\n    --------------------------------------------------------\n\n    `OnlineReturnPolicy"
-    after: "This API defines the following resource model:\n\n    - `OnlineReturnPolicy"
-    count: 8
+    before: "This API defines the following resource model:\n    --------------------------------------------------------\n\n    \\[OnlineReturnPolicy"
+    after: "This API defines the following resource model:\n\n    - [OnlineReturnPolicy"
+    count: 4
   - paths: [
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/async_client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/client.py,
@@ -420,7 +303,7 @@ replacements:
     before: |
       Here's an example of how the aggregated status is computed:\n
       \        Free listings \\\| Shopping ads \\\| Status
-      \        --------------\|--------------\|------------------------------
+      \        --------------\\\|--------------\\\|------------------------------
       \        Approved \\\| Approved \\\| ELIGIBLE Approved \\\| Pending \\\| ELIGIBLE
       \        Approved \\\| Disapproved \\\| ELIGIBLE_LIMITED Pending \\\| Pending \\\|
       \        PENDING Disapproved \\\| Disapproved \\\| NOT_ELIGIBLE_OR_DISAPPROVED\n
@@ -429,7 +312,7 @@ replacements:
       Here's an example of how the aggregated status is computed:\n
               ```
               Free listings \| Shopping ads \| Status
-              --------------|--------------|------------------------------
+              --------------\|--------------\|------------------------------
               Approved \| Approved \| ELIGIBLE Approved \| Pending \| ELIGIBLE
               Approved \| Disapproved \| ELIGIBLE_LIMITED Pending \| Pending \|
               PENDING Disapproved \| Disapproved \| NOT_ELIGIBLE_OR_DISAPPROVED
@@ -492,12 +375,6 @@ replacements:
                         "another-example": "YW5vdGhlcl9leGFtcGxlX3ZhbHVl"
                       }\n
     count: 2
-  - paths: [
-      packages/google-cloud-financialservices/google/cloud/financialservices_v1/types/engine_version.py,
-    ]
-    before: \"state:\*\"
-    after: "`state:*`"
-    count: 1
   - paths: [
       packages/google-cloud-automl/google/cloud/automl_v1/types/io.py,
     ]
@@ -591,12 +468,6 @@ replacements:
                   to 100.
     count: 1
   - paths: [
-      packages/google-cloud-managedkafka/google/cloud/managedkafka_v1/types/resources.py,
-    ]
-    before: \"User:\*\"
-    after: "`User:*`"
-    count: 1
-  - paths: [
       packages/google-cloud-network-services/google/cloud/network_services_v1/types/service_lb_policy.py,
     ]
     before: |
@@ -608,15 +479,6 @@ replacements:
                       IG/NEG will be set as drained.\n
                       - An IG/NEG is considered unhealthy if less than
     count: 1
-  - paths: [
-      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/types/schema_registry.py,
-      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/services/managed_schema_registry/client.py,
-      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/services/managed_schema_registry/async_client.py,
-    ]
-    before: |
-      -  projects/\{project\}/locations/\{location\}/schemaRegistries/\{schema_registry\}/compatibility/subjects/\*/versions:
-    after: "-  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions`:\n"
-    count: 3
   - paths: [
       packages/google-cloud-discoveryengine/google/cloud/discoveryengine_v1/types/search_service.py,
       packages/google-cloud-discoveryengine/google/cloud/discoveryengine_v1alpha/types/search_service.py,
@@ -656,3 +518,33 @@ replacements:
                     happens in the context of the search   results
                     from the first search call.
     count: 3
+  - paths: [
+      packages/google-cloud-maintenance-api/google/cloud/maintenance_api_v1beta/types/maintenance_service.py,
+    ]
+    before: |
+      user_controllable \(bool\):
+      \            Output only. Indicates whether the user has
+      \            some control over that maintenance, either
+      \             proactively before maintenance was scheduled
+    after: |
+      user_controllable (bool):
+                  Output only. Indicates whether the user has
+                  some control over that maintenance, either
+                  proactively before maintenance was scheduled
+    count: 1
+  - paths: [
+      packages/google-cloud-storagebatchoperations/google/cloud/storagebatchoperations_v1/types/storage_batch_operations_types.py,
+    ]
+    before: |
+      content_type \(str\):
+      \            Optional. Updates objects Content-Type fixed
+      \            metadata. Unset values will be ignored.
+      \             Set empty values to clear the metadata. Refer
+      \            to documentation in
+    after: |
+      content_type (str):
+                  Optional. Updates objects Content-Type fixed
+                  metadata. Unset values will be ignored.
+                  Set empty values to clear the metadata. Refer
+                  to documentation in
+    count: 1
