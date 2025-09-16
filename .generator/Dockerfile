@@ -111,6 +111,10 @@ COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 # Set the working directory in the container.
 WORKDIR /app
 
+# Install dependencies of the CLI such as click.
+# Install gapic-generator which is used to generate libraries.
+# Install nox which is used for running client library tests.
+# Install starlark-pyo3 which is used to parse BUILD.bazel files.
 COPY .generator/requirements.in .
 RUN python3.9 -m pip install -r requirements.in
 RUN python3.9 -m pip install /synthtool
