@@ -409,17 +409,23 @@ def test_generate_api_success(mocker, caplog):
     SOURCE = "source"
     OUTPUT = "output"
 
-    mock_run_post_processor = mocker.patch("cli._read_bazel_build_py_rule")
-    mock_run_post_processor = mocker.patch("cli._get_api_generator_options")
-    mock_copy_files_needed_for_post_processing = mocker.patch(
+    mock_read_bazel_build_py_rule = mocker.patch("cli._read_bazel_build_py_rule")
+    mock_get_api_generator_options = mocker.patch("cli._get_api_generator_options")
+    mock_determine_generator_command = mocker.patch(
         "cli._determine_generator_command"
     )
-    mock_copy_files_needed_for_post_processing = mocker.patch(
+    mock_run_generator_command = mocker.patch(
         "cli._run_generator_command"
     )
-    mock_clean_up_files_after_post_processing = mocker.patch("shutil.copytree")
+    mock_shutil_copytree = mocker.patch("shutil.copytree")
 
     _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT)
+
+    mock_read_bazel_build_py_rule.assert_called_once()
+    mock_get_api_generator_options.assert_called_once()
+    mock_determine_generator_command.assert_called_once()
+    mock_run_generator_command.assert_called_once()
+    mock_shutil_copytree.assert_called_once()
 
 
 def test_handle_generate_success(
