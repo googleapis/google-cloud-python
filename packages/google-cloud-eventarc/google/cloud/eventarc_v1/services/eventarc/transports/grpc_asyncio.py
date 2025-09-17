@@ -806,7 +806,9 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
     ]:
         r"""Return a callable for the get google channel config method over gRPC.
 
-        Get a GoogleChannelConfig
+        Get a GoogleChannelConfig.
+        The name of the GoogleChannelConfig in the response is
+        ALWAYS coded with projectID.
 
         Returns:
             Callable[[~.GetGoogleChannelConfigRequest],
