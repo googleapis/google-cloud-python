@@ -48,7 +48,14 @@ def configure_state_yaml() -> None:
     with open(LIBRARIAN_YAML, "r") as state_yaml_file:
         state_dict = yaml.safe_load(state_yaml_file)
 
+    existing_library_ids = {library["id"] for library in state_dict.get("libraries", [])}
+
     for package_name in packages_to_onboard["packages_to_onboard"]:
+        # Check for duplication
+        if package_name in existing_library_ids:
+            print(f"Skipping package '{package_name}' as it already exists in state.yaml.")
+            continue
+
         package_path = Path(PACKAGES_DIR / package_name).resolve()
         api_paths = []
         for individual_metadata_file in package_path.rglob(f"**/{GAPIC_METADATA_JSON}"):
