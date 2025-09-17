@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.38.0](https://github.com/googleapis/python-bigquery/compare/v3.37.0...v3.38.0) (2025-09-15)
+
+
+### Features
+
+* Add additional query stats ([#2270](https://github.com/googleapis/python-bigquery/issues/2270)) ([7b1b718](https://github.com/googleapis/python-bigquery/commit/7b1b718123afd80c0f68212946e4179bcd6db67f))
+
 ## [3.37.0](https://github.com/googleapis/python-bigquery/compare/v3.36.0...v3.37.0) (2025-09-08)
 
 
