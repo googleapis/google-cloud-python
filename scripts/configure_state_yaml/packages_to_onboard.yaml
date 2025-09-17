@@ -16,4 +16,5 @@
 packages_to_onboard: [
   "google-cloud-dlp",
   "google-cloud-eventarc",
+  "google-cloud-video-live-stream",
 ]
