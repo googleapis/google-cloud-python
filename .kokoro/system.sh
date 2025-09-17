@@ -46,7 +46,11 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
   # Get the path to the package by removing the suffix /tests/system
   package=$(echo $dir | cut -f -2 -d '/')
 
-  files_to_check=${package}/CHANGELOG.md
+  if [[ $package = @(*google-cloud-bigquery-storage*) ]]; then
+    files_to_check=${package}
+  else
+    files_to_check=${package}/CHANGELOG.md
+  fi
 
   echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check}'"
   set +e
