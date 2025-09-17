@@ -430,7 +430,7 @@ def test_handle_generate_success(
     """
     caplog.set_level(logging.INFO)
 
-    mock_run_post_processor = mocker.patch("cli._generate_api")
+    mock_generate_api = mocker.patch("cli._generate_api")
     mock_run_post_processor = mocker.patch("cli._run_post_processor")
     mock_copy_files_needed_for_post_processing = mocker.patch(
         "cli._copy_files_needed_for_post_processing"
@@ -448,6 +448,7 @@ def test_handle_generate_success(
     mock_clean_up_files_after_post_processing.assert_called_once_with(
         "output", "google-cloud-language"
     )
+    mock_generate_api.assert_called_once()
 
 
 def test_handle_generate_fail(caplog):
