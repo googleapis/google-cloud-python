@@ -201,7 +201,7 @@ def precision_score(
                 default='binary'
             This parameter is required for multiclass/multilabel targets.
             Possible values are 'None', 'micro', 'macro', 'samples', 'weighted', 'binary'.
-            Only average=None is supported.
+            Only None and 'binary' is supported.
 
     Returns:
         precision: float (if average is not None) or Series of float of shape \

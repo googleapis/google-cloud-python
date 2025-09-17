@@ -743,6 +743,71 @@ def test_precision_score_series(session):
     )
 
 
+@pytest.mark.parametrize(
+    ("pos_label", "expected_score"),
+    [
+        ("a", 1 / 3),
+        ("b", 0),
+    ],
+)
+def test_precision_score_binary(session, pos_label, expected_score):
+    pd_df = pd.DataFrame(
+        {
+            "y_true": ["a", "a", "a", "b", "b"],
+            "y_pred": ["b", "b", "a", "a", "a"],
+        }
+    )
+    df = session.read_pandas(pd_df)
+
+    precision_score = metrics.precision_score(
+        df["y_true"], df["y_pred"], average="binary", pos_label=pos_label
+    )
+
+    assert precision_score == pytest.approx(expected_score)
+
+
+def test_precision_score_binary_default_arguments(session):
+    pd_df = pd.DataFrame(
+        {
+            "y_true": [1, 1, 1, 0, 0],
+            "y_pred": [0, 0, 1, 1, 1],
+        }
+    )
+    df = session.read_pandas(pd_df)
+
+    precision_score = metrics.precision_score(df["y_true"], df["y_pred"])
+
+    assert precision_score == pytest.approx(1 / 3)
+
+
+@pytest.mark.parametrize(
+    ("y_true", "y_pred", "pos_label"),
+    [
+        pytest.param(
+            pd.Series([1, 2, 3]), pd.Series([1, 0]), 1, id="y_true-non-binary-label"
+        ),
+        pytest.param(
+            pd.Series([1, 0]), pd.Series([1, 2, 3]), 1, id="y_pred-non-binary-label"
+        ),
+        pytest.param(
+            pd.Series([1, 0]), pd.Series([1, 2]), 1, id="combined-non-binary-label"
+        ),
+        pytest.param(pd.Series([1, 0]), pd.Series([1, 0]), 2, id="invalid-pos_label"),
+    ],
+)
+def test_precision_score_binary_invalid_input_raise_error(
+    session, y_true, y_pred, pos_label
+):
+
+    bf_y_true = session.read_pandas(y_true)
+    bf_y_pred = session.read_pandas(y_pred)
+
+    with pytest.raises(ValueError):
+        metrics.precision_score(
+            bf_y_true, bf_y_pred, average="binary", pos_label=pos_label
+        )
+
+
 def test_f1_score(session):
     pd_df = pd.DataFrame(
         {
