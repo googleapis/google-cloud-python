@@ -85,3 +85,28 @@ libraries:
     remove_regex:
       - packages/google-ads-marketingplatform-admin
     tag_format: '{id}-v{version}'
+  - id: google-ai-generativelanguage
+    version: 0.7.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/ai/generativelanguage/v1
+      - path: google/ai/generativelanguage/v1beta
+      - path: google/ai/generativelanguage/v1beta3
+      - path: google/ai/generativelanguage/v1beta2
+      - path: google/ai/generativelanguage/v1alpha
+    source_roots:
+      - packages/google-ai-generativelanguage
+    preserve_regex:
+      - packages/google-ai-generativelanguage/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - tar.gz
+      - gapic_version.py
+      - samples/generated_samples/snippet_metadata_
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-ai-generativelanguage
+    tag_format: '{id}-v{version}'
