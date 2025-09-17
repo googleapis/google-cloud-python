@@ -203,3 +203,8 @@ def test_default_options():
 
     assert options.allow_large_results is False
     assert options.ordering_mode == "strict"
+
+    # We should default to None as an indicator that the user hasn't set these
+    # explicitly. See internal issue b/445731915.
+    assert options.credentials is None
+    assert options.project is None

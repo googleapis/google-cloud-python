@@ -22,7 +22,6 @@ import warnings
 import google.auth.credentials
 import requests.adapters
 
-import bigframes._config.auth
 import bigframes._importing
 import bigframes.enums
 import bigframes.exceptions as bfe
@@ -38,7 +37,6 @@ UNKNOWN_LOCATION_MESSAGE = "The location '{location}' is set to an unknown value
 
 def _get_validated_location(value: Optional[str]) -> Optional[str]:
     import bigframes._tools.strings
-    import bigframes.constants
 
     if value is None or value in bigframes.constants.ALL_BIGQUERY_LOCATIONS:
         return value
@@ -143,52 +141,20 @@ class BigQueryOptions:
             )
         self._application_name = value
 
-    def _try_set_default_credentials_and_project(
-        self,
-    ) -> tuple[google.auth.credentials.Credentials, Optional[str]]:
-        # Don't fetch credentials or project if credentials is already set.
-        # If it's set, we've already authenticated, so if the user wants to
-        # re-auth, they should explicitly reset the credentials.
-        if self._credentials is not None:
-            return self._credentials, self._project
-
-        (
-            credentials,
-            credentials_project,
-        ) = bigframes._config.auth.get_default_credentials_with_project()
-        self._credentials = credentials
-
-        # Avoid overriding an explicitly set project with a default value.
-        if self._project is None:
-            self._project = credentials_project
-
-        return credentials, self._project
-
     @property
-    def credentials(self) -> google.auth.credentials.Credentials:
+    def credentials(self) -> Optional[google.auth.credentials.Credentials]:
         """The OAuth2 credentials to use for this client.
-
-        Set to None to force re-authentication.
 
         Returns:
             None or google.auth.credentials.Credentials:
                 google.auth.credentials.Credentials if exists; otherwise None.
         """
-        if self._credentials:
-            return self._credentials
-
-        credentials, _ = self._try_set_default_credentials_and_project()
-        return credentials
+        return self._credentials
 
     @credentials.setter
     def credentials(self, value: Optional[google.auth.credentials.Credentials]):
         if self._session_started and self._credentials is not value:
             raise ValueError(SESSION_STARTED_MESSAGE.format(attribute="credentials"))
-
-        if value is None:
-            # The user has _explicitly_ asked that we re-authenticate.
-            bigframes._config.auth.reset_default_credentials_and_project()
-
         self._credentials = value
 
     @property
@@ -217,11 +183,7 @@ class BigQueryOptions:
             None or str:
                 Google Cloud project ID as a string; otherwise None.
         """
-        if self._project:
-            return self._project
-
-        _, project = self._try_set_default_credentials_and_project()
-        return project
+        return self._project
 
     @project.setter
     def project(self, value: Optional[str]):

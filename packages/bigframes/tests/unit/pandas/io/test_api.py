@@ -17,6 +17,7 @@ from unittest import mock
 import google.cloud.bigquery
 import pytest
 
+import bigframes._config.auth
 import bigframes.dataframe
 import bigframes.pandas
 import bigframes.pandas.io.api as bf_io_api
@@ -50,7 +51,7 @@ def test_read_gbq_colab_dry_run_doesnt_call_set_location(
     mock_set_location.assert_not_called()
 
 
-@mock.patch("bigframes._config.auth.get_default_credentials_with_project")
+@mock.patch("bigframes._config.auth.pydata_google_auth.default")
 @mock.patch("bigframes.core.global_session.with_default_session")
 def test_read_gbq_colab_dry_run_doesnt_authenticate_multiple_times(
     mock_with_default_session, mock_get_credentials, monkeypatch
@@ -77,12 +78,14 @@ def test_read_gbq_colab_dry_run_doesnt_authenticate_multiple_times(
     mock_df = mock.create_autospec(bigframes.dataframe.DataFrame)
     mock_with_default_session.return_value = mock_df
 
+    bigframes._config.auth._cached_credentials = None
     query_or_table = "SELECT {param1} AS param1"
     sample_pyformat_args = {"param1": "value1"}
     bf_io_api._read_gbq_colab(
         query_or_table, pyformat_args=sample_pyformat_args, dry_run=True
     )
 
+    mock_get_credentials.assert_called()
     mock_with_default_session.assert_not_called()
     mock_get_credentials.reset_mock()
 
