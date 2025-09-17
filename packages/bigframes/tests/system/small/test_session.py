@@ -511,8 +511,6 @@ def test_read_gbq_twice_with_same_timestamp(session, penguins_table_id):
     [
         # Wildcard tables
         "bigquery-public-data.noaa_gsod.gsod194*",
-        # Linked datasets
-        "bigframes-dev.thelook_ecommerce.orders",
         # Materialized views
         "bigframes-dev.bigframes_tests_sys.base_table_mat_view",
     ],
