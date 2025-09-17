@@ -40,7 +40,7 @@ class AIGenerateBool(base_ops.NaryOp):
             pa.struct(
                 (
                     pa.field("result", pa.bool_()),
-                    pa.field("full_response", pa.string()),
+                    pa.field("full_response", dtypes.JSON_ARROW_TYPE),
                     pa.field("status", pa.string()),
                 )
             )
