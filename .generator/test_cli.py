@@ -29,25 +29,28 @@ from cli import (
     GENERATE_REQUEST_FILE,
     BUILD_REQUEST_FILE,
     RELEASE_INIT_REQUEST_FILE,
+    SOURCE_DIR,
     STATE_YAML_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
-    _build_bazel_target,
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
-    _determine_bazel_rule,
-    _get_library_dist_name,
+    _determine_generator_command,
     _determine_library_namespace,
+    _generate_api,
+    _get_api_generator_options,
+    _get_library_dist_name,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
     _get_previous_version,
-    _locate_and_extract_artifact,
     _process_changelog,
     _process_version_file,
+    _read_bazel_build_py_rule,
     _read_json_file,
     _read_text_file,
     _run_individual_session,
+    _run_generator_command,
     _run_nox_sessions,
     _run_post_processor,
     _update_changelog_for_library,
@@ -95,6 +98,27 @@ _MOCK_LIBRARY_CHANGES = [
     },
 ]
 
+_MOCK_BAZEL_CONTENT = """load(
+    "@com_google_googleapis_imports//:imports.bzl",
+    "py_gapic_assembly_pkg",
+    "py_gapic_library",
+    "py_test",
+)
+
+py_gapic_library(
+    name = "language_py_gapic",
+    srcs = [":language_proto"],
+    grpc_service_config = "language_grpc_service_config.json",
+    rest_numeric_enums = True,
+    service_yaml = "language_v1.yaml",
+    transport = "grpc+rest",
+    deps = [
+    ],
+    opt_args = [
+        "python-gapic-namespace=google.cloud",
+    ],
+)"""
+
 
 @pytest.fixture
 def mock_generate_request_file(tmp_path, monkeypatch):
@@ -134,6 +158,18 @@ def mock_build_request_file(tmp_path, monkeypatch):
     # Change the current working directory to the temp path for the test.
     monkeypatch.chdir(tmp_path)
     return request_file
+
+
+@pytest.fixture
+def mock_build_bazel_file(tmp_path, monkeypatch):
+    """Creates the mock BUILD.bazel file at the correct path inside a temp dir."""
+    bazel_build_path = f"{SOURCE_DIR}/google/cloud/language/v1/BUILD.bazel"
+    bazel_build_dir = tmp_path / Path(bazel_build_path).parent
+    os.makedirs(bazel_build_dir, exist_ok=True)
+    build_bazel_file = bazel_build_dir / os.path.basename(bazel_build_path)
+
+    build_bazel_file.write_text(_MOCK_BAZEL_CONTENT)
+    return build_bazel_file
 
 
 @pytest.fixture
@@ -236,130 +272,6 @@ def test_handle_configure_success(caplog, mock_generate_request_file):
     assert "'configure' command executed." in caplog.text
 
 
-def test_determine_bazel_rule_success(mocker, caplog):
-    """
-    Tests the happy path of _determine_bazel_rule.
-    """
-    caplog.set_level(logging.INFO)
-    mock_content = 'name = "google-cloud-language-v1-py",\n'
-    mocker.patch("cli.open", mock_open(read_data=mock_content))
-
-    rule = _determine_bazel_rule("google/cloud/language/v1", "source")
-
-    assert rule == "//google/cloud/language/v1:google-cloud-language-v1-py"
-    assert "Found Bazel rule" in caplog.text
-
-
-def test_build_bazel_target_success(mocker, caplog):
-    """
-    Tests that the build helper logs success when the command runs correctly.
-    """
-    caplog.set_level(logging.INFO)
-    mocker.patch("cli.subprocess.run", return_value=MagicMock(returncode=0))
-    _build_bazel_target("mock/bazel:rule", "source")
-    assert "Bazel build for mock/bazel:rule rule completed successfully" in caplog.text
-
-
-def test_build_bazel_target_fails_to_find_rule_match(mocker, caplog):
-    """
-    Tests that ValueError is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.ERROR)
-    mock_content = '"google-cloud-language-v1-py",\n'
-    mocker.patch("cli.open", mock_open(read_data=mock_content))
-
-    with pytest.raises(ValueError):
-        _build_bazel_target("mock/bazel:rule", "source")
-
-
-def test_build_bazel_target_fails_to_determine_rule(caplog):
-    """
-    Tests that ValueError is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.ERROR)
-    with pytest.raises(ValueError):
-        _build_bazel_target("mock/bazel:rule", "source")
-
-
-def test_build_bazel_target_fails(mocker, caplog):
-    """
-    Tests that ValueError is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.ERROR)
-    mock_content = '"google-cloud-language-v1-py",\n'
-    mocker.patch("cli.open", mock_open(read_data=mock_content))
-
-    with pytest.raises(ValueError):
-        _build_bazel_target("mock/bazel:rule", "source")
-
-
-def test_determine_bazel_rule_command_fails(mocker, caplog):
-    """
-    Tests that an exception is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.INFO)
-    mocker.patch(
-        "cli.subprocess.run",
-        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Bazel error"),
-    )
-
-    with pytest.raises(ValueError):
-        _determine_bazel_rule("google/cloud/language/v1", "source")
-
-    assert "Found Bazel rule" not in caplog.text
-
-
-def test_locate_and_extract_artifact_success(mocker, caplog):
-    """
-    Tests that the artifact helper calls the correct sequence of commands.
-    """
-    caplog.set_level(logging.INFO)
-    mock_info_result = MagicMock(stdout="/path/to/bazel-bin\n")
-    mock_tar_result = MagicMock(returncode=0)
-    mocker.patch("cli.subprocess.run", side_effect=[mock_info_result, mock_tar_result])
-    mock_makedirs = mocker.patch("cli.os.makedirs")
-    _locate_and_extract_artifact(
-        "//google/cloud/language/v1:rule-py",
-        "google-cloud-language",
-        "source",
-        "output",
-        "google/cloud/language/v1",
-    )
-    assert (
-        "Found artifact at: /path/to/bazel-bin/google/cloud/language/v1/rule-py.tar.gz"
-        in caplog.text
-    )
-    assert (
-        "Preparing staging directory: output/owl-bot-staging/google-cloud-language"
-        in caplog.text
-    )
-    assert (
-        "Artifact /path/to/bazel-bin/google/cloud/language/v1/rule-py.tar.gz extracted successfully"
-        in caplog.text
-    )
-    mock_makedirs.assert_called_once()
-
-
-def test_locate_and_extract_artifact_fails(mocker, caplog):
-    """
-    Tests that an exception is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.INFO)
-    mocker.patch(
-        "cli.subprocess.run",
-        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Bazel error"),
-    )
-
-    with pytest.raises(ValueError):
-        _locate_and_extract_artifact(
-            "//google/cloud/language/v1:rule-py",
-            "google-cloud-language",
-            "source",
-            "output",
-            "google/cloud/language/v1",
-        )
-
-
 def test_run_post_processor_success(mocker, caplog):
     """
     Tests that the post-processor helper calls the correct command.
@@ -378,17 +290,153 @@ def test_run_post_processor_success(mocker, caplog):
     assert "Python post-processor ran successfully." in caplog.text
 
 
-def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
+def test_read_bazel_build_py_rule_success(mocker, mock_build_bazel_file):
+    """Tests successful reading and parsing of a valid BUILD.bazel file."""
+    api_path = "google/cloud/language/v1"
+    # Use the empty string as the source path, since the fixture has set the CWD to the temporary root.
+    source_dir = "source"
+
+    mocker.patch("cli._read_text_file", return_value=_MOCK_BAZEL_CONTENT)
+    # The fixture already creates the file, so we just need to call the function
+    py_gapic_config = _read_bazel_build_py_rule(api_path, source_dir)
+
+    assert (
+        "language_py_gapic" not in py_gapic_config
+    )  # Only rule attributes should be returned
+    assert py_gapic_config["grpc_service_config"] == "language_grpc_service_config.json"
+    assert py_gapic_config["rest_numeric_enums"] is True
+    assert py_gapic_config["transport"] == "grpc+rest"
+    assert py_gapic_config["opt_args"] == ["python-gapic-namespace=google.cloud"]
+
+
+def test_get_api_generator_options_all_options():
+    """Tests option extraction when all relevant fields are present."""
+    api_path = "google/cloud/language/v1"
+    py_gapic_config = {
+        "grpc_service_config": "config.json",
+        "rest_numeric_enums": True,
+        "service_yaml": "service.yaml",
+        "transport": "grpc+rest",
+        "opt_args": ["single_arg", "another_arg"],
+    }
+    options = _get_api_generator_options(api_path, py_gapic_config)
+
+    expected = [
+        "retry-config=google/cloud/language/v1/config.json",
+        "rest-numeric-enums=True",
+        "service-yaml=google/cloud/language/v1/service.yaml",
+        "transport=grpc+rest",
+        "single_arg",
+        "another_arg",
+    ]
+    assert sorted(options) == sorted(expected)
+
+
+def test_get_api_generator_options_minimal_options():
+    """Tests option extraction when only transport is present."""
+    api_path = "google/cloud/minimal/v1"
+    py_gapic_config = {
+        "transport": "grpc",
+    }
+    options = _get_api_generator_options(api_path, py_gapic_config)
+
+    expected = ["transport=grpc"]
+    assert options == expected
+
+
+def test_determine_generator_command_with_options():
+    """Tests command construction with options."""
+    api_path = "google/cloud/test/v1"
+    tmp_dir = "/tmp/output/test"
+    options = ["transport=grpc", "custom_option=foo"]
+    command = _determine_generator_command(api_path, tmp_dir, options)
+
+    expected_options = "--python_gapic_opt=metadata,transport=grpc,custom_option=foo"
+    expected_command = (
+        f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir} {expected_options}"
+    )
+    assert command == expected_command
+
+
+def test_determine_generator_command_no_options():
+    """Tests command construction without extra options."""
+    api_path = "google/cloud/test/v1"
+    tmp_dir = "/tmp/output/test"
+    options = []
+    command = _determine_generator_command(api_path, tmp_dir, options)
+
+    # Note: 'metadata' is always included if options list is empty or not
+    # only if `generator_options` is not empty. If it is empty, the result is:
+    expected_command_no_options = (
+        f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
+    )
+    assert command == expected_command_no_options
+
+
+def test_run_generator_command_success(mocker):
+    """Tests successful execution of the protoc command."""
+    mock_run = mocker.patch(
+        "cli.subprocess.run", return_value=MagicMock(stdout="ok", stderr="", check=True)
+    )
+    command = "protoc api/*.proto --python_gapic_out=/tmp/out"
+    source = "/src"
+
+    _run_generator_command(command, source)
+
+    mock_run.assert_called_once_with(
+        [command], cwd=source, shell=True, check=True, capture_output=True, text=True
+    )
+
+
+def test_run_generator_command_failure(mocker):
+    """Tests failure when protoc command returns a non-zero exit code."""
+    mock_run = mocker.patch(
+        "cli.subprocess.run",
+        side_effect=subprocess.CalledProcessError(1, "protoc", stderr="error"),
+    )
+    command = "protoc api/*.proto --python_gapic_out=/tmp/out"
+    source = "/src"
+
+    with pytest.raises(subprocess.CalledProcessError):
+        _run_generator_command(command, source)
+
+
+def test_generate_api_success(mocker, caplog):
+    caplog.set_level(logging.INFO)
+
+    API_PATH = "google/cloud/language/v1"
+    LIBRARY_ID = "google-cloud-language"
+    SOURCE = "source"
+    OUTPUT = "output"
+
+    mock_read_bazel_build_py_rule = mocker.patch("cli._read_bazel_build_py_rule")
+    mock_get_api_generator_options = mocker.patch("cli._get_api_generator_options")
+    mock_determine_generator_command = mocker.patch(
+        "cli._determine_generator_command"
+    )
+    mock_run_generator_command = mocker.patch(
+        "cli._run_generator_command"
+    )
+    mock_shutil_copytree = mocker.patch("shutil.copytree")
+
+    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT)
+
+    mock_read_bazel_build_py_rule.assert_called_once()
+    mock_get_api_generator_options.assert_called_once()
+    mock_determine_generator_command.assert_called_once()
+    mock_run_generator_command.assert_called_once()
+    mock_shutil_copytree.assert_called_once()
+
+
+def test_handle_generate_success(
+    caplog, mock_generate_request_file, mock_build_bazel_file, mocker
+):
     """
     Tests the successful execution path of handle_generate.
     """
     caplog.set_level(logging.INFO)
 
-    mock_determine_rule = mocker.patch(
-        "cli._determine_bazel_rule", return_value="mock-rule"
-    )
-    mock_build_target = mocker.patch("cli._build_bazel_target")
-    mock_locate_and_extract_artifact = mocker.patch("cli._locate_and_extract_artifact")
+    mock_generate_api = mocker.patch("cli._generate_api")
     mock_run_post_processor = mocker.patch("cli._run_post_processor")
     mock_copy_files_needed_for_post_processing = mocker.patch(
         "cli._copy_files_needed_for_post_processing"
@@ -399,7 +447,6 @@ def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
 
     handle_generate()
 
-    mock_determine_rule.assert_called_once_with("google/cloud/language/v1", "source")
     mock_run_post_processor.assert_called_once_with("output", "google-cloud-language")
     mock_copy_files_needed_for_post_processing.assert_called_once_with(
         "output", "input", "google-cloud-language"
@@ -407,6 +454,7 @@ def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
     mock_clean_up_files_after_post_processing.assert_called_once_with(
         "output", "google-cloud-language"
     )
+    mock_generate_api.assert_called_once()
 
 
 def test_handle_generate_fail(caplog):

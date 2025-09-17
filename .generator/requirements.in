@@ -1,1 +1,5 @@
+click
+gapic-generator
+nox
+starlark-pyo3>=2025.1
 build
