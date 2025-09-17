@@ -430,6 +430,40 @@ def json_value_array(
     return input._apply_unary_op(ops.JSONValueArray(json_path=json_path))
 
 
+def to_json(
+    input: series.Series,
+) -> series.Series:
+    """Converts a series with a JSON value to a JSON-formatted STRING value.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+
+        >>> s = bpd.Series([1, 2, 3])
+        >>> bbq.to_json(s)
+        0    1
+        1    2
+        2    3
+        dtype: extension<dbjson<JSONArrowType>>[pyarrow]
+
+        >>> s = bpd.Series([{"int": 1, "str": "pandas"}, {"int": 2, "str": "numpy"}])
+        >>> bbq.to_json(s)
+        0    {"int":1,"str":"pandas"}
+        1     {"int":2,"str":"numpy"}
+        dtype: extension<dbjson<JSONArrowType>>[pyarrow]
+
+    Args:
+        input (bigframes.series.Series):
+            The Series containing JSON or JSON-formatted string values.
+
+    Returns:
+        bigframes.series.Series: A new Series with the JSON value.
+    """
+    return input._apply_unary_op(ops.ToJSON())
+
+
 def to_json_string(
     input: series.Series,
 ) -> series.Series:

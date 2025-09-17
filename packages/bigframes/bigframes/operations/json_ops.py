@@ -103,6 +103,20 @@ class ParseJSON(base_ops.UnaryOp):
 
 
 @dataclasses.dataclass(frozen=True)
+class ToJSON(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "to_json"
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if not dtypes.is_json_encoding_type(input_type):
+            raise TypeError(
+                "The value to be assigned must be a type that can be encoded as JSON."
+                + f"Received type: {input_type}"
+            )
+        return dtypes.JSON_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
 class ToJSONString(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "to_json_string"
 

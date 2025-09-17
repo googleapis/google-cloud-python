@@ -124,6 +124,7 @@ from bigframes.operations.json_ops import (
     JSONValue,
     JSONValueArray,
     ParseJSON,
+    ToJSON,
     ToJSONString,
 )
 from bigframes.operations.numeric_ops import (
@@ -376,6 +377,7 @@ __all__ = [
     "JSONValue",
     "JSONValueArray",
     "ParseJSON",
+    "ToJSON",
     "ToJSONString",
     # Bool ops
     "and_op",

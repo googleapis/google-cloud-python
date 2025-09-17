@@ -1302,6 +1302,11 @@ def parse_json_op_impl(x: ibis_types.Value, op: ops.ParseJSON):
     return parse_json(json_str=x)
 
 
+@scalar_op_compiler.register_unary_op(ops.ToJSON)
+def to_json_op_impl(json_obj: ibis_types.Value):
+    return to_json(json_obj=json_obj)
+
+
 @scalar_op_compiler.register_unary_op(ops.ToJSONString)
 def to_json_string_op_impl(x: ibis_types.Value):
     return to_json_string(value=x)
@@ -2091,6 +2096,11 @@ def json_extract_string_array(  # type: ignore[empty-body]
     json_obj: ibis_dtypes.JSON, json_path: ibis_dtypes.String
 ) -> ibis_dtypes.Array[ibis_dtypes.String]:
     """Extracts a JSON array and converts it to a SQL ARRAY of STRINGs."""
+
+
+@ibis_udf.scalar.builtin(name="to_json")
+def to_json(json_obj) -> ibis_dtypes.JSON:  # type: ignore[empty-body]
+    """Convert to JSON."""
 
 
 @ibis_udf.scalar.builtin(name="to_json_string")
