@@ -346,7 +346,7 @@ def prerelease(session):
     # https://github.com/googleapis/python-bigquery-pandas/issues/854
     session.install(
         "https://github.com/googleapis/python-bigquery/archive/main.zip",
-        "https://github.com/googleapis/python-bigquery-storage/archive/main.zip",
+        "git+https://github.com/googleapis/google-cloud-python.git@main#subdirectory=packages/google-cloud-bigquery-storage",
     )
 
     # Because we test minimum dependency versions on the minimum Python
