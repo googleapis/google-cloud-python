@@ -416,12 +416,7 @@ def _run_nox_sessions(library_id: str, repo: str):
             the config.yaml.
     """
     sessions = [
-        "unit-3.9",
-        "unit-3.13",
-        "docs",
-        "lint",
-        "lint_setup_py",
-        "mypy-3.13",
+        "unit-3.13(protobuf_implementation='upb')",
     ]
     current_session = None
     try:

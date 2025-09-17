@@ -411,12 +411,8 @@ def test_generate_api_success(mocker, caplog):
 
     mock_read_bazel_build_py_rule = mocker.patch("cli._read_bazel_build_py_rule")
     mock_get_api_generator_options = mocker.patch("cli._get_api_generator_options")
-    mock_determine_generator_command = mocker.patch(
-        "cli._determine_generator_command"
-    )
-    mock_run_generator_command = mocker.patch(
-        "cli._run_generator_command"
-    )
+    mock_determine_generator_command = mocker.patch("cli._determine_generator_command")
+    mock_run_generator_command = mocker.patch("cli._run_generator_command")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
 
     _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT)
@@ -508,24 +504,16 @@ def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
     mock_run_individual_session = mocker.patch("cli._run_individual_session")
 
     sessions_to_run = [
-        "unit-3.9",
-        "unit-3.13",
-        "docs",
-        "lint",
-        "lint_setup_py",
-        "mypy-3.13",
+        "unit-3.13(protobuf_implementation='upb')",
     ]
     _run_nox_sessions("mock-library", "repo")
 
     assert mock_run_individual_session.call_count == len(sessions_to_run)
     mock_run_individual_session.assert_has_calls(
         [
-            mocker.call("unit-3.9", "mock-library", "repo"),
-            mocker.call("unit-3.13", "mock-library", "repo"),
-            mocker.call("docs", "mock-library", "repo"),
-            mocker.call("lint", "mock-library", "repo"),
-            mocker.call("lint_setup_py", "mock-library", "repo"),
-            mocker.call("mypy-3.13", "mock-library", "repo"),
+            mocker.call(
+                "unit-3.13(protobuf_implementation='upb')", "mock-library", "repo"
+            ),
         ]
     )
 
@@ -558,7 +546,7 @@ def test_run_nox_sessions_individual_session_failure(
     mocker.patch("cli._get_library_id", return_value="mock-library")
     mock_run_individual_session = mocker.patch(
         "cli._run_individual_session",
-        side_effect=[None, subprocess.CalledProcessError(1, "nox", "session failed")],
+        side_effect=[subprocess.CalledProcessError(1, "nox", "session failed")],
     )
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
