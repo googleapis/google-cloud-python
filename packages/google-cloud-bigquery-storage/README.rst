@@ -1,7 +1,6 @@
 Python Client for Google BigQuery Storage
 =========================================
 
-
 |stable| |pypi| |versions|
 
 `Google BigQuery Storage`_: 
