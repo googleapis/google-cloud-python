@@ -391,8 +391,12 @@ class LivestreamServiceAsyncClient:
                 should not be set.
             channel_id (:class:`str`):
                 Required. The ID of the channel resource to be created.
-                This value must be 1-63 characters, begin and end with
-                ``[a-z0-9]``, could contain dashes (-) in between.
+
+                This value must be 1-63 characters, begin and end with a
+                lower-case letter or a number, and consist of only
+                lower-case letters, numbers, and hyphens. In other
+                words, it must match the following regex:
+                ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``channel_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1278,6 +1282,289 @@ class LivestreamServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def start_distribution(
+        self,
+        request: Optional[Union[service.StartDistributionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        distribution_keys: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Starts distribution which delivers outputs to the
+        destination indicated by the Distribution configuration.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            async def sample_start_distribution():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.StartDistributionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.start_distribution(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.StartDistributionRequest, dict]]):
+                The request object. Request message for
+                "LivestreamService.StartDistribution".
+            name (:class:`str`):
+                Required. The name of the channel resource, in the form
+                of:
+                ``projects/{project}/locations/{location}/channels/{channelId}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            distribution_keys (:class:`MutableSequence[str]`):
+                Optional. A list of keys to identify
+                the distribution configuration in the
+                channel resource. If left empty, all the
+                distributions in the channel
+                specification will be started.
+
+                This corresponds to the ``distribution_keys`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.video.live_stream_v1.types.ChannelOperationResponse`
+                Response message for Start/Stop Channel long-running
+                operations.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, distribution_keys]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.StartDistributionRequest):
+            request = service.StartDistributionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if distribution_keys:
+            request.distribution_keys.extend(distribution_keys)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.start_distribution
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            service.ChannelOperationResponse,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def stop_distribution(
+        self,
+        request: Optional[Union[service.StopDistributionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        distribution_keys: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Stops the specified distribution.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            async def sample_stop_distribution():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.StopDistributionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.stop_distribution(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.StopDistributionRequest, dict]]):
+                The request object. Request message for
+                "LivestreamService.StopDistribution".
+            name (:class:`str`):
+                Required. The name of the channel resource, in the form
+                of:
+                ``projects/{project}/locations/{location}/channels/{channelId}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            distribution_keys (:class:`MutableSequence[str]`):
+                Optional. A list of key to identify
+                the distribution configuration in the
+                channel resource. If left empty, all the
+                distributions in the channel
+                specification will be stopped.
+
+                This corresponds to the ``distribution_keys`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.video.live_stream_v1.types.ChannelOperationResponse`
+                Response message for Start/Stop Channel long-running
+                operations.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, distribution_keys]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.StopDistributionRequest):
+            request = service.StopDistributionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if distribution_keys:
+            request.distribution_keys.extend(distribution_keys)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.stop_distribution
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            service.ChannelOperationResponse,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def create_input(
         self,
         request: Optional[Union[service.CreateInputRequest, dict]] = None,
@@ -1343,8 +1630,12 @@ class LivestreamServiceAsyncClient:
                 should not be set.
             input_id (:class:`str`):
                 Required. The ID of the input resource to be created.
-                This value must be 1-63 characters, begin and end with
-                ``[a-z0-9]``, could contain dashes (-) in between.
+
+                This value must be 1-63 characters, begin and end with a
+                lower-case letter or a number, and consist of only
+                lower-case letters, numbers, and hyphens. In other
+                words, it must match the following regex:
+                ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``input_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1949,6 +2240,118 @@ class LivestreamServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def preview_input(
+        self,
+        request: Optional[Union[service.PreviewInputRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> service.PreviewInputResponse:
+        r"""Preview the streaming content of the specified input.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            async def sample_preview_input():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.PreviewInputRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.preview_input(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.PreviewInputRequest, dict]]):
+                The request object. Request message for
+                "LivestreamService.PreviewInput".
+            name (:class:`str`):
+                Required. The name of the input resource, in the form
+                of:
+                ``projects/{project}/locations/{location}/inputs/{inputId}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.video.live_stream_v1.types.PreviewInputResponse:
+                Response message for
+                "LivestreamService.PreviewInput"
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.PreviewInputRequest):
+            request = service.PreviewInputRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.preview_input
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def create_event(
         self,
         request: Optional[Union[service.CreateEventRequest, dict]] = None,
@@ -2011,8 +2414,12 @@ class LivestreamServiceAsyncClient:
                 should not be set.
             event_id (:class:`str`):
                 Required. The ID of the event resource to be created.
-                This value must be 1-63 characters, begin and end with
-                ``[a-z0-9]``, could contain dashes (-) in between.
+
+                This value must be 1-63 characters, begin and end with a
+                lower-case letter or a number, and consist of only
+                lower-case letters, numbers, and hyphens. In other
+                words, it must match the following regex:
+                ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``event_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2733,13 +3140,13 @@ class LivestreamServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             clip_id (:class:`str`):
-                Required. Id of the requesting object
-                in the following form:
+                Required. The ID of the clip resource to be created.
 
-                1. 1 character minimum, 63 characters
-                    maximum
-                2. Only contains letters, digits,
-                    underscores, and hyphens
+                This value must be 1-63 characters, begin and end with a
+                lower-case letter or a number, and consist of only
+                lower-case letters, numbers, and hyphens. In other
+                words, it must match the following regex:
+                ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``clip_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3024,13 +3431,14 @@ class LivestreamServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             dvr_session_id (:class:`str`):
-                Required. Id of the requesting object
-                in the following form:
+                Required. The ID of the DVR session resource to be
+                created.
 
-                1. 1 character minimum, 63 characters
-                    maximum
-                2. Only contains letters, digits,
-                    underscores, and hyphens
+                This value must be 1-63 characters, begin and end with a
+                lower-case letter or a number, and consist of only
+                lower-case letters, numbers, and hyphens. In other
+                words, it must match the following regex:
+                ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``dvr_session_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3700,8 +4108,12 @@ class LivestreamServiceAsyncClient:
                 should not be set.
             asset_id (:class:`str`):
                 Required. The ID of the asset resource to be created.
-                This value must be 1-63 characters, begin and end with
-                ``[a-z0-9]``, could contain dashes (-) in between.
+
+                This value must be 1-63 characters, begin and end with a
+                lower-case letter or a number, and consist of only
+                lower-case letters, numbers, and hyphens. In other
+                words, it must match the following regex:
+                ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``asset_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

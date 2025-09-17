@@ -2459,7 +2459,9 @@ class EventarcAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> google_channel_config.GoogleChannelConfig:
-        r"""Get a GoogleChannelConfig
+        r"""Get a GoogleChannelConfig.
+        The name of the GoogleChannelConfig in the response is
+        ALWAYS coded with projectID.
 
         .. code-block:: python
 
@@ -2864,7 +2866,7 @@ class EventarcAsyncClient:
                 ListMessageBuses method.
             parent (:class:`str`):
                 Required. The parent collection to
-                list triggers on.
+                list message buses on.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3137,7 +3139,7 @@ class EventarcAsyncClient:
             message_bus_id (:class:`str`):
                 Required. The user-provided ID to be assigned to the
                 MessageBus. It should match the format
-                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$)
+                ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``message_bus_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3813,7 +3815,7 @@ class EventarcAsyncClient:
             enrollment_id (:class:`str`):
                 Required. The user-provided ID to be assigned to the
                 Enrollment. It should match the format
-                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+                ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``enrollment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4485,8 +4487,9 @@ class EventarcAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             pipeline_id (:class:`str`):
-                Required. The user-provided ID to be
-                assigned to the Pipeline.
+                Required. The user-provided ID to be assigned to the
+                Pipeline. It should match the format
+                ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``pipeline_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5156,7 +5159,7 @@ class EventarcAsyncClient:
             google_api_source_id (:class:`str`):
                 Required. The user-provided ID to be assigned to the
                 GoogleApiSource. It should match the format
-                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+                ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
 
                 This corresponds to the ``google_api_source_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
