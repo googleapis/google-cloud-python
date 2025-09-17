@@ -14,7 +14,7 @@
 
 import base64
 import decimal
-from typing import Iterable, Optional, Set, Union
+from typing import Iterable, Optional, Sequence, Set, Union
 
 import geopandas as gpd  # type: ignore
 import google.api_core.operation
@@ -25,6 +25,7 @@ import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
 
+from bigframes.core import expression as expr
 import bigframes.functions._utils as bff_utils
 import bigframes.pandas
 
@@ -448,3 +449,22 @@ def get_function_name(func, package_requirements=None, is_row_processor=False):
     function_hash = bff_utils.get_hash(func, package_requirements)
 
     return f"bigframes_{function_hash}"
+
+
+def _apply_unary_ops(
+    obj: bigframes.pandas.DataFrame,
+    ops_list: Sequence[expr.Expression],
+    new_names: Sequence[str],
+) -> str:
+    """Applies a list of unary ops to the given DataFrame and returns the SQL
+    representing the resulting DataFrames."""
+    array_value = obj._block.expr
+    result, old_names = array_value.compute_values(ops_list)
+
+    # Rename columns for deterministic golden SQL results.
+    assert len(old_names) == len(new_names)
+    col_ids = {old_name: new_name for old_name, new_name in zip(old_names, new_names)}
+    result = result.rename_columns(col_ids).select_columns(new_names)
+
+    sql = result.session._executor.to_sql(result, enable_cache=False)
+    return sql

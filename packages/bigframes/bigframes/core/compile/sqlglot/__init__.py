@@ -14,7 +14,18 @@
 from __future__ import annotations
 
 from bigframes.core.compile.sqlglot.compiler import SQLGlotCompiler
+import bigframes.core.compile.sqlglot.expressions.array_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.binary_compiler  # noqa: F401
-import bigframes.core.compile.sqlglot.expressions.unary_compiler  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.blob_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.comparison_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.date_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.datetime_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.generic_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.geo_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.json_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.numeric_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.string_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.struct_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.timedelta_ops  # noqa: F401
 
 __all__ = ["SQLGlotCompiler"]
