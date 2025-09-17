@@ -508,14 +508,32 @@ def _verify_library_namespace(library_id: str, repo: str):
         repo (str): The path to the root of the repository.
     """
     # TODO(https://github.com/googleapis/google-cloud-python/issues/14376): Update the list of namespaces which are exceptions.
-    exception_namespaces = ["google.cloud.billing"]
+    exception_namespaces = [
+        "google.area120",
+        "google.apps.script",
+        "google.apps.script.type",
+        "google.cloud.alloydb",
+        "google.cloud.billing",
+        "google.cloud.devtools",
+        "google.cloud.gkeconnect",
+        "google.cloud.gkehub_v1",
+        "google.cloud.orchestration.airflow",
+        "google.cloud.security",
+        "google.cloud.video",
+        "google.cloud.workflows",
+        "google.monitoring",
+    ]
     valid_namespaces = [
         "google",
+        "google.analytics",
         "google.apps",
         "google.ads",
+        "google.ai",
         "google.cloud",
+        "google.geo",
         "google.maps",
         "google.shopping",
+        "grafeas",
         *exception_namespaces,
     ]
     gapic_version_file = "gapic_version.py"
