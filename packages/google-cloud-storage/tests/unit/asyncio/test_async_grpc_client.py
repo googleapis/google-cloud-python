@@ -26,7 +26,7 @@ def _make_credentials(spec=None):
 class TestAsyncGrpcClient(unittest.TestCase):
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_constructor_default_options(self, mock_async_storage_client):
-        from google.cloud.storage._experimental import async_grpc_client
+        from google.cloud.storage._experimental.asyncio import async_grpc_client
 
         mock_transport_cls = mock.MagicMock()
         mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
@@ -54,7 +54,7 @@ class TestAsyncGrpcClient(unittest.TestCase):
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_constructor_disables_directpath(self, mock_async_storage_client):
-        from google.cloud.storage._experimental import async_grpc_client
+        from google.cloud.storage._experimental.asyncio import async_grpc_client
 
         mock_transport_cls = mock.MagicMock()
         mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
@@ -74,7 +74,7 @@ class TestAsyncGrpcClient(unittest.TestCase):
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_grpc_client_property(self, mock_async_storage_client):
-        from google.cloud.storage._experimental import async_grpc_client
+        from google.cloud.storage._experimental.asyncio import async_grpc_client
 
         mock_creds = _make_credentials()
 
