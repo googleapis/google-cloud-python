@@ -16,6 +16,7 @@
 packages_to_onboard: [
   "google-ads-marketingplatform-admin",
   "google-ai-generativelanguage",
+  "google-analytics-admin",
   "google-cloud-dlp",
   "google-cloud-eventarc",
   "google-cloud-video-live-stream",
