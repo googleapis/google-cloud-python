@@ -71,8 +71,8 @@ class Channel(proto.Message):
             channel. The token must be used by the provider
             to register the channel for publishing.
         crypto_key_name (str):
-            Resource name of a KMS crypto key (managed by the user) used
-            to encrypt/decrypt their event data.
+            Optional. Resource name of a KMS crypto key (managed by the
+            user) used to encrypt/decrypt their event data.
 
             It must match the pattern
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
@@ -80,6 +80,8 @@ class Channel(proto.Message):
             Output only. Whether or not this Channel
             satisfies the requirements of physical zone
             separation
+        labels (MutableMapping[str, str]):
+            Optional. Resource labels.
     """
 
     class State(proto.Enum):
@@ -161,6 +163,11 @@ class Channel(proto.Message):
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=12,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
     )
 
 

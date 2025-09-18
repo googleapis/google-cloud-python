@@ -135,14 +135,29 @@
                 "list_inputs"
               ]
             },
+            "PreviewInput": {
+              "methods": [
+                "preview_input"
+              ]
+            },
             "StartChannel": {
               "methods": [
                 "start_channel"
               ]
             },
+            "StartDistribution": {
+              "methods": [
+                "start_distribution"
+              ]
+            },
             "StopChannel": {
               "methods": [
                 "stop_channel"
+              ]
+            },
+            "StopDistribution": {
+              "methods": [
+                "stop_distribution"
               ]
             },
             "UpdateChannel": {
@@ -295,14 +310,29 @@
                 "list_inputs"
               ]
             },
+            "PreviewInput": {
+              "methods": [
+                "preview_input"
+              ]
+            },
             "StartChannel": {
               "methods": [
                 "start_channel"
               ]
             },
+            "StartDistribution": {
+              "methods": [
+                "start_distribution"
+              ]
+            },
             "StopChannel": {
               "methods": [
                 "stop_channel"
+              ]
+            },
+            "StopDistribution": {
+              "methods": [
+                "stop_distribution"
               ]
             },
             "UpdateChannel": {
@@ -455,14 +485,29 @@
                 "list_inputs"
               ]
             },
+            "PreviewInput": {
+              "methods": [
+                "preview_input"
+              ]
+            },
             "StartChannel": {
               "methods": [
                 "start_channel"
               ]
             },
+            "StartDistribution": {
+              "methods": [
+                "start_distribution"
+              ]
+            },
             "StopChannel": {
               "methods": [
                 "stop_channel"
+              ]
+            },
+            "StopDistribution": {
+              "methods": [
+                "stop_distribution"
               ]
             },
             "UpdateChannel": {
