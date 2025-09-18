@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.21.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.20.0...v2.21.0) (2025-09-17)
+
+
+### Features
+
+* Add bigframes.bigquery.to_json ([#2078](https://github.com/googleapis/python-bigquery-dataframes/issues/2078)) ([0fc795a](https://github.com/googleapis/python-bigquery-dataframes/commit/0fc795a9fb56f469b62603462c3f0f56f52bfe04))
+* Support average='binary' in precision_score() ([#2080](https://github.com/googleapis/python-bigquery-dataframes/issues/2080)) ([920f381](https://github.com/googleapis/python-bigquery-dataframes/commit/920f381aec7e0a0b986886cdbc333e86335c6d7d))
+* Support pandas series in ai.generate_bool ([#2086](https://github.com/googleapis/python-bigquery-dataframes/issues/2086)) ([a3de53f](https://github.com/googleapis/python-bigquery-dataframes/commit/a3de53f68b2a24f4ed85a474dfaff9b59570a2f1))
+
+
+### Bug Fixes
+
+* Allow bigframes.options.bigquery.credentials to be `None` ([#2092](https://github.com/googleapis/python-bigquery-dataframes/issues/2092)) ([78f4001](https://github.com/googleapis/python-bigquery-dataframes/commit/78f4001e8fcfc77fc82f3893d58e0d04c0f6d3db))
+
 ## [2.20.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.19.0...v2.20.0) (2025-09-16)
 
 
