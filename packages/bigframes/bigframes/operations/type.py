@@ -174,15 +174,7 @@ class CoerceCommon(BinaryTypeSignature):
     def output_type(
         self, left_type: ExpressionType, right_type: ExpressionType
     ) -> ExpressionType:
-        try:
-            return bigframes.dtypes.coerce_to_common(left_type, right_type)
-        except TypeError:
-            pass
-        if bigframes.dtypes.can_coerce(left_type, right_type):
-            return right_type
-        if bigframes.dtypes.can_coerce(right_type, left_type):
-            return left_type
-        raise TypeError(f"Cannot coerce {left_type} and {right_type} to a common type.")
+        return bigframes.dtypes.coerce_to_common(left_type, right_type)
 
 
 @dataclasses.dataclass
@@ -192,8 +184,7 @@ class Comparison(BinaryTypeSignature):
     def output_type(
         self, left_type: ExpressionType, right_type: ExpressionType
     ) -> ExpressionType:
-        common_type = CoerceCommon().output_type(left_type, right_type)
-        if not bigframes.dtypes.is_comparable(common_type):
+        if not bigframes.dtypes.can_compare(left_type, right_type):
             raise TypeError(f"Types {left_type} and {right_type} are not comparable")
         return bigframes.dtypes.BOOL_DTYPE
 

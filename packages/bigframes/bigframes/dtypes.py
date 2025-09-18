@@ -358,6 +358,11 @@ def is_comparable(type_: ExpressionType) -> bool:
     return (type_ is not None) and is_orderable(type_)
 
 
+def can_compare(type1: ExpressionType, type2: ExpressionType) -> bool:
+    coerced_type = coerce_to_common(type1, type2)
+    return is_comparable(coerced_type)
+
+
 def get_struct_fields(type_: ExpressionType) -> dict[str, Dtype]:
     assert isinstance(type_, pd.ArrowDtype)
     assert isinstance(type_.pyarrow_dtype, pa.StructType)

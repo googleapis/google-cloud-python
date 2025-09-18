@@ -480,6 +480,14 @@ class ArrayValue:
         type: typing.Literal["inner", "outer", "left", "right", "cross"] = "inner",
         propogate_order: Optional[bool] = None,
     ) -> typing.Tuple[ArrayValue, typing.Tuple[dict[str, str], dict[str, str]]]:
+        for lcol, rcol in conditions:
+            ltype = self.get_column_type(lcol)
+            rtype = other.get_column_type(rcol)
+            if not bigframes.dtypes.can_compare(ltype, rtype):
+                raise TypeError(
+                    f"Cannot join with non-comparable join key types: {ltype}, {rtype}"
+                )
+
         l_mapping = {  # Identity mapping, only rename right side
             lcol.name: lcol.name for lcol in self.node.ids
         }
