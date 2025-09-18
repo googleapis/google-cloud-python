@@ -85,7 +85,6 @@ def configure_state_yaml() -> None:
                         f"^packages/{package_path.name}/docs/CHANGELOG.md",
                         f"^packages/{package_path.name}/docs/README.rst",
                         f"^packages/{package_path.name}/samples/README.txt",
-                        f"^packages/{package_path.name}/tar.gz",
                         f"^packages/{package_path.name}/.*/gapic_version.py",
                         f"^packages/{package_path.name}/samples/generated_samples/snippet_metadata_",
                         f"^packages/{package_path.name}/scripts/client-post-processing",

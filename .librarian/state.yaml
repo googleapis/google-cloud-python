@@ -13,7 +13,6 @@ libraries:
       - ^packages/google-cloud-dlp/docs/CHANGELOG.md
       - ^packages/google-cloud-dlp/docs/README.rst
       - ^packages/google-cloud-dlp/samples/README.txt
-      - ^packages/google-cloud-dlp/tar.gz
       - ^packages/google-cloud-dlp/.*/gapic_version.py
       - ^packages/google-cloud-dlp/samples/generated_samples/snippet_metadata_
       - ^packages/google-cloud-dlp/scripts/client-post-processing
@@ -34,7 +33,6 @@ libraries:
       - ^packages/google-cloud-eventarc/docs/CHANGELOG.md
       - ^packages/google-cloud-eventarc/docs/README.rst
       - ^packages/google-cloud-eventarc/samples/README.txt
-      - ^packages/google-cloud-eventarc/tar.gz
       - ^packages/google-cloud-eventarc/.*/gapic_version.py
       - ^packages/google-cloud-eventarc/samples/generated_samples/snippet_metadata_
       - ^packages/google-cloud-eventarc/scripts/client-post-processing
@@ -55,7 +53,6 @@ libraries:
       - ^packages/google-cloud-video-live-stream/docs/CHANGELOG.md
       - ^packages/google-cloud-video-live-stream/docs/README.rst
       - ^packages/google-cloud-video-live-stream/samples/README.txt
-      - ^packages/google-cloud-video-live-stream/tar.gz
       - ^packages/google-cloud-video-live-stream/.*/gapic_version.py
       - ^packages/google-cloud-video-live-stream/samples/generated_samples/snippet_metadata_
       - ^packages/google-cloud-video-live-stream/scripts/client-post-processing
@@ -76,7 +73,6 @@ libraries:
       - ^packages/google-ads-marketingplatform-admin/docs/CHANGELOG.md
       - ^packages/google-ads-marketingplatform-admin/docs/README.rst
       - ^packages/google-ads-marketingplatform-admin/samples/README.txt
-      - ^packages/google-ads-marketingplatform-admin/tar.gz
       - ^packages/google-ads-marketingplatform-admin/.*/gapic_version.py
       - ^packages/google-ads-marketingplatform-admin/samples/generated_samples/snippet_metadata_
       - ^packages/google-ads-marketingplatform-admin/scripts/client-post-processing
@@ -101,7 +97,6 @@ libraries:
       - ^packages/google-ai-generativelanguage/docs/CHANGELOG.md
       - ^packages/google-ai-generativelanguage/docs/README.rst
       - ^packages/google-ai-generativelanguage/samples/README.txt
-      - ^packages/google-ai-generativelanguage/tar.gz
       - ^packages/google-ai-generativelanguage/.*/gapic_version.py
       - ^packages/google-ai-generativelanguage/samples/generated_samples/snippet_metadata_
       - ^packages/google-ai-generativelanguage/scripts/client-post-processing
@@ -123,7 +118,6 @@ libraries:
       - ^packages/google-analytics-admin/docs/CHANGELOG.md
       - ^packages/google-analytics-admin/docs/README.rst
       - ^packages/google-analytics-admin/samples/README.txt
-      - ^packages/google-analytics-admin/tar.gz
       - ^packages/google-analytics-admin/.*/gapic_version.py
       - ^packages/google-analytics-admin/samples/generated_samples/snippet_metadata_
       - ^packages/google-analytics-admin/scripts/client-post-processing
@@ -145,7 +139,6 @@ libraries:
       - ^packages/google-analytics-data/docs/CHANGELOG.md
       - ^packages/google-analytics-data/docs/README.rst
       - ^packages/google-analytics-data/samples/README.txt
-      - ^packages/google-analytics-data/tar.gz
       - ^packages/google-analytics-data/.*/gapic_version.py
       - ^packages/google-analytics-data/samples/generated_samples/snippet_metadata_
       - ^packages/google-analytics-data/scripts/client-post-processing
@@ -166,7 +159,6 @@ libraries:
       - ^packages/google-ads-admanager/docs/CHANGELOG.md
       - ^packages/google-ads-admanager/docs/README.rst
       - ^packages/google-ads-admanager/samples/README.txt
-      - ^packages/google-ads-admanager/tar.gz
       - ^packages/google-ads-admanager/.*/gapic_version.py
       - ^packages/google-ads-admanager/samples/generated_samples/snippet_metadata_
       - ^packages/google-ads-admanager/scripts/client-post-processing
