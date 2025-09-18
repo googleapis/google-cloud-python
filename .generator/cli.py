@@ -44,6 +44,7 @@ except ImportError as e:  # pragma: NO COVER
 logger = logging.getLogger()
 
 BUILD_REQUEST_FILE = "build-request.json"
+CONFIGURE_REQUEST_FILE = "configure-request.json"
 GENERATE_REQUEST_FILE = "generate-request.json"
 RELEASE_INIT_REQUEST_FILE = "release-init-request.json"
 STATE_YAML_FILE = "state.yaml"
@@ -115,9 +116,29 @@ def _write_json_file(path: str, updated_content: Dict):
         f.write("\n")
 
 
-def handle_configure():
+def handle_generate(
+    librarian: str = LIBRARIAN_DIR,
+    source: str = SOURCE_DIR,
+    output: str = OUTPUT_DIR,
+    input: str = INPUT_DIR,
+):
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
     logger.info("'configure' command executed.")
+    try:
+        # Read a generate-request.json file
+        request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
+        library_id = _get_library_id(request_data)
+        apis_to_configure = request_data.get("apis", [])
+        for api in apis_to_generate:
+            api_path = api.get("path")
+            if api_path:
+                _generate_api(api_path, library_id, source, output)
+        _copy_files_needed_for_post_processing(output, input, library_id)
+        _run_post_processor(output, library_id)
+        _clean_up_files_after_post_processing(output, library_id)
+    except Exception as e:
+        raise ValueError("Generation failed.") from e
+    logger.info("'generate' command executed.")
 
 
 def _get_library_id(request_data: Dict) -> str:
