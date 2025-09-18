@@ -13,6 +13,8 @@
 # limitations under the License.
 
 
+import io
+
 import pandas as pd
 import pytest
 
@@ -42,6 +44,38 @@ def test_null_index_materialize(scalars_df_null_index, scalars_pandas_df_default
     pd.testing.assert_frame_equal(
         bf_result, scalars_pandas_df_default_index, check_index_type=False
     )
+
+
+def test_null_index_info(scalars_df_null_index):
+    expected = (
+        "<class 'bigframes.dataframe.DataFrame'>\n"
+        "NullIndex\n"
+        "Data columns (total 14 columns):\n"
+        "  #  Column         Non-Null Count    Dtype\n"
+        "---  -------------  ----------------  ------------------------------\n"
+        "  0  bool_col       8 non-null        boolean\n"
+        "  1  bytes_col      6 non-null        binary[pyarrow]\n"
+        "  2  date_col       7 non-null        date32[day][pyarrow]\n"
+        "  3  datetime_col   6 non-null        timestamp[us][pyarrow]\n"
+        "  4  geography_col  4 non-null        geometry\n"
+        "  5  int64_col      8 non-null        Int64\n"
+        "  6  int64_too      9 non-null        Int64\n"
+        "  7  numeric_col    6 non-null        decimal128(38, 9)[pyarrow]\n"
+        "  8  float64_col    7 non-null        Float64\n"
+        "  9  rowindex_2     9 non-null        Int64\n"
+        " 10  string_col     8 non-null        string\n"
+        " 11  time_col       6 non-null        time64[us][pyarrow]\n"
+        " 12  timestamp_col  6 non-null        timestamp[us, tz=UTC][pyarrow]\n"
+        " 13  duration_col   7 non-null        duration[us][pyarrow]\n"
+        "dtypes: Float64(1), Int64(3), binary[pyarrow](1), boolean(1), date32[day][pyarrow](1), decimal128(38, 9)[pyarrow](1), duration[us][pyarrow](1), geometry(1), string(1), time64[us][pyarrow](1), timestamp[us, tz=UTC][pyarrow](1), timestamp[us][pyarrow](1)\n"
+        "memory usage: 1269 bytes\n"
+    )
+
+    bf_result = io.StringIO()
+
+    scalars_df_null_index.drop(columns="rowindex").info(buf=bf_result)
+
+    assert expected == bf_result.getvalue()
 
 
 def test_null_index_series_repr(scalars_df_null_index, scalars_pandas_df_default_index):

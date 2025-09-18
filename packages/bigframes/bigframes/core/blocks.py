@@ -253,6 +253,10 @@ class Block:
         return block
 
     @property
+    def has_index(self) -> bool:
+        return len(self._index_columns) > 0
+
+    @property
     def index(self) -> BlockIndexProperties:
         """Row identities for values in the Block."""
         return BlockIndexProperties(self)

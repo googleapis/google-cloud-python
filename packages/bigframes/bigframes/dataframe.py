@@ -489,7 +489,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             column_sizes = pandas.concat([index_size, column_sizes])
         return column_sizes
 
-    @validations.requires_index
     def info(
         self,
         verbose: Optional[bool] = None,
@@ -512,12 +511,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         obuf.write(f"{type(self)}\n")
 
-        index_type = "MultiIndex" if self.index.nlevels > 1 else "Index"
+        if self._block.has_index:
+            index_type = "MultiIndex" if self.index.nlevels > 1 else "Index"
 
-        # These accessses are kind of expensive, maybe should try to skip?
-        first_indice = self.index[0]
-        last_indice = self.index[-1]
-        obuf.write(f"{index_type}: {n_rows} entries, {first_indice} to {last_indice}\n")
+            # These accessses are kind of expensive, maybe should try to skip?
+            first_indice = self.index[0]
+            last_indice = self.index[-1]
+            obuf.write(
+                f"{index_type}: {n_rows} entries, {first_indice} to {last_indice}\n"
+            )
+        else:
+            obuf.write("NullIndex\n")
 
         dtype_strings = self.dtypes.astype("string")
         if show_all_columns:
