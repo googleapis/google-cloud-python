@@ -4672,10 +4672,10 @@ class DataFrame(generic.NDFrame):
 
         Another option to join using the key columns is to use the on parameter:
 
-            >>> df1.join(df2, on="col1", how="right")
+            >>> df1.join(df2, on="col2", how="right")
                   col1  col2 col3  col4
-            <NA>    11  <NA>  foo     3
-            <NA>    22  <NA>  baz     4
+            <NA>  <NA>    11  foo     3
+            <NA>  <NA>    22  baz     4
             <BLANKLINE>
             [2 rows x 4 columns]
 
