@@ -27,6 +27,7 @@ import bigframes_vendored.sklearn.preprocessing._label
 import bigframes_vendored.sklearn.preprocessing._polynomial
 
 from bigframes.core import log_adapter
+import bigframes.core.utils as core_utils
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
@@ -59,6 +60,7 @@ class StandardScaler(
         Returns: a list of tuples sql_expr."""
         if columns is None:
             columns = X.columns
+        columns, _ = core_utils.get_standardized_ids(columns)
         return [
             self._base_sql_generator.ml_standard_scaler(
                 column, f"standard_scaled_{column}"
@@ -136,6 +138,7 @@ class MaxAbsScaler(
         Returns: a list of tuples sql_expr."""
         if columns is None:
             columns = X.columns
+        columns, _ = core_utils.get_standardized_ids(columns)
         return [
             self._base_sql_generator.ml_max_abs_scaler(
                 column, f"max_abs_scaled_{column}"
@@ -214,6 +217,7 @@ class MinMaxScaler(
         Returns: a list of tuples sql_expr."""
         if columns is None:
             columns = X.columns
+        columns, _ = core_utils.get_standardized_ids(columns)
         return [
             self._base_sql_generator.ml_min_max_scaler(
                 column, f"min_max_scaled_{column}"
@@ -304,6 +308,7 @@ class KBinsDiscretizer(
         Returns: a list of tuples sql_expr."""
         if columns is None:
             columns = X.columns
+        columns, _ = core_utils.get_standardized_ids(columns)
         array_split_points = {}
         if self.strategy == "uniform":
             for column in columns:
@@ -433,6 +438,7 @@ class OneHotEncoder(
         Returns: a list of tuples sql_expr."""
         if columns is None:
             columns = X.columns
+        columns, _ = core_utils.get_standardized_ids(columns)
         drop = self.drop if self.drop is not None else "none"
         # minus one here since BQML's implementation always includes index 0, and top_k is on top of that.
         top_k = (
@@ -547,6 +553,7 @@ class LabelEncoder(
         Returns: a list of tuples sql_expr."""
         if columns is None:
             columns = X.columns
+        columns, _ = core_utils.get_standardized_ids(columns)
 
         # minus one here since BQML's inplimentation always includes index 0, and top_k is on top of that.
         top_k = (
@@ -644,6 +651,7 @@ class PolynomialFeatures(
         Returns: a list of tuples sql_expr."""
         if columns is None:
             columns = X.columns
+        columns, _ = core_utils.get_standardized_ids(columns)
         output_name = "poly_feat"
         return [
             self._base_sql_generator.ml_polynomial_expand(

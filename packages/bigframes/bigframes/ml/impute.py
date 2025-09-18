@@ -23,6 +23,7 @@ from typing import Iterable, List, Literal, Optional
 import bigframes_vendored.sklearn.impute._base
 
 from bigframes.core import log_adapter
+import bigframes.core.utils as core_utils
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
@@ -62,6 +63,7 @@ class SimpleImputer(
         Returns: a list of tuples sql_expr."""
         if columns is None:
             columns = X.columns
+        columns, _ = core_utils.get_standardized_ids(columns)
         return [
             self._base_sql_generator.ml_imputer(
                 column, self.strategy, f"imputer_{column}"

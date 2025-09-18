@@ -29,6 +29,7 @@ from google.cloud import bigquery
 
 from bigframes.core import log_adapter
 import bigframes.core.compile.googlesql as sql_utils
+import bigframes.core.utils as core_utils
 from bigframes.ml import base, core, globals, impute, preprocessing, utils
 import bigframes.pandas as bpd
 
@@ -103,13 +104,12 @@ class SQLScalarColumnTransformer:
         # TODO: More robust unescaping
         self._target_column = target_column.replace("`", "")
 
-    PLAIN_COLNAME_RX = re.compile("^[a-z][a-z0-9_]*$", re.IGNORECASE)
-
     def _compile_to_sql(
         self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
     ) -> List[str]:
         if columns is None:
             columns = X.columns
+        columns, _ = core_utils.get_standardized_ids(columns)
         result = []
         for column in columns:
             current_sql = self._sql.format(sql_utils.identifier(column))

@@ -19,6 +19,7 @@ import pyarrow as pa
 
 import bigframes.features
 from bigframes.ml import preprocessing
+import bigframes.pandas as bpd
 from bigframes.testing import utils
 
 ONE_HOT_ENCODED_DTYPE = (
@@ -62,7 +63,7 @@ def test_standard_scaler_normalizes(penguins_df_default_index, new_penguins_df):
     pd.testing.assert_frame_equal(result, expected, rtol=0.1)
 
 
-def test_standard_scaler_normalizeds_fit_transform(new_penguins_df):
+def test_standard_scaler_normalizes_fit_transform(new_penguins_df):
     # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.StandardScaler, when BQML's change is in prod.
     scaler = preprocessing.StandardScaler()
     result = scaler.fit_transform(
@@ -106,6 +107,37 @@ def test_standard_scaler_series_normalizes(penguins_df_default_index, new_pengui
                 -0.9945520581113803,
                 -1.104611490204711,
             ],
+        },
+        dtype="Float64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=0.1)
+
+
+def test_standard_scaler_normalizes_non_standard_column_names(
+    new_penguins_df: bpd.DataFrame,
+):
+    new_penguins_df = new_penguins_df.rename(
+        columns={
+            "culmen_length_mm": "culmen?metric",
+            "culmen_depth_mm": "culmen/metric",
+        }
+    )
+    scaler = preprocessing.StandardScaler()
+    result = scaler.fit_transform(
+        new_penguins_df[["culmen?metric", "culmen/metric", "flipper_length_mm"]]
+    ).to_pandas()
+
+    # If standard-scaled correctly, mean should be 0.0
+    for column in result.columns:
+        assert math.isclose(result[column].mean(), 0.0, abs_tol=1e-3)
+
+    expected = pd.DataFrame(
+        {
+            "standard_scaled_culmen_metric": [1.313249, -0.20198, -1.111118],
+            "standard_scaled_culmen_metric_1": [1.17072, -1.272416, 0.101848],
+            "standard_scaled_flipper_length_mm": [1.251089, -1.196588, -0.054338],
         },
         dtype="Float64",
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
