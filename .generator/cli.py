@@ -116,14 +116,12 @@ def _write_json_file(path: str, updated_content: Dict):
         f.write("\n")
 
 
-def handle_generate(
+def handle_configure(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
     output: str = OUTPUT_DIR,
     input: str = INPUT_DIR,
 ):
-    # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
-    logger.info("'configure' command executed.")
     try:
         # Read a generate-request.json file
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
