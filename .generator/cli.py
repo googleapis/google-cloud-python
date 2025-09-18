@@ -224,11 +224,6 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     ):  # pragma: NO COVER
         os.remove(gapic_version_file)
 
-    for snippet_metadata_file in glob.glob(
-        f"{output}/{path_to_library}/samples/generated_samples/snippet_metadata*.json"
-    ):  # pragma: NO COVER
-        os.remove(snippet_metadata_file)
-
 
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
