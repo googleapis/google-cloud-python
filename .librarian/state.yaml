@@ -9,18 +9,18 @@ libraries:
     source_roots:
       - packages/google-cloud-dlp
     preserve_regex:
-      - packages/google-cloud-dlp/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
+      - ^packages/google-cloud-dlp/CHANGELOG.md
+      - ^packages/google-cloud-dlp/docs/CHANGELOG.md
+      - ^packages/google-cloud-dlp/docs/README.rst
+      - ^packages/google-cloud-dlp/samples/README.txt
+      - ^packages/google-cloud-dlp/tar.gz
+      - ^packages/google-cloud-dlp/.*/gapic_version.py
+      - ^packages/google-cloud-dlp/samples/generated_samples/snippet_metadata_
+      - ^packages/google-cloud-dlp/scripts/client-post-processing
+      - ^packages/google-cloud-dlp/samples/snippets/README.rst
+      - ^packages/google-cloud-dlp/tests/system
     remove_regex:
-      - packages/google-cloud-dlp
+      - ^packages/google-cloud-dlp
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc
     version: 1.15.3
@@ -30,18 +30,18 @@ libraries:
     source_roots:
       - packages/google-cloud-eventarc
     preserve_regex:
-      - packages/google-cloud-eventarc/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
+      - ^packages/google-cloud-eventarc/CHANGELOG.md
+      - ^packages/google-cloud-eventarc/docs/CHANGELOG.md
+      - ^packages/google-cloud-eventarc/docs/README.rst
+      - ^packages/google-cloud-eventarc/samples/README.txt
+      - ^packages/google-cloud-eventarc/tar.gz
+      - ^packages/google-cloud-eventarc/.*/gapic_version.py
+      - ^packages/google-cloud-eventarc/samples/generated_samples/snippet_metadata_
+      - ^packages/google-cloud-eventarc/scripts/client-post-processing
+      - ^packages/google-cloud-eventarc/samples/snippets/README.rst
+      - ^packages/google-cloud-eventarc/tests/system
     remove_regex:
-      - packages/google-cloud-eventarc
+      - ^packages/google-cloud-eventarc
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-live-stream
     version: 1.12.0
@@ -51,18 +51,18 @@ libraries:
     source_roots:
       - packages/google-cloud-video-live-stream
     preserve_regex:
-      - packages/google-cloud-video-live-stream/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
+      - ^packages/google-cloud-video-live-stream/CHANGELOG.md
+      - ^packages/google-cloud-video-live-stream/docs/CHANGELOG.md
+      - ^packages/google-cloud-video-live-stream/docs/README.rst
+      - ^packages/google-cloud-video-live-stream/samples/README.txt
+      - ^packages/google-cloud-video-live-stream/tar.gz
+      - ^packages/google-cloud-video-live-stream/.*/gapic_version.py
+      - ^packages/google-cloud-video-live-stream/samples/generated_samples/snippet_metadata_
+      - ^packages/google-cloud-video-live-stream/scripts/client-post-processing
+      - ^packages/google-cloud-video-live-stream/samples/snippets/README.rst
+      - ^packages/google-cloud-video-live-stream/tests/system
     remove_regex:
-      - packages/google-cloud-video-live-stream
+      - ^packages/google-cloud-video-live-stream
     tag_format: '{id}-v{version}'
   - id: google-ads-marketingplatform-admin
     version: 0.1.6
@@ -72,18 +72,18 @@ libraries:
     source_roots:
       - packages/google-ads-marketingplatform-admin
     preserve_regex:
-      - packages/google-ads-marketingplatform-admin/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
+      - ^packages/google-ads-marketingplatform-admin/CHANGELOG.md
+      - ^packages/google-ads-marketingplatform-admin/docs/CHANGELOG.md
+      - ^packages/google-ads-marketingplatform-admin/docs/README.rst
+      - ^packages/google-ads-marketingplatform-admin/samples/README.txt
+      - ^packages/google-ads-marketingplatform-admin/tar.gz
+      - ^packages/google-ads-marketingplatform-admin/.*/gapic_version.py
+      - ^packages/google-ads-marketingplatform-admin/samples/generated_samples/snippet_metadata_
+      - ^packages/google-ads-marketingplatform-admin/scripts/client-post-processing
+      - ^packages/google-ads-marketingplatform-admin/samples/snippets/README.rst
+      - ^packages/google-ads-marketingplatform-admin/tests/system
     remove_regex:
-      - packages/google-ads-marketingplatform-admin
+      - ^packages/google-ads-marketingplatform-admin
     tag_format: '{id}-v{version}'
   - id: google-ai-generativelanguage
     version: 0.7.0
@@ -97,18 +97,18 @@ libraries:
     source_roots:
       - packages/google-ai-generativelanguage
     preserve_regex:
-      - packages/google-ai-generativelanguage/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
+      - ^packages/google-ai-generativelanguage/CHANGELOG.md
+      - ^packages/google-ai-generativelanguage/docs/CHANGELOG.md
+      - ^packages/google-ai-generativelanguage/docs/README.rst
+      - ^packages/google-ai-generativelanguage/samples/README.txt
+      - ^packages/google-ai-generativelanguage/tar.gz
+      - ^packages/google-ai-generativelanguage/.*/gapic_version.py
+      - ^packages/google-ai-generativelanguage/samples/generated_samples/snippet_metadata_
+      - ^packages/google-ai-generativelanguage/scripts/client-post-processing
+      - ^packages/google-ai-generativelanguage/samples/snippets/README.rst
+      - ^packages/google-ai-generativelanguage/tests/system
     remove_regex:
-      - packages/google-ai-generativelanguage
+      - ^packages/google-ai-generativelanguage
     tag_format: '{id}-v{version}'
   - id: google-analytics-admin
     version: 0.25.0
@@ -119,18 +119,18 @@ libraries:
     source_roots:
       - packages/google-analytics-admin
     preserve_regex:
-      - packages/google-analytics-admin/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
+      - ^packages/google-analytics-admin/CHANGELOG.md
+      - ^packages/google-analytics-admin/docs/CHANGELOG.md
+      - ^packages/google-analytics-admin/docs/README.rst
+      - ^packages/google-analytics-admin/samples/README.txt
+      - ^packages/google-analytics-admin/tar.gz
+      - ^packages/google-analytics-admin/.*/gapic_version.py
+      - ^packages/google-analytics-admin/samples/generated_samples/snippet_metadata_
+      - ^packages/google-analytics-admin/scripts/client-post-processing
+      - ^packages/google-analytics-admin/samples/snippets/README.rst
+      - ^packages/google-analytics-admin/tests/system
     remove_regex:
-      - packages/google-analytics-admin
+      - ^packages/google-analytics-admin
     tag_format: '{id}-v{version}'
   - id: google-analytics-data
     version: 0.18.19
@@ -141,18 +141,18 @@ libraries:
     source_roots:
       - packages/google-analytics-data
     preserve_regex:
-      - packages/google-analytics-data/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
+      - ^packages/google-analytics-data/CHANGELOG.md
+      - ^packages/google-analytics-data/docs/CHANGELOG.md
+      - ^packages/google-analytics-data/docs/README.rst
+      - ^packages/google-analytics-data/samples/README.txt
+      - ^packages/google-analytics-data/tar.gz
+      - ^packages/google-analytics-data/.*/gapic_version.py
+      - ^packages/google-analytics-data/samples/generated_samples/snippet_metadata_
+      - ^packages/google-analytics-data/scripts/client-post-processing
+      - ^packages/google-analytics-data/samples/snippets/README.rst
+      - ^packages/google-analytics-data/tests/system
     remove_regex:
-      - packages/google-analytics-data
+      - ^packages/google-analytics-data
     tag_format: '{id}-v{version}'
   - id: google-ads-admanager
     version: 0.3.0
@@ -162,16 +162,16 @@ libraries:
     source_roots:
       - packages/google-ads-admanager
     preserve_regex:
-      - packages/google-ads-admanager/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - tar.gz
-      - gapic_version.py
-      - samples/generated_samples/snippet_metadata_
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
+      - ^packages/google-ads-admanager/CHANGELOG.md
+      - ^packages/google-ads-admanager/docs/CHANGELOG.md
+      - ^packages/google-ads-admanager/docs/README.rst
+      - ^packages/google-ads-admanager/samples/README.txt
+      - ^packages/google-ads-admanager/tar.gz
+      - ^packages/google-ads-admanager/.*/gapic_version.py
+      - ^packages/google-ads-admanager/samples/generated_samples/snippet_metadata_
+      - ^packages/google-ads-admanager/scripts/client-post-processing
+      - ^packages/google-ads-admanager/samples/snippets/README.rst
+      - ^packages/google-ads-admanager/tests/system
     remove_regex:
-      - packages/google-ads-admanager
+      - ^packages/google-ads-admanager
     tag_format: '{id}-v{version}'
