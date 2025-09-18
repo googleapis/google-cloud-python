@@ -127,18 +127,16 @@ def handle_generate(
     try:
         # Read a generate-request.json file
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
+        print(request_data)
         library_id = _get_library_id(request_data)
         apis_to_configure = request_data.get("apis", [])
-        for api in apis_to_generate:
+        for api in apis_to_configure:
             api_path = api.get("path")
             if api_path:
                 _generate_api(api_path, library_id, source, output)
-        _copy_files_needed_for_post_processing(output, input, library_id)
-        _run_post_processor(output, library_id)
-        _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
-        raise ValueError("Generation failed.") from e
-    logger.info("'generate' command executed.")
+        raise ValueError("Configuring a new library failed.") from e
+    logger.info("'configure' command executed.")
 
 
 def _get_library_id(request_data: Dict) -> str:
