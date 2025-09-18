@@ -33,7 +33,6 @@ __protobuf__ = proto.module(
         "FolderCreationConfig",
         "ProjectCreationConfig",
         "CloudControlMetadata",
-        "CloudControlGroupDeployment",
         "CreateFrameworkDeploymentRequest",
         "DeleteFrameworkDeploymentRequest",
         "GetFrameworkDeploymentRequest",
@@ -49,7 +48,8 @@ __protobuf__ = proto.module(
 
 
 class DeploymentState(proto.Enum):
-    r"""
+    r"""DeploymentState represents the state of the Deployment
+    resource.
 
     Values:
         DEPLOYMENT_STATE_UNSPECIFIED (0):
@@ -61,13 +61,22 @@ class DeploymentState(proto.Enum):
         DEPLOYMENT_STATE_DELETING (3):
             Deployment is in DELETING state.
         DEPLOYMENT_STATE_FAILED (4):
-            Deployment has failed.
+            Deployment has failed. All the changes made
+            by the deployment have been successfully rolled
+            back. A deployment in the FAILED state can be
+            retried or deleted.
         DEPLOYMENT_STATE_READY (5):
-            Deployment is ready.
+            Deployment is successful and ready to use.
         DEPLOYMENT_STATE_PARTIALLY_DEPLOYED (6):
-            Deployment is partially deployed.
+            Deployment is partially deployed. All the
+            Cloud Controls were not deployed successfully.
+            Retrying the operation will resume from the
+            first failed step.
         DEPLOYMENT_STATE_PARTIALLY_DELETED (7):
-            Deployment is partially deleted.
+            Deployment is partially deleted. All the
+            Cloud Control Deployments were not deleted
+            successfully. Retrying the operation will resume
+            from the first failed step.
     """
     DEPLOYMENT_STATE_UNSPECIFIED = 0
     DEPLOYMENT_STATE_VALIDATING = 1
@@ -80,41 +89,42 @@ class DeploymentState(proto.Enum):
 
 
 class FrameworkDeployment(proto.Message):
-    r"""FrameworkDeployment is a resource that represents a
-    deployment using a framework.
+    r"""FrameworkDeployment represents deployment of a Framework on a
+    target resource. Supported target resources are
+    organizations/{organization}, folders/{folder}, and
+    projects/{project}.
 
     Attributes:
         name (str):
-            Identifier. FrameworkDeployment name in either of the
-            following formats:
+            Identifier. FrameworkDeployment name in the following
+            format:
             organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}
         target_resource_config (google.cloud.cloudsecuritycompliance_v1.types.TargetResourceConfig):
-            Required. target_resource_config referencing either an
-            already existing target_resource or contains config for a
-            target_resource to be created
+            Required. The details of the target resource
+            on which the Framework is to be deployed. It can
+            either be an existing target resource or a new
+            target resource to be created.
         computed_target_resource (str):
             Output only. The resource on which the
             Framework is deployed based on the provided
-            TargetResourceConfig. In format
-            organizations/{organization}, folders/{folder},
-            projects/{project} or
-            projects/{project}/locations/{location}/applications/{application}.
+            TargetResourceConfig in the following format:
+
+            organizations/{organization}, folders/{folder}
+            or projects/{project}
         framework (google.cloud.cloudsecuritycompliance_v1.types.FrameworkReference):
-            Required. Framework resource reference
+            Required. Reference to the framework to be
+            deployed.
         description (str):
             Optional. User provided description of the
-            deployment
+            Framework deployment
         cloud_control_metadata (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlMetadata]):
-            Required. Deployment mode and parameters for each of the
-            cloud_controls part of the framework.
+            Required. Deployment mode and parameters for
+            each of the Cloud Controls in the framework.
+            Every Cloud Control in the framework must have a
+            CloudControlMetadata.
         deployment_state (google.cloud.cloudsecuritycompliance_v1.types.DeploymentState):
-            Output only. State of the deployment
-        cc_deployments (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlDeployment]):
-            Output only. This field is inlined just for
-            cloudNext because the one platform apis of
-            CCDeployment does not exist. Beyond cloud next
-            it will be replaced with the field below which
-            is the references of cloud control deployment
+            Output only. State of the Framework
+            Deployment
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the resource
             was created.
@@ -124,21 +134,20 @@ class FrameworkDeployment(proto.Message):
         etag (str):
             Optional. To prevent concurrent updates from overwriting
             each other, always provide the ``etag`` when you update a
-            CustomComplianceFramework. You can also provide the ``etag``
-            when you delete a CustomComplianceFramework, to help ensure
-            that you're deleting the intended version of the
-            CustomComplianceFramework.
-        cc_group_deployments (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlGroupDeployment]):
-            Output only. Similarly we'll also have a
-            field for CloudControlGroups
+            FrameworkDeployment. You can also provide the ``etag`` when
+            you delete a FrameworkDeployment, to help ensure that you're
+            deleting the intended version of the FrameworkDeployment.
         target_resource_display_name (str):
             Output only. The display name of the target
             resource.
         cloud_control_deployment_references (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlDeploymentReference]):
             Output only. The references to the cloud control
-            deployments. Example: If a framework deployment deploys two
-            cloud controls, cc-deployment-1 and cc-deployment-2, then
-            the cloud_control_deployment_references will be: {
+            deployments. It has all the CloudControlDeployments which
+            are either directly added in the framework or through a
+            CloudControlGroup. Example: If a framework deployment
+            deploys two cloud controls, cc-deployment-1 and
+            cc-deployment-2, then the
+            cloud_control_deployment_references will be: {
             cloud_control_deployment_reference: {
             cloud_control_deployment:
             "organizations/{organization}/locations/{location}/cloudControlDeployments/cc-deployment-1"
@@ -182,11 +191,6 @@ class FrameworkDeployment(proto.Message):
         number=7,
         enum="DeploymentState",
     )
-    cc_deployments: MutableSequence["CloudControlDeployment"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message="CloudControlDeployment",
-    )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
@@ -200,13 +204,6 @@ class FrameworkDeployment(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=11,
-    )
-    cc_group_deployments: MutableSequence[
-        "CloudControlGroupDeployment"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message="CloudControlGroupDeployment",
     )
     target_resource_display_name: str = proto.Field(
         proto.STRING,
@@ -222,32 +219,37 @@ class FrameworkDeployment(proto.Message):
 
 
 class CloudControlDeployment(proto.Message):
-    r"""CloudControlDeployment is a resource that represents a
-    deployment using a cloud control.
+    r"""CloudControlDeployment represents deployment of a
+    CloudControl on a target resource. Supported target resources
+    are organizations/{organization}, folders/{folder}, and
+    projects/{project}.
 
     Attributes:
         name (str):
-            Identifier. CloudControlDeployment name in either of the
-            following formats:
+            Identifier. CloudControlDeployment name in the following
+            format:
             organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}
         target_resource_config (google.cloud.cloudsecuritycompliance_v1.types.TargetResourceConfig):
-            Required. target_resource_config referencing either an
-            already existing target_resource or contains config for a
-            target_resource to be created
+            Required. The details of the target resource
+            on which the CloudControl is to be deployed. It
+            can either be an existing target resource or a
+            new target resource to be created.
         target_resource (str):
             Output only. The resource on which the
             CloudControl is deployed based on the provided
-            TargetResourceConfig. In format
+            TargetResourceConfig in the following format:
+
             organizations/{organization}, folders/{folder}
             or projects/{project}.
         cloud_control_metadata (google.cloud.cloudsecuritycompliance_v1.types.CloudControlMetadata):
-            Required. CloudControlReference, Deployment mode and
-            parameters for the cloud_control
+            Required. Deployment mode and parameters for
+            the Cloud Control.
         description (str):
             Optional. User provided description of the
-            deployment
+            CloudControl deployment
         deployment_state (google.cloud.cloudsecuritycompliance_v1.types.DeploymentState):
-            Output only. State of the deployment
+            Output only. State of the CloudControl
+            deployment
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the resource
             was created.
@@ -257,21 +259,21 @@ class CloudControlDeployment(proto.Message):
         etag (str):
             Optional. To prevent concurrent updates from overwriting
             each other, always provide the ``etag`` when you update a
-            CustomComplianceCloudControl. You can also provide the
-            ``etag`` when you delete a CustomComplianceCloudControl, to
-            help ensure that you're deleting the intended version of the
-            CustomComplianceCloudControl.
+            CloudControlDeployment. You can also provide the ``etag``
+            when you delete a CloudControlDeployment, to help ensure
+            that you're deleting the intended version of the
+            CloudControlDeployment.
         parameter_substituted_cloud_control (google.cloud.cloudsecuritycompliance_v1.types.CloudControl):
-            Output only. The cloud control after
-            parameter substitution.
+            Output only. The CloudControl after
+            substitution of given parameters.
         framework_deployment_references (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.FrameworkDeploymentReference]):
-            Output only. The references to the framework
-            deployments that this cloud control deployment
-            is part of.
+            Output only. The references to the Framework
+            deployments that this Cloud Control deployment
+            is part of. A Cloud Control deployment can be
+            part of multiple Framework deployments.
         target_resource_display_name (str):
-            Output only. The name of the application,
-            project, folder, or organization that the cloud
-            control is deployed on.
+            Output only. The display name of the target
+            resource.
     """
 
     name: str = proto.Field(
@@ -348,13 +350,12 @@ class TargetResourceConfig(proto.Message):
         existing_target_resource (str):
             Optional. CRM node in format
             organizations/{organization}, folders/{folder},
-            projects/{project} or
-            projects/{project}/locations/{location}/applications/{application}.
+            or projects/{project}
 
             This field is a member of `oneof`_ ``resource_config``.
         target_resource_creation_config (google.cloud.cloudsecuritycompliance_v1.types.TargetResourceCreationConfig):
             Optional. Config to create a new resource and use that as
-            the target_resource for deployment
+            the target_resource for deployment.
 
             This field is a member of `oneof`_ ``resource_config``.
     """
@@ -374,7 +375,7 @@ class TargetResourceConfig(proto.Message):
 
 class TargetResourceCreationConfig(proto.Message):
     r"""TargetResourceCreationConfig contains the config to create a new
-    resource and use that as the target_resource for deployment.
+    resource to be used as the target_resource of a deployment.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -385,11 +386,13 @@ class TargetResourceCreationConfig(proto.Message):
 
     Attributes:
         folder_creation_config (google.cloud.cloudsecuritycompliance_v1.types.FolderCreationConfig):
-            Optional. Config to create a new folder
+            Optional. Config to create a new folder to be used as the
+            target_resource of a deployment.
 
             This field is a member of `oneof`_ ``resource_creation_config``.
         project_creation_config (google.cloud.cloudsecuritycompliance_v1.types.ProjectCreationConfig):
-            Optional. Config to create a new project
+            Optional. Config to create a new project to be used as the
+            target_resource of a deployment.
 
             This field is a member of `oneof`_ ``resource_creation_config``.
     """
@@ -409,12 +412,13 @@ class TargetResourceCreationConfig(proto.Message):
 
 
 class FolderCreationConfig(proto.Message):
-    r"""FolderCreationConfig contains the config to create a new
-    folder.
+    r"""FolderCreationConfig contains the config to create a new folder to
+    be used as the target_resource of a deployment.
 
     Attributes:
         parent (str):
-            Required. organizations/{org} or
+            Required. The parent of the folder to be
+            created. It can be an organizations/{org} or
             folders/{folder}
         folder_display_name (str):
             Required. Display name of the folder to be
@@ -432,8 +436,8 @@ class FolderCreationConfig(proto.Message):
 
 
 class ProjectCreationConfig(proto.Message):
-    r"""ProjectCreationConfig contains the config to create a new
-    project.
+    r"""ProjectCreationConfig contains the config to create a new project to
+    be used as the target_resource of a deployment.
 
     Attributes:
         parent (str):
@@ -441,10 +445,10 @@ class ProjectCreationConfig(proto.Message):
             folders/{folder}
         project_display_name (str):
             Required. Display name of the project to be
-            created
+            created.
         billing_account_id (str):
             Required. Billing account id to be used for
-            the project
+            the project.
     """
 
     parent: str = proto.Field(
@@ -462,12 +466,12 @@ class ProjectCreationConfig(proto.Message):
 
 
 class CloudControlMetadata(proto.Message):
-    r"""CloudControlMetadata contains the metadata for each of the
-    cloud controls part of the framework.
+    r"""CloudControlMetadata contains the enforcement mode and
+    parameters of a Cloud Control Deployment.
 
     Attributes:
         cloud_control_details (google.cloud.cloudsecuritycompliance_v1.types.CloudControlDetails):
-            Required. Cloud control details
+            Required. Cloud control name and parameters.
         enforcement_mode (google.cloud.cloudsecuritycompliance_v1.types.EnforcementMode):
             Required. Enforcement mode of the cloud
             control
@@ -485,72 +489,23 @@ class CloudControlMetadata(proto.Message):
     )
 
 
-class CloudControlGroupDeployment(proto.Message):
-    r"""CloudControlGroupDeployment contains the cloud control group
-    and the cloud control deployments in the group.
-
-    Attributes:
-        cloud_control_group (google.cloud.cloudsecuritycompliance_v1.types.CloudControlGroup):
-            Required. Cloud control group
-        cc_deployments (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlDeployment]):
-            Required. Cloud control deployments in the
-            group
-        cc_deployment_references (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlDeploymentReference]):
-            Output only. The references to the cloud control deployments
-            in the cloud control group. For example, if a cloud control
-            group has two cloud controls, ``cloud-control-1`` and
-            ``cloud-control-2``, and the cloud control deployments for
-            these cloud controls are ``cloud-control-deployment-1`` and
-            ``cloud-control-deployment-2`` respectively, then the
-            references are:
-
-            ::
-
-                cloud_control_deployment_reference: {
-                  cloud_control_deployment:
-                  "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-1"
-                },
-                cloud_control_deployment_reference: {
-                 cloud_control_deployment:
-                 "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-2"
-                }
-    """
-
-    cloud_control_group: common.CloudControlGroup = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=common.CloudControlGroup,
-    )
-    cc_deployments: MutableSequence["CloudControlDeployment"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="CloudControlDeployment",
-    )
-    cc_deployment_references: MutableSequence[
-        "CloudControlDeploymentReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="CloudControlDeploymentReference",
-    )
-
-
 class CreateFrameworkDeploymentRequest(proto.Message):
-    r"""Request message for CreateFrameworkDeployment.
+    r"""Request message for CreateFrameworkDeployment API.
 
     Attributes:
         parent (str):
-            Required. Value for parent. Supported
-            formats:
+            Required. The parent resource of the
+            FrameworkDeployment in the format:
             organizations/{organization}/locations/{location}
             Only global location is supported.
         framework_deployment_id (str):
             Optional. User provided identifier. It should
-            be unique in scope of a parent Please note that
-            this is optional and if not provided, a random
-            UUID will be generated.
+            be unique in scope of a parent. This is optional
+            and if not provided, a random UUID will be
+            generated.
         framework_deployment (google.cloud.cloudsecuritycompliance_v1.types.FrameworkDeployment):
-            Required. The resource being created.
+            Required. The FrameworkDeployment to be
+            created.
     """
 
     parent: str = proto.Field(
@@ -573,8 +528,8 @@ class DeleteFrameworkDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the framework deployment to be deleted
-            FrameworkDeployment name in either of the following formats:
+            Required. name of the FrameworkDeployment to be deleted in
+            the following format:
             organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}
         etag (str):
             Optional. An opaque identifier for the current version of
@@ -603,8 +558,7 @@ class GetFrameworkDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. FrameworkDeployment name in either of the
-            following formats:
+            Required. FrameworkDeployment name in the following format:
             organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}
     """
 
@@ -619,8 +573,10 @@ class ListFrameworkDeploymentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent value for
-            ListFrameworkDeploymentsRequest.
+            Required. parent resource of the
+            FrameworkDeployment in the format:
+            organizations/{organization}/locations/{location}
+            Only global location is supported.
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -661,7 +617,7 @@ class ListFrameworkDeploymentsRequest(proto.Message):
 
 
 class ListFrameworkDeploymentsResponse(proto.Message):
-    r"""Message for response to listing FrameworkDeployments.
+    r"""Response message for ListFrameworkDeployments.
 
     Attributes:
         framework_deployments (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.FrameworkDeployment]):
@@ -691,8 +647,8 @@ class GetCloudControlDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. CloudControlDeployment name in either of the
-            following formats:
+            Required. CloudControlDeployment name in the following
+            format:
             organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}
     """
 
@@ -707,8 +663,10 @@ class ListCloudControlDeploymentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent value for
-            ListCloudControlDeploymentsRequest.
+            Required. parent resource of the
+            CloudControlDeployment in the format:
+            organizations/{organization}/locations/{location}
+            Only global location is supported.
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -749,7 +707,7 @@ class ListCloudControlDeploymentsRequest(proto.Message):
 
 
 class ListCloudControlDeploymentsResponse(proto.Message):
-    r"""Message for response to listing CloudControlDeployments.
+    r"""Response message for ListCloudControlDeployments.
 
     Attributes:
         cloud_control_deployments (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlDeployment]):
@@ -777,11 +735,11 @@ class ListCloudControlDeploymentsResponse(proto.Message):
 
 
 class CloudControlDeploymentReference(proto.Message):
-    r"""The reference to the cloud control deployment.
+    r"""The reference to a CloudControlDeployment.
 
     Attributes:
         cloud_control_deployment (str):
-            Output only. The name of the cloud control deployment. The
+            Output only. The name of the CloudControlDeployment. The
             format is:
             organizations/{org}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}
     """
@@ -793,19 +751,21 @@ class CloudControlDeploymentReference(proto.Message):
 
 
 class FrameworkDeploymentReference(proto.Message):
-    r"""The reference to the framework deployment.
+    r"""The reference to a FrameworkDeployment.
 
     Attributes:
         framework_deployment (str):
-            Output only. The name of the framework. The format is:
+            Output only. The name of the FrameworkDeployment. The format
+            is:
             organizations/{org}/locations/{location}/frameworkDeployments/{framework_deployment_id}
         framework_reference (google.cloud.cloudsecuritycompliance_v1.types.FrameworkReference):
-            Optional. The reference to the framework that this
+            Optional. The reference to the Framework that this
             deployment is for. Example: { framework:
             "organizations/{org}/locations/{location}/frameworks/{framework}",
             major_revision_id: 1 }
         framework_display_name (str):
-            Optional. The display name of the framework.
+            Optional. The display name of the Framework
+            that this FrameworkDeployment is for.
     """
 
     framework_deployment: str = proto.Field(
