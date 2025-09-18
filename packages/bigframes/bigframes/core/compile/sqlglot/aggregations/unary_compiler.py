@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import typing
 
+import pandas as pd
 import sqlglot.expressions as sge
 
 from bigframes import dtypes
@@ -46,18 +47,22 @@ def _(
     return apply_window_if_present(sge.func("COUNT", column.expr), window)
 
 
-@UNARY_OP_REGISTRATION.register(agg_ops.SumOp)
+@UNARY_OP_REGISTRATION.register(agg_ops.MaxOp)
 def _(
-    op: agg_ops.SumOp,
+    op: agg_ops.MaxOp,
     column: typed_expr.TypedExpr,
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
-    expr = column.expr
-    if column.dtype == dtypes.BOOL_DTYPE:
-        expr = sge.Cast(this=column.expr, to="INT64")
-    # Will be null if all inputs are null. Pandas defaults to zero sum though.
-    expr = apply_window_if_present(sge.func("SUM", expr), window)
-    return sge.func("IFNULL", expr, ir._literal(0, column.dtype))
+    return apply_window_if_present(sge.func("MAX", column.expr), window)
+
+
+@UNARY_OP_REGISTRATION.register(agg_ops.MinOp)
+def _(
+    op: agg_ops.MinOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    return apply_window_if_present(sge.func("MIN", column.expr), window)
 
 
 @UNARY_OP_REGISTRATION.register(agg_ops.SizeUnaryOp)
@@ -67,3 +72,20 @@ def _(
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
     return apply_window_if_present(sge.func("COUNT", sge.convert(1)), window)
+
+
+@UNARY_OP_REGISTRATION.register(agg_ops.SumOp)
+def _(
+    op: agg_ops.SumOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    expr = column.expr
+    if column.dtype == dtypes.BOOL_DTYPE:
+        expr = sge.Cast(this=column.expr, to="INT64")
+
+    expr = apply_window_if_present(sge.func("SUM", expr), window)
+
+    # Will be null if all inputs are null. Pandas defaults to zero sum though.
+    zero = pd.to_timedelta(0) if column.dtype == dtypes.TIMEDELTA_DTYPE else 0
+    return sge.func("IFNULL", expr, ir._literal(zero, column.dtype))
