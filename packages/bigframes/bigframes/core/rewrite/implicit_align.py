@@ -18,12 +18,8 @@ import itertools
 from typing import cast, Optional, Sequence, Set, Tuple
 
 import bigframes.core.expression
-import bigframes.core.guid
 import bigframes.core.identifiers
-import bigframes.core.join_def
 import bigframes.core.nodes
-import bigframes.core.window_spec
-import bigframes.operations.aggregations
 
 # Combination of selects and additive nodes can be merged as an explicit keyless "row join"
 ALIGNABLE_NODES = (

@@ -251,12 +251,7 @@ class ApproxQuartilesOp(UnaryAggregateOp):
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         if not dtypes.is_orderable(input_types[0]):
             raise TypeError(f"Type {input_types[0]} is not orderable")
-        if pd.api.types.is_bool_dtype(input_types[0]) or pd.api.types.is_integer_dtype(
-            input_types[0]
-        ):
-            return dtypes.FLOAT_DTYPE
-        else:
-            return input_types[0]
+        return input_types[0]
 
 
 @dataclasses.dataclass(frozen=True)

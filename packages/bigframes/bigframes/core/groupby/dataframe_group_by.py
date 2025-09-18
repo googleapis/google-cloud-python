@@ -149,6 +149,20 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             )
         )
 
+    def describe(self, include: None | Literal["all"] = None):
+        from bigframes.pandas.core.methods import describe
+
+        return df.DataFrame(
+            describe._describe(
+                self._block,
+                self._selected_cols,
+                include,
+                as_index=self._as_index,
+                by_col_ids=self._by_col_ids,
+                dropna=self._dropna,
+            )
+        )
+
     def size(self) -> typing.Union[df.DataFrame, series.Series]:
         agg_block, _ = self._block.aggregate_size(
             by_column_ids=self._by_col_ids,

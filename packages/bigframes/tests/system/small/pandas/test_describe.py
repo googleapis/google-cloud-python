@@ -230,3 +230,125 @@ def test_series_describe_temporal(scalars_dfs):
         check_dtype=False,
         check_index_type=False,
     )
+
+
+def test_df_groupby_describe(scalars_dfs):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    numeric_columns = [
+        "int64_col",
+        "float64_col",
+    ]
+    non_numeric_columns = ["string_col"]
+    supported_columns = numeric_columns + non_numeric_columns
+
+    bf_full_result = (
+        scalars_df.groupby("bool_col")[supported_columns]
+        .describe(include="all")
+        .to_pandas()
+    )
+
+    pd_full_result = scalars_pandas_df.groupby("bool_col")[supported_columns].describe(
+        include="all"
+    )
+
+    for col in supported_columns:
+        pd_result = pd_full_result[col]
+        bf_result = bf_full_result[col]
+
+        if col in numeric_columns:
+            # Drop quartiles, as they are approximate
+            bf_min = bf_result["min"]
+            bf_p25 = bf_result["25%"]
+            bf_p50 = bf_result["50%"]
+            bf_p75 = bf_result["75%"]
+            bf_max = bf_result["max"]
+
+            # Reindex results with the specified keys and their order, because
+            # the relative order is not important.
+            bf_result = bf_result.reindex(
+                columns=["count", "mean", "std", "min", "max"]
+            )
+            pd_result = pd_result.reindex(
+                columns=["count", "mean", "std", "min", "max"]
+            )
+
+            # Double-check that quantiles are at least plausible.
+            assert (
+                (bf_min <= bf_p25)
+                & (bf_p25 <= bf_p50)
+                & (bf_p50 <= bf_p50)
+                & (bf_p75 <= bf_max)
+            ).all()
+        else:
+            # Reindex results with the specified keys and their order, because
+            # the relative order is not important.
+            bf_result = bf_result.reindex(columns=["count", "nunique"])
+            pd_result = pd_result.reindex(columns=["count", "unique"])
+        pandas.testing.assert_frame_equal(
+            # BF counter part of "unique" is called "nunique"
+            pd_result.astype("Float64").rename(columns={"unique": "nunique"}),
+            bf_result,
+            check_dtype=False,
+            check_index_type=False,
+        )
+
+
+def test_series_groupby_describe(scalars_dfs):
+    # TODO: supply a reason why this isn't compatible with pandas 1.x
+    pytest.importorskip("pandas", minversion="2.0.0")
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    numeric_columns = [
+        "int64_col",
+        "float64_col",
+    ]
+    non_numeric_columns = ["string_col"]
+    supported_columns = numeric_columns + non_numeric_columns
+
+    bf_df = scalars_df.groupby("bool_col")
+
+    pd_df = scalars_pandas_df.groupby("bool_col")
+
+    for col in supported_columns:
+        pd_result = pd_df[col].describe(include="all")
+        bf_result = bf_df[col].describe(include="all").to_pandas()
+
+        if col in numeric_columns:
+            # Drop quartiles, as they are approximate
+            bf_min = bf_result["min"]
+            bf_p25 = bf_result["25%"]
+            bf_p50 = bf_result["50%"]
+            bf_p75 = bf_result["75%"]
+            bf_max = bf_result["max"]
+
+            # Reindex results with the specified keys and their order, because
+            # the relative order is not important.
+            bf_result = bf_result.reindex(
+                columns=["count", "mean", "std", "min", "max"]
+            )
+            pd_result = pd_result.reindex(
+                columns=["count", "mean", "std", "min", "max"]
+            )
+
+            # Double-check that quantiles are at least plausible.
+            assert (
+                (bf_min <= bf_p25)
+                & (bf_p25 <= bf_p50)
+                & (bf_p50 <= bf_p50)
+                & (bf_p75 <= bf_max)
+            ).all()
+        else:
+            # Reindex results with the specified keys and their order, because
+            # the relative order is not important.
+            bf_result = bf_result.reindex(columns=["count", "nunique"])
+            pd_result = pd_result.reindex(columns=["count", "unique"])
+        pandas.testing.assert_frame_equal(
+            # BF counter part of "unique" is called "nunique"
+            pd_result.astype("Float64").rename(columns={"unique": "nunique"}),
+            bf_result,
+            check_dtype=False,
+            check_index_type=False,
+        )

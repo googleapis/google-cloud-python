@@ -1780,7 +1780,9 @@ class Block:
         else:
             return result_block.with_column_labels(columns_values)
 
-    def stack(self, how="left", levels: int = 1):
+    def stack(
+        self, how="left", levels: int = 1, *, override_labels: Optional[pd.Index] = None
+    ):
         """Unpivot last column axis level into row axis"""
         if levels == 0:
             return self
@@ -1788,7 +1790,9 @@ class Block:
         # These are the values that will be turned into rows
 
         col_labels, row_labels = utils.split_index(self.column_labels, levels=levels)
-        row_labels = row_labels.drop_duplicates()
+        row_labels = (
+            row_labels.drop_duplicates() if override_labels is None else override_labels
+        )
 
         if col_labels is None:
             result_index: pd.Index = pd.Index([None])
