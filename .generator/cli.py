@@ -134,6 +134,7 @@ def handle_configure(
             if api_path:
                 # _generate_api(api_path, library_id, source, output)
                 pass
+        _write_json_file(f"{librarian}/configure-response.json", request_data)
     except Exception as e:
         raise ValueError("Configuring a new library failed.") from e
     logger.info("'configure' command executed.")
