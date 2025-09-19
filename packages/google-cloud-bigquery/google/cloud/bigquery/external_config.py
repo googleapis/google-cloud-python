@@ -637,11 +637,7 @@ OptionsType = Union[
 
 
 class HivePartitioningOptions(object):
-    """[Beta] Options that configure hive partitioning.
-
-    .. note::
-        **Experimental**. This feature is experimental and might change or
-        have limited support.
+    """Options that configure hive partitioning.
 
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#HivePartitioningOptions
@@ -808,12 +804,8 @@ class ExternalConfig(object):
 
     @property
     def hive_partitioning(self):
-        """Optional[:class:`~.external_config.HivePartitioningOptions`]: [Beta] When set, \
+        """Optional[:class:`~.external_config.HivePartitioningOptions`]: When set, \
         it configures hive partitioning support.
-
-        .. note::
-            **Experimental**. This feature is experimental and might change or
-            have limited support.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.hive_partitioning_options
@@ -979,14 +971,8 @@ class ExternalConfig(object):
 
     @property
     def connection_id(self):
-        """Optional[str]: [Experimental] ID of a BigQuery Connection API
+        """Optional[str]: ID of a BigQuery Connection API
         resource.
-
-        .. WARNING::
-
-           This feature is experimental. Pre-GA features may have limited
-           support, and changes to pre-GA features may not be compatible with
-           other pre-GA versions.
         """
         return self._properties.get("connectionId")
 
