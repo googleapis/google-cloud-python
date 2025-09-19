@@ -41,12 +41,14 @@ __protobuf__ = proto.module(
         "AudioStreamProperty",
         "AudioFormat",
         "InputAttachment",
+        "AutoTranscriptionConfig",
         "Event",
         "Clip",
         "TimeInterval",
         "DvrSession",
         "Asset",
         "Encryption",
+        "EncryptionUpdate",
         "Pool",
     },
 )
@@ -121,12 +123,25 @@ class Input(proto.Message):
                 Resolution <= 1920x1080. Bitrate <= 25 Mbps.
                 FPS <= 60.
             UHD (3):
-                Resolution <= 4096x2160. Not supported yet.
+                Resolution <= 4096x2160. Bitrate <= 50 Mbps.
+                FPS <= 60.
+            SD_H265 (4):
+                Resolution <= 1280x720. Bitrate <= 6 Mbps.
+                FPS <= 60. H265 codec.
+            HD_H265 (5):
+                Resolution <= 1920x1080. Bitrate <= 25 Mbps.
+                FPS <= 60. H265 codec.
+            UHD_H265 (6):
+                Resolution <= 4096x2160. Bitrate <= 50 Mbps.
+                FPS <= 60. H265 codec.
         """
         TIER_UNSPECIFIED = 0
         SD = 1
         HD = 2
         UHD = 3
+        SD_H265 = 4
+        HD_H265 = 5
+        UHD_H265 = 6
 
     class SecurityRule(proto.Message):
         r"""Security rules for access control. Each field represents one
@@ -236,6 +251,11 @@ class Channel(proto.Message):
             streams.
         manifests (MutableSequence[google.cloud.video.live_stream_v1.types.Manifest]):
             List of output manifests.
+        distribution_streams (MutableSequence[google.cloud.video.live_stream_v1.types.DistributionStream]):
+            Optional. List of multiplexing settings of
+            streams for distributions.
+        distributions (MutableSequence[google.cloud.video.live_stream_v1.types.Distribution]):
+            Optional. List of distributions.
         sprite_sheets (MutableSequence[google.cloud.video.live_stream_v1.types.SpriteSheet]):
             List of output sprite sheets.
         streaming_state (google.cloud.video.live_stream_v1.types.Channel.StreamingState):
@@ -253,9 +273,9 @@ class Channel(proto.Message):
         timecode_config (google.cloud.video.live_stream_v1.types.TimecodeConfig):
             Configuration of timecode for this channel.
         encryptions (MutableSequence[google.cloud.video.live_stream_v1.types.Encryption]):
-            Encryption configurations for this channel.
-            Each configuration has an ID which is referred
-            to by each MuxStream to indicate which
+            Optional. Encryption configurations for this
+            channel. Each configuration has an ID which is
+            referred to by each MuxStream to indicate which
             configuration is used for that output.
         input_config (google.cloud.video.live_stream_v1.types.InputConfig):
             The configuration for input sources defined in
@@ -267,6 +287,9 @@ class Channel(proto.Message):
             Optional. List of static overlay images.
             Those images display over the output content for
             the whole duration of the live stream.
+        auto_transcription_config (google.cloud.video.live_stream_v1.types.AutoTranscriptionConfig):
+            Optional. Advanced configurations for
+            auto-generated text streams.
     """
 
     class StreamingState(proto.Enum):
@@ -370,6 +393,18 @@ class Channel(proto.Message):
         number=12,
         message=outputs.Manifest,
     )
+    distribution_streams: MutableSequence[
+        outputs.DistributionStream
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=28,
+        message=outputs.DistributionStream,
+    )
+    distributions: MutableSequence[outputs.Distribution] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=29,
+        message=outputs.Distribution,
+    )
     sprite_sheets: MutableSequence[outputs.SpriteSheet] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
@@ -414,6 +449,11 @@ class Channel(proto.Message):
         proto.MESSAGE,
         number=27,
         message="StaticOverlay",
+    )
+    auto_transcription_config: "AutoTranscriptionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        message="AutoTranscriptionConfig",
     )
 
 
@@ -815,6 +855,76 @@ class InputAttachment(proto.Message):
     )
 
 
+class AutoTranscriptionConfig(proto.Message):
+    r"""Advanced configurations for auto-generated text streams.
+
+    Attributes:
+        display_timing (google.cloud.video.live_stream_v1.types.AutoTranscriptionConfig.DisplayTiming):
+            Optional. Whether auto-generated text streams
+            are displayed synchronously or asynchronously
+            with the original audio.
+        quality_preset (google.cloud.video.live_stream_v1.types.AutoTranscriptionConfig.QualityPreset):
+            Optional. Tunes the latency and quality of
+            auto-generated captions.
+    """
+
+    class DisplayTiming(proto.Enum):
+        r"""Whether auto-generated text streams are displayed
+        synchronously or asynchronously with the original audio.
+
+        Values:
+            DISPLAY_TIMING_UNSPECIFIED (0):
+                Display timing is not specified. Caption
+                display will be asynchronous by default.
+            ASYNC (1):
+                Caption will be displayed asynchronous with
+                audio.
+            SYNC (2):
+                Caption will be displayed synchronous with
+                audio. This option increases overall media
+                output latency, and reduces viewing latency
+                between audio and auto-generated captions.
+        """
+        DISPLAY_TIMING_UNSPECIFIED = 0
+        ASYNC = 1
+        SYNC = 2
+
+    class QualityPreset(proto.Enum):
+        r"""Presets to tune the latency and quality of auto-generated
+        captions.
+
+        Values:
+            QUALITY_PRESET_UNSPECIFIED (0):
+                Quality Preset is not specified. By default,
+                BALANCED_QUALITY will be used.
+            LOW_LATENCY (1):
+                Reduce the latency of auto-generated
+                captions. This may reduce the quality of the
+                captions.
+            BALANCED_QUALITY (2):
+                Default behavior when QualityPreset is not
+                specified.
+            IMPROVED_QUALITY (3):
+                Increases the quality of the auto-generated
+                captions at the cost of higher latency.
+        """
+        QUALITY_PRESET_UNSPECIFIED = 0
+        LOW_LATENCY = 1
+        BALANCED_QUALITY = 2
+        IMPROVED_QUALITY = 3
+
+    display_timing: DisplayTiming = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=DisplayTiming,
+    )
+    quality_preset: QualityPreset = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=QualityPreset,
+    )
+
+
 class Event(proto.Message):
     r"""Event is a sub-resource of a channel, which can be scheduled
     by the user to execute operations on a channel resource without
@@ -859,6 +969,10 @@ class Event(proto.Message):
             This field is a member of `oneof`_ ``task``.
         unmute (google.cloud.video.live_stream_v1.types.Event.UnmuteTask):
             Unmutes the stream.
+
+            This field is a member of `oneof`_ ``task``.
+        update_encryptions (google.cloud.video.live_stream_v1.types.Event.UpdateEncryptionsTask):
+            Updates encryption settings.
 
             This field is a member of `oneof`_ ``task``.
         execute_now (bool):
@@ -997,6 +1111,22 @@ class Event(proto.Message):
 
         """
 
+    class UpdateEncryptionsTask(proto.Message):
+        r"""Update encryption settings.
+
+        Attributes:
+            encryptions (MutableSequence[google.cloud.video.live_stream_v1.types.EncryptionUpdate]):
+                Required. A list of
+                [EncryptionUpdate][google.cloud.video.livestream.v1.EncryptionUpdate]s
+                that updates the existing encryption settings.
+        """
+
+        encryptions: MutableSequence["EncryptionUpdate"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="EncryptionUpdate",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1051,6 +1181,12 @@ class Event(proto.Message):
         number=16,
         oneof="task",
         message=UnmuteTask,
+    )
+    update_encryptions: UpdateEncryptionsTask = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        oneof="task",
+        message=UpdateEncryptionsTask,
     )
     execute_now: bool = proto.Field(
         proto.BOOL,
@@ -1720,13 +1856,13 @@ class Encryption(proto.Message):
 
         Attributes:
             widevine (google.cloud.video.live_stream_v1.types.Encryption.Widevine):
-                Widevine configuration.
+                Optional. Widevine configuration.
             fairplay (google.cloud.video.live_stream_v1.types.Encryption.Fairplay):
-                Fairplay configuration.
+                Optional. Fairplay configuration.
             playready (google.cloud.video.live_stream_v1.types.Encryption.Playready):
-                Playready configuration.
+                Optional. Playready configuration.
             clearkey (google.cloud.video.live_stream_v1.types.Encryption.Clearkey):
-                Clearkey configuration.
+                Optional. Clearkey configuration.
         """
 
         widevine: "Encryption.Widevine" = proto.Field(
@@ -1804,6 +1940,33 @@ class Encryption(proto.Message):
         number=6,
         oneof="encryption_mode",
         message=MpegCommonEncryption,
+    )
+
+
+class EncryptionUpdate(proto.Message):
+    r"""Encryption setting when updating encryption.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            Required. Identifier for the encryption
+            option to be updated.
+        secret_manager_key_source (google.cloud.video.live_stream_v1.types.Encryption.SecretManagerSource):
+            For keys stored in Google Secret Manager.
+
+            This field is a member of `oneof`_ ``secret_source``.
+    """
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    secret_manager_key_source: "Encryption.SecretManagerSource" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="secret_source",
+        message="Encryption.SecretManagerSource",
     )
 
 

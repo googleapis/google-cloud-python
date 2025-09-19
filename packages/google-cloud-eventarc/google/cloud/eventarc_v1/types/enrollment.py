@@ -63,9 +63,9 @@ class Enrollment(proto.Message):
             Required. A CEL expression identifying which
             messages this enrollment applies to.
         message_bus (str):
-            Required. Resource name of the message bus
-            identifying the source of the messages. It
-            matches the form
+            Required. Immutable. Resource name of the
+            message bus identifying the source of the
+            messages. It matches the form
             projects/{project}/locations/{location}/messageBuses/{messageBus}.
         destination (str):
             Required. Destination is the Pipeline that the Enrollment is
