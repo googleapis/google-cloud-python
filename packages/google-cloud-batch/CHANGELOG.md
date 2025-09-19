@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.37](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.36...google-cloud-batch-v0.17.37) (2025-09-19)
+
+
+### Features
+
+* [google-cloud-batch] added new provisioning models ([#14432](https://github.com/googleapis/google-cloud-python/issues/14432)) ([b77e02b](https://github.com/googleapis/google-cloud-python/commit/b77e02b14afff4e046eff81a9aea05320faa3017))
+
 ## [0.17.36](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.35...google-cloud-batch-v0.17.36) (2025-06-11)
 
 

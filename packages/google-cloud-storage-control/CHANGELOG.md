@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.6.1...google-cloud-storage-control-v1.7.0) (2025-09-19)
+
+
+### Features
+
+* [google-cloud-storage-control] Add new GetIamPolicy, SetIamPolicy, and TestIamPermissions RPCs ([#14372](https://github.com/googleapis/google-cloud-python/issues/14372)) ([1111f8c](https://github.com/googleapis/google-cloud-python/commit/1111f8c67449728120b3609657f871fe6f8dc3a2))
+
 ## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.6.0...google-cloud-storage-control-v1.6.1) (2025-07-23)
 
 

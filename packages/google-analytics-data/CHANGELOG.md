@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.18.20](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.19...google-analytics-data-v0.18.20) (2025-09-19)
+
+
+### Features
+
+* [google-cloud-eventarc] add new fields to Eventarc resources ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added Auto Transcription support ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added H.265 (HEVC) codec support ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added PreviewInput method used for the low latency input monitoring ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added StartDistribution/StopDistribution methods and Distribution/DistributionStream messages used for distributing live streams to external RTMP/SRT endpoints ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added UHD (4k) resolution support ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added UpdateEncryptions event to perform key rotation without restarting a channel ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+
+
+### Bug Fixes
+
+* [google-cloud-eventarc] upgrade gRPC service registration func ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+
+
+### Documentation
+
+* [google-cloud-eventarc] correct some comments ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Update requirements of resource ID fields to be more clear ([2673009](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+
 ## [0.18.19](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.18...google-analytics-data-v0.18.19) (2025-06-11)
 
 
