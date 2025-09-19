@@ -2143,6 +2143,10 @@ class _BaseEventarcRestTransport(EventarcTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/kafkaSources/*}:getIamPolicy",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1/{resource=projects/*/locations/*/googleApiSources/*}:getIamPolicy",
                 },
             ]
@@ -2194,6 +2198,11 @@ class _BaseEventarcRestTransport(EventarcTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/pipelines/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/kafkaSources/*}:setIamPolicy",
                     "body": "*",
                 },
                 {
@@ -2255,6 +2264,11 @@ class _BaseEventarcRestTransport(EventarcTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/pipelines/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/kafkaSources/*}:testIamPermissions",
                     "body": "*",
                 },
                 {
