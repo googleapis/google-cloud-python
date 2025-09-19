@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-network-security/#history
+
 ## [0.9.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.18...google-cloud-network-security-v0.9.19) (2025-09-04)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-memorystore/#history
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.1.2...google-cloud-memorystore-v0.1.3) (2025-05-08)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-discoveryengine/#history
+
 ## [0.13.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.10...google-cloud-discoveryengine-v0.13.11) (2025-07-26)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-service-directory/#history
+
 ## [1.14.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.14.1...google-cloud-service-directory-v1.14.2) (2025-03-15)
 
 

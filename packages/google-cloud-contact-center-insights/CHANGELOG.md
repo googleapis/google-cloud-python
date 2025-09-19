@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-contact-center-insights/#history
+
 ## [1.23.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.23.2...google-cloud-contact-center-insights-v1.23.3) (2025-06-11)
 
 

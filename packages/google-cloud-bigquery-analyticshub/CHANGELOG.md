@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-bigquery-analyticshub/#history
+
 ## [0.4.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.19...google-cloud-bigquery-analyticshub-v0.4.20) (2025-09-04)
 
 

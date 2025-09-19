@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-storage-transfer/#history
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.16.1...google-cloud-storage-transfer-v1.17.0) (2025-05-26)
 
 

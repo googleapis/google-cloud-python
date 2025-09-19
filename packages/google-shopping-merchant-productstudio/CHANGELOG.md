@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-shopping-merchant-productstudio/#history
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-productstudio-v0.1.0...google-shopping-merchant-productstudio-v0.1.1) (2025-07-02)
 
 

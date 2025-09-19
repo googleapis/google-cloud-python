@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-private-catalog/#history
+
 ## [0.9.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-catalog-v0.9.17...google-cloud-private-catalog-v0.9.18) (2025-06-11)
 
 

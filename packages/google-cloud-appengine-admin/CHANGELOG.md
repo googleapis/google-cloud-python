@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-appengine-admin/#history
+
 ## [1.14.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.14.1...google-cloud-appengine-admin-v1.14.2) (2025-06-11)
 
 

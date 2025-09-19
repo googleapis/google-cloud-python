@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-video-live-stream/#history
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.11.1...google-cloud-video-live-stream-v1.12.0) (2025-05-15)
 
 

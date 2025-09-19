@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-public-ca/#history
+
 ## [0.3.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.17...google-cloud-public-ca-v0.3.18) (2025-06-11)
 
 

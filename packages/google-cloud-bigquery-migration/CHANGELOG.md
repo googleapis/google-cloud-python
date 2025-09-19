@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-bigquery-migration/#history
+
 ## [0.11.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.14...google-cloud-bigquery-migration-v0.11.15) (2025-06-11)
 
 

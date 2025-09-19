@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-batch/#history
+
 ## [0.17.36](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.35...google-cloud-batch-v0.17.36) (2025-06-11)
 
 

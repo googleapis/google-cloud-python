@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-shopping-merchant-issueresolution/#history
+
 ## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-issueresolution-v0.1.1...google-shopping-merchant-issueresolution-v1.0.0) (2025-08-29)
 
 

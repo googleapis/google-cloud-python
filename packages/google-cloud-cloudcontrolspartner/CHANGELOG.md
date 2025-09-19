@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-cloudcontrolspartner/#history
+
 ## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.6...google-cloud-cloudcontrolspartner-v0.2.7) (2025-05-08)
 
 

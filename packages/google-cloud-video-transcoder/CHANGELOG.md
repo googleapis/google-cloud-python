@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-video-transcoder/#history
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.16.0...google-cloud-video-transcoder-v1.17.0) (2025-08-29)
 
 

@@ -1,5 +1,8 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-dialogflow-cx/#history
 
 ## [1.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.41.1...google-cloud-dialogflow-cx-v1.42.0) (2025-07-04)
 

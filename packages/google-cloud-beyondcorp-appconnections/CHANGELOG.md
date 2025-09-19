@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-beyondcorp-appconnections/#history
+
 ## [0.4.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnections-v0.4.17...google-cloud-beyondcorp-appconnections-v0.4.18) (2025-06-11)
 
 

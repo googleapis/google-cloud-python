@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-shopping-merchant-reviews/#history
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reviews-v0.1.4...google-shopping-merchant-reviews-v0.2.0) (2025-07-26)
 
 

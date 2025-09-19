@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-compute/#history
+
 ## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.36.0...google-cloud-compute-v1.37.0) (2025-09-04)
 
 

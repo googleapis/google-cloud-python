@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-commerce-consumer-procurement/#history
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-commerce-consumer-procurement-v0.1.13...google-cloud-commerce-consumer-procurement-v0.2.0) (2025-05-26)
 
 

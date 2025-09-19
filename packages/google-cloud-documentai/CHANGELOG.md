@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-documentai/#history
+
 ## [3.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.5.0...google-cloud-documentai-v3.6.0) (2025-08-29)
 
 

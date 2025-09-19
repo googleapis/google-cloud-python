@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-maps-routing/#history
+
 ## [0.6.16](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.15...google-maps-routing-v0.6.16) (2025-06-11)
 
 

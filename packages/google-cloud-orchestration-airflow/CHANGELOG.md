@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-orchestration-airflow/#history
+
 ## [1.17.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.17.4...google-cloud-orchestration-airflow-v1.17.5) (2025-04-15)
 
 

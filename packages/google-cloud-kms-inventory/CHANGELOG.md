@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-kms-inventory/#history
+
 ## [0.2.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.14...google-cloud-kms-inventory-v0.2.15) (2025-06-11)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-assured-workloads/#history
+
 ## [1.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-assured-workloads-v1.15.1...google-cloud-assured-workloads-v1.15.2) (2025-06-11)
 
 

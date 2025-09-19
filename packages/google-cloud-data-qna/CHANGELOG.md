@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-data-qna/#history
+
 ## [0.10.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.16...google-cloud-data-qna-v0.10.17) (2025-06-11)
 
 

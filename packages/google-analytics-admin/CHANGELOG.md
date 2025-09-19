@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-analytics-admin/#history
+
 ## [0.25.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.24.1...google-analytics-admin-v0.25.0) (2025-08-29)
 
 

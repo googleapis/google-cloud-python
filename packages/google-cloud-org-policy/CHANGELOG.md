@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-org-policy/#history
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-org-policy-v1.13.1...google-cloud-org-policy-v1.14.0) (2025-04-17)
 
 

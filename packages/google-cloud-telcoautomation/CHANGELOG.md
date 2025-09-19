@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-telcoautomation/#history
+
 ## [0.2.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.2.10...google-cloud-telcoautomation-v0.2.11) (2025-06-11)
 
 

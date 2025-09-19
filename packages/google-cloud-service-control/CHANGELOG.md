@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-service-control/#history
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.15.1...google-cloud-service-control-v1.16.0) (2025-07-23)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-channel/#history
+
 ## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.22.2...google-cloud-channel-v1.23.0) (2025-06-19)
 
 

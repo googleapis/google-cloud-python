@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-apigee-connect/#history
+
 ## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.12.1...google-cloud-apigee-connect-v1.12.2) (2025-06-11)
 
 

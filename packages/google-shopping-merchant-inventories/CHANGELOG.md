@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-shopping-merchant-inventories/#history
+
 ## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.16...google-shopping-merchant-inventories-v1.0.0) (2025-08-29)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-network-services/#history
+
 ## [0.5.24](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.23...google-cloud-network-services-v0.5.24) (2025-07-10)
 
 

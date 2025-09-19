@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-policysimulator/#history
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policysimulator-v0.1.14...google-cloud-policysimulator-v0.1.15) (2025-07-23)
 
 

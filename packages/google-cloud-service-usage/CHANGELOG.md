@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-service-usage/#history
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-usage-v1.13.0...google-cloud-service-usage-v1.13.1) (2025-03-15)
 
 

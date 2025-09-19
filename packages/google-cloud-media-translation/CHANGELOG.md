@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-media-translation/#history
+
 ## [0.11.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.16...google-cloud-media-translation-v0.11.17) (2025-06-11)
 
 

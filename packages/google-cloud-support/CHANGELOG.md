@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-support/#history
+
 ## [0.1.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.18...google-cloud-support-v0.1.19) (2025-08-10)
 
 

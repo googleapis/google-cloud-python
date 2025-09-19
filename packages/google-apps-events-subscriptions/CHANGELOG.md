@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-apps-events-subscriptions/#history
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.2.1...google-apps-events-subscriptions-v0.2.2) (2025-06-12)
 
 

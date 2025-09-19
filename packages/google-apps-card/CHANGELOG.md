@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-apps-card/#history
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.7...google-apps-card-v0.1.8) (2025-06-11)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-policytroubleshooter-iam/#history
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policytroubleshooter-iam-v0.1.12...google-cloud-policytroubleshooter-iam-v0.1.13) (2025-06-11)
 
 
