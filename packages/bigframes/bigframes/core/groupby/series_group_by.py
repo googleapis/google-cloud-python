@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import datetime
 import typing
-from typing import Literal, Sequence, Union
+from typing import Iterable, Literal, Sequence, Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
@@ -28,7 +28,7 @@ from bigframes.core import expression as ex
 from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
-from bigframes.core.groupby import aggs
+from bigframes.core.groupby import aggs, group_by
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
@@ -52,6 +52,8 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         by_col_ids: typing.Sequence[str],
         value_name: blocks.Label = None,
         dropna=True,
+        *,
+        by_key_is_singular: bool = False,
     ):
         # TODO(tbergeron): Support more group-by expression types
         self._block = block
@@ -59,6 +61,10 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         self._by_col_ids = by_col_ids
         self._value_name = value_name
         self._dropna = dropna  # Applies to aggregations but not windowing
+
+        self._by_key_is_singular = by_key_is_singular
+        if by_key_is_singular:
+            assert len(by_col_ids) == 1, "singular key should be exactly one group key"
 
     @property
     def _session(self) -> session.Session:
@@ -88,6 +94,19 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
                 dropna=self._dropna,
             )
         ).droplevel(level=0, axis=1)
+
+    def __iter__(self) -> Iterable[Tuple[blocks.Label, series.Series]]:
+        for group_keys, filtered_block in group_by.block_groupby_iter(
+            self._block,
+            by_col_ids=self._by_col_ids,
+            by_key_is_singular=self._by_key_is_singular,
+            dropna=self._dropna,
+        ):
+            filtered_series = series.Series(
+                filtered_block.select_column(self._value_column)
+            )
+            filtered_series.name = self._value_name
+            yield group_keys, filtered_series
 
     def all(self) -> series.Series:
         return self._aggregate(agg_ops.all_op)

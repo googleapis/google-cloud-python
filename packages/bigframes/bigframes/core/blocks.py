@@ -1375,10 +1375,16 @@ class Block:
     ) -> typing.Tuple[Block, typing.Sequence[str]]:
         """
         Apply aggregations to the block.
+
         Arguments:
             by_column_id: column id of the aggregation key, this is preserved through the transform and used as index.
             aggregations: input_column_id, operation tuples
             dropna: whether null keys should be dropped
+
+        Returns:
+            Tuple[Block, Sequence[str]]:
+                The first element is the grouped block. The second is the
+                column IDs corresponding to each applied aggregation.
         """
         if column_labels is None:
             column_labels = pd.Index(range(len(aggregations)))

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import datetime
 import typing
-from typing import Literal, Optional, Sequence, Tuple, Union
+from typing import Iterable, Literal, Optional, Sequence, Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
@@ -29,7 +29,7 @@ from bigframes.core import expression as ex
 from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
-from bigframes.core.groupby import aggs, series_group_by
+from bigframes.core.groupby import aggs, group_by, series_group_by
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
@@ -54,6 +54,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         selected_cols: typing.Optional[typing.Sequence[str]] = None,
         dropna: bool = True,
         as_index: bool = True,
+        by_key_is_singular: bool = False,
     ):
         # TODO(tbergeron): Support more group-by expression types
         self._block = block
@@ -64,6 +65,9 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             )
         }
         self._by_col_ids = by_col_ids
+        self._by_key_is_singular = by_key_is_singular
+        if by_key_is_singular:
+            assert len(by_col_ids) == 1, "singular key should be exactly one group key"
 
         self._dropna = dropna
         self._as_index = as_index
@@ -162,6 +166,16 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
                 dropna=self._dropna,
             )
         )
+
+    def __iter__(self) -> Iterable[Tuple[blocks.Label, df.DataFrame]]:
+        for group_keys, filtered_block in group_by.block_groupby_iter(
+            self._block,
+            by_col_ids=self._by_col_ids,
+            by_key_is_singular=self._by_key_is_singular,
+            dropna=self._dropna,
+        ):
+            filtered_df = df.DataFrame(filtered_block)
+            yield group_keys, filtered_df
 
     def size(self) -> typing.Union[df.DataFrame, series.Series]:
         agg_block, _ = self._block.aggregate_size(

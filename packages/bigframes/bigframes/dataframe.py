@@ -3913,11 +3913,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         as_index: bool = True,
         dropna: bool = True,
     ):
+        if utils.is_list_like(level):
+            by_key_is_singular = False
+        else:
+            by_key_is_singular = True
+
         return groupby.DataFrameGroupBy(
             self._block,
             by_col_ids=self._resolve_levels(level),
             as_index=as_index,
             dropna=dropna,
+            by_key_is_singular=by_key_is_singular,
         )
 
     def _groupby_series(
@@ -3930,10 +3936,14 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         as_index: bool = True,
         dropna: bool = True,
     ):
+        # Pandas makes a distinction between groupby with a list of keys
+        # versus groupby with a single item in some methods, like __iter__.
         if not isinstance(by, bigframes.series.Series) and utils.is_list_like(by):
             by = list(by)
+            by_key_is_singular = False
         else:
             by = [typing.cast(typing.Union[blocks.Label, bigframes.series.Series], by)]
+            by_key_is_singular = True
 
         block = self._block
         col_ids: typing.Sequence[str] = []
@@ -3963,6 +3973,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             by_col_ids=col_ids,
             as_index=as_index,
             dropna=dropna,
+            by_key_is_singular=by_key_is_singular,
         )
 
     def abs(self) -> DataFrame:
