@@ -114,7 +114,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class CmekServiceGrpcTransport(CmekServiceTransport):
     """gRPC backend transport for CmekService.
 
-    Dataplex Cmek Service
+    Dataplex Universal Catalog Customer Managed Encryption Keys
+    (CMEK) Service
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

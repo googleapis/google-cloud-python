@@ -369,7 +369,7 @@ class DataplexServiceAsyncClient:
             parent (:class:`str`):
                 Required. The resource name of the lake location, of the
                 form: projects/{project_number}/locations/{location_id}
-                where ``location_id`` refers to a GCP region.
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -802,7 +802,7 @@ class DataplexServiceAsyncClient:
                 Required. The resource name of the lake location, of the
                 form:
                 ``projects/{project_number}/locations/{location_id}``
-                where ``location_id`` refers to a GCP region.
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

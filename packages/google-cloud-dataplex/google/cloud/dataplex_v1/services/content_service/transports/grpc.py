@@ -117,7 +117,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class ContentServiceGrpcTransport(ContentServiceTransport):
     """gRPC backend transport for ContentService.
 
-    ContentService manages Notebook and SQL Scripts for Dataplex.
+    ContentService manages Notebook and SQL Scripts for Dataplex
+    Universal Catalog.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

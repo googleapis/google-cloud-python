@@ -72,7 +72,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class CmekServiceAsyncClient:
-    """Dataplex Cmek Service"""
+    """Dataplex Universal Catalog Customer Managed Encryption Keys
+    (CMEK) Service
+    """
 
     _client: CmekServiceClient
 

@@ -2113,7 +2113,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     },
                     {
                         "method": "get",
-                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                        "uri": "/v1/{name=organizations/*/locations/*}/operations",
                     },
                 ],
             }

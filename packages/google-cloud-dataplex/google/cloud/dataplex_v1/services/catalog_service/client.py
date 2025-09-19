@@ -119,9 +119,9 @@ class CatalogServiceClientMeta(type):
 
 class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
     """The primary resources offered by this service are
-    EntryGroups, EntryTypes, AspectTypes, and Entries. They
-    collectively let data administrators organize, manage, secure,
-    and catalog data located across cloud projects in their
+    EntryGroups, EntryTypes, AspectTypes, Entries and EntryLinks.
+    They collectively let data administrators organize, manage,
+    secure, and catalog data located across cloud projects in their
     organization in a variety of storage systems, including Cloud
     Storage and BigQuery.
     """
@@ -285,6 +285,30 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def entry_link_path(
+        project: str,
+        location: str,
+        entry_group: str,
+        entry_link: str,
+    ) -> str:
+        """Returns a fully-qualified entry_link string."""
+        return "projects/{project}/locations/{location}/entryGroups/{entry_group}/entryLinks/{entry_link}".format(
+            project=project,
+            location=location,
+            entry_group=entry_group,
+            entry_link=entry_link,
+        )
+
+    @staticmethod
+    def parse_entry_link_path(path: str) -> Dict[str, str]:
+        """Parses a entry_link path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/entryGroups/(?P<entry_group>.+?)/entryLinks/(?P<entry_link>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def entry_type_path(
         project: str,
         location: str,
@@ -302,6 +326,28 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         """Parses a entry_type path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/entryTypes/(?P<entry_type>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def glossary_path(
+        project: str,
+        location: str,
+        glossary: str,
+    ) -> str:
+        """Returns a fully-qualified glossary string."""
+        return "projects/{project}/locations/{location}/glossaries/{glossary}".format(
+            project=project,
+            location=location,
+            glossary=glossary,
+        )
+
+    @staticmethod
+    def parse_glossary_path(path: str) -> Dict[str, str]:
+        """Parses a glossary path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/glossaries/(?P<glossary>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1134,7 +1180,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteEntryTypeRequest, dict]):
-                The request object. Delele EntryType Request.
+                The request object. Delete EntryType Request.
             name (str):
                 Required. The resource name of the EntryType:
                 ``projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}``.
@@ -1773,7 +1819,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteAspectTypeRequest, dict]):
-                The request object. Delele AspectType Request.
+                The request object. Delete AspectType Request.
             name (str):
                 Required. The resource name of the AspectType:
                 ``projects/{project_number}/locations/{location_id}/aspectTypes/{aspect_type_id}``.
@@ -2142,7 +2188,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             parent (str):
                 Required. The resource name of the entryGroup, of the
                 form: projects/{project_number}/locations/{location_id}
-                where ``location_id`` refers to a GCP region.
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3470,7 +3516,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             name (str):
                 Required. The project to which the request should be
                 attributed in the following form:
-                ``projects/{project}/locations/{location}``.
+                ``projects/{project}/locations/global``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3478,7 +3524,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             query (str):
                 Required. The query against which entries in scope
                 should be matched. The query syntax is defined in
-                `Search syntax for Dataplex
+                `Search syntax for Dataplex Universal
                 Catalog <https://cloud.google.com/dataplex/docs/search-syntax>`__.
 
                 This corresponds to the ``query`` field
@@ -3570,8 +3616,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Creates a metadata job. For example, use a metadata
-        job to import Dataplex Catalog entries and aspects from
-        a third-party system into Dataplex.
+        job to import metadata from a third-party system into
+        Dataplex Universal Catalog.
 
         .. code-block:: python
 
@@ -4038,6 +4084,358 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+    def create_entry_link(
+        self,
+        request: Optional[Union[catalog.CreateEntryLinkRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        entry_link: Optional[catalog.EntryLink] = None,
+        entry_link_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> catalog.EntryLink:
+        r"""Creates an Entry Link.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_create_entry_link():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                entry_link = dataplex_v1.EntryLink()
+                entry_link.entry_link_type = "entry_link_type_value"
+                entry_link.entry_references.name = "name_value"
+                entry_link.entry_references.type_ = "TARGET"
+
+                request = dataplex_v1.CreateEntryLinkRequest(
+                    parent="parent_value",
+                    entry_link_id="entry_link_id_value",
+                    entry_link=entry_link,
+                )
+
+                # Make the request
+                response = client.create_entry_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.CreateEntryLinkRequest, dict]):
+                The request object. Request message for CreateEntryLink.
+            parent (str):
+                Required. The resource name of the parent Entry Group:
+                ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            entry_link (google.cloud.dataplex_v1.types.EntryLink):
+                Required. Entry Link resource.
+                This corresponds to the ``entry_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            entry_link_id (str):
+                Required. Entry Link identifier
+
+                - Must contain only lowercase letters, numbers and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-63 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the EntryGroup.
+
+                This corresponds to the ``entry_link_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.EntryLink:
+                EntryLink represents a link between
+                two Entries.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, entry_link, entry_link_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.CreateEntryLinkRequest):
+            request = catalog.CreateEntryLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if entry_link is not None:
+                request.entry_link = entry_link
+            if entry_link_id is not None:
+                request.entry_link_id = entry_link_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_entry_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_entry_link(
+        self,
+        request: Optional[Union[catalog.DeleteEntryLinkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> catalog.EntryLink:
+        r"""Deletes an Entry Link.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_delete_entry_link():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeleteEntryLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_entry_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.DeleteEntryLinkRequest, dict]):
+                The request object. Request message for DeleteEntryLink.
+            name (str):
+                Required. The resource name of the Entry Link:
+                ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entryLinks/{entry_link_id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.EntryLink:
+                EntryLink represents a link between
+                two Entries.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.DeleteEntryLinkRequest):
+            request = catalog.DeleteEntryLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_entry_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_entry_link(
+        self,
+        request: Optional[Union[catalog.GetEntryLinkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> catalog.EntryLink:
+        r"""Gets an Entry Link.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_get_entry_link():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetEntryLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_entry_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.GetEntryLinkRequest, dict]):
+                The request object. Request message for GetEntryLink.
+            name (str):
+                Required. The resource name of the Entry Link:
+                ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entryLinks/{entry_link_id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.EntryLink:
+                EntryLink represents a link between
+                two Entries.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.GetEntryLinkRequest):
+            request = catalog.GetEntryLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_entry_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def __enter__(self) -> "CatalogServiceClient":
         return self
