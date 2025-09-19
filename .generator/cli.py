@@ -138,11 +138,9 @@ def handle_configure(
     input: str = INPUT_DIR,
 ):
     try:
-        # configure-request.json contains the partial library definition.
         library_config = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
         library_id = _get_library_id(library_config)
 
-        # Fill in the missing fields.
         library_config["version"] = _get_library_version(library_id, repo)
         library_config["source_roots"] = [f"packages/{library_id}"]
         library_config["preserve_regex"] = [
@@ -157,8 +155,8 @@ def handle_configure(
             "tests/system",
         ]
         library_config["remove_regex"] = [f"packages/{library_id}"]
+        library_config["tag_format"] = "{id}-v{version}"
 
-        # Write the completed configuration to configure-response.json.
         _write_json_file(f"{librarian}/configure-response.json", library_config)
 
     except Exception as e:
