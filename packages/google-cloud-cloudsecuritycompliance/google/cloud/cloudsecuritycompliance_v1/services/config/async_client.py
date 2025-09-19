@@ -67,7 +67,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class ConfigAsyncClient:
-    """Service describing handlers for config resources"""
+    """Config Service manages compliance frameworks, cloud controls,
+    and their configurations.
+    """
 
     _client: ConfigClient
 
@@ -293,7 +295,10 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListFrameworksAsyncPager:
-        r"""Lists Frameworks in a given organization.
+        r"""Lists all Frameworks (both Built-in and Custom)
+        available within a given parent resource. This method
+        supports pagination. The latest major version of each
+        Framework is returned.
 
         .. code-block:: python
 
@@ -324,10 +329,12 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.ListFrameworksRequest, dict]]):
-                The request object. Request message for [ListFrameworks][].
+                The request object. Request message for listing
+                Frameworks.
             parent (:class:`str`):
                 Required. The parent resource name, in the format
                 ``organizations/{organization}/locations/{location}``.
+                Only global location is supported.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -342,10 +349,13 @@ class ConfigAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.services.config.pagers.ListFrameworksAsyncPager:
-                Response message for [ListFrameworks][].
+                Response message for listing
+                Frameworks. Contains a paginated list of
+                Framework resources.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -417,7 +427,13 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.Framework:
-        r"""Gets details of a single Framework.
+        r"""Gets details of a single Framework. This method retrieves a
+        Framework resource, which can be either Built-in or Custom,
+        identified by its name.
+
+        By default, the latest major version of the Framework is
+        returned. A specific major version can be retrieved by
+        specifying the ``major_revision_id`` in the request.
 
         .. code-block:: python
 
@@ -447,7 +463,8 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.GetFrameworkRequest, dict]]):
-                The request object. Message for getting a Framework.
+                The request object. Request message for getting a
+                Framework.
             name (:class:`str`):
                 Required. The name of the framework to retrieve. Format:
                 organizations/{organization}/locations/{location}/frameworks/{framework_id}
@@ -465,9 +482,14 @@ class ConfigAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.Framework:
-                Framework is a collection of
-                CloudControls which represents
-                industry/GCP/Customer defined
+                A Framework is a collection of
+                CloudControls to address security and
+                compliance requirements. Frameworks can
+                be used for prevention, detection, and
+                auditing. They can be either built-in,
+                industry-standard frameworks provided by
+                GCP/AZURE/AWS (e.g., NIST, FedRAMP) or
+                custom frameworks created by users.
 
         """
         # Create or coerce a protobuf request object.
@@ -530,7 +552,9 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.Framework:
-        r"""Creates a single framework for a given resource.
+        r"""Creates a new Framework with type ``Custom`` under a given
+        parent resource. Frameworks with type ``Built-in`` are managed
+        by Google and cannot be created through this API.
 
         .. code-block:: python
 
@@ -565,7 +589,8 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.CreateFrameworkRequest, dict]]):
-                The request object. Message for creating a Framework
+                The request object. Request message for creating a
+                Framework
             parent (:class:`str`):
                 Required. The parent resource name, in the format
                 ``organizations/{organization}/locations/{location}``.
@@ -597,9 +622,14 @@ class ConfigAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.Framework:
-                Framework is a collection of
-                CloudControls which represents
-                industry/GCP/Customer defined
+                A Framework is a collection of
+                CloudControls to address security and
+                compliance requirements. Frameworks can
+                be used for prevention, detection, and
+                auditing. They can be either built-in,
+                industry-standard frameworks provided by
+                GCP/AZURE/AWS (e.g., NIST, FedRAMP) or
+                custom frameworks created by users.
 
         """
         # Create or coerce a protobuf request object.
@@ -665,7 +695,19 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.Framework:
-        r"""Updates a single Framework.
+        r"""Updates a single Framework. This method allows for partial
+        updates of a Framework resource. The fields to be updated are
+        specified using the ``update_mask``.
+
+        - If an ``update_mask`` is provided, only the fields specified
+          in the mask will be updated.
+        - If no ``update_mask`` is provided, all fields present in the
+          request's ``framework`` body will be used to overwrite the
+          existing resource.
+
+        This operation can only be performed on Frameworks with type
+        ``CUSTOM``. A successful update will result in a new version of
+        the Framework.
 
         .. code-block:: python
 
@@ -698,7 +740,8 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.UpdateFrameworkRequest, dict]]):
-                The request object. Message for updating a Framework
+                The request object. Request message for updating a
+                Framework.
             framework (:class:`google.cloud.cloudsecuritycompliance_v1.types.Framework`):
                 Required. The resource being updated
                 This corresponds to the ``framework`` field
@@ -726,9 +769,14 @@ class ConfigAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.Framework:
-                Framework is a collection of
-                CloudControls which represents
-                industry/GCP/Customer defined
+                A Framework is a collection of
+                CloudControls to address security and
+                compliance requirements. Frameworks can
+                be used for prevention, detection, and
+                auditing. They can be either built-in,
+                industry-standard frameworks provided by
+                GCP/AZURE/AWS (e.g., NIST, FedRAMP) or
+                custom frameworks created by users.
 
         """
         # Create or coerce a protobuf request object.
@@ -793,7 +841,14 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a single Framework.
+        r"""Deletes a single Custom Framework, including all its minor and
+        minor revisions.
+
+        - This operation can only be performed on Frameworks with type
+          ``CUSTOM``. Built-in Frameworks cannot be deleted.
+        - The Framework cannot be deleted if it is currently deployed on
+          any resource.
+        - This action is permanent and cannot be undone.
 
         .. code-block:: python
 
@@ -820,7 +875,8 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.DeleteFrameworkRequest, dict]]):
-                The request object. Message for deleting a Framework
+                The request object. Request message for deleting a
+                Framework.
             name (:class:`str`):
                 Required. Name of the resource, in the format
                 ``organizations/{organization}/locations/{location}/frameworks/{framework}``.
@@ -891,7 +947,10 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCloudControlsAsyncPager:
-        r"""Lists CloudControls in a given organization.
+        r"""Lists all CloudControls (both Built-in and Custom)
+        available within a given parent resource. This method
+        supports pagination. The latest major version of each
+        CloudControl is returned.
 
         .. code-block:: python
 
@@ -922,7 +981,8 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.ListCloudControlsRequest, dict]]):
-                The request object. Request message for [ListCloudControls][].
+                The request object. Request message for listing
+                CloudControls.
             parent (:class:`str`):
                 Required. The parent resource name, in the format
                 ``organizations/{organization}/locations/{location}``.
@@ -1016,7 +1076,13 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.CloudControl:
-        r"""Gets details of a single CloudControl.
+        r"""Gets details of a single CloudControl. This method retrieves a
+        CloudControl resource, which can be either Built-in or Custom,
+        identified by its name.
+
+        By default, the latest major version of the CloudControl is
+        returned. A specific major version can be retrieved by
+        specifying the ``major_revision_id`` in the request.
 
         .. code-block:: python
 
@@ -1046,7 +1112,8 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.GetCloudControlRequest, dict]]):
-                The request object. Message for getting a CloudControl.
+                The request object. Request message for getting a
+                CloudControl.
             name (:class:`str`):
                 Required. The name of the cloudcontrol to retrieve in
                 the format:
@@ -1065,9 +1132,14 @@ class ConfigAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.CloudControl:
-                A CloudControl is a GCP-provided
-                parameterized concept which is used to
-                satisfy a Security or Compliance intent.
+                A CloudControl is the fundamental unit encapsulating the rules
+                   to meet a specific security or compliance intent. It
+                   can contain various rule types (like Organization
+                   Policies, CEL expressions, etc.) enabling different
+                   enforcement modes (Preventive, Detective, Audit).
+                   CloudControls are often parameterized for reusability
+                   and can be either BUILT_IN (provided by Google) or
+                   CUSTOM (defined by the user).
 
         """
         # Create or coerce a protobuf request object.
@@ -1130,7 +1202,9 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.CloudControl:
-        r"""Creates a single CloudControl for a given resource.
+        r"""Creates a new CloudControl with type ``Custom`` under a given
+        parent resource. ``Built-in`` CloudControls are managed by
+        Google and cannot be created through this API.
 
         .. code-block:: python
 
@@ -1165,7 +1239,8 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.CreateCloudControlRequest, dict]]):
-                The request object. Message for creating a CloudControl
+                The request object. Request message for creating a
+                CloudControl
             parent (:class:`str`):
                 Required. The parent resource name, in the format
                 ``organizations/{organization}/locations/{location}``.
@@ -1196,9 +1271,14 @@ class ConfigAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.CloudControl:
-                A CloudControl is a GCP-provided
-                parameterized concept which is used to
-                satisfy a Security or Compliance intent.
+                A CloudControl is the fundamental unit encapsulating the rules
+                   to meet a specific security or compliance intent. It
+                   can contain various rule types (like Organization
+                   Policies, CEL expressions, etc.) enabling different
+                   enforcement modes (Preventive, Detective, Audit).
+                   CloudControls are often parameterized for reusability
+                   and can be either BUILT_IN (provided by Google) or
+                   CUSTOM (defined by the user).
 
         """
         # Create or coerce a protobuf request object.
@@ -1264,7 +1344,18 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common.CloudControl:
-        r"""Updates a single CloudControl.
+        r"""Updates a single CloudControl. This method allows for partial
+        updates of a Custom CloudControl resource. Built-in
+        CloudControls cannot be updated.
+
+        - If an ``update_mask`` is provided, only the fields specified
+          in the mask will be updated.
+        - If no ``update_mask`` is provided, all fields present in the
+          request's ``cloud_control`` body will be used to overwrite the
+          existing resource.
+
+        A successful update will result in a new version of the
+        CloudControl.
 
         .. code-block:: python
 
@@ -1297,7 +1388,8 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.UpdateCloudControlRequest, dict]]):
-                The request object. Message for updating a CloudControl.
+                The request object. Request message for
+                UpdateCloudControl.
             cloud_control (:class:`google.cloud.cloudsecuritycompliance_v1.types.CloudControl`):
                 Required. The resource being updated
                 This corresponds to the ``cloud_control`` field
@@ -1331,9 +1423,14 @@ class ConfigAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.CloudControl:
-                A CloudControl is a GCP-provided
-                parameterized concept which is used to
-                satisfy a Security or Compliance intent.
+                A CloudControl is the fundamental unit encapsulating the rules
+                   to meet a specific security or compliance intent. It
+                   can contain various rule types (like Organization
+                   Policies, CEL expressions, etc.) enabling different
+                   enforcement modes (Preventive, Detective, Audit).
+                   CloudControls are often parameterized for reusability
+                   and can be either BUILT_IN (provided by Google) or
+                   CUSTOM (defined by the user).
 
         """
         # Create or coerce a protobuf request object.
@@ -1398,7 +1495,14 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a single CloudControl.
+        r"""Deletes a single Custom CloudControl, including all its major
+        and minor revisions.
+
+        - This operation can only be performed on CloudControls with
+          type ``CUSTOM``. Built-in CloudControls cannot be deleted.
+        - The CloudControl cannot be deleted if any of its revisions are
+          currently referenced by any Framework.
+        - This action is permanent and cannot be undone.
 
         .. code-block:: python
 
@@ -1425,7 +1529,8 @@ class ConfigAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.DeleteCloudControlRequest, dict]]):
-                The request object. Message for deleting a CloudControl.
+                The request object. Request message for deleting a
+                CloudControl.
             name (:class:`str`):
                 Required. Name of the resource, in the format
                 ``organizations/{organization}/locations/{location}/CloudControls/{CloudControl}``.

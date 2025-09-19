@@ -1596,6 +1596,7 @@ def test_get_framework(request_type, transport: str = "grpc"):
             supported_target_resource_types=[
                 common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
             ],
+            supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
         )
         response = client.get_framework(request)
 
@@ -1617,6 +1618,7 @@ def test_get_framework(request_type, transport: str = "grpc"):
     assert response.supported_target_resource_types == [
         common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
     ]
+    assert response.supported_enforcement_modes == [common.EnforcementMode.PREVENTIVE]
 
 
 def test_get_framework_non_empty_request_with_auto_populated_field():
@@ -1752,6 +1754,7 @@ async def test_get_framework_async(
                 supported_target_resource_types=[
                     common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
                 ],
+                supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
             )
         )
         response = await client.get_framework(request)
@@ -1774,6 +1777,7 @@ async def test_get_framework_async(
     assert response.supported_target_resource_types == [
         common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
     ]
+    assert response.supported_enforcement_modes == [common.EnforcementMode.PREVENTIVE]
 
 
 @pytest.mark.asyncio
@@ -1951,6 +1955,7 @@ def test_create_framework(request_type, transport: str = "grpc"):
             supported_target_resource_types=[
                 common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
             ],
+            supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
         )
         response = client.create_framework(request)
 
@@ -1972,6 +1977,7 @@ def test_create_framework(request_type, transport: str = "grpc"):
     assert response.supported_target_resource_types == [
         common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
     ]
+    assert response.supported_enforcement_modes == [common.EnforcementMode.PREVENTIVE]
 
 
 def test_create_framework_non_empty_request_with_auto_populated_field():
@@ -2111,6 +2117,7 @@ async def test_create_framework_async(
                 supported_target_resource_types=[
                     common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
                 ],
+                supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
             )
         )
         response = await client.create_framework(request)
@@ -2133,6 +2140,7 @@ async def test_create_framework_async(
     assert response.supported_target_resource_types == [
         common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
     ]
+    assert response.supported_enforcement_modes == [common.EnforcementMode.PREVENTIVE]
 
 
 @pytest.mark.asyncio
@@ -2330,6 +2338,7 @@ def test_update_framework(request_type, transport: str = "grpc"):
             supported_target_resource_types=[
                 common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
             ],
+            supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
         )
         response = client.update_framework(request)
 
@@ -2351,6 +2360,7 @@ def test_update_framework(request_type, transport: str = "grpc"):
     assert response.supported_target_resource_types == [
         common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
     ]
+    assert response.supported_enforcement_modes == [common.EnforcementMode.PREVENTIVE]
 
 
 def test_update_framework_non_empty_request_with_auto_populated_field():
@@ -2484,6 +2494,7 @@ async def test_update_framework_async(
                 supported_target_resource_types=[
                     common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
                 ],
+                supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
             )
         )
         response = await client.update_framework(request)
@@ -2506,6 +2517,7 @@ async def test_update_framework_async(
     assert response.supported_target_resource_types == [
         common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
     ]
+    assert response.supported_enforcement_modes == [common.EnforcementMode.PREVENTIVE]
 
 
 @pytest.mark.asyncio
@@ -7478,6 +7490,7 @@ async def test_get_framework_empty_call_grpc_asyncio():
                 supported_target_resource_types=[
                     common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
                 ],
+                supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
             )
         )
         await client.get_framework(request=None)
@@ -7514,6 +7527,7 @@ async def test_create_framework_empty_call_grpc_asyncio():
                 supported_target_resource_types=[
                     common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
                 ],
+                supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
             )
         )
         await client.create_framework(request=None)
@@ -7550,6 +7564,7 @@ async def test_update_framework_empty_call_grpc_asyncio():
                 supported_target_resource_types=[
                     common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
                 ],
+                supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
             )
         )
         await client.update_framework(request=None)
@@ -7952,6 +7967,7 @@ def test_get_framework_rest_call_success(request_type):
             supported_target_resource_types=[
                 common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
             ],
+            supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
         )
 
         # Wrap the value into a proper Response obj
@@ -7978,6 +7994,7 @@ def test_get_framework_rest_call_success(request_type):
     assert response.supported_target_resource_types == [
         common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
     ]
+    assert response.supported_enforcement_modes == [common.EnforcementMode.PREVENTIVE]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8081,42 +8098,30 @@ def test_create_framework_rest_call_success(request_type):
         "display_name": "display_name_value",
         "description": "description_value",
         "type_": 1,
-        "cloud_control_group_details": [
+        "cloud_control_details": [
             {
-                "cloud_control_group": {
-                    "name": "name_value",
-                    "description": "description_value",
-                    "type_": 1,
-                    "control_id": "control_id_value",
-                    "cloud_control_details": [
-                        {
-                            "name": "name_value",
-                            "major_revision_id": 1811,
-                            "parameters": [
-                                {
-                                    "name": "name_value",
-                                    "parameter_value": {
-                                        "string_value": "string_value_value",
-                                        "bool_value": True,
-                                        "string_list_value": {
-                                            "values": ["values_value1", "values_value2"]
-                                        },
-                                        "number_value": 0.1285,
-                                        "oneof_value": {},
-                                    },
-                                }
-                            ],
-                        }
-                    ],
-                    "major_revision_id": 1811,
-                    "control": "control_value",
-                }
+                "name": "name_value",
+                "major_revision_id": 1811,
+                "parameters": [
+                    {
+                        "name": "name_value",
+                        "parameter_value": {
+                            "string_value": "string_value_value",
+                            "bool_value": True,
+                            "string_list_value": {
+                                "values": ["values_value1", "values_value2"]
+                            },
+                            "number_value": 0.1285,
+                            "oneof_value": {},
+                        },
+                    }
+                ],
             }
         ],
-        "cloud_control_details": {},
         "category": [1],
         "supported_cloud_providers": [1],
         "supported_target_resource_types": [1],
+        "supported_enforcement_modes": [1],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8201,6 +8206,7 @@ def test_create_framework_rest_call_success(request_type):
             supported_target_resource_types=[
                 common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
             ],
+            supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
         )
 
         # Wrap the value into a proper Response obj
@@ -8227,6 +8233,7 @@ def test_create_framework_rest_call_success(request_type):
     assert response.supported_target_resource_types == [
         common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
     ]
+    assert response.supported_enforcement_modes == [common.EnforcementMode.PREVENTIVE]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8338,42 +8345,30 @@ def test_update_framework_rest_call_success(request_type):
         "display_name": "display_name_value",
         "description": "description_value",
         "type_": 1,
-        "cloud_control_group_details": [
+        "cloud_control_details": [
             {
-                "cloud_control_group": {
-                    "name": "name_value",
-                    "description": "description_value",
-                    "type_": 1,
-                    "control_id": "control_id_value",
-                    "cloud_control_details": [
-                        {
-                            "name": "name_value",
-                            "major_revision_id": 1811,
-                            "parameters": [
-                                {
-                                    "name": "name_value",
-                                    "parameter_value": {
-                                        "string_value": "string_value_value",
-                                        "bool_value": True,
-                                        "string_list_value": {
-                                            "values": ["values_value1", "values_value2"]
-                                        },
-                                        "number_value": 0.1285,
-                                        "oneof_value": {},
-                                    },
-                                }
-                            ],
-                        }
-                    ],
-                    "major_revision_id": 1811,
-                    "control": "control_value",
-                }
+                "name": "name_value",
+                "major_revision_id": 1811,
+                "parameters": [
+                    {
+                        "name": "name_value",
+                        "parameter_value": {
+                            "string_value": "string_value_value",
+                            "bool_value": True,
+                            "string_list_value": {
+                                "values": ["values_value1", "values_value2"]
+                            },
+                            "number_value": 0.1285,
+                            "oneof_value": {},
+                        },
+                    }
+                ],
             }
         ],
-        "cloud_control_details": {},
         "category": [1],
         "supported_cloud_providers": [1],
         "supported_target_resource_types": [1],
+        "supported_enforcement_modes": [1],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8458,6 +8453,7 @@ def test_update_framework_rest_call_success(request_type):
             supported_target_resource_types=[
                 common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
             ],
+            supported_enforcement_modes=[common.EnforcementMode.PREVENTIVE],
         )
 
         # Wrap the value into a proper Response obj
@@ -8484,6 +8480,7 @@ def test_update_framework_rest_call_success(request_type):
     assert response.supported_target_resource_types == [
         common.TargetResourceType.TARGET_RESOURCE_CRM_TYPE_ORG
     ]
+    assert response.supported_enforcement_modes == [common.EnforcementMode.PREVENTIVE]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

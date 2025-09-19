@@ -69,7 +69,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class DeploymentAsyncClient:
-    """Service describing handlers for resources"""
+    """Deployment service allows users to manage deployments of
+    Frameworks and Cloud Controls on a target resource.
+    """
 
     _client: DeploymentClient
 
@@ -311,8 +313,8 @@ class DeploymentAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a new FrameworkDeployment in a given project
-        and location.
+        r"""Creates a new FrameworkDeployment in a given parent
+        resource.
 
         .. code-block:: python
 
@@ -355,10 +357,10 @@ class DeploymentAsyncClient:
         Args:
             request (Optional[Union[google.cloud.cloudsecuritycompliance_v1.types.CreateFrameworkDeploymentRequest, dict]]):
                 The request object. Request message for
-                CreateFrameworkDeployment.
+                CreateFrameworkDeployment API.
             parent (:class:`str`):
-                Required. Value for parent. Supported
-                formats:
+                Required. The parent resource of the
+                FrameworkDeployment in the format:
                 organizations/{organization}/locations/{location}
                 Only global location is supported.
 
@@ -366,15 +368,17 @@ class DeploymentAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             framework_deployment (:class:`google.cloud.cloudsecuritycompliance_v1.types.FrameworkDeployment`):
-                Required. The resource being created.
+                Required. The FrameworkDeployment to
+                be created.
+
                 This corresponds to the ``framework_deployment`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             framework_deployment_id (:class:`str`):
                 Optional. User provided identifier.
-                It should be unique in scope of a parent
-                Please note that this is optional and if
-                not provided, a random UUID will be
+                It should be unique in scope of a
+                parent. This is optional and if not
+                provided, a random UUID will be
                 generated.
 
                 This corresponds to the ``framework_deployment_id`` field
@@ -392,8 +396,10 @@ class DeploymentAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.cloudsecuritycompliance_v1.types.FrameworkDeployment` FrameworkDeployment is a resource that represents a deployment using a
-                   framework.
+                The result type for the operation will be :class:`google.cloud.cloudsecuritycompliance_v1.types.FrameworkDeployment` FrameworkDeployment represents deployment of a Framework on a target
+                   resource. Supported target resources are
+                   organizations/{organization}, folders/{folder}, and
+                   projects/{project}.
 
         """
         # Create or coerce a protobuf request object.
@@ -505,9 +511,8 @@ class DeploymentAsyncClient:
                 The request object. Request message for
                 DeleteFrameworkDeployment.
             name (:class:`str`):
-                Required. Name of the framework deployment to be deleted
-                FrameworkDeployment name in either of the following
-                formats:
+                Required. name of the FrameworkDeployment to be deleted
+                in the following format:
                 organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}
 
                 This corresponds to the ``name`` field
@@ -636,8 +641,8 @@ class DeploymentAsyncClient:
                 The request object. Request message for
                 GetFrameworkDeployment.
             name (:class:`str`):
-                Required. FrameworkDeployment name in either of the
-                following formats:
+                Required. FrameworkDeployment name in the following
+                format:
                 organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}
 
                 This corresponds to the ``name`` field
@@ -653,9 +658,12 @@ class DeploymentAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.FrameworkDeployment:
-                FrameworkDeployment is a resource
-                that represents a deployment using a
-                framework.
+                FrameworkDeployment represents
+                deployment of a Framework on a target
+                resource. Supported target resources are
+                organizations/{organization},
+                folders/{folder}, and
+                projects/{project}.
 
         """
         # Create or coerce a protobuf request object.
@@ -718,8 +726,8 @@ class DeploymentAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListFrameworkDeploymentsAsyncPager:
-        r"""Lists FrameworkDeployments in a given parent and
-        location.
+        r"""Lists FrameworkDeployments in a given parent
+        resource.
 
         .. code-block:: python
 
@@ -753,8 +761,10 @@ class DeploymentAsyncClient:
                 The request object. Request message for
                 ListFrameworkDeployments.
             parent (:class:`str`):
-                Required. Parent value for
-                ListFrameworkDeploymentsRequest.
+                Required. parent resource of the
+                FrameworkDeployment in the format:
+                organizations/{organization}/locations/{location}
+                Only global location is supported.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -769,8 +779,8 @@ class DeploymentAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.services.deployment.pagers.ListFrameworkDeploymentsAsyncPager:
-                Message for response to listing
-                FrameworkDeployments.
+                Response message for
+                ListFrameworkDeployments.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -880,8 +890,8 @@ class DeploymentAsyncClient:
                 The request object. Request message for
                 GetCloudControlDeployment.
             name (:class:`str`):
-                Required. CloudControlDeployment name in either of the
-                following formats:
+                Required. CloudControlDeployment name in the following
+                format:
                 organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}
 
                 This corresponds to the ``name`` field
@@ -897,9 +907,12 @@ class DeploymentAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.types.CloudControlDeployment:
-                CloudControlDeployment is a resource
-                that represents a deployment using a
-                cloud control.
+                CloudControlDeployment represents
+                deployment of a CloudControl on a target
+                resource. Supported target resources are
+                organizations/{organization},
+                folders/{folder}, and
+                projects/{project}.
 
         """
         # Create or coerce a protobuf request object.
@@ -962,7 +975,8 @@ class DeploymentAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCloudControlDeploymentsAsyncPager:
-        r"""Lists CloudControlDeployments under a given parent.
+        r"""Lists CloudControlDeployments in a given parent
+        resource.
 
         .. code-block:: python
 
@@ -996,8 +1010,10 @@ class DeploymentAsyncClient:
                 The request object. Request message for
                 ListCloudControlDeployments.
             parent (:class:`str`):
-                Required. Parent value for
-                ListCloudControlDeploymentsRequest.
+                Required. parent resource of the
+                CloudControlDeployment in the format:
+                organizations/{organization}/locations/{location}
+                Only global location is supported.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1012,8 +1028,8 @@ class DeploymentAsyncClient:
 
         Returns:
             google.cloud.cloudsecuritycompliance_v1.services.deployment.pagers.ListCloudControlDeploymentsAsyncPager:
-                Message for response to listing
-                CloudControlDeployments.
+                Response message for
+                ListCloudControlDeployments.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

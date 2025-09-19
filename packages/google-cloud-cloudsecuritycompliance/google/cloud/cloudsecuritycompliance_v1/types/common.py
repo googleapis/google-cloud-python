@@ -23,7 +23,6 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.cloudsecuritycompliance.v1",
     manifest={
-        "RegulatoryControlResponsibilityType",
         "EnforcementMode",
         "FrameworkCategory",
         "CloudControlCategory",
@@ -32,7 +31,6 @@ __protobuf__ = proto.module(
         "RuleActionType",
         "TargetResourceType",
         "Framework",
-        "CloudControlGroup",
         "CloudControlDetails",
         "FrameworkReference",
         "Parameter",
@@ -50,29 +48,8 @@ __protobuf__ = proto.module(
         "Rule",
         "CELExpression",
         "OperationMetadata",
-        "Control",
-        "ControlFamily",
     },
 )
-
-
-class RegulatoryControlResponsibilityType(proto.Enum):
-    r"""Regulatory Control Responsibility Type
-
-    Values:
-        REGULATORY_CONTROL_RESPONSIBILITY_TYPE_UNSPECIFIED (0):
-            Unspecified. Invalid state.
-        GOOGLE (1):
-            Google responsibility.
-        CUSTOMER (2):
-            Customer responsibility.
-        SHARED (3):
-            Shared responsibility.
-    """
-    REGULATORY_CONTROL_RESPONSIBILITY_TYPE_UNSPECIFIED = 0
-    GOOGLE = 1
-    CUSTOMER = 2
-    SHARED = 3
 
 
 class EnforcementMode(proto.Enum):
@@ -329,8 +306,11 @@ class TargetResourceType(proto.Enum):
 
 
 class Framework(proto.Message):
-    r"""Framework is a collection of CloudControls which represents
-    industry/GCP/Customer defined
+    r"""A Framework is a collection of CloudControls to address
+    security and compliance requirements. Frameworks can be used for
+    prevention, detection, and auditing. They can be either
+    built-in, industry-standard frameworks provided by GCP/AZURE/AWS
+    (e.g., NIST, FedRAMP) or custom frameworks created by users.
 
     Attributes:
         name (str):
@@ -348,9 +328,6 @@ class Framework(proto.Message):
         type_ (google.cloud.cloudsecuritycompliance_v1.types.Framework.FrameworkType):
             Output only. The type of the framework. The default is
             TYPE_CUSTOM.
-        cloud_control_group_details (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.Framework.CloudControlGroupDetails]):
-            Optional. The details of the cloud control
-            groups included in the framework.
         cloud_control_details (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlDetails]):
             Optional. The details of the cloud controls
             directly added without any grouping in the
@@ -362,6 +339,9 @@ class Framework(proto.Message):
         supported_target_resource_types (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.TargetResourceType]):
             Output only. target resource types supported
             by the Framework.
+        supported_enforcement_modes (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.EnforcementMode]):
+            Output only. The supported enforcement modes
+            of the framework.
     """
 
     class FrameworkType(proto.Enum):
@@ -380,28 +360,6 @@ class Framework(proto.Message):
         FRAMEWORK_TYPE_UNSPECIFIED = 0
         BUILT_IN = 1
         CUSTOM = 2
-
-    class CloudControlGroupDetails(proto.Message):
-        r"""The details of the cloud control group included in the
-        framework.
-
-
-        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
-        Attributes:
-            cloud_control_group (google.cloud.cloudsecuritycompliance_v1.types.CloudControlGroup):
-                The cloud control group included in the
-                framework.
-
-                This field is a member of `oneof`_ ``kind``.
-        """
-
-        cloud_control_group: "CloudControlGroup" = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            oneof="kind",
-            message="CloudControlGroup",
-        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -423,13 +381,6 @@ class Framework(proto.Message):
         proto.ENUM,
         number=6,
         enum=FrameworkType,
-    )
-    cloud_control_group_details: MutableSequence[
-        CloudControlGroupDetails
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=CloudControlGroupDetails,
     )
     cloud_control_details: MutableSequence["CloudControlDetails"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -453,87 +404,12 @@ class Framework(proto.Message):
         number=11,
         enum="TargetResourceType",
     )
-
-
-class CloudControlGroup(proto.Message):
-    r"""CloudControlGroup is an optional entity within a Framework
-    that helps customers organize their CloudControls.
-
-    Attributes:
-        name (str):
-            Required. The name of the cloud control group
-            in the format:
-            “organizations/{organization}/locations/{location}/
-            cloudControlGroups/{cloud-control-group}”
-        description (str):
-            Optional. The description of the cloud
-            control group.The maximum length is 2000
-            characters.
-        type_ (google.cloud.cloudsecuritycompliance_v1.types.CloudControlGroup.CloudControlGroupType):
-            Optional. Output only. The type of the cloud control group.
-            Default is TYPE_CUSTOM.
-        control_id (str):
-            Optional. The control identifier used to
-            fetch the findings. This is same as the control
-            report name.
-        cloud_control_details (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.CloudControlDetails]):
-            Required. The details of the cloud controls
-            to be referred to in the framework.
-        major_revision_id (int):
-            Optional. Major revision of the cloud control
-            group.
-        control (str):
-            Optional. The industry-defined Control assciated with the
-            cloud controls in this group.
-            organizations/{organization}/locations/{location}/controls/{control_id}
-    """
-
-    class CloudControlGroupType(proto.Enum):
-        r"""CloudControlGroupType is the type of the CloudControlGroup.
-
-        Values:
-            CLOUD_CONTROL_GROUP_TYPE_UNSPECIFIED (0):
-                Default value. This value is unused.
-            BUILT_IN (1):
-                The CloudControlGroup is a built-in group
-                provided by GCP.
-            CUSTOM (2):
-                The CloudControlGroup is a custom group
-                created by the user.
-        """
-        CLOUD_CONTROL_GROUP_TYPE_UNSPECIFIED = 0
-        BUILT_IN = 1
-        CUSTOM = 2
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    description: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    type_: CloudControlGroupType = proto.Field(
+    supported_enforcement_modes: MutableSequence[
+        "EnforcementMode"
+    ] = proto.RepeatedField(
         proto.ENUM,
-        number=3,
-        enum=CloudControlGroupType,
-    )
-    control_id: str = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    cloud_control_details: MutableSequence["CloudControlDetails"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message="CloudControlDetails",
-    )
-    major_revision_id: int = proto.Field(
-        proto.INT64,
-        number=6,
-    )
-    control: str = proto.Field(
-        proto.STRING,
-        number=8,
+        number=13,
+        enum="EnforcementMode",
     )
 
 
@@ -622,8 +498,13 @@ class Parameter(proto.Message):
 
 
 class CloudControl(proto.Message):
-    r"""A CloudControl is a GCP-provided parameterized concept which
-    is used to satisfy a Security or Compliance intent.
+    r"""A CloudControl is the fundamental unit encapsulating the rules to
+    meet a specific security or compliance intent. It can contain
+    various rule types (like Organization Policies, CEL expressions,
+    etc.) enabling different enforcement modes (Preventive, Detective,
+    Audit). CloudControls are often parameterized for reusability and
+    can be either BUILT_IN (provided by Google) or CUSTOM (defined by
+    the user).
 
     Attributes:
         name (str):
@@ -1211,193 +1092,6 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
-    )
-
-
-class Control(proto.Message):
-    r"""Represents a Regulatory control.
-
-    Attributes:
-        name (str):
-            Output only. The name of a Control. Format:
-
-            'organizations/{organization}/locations/{location}/controls/{control}''
-        display_name (str):
-            Output only. display_name
-        description (str):
-            Output only. The description of the control.
-        family (google.cloud.cloudsecuritycompliance_v1.types.Control.Family):
-            Output only. Group where the control belongs.
-            E.g. Access Control.
-        control_family (google.cloud.cloudsecuritycompliance_v1.types.ControlFamily):
-            Output only. Regulatory Family of the control
-            E.g. Access Control
-        responsibility_type (google.cloud.cloudsecuritycompliance_v1.types.RegulatoryControlResponsibilityType):
-            Output only. The control comes under whoose
-            responsibility e.g. GOOGLE, CUSTOMER or SHARED.
-        google_responsibility_description (str):
-            Output only. Google responsibility
-            description of regulatory control.
-        google_responsibility_implementation (str):
-            Output only. Google responsibility
-            implementation of regulatory control.
-        customer_responsibility_description (str):
-            Output only. Customer responsibility
-            description of regulatory control.
-        customer_responsibility_implementation (str):
-            Output only. Customer responsibility
-            implementation of regulatory control.
-        shared_responsibility_description (str):
-            Output only. Description of shared
-            Responsibility between Google and Customer in
-            implementing this control
-        additional_content_uri (str):
-            Output only. Link to the public documentation
-            related to this control
-        related_frameworks (MutableSequence[str]):
-            Output only. The Frameworks that include this
-            CloudControl
-    """
-
-    class Family(proto.Enum):
-        r"""Family of the control. E.g. Access Control
-
-        Values:
-            FAMILY_UNSPECIFIED (0):
-                Unspecified. Invalid state.
-            AC (1):
-                Access Control
-            AT (2):
-                Awareness and Training
-            AU (3):
-                Audit and Accountability
-            CA (4):
-                Certification, Accreditation and Security
-                Assessments
-            CM (5):
-                Configuration Management
-            CP (6):
-                Contingency Planning
-            IA (7):
-                Identification and Authentication
-            IR (8):
-                Incident Response
-            MA (9):
-                Maintenance
-            MP (10):
-                Media Protection
-            PE (11):
-                Physical and Environmental Protection
-            PL (12):
-                Security Planning
-            PS (13):
-                Personnel Security
-            RA (14):
-                Risk Assessment
-            SA (15):
-                System Services and Acquisition
-            SC (16):
-                System and Communications Protection
-            SI (17):
-                System and Information Integrity
-            SR (18):
-                Supply Chain Risk Management
-        """
-        FAMILY_UNSPECIFIED = 0
-        AC = 1
-        AT = 2
-        AU = 3
-        CA = 4
-        CM = 5
-        CP = 6
-        IA = 7
-        IR = 8
-        MA = 9
-        MP = 10
-        PE = 11
-        PL = 12
-        PS = 13
-        RA = 14
-        SA = 15
-        SC = 16
-        SI = 17
-        SR = 18
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    display_name: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-    description: str = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    family: Family = proto.Field(
-        proto.ENUM,
-        number=5,
-        enum=Family,
-    )
-    control_family: "ControlFamily" = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        message="ControlFamily",
-    )
-    responsibility_type: "RegulatoryControlResponsibilityType" = proto.Field(
-        proto.ENUM,
-        number=7,
-        enum="RegulatoryControlResponsibilityType",
-    )
-    google_responsibility_description: str = proto.Field(
-        proto.STRING,
-        number=8,
-    )
-    google_responsibility_implementation: str = proto.Field(
-        proto.STRING,
-        number=9,
-    )
-    customer_responsibility_description: str = proto.Field(
-        proto.STRING,
-        number=10,
-    )
-    customer_responsibility_implementation: str = proto.Field(
-        proto.STRING,
-        number=11,
-    )
-    shared_responsibility_description: str = proto.Field(
-        proto.STRING,
-        number=12,
-    )
-    additional_content_uri: str = proto.Field(
-        proto.STRING,
-        number=13,
-    )
-    related_frameworks: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=14,
-    )
-
-
-class ControlFamily(proto.Message):
-    r"""Regulatory Family of the control
-
-    Attributes:
-        family_id (str):
-            ID of the regulatory control family.
-        display_name (str):
-            Display name of the regulatory control
-            family.
-    """
-
-    family_id: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    display_name: str = proto.Field(
-        proto.STRING,
-        number=2,
     )
 
 

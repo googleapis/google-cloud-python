@@ -5460,103 +5460,13 @@ def test_create_framework_deployment_rest_call_success(request_type):
             }
         ],
         "deployment_state": 1,
-        "cc_deployments": [
-            {
-                "name": "name_value",
-                "target_resource_config": {},
-                "target_resource": "target_resource_value",
-                "cloud_control_metadata": {},
-                "description": "description_value",
-                "deployment_state": 1,
-                "create_time": {"seconds": 751, "nanos": 543},
-                "update_time": {},
-                "etag": "etag_value",
-                "parameter_substituted_cloud_control": {
-                    "name": "name_value",
-                    "major_revision_id": 1811,
-                    "description": "description_value",
-                    "display_name": "display_name_value",
-                    "supported_enforcement_modes": [1],
-                    "parameter_spec": [
-                        {
-                            "name": "name_value",
-                            "display_name": "display_name_value",
-                            "description": "description_value",
-                            "is_required": True,
-                            "value_type": 3,
-                            "default_value": {},
-                            "substitution_rules": [
-                                {
-                                    "placeholder_substitution_rule": {
-                                        "attribute": "attribute_value"
-                                    },
-                                    "attribute_substitution_rule": {
-                                        "attribute": "attribute_value"
-                                    },
-                                }
-                            ],
-                            "sub_parameters": {},
-                            "validation": {
-                                "allowed_values": {"values": {}},
-                                "int_range": {"min_": 419, "max_": 421},
-                                "regexp_pattern": {"pattern": "pattern_value"},
-                            },
-                        }
-                    ],
-                    "rules": [
-                        {
-                            "cel_expression": {
-                                "resource_types_values": {},
-                                "expression": "expression_value",
-                            },
-                            "description": "description_value",
-                            "rule_action_types": [1],
-                        }
-                    ],
-                    "severity": 1,
-                    "finding_category": "finding_category_value",
-                    "supported_cloud_providers": [1],
-                    "related_frameworks": [
-                        "related_frameworks_value1",
-                        "related_frameworks_value2",
-                    ],
-                    "remediation_steps": "remediation_steps_value",
-                    "categories": [1],
-                    "create_time": {},
-                    "supported_target_resource_types": [1],
-                },
-                "framework_deployment_references": [
-                    {
-                        "framework_deployment": "framework_deployment_value",
-                        "framework_reference": {},
-                        "framework_display_name": "framework_display_name_value",
-                    }
-                ],
-                "target_resource_display_name": "target_resource_display_name_value",
-            }
-        ],
-        "create_time": {},
+        "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
-        "cc_group_deployments": [
-            {
-                "cloud_control_group": {
-                    "name": "name_value",
-                    "description": "description_value",
-                    "type_": 1,
-                    "control_id": "control_id_value",
-                    "cloud_control_details": {},
-                    "major_revision_id": 1811,
-                    "control": "control_value",
-                },
-                "cc_deployments": {},
-                "cc_deployment_references": [
-                    {"cloud_control_deployment": "cloud_control_deployment_value"}
-                ],
-            }
-        ],
         "target_resource_display_name": "target_resource_display_name_value",
-        "cloud_control_deployment_references": {},
+        "cloud_control_deployment_references": [
+            {"cloud_control_deployment": "cloud_control_deployment_value"}
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
