@@ -1021,6 +1021,13 @@ if __name__ == "__main__":  # pragma: NO COVER
             output=args.output,
             input=args.input,
         )
+    elif args.command == "configure":
+        args.func(
+            librarian=args.librarian,
+            input=args.input,
+            repo=args.repo,
+            source=args.sourceß,
+        )
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
     elif args.command == "release-init":
