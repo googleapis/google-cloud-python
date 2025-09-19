@@ -1026,9 +1026,9 @@ if __name__ == "__main__":  # pragma: NO COVER
     elif args.command == "configure":
         args.func(
             librarian=args.librarian,
-            input=args.input,
-            repo=args.repo,
             source=args.source,
+            repo=args.repo,
+            input=args.input,
         )
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
