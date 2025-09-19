@@ -119,7 +119,7 @@ def _write_json_file(path: str, updated_content: Dict):
 def handle_configure(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
-    output: str = OUTPUT_DIR,
+    repo: str = REPO_DIR,
     input: str = INPUT_DIR,
 ):
     try:
@@ -130,8 +130,10 @@ def handle_configure(
         apis_to_configure = request_data.get("apis", [])
         for api in apis_to_configure:
             api_path = api.get("path")
+            print(api_path)
             if api_path:
-                _generate_api(api_path, library_id, source, output)
+                # _generate_api(api_path, library_id, source, output)
+                pass
     except Exception as e:
         raise ValueError("Configuring a new library failed.") from e
     logger.info("'configure' command executed.")
