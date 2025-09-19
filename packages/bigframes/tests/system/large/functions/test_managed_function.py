@@ -1245,7 +1245,7 @@ def test_managed_function_df_where_other_issue(session, dataset_id, scalars_df_i
         cleanup_function_assets(the_sum_mf, session.bqclient, ignore_failures=False)
 
 
-def test_managed_function_series_where_mask(session, dataset_id, scalars_dfs):
+def test_managed_function_series_where_mask_map(session, dataset_id, scalars_dfs):
     try:
 
         # The return type has to be bool type for callable where condition.
@@ -1282,6 +1282,13 @@ def test_managed_function_series_where_mask(session, dataset_id, scalars_dfs):
             cond=is_positive_mf, other=-bf_int64_filtered
         ).to_pandas()
         pd_result = pd_int64_filtered.mask(cond=_is_positive, other=-pd_int64_filtered)
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+        # Test series.map method.
+        bf_result = bf_int64_filtered.map(is_positive_mf).to_pandas()
+        pd_result = pd_int64_filtered.map(_is_positive)
 
         # Ignore any dtype difference.
         pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)

@@ -25,6 +25,7 @@ import textwrap
 import typing
 from typing import (
     Any,
+    Callable,
     cast,
     Iterable,
     List,
@@ -2339,7 +2340,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def map(
         self,
-        arg: typing.Union[Mapping, Series],
+        arg: typing.Union[Mapping, Series, Callable],
         na_action: Optional[str] = None,
         *,
         verify_integrity: bool = False,
@@ -2361,6 +2362,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
             map_df = map_df.set_index("keys")
         elif callable(arg):
+            # This is for remote function and managed funtion.
             return self.apply(arg)
         else:
             # Mirroring pandas, call the uncallable object
