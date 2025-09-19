@@ -15,6 +15,7 @@
 import pytest
 
 from bigframes import operations as ops
+import bigframes.core.expression as ex
 import bigframes.pandas as bpd
 from bigframes.testing import utils
 
@@ -302,4 +303,11 @@ def test_zfill(scalar_types_df: bpd.DataFrame, snapshot):
     sql = utils._apply_unary_ops(
         bf_df, [ops.ZfillOp(width=10).as_expr(col_name)], [col_name]
     )
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_add_string(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = utils._apply_binary_op(bf_df, ops.add_op, "string_col", ex.const("a"))
+
     snapshot.assert_match(sql, "out.sql")

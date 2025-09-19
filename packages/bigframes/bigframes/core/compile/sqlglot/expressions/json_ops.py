@@ -21,6 +21,7 @@ from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
 register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
+register_binary_op = scalar_compiler.scalar_op_compiler.register_binary_op
 
 
 @register_unary_op(ops.JSONExtract, pass_op=True)
@@ -66,3 +67,8 @@ def _(expr: TypedExpr) -> sge.Expression:
 @register_unary_op(ops.ToJSONString)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.func("TO_JSON_STRING", expr.expr)
+
+
+@register_binary_op(ops.JSONSet, pass_op=True)
+def _(left: TypedExpr, right: TypedExpr, op) -> sge.Expression:
+    return sge.func("JSON_SET", left.expr, sge.convert(op.json_path), right.expr)

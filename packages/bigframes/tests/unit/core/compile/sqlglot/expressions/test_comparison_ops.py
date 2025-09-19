@@ -42,3 +42,81 @@ def test_is_in(scalar_types_df: bpd.DataFrame, snapshot):
 
     sql = utils._apply_unary_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
     snapshot.assert_match(sql, "out.sql")
+
+
+def test_eq_null_match(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+    sql = utils._apply_binary_op(bf_df, ops.eq_null_match_op, "int64_col", "bool_col")
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_eq_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_ne_int"] = bf_df["int64_col"] == bf_df["int64_col"]
+    bf_df["int_ne_1"] = bf_df["int64_col"] == 1
+
+    bf_df["int_ne_bool"] = bf_df["int64_col"] == bf_df["bool_col"]
+    bf_df["bool_ne_int"] = bf_df["bool_col"] == bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_gt_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_gt_int"] = bf_df["int64_col"] > bf_df["int64_col"]
+    bf_df["int_gt_1"] = bf_df["int64_col"] > 1
+
+    bf_df["int_gt_bool"] = bf_df["int64_col"] > bf_df["bool_col"]
+    bf_df["bool_gt_int"] = bf_df["bool_col"] > bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_ge_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_ge_int"] = bf_df["int64_col"] >= bf_df["int64_col"]
+    bf_df["int_ge_1"] = bf_df["int64_col"] >= 1
+
+    bf_df["int_ge_bool"] = bf_df["int64_col"] >= bf_df["bool_col"]
+    bf_df["bool_ge_int"] = bf_df["bool_col"] >= bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_lt_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_lt_int"] = bf_df["int64_col"] < bf_df["int64_col"]
+    bf_df["int_lt_1"] = bf_df["int64_col"] < 1
+
+    bf_df["int_lt_bool"] = bf_df["int64_col"] < bf_df["bool_col"]
+    bf_df["bool_lt_int"] = bf_df["bool_col"] < bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_le_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_le_int"] = bf_df["int64_col"] <= bf_df["int64_col"]
+    bf_df["int_le_1"] = bf_df["int64_col"] <= 1
+
+    bf_df["int_le_bool"] = bf_df["int64_col"] <= bf_df["bool_col"]
+    bf_df["bool_le_int"] = bf_df["bool_col"] <= bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_ne_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_ne_int"] = bf_df["int64_col"] != bf_df["int64_col"]
+    bf_df["int_ne_1"] = bf_df["int64_col"] != 1
+
+    bf_df["int_ne_bool"] = bf_df["int64_col"] != bf_df["bool_col"]
+    bf_df["bool_ne_int"] = bf_df["bool_col"] != bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")

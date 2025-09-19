@@ -25,9 +25,10 @@ import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
 
-from bigframes.core import expression as expr
+from bigframes import operations as ops
+from bigframes.core import expression as ex
 import bigframes.functions._utils as bff_utils
-import bigframes.pandas
+import bigframes.pandas as bpd
 
 ML_REGRESSION_METRICS = [
     "mean_absolute_error",
@@ -67,17 +68,13 @@ ML_MULTIMODAL_GENERATE_EMBEDDING_OUTPUT = [
 
 
 # Prefer this function for tests that run in both ordered and unordered mode
-def assert_dfs_equivalent(
-    pd_df: pd.DataFrame, bf_df: bigframes.pandas.DataFrame, **kwargs
-):
+def assert_dfs_equivalent(pd_df: pd.DataFrame, bf_df: bpd.DataFrame, **kwargs):
     bf_df_local = bf_df.to_pandas()
     ignore_order = not bf_df._session._strictly_ordered
     assert_pandas_df_equal(bf_df_local, pd_df, ignore_order=ignore_order, **kwargs)
 
 
-def assert_series_equivalent(
-    pd_series: pd.Series, bf_series: bigframes.pandas.Series, **kwargs
-):
+def assert_series_equivalent(pd_series: pd.Series, bf_series: bpd.Series, **kwargs):
     bf_df_local = bf_series.to_pandas()
     ignore_order = not bf_series._session._strictly_ordered
     assert_series_equal(bf_df_local, pd_series, ignore_order=ignore_order, **kwargs)
@@ -452,12 +449,12 @@ def get_function_name(func, package_requirements=None, is_row_processor=False):
 
 
 def _apply_unary_ops(
-    obj: bigframes.pandas.DataFrame,
-    ops_list: Sequence[expr.Expression],
+    obj: bpd.DataFrame,
+    ops_list: Sequence[ex.Expression],
     new_names: Sequence[str],
 ) -> str:
     """Applies a list of unary ops to the given DataFrame and returns the SQL
-    representing the resulting DataFrames."""
+    representing the resulting DataFrame."""
     array_value = obj._block.expr
     result, old_names = array_value.compute_values(ops_list)
 
@@ -465,6 +462,26 @@ def _apply_unary_ops(
     assert len(old_names) == len(new_names)
     col_ids = {old_name: new_name for old_name, new_name in zip(old_names, new_names)}
     result = result.rename_columns(col_ids).select_columns(new_names)
+
+    sql = result.session._executor.to_sql(result, enable_cache=False)
+    return sql
+
+
+def _apply_binary_op(
+    obj: bpd.DataFrame,
+    op: ops.BinaryOp,
+    l_arg: str,
+    r_arg: Union[str, ex.Expression],
+) -> str:
+    """Applies a binary op to the given DataFrame and return the SQL representing
+    the resulting DataFrame."""
+    array_value = obj._block.expr
+    op_expr = op.as_expr(l_arg, r_arg)
+    result, col_ids = array_value.compute_values([op_expr])
+
+    # Rename columns for deterministic golden SQL results.
+    assert len(col_ids) == 1
+    result = result.rename_columns({col_ids[0]: l_arg}).select_columns([l_arg])
 
     sql = result.session._executor.to_sql(result, enable_cache=False)
     return sql

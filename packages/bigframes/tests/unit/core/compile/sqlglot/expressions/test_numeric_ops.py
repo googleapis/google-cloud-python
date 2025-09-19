@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
 import pytest
 
 from bigframes import operations as ops
@@ -211,3 +212,88 @@ def test_tanh(scalar_types_df: bpd.DataFrame, snapshot):
     sql = utils._apply_unary_ops(bf_df, [ops.tanh_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
+
+
+def test_add_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_add_int"] = bf_df["int64_col"] + bf_df["int64_col"]
+    bf_df["int_add_1"] = bf_df["int64_col"] + 1
+
+    bf_df["int_add_bool"] = bf_df["int64_col"] + bf_df["bool_col"]
+    bf_df["bool_add_int"] = bf_df["bool_col"] + bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_div_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col", "float64_col"]]
+
+    bf_df["int_div_int"] = bf_df["int64_col"] / bf_df["int64_col"]
+    bf_df["int_div_1"] = bf_df["int64_col"] / 1
+    bf_df["int_div_0"] = bf_df["int64_col"] / 0.0
+
+    bf_df["int_div_float"] = bf_df["int64_col"] / bf_df["float64_col"]
+    bf_df["float_div_int"] = bf_df["float64_col"] / bf_df["int64_col"]
+    bf_df["float_div_0"] = bf_df["float64_col"] / 0.0
+
+    bf_df["int_div_bool"] = bf_df["int64_col"] / bf_df["bool_col"]
+    bf_df["bool_div_int"] = bf_df["bool_col"] / bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_div_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col", "int64_col"]]
+    timedelta = pd.Timedelta(1, unit="d")
+    bf_df["timedelta_div_numeric"] = timedelta / bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_floordiv_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col", "float64_col"]]
+
+    bf_df["int_div_int"] = bf_df["int64_col"] // bf_df["int64_col"]
+    bf_df["int_div_1"] = bf_df["int64_col"] // 1
+    bf_df["int_div_0"] = bf_df["int64_col"] // 0.0
+
+    bf_df["int_div_float"] = bf_df["int64_col"] // bf_df["float64_col"]
+    bf_df["float_div_int"] = bf_df["float64_col"] // bf_df["int64_col"]
+    bf_df["float_div_0"] = bf_df["float64_col"] // 0.0
+
+    bf_df["int_div_bool"] = bf_df["int64_col"] // bf_df["bool_col"]
+    bf_df["bool_div_int"] = bf_df["bool_col"] // bf_df["int64_col"]
+
+
+def test_floordiv_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col", "date_col"]]
+    timedelta = pd.Timedelta(1, unit="d")
+
+    bf_df["timedelta_div_numeric"] = timedelta // 2
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_mul_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_mul_int"] = bf_df["int64_col"] * bf_df["int64_col"]
+    bf_df["int_mul_1"] = bf_df["int64_col"] * 1
+
+    bf_df["int_mul_bool"] = bf_df["int64_col"] * bf_df["bool_col"]
+    bf_df["bool_mul_int"] = bf_df["bool_col"] * bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_sub_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_add_int"] = bf_df["int64_col"] - bf_df["int64_col"]
+    bf_df["int_add_1"] = bf_df["int64_col"] - 1
+
+    bf_df["int_add_bool"] = bf_df["int64_col"] - bf_df["bool_col"]
+    bf_df["bool_add_int"] = bf_df["bool_col"] - bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")

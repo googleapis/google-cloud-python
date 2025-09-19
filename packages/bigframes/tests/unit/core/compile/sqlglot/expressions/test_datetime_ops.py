@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
 import pytest
 
 from bigframes import operations as ops
@@ -215,3 +216,29 @@ def test_iso_year(scalar_types_df: bpd.DataFrame, snapshot):
     sql = utils._apply_unary_ops(bf_df, [ops.iso_year_op.as_expr(col_name)], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
+
+
+def test_add_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col", "date_col"]]
+    timedelta = pd.Timedelta(1, unit="d")
+
+    bf_df["date_add_timedelta"] = bf_df["date_col"] + timedelta
+    bf_df["timestamp_add_timedelta"] = bf_df["timestamp_col"] + timedelta
+    bf_df["timedelta_add_date"] = timedelta + bf_df["date_col"]
+    bf_df["timedelta_add_timestamp"] = timedelta + bf_df["timestamp_col"]
+    bf_df["timedelta_add_timedelta"] = timedelta + timedelta
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_sub_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col", "duration_col", "date_col"]]
+    bf_df["duration_col"] = bpd.to_timedelta(bf_df["duration_col"], unit="us")
+
+    bf_df["date_sub_timedelta"] = bf_df["date_col"] - bf_df["duration_col"]
+    bf_df["timestamp_sub_timedelta"] = bf_df["timestamp_col"] - bf_df["duration_col"]
+    bf_df["timestamp_sub_date"] = bf_df["date_col"] - bf_df["date_col"]
+    bf_df["date_sub_timestamp"] = bf_df["timestamp_col"] - bf_df["timestamp_col"]
+    bf_df["timedelta_sub_timedelta"] = bf_df["duration_col"] - bf_df["duration_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")

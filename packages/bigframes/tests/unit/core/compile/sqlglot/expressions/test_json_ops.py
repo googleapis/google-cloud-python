@@ -15,6 +15,7 @@
 import pytest
 
 from bigframes import operations as ops
+import bigframes.core.expression as ex
 import bigframes.pandas as bpd
 from bigframes.testing import utils
 
@@ -94,6 +95,15 @@ def test_to_json_string(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df[[col_name]]
     sql = utils._apply_unary_ops(
         bf_df, [ops.ToJSONString().as_expr(col_name)], [col_name]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_json_set(json_types_df: bpd.DataFrame, snapshot):
+    bf_df = json_types_df[["json_col"]]
+    sql = utils._apply_binary_op(
+        bf_df, ops.JSONSet(json_path="$.a"), "json_col", ex.const(100)
     )
 
     snapshot.assert_match(sql, "out.sql")
