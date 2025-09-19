@@ -1,111 +1,5 @@
 {
     "packages": {
-        "packages/google-ads-admanager": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-ads-admanager",
-            "extra-files": [
-                "google/ads/admanager/gapic_version.py",
-                "google/ads/admanager_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.ads.admanager.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-ads-marketingplatform-admin": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-ads-marketingplatform-admin",
-            "extra-files": [
-                "google/ads/marketingplatform_admin/gapic_version.py",
-                "google/ads/marketingplatform_admin_v1alpha/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.marketingplatform.admin.v1alpha.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-ai-generativelanguage": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-ai-generativelanguage",
-            "extra-files": [
-                "google/ai/generativelanguage/gapic_version.py",
-                "google/ai/generativelanguage_v1/gapic_version.py",
-                "google/ai/generativelanguage_v1alpha/gapic_version.py",
-                "google/ai/generativelanguage_v1beta/gapic_version.py",
-                "google/ai/generativelanguage_v1beta2/gapic_version.py",
-                "google/ai/generativelanguage_v1beta3/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1alpha.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1beta.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1beta2.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1beta3.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-analytics-admin": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-analytics-admin",
-            "extra-files": [
-                "google/analytics/admin/gapic_version.py",
-                "google/analytics/admin_v1alpha/gapic_version.py",
-                "google/analytics/admin_v1beta/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.analytics.admin.v1beta.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-analytics-data": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-analytics-data",
-            "extra-files": [
-                "google/analytics/data/gapic_version.py",
-                "google/analytics/data_v1alpha/gapic_version.py",
-                "google/analytics/data_v1beta/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.analytics.data.v1alpha.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.analytics.data.v1beta.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
         "packages/google-apps-card": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -1604,21 +1498,6 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.essentialcontacts.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-cloud-eventarc": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-eventarc",
-            "extra-files": [
-                "google/cloud/eventarc/gapic_version.py",
-                "google/cloud/eventarc_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.eventarc.v1.json",
                     "type": "json"
                 }
             ],
@@ -3279,21 +3158,6 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.translation.v3beta1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-cloud-video-live-stream": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-video-live-stream",
-            "extra-files": [
-                "google/cloud/video/live_stream/gapic_version.py",
-                "google/cloud/video/live_stream_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.video.livestream.v1.json",
                     "type": "json"
                 }
             ],
