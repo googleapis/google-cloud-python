@@ -121,6 +121,29 @@ def handle_configure(
     repo: str = REPO_DIR,
     input: str = INPUT_DIR,
 ):
+    """Onboards a new library by completing its configuration.
+
+    This function reads a partial library definition from `configure-request.json`,
+    fills in missing fields like the version, source roots, and preservation
+    rules, and writes the complete configuration to `configure-response.json`.
+    It ensures that new libraries conform to the repository's standard structure.
+
+    See https://github.com/googleapis/librarian/blob/main/doc/container-contract.md#configure-container-command
+
+    Args:
+        librarian(str): Path to the directory in the container which contains
+            the librarian configuration.
+        source(str): Path to the directory in the container which contains
+            API protos.
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+        input(str): The path to the directory in the container
+            which contains additional generator input.
+
+    Raises:
+        ValueError: If configuring a new library fails.
+    """
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
     logger.info("'configure' command executed.")
 
