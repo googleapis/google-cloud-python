@@ -116,6 +116,21 @@ def _write_json_file(path: str, updated_content: Dict):
         f.write("\n")
 
 
+def _get_library_version(library_id: str, repo: str) -> str:
+    """Gets the library version from its gapic_version.py file."""
+    library_path = Path(f"{repo}/packages/{library_id}")
+    gapic_version_files = list(library_path.rglob("**/gapic_version.py"))
+    if not gapic_version_files:
+        raise ValueError(f"Could not find gapic_version.py for {library_id}")
+
+    content = _read_text_file(gapic_version_files[0])
+    match = re.search(r"__version__\s*=\s*[\"']([^\"']+)[\"']", content)
+    if not match:
+        raise ValueError(f"Could not extract version from {gapic_version_files[0]}")
+
+    return match.group(1)
+
+
 def handle_configure(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
@@ -123,18 +138,29 @@ def handle_configure(
     input: str = INPUT_DIR,
 ):
     try:
-        # Read a generate-request.json file
-        request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
-        print(request_data)
-        library_id = _get_library_id(request_data)
-        apis_to_configure = request_data.get("apis", [])
-        for api in apis_to_configure:
-            api_path = api.get("path")
-            print(api_path)
-            if api_path:
-                # _generate_api(api_path, library_id, source, output)
-                pass
-        _write_json_file(f"{librarian}/configure-response.json", request_data)
+        # configure-request.json contains the partial library definition.
+        library_config = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
+        library_id = _get_library_id(library_config)
+
+        # Fill in the missing fields.
+        library_config["version"] = _get_library_version(library_id, repo)
+        library_config["source_roots"] = [f"packages/{library_id}"]
+        library_config["preserve_regex"] = [
+            f"packages/{library_id}/CHANGELOG.md",
+            "docs/CHANGELOG.md",
+            "docs/README.rst",
+            "samples/README.txt",
+            "tar.gz",
+            "gapic_version.py",
+            "scripts/client-post-processing",
+            "samples/snippets/README.rst",
+            "tests/system",
+        ]
+        library_config["remove_regex"] = [f"packages/{library_id}"]
+
+        # Write the completed configuration to configure-response.json.
+        _write_json_file(f"{librarian}/configure-response.json", library_config)
+
     except Exception as e:
         raise ValueError("Configuring a new library failed.") from e
     logger.info("'configure' command executed.")
