@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-maps-routeoptimization/#history
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-maps-routeoptimization-v0.1.10...google-maps-routeoptimization-v0.1.11) (2025-06-11)
 
 

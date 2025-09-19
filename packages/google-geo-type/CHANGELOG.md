@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-geo-type/#history
+
 ## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-geo-type-v0.3.12...google-geo-type-v0.3.13) (2025-06-11)
 
 

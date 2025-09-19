@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-network-connectivity/#history
+
 ## [2.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.9.0...google-cloud-network-connectivity-v2.10.0) (2025-09-08)
 
 

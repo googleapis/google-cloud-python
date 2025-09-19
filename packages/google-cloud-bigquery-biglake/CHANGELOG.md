@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-bigquery-biglake/#history
+
 ## [0.4.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.4.14...google-cloud-bigquery-biglake-v0.4.15) (2025-06-11)
 
 

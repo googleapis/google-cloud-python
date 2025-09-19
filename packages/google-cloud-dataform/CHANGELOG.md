@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-dataform/#history
+
 ## [0.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.6.1...google-cloud-dataform-v0.6.2) (2025-05-20)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-vpc-access/#history
+
 ## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vpc-access-v1.13.1...google-cloud-vpc-access-v1.13.2) (2025-06-11)
 
 

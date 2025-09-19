@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-access-approval/#history
+
 ## [1.16.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-approval-v1.16.1...google-cloud-access-approval-v1.16.2) (2025-06-11)
 
 

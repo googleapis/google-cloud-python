@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-datastream/#history
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.14.1...google-cloud-datastream-v1.15.0) (2025-08-10)
 
 

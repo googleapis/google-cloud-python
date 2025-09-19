@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-ads-marketingplatform-admin/#history
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.5...google-ads-marketingplatform-admin-v0.1.6) (2025-06-11)
 
 

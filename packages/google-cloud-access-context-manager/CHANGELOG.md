@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-access-context-manager/#history
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.2.1...google-cloud-access-context-manager-v0.2.2) (2025-03-15)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-secret-manager/#history
+
 ## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.23.3...google-cloud-secret-manager-v2.24.0) (2025-06-05)
 
 

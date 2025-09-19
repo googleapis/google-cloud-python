@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-netapp/#history
+
 ## [0.3.24](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.23...google-cloud-netapp-v0.3.24) (2025-09-04)
 
 

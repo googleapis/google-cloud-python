@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-managedkafka/#history
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.11...google-cloud-managedkafka-v0.1.12) (2025-07-10)
 
 

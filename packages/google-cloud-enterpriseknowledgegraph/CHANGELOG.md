@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-enterpriseknowledgegraph/#history
+
 ## [0.3.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-enterpriseknowledgegraph-v0.3.16...google-cloud-enterpriseknowledgegraph-v0.3.17) (2025-06-11)
 
 

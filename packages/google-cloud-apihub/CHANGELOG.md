@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-apihub/#history
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apihub-v0.2.5...google-cloud-apihub-v0.2.6) (2025-06-11)
 
 

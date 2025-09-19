@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-ads-admanager/#history
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.2.6...google-ads-admanager-v0.3.0) (2025-07-02)
 
 

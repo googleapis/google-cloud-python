@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-maps-fleetengine/#history
+
 ## [0.2.11](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.2.10...google-maps-fleetengine-v0.2.11) (2025-07-10)
 
 

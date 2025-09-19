@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-private-ca/#history
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.14.3...google-cloud-private-ca-v1.15.0) (2025-07-10)
 
 

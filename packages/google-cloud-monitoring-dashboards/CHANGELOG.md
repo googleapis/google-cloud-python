@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-monitoring-dashboards/#history
+
 ## [2.18.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.18.1...google-cloud-monitoring-dashboards-v2.18.2) (2025-06-11)
 
 

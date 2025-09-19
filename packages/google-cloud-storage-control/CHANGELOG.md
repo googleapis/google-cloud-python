@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-storage-control/#history
+
 ## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.6.0...google-cloud-storage-control-v1.6.1) (2025-07-23)
 
 

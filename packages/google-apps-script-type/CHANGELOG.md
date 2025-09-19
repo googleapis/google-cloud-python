@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-apps-script-type/#history
+
 ## [0.3.15](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.3.14...google-apps-script-type-v0.3.15) (2025-06-11)
 
 

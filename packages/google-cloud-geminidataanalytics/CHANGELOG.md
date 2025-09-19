@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.2.0...google-cloud-geminidataanalytics-v0.3.0) (2025-08-29)
 
 

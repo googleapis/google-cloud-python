@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-config/#history
+
 ## [0.1.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.20...google-cloud-config-v0.1.21) (2025-09-04)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-bigquery-reservation/#history
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.18.0...google-cloud-bigquery-reservation-v1.19.0) (2025-09-04)
 
 

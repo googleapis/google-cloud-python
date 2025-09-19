@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-shell/#history
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-shell-v1.12.0...google-cloud-shell-v1.12.1) (2025-03-15)
 
 

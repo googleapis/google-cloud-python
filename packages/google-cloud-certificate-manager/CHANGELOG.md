@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-certificate-manager/#history
+
 ## [1.10.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.10.1...google-cloud-certificate-manager-v1.10.2) (2025-06-11)
 
 

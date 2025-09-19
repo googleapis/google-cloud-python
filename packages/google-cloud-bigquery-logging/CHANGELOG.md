@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-bigquery-logging/#history
+
 ## [1.6.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.6.2...google-cloud-bigquery-logging-v1.6.3) (2025-06-11)
 
 

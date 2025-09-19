@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-storagebatchoperations/#history
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storagebatchoperations-v0.1.2...google-cloud-storagebatchoperations-v0.1.3) (2025-05-15)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-appengine-logging/#history
+
 ## [1.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-logging-v1.6.1...google-cloud-appengine-logging-v1.6.2) (2025-06-11)
 
 

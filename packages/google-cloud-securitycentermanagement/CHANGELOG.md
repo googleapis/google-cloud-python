@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-securitycentermanagement/#history
+
 ## [0.1.22](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.21...google-cloud-securitycentermanagement-v0.1.22) (2025-04-12)
 
 

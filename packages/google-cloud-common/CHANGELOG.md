@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-common/#history
+
 ## [1.5.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.5.1...google-cloud-common-v1.5.2) (2025-06-11)
 
 

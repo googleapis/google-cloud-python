@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-advisorynotifications/#history
+
 ## [0.3.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.15...google-cloud-advisorynotifications-v0.3.16) (2025-06-11)
 
 

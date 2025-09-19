@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-audit-log/#history
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.3.1...google-cloud-audit-log-v0.3.2) (2025-03-15)
 
 

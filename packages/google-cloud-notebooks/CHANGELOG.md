@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-notebooks/#history
+
 ## [1.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.13.2...google-cloud-notebooks-v1.13.3) (2025-06-11)
 
 

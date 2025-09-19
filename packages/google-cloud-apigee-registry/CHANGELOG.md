@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-apigee-registry/#history
+
 ## [0.6.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.6.17...google-cloud-apigee-registry-v0.6.18) (2025-06-11)
 
 

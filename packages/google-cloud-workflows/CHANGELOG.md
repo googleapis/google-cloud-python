@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-workflows/#history
+
 ## [1.18.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.18.1...google-cloud-workflows-v1.18.2) (2025-06-11)
 
 

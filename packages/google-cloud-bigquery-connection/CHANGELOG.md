@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-bigquery-connection/#history
+
 ## [1.18.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-connection-v1.18.2...google-cloud-bigquery-connection-v1.18.3) (2025-06-11)
 
 

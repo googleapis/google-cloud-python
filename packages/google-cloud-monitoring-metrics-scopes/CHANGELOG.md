@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-monitoring-metrics-scopes/#history
+
 ## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-metrics-scopes-v1.9.1...google-cloud-monitoring-metrics-scopes-v1.9.2) (2025-06-11)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-storageinsights/#history
+
 ## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.15...google-cloud-storageinsights-v0.1.16) (2025-05-15)
 
 

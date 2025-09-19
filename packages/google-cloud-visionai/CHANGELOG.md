@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-visionai/#history
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.9...google-cloud-visionai-v0.1.10) (2025-06-11)
 
 

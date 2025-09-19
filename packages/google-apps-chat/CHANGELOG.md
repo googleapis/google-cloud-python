@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-apps-chat/#history
+
 ## [0.2.9](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.8...google-apps-chat-v0.2.9) (2025-08-29)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-rapidmigrationassessment/#history
+
 ## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.15...google-cloud-rapidmigrationassessment-v0.1.16) (2025-06-11)
 
 

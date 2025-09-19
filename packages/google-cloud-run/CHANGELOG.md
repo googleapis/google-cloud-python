@@ -1,5 +1,8 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-run/#history
 
 ## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.19...google-cloud-run-v0.11.0) (2025-08-29)
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-gke-hub/#history
+
 ## [1.17.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.17.2...google-cloud-gke-hub-v1.17.3) (2025-06-11)
 
 
