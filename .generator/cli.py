@@ -115,7 +115,12 @@ def _write_json_file(path: str, updated_content: Dict):
         f.write("\n")
 
 
-def handle_configure():
+def handle_configure(
+    librarian: str = LIBRARIAN_DIR,
+    source: str = SOURCE_DIR,
+    repo: str = REPO_DIR,
+    input: str = INPUT_DIR,
+):
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
     logger.info("'configure' command executed.")
 
@@ -997,7 +1002,14 @@ if __name__ == "__main__":  # pragma: NO COVER
     args = parser.parse_args()
 
     # Pass specific arguments to the handler functions for generate/build
-    if args.command == "generate":
+    if args.command == "configure":
+        args.func(
+            librarian=args.librarian,
+            source=args.source,
+            repo=args.repo,
+            input=args.input,
+        )
+    elif args.command == "generate":
         args.func(
             librarian=args.librarian,
             source=args.source,
