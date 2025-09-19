@@ -43,7 +43,7 @@ def get_version_for_package(version_path: Path) -> Tuple[int]:
 
 def get_packages_with_owlbot_yaml(packages_dir: Path = PACKAGES_DIR) -> List[Path]:
     """
-    Walks through all API packages in the specified `packages_dir` path. 
+    Walks through all API packages in the specified `packages_dir` path.
 
     Args:
         packages_dir(pathlib.Path): Path to the directory which contains packages.
@@ -62,7 +62,8 @@ def configure_release_please_manifest(
 ) -> None:
     """
     This method updates the `.release-please-manifest.json` file in the directory
-    `root_dir`.
+    `root_dir`. It removes entries that are not in `package_dirs` and updates
+    versions for both existing and new packages.
 
     Args:
         package_dirs(List[pathlib.Path]): A list of Paths, one for each package in the
@@ -72,25 +73,41 @@ def configure_release_please_manifest(
     Returns:
         None
     """
+
     release_please_manifest = root_dir / ".release-please-manifest.json"
+
     with open(release_please_manifest, "r") as f:
         manifest_json = json.load(f)
-        for package_dir in package_dirs:
-            if f"packages/{package_dir.name}" not in manifest_json:
-                manifest_json[f"packages/{package_dir.name}"] = "0.0.0"
 
-            if not package_supports_gapic_version(package_dir):
-                continue
-            gapic_version_file = next(package_dir.rglob("**/gapic_version.py"), None)
-            if gapic_version_file is None:
-                raise Exception("Failed to find gapic_version.py")
-            version = get_version_for_package(gapic_version_file)
-            # check the version in gapic_version.py and update if newer than the default which is
-            # 0.0.0 or 0.1.0.
-            if version != (0, 0, 0) and version != (0, 1, 0):
-                manifest_json[
-                    f"packages/{package_dir.name}"
-                ] = f"{version[0]}.{version[1]}.{version[2]}"
+    expected_package_paths = {
+        f"packages/{package_dir.name}" for package_dir in package_dirs
+    }
+
+    keys_to_remove = []
+    for key in manifest_json.keys():
+        if key not in expected_package_paths:
+            keys_to_remove.append(key)
+
+    for key in keys_to_remove:
+        print(f"Removed stale entry from manifest: {key}")
+        del manifest_json[key]
+
+    for package_dir in package_dirs:
+        if f"packages/{package_dir.name}" not in manifest_json:
+            manifest_json[f"packages/{package_dir.name}"] = "0.0.0"
+
+        if not package_supports_gapic_version(package_dir):
+            continue
+        gapic_version_file = next(package_dir.rglob("**/gapic_version.py"), None)
+        if gapic_version_file is None:
+            raise Exception("Failed to find gapic_version.py")
+        version = get_version_for_package(gapic_version_file)
+        # check the version in gapic_version.py and update if newer than the default which is
+        # 0.0.0 or 0.1.0.
+        if version != (0, 0, 0) and version != (0, 1, 0):
+            manifest_json[
+                f"packages/{package_dir.name}"
+            ] = f"{version[0]}.{version[1]}.{version[2]}"
 
     with open(release_please_manifest, "w") as f:
         json.dump(manifest_json, f, indent=4, sort_keys=True)
@@ -98,8 +115,8 @@ def configure_release_please_manifest(
 
 
 def package_supports_gapic_version(package_dir: str) -> bool:
-    """Returns True if the given package directory is expected to have gapic_version.py """            
-    
+    """Returns True if the given package directory is expected to have gapic_version.py"""
+
     for package in PACKAGES_WITHOUT_GAPIC_VERSION:
         if package_dir == Path(PACKAGES_DIR / package):
             return False
@@ -111,16 +128,16 @@ def configure_release_please_config(
     package_dirs: List[Path], root_dir: Path = ROOT_DIR
 ) -> None:
     """
-        This method updates the `release-please-config.json` file in the directory
-        `root_dir`. If `root_dir` is not provided, `google-cloud-python` will be used as the root.
+    This method updates the `release-please-config.json` file in the directory
+    `root_dir`. If `root_dir` is not provided, `google-cloud-python` will be used as the root.
 
-        Args:
-            package_dirs(List[pathlib.Path]): A list of Paths, one for each package in
-                the `packages/` folder whose entry will be updated in the release-please config.
-            root_dir(pathlib.Path): The directory to update the `release-please-config.json`
+    Args:
+        package_dirs(List[pathlib.Path]): A list of Paths, one for each package in
+            the `packages/` folder whose entry will be updated in the release-please config.
+        root_dir(pathlib.Path): The directory to update the `release-please-config.json`
 
-        Returns:
-            None
+    Returns:
+        None
     """
     release_please_config = root_dir / "release-please-config.json"
     config_json = {"packages": {}}
