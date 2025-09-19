@@ -435,7 +435,7 @@ def _run_nox_sessions(library_id: str, repo: str):
     Args:
         library_id(str): The library id under test.
         repo(str): This directory will contain all directories that make up a
-            library, the .librarian folder, and any global file declared in
+            library, the .librarian folder, and any global files declared in
             the config.yaml.
     """
     sessions = [
