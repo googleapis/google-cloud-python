@@ -2,7 +2,7 @@ image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-li
 libraries:
   - id: google-cloud-dlp
     version: 3.32.0
-    last_generated_commit: b7e013ac0b9896cf89de48706221ec22212d8d0e
+    last_generated_commit: 3acfdb6166a7101691cdf812bf8f8a67a2084fde
     apis:
       - path: google/privacy/dlp/v2
         service_config: dlp_v2.yaml
@@ -23,7 +23,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc
     version: 1.15.3
-    last_generated_commit: b7e013ac0b9896cf89de48706221ec22212d8d0e
+    last_generated_commit: 3acfdb6166a7101691cdf812bf8f8a67a2084fde
     apis:
       - path: google/cloud/eventarc/v1
         service_config: eventarc_v1.yaml
@@ -44,7 +44,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-live-stream
     version: 1.12.0
-    last_generated_commit: b7e013ac0b9896cf89de48706221ec22212d8d0e
+    last_generated_commit: 3acfdb6166a7101691cdf812bf8f8a67a2084fde
     apis:
       - path: google/cloud/video/livestream/v1
         service_config: livestream_v1.yaml
@@ -65,7 +65,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-marketingplatform-admin
     version: 0.1.6
-    last_generated_commit: b7e013ac0b9896cf89de48706221ec22212d8d0e
+    last_generated_commit: 3acfdb6166a7101691cdf812bf8f8a67a2084fde
     apis:
       - path: google/marketingplatform/admin/v1alpha
         service_config: marketingplatformadmin_v1alpha.yaml
@@ -86,7 +86,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ai-generativelanguage
     version: 0.7.0
-    last_generated_commit: b7e013ac0b9896cf89de48706221ec22212d8d0e
+    last_generated_commit: 3acfdb6166a7101691cdf812bf8f8a67a2084fde
     apis:
       - path: google/ai/generativelanguage/v1
         service_config: generativelanguage_v1.yaml
@@ -115,7 +115,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-analytics-admin
     version: 0.25.0
-    last_generated_commit: b7e013ac0b9896cf89de48706221ec22212d8d0e
+    last_generated_commit: 3acfdb6166a7101691cdf812bf8f8a67a2084fde
     apis:
       - path: google/analytics/admin/v1beta
         service_config: analyticsadmin_v1beta.yaml
@@ -138,7 +138,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-analytics-data
     version: 0.18.19
-    last_generated_commit: b7e013ac0b9896cf89de48706221ec22212d8d0e
+    last_generated_commit: 3acfdb6166a7101691cdf812bf8f8a67a2084fde
     apis:
       - path: google/analytics/data/v1alpha
         service_config: analyticsdata_v1alpha.yaml
@@ -161,7 +161,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-admanager
     version: 0.3.0
-    last_generated_commit: b7e013ac0b9896cf89de48706221ec22212d8d0e
+    last_generated_commit: 3acfdb6166a7101691cdf812bf8f8a67a2084fde
     apis:
       - path: google/ads/admanager/v1
         service_config: admanager_v1.yaml
