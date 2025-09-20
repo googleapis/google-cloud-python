@@ -187,12 +187,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `BigQuery Storage <https://github.com/googleapis/python-bigquery-storage>`_
+   * - `BigQuery Storage <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-storage>`_
      - stable
      - |PyPI-google-cloud-bigquery-storage|
      - `API Issues <https://issuetracker.google.com/savedsearches/559654>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187149>`_
-     - `Client Library Issues <https://github.com/googleapis/python-bigquery-storage/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigQuery connector for Jupyter and IPython <https://github.com/googleapis/python-bigquery-magics>`_
      - stable
      - |PyPI-bigquery-magics|
@@ -1009,6 +1009,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `BigLake API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-biglake>`_
+     - preview
+     - |PyPI-google-cloud-biglake|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `BigLake API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-biglake>`_
      - preview
      - |PyPI-google-cloud-bigquery-biglake|
@@ -1483,6 +1489,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Security Compliance API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-cloudsecuritycompliance>`_
+     - preview
+     - |PyPI-google-cloud-cloudsecuritycompliance|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1761967>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1761967&template=0>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Service Health API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-servicehealth>`_
      - preview
      - |PyPI-google-cloud-servicehealth|
@@ -1868,6 +1880,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-beyondcorp-clientconnectorservices
 .. |PyPI-google-cloud-beyondcorp-clientgateways| image:: https://img.shields.io/pypi/v/google-cloud-beyondcorp-clientgateways.svg
      :target: https://pypi.org/project/google-cloud-beyondcorp-clientgateways
+.. |PyPI-google-cloud-biglake| image:: https://img.shields.io/pypi/v/google-cloud-biglake.svg
+     :target: https://pypi.org/project/google-cloud-biglake
 .. |PyPI-google-cloud-bigquery-biglake| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-biglake.svg
      :target: https://pypi.org/project/google-cloud-bigquery-biglake
 .. |PyPI-google-cloud-bigquery-analyticshub| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-analyticshub.svg
@@ -2026,6 +2040,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-securesourcemanager
 .. |PyPI-google-cloud-securitycentermanagement| image:: https://img.shields.io/pypi/v/google-cloud-securitycentermanagement.svg
      :target: https://pypi.org/project/google-cloud-securitycentermanagement
+.. |PyPI-google-cloud-cloudsecuritycompliance| image:: https://img.shields.io/pypi/v/google-cloud-cloudsecuritycompliance.svg
+     :target: https://pypi.org/project/google-cloud-cloudsecuritycompliance
 .. |PyPI-google-cloud-servicehealth| image:: https://img.shields.io/pypi/v/google-cloud-servicehealth.svg
      :target: https://pypi.org/project/google-cloud-servicehealth
 .. |PyPI-google-maps-solar| image:: https://img.shields.io/pypi/v/google-maps-solar.svg
