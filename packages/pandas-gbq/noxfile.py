@@ -230,10 +230,12 @@ def default(session):
     )
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @_calculate_duration
 def unit(session):
     """Run the unit test suite."""
+    if session.python not in UNIT_TEST_PYTHON_VERSIONS:
+        session.skip(f"Testing of Python runtime {session.python} skipped because it's not in {UNIT_TEST_PYTHON_VERSIONS}")
     default(session)
 
 
