@@ -59,11 +59,7 @@ class QueryUsageHistoriesRequest(proto.Message):
         parent (str):
             Required. The compute engine resource and
             location for the time series values to return.
-            The format is:
-
-                projects/{project}/locations/{location} or
-            organizations/{organization}/locations/{location}
-            or     folders/{folder}/locations/{location}
+            The format is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
         location_level (google.cloud.capacityplanner_v1beta.types.TimeSeries.LocationType):
             Optional. The location level of the
             reservations usage timeseries.
@@ -194,11 +190,7 @@ class QueryForecastsRequest(proto.Message):
         parent (str):
             Required. The compute engine resource and
             location for the time series values to return.
-            The format is:
-
-            projects/{project}/locations/{location} or
-            organizations/{organization}/locations/{location}
-            or folders/{folder}/locations/{location}
+            The format is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
         machine_family (str):
             The machine family to use to select the ``Forecast`` values
             to return. Possible values include "n1", and "n2d". Empty
@@ -315,11 +307,7 @@ class QueryReservationsRequest(proto.Message):
         parent (str):
             Required. The compute engine resource and
             location for the time series values to return.
-            The format is:
-
-            projects/{project}/locations/{location} or
-            organizations/{organization}/locations/{location}
-            or folders/{folder}/locations/{location}
+            The format is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
         location_level (google.cloud.capacityplanner_v1beta.types.TimeSeries.LocationType):
             Optional. The location level of the
             reservations usage timeseries.
@@ -999,11 +987,7 @@ class ExportUsageHistoriesRequest(proto.Message):
         parent (str):
             Required. The compute engine resource and
             location for the time series values to return.
-            The format is:
-
-               projects/{project}/locations/{location} or
-            organizations/{organization}/locations/{location}
-            or    folders/{folder}/locations/{location}
+            The format is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
         is_spot (bool):
             Optional. Set true to export usage for spot
             resources.
@@ -1113,9 +1097,10 @@ class ExportForecastsRequest(proto.Message):
             location for the time series values to return.
             The format is:
 
-               projects/{project}/locations/{location} or
-            organizations/{organization}/locations/{location}
-            or    folders/{folder}/locations/{location}
+                projects/{project}/locations/{location} or
+                organizations/{organization}/locations/{location} or
+                folders/{folder}/locations/{location}
+
         machine_family (str):
             Optional. The machine family to use to select the
             ``Forecast`` values to return. Possible values include "n1",
@@ -1243,12 +1228,7 @@ class ExportReservationsUsageRequest(proto.Message):
             This field is a member of `oneof`_ ``resource``.
         parent (str):
             Required. The compute engine resource and
-            location of the reservationsusage. The format
-            is:
-
-               projects/{project}/locations/{location} or
-            organizations/{organization}/locations/{location}
-            or    folders/{folder}/locations/{location}
+            location of the reservationsusage. The format is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
         location_level (google.cloud.capacityplanner_v1beta.types.TimeSeries.LocationType):
             Optional. The location level of the
             reservations usage timeseries.
