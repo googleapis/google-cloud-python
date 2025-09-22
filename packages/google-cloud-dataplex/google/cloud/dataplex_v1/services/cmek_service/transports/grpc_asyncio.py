@@ -120,7 +120,8 @@ class _LoggingClientAIOInterceptor(
 class CmekServiceGrpcAsyncIOTransport(CmekServiceTransport):
     """gRPC AsyncIO backend transport for CmekService.
 
-    Dataplex Cmek Service
+    Dataplex Universal Catalog Customer Managed Encryption Keys
+    (CMEK) Service
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

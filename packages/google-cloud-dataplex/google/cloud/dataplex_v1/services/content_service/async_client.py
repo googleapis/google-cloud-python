@@ -71,7 +71,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class ContentServiceAsyncClient:
-    """ContentService manages Notebook and SQL Scripts for Dataplex."""
+    """ContentService manages Notebook and SQL Scripts for Dataplex
+    Universal Catalog.
+    """
 
     _client: ContentServiceClient
 

@@ -116,7 +116,9 @@ class CmekServiceClientMeta(type):
 
 
 class CmekServiceClient(metaclass=CmekServiceClientMeta):
-    """Dataplex Cmek Service"""
+    """Dataplex Universal Catalog Customer Managed Encryption Keys
+    (CMEK) Service
+    """
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):

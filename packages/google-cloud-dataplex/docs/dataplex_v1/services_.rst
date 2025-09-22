@@ -3,6 +3,7 @@ Services for Google Cloud Dataplex v1 API
 .. toctree::
     :maxdepth: 2
 
+    business_glossary_service
     catalog_service
     cmek_service
     content_service

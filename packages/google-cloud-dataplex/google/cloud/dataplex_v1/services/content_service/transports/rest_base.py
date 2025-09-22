@@ -705,7 +705,7 @@ class _BaseContentServiceRestTransport(ContentServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                    "uri": "/v1/{name=organizations/*/locations/*}/operations",
                 },
             ]
             return http_options
