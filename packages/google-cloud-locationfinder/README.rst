@@ -3,7 +3,7 @@ Python Client for
 
 |preview| |pypi| |versions|
 
-``_: 
+`google-cloud-locationfinder`: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-locationfinder/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-locationfinder.svg
    :target: https://pypi.org/project/google-cloud-locationfinder/
-.. _: 
+.. _`google-cloud-locationfinder`: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-locationfinder
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-locationfinder/latest/summary_overview
-.. _Product Documentation:  
+.. _Product Documentation: https://cloud.google.com/maps-platform/location-finder/
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Location Finder API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Location Finder API.: https://console.cloud.google.com/flows/enableapi?apiid=locationfinder.googleapis.com
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
