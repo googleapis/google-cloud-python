@@ -80,6 +80,7 @@ from google.cloud.dataplex_v1.types import (
     data_profile,
     data_quality,
     datascans,
+    datascans_common,
     processing,
     resources,
     service,
@@ -7119,6 +7120,7 @@ def test_create_data_scan_rest_call_success(request_type):
                     "job_end_trigger": {},
                 },
             },
+            "catalog_publishing_enabled": True,
         },
         "data_profile_spec": {
             "sampling_percent": 0.17070000000000002,
@@ -7136,6 +7138,7 @@ def test_create_data_scan_rest_call_success(request_type):
                 "table_type": 1,
                 "connection": "connection_value",
                 "location": "location_value",
+                "project": "project_value",
             },
             "storage_config": {
                 "include_patterns": [
@@ -7165,7 +7168,14 @@ def test_create_data_scan_rest_call_success(request_type):
             "dimensions": [
                 {"dimension": {"name": "name_value"}, "passed": True, "score": 0.54}
             ],
-            "columns": [{"column": "column_value", "score": 0.54}],
+            "columns": [
+                {
+                    "column": "column_value",
+                    "score": 0.54,
+                    "passed": True,
+                    "dimensions": {},
+                }
+            ],
             "rules": [
                 {
                     "rule": {},
@@ -7189,6 +7199,7 @@ def test_create_data_scan_rest_call_success(request_type):
             "post_scan_actions_result": {
                 "bigquery_export_result": {"state": 1, "message": "message_value"}
             },
+            "catalog_publishing_status": {"state": 1},
         },
         "data_profile_result": {
             "row_count": 992,
@@ -7511,6 +7522,7 @@ def test_update_data_scan_rest_call_success(request_type):
                     "job_end_trigger": {},
                 },
             },
+            "catalog_publishing_enabled": True,
         },
         "data_profile_spec": {
             "sampling_percent": 0.17070000000000002,
@@ -7528,6 +7540,7 @@ def test_update_data_scan_rest_call_success(request_type):
                 "table_type": 1,
                 "connection": "connection_value",
                 "location": "location_value",
+                "project": "project_value",
             },
             "storage_config": {
                 "include_patterns": [
@@ -7557,7 +7570,14 @@ def test_update_data_scan_rest_call_success(request_type):
             "dimensions": [
                 {"dimension": {"name": "name_value"}, "passed": True, "score": 0.54}
             ],
-            "columns": [{"column": "column_value", "score": 0.54}],
+            "columns": [
+                {
+                    "column": "column_value",
+                    "score": 0.54,
+                    "passed": True,
+                    "dimensions": {},
+                }
+            ],
             "rules": [
                 {
                     "rule": {},
@@ -7581,6 +7601,7 @@ def test_update_data_scan_rest_call_success(request_type):
             "post_scan_actions_result": {
                 "bigquery_export_result": {"state": 1, "message": "message_value"}
             },
+            "catalog_publishing_status": {"state": 1},
         },
         "data_profile_result": {
             "row_count": 992,

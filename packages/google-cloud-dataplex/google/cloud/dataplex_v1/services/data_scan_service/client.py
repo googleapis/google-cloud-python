@@ -881,7 +881,7 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                 Required. The resource name of the parent location:
                 ``projects/{project}/locations/{location_id}`` where
                 ``project`` refers to a *project_id* or *project_number*
-                and ``location_id`` refers to a GCP region.
+                and ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1200,8 +1200,8 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                 Required. The resource name of the dataScan:
                 ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
                 where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a GCP
-                region.
+                *project_number* and ``location_id`` refers to a Google
+                Cloud region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1328,8 +1328,8 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                 Required. The resource name of the dataScan:
                 ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
                 where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a GCP
-                region.
+                *project_number* and ``location_id`` refers to a Google
+                Cloud region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1458,7 +1458,7 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                 Required. The resource name of the parent location:
                 ``projects/{project}/locations/{location_id}`` where
                 ``project`` refers to a *project_id* or *project_number*
-                and ``location_id`` refers to a GCP region.
+                and ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1581,8 +1581,8 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                 Required. The resource name of the DataScan:
                 ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``.
                 where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a GCP
-                region.
+                *project_number* and ``location_id`` refers to a Google
+                Cloud region.
 
                 Only **OnDemand** data scans are allowed.
 
@@ -1691,8 +1691,8 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                 Required. The resource name of the DataScanJob:
                 ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}``
                 where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a GCP
-                region.
+                *project_number* and ``location_id`` refers to a Google
+                Cloud region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1802,8 +1802,8 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                 Required. The resource name of the parent environment:
                 ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
                 where ``project`` refers to a *project_id* or
-                *project_number* and ``location_id`` refers to a GCP
-                region.
+                *project_number* and ``location_id`` refers to a Google
+                Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

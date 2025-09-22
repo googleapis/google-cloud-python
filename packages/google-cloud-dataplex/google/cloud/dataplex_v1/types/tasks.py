@@ -665,7 +665,8 @@ class Job(proto.Message):
             FAILED (5):
                 The job is no longer running due to an error.
             ABORTED (6):
-                The job was cancelled outside of Dataplex.
+                The job was cancelled outside of Dataplex
+                Universal Catalog.
         """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
@@ -682,8 +683,9 @@ class Job(proto.Message):
             TRIGGER_UNSPECIFIED (0):
                 The trigger is unspecified.
             TASK_CONFIG (1):
-                The job was triggered by Dataplex based on
-                trigger spec from task definition.
+                The job was triggered by Dataplex Universal
+                Catalog based on trigger spec from task
+                definition.
             RUN_REQUEST (2):
                 The job was triggered by the explicit call of
                 Task API.

@@ -29,14 +29,14 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dataplex_v1.types import data_taxonomy
-from google.cloud.dataplex_v1.types import data_taxonomy as gcd_data_taxonomy
+from google.cloud.dataplex_v1.types import business_glossary
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .rest_base import _BaseDataTaxonomyServiceRestTransport
+from .rest_base import _BaseBusinessGlossaryServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -62,8 +62,8 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-class DataTaxonomyServiceRestInterceptor:
-    """Interceptor for DataTaxonomyService.
+class BusinessGlossaryServiceRestInterceptor:
+    """Interceptor for BusinessGlossaryService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -73,874 +73,802 @@ class DataTaxonomyServiceRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the DataTaxonomyServiceRestTransport.
+    instance of a custom subclass when constructing the BusinessGlossaryServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomDataTaxonomyServiceInterceptor(DataTaxonomyServiceRestInterceptor):
-            def pre_create_data_attribute(self, request, metadata):
+        class MyCustomBusinessGlossaryServiceInterceptor(BusinessGlossaryServiceRestInterceptor):
+            def pre_create_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_data_attribute(self, response):
+            def post_create_glossary(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_create_data_attribute_binding(self, request, metadata):
+            def pre_create_glossary_category(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_data_attribute_binding(self, response):
+            def post_create_glossary_category(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_create_data_taxonomy(self, request, metadata):
+            def pre_create_glossary_term(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_data_taxonomy(self, response):
+            def post_create_glossary_term(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_delete_data_attribute(self, request, metadata):
+            def pre_delete_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_data_attribute(self, response):
+            def post_delete_glossary(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_delete_data_attribute_binding(self, request, metadata):
+            def pre_delete_glossary_category(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_data_attribute_binding(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_delete_data_taxonomy(self, request, metadata):
+            def pre_delete_glossary_term(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_delete_data_taxonomy(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_data_attribute(self, request, metadata):
+            def pre_get_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_data_attribute(self, response):
+            def post_get_glossary(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_get_data_attribute_binding(self, request, metadata):
+            def pre_get_glossary_category(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_data_attribute_binding(self, response):
+            def post_get_glossary_category(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_get_data_taxonomy(self, request, metadata):
+            def pre_get_glossary_term(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_data_taxonomy(self, response):
+            def post_get_glossary_term(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_data_attribute_bindings(self, request, metadata):
+            def pre_list_glossaries(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_data_attribute_bindings(self, response):
+            def post_list_glossaries(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_data_attributes(self, request, metadata):
+            def pre_list_glossary_categories(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_data_attributes(self, response):
+            def post_list_glossary_categories(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_data_taxonomies(self, request, metadata):
+            def pre_list_glossary_terms(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_data_taxonomies(self, response):
+            def post_list_glossary_terms(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_update_data_attribute(self, request, metadata):
+            def pre_update_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_data_attribute(self, response):
+            def post_update_glossary(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_update_data_attribute_binding(self, request, metadata):
+            def pre_update_glossary_category(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_data_attribute_binding(self, response):
+            def post_update_glossary_category(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_update_data_taxonomy(self, request, metadata):
+            def pre_update_glossary_term(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_data_taxonomy(self, response):
+            def post_update_glossary_term(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-        transport = DataTaxonomyServiceRestTransport(interceptor=MyCustomDataTaxonomyServiceInterceptor())
-        client = DataTaxonomyServiceClient(transport=transport)
+        transport = BusinessGlossaryServiceRestTransport(interceptor=MyCustomBusinessGlossaryServiceInterceptor())
+        client = BusinessGlossaryServiceClient(transport=transport)
 
 
     """
 
-    def pre_create_data_attribute(
+    def pre_create_glossary(
         self,
-        request: data_taxonomy.CreateDataAttributeRequest,
+        request: business_glossary.CreateGlossaryRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        data_taxonomy.CreateDataAttributeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        business_glossary.CreateGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
-        """Pre-rpc interceptor for create_data_attribute
+        """Pre-rpc interceptor for create_glossary
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
-    def post_create_data_attribute(
+    def post_create_glossary(
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for create_data_attribute
+        """Post-rpc interceptor for create_glossary
 
-        DEPRECATED. Please use the `post_create_data_attribute_with_metadata`
+        DEPRECATED. Please use the `post_create_glossary_with_metadata`
         interceptor instead.
 
         Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_create_data_attribute` interceptor runs
-        before the `post_create_data_attribute_with_metadata` interceptor.
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_create_glossary` interceptor runs
+        before the `post_create_glossary_with_metadata` interceptor.
         """
         return response
 
-    def post_create_data_attribute_with_metadata(
+    def post_create_glossary_with_metadata(
         self,
         response: operations_pb2.Operation,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for create_data_attribute
+        """Post-rpc interceptor for create_glossary
 
         Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
 
-        We recommend only using this `post_create_data_attribute_with_metadata`
-        interceptor in new development instead of the `post_create_data_attribute` interceptor.
-        When both interceptors are used, this `post_create_data_attribute_with_metadata` interceptor runs after the
-        `post_create_data_attribute` interceptor. The (possibly modified) response returned by
-        `post_create_data_attribute` will be passed to
-        `post_create_data_attribute_with_metadata`.
+        We recommend only using this `post_create_glossary_with_metadata`
+        interceptor in new development instead of the `post_create_glossary` interceptor.
+        When both interceptors are used, this `post_create_glossary_with_metadata` interceptor runs after the
+        `post_create_glossary` interceptor. The (possibly modified) response returned by
+        `post_create_glossary` will be passed to
+        `post_create_glossary_with_metadata`.
         """
         return response, metadata
 
-    def pre_create_data_attribute_binding(
+    def pre_create_glossary_category(
         self,
-        request: data_taxonomy.CreateDataAttributeBindingRequest,
+        request: business_glossary.CreateGlossaryCategoryRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        data_taxonomy.CreateDataAttributeBindingRequest,
+        business_glossary.CreateGlossaryCategoryRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
-        """Pre-rpc interceptor for create_data_attribute_binding
+        """Pre-rpc interceptor for create_glossary_category
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
-    def post_create_data_attribute_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for create_data_attribute_binding
+    def post_create_glossary_category(
+        self, response: business_glossary.GlossaryCategory
+    ) -> business_glossary.GlossaryCategory:
+        """Post-rpc interceptor for create_glossary_category
 
-        DEPRECATED. Please use the `post_create_data_attribute_binding_with_metadata`
+        DEPRECATED. Please use the `post_create_glossary_category_with_metadata`
         interceptor instead.
 
         Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_create_data_attribute_binding` interceptor runs
-        before the `post_create_data_attribute_binding_with_metadata` interceptor.
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_create_glossary_category` interceptor runs
+        before the `post_create_glossary_category_with_metadata` interceptor.
         """
         return response
 
-    def post_create_data_attribute_binding_with_metadata(
+    def post_create_glossary_category_with_metadata(
+        self,
+        response: business_glossary.GlossaryCategory,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.GlossaryCategory, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_glossary_category
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
+
+        We recommend only using this `post_create_glossary_category_with_metadata`
+        interceptor in new development instead of the `post_create_glossary_category` interceptor.
+        When both interceptors are used, this `post_create_glossary_category_with_metadata` interceptor runs after the
+        `post_create_glossary_category` interceptor. The (possibly modified) response returned by
+        `post_create_glossary_category` will be passed to
+        `post_create_glossary_category_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_glossary_term(
+        self,
+        request: business_glossary.CreateGlossaryTermRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.CreateGlossaryTermRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_glossary_term
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def post_create_glossary_term(
+        self, response: business_glossary.GlossaryTerm
+    ) -> business_glossary.GlossaryTerm:
+        """Post-rpc interceptor for create_glossary_term
+
+        DEPRECATED. Please use the `post_create_glossary_term_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_create_glossary_term` interceptor runs
+        before the `post_create_glossary_term_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_glossary_term_with_metadata(
+        self,
+        response: business_glossary.GlossaryTerm,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[business_glossary.GlossaryTerm, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_glossary_term
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
+
+        We recommend only using this `post_create_glossary_term_with_metadata`
+        interceptor in new development instead of the `post_create_glossary_term` interceptor.
+        When both interceptors are used, this `post_create_glossary_term_with_metadata` interceptor runs after the
+        `post_create_glossary_term` interceptor. The (possibly modified) response returned by
+        `post_create_glossary_term` will be passed to
+        `post_create_glossary_term_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_glossary(
+        self,
+        request: business_glossary.DeleteGlossaryRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.DeleteGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_glossary
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def post_delete_glossary(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_glossary
+
+        DEPRECATED. Please use the `post_delete_glossary_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_delete_glossary` interceptor runs
+        before the `post_delete_glossary_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_glossary_with_metadata(
         self,
         response: operations_pb2.Operation,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for create_data_attribute_binding
+        """Post-rpc interceptor for delete_glossary
 
         Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
 
-        We recommend only using this `post_create_data_attribute_binding_with_metadata`
-        interceptor in new development instead of the `post_create_data_attribute_binding` interceptor.
-        When both interceptors are used, this `post_create_data_attribute_binding_with_metadata` interceptor runs after the
-        `post_create_data_attribute_binding` interceptor. The (possibly modified) response returned by
-        `post_create_data_attribute_binding` will be passed to
-        `post_create_data_attribute_binding_with_metadata`.
+        We recommend only using this `post_delete_glossary_with_metadata`
+        interceptor in new development instead of the `post_delete_glossary` interceptor.
+        When both interceptors are used, this `post_delete_glossary_with_metadata` interceptor runs after the
+        `post_delete_glossary` interceptor. The (possibly modified) response returned by
+        `post_delete_glossary` will be passed to
+        `post_delete_glossary_with_metadata`.
         """
         return response, metadata
 
-    def pre_create_data_taxonomy(
+    def pre_delete_glossary_category(
         self,
-        request: gcd_data_taxonomy.CreateDataTaxonomyRequest,
+        request: business_glossary.DeleteGlossaryCategoryRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcd_data_taxonomy.CreateDataTaxonomyRequest,
+        business_glossary.DeleteGlossaryCategoryRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
-        """Pre-rpc interceptor for create_data_taxonomy
+        """Pre-rpc interceptor for delete_glossary_category
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
-    def post_create_data_taxonomy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for create_data_taxonomy
+    def pre_delete_glossary_term(
+        self,
+        request: business_glossary.DeleteGlossaryTermRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.DeleteGlossaryTermRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_glossary_term
 
-        DEPRECATED. Please use the `post_create_data_taxonomy_with_metadata`
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def pre_get_glossary(
+        self,
+        request: business_glossary.GetGlossaryRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.GetGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_glossary
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def post_get_glossary(
+        self, response: business_glossary.Glossary
+    ) -> business_glossary.Glossary:
+        """Post-rpc interceptor for get_glossary
+
+        DEPRECATED. Please use the `post_get_glossary_with_metadata`
         interceptor instead.
 
         Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_create_data_taxonomy` interceptor runs
-        before the `post_create_data_taxonomy_with_metadata` interceptor.
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_get_glossary` interceptor runs
+        before the `post_get_glossary_with_metadata` interceptor.
         """
         return response
 
-    def post_create_data_taxonomy_with_metadata(
+    def post_get_glossary_with_metadata(
+        self,
+        response: business_glossary.Glossary,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[business_glossary.Glossary, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_glossary
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
+
+        We recommend only using this `post_get_glossary_with_metadata`
+        interceptor in new development instead of the `post_get_glossary` interceptor.
+        When both interceptors are used, this `post_get_glossary_with_metadata` interceptor runs after the
+        `post_get_glossary` interceptor. The (possibly modified) response returned by
+        `post_get_glossary` will be passed to
+        `post_get_glossary_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_glossary_category(
+        self,
+        request: business_glossary.GetGlossaryCategoryRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.GetGlossaryCategoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_glossary_category
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def post_get_glossary_category(
+        self, response: business_glossary.GlossaryCategory
+    ) -> business_glossary.GlossaryCategory:
+        """Post-rpc interceptor for get_glossary_category
+
+        DEPRECATED. Please use the `post_get_glossary_category_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_get_glossary_category` interceptor runs
+        before the `post_get_glossary_category_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_glossary_category_with_metadata(
+        self,
+        response: business_glossary.GlossaryCategory,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.GlossaryCategory, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_glossary_category
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
+
+        We recommend only using this `post_get_glossary_category_with_metadata`
+        interceptor in new development instead of the `post_get_glossary_category` interceptor.
+        When both interceptors are used, this `post_get_glossary_category_with_metadata` interceptor runs after the
+        `post_get_glossary_category` interceptor. The (possibly modified) response returned by
+        `post_get_glossary_category` will be passed to
+        `post_get_glossary_category_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_glossary_term(
+        self,
+        request: business_glossary.GetGlossaryTermRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.GetGlossaryTermRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_glossary_term
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def post_get_glossary_term(
+        self, response: business_glossary.GlossaryTerm
+    ) -> business_glossary.GlossaryTerm:
+        """Post-rpc interceptor for get_glossary_term
+
+        DEPRECATED. Please use the `post_get_glossary_term_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_get_glossary_term` interceptor runs
+        before the `post_get_glossary_term_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_glossary_term_with_metadata(
+        self,
+        response: business_glossary.GlossaryTerm,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[business_glossary.GlossaryTerm, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_glossary_term
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
+
+        We recommend only using this `post_get_glossary_term_with_metadata`
+        interceptor in new development instead of the `post_get_glossary_term` interceptor.
+        When both interceptors are used, this `post_get_glossary_term_with_metadata` interceptor runs after the
+        `post_get_glossary_term` interceptor. The (possibly modified) response returned by
+        `post_get_glossary_term` will be passed to
+        `post_get_glossary_term_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_glossaries(
+        self,
+        request: business_glossary.ListGlossariesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.ListGlossariesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_glossaries
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def post_list_glossaries(
+        self, response: business_glossary.ListGlossariesResponse
+    ) -> business_glossary.ListGlossariesResponse:
+        """Post-rpc interceptor for list_glossaries
+
+        DEPRECATED. Please use the `post_list_glossaries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_list_glossaries` interceptor runs
+        before the `post_list_glossaries_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_glossaries_with_metadata(
+        self,
+        response: business_glossary.ListGlossariesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.ListGlossariesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_glossaries
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
+
+        We recommend only using this `post_list_glossaries_with_metadata`
+        interceptor in new development instead of the `post_list_glossaries` interceptor.
+        When both interceptors are used, this `post_list_glossaries_with_metadata` interceptor runs after the
+        `post_list_glossaries` interceptor. The (possibly modified) response returned by
+        `post_list_glossaries` will be passed to
+        `post_list_glossaries_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_glossary_categories(
+        self,
+        request: business_glossary.ListGlossaryCategoriesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.ListGlossaryCategoriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_glossary_categories
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def post_list_glossary_categories(
+        self, response: business_glossary.ListGlossaryCategoriesResponse
+    ) -> business_glossary.ListGlossaryCategoriesResponse:
+        """Post-rpc interceptor for list_glossary_categories
+
+        DEPRECATED. Please use the `post_list_glossary_categories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_list_glossary_categories` interceptor runs
+        before the `post_list_glossary_categories_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_glossary_categories_with_metadata(
+        self,
+        response: business_glossary.ListGlossaryCategoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.ListGlossaryCategoriesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_glossary_categories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
+
+        We recommend only using this `post_list_glossary_categories_with_metadata`
+        interceptor in new development instead of the `post_list_glossary_categories` interceptor.
+        When both interceptors are used, this `post_list_glossary_categories_with_metadata` interceptor runs after the
+        `post_list_glossary_categories` interceptor. The (possibly modified) response returned by
+        `post_list_glossary_categories` will be passed to
+        `post_list_glossary_categories_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_glossary_terms(
+        self,
+        request: business_glossary.ListGlossaryTermsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.ListGlossaryTermsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_glossary_terms
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def post_list_glossary_terms(
+        self, response: business_glossary.ListGlossaryTermsResponse
+    ) -> business_glossary.ListGlossaryTermsResponse:
+        """Post-rpc interceptor for list_glossary_terms
+
+        DEPRECATED. Please use the `post_list_glossary_terms_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_list_glossary_terms` interceptor runs
+        before the `post_list_glossary_terms_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_glossary_terms_with_metadata(
+        self,
+        response: business_glossary.ListGlossaryTermsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.ListGlossaryTermsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_glossary_terms
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
+
+        We recommend only using this `post_list_glossary_terms_with_metadata`
+        interceptor in new development instead of the `post_list_glossary_terms` interceptor.
+        When both interceptors are used, this `post_list_glossary_terms_with_metadata` interceptor runs after the
+        `post_list_glossary_terms` interceptor. The (possibly modified) response returned by
+        `post_list_glossary_terms` will be passed to
+        `post_list_glossary_terms_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_glossary(
+        self,
+        request: business_glossary.UpdateGlossaryRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        business_glossary.UpdateGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_glossary
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BusinessGlossaryService server.
+        """
+        return request, metadata
+
+    def post_update_glossary(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_glossary
+
+        DEPRECATED. Please use the `post_update_glossary_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_update_glossary` interceptor runs
+        before the `post_update_glossary_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_glossary_with_metadata(
         self,
         response: operations_pb2.Operation,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for create_data_taxonomy
+        """Post-rpc interceptor for update_glossary
 
         Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
 
-        We recommend only using this `post_create_data_taxonomy_with_metadata`
-        interceptor in new development instead of the `post_create_data_taxonomy` interceptor.
-        When both interceptors are used, this `post_create_data_taxonomy_with_metadata` interceptor runs after the
-        `post_create_data_taxonomy` interceptor. The (possibly modified) response returned by
-        `post_create_data_taxonomy` will be passed to
-        `post_create_data_taxonomy_with_metadata`.
+        We recommend only using this `post_update_glossary_with_metadata`
+        interceptor in new development instead of the `post_update_glossary` interceptor.
+        When both interceptors are used, this `post_update_glossary_with_metadata` interceptor runs after the
+        `post_update_glossary` interceptor. The (possibly modified) response returned by
+        `post_update_glossary` will be passed to
+        `post_update_glossary_with_metadata`.
         """
         return response, metadata
 
-    def pre_delete_data_attribute(
+    def pre_update_glossary_category(
         self,
-        request: data_taxonomy.DeleteDataAttributeRequest,
+        request: business_glossary.UpdateGlossaryCategoryRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        data_taxonomy.DeleteDataAttributeRequest,
+        business_glossary.UpdateGlossaryCategoryRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
-        """Pre-rpc interceptor for delete_data_attribute
+        """Pre-rpc interceptor for update_glossary_category
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
-    def post_delete_data_attribute(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for delete_data_attribute
+    def post_update_glossary_category(
+        self, response: business_glossary.GlossaryCategory
+    ) -> business_glossary.GlossaryCategory:
+        """Post-rpc interceptor for update_glossary_category
 
-        DEPRECATED. Please use the `post_delete_data_attribute_with_metadata`
+        DEPRECATED. Please use the `post_update_glossary_category_with_metadata`
         interceptor instead.
 
         Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_delete_data_attribute` interceptor runs
-        before the `post_delete_data_attribute_with_metadata` interceptor.
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_update_glossary_category` interceptor runs
+        before the `post_update_glossary_category_with_metadata` interceptor.
         """
         return response
 
-    def post_delete_data_attribute_with_metadata(
+    def post_update_glossary_category_with_metadata(
         self,
-        response: operations_pb2.Operation,
+        response: business_glossary.GlossaryCategory,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for delete_data_attribute
+    ) -> Tuple[
+        business_glossary.GlossaryCategory, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_glossary_category
 
         Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
 
-        We recommend only using this `post_delete_data_attribute_with_metadata`
-        interceptor in new development instead of the `post_delete_data_attribute` interceptor.
-        When both interceptors are used, this `post_delete_data_attribute_with_metadata` interceptor runs after the
-        `post_delete_data_attribute` interceptor. The (possibly modified) response returned by
-        `post_delete_data_attribute` will be passed to
-        `post_delete_data_attribute_with_metadata`.
+        We recommend only using this `post_update_glossary_category_with_metadata`
+        interceptor in new development instead of the `post_update_glossary_category` interceptor.
+        When both interceptors are used, this `post_update_glossary_category_with_metadata` interceptor runs after the
+        `post_update_glossary_category` interceptor. The (possibly modified) response returned by
+        `post_update_glossary_category` will be passed to
+        `post_update_glossary_category_with_metadata`.
         """
         return response, metadata
 
-    def pre_delete_data_attribute_binding(
+    def pre_update_glossary_term(
         self,
-        request: data_taxonomy.DeleteDataAttributeBindingRequest,
+        request: business_glossary.UpdateGlossaryTermRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        data_taxonomy.DeleteDataAttributeBindingRequest,
+        business_glossary.UpdateGlossaryTermRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
-        """Pre-rpc interceptor for delete_data_attribute_binding
+        """Pre-rpc interceptor for update_glossary_term
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
-    def post_delete_data_attribute_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for delete_data_attribute_binding
+    def post_update_glossary_term(
+        self, response: business_glossary.GlossaryTerm
+    ) -> business_glossary.GlossaryTerm:
+        """Post-rpc interceptor for update_glossary_term
 
-        DEPRECATED. Please use the `post_delete_data_attribute_binding_with_metadata`
+        DEPRECATED. Please use the `post_update_glossary_term_with_metadata`
         interceptor instead.
 
         Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_delete_data_attribute_binding` interceptor runs
-        before the `post_delete_data_attribute_binding_with_metadata` interceptor.
+        after it is returned by the BusinessGlossaryService server but before
+        it is returned to user code. This `post_update_glossary_term` interceptor runs
+        before the `post_update_glossary_term_with_metadata` interceptor.
         """
         return response
 
-    def post_delete_data_attribute_binding_with_metadata(
+    def post_update_glossary_term_with_metadata(
         self,
-        response: operations_pb2.Operation,
+        response: business_glossary.GlossaryTerm,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for delete_data_attribute_binding
+    ) -> Tuple[business_glossary.GlossaryTerm, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_glossary_term
 
         Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_delete_data_attribute_binding_with_metadata`
-        interceptor in new development instead of the `post_delete_data_attribute_binding` interceptor.
-        When both interceptors are used, this `post_delete_data_attribute_binding_with_metadata` interceptor runs after the
-        `post_delete_data_attribute_binding` interceptor. The (possibly modified) response returned by
-        `post_delete_data_attribute_binding` will be passed to
-        `post_delete_data_attribute_binding_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_delete_data_taxonomy(
-        self,
-        request: data_taxonomy.DeleteDataTaxonomyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.DeleteDataTaxonomyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Pre-rpc interceptor for delete_data_taxonomy
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_delete_data_taxonomy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for delete_data_taxonomy
-
-        DEPRECATED. Please use the `post_delete_data_taxonomy_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_delete_data_taxonomy` interceptor runs
-        before the `post_delete_data_taxonomy_with_metadata` interceptor.
-        """
-        return response
-
-    def post_delete_data_taxonomy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for delete_data_taxonomy
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_delete_data_taxonomy_with_metadata`
-        interceptor in new development instead of the `post_delete_data_taxonomy` interceptor.
-        When both interceptors are used, this `post_delete_data_taxonomy_with_metadata` interceptor runs after the
-        `post_delete_data_taxonomy` interceptor. The (possibly modified) response returned by
-        `post_delete_data_taxonomy` will be passed to
-        `post_delete_data_taxonomy_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_get_data_attribute(
-        self,
-        request: data_taxonomy.GetDataAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.GetDataAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Pre-rpc interceptor for get_data_attribute
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_get_data_attribute(
-        self, response: data_taxonomy.DataAttribute
-    ) -> data_taxonomy.DataAttribute:
-        """Post-rpc interceptor for get_data_attribute
-
-        DEPRECATED. Please use the `post_get_data_attribute_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_get_data_attribute` interceptor runs
-        before the `post_get_data_attribute_with_metadata` interceptor.
-        """
-        return response
-
-    def post_get_data_attribute_with_metadata(
-        self,
-        response: data_taxonomy.DataAttribute,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[data_taxonomy.DataAttribute, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for get_data_attribute
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_get_data_attribute_with_metadata`
-        interceptor in new development instead of the `post_get_data_attribute` interceptor.
-        When both interceptors are used, this `post_get_data_attribute_with_metadata` interceptor runs after the
-        `post_get_data_attribute` interceptor. The (possibly modified) response returned by
-        `post_get_data_attribute` will be passed to
-        `post_get_data_attribute_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_get_data_attribute_binding(
-        self,
-        request: data_taxonomy.GetDataAttributeBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.GetDataAttributeBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for get_data_attribute_binding
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_get_data_attribute_binding(
-        self, response: data_taxonomy.DataAttributeBinding
-    ) -> data_taxonomy.DataAttributeBinding:
-        """Post-rpc interceptor for get_data_attribute_binding
-
-        DEPRECATED. Please use the `post_get_data_attribute_binding_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_get_data_attribute_binding` interceptor runs
-        before the `post_get_data_attribute_binding_with_metadata` interceptor.
-        """
-        return response
-
-    def post_get_data_attribute_binding_with_metadata(
-        self,
-        response: data_taxonomy.DataAttributeBinding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.DataAttributeBinding, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Post-rpc interceptor for get_data_attribute_binding
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_get_data_attribute_binding_with_metadata`
-        interceptor in new development instead of the `post_get_data_attribute_binding` interceptor.
-        When both interceptors are used, this `post_get_data_attribute_binding_with_metadata` interceptor runs after the
-        `post_get_data_attribute_binding` interceptor. The (possibly modified) response returned by
-        `post_get_data_attribute_binding` will be passed to
-        `post_get_data_attribute_binding_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_get_data_taxonomy(
-        self,
-        request: data_taxonomy.GetDataTaxonomyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.GetDataTaxonomyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Pre-rpc interceptor for get_data_taxonomy
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_get_data_taxonomy(
-        self, response: data_taxonomy.DataTaxonomy
-    ) -> data_taxonomy.DataTaxonomy:
-        """Post-rpc interceptor for get_data_taxonomy
-
-        DEPRECATED. Please use the `post_get_data_taxonomy_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_get_data_taxonomy` interceptor runs
-        before the `post_get_data_taxonomy_with_metadata` interceptor.
-        """
-        return response
-
-    def post_get_data_taxonomy_with_metadata(
-        self,
-        response: data_taxonomy.DataTaxonomy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[data_taxonomy.DataTaxonomy, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for get_data_taxonomy
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_get_data_taxonomy_with_metadata`
-        interceptor in new development instead of the `post_get_data_taxonomy` interceptor.
-        When both interceptors are used, this `post_get_data_taxonomy_with_metadata` interceptor runs after the
-        `post_get_data_taxonomy` interceptor. The (possibly modified) response returned by
-        `post_get_data_taxonomy` will be passed to
-        `post_get_data_taxonomy_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_list_data_attribute_bindings(
-        self,
-        request: data_taxonomy.ListDataAttributeBindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataAttributeBindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for list_data_attribute_bindings
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_list_data_attribute_bindings(
-        self, response: data_taxonomy.ListDataAttributeBindingsResponse
-    ) -> data_taxonomy.ListDataAttributeBindingsResponse:
-        """Post-rpc interceptor for list_data_attribute_bindings
-
-        DEPRECATED. Please use the `post_list_data_attribute_bindings_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_list_data_attribute_bindings` interceptor runs
-        before the `post_list_data_attribute_bindings_with_metadata` interceptor.
-        """
-        return response
-
-    def post_list_data_attribute_bindings_with_metadata(
-        self,
-        response: data_taxonomy.ListDataAttributeBindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataAttributeBindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for list_data_attribute_bindings
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_list_data_attribute_bindings_with_metadata`
-        interceptor in new development instead of the `post_list_data_attribute_bindings` interceptor.
-        When both interceptors are used, this `post_list_data_attribute_bindings_with_metadata` interceptor runs after the
-        `post_list_data_attribute_bindings` interceptor. The (possibly modified) response returned by
-        `post_list_data_attribute_bindings` will be passed to
-        `post_list_data_attribute_bindings_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_list_data_attributes(
-        self,
-        request: data_taxonomy.ListDataAttributesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataAttributesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Pre-rpc interceptor for list_data_attributes
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_list_data_attributes(
-        self, response: data_taxonomy.ListDataAttributesResponse
-    ) -> data_taxonomy.ListDataAttributesResponse:
-        """Post-rpc interceptor for list_data_attributes
-
-        DEPRECATED. Please use the `post_list_data_attributes_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_list_data_attributes` interceptor runs
-        before the `post_list_data_attributes_with_metadata` interceptor.
-        """
-        return response
-
-    def post_list_data_attributes_with_metadata(
-        self,
-        response: data_taxonomy.ListDataAttributesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataAttributesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for list_data_attributes
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_list_data_attributes_with_metadata`
-        interceptor in new development instead of the `post_list_data_attributes` interceptor.
-        When both interceptors are used, this `post_list_data_attributes_with_metadata` interceptor runs after the
-        `post_list_data_attributes` interceptor. The (possibly modified) response returned by
-        `post_list_data_attributes` will be passed to
-        `post_list_data_attributes_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_list_data_taxonomies(
-        self,
-        request: data_taxonomy.ListDataTaxonomiesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataTaxonomiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Pre-rpc interceptor for list_data_taxonomies
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_list_data_taxonomies(
-        self, response: data_taxonomy.ListDataTaxonomiesResponse
-    ) -> data_taxonomy.ListDataTaxonomiesResponse:
-        """Post-rpc interceptor for list_data_taxonomies
-
-        DEPRECATED. Please use the `post_list_data_taxonomies_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_list_data_taxonomies` interceptor runs
-        before the `post_list_data_taxonomies_with_metadata` interceptor.
-        """
-        return response
-
-    def post_list_data_taxonomies_with_metadata(
-        self,
-        response: data_taxonomy.ListDataTaxonomiesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.ListDataTaxonomiesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for list_data_taxonomies
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_list_data_taxonomies_with_metadata`
-        interceptor in new development instead of the `post_list_data_taxonomies` interceptor.
-        When both interceptors are used, this `post_list_data_taxonomies_with_metadata` interceptor runs after the
-        `post_list_data_taxonomies` interceptor. The (possibly modified) response returned by
-        `post_list_data_taxonomies` will be passed to
-        `post_list_data_taxonomies_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_update_data_attribute(
-        self,
-        request: data_taxonomy.UpdateDataAttributeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.UpdateDataAttributeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for update_data_attribute
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_update_data_attribute(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for update_data_attribute
-
-        DEPRECATED. Please use the `post_update_data_attribute_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_update_data_attribute` interceptor runs
-        before the `post_update_data_attribute_with_metadata` interceptor.
-        """
-        return response
-
-    def post_update_data_attribute_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for update_data_attribute
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_update_data_attribute_with_metadata`
-        interceptor in new development instead of the `post_update_data_attribute` interceptor.
-        When both interceptors are used, this `post_update_data_attribute_with_metadata` interceptor runs after the
-        `post_update_data_attribute` interceptor. The (possibly modified) response returned by
-        `post_update_data_attribute` will be passed to
-        `post_update_data_attribute_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_update_data_attribute_binding(
-        self,
-        request: data_taxonomy.UpdateDataAttributeBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_taxonomy.UpdateDataAttributeBindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for update_data_attribute_binding
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_update_data_attribute_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for update_data_attribute_binding
-
-        DEPRECATED. Please use the `post_update_data_attribute_binding_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_update_data_attribute_binding` interceptor runs
-        before the `post_update_data_attribute_binding_with_metadata` interceptor.
-        """
-        return response
-
-    def post_update_data_attribute_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for update_data_attribute_binding
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_update_data_attribute_binding_with_metadata`
-        interceptor in new development instead of the `post_update_data_attribute_binding` interceptor.
-        When both interceptors are used, this `post_update_data_attribute_binding_with_metadata` interceptor runs after the
-        `post_update_data_attribute_binding` interceptor. The (possibly modified) response returned by
-        `post_update_data_attribute_binding` will be passed to
-        `post_update_data_attribute_binding_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_update_data_taxonomy(
-        self,
-        request: gcd_data_taxonomy.UpdateDataTaxonomyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_data_taxonomy.UpdateDataTaxonomyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for update_data_taxonomy
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
-        """
-        return request, metadata
-
-    def post_update_data_taxonomy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for update_data_taxonomy
-
-        DEPRECATED. Please use the `post_update_data_taxonomy_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataTaxonomyService server but before
-        it is returned to user code. This `post_update_data_taxonomy` interceptor runs
-        before the `post_update_data_taxonomy_with_metadata` interceptor.
-        """
-        return response
-
-    def post_update_data_taxonomy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for update_data_taxonomy
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataTaxonomyService server but before it is returned to user code.
-
-        We recommend only using this `post_update_data_taxonomy_with_metadata`
-        interceptor in new development instead of the `post_update_data_taxonomy` interceptor.
-        When both interceptors are used, this `post_update_data_taxonomy_with_metadata` interceptor runs after the
-        `post_update_data_taxonomy` interceptor. The (possibly modified) response returned by
-        `post_update_data_taxonomy` will be passed to
-        `post_update_data_taxonomy_with_metadata`.
+        is returned by the BusinessGlossaryService server but before it is returned to user code.
+
+        We recommend only using this `post_update_glossary_term_with_metadata`
+        interceptor in new development instead of the `post_update_glossary_term` interceptor.
+        When both interceptors are used, this `post_update_glossary_term_with_metadata` interceptor runs after the
+        `post_update_glossary_term` interceptor. The (possibly modified) response returned by
+        `post_update_glossary_term` will be passed to
+        `post_update_glossary_term_with_metadata`.
         """
         return response, metadata
 
@@ -954,7 +882,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
@@ -964,7 +892,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
-        after it is returned by the DataTaxonomyService server but before
+        after it is returned by the BusinessGlossaryService server but before
         it is returned to user code.
         """
         return response
@@ -979,7 +907,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
@@ -989,7 +917,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
-        after it is returned by the DataTaxonomyService server but before
+        after it is returned by the BusinessGlossaryService server but before
         it is returned to user code.
         """
         return response
@@ -1004,7 +932,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
@@ -1012,7 +940,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the DataTaxonomyService server but before
+        after it is returned by the BusinessGlossaryService server but before
         it is returned to user code.
         """
         return response
@@ -1027,7 +955,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
@@ -1035,7 +963,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the DataTaxonomyService server but before
+        after it is returned by the BusinessGlossaryService server but before
         it is returned to user code.
         """
         return response
@@ -1050,7 +978,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
@@ -1060,7 +988,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the DataTaxonomyService server but before
+        after it is returned by the BusinessGlossaryService server but before
         it is returned to user code.
         """
         return response
@@ -1075,7 +1003,7 @@ class DataTaxonomyServiceRestInterceptor:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataTaxonomyService server.
+        before they are sent to the BusinessGlossaryService server.
         """
         return request, metadata
 
@@ -1085,25 +1013,29 @@ class DataTaxonomyServiceRestInterceptor:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
-        after it is returned by the DataTaxonomyService server but before
+        after it is returned by the BusinessGlossaryService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class DataTaxonomyServiceRestStub:
+class BusinessGlossaryServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: DataTaxonomyServiceRestInterceptor
+    _interceptor: BusinessGlossaryServiceRestInterceptor
 
 
-class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
-    """REST backend synchronous transport for DataTaxonomyService.
+class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTransport):
+    """REST backend synchronous transport for BusinessGlossaryService.
 
-    DataTaxonomyService enables attribute-based governance. The
-    resources currently offered include DataTaxonomy and
-    DataAttribute.
+    BusinessGlossaryService provides APIs for managing business
+    glossary resources for enterprise customers.
+    The resources currently supported in Business Glossary are:
+
+    1. Glossary
+    2. GlossaryCategory
+    3. GlossaryTerm
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -1124,7 +1056,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[DataTaxonomyServiceRestInterceptor] = None,
+        interceptor: Optional[BusinessGlossaryServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -1177,7 +1109,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or DataTaxonomyServiceRestInterceptor()
+        self._interceptor = interceptor or BusinessGlossaryServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1250,12 +1182,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateDataAttribute(
-        _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute,
-        DataTaxonomyServiceRestStub,
+    class _CreateGlossary(
+        _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.CreateDataAttribute")
+            return hash("BusinessGlossaryServiceRestTransport.CreateGlossary")
 
         @staticmethod
         def _get_response(
@@ -1282,17 +1214,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.CreateDataAttributeRequest,
+            request: business_glossary.CreateGlossaryRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
-            r"""Call the create data attribute method over HTTP.
+            r"""Call the create glossary method over HTTP.
 
             Args:
-                request (~.data_taxonomy.CreateDataAttributeRequest):
-                    The request object. Create DataAttribute request.
+                request (~.business_glossary.CreateGlossaryRequest):
+                    The request object. Create Glossary Request
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1310,22 +1242,20 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_create_data_attribute(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_transcoded_request(
+            request, metadata = self._interceptor.pre_create_glossary(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_request_body_json(
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_request_body_json(
                 transcoded_request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_query_params_json(
                 transcoded_request
             )
 
@@ -1347,10 +1277,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.CreateDataAttribute",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.CreateGlossary",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "CreateDataAttribute",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "CreateGlossary",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
@@ -1358,7 +1288,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = (
-                DataTaxonomyServiceRestTransport._CreateDataAttribute._get_response(
+                BusinessGlossaryServiceRestTransport._CreateGlossary._get_response(
                     self._host,
                     metadata,
                     query_params,
@@ -1378,9 +1308,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_create_data_attribute(resp)
+            resp = self._interceptor.post_create_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_attribute_with_metadata(
+            resp, _ = self._interceptor.post_create_glossary_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1396,22 +1326,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.create_data_attribute",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.create_glossary",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "CreateDataAttribute",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "CreateGlossary",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _CreateDataAttributeBinding(
-        _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding,
-        DataTaxonomyServiceRestStub,
+    class _CreateGlossaryCategory(
+        _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.CreateDataAttributeBinding")
+            return hash("BusinessGlossaryServiceRestTransport.CreateGlossaryCategory")
 
         @staticmethod
         def _get_response(
@@ -1438,51 +1368,52 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.CreateDataAttributeBindingRequest,
+            request: business_glossary.CreateGlossaryCategoryRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the create data attribute
-            binding method over HTTP.
+        ) -> business_glossary.GlossaryCategory:
+            r"""Call the create glossary category method over HTTP.
 
-                Args:
-                    request (~.data_taxonomy.CreateDataAttributeBindingRequest):
-                        The request object. Create DataAttributeBinding request.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.business_glossary.CreateGlossaryCategoryRequest):
+                    The request object. Creates a new GlossaryCategory under
+                the specified Glossary.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.business_glossary.GlossaryCategory:
+                    A GlossaryCategory represents a
+                collection of GlossaryCategories and
+                GlossaryTerms within a Glossary that are
+                related to each other.
 
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_create_data_attribute_binding(
+            request, metadata = self._interceptor.pre_create_glossary_category(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_request_body_json(
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_request_body_json(
                 transcoded_request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_query_params_json(
                 transcoded_request
             )
 
@@ -1494,7 +1425,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1504,17 +1435,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.CreateDataAttributeBinding",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.CreateGlossaryCategory",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "CreateDataAttributeBinding",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "CreateGlossaryCategory",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._CreateDataAttributeBinding._get_response(
+            response = BusinessGlossaryServiceRestTransport._CreateGlossaryCategory._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -1530,22 +1461,23 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = business_glossary.GlossaryCategory()
+            pb_resp = business_glossary.GlossaryCategory.pb(resp)
 
-            resp = self._interceptor.post_create_data_attribute_binding(resp)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_glossary_category(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_data_attribute_binding_with_metadata(
+            resp, _ = self._interceptor.post_create_glossary_category_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)
+                    response_payload = business_glossary.GlossaryCategory.to_json(
+                        response
+                    )
                 except:
                     response_payload = None
                 http_response = {
@@ -1554,22 +1486,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.create_data_attribute_binding",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.create_glossary_category",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "CreateDataAttributeBinding",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "CreateGlossaryCategory",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _CreateDataTaxonomy(
-        _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy,
-        DataTaxonomyServiceRestStub,
+    class _CreateGlossaryTerm(
+        _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.CreateDataTaxonomy")
+            return hash("BusinessGlossaryServiceRestTransport.CreateGlossaryTerm")
 
         @staticmethod
         def _get_response(
@@ -1596,17 +1528,18 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: gcd_data_taxonomy.CreateDataTaxonomyRequest,
+            request: business_glossary.CreateGlossaryTermRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the create data taxonomy method over HTTP.
+        ) -> business_glossary.GlossaryTerm:
+            r"""Call the create glossary term method over HTTP.
 
             Args:
-                request (~.gcd_data_taxonomy.CreateDataTaxonomyRequest):
-                    The request object. Create DataTaxonomy request.
+                request (~.business_glossary.CreateGlossaryTermRequest):
+                    The request object. Creates a new GlossaryTerm under the
+                specified Glossary.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1616,30 +1549,32 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
+                ~.business_glossary.GlossaryTerm:
+                    GlossaryTerms are the core of
+                Glossary. A GlossaryTerm holds a rich
+                text description that can be attached to
+                Entries or specific columns to enrich
+                them.
 
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_create_data_taxonomy(
+            request, metadata = self._interceptor.pre_create_glossary_term(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_request_body_json(
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_request_body_json(
                 transcoded_request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_query_params_json(
                 transcoded_request
             )
 
@@ -1651,7 +1586,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1661,10 +1596,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.CreateDataTaxonomy",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.CreateGlossaryTerm",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "CreateDataTaxonomy",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "CreateGlossaryTerm",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
@@ -1672,7 +1607,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = (
-                DataTaxonomyServiceRestTransport._CreateDataTaxonomy._get_response(
+                BusinessGlossaryServiceRestTransport._CreateGlossaryTerm._get_response(
                     self._host,
                     metadata,
                     query_params,
@@ -1689,19 +1624,21 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = business_glossary.GlossaryTerm()
+            pb_resp = business_glossary.GlossaryTerm.pb(resp)
 
-            resp = self._interceptor.post_create_data_taxonomy(resp)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_glossary_term(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_taxonomy_with_metadata(
+            resp, _ = self._interceptor.post_create_glossary_term_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)
+                    response_payload = business_glossary.GlossaryTerm.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1710,22 +1647,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.create_data_taxonomy",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.create_glossary_term",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "CreateDataTaxonomy",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "CreateGlossaryTerm",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _DeleteDataAttribute(
-        _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute,
-        DataTaxonomyServiceRestStub,
+    class _DeleteGlossary(
+        _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.DeleteDataAttribute")
+            return hash("BusinessGlossaryServiceRestTransport.DeleteGlossary")
 
         @staticmethod
         def _get_response(
@@ -1751,17 +1688,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.DeleteDataAttributeRequest,
+            request: business_glossary.DeleteGlossaryRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
-            r"""Call the delete data attribute method over HTTP.
+            r"""Call the delete glossary method over HTTP.
 
             Args:
-                request (~.data_taxonomy.DeleteDataAttributeRequest):
-                    The request object. Delete DataAttribute request.
+                request (~.business_glossary.DeleteGlossaryRequest):
+                    The request object. Delete Glossary Request
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1779,18 +1716,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_delete_data_attribute(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_transcoded_request(
+            request, metadata = self._interceptor.pre_delete_glossary(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_query_params_json(
                 transcoded_request
             )
 
@@ -1812,10 +1747,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.DeleteDataAttribute",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.DeleteGlossary",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "DeleteDataAttribute",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "DeleteGlossary",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
@@ -1823,7 +1758,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = (
-                DataTaxonomyServiceRestTransport._DeleteDataAttribute._get_response(
+                BusinessGlossaryServiceRestTransport._DeleteGlossary._get_response(
                     self._host,
                     metadata,
                     query_params,
@@ -1842,9 +1777,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_delete_data_attribute(resp)
+            resp = self._interceptor.post_delete_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_data_attribute_with_metadata(
+            resp, _ = self._interceptor.post_delete_glossary_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1860,22 +1795,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.delete_data_attribute",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.delete_glossary",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "DeleteDataAttribute",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "DeleteGlossary",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _DeleteDataAttributeBinding(
-        _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding,
-        DataTaxonomyServiceRestStub,
+    class _DeleteGlossaryCategory(
+        _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.DeleteDataAttributeBinding")
+            return hash("BusinessGlossaryServiceRestTransport.DeleteGlossaryCategory")
 
         @staticmethod
         def _get_response(
@@ -1901,47 +1836,39 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.DeleteDataAttributeBindingRequest,
+            request: business_glossary.DeleteGlossaryCategoryRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the delete data attribute
-            binding method over HTTP.
+        ):
+            r"""Call the delete glossary category method over HTTP.
 
-                Args:
-                    request (~.data_taxonomy.DeleteDataAttributeBindingRequest):
-                        The request object. Delete DataAttributeBinding request.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
-
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
-
+            Args:
+                request (~.business_glossary.DeleteGlossaryCategoryRequest):
+                    The request object. Delete GlossaryCategory Request
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_delete_data_attribute_binding(
+            request, metadata = self._interceptor.pre_delete_glossary_category(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_query_params_json(
                 transcoded_request
             )
 
@@ -1963,17 +1890,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.DeleteDataAttributeBinding",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.DeleteGlossaryCategory",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "DeleteDataAttributeBinding",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "DeleteGlossaryCategory",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._DeleteDataAttributeBinding._get_response(
+            response = BusinessGlossaryServiceRestTransport._DeleteGlossaryCategory._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -1987,47 +1914,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_delete_data_attribute_binding(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_data_attribute_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.delete_data_attribute_binding",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "DeleteDataAttributeBinding",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _DeleteDataTaxonomy(
-        _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy,
-        DataTaxonomyServiceRestStub,
+    class _DeleteGlossaryTerm(
+        _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.DeleteDataTaxonomy")
+            return hash("BusinessGlossaryServiceRestTransport.DeleteGlossaryTerm")
 
         @staticmethod
         def _get_response(
@@ -2053,17 +1945,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.DeleteDataTaxonomyRequest,
+            request: business_glossary.DeleteGlossaryTermRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the delete data taxonomy method over HTTP.
+        ):
+            r"""Call the delete glossary term method over HTTP.
 
             Args:
-                request (~.data_taxonomy.DeleteDataTaxonomyRequest):
-                    The request object. Delete DataTaxonomy request.
+                request (~.business_glossary.DeleteGlossaryTermRequest):
+                    The request object. Delete GlossaryTerm Request
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2071,28 +1963,21 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     sent along with the request as metadata. Normally, each value must be of type `str`,
                     but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_delete_data_taxonomy(
+            request, metadata = self._interceptor.pre_delete_glossary_term(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_query_params_json(
                 transcoded_request
             )
 
@@ -2114,10 +1999,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.DeleteDataTaxonomy",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.DeleteGlossaryTerm",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "DeleteDataTaxonomy",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "DeleteGlossaryTerm",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
@@ -2125,7 +2010,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = (
-                DataTaxonomyServiceRestTransport._DeleteDataTaxonomy._get_response(
+                BusinessGlossaryServiceRestTransport._DeleteGlossaryTerm._get_response(
                     self._host,
                     metadata,
                     query_params,
@@ -2140,44 +2025,12 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_delete_data_taxonomy(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_data_taxonomy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.delete_data_taxonomy",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "DeleteDataTaxonomy",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _GetDataAttribute(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute,
-        DataTaxonomyServiceRestStub,
+    class _GetGlossary(
+        _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.GetDataAttribute")
+            return hash("BusinessGlossaryServiceRestTransport.GetGlossary")
 
         @staticmethod
         def _get_response(
@@ -2203,17 +2056,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.GetDataAttributeRequest,
+            request: business_glossary.GetGlossaryRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> data_taxonomy.DataAttribute:
-            r"""Call the get data attribute method over HTTP.
+        ) -> business_glossary.Glossary:
+            r"""Call the get glossary method over HTTP.
 
             Args:
-                request (~.data_taxonomy.GetDataAttributeRequest):
-                    The request object. Get DataAttribute request.
+                request (~.business_glossary.GetGlossaryRequest):
+                    The request object. Get Glossary Request
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2223,35 +2076,28 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.data_taxonomy.DataAttribute:
-                    Denotes one dataAttribute in a dataTaxonomy, for
-                example, PII. DataAttribute resources can be defined in
-                a hierarchy. A single dataAttribute resource can contain
-                specs of multiple types
-
-                ::
-
-                   PII
-                     - ResourceAccessSpec :
-                                   - readers :foo@bar.com
-                     - DataAccessSpec :
-                                   - readers :bar@foo.com
+                ~.business_glossary.Glossary:
+                    A Glossary represents a collection of
+                GlossaryCategories and GlossaryTerms
+                defined by the user. Glossary is a top
+                level resource and is the Google Cloud
+                parent resource of all the
+                GlossaryCategories and GlossaryTerms
+                within it.
 
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_get_data_attribute(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_transcoded_request(
+            request, metadata = self._interceptor.pre_get_glossary(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_query_params_json(
                 transcoded_request
             )
 
@@ -2273,17 +2119,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.GetDataAttribute",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.GetGlossary",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "GetDataAttribute",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "GetGlossary",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._GetDataAttribute._get_response(
+            response = BusinessGlossaryServiceRestTransport._GetGlossary._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -2298,21 +2144,21 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = data_taxonomy.DataAttribute()
-            pb_resp = data_taxonomy.DataAttribute.pb(resp)
+            resp = business_glossary.Glossary()
+            pb_resp = business_glossary.Glossary.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_get_data_attribute(resp)
+            resp = self._interceptor.post_get_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_attribute_with_metadata(
+            resp, _ = self._interceptor.post_get_glossary_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = data_taxonomy.DataAttribute.to_json(response)
+                    response_payload = business_glossary.Glossary.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2321,22 +2167,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.get_data_attribute",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.get_glossary",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "GetDataAttribute",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "GetGlossary",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _GetDataAttributeBinding(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding,
-        DataTaxonomyServiceRestStub,
+    class _GetGlossaryCategory(
+        _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.GetDataAttributeBinding")
+            return hash("BusinessGlossaryServiceRestTransport.GetGlossaryCategory")
 
         @staticmethod
         def _get_response(
@@ -2362,48 +2208,47 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.GetDataAttributeBindingRequest,
+            request: business_glossary.GetGlossaryCategoryRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> data_taxonomy.DataAttributeBinding:
-            r"""Call the get data attribute
-            binding method over HTTP.
+        ) -> business_glossary.GlossaryCategory:
+            r"""Call the get glossary category method over HTTP.
 
-                Args:
-                    request (~.data_taxonomy.GetDataAttributeBindingRequest):
-                        The request object. Get DataAttributeBinding request.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.business_glossary.GetGlossaryCategoryRequest):
+                    The request object. Get GlossaryCategory Request
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.data_taxonomy.DataAttributeBinding:
-                        DataAttributeBinding represents
-                    binding of attributes to resources. Eg:
-                    Bind 'CustomerInfo' entity with 'PII'
-                    attribute.
+            Returns:
+                ~.business_glossary.GlossaryCategory:
+                    A GlossaryCategory represents a
+                collection of GlossaryCategories and
+                GlossaryTerms within a Glossary that are
+                related to each other.
 
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_get_data_attribute_binding(
+            request, metadata = self._interceptor.pre_get_glossary_category(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_query_params_json(
                 transcoded_request
             )
 
@@ -2425,10 +2270,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.GetDataAttributeBinding",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.GetGlossaryCategory",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "GetDataAttributeBinding",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "GetGlossaryCategory",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
@@ -2436,7 +2281,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = (
-                DataTaxonomyServiceRestTransport._GetDataAttributeBinding._get_response(
+                BusinessGlossaryServiceRestTransport._GetGlossaryCategory._get_response(
                     self._host,
                     metadata,
                     query_params,
@@ -2452,21 +2297,21 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = data_taxonomy.DataAttributeBinding()
-            pb_resp = data_taxonomy.DataAttributeBinding.pb(resp)
+            resp = business_glossary.GlossaryCategory()
+            pb_resp = business_glossary.GlossaryCategory.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_get_data_attribute_binding(resp)
+            resp = self._interceptor.post_get_glossary_category(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_attribute_binding_with_metadata(
+            resp, _ = self._interceptor.post_get_glossary_category_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = data_taxonomy.DataAttributeBinding.to_json(
+                    response_payload = business_glossary.GlossaryCategory.to_json(
                         response
                     )
                 except:
@@ -2477,22 +2322,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.get_data_attribute_binding",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.get_glossary_category",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "GetDataAttributeBinding",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "GetGlossaryCategory",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _GetDataTaxonomy(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy,
-        DataTaxonomyServiceRestStub,
+    class _GetGlossaryTerm(
+        _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.GetDataTaxonomy")
+            return hash("BusinessGlossaryServiceRestTransport.GetGlossaryTerm")
 
         @staticmethod
         def _get_response(
@@ -2518,17 +2363,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.GetDataTaxonomyRequest,
+            request: business_glossary.GetGlossaryTermRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> data_taxonomy.DataTaxonomy:
-            r"""Call the get data taxonomy method over HTTP.
+        ) -> business_glossary.GlossaryTerm:
+            r"""Call the get glossary term method over HTTP.
 
             Args:
-                request (~.data_taxonomy.GetDataTaxonomyRequest):
-                    The request object. Get DataTaxonomy request.
+                request (~.business_glossary.GetGlossaryTermRequest):
+                    The request object. Get GlossaryTerm Request
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2538,29 +2383,28 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.data_taxonomy.DataTaxonomy:
-                    DataTaxonomy represents a set of
-                hierarchical DataAttributes resources,
-                grouped with a common theme Eg:
-                'SensitiveDataTaxonomy' can have
-                attributes to manage PII data. It is
-                defined at project level.
+                ~.business_glossary.GlossaryTerm:
+                    GlossaryTerms are the core of
+                Glossary. A GlossaryTerm holds a rich
+                text description that can be attached to
+                Entries or specific columns to enrich
+                them.
 
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_get_data_taxonomy(
+            request, metadata = self._interceptor.pre_get_glossary_term(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_query_params_json(
                 transcoded_request
             )
 
@@ -2582,23 +2426,25 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.GetDataTaxonomy",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.GetGlossaryTerm",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "GetDataTaxonomy",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "GetGlossaryTerm",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._GetDataTaxonomy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            response = (
+                BusinessGlossaryServiceRestTransport._GetGlossaryTerm._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2607,21 +2453,21 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = data_taxonomy.DataTaxonomy()
-            pb_resp = data_taxonomy.DataTaxonomy.pb(resp)
+            resp = business_glossary.GlossaryTerm()
+            pb_resp = business_glossary.GlossaryTerm.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_get_data_taxonomy(resp)
+            resp = self._interceptor.post_get_glossary_term(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_taxonomy_with_metadata(
+            resp, _ = self._interceptor.post_get_glossary_term_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = data_taxonomy.DataTaxonomy.to_json(response)
+                    response_payload = business_glossary.GlossaryTerm.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2630,22 +2476,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.get_data_taxonomy",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.get_glossary_term",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "GetDataTaxonomy",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "GetGlossaryTerm",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _ListDataAttributeBindings(
-        _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings,
-        DataTaxonomyServiceRestStub,
+    class _ListGlossaries(
+        _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.ListDataAttributeBindings")
+            return hash("BusinessGlossaryServiceRestTransport.ListGlossaries")
 
         @staticmethod
         def _get_response(
@@ -2671,44 +2517,41 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.ListDataAttributeBindingsRequest,
+            request: business_glossary.ListGlossariesRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> data_taxonomy.ListDataAttributeBindingsResponse:
-            r"""Call the list data attribute
-            bindings method over HTTP.
+        ) -> business_glossary.ListGlossariesResponse:
+            r"""Call the list glossaries method over HTTP.
 
-                Args:
-                    request (~.data_taxonomy.ListDataAttributeBindingsRequest):
-                        The request object. List DataAttributeBindings request.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.business_glossary.ListGlossariesRequest):
+                    The request object. List Glossaries Request
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.data_taxonomy.ListDataAttributeBindingsResponse:
-                        List DataAttributeBindings response.
+            Returns:
+                ~.business_glossary.ListGlossariesResponse:
+                    List Glossaries Response
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_list_data_attribute_bindings(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_transcoded_request(
+            request, metadata = self._interceptor.pre_list_glossaries(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_query_params_json(
                 transcoded_request
             )
 
@@ -2730,17 +2573,168 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.ListDataAttributeBindings",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.ListGlossaries",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "ListDataAttributeBindings",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "ListGlossaries",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._ListDataAttributeBindings._get_response(
+            response = (
+                BusinessGlossaryServiceRestTransport._ListGlossaries._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = business_glossary.ListGlossariesResponse()
+            pb_resp = business_glossary.ListGlossariesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_glossaries(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_glossaries_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = business_glossary.ListGlossariesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.list_glossaries",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "ListGlossaries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListGlossaryCategories(
+        _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories,
+        BusinessGlossaryServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("BusinessGlossaryServiceRestTransport.ListGlossaryCategories")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: business_glossary.ListGlossaryCategoriesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> business_glossary.ListGlossaryCategoriesResponse:
+            r"""Call the list glossary categories method over HTTP.
+
+            Args:
+                request (~.business_glossary.ListGlossaryCategoriesRequest):
+                    The request object. List GlossaryCategories Request
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.business_glossary.ListGlossaryCategoriesResponse:
+                    List GlossaryCategories Response
+            """
+
+            http_options = (
+                _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_glossary_categories(
+                request, metadata
+            )
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.ListGlossaryCategories",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "ListGlossaryCategories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BusinessGlossaryServiceRestTransport._ListGlossaryCategories._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -2755,14 +2749,14 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = data_taxonomy.ListDataAttributeBindingsResponse()
-            pb_resp = data_taxonomy.ListDataAttributeBindingsResponse.pb(resp)
+            resp = business_glossary.ListGlossaryCategoriesResponse()
+            pb_resp = business_glossary.ListGlossaryCategoriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_data_attribute_bindings(resp)
+            resp = self._interceptor.post_list_glossary_categories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_attribute_bindings_with_metadata(
+            resp, _ = self._interceptor.post_list_glossary_categories_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2770,7 +2764,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = (
-                        data_taxonomy.ListDataAttributeBindingsResponse.to_json(
+                        business_glossary.ListGlossaryCategoriesResponse.to_json(
                             response
                         )
                     )
@@ -2782,22 +2776,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.list_data_attribute_bindings",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.list_glossary_categories",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "ListDataAttributeBindings",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "ListGlossaryCategories",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _ListDataAttributes(
-        _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes,
-        DataTaxonomyServiceRestStub,
+    class _ListGlossaryTerms(
+        _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.ListDataAttributes")
+            return hash("BusinessGlossaryServiceRestTransport.ListGlossaryTerms")
 
         @staticmethod
         def _get_response(
@@ -2823,17 +2817,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.ListDataAttributesRequest,
+            request: business_glossary.ListGlossaryTermsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> data_taxonomy.ListDataAttributesResponse:
-            r"""Call the list data attributes method over HTTP.
+        ) -> business_glossary.ListGlossaryTermsResponse:
+            r"""Call the list glossary terms method over HTTP.
 
             Args:
-                request (~.data_taxonomy.ListDataAttributesRequest):
-                    The request object. List DataAttributes request.
+                request (~.business_glossary.ListGlossaryTermsRequest):
+                    The request object. List GlossaryTerms Request
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2843,23 +2837,23 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.data_taxonomy.ListDataAttributesResponse:
-                    List DataAttributes response.
+                ~.business_glossary.ListGlossaryTermsResponse:
+                    List GlossaryTerms Response
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_list_data_attributes(
+            request, metadata = self._interceptor.pre_list_glossary_terms(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_query_params_json(
                 transcoded_request
             )
 
@@ -2881,10 +2875,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.ListDataAttributes",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.ListGlossaryTerms",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "ListDataAttributes",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "ListGlossaryTerms",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
@@ -2892,7 +2886,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = (
-                DataTaxonomyServiceRestTransport._ListDataAttributes._get_response(
+                BusinessGlossaryServiceRestTransport._ListGlossaryTerms._get_response(
                     self._host,
                     metadata,
                     query_params,
@@ -2908,22 +2902,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = data_taxonomy.ListDataAttributesResponse()
-            pb_resp = data_taxonomy.ListDataAttributesResponse.pb(resp)
+            resp = business_glossary.ListGlossaryTermsResponse()
+            pb_resp = business_glossary.ListGlossaryTermsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_data_attributes(resp)
+            resp = self._interceptor.post_list_glossary_terms(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_attributes_with_metadata(
+            resp, _ = self._interceptor.post_list_glossary_terms_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = data_taxonomy.ListDataAttributesResponse.to_json(
-                        response
+                    response_payload = (
+                        business_glossary.ListGlossaryTermsResponse.to_json(response)
                     )
                 except:
                     response_payload = None
@@ -2933,173 +2927,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.list_data_attributes",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.list_glossary_terms",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "ListDataAttributes",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "ListGlossaryTerms",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _ListDataTaxonomies(
-        _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies,
-        DataTaxonomyServiceRestStub,
+    class _UpdateGlossary(
+        _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.ListDataTaxonomies")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: data_taxonomy.ListDataTaxonomiesRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> data_taxonomy.ListDataTaxonomiesResponse:
-            r"""Call the list data taxonomies method over HTTP.
-
-            Args:
-                request (~.data_taxonomy.ListDataTaxonomiesRequest):
-                    The request object. List DataTaxonomies request.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.data_taxonomy.ListDataTaxonomiesResponse:
-                    List DataTaxonomies response.
-            """
-
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_list_data_taxonomies(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.ListDataTaxonomies",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "ListDataTaxonomies",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = (
-                DataTaxonomyServiceRestTransport._ListDataTaxonomies._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = data_taxonomy.ListDataTaxonomiesResponse()
-            pb_resp = data_taxonomy.ListDataTaxonomiesResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_list_data_taxonomies(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_taxonomies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = data_taxonomy.ListDataTaxonomiesResponse.to_json(
-                        response
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.list_data_taxonomies",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "ListDataTaxonomies",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _UpdateDataAttribute(
-        _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute,
-        DataTaxonomyServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.UpdateDataAttribute")
+            return hash("BusinessGlossaryServiceRestTransport.UpdateGlossary")
 
         @staticmethod
         def _get_response(
@@ -3126,17 +2969,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.UpdateDataAttributeRequest,
+            request: business_glossary.UpdateGlossaryRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
-            r"""Call the update data attribute method over HTTP.
+            r"""Call the update glossary method over HTTP.
 
             Args:
-                request (~.data_taxonomy.UpdateDataAttributeRequest):
-                    The request object. Update DataAttribute request.
+                request (~.business_glossary.UpdateGlossaryRequest):
+                    The request object. Update Glossary Request
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3154,22 +2997,20 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_update_data_attribute(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_transcoded_request(
+            request, metadata = self._interceptor.pre_update_glossary(request, metadata)
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_request_body_json(
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_request_body_json(
                 transcoded_request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_query_params_json(
                 transcoded_request
             )
 
@@ -3191,10 +3032,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.UpdateDataAttribute",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.UpdateGlossary",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "UpdateDataAttribute",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "UpdateGlossary",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
@@ -3202,7 +3043,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = (
-                DataTaxonomyServiceRestTransport._UpdateDataAttribute._get_response(
+                BusinessGlossaryServiceRestTransport._UpdateGlossary._get_response(
                     self._host,
                     metadata,
                     query_params,
@@ -3222,9 +3063,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_update_data_attribute(resp)
+            resp = self._interceptor.post_update_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_attribute_with_metadata(
+            resp, _ = self._interceptor.post_update_glossary_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3240,22 +3081,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.update_data_attribute",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.update_glossary",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "UpdateDataAttribute",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "UpdateGlossary",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _UpdateDataAttributeBinding(
-        _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding,
-        DataTaxonomyServiceRestStub,
+    class _UpdateGlossaryCategory(
+        _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.UpdateDataAttributeBinding")
+            return hash("BusinessGlossaryServiceRestTransport.UpdateGlossaryCategory")
 
         @staticmethod
         def _get_response(
@@ -3282,51 +3123,51 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: data_taxonomy.UpdateDataAttributeBindingRequest,
+            request: business_glossary.UpdateGlossaryCategoryRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the update data attribute
-            binding method over HTTP.
+        ) -> business_glossary.GlossaryCategory:
+            r"""Call the update glossary category method over HTTP.
 
-                Args:
-                    request (~.data_taxonomy.UpdateDataAttributeBindingRequest):
-                        The request object. Update DataAttributeBinding request.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
+            Args:
+                request (~.business_glossary.UpdateGlossaryCategoryRequest):
+                    The request object. Update GlossaryCategory Request
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
-                Returns:
-                    ~.operations_pb2.Operation:
-                        This resource represents a
-                    long-running operation that is the
-                    result of a network API call.
+            Returns:
+                ~.business_glossary.GlossaryCategory:
+                    A GlossaryCategory represents a
+                collection of GlossaryCategories and
+                GlossaryTerms within a Glossary that are
+                related to each other.
 
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_update_data_attribute_binding(
+            request, metadata = self._interceptor.pre_update_glossary_category(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_request_body_json(
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_request_body_json(
                 transcoded_request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_query_params_json(
                 transcoded_request
             )
 
@@ -3338,7 +3179,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3348,17 +3189,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.UpdateDataAttributeBinding",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.UpdateGlossaryCategory",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "UpdateDataAttributeBinding",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "UpdateGlossaryCategory",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._UpdateDataAttributeBinding._get_response(
+            response = BusinessGlossaryServiceRestTransport._UpdateGlossaryCategory._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -3374,22 +3215,23 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = business_glossary.GlossaryCategory()
+            pb_resp = business_glossary.GlossaryCategory.pb(resp)
 
-            resp = self._interceptor.post_update_data_attribute_binding(resp)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_glossary_category(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_data_attribute_binding_with_metadata(
+            resp, _ = self._interceptor.post_update_glossary_category_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)
+                    response_payload = business_glossary.GlossaryCategory.to_json(
+                        response
+                    )
                 except:
                     response_payload = None
                 http_response = {
@@ -3398,22 +3240,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.update_data_attribute_binding",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.update_glossary_category",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "UpdateDataAttributeBinding",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "UpdateGlossaryCategory",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _UpdateDataTaxonomy(
-        _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy,
-        DataTaxonomyServiceRestStub,
+    class _UpdateGlossaryTerm(
+        _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.UpdateDataTaxonomy")
+            return hash("BusinessGlossaryServiceRestTransport.UpdateGlossaryTerm")
 
         @staticmethod
         def _get_response(
@@ -3440,17 +3282,17 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
         def __call__(
             self,
-            request: gcd_data_taxonomy.UpdateDataTaxonomyRequest,
+            request: business_glossary.UpdateGlossaryTermRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the update data taxonomy method over HTTP.
+        ) -> business_glossary.GlossaryTerm:
+            r"""Call the update glossary term method over HTTP.
 
             Args:
-                request (~.gcd_data_taxonomy.UpdateDataTaxonomyRequest):
-                    The request object. Update DataTaxonomy request.
+                request (~.business_glossary.UpdateGlossaryTermRequest):
+                    The request object. Update GlossaryTerm Request
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3460,30 +3302,32 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
+                ~.business_glossary.GlossaryTerm:
+                    GlossaryTerms are the core of
+                Glossary. A GlossaryTerm holds a rich
+                text description that can be attached to
+                Entries or specific columns to enrich
+                them.
 
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_update_data_taxonomy(
+            request, metadata = self._interceptor.pre_update_glossary_term(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_request_body_json(
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_request_body_json(
                 transcoded_request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_query_params_json(
                 transcoded_request
             )
 
@@ -3495,7 +3339,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3505,10 +3349,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.UpdateDataTaxonomy",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.UpdateGlossaryTerm",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "UpdateDataTaxonomy",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "UpdateGlossaryTerm",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
@@ -3516,7 +3360,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             # Send the request
             response = (
-                DataTaxonomyServiceRestTransport._UpdateDataTaxonomy._get_response(
+                BusinessGlossaryServiceRestTransport._UpdateGlossaryTerm._get_response(
                     self._host,
                     metadata,
                     query_params,
@@ -3533,19 +3377,21 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = business_glossary.GlossaryTerm()
+            pb_resp = business_glossary.GlossaryTerm.pb(resp)
 
-            resp = self._interceptor.post_update_data_taxonomy(resp)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_glossary_term(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_taxonomy_with_metadata(
+            resp, _ = self._interceptor.post_update_glossary_term_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)
+                    response_payload = business_glossary.GlossaryTerm.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3554,10 +3400,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceClient.update_data_taxonomy",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.update_glossary_term",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
-                        "rpcName": "UpdateDataTaxonomy",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
+                        "rpcName": "UpdateGlossaryTerm",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3565,157 +3411,159 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             return resp
 
     @property
-    def create_data_attribute(
+    def create_glossary(
         self,
-    ) -> Callable[[data_taxonomy.CreateDataAttributeRequest], operations_pb2.Operation]:
+    ) -> Callable[[business_glossary.CreateGlossaryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateDataAttribute(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_data_attribute_binding(
+    def create_glossary_category(
         self,
     ) -> Callable[
-        [data_taxonomy.CreateDataAttributeBindingRequest], operations_pb2.Operation
+        [business_glossary.CreateGlossaryCategoryRequest],
+        business_glossary.GlossaryCategory,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateGlossaryCategory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_data_taxonomy(
+    def create_glossary_term(
         self,
     ) -> Callable[
-        [gcd_data_taxonomy.CreateDataTaxonomyRequest], operations_pb2.Operation
+        [business_glossary.CreateGlossaryTermRequest], business_glossary.GlossaryTerm
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateDataTaxonomy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateGlossaryTerm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_attribute(
+    def delete_glossary(
         self,
-    ) -> Callable[[data_taxonomy.DeleteDataAttributeRequest], operations_pb2.Operation]:
+    ) -> Callable[[business_glossary.DeleteGlossaryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteDataAttribute(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_attribute_binding(
+    def delete_glossary_category(
+        self,
+    ) -> Callable[[business_glossary.DeleteGlossaryCategoryRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteGlossaryCategory(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_glossary_term(
+        self,
+    ) -> Callable[[business_glossary.DeleteGlossaryTermRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteGlossaryTerm(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_glossary(
+        self,
+    ) -> Callable[[business_glossary.GetGlossaryRequest], business_glossary.Glossary]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetGlossary(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_glossary_category(
         self,
     ) -> Callable[
-        [data_taxonomy.DeleteDataAttributeBindingRequest], operations_pb2.Operation
+        [business_glossary.GetGlossaryCategoryRequest],
+        business_glossary.GlossaryCategory,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetGlossaryCategory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_taxonomy(
-        self,
-    ) -> Callable[[data_taxonomy.DeleteDataTaxonomyRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._DeleteDataTaxonomy(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_data_attribute(
-        self,
-    ) -> Callable[[data_taxonomy.GetDataAttributeRequest], data_taxonomy.DataAttribute]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetDataAttribute(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_data_attribute_binding(
+    def get_glossary_term(
         self,
     ) -> Callable[
-        [data_taxonomy.GetDataAttributeBindingRequest],
-        data_taxonomy.DataAttributeBinding,
+        [business_glossary.GetGlossaryTermRequest], business_glossary.GlossaryTerm
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetGlossaryTerm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_taxonomy(
-        self,
-    ) -> Callable[[data_taxonomy.GetDataTaxonomyRequest], data_taxonomy.DataTaxonomy]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetDataTaxonomy(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_data_attribute_bindings(
+    def list_glossaries(
         self,
     ) -> Callable[
-        [data_taxonomy.ListDataAttributeBindingsRequest],
-        data_taxonomy.ListDataAttributeBindingsResponse,
+        [business_glossary.ListGlossariesRequest],
+        business_glossary.ListGlossariesResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDataAttributeBindings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListGlossaries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_attributes(
+    def list_glossary_categories(
         self,
     ) -> Callable[
-        [data_taxonomy.ListDataAttributesRequest],
-        data_taxonomy.ListDataAttributesResponse,
+        [business_glossary.ListGlossaryCategoriesRequest],
+        business_glossary.ListGlossaryCategoriesResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDataAttributes(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListGlossaryCategories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_taxonomies(
+    def list_glossary_terms(
         self,
     ) -> Callable[
-        [data_taxonomy.ListDataTaxonomiesRequest],
-        data_taxonomy.ListDataTaxonomiesResponse,
+        [business_glossary.ListGlossaryTermsRequest],
+        business_glossary.ListGlossaryTermsResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDataTaxonomies(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListGlossaryTerms(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_attribute(
+    def update_glossary(
         self,
-    ) -> Callable[[data_taxonomy.UpdateDataAttributeRequest], operations_pb2.Operation]:
+    ) -> Callable[[business_glossary.UpdateGlossaryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateDataAttribute(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_attribute_binding(
+    def update_glossary_category(
         self,
     ) -> Callable[
-        [data_taxonomy.UpdateDataAttributeBindingRequest], operations_pb2.Operation
+        [business_glossary.UpdateGlossaryCategoryRequest],
+        business_glossary.GlossaryCategory,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGlossaryCategory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_taxonomy(
+    def update_glossary_term(
         self,
     ) -> Callable[
-        [gcd_data_taxonomy.UpdateDataTaxonomyRequest], operations_pb2.Operation
+        [business_glossary.UpdateGlossaryTermRequest], business_glossary.GlossaryTerm
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateDataTaxonomy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGlossaryTerm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _GetLocation(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetLocation,
-        DataTaxonomyServiceRestStub,
+        _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.GetLocation")
+            return hash("BusinessGlossaryServiceRestTransport.GetLocation")
 
         @staticmethod
         def _get_response(
@@ -3765,16 +3613,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation._get_http_options()
             )
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
 
@@ -3796,9 +3644,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.GetLocation",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.GetLocation",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "GetLocation",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -3806,7 +3654,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._GetLocation._get_response(
+            response = BusinessGlossaryServiceRestTransport._GetLocation._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -3837,9 +3685,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceAsyncClient.GetLocation",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceAsyncClient.GetLocation",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "GetLocation",
                         "httpResponse": http_response,
                         "metadata": http_response["headers"],
@@ -3852,11 +3700,11 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
     class _ListLocations(
-        _BaseDataTaxonomyServiceRestTransport._BaseListLocations,
-        DataTaxonomyServiceRestStub,
+        _BaseBusinessGlossaryServiceRestTransport._BaseListLocations,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.ListLocations")
+            return hash("BusinessGlossaryServiceRestTransport.ListLocations")
 
         @staticmethod
         def _get_response(
@@ -3906,16 +3754,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseListLocations._get_http_options()
             )
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
 
@@ -3937,9 +3785,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.ListLocations",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.ListLocations",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "ListLocations",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -3947,13 +3795,15 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            response = (
+                BusinessGlossaryServiceRestTransport._ListLocations._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3978,9 +3828,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceAsyncClient.ListLocations",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceAsyncClient.ListLocations",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "ListLocations",
                         "httpResponse": http_response,
                         "metadata": http_response["headers"],
@@ -3993,11 +3843,11 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _CancelOperation(
-        _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation,
-        DataTaxonomyServiceRestStub,
+        _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.CancelOperation")
+            return hash("BusinessGlossaryServiceRestTransport.CancelOperation")
 
         @staticmethod
         def _get_response(
@@ -4045,22 +3895,22 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_http_options()
             )
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_request_body_json(
+            body = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_request_body_json(
                 transcoded_request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
 
@@ -4082,9 +3932,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.CancelOperation",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.CancelOperation",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "CancelOperation",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -4092,14 +3942,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            response = (
+                BusinessGlossaryServiceRestTransport._CancelOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4114,11 +3966,11 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _DeleteOperation(
-        _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation,
-        DataTaxonomyServiceRestStub,
+        _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.DeleteOperation")
+            return hash("BusinessGlossaryServiceRestTransport.DeleteOperation")
 
         @staticmethod
         def _get_response(
@@ -4165,18 +4017,18 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
 
@@ -4198,9 +4050,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.DeleteOperation",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.DeleteOperation",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "DeleteOperation",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -4208,13 +4060,15 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            response = (
+                BusinessGlossaryServiceRestTransport._DeleteOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4229,11 +4083,11 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _GetOperation(
-        _BaseDataTaxonomyServiceRestTransport._BaseGetOperation,
-        DataTaxonomyServiceRestStub,
+        _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.GetOperation")
+            return hash("BusinessGlossaryServiceRestTransport.GetOperation")
 
         @staticmethod
         def _get_response(
@@ -4283,16 +4137,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation._get_http_options()
             )
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
 
@@ -4314,9 +4168,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.GetOperation",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.GetOperation",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -4324,7 +4178,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._GetOperation._get_response(
+            response = BusinessGlossaryServiceRestTransport._GetOperation._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -4355,9 +4209,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceAsyncClient.GetOperation",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceAsyncClient.GetOperation",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
                         "metadata": http_response["headers"],
@@ -4370,11 +4224,11 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
     class _ListOperations(
-        _BaseDataTaxonomyServiceRestTransport._BaseListOperations,
-        DataTaxonomyServiceRestStub,
+        _BaseBusinessGlossaryServiceRestTransport._BaseListOperations,
+        BusinessGlossaryServiceRestStub,
     ):
         def __hash__(self):
-            return hash("DataTaxonomyServiceRestTransport.ListOperations")
+            return hash("BusinessGlossaryServiceRestTransport.ListOperations")
 
         @staticmethod
         def _get_response(
@@ -4424,16 +4278,16 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             """
 
             http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_http_options()
+                _BaseBusinessGlossaryServiceRestTransport._BaseListOperations._get_http_options()
             )
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_transcoded_request(
+            transcoded_request = _BaseBusinessGlossaryServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_query_params_json(
+            query_params = _BaseBusinessGlossaryServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
 
@@ -4455,9 +4309,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataTaxonomyServiceClient.ListOperations",
+                    f"Sending request for google.cloud.dataplex_v1.BusinessGlossaryServiceClient.ListOperations",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -4465,13 +4319,15 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 )
 
             # Send the request
-            response = DataTaxonomyServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            response = (
+                BusinessGlossaryServiceRestTransport._ListOperations._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4496,9 +4352,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataTaxonomyServiceAsyncClient.ListOperations",
+                    "Received response for google.cloud.dataplex_v1.BusinessGlossaryServiceAsyncClient.ListOperations",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
                         "metadata": http_response["headers"],
@@ -4514,4 +4370,4 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
         self._session.close()
 
 
-__all__ = ("DataTaxonomyServiceRestTransport",)
+__all__ = ("BusinessGlossaryServiceRestTransport",)

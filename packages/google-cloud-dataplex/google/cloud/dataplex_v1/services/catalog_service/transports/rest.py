@@ -105,6 +105,14 @@ class CatalogServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_entry_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_entry_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_entry_type(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -145,6 +153,14 @@ class CatalogServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_entry_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_entry_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_entry_type(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -174,6 +190,14 @@ class CatalogServiceRestInterceptor:
                 return request, metadata
 
             def post_get_entry_group(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_entry_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_entry_link(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -439,6 +463,50 @@ class CatalogServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_entry_link(
+        self,
+        request: catalog.CreateEntryLinkRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.CreateEntryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for create_entry_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_create_entry_link(self, response: catalog.EntryLink) -> catalog.EntryLink:
+        """Post-rpc interceptor for create_entry_link
+
+        DEPRECATED. Please use the `post_create_entry_link_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_create_entry_link` interceptor runs
+        before the `post_create_entry_link_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_entry_link_with_metadata(
+        self,
+        response: catalog.EntryLink,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.EntryLink, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_entry_link
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_create_entry_link_with_metadata`
+        interceptor in new development instead of the `post_create_entry_link` interceptor.
+        When both interceptors are used, this `post_create_entry_link_with_metadata` interceptor runs after the
+        `post_create_entry_link` interceptor. The (possibly modified) response returned by
+        `post_create_entry_link` will be passed to
+        `post_create_entry_link_with_metadata`.
+        """
+        return response, metadata
+
     def pre_create_entry_type(
         self,
         request: catalog.CreateEntryTypeRequest,
@@ -671,6 +739,50 @@ class CatalogServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_entry_link(
+        self,
+        request: catalog.DeleteEntryLinkRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.DeleteEntryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for delete_entry_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_delete_entry_link(self, response: catalog.EntryLink) -> catalog.EntryLink:
+        """Post-rpc interceptor for delete_entry_link
+
+        DEPRECATED. Please use the `post_delete_entry_link_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_delete_entry_link` interceptor runs
+        before the `post_delete_entry_link_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_entry_link_with_metadata(
+        self,
+        response: catalog.EntryLink,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.EntryLink, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_entry_link
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_entry_link_with_metadata`
+        interceptor in new development instead of the `post_delete_entry_link` interceptor.
+        When both interceptors are used, this `post_delete_entry_link_with_metadata` interceptor runs after the
+        `post_delete_entry_link` interceptor. The (possibly modified) response returned by
+        `post_delete_entry_link` will be passed to
+        `post_delete_entry_link_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_entry_type(
         self,
         request: catalog.DeleteEntryTypeRequest,
@@ -844,6 +956,50 @@ class CatalogServiceRestInterceptor:
         `post_get_entry_group` interceptor. The (possibly modified) response returned by
         `post_get_entry_group` will be passed to
         `post_get_entry_group_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_entry_link(
+        self,
+        request: catalog.GetEntryLinkRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.GetEntryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_entry_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CatalogService server.
+        """
+        return request, metadata
+
+    def post_get_entry_link(self, response: catalog.EntryLink) -> catalog.EntryLink:
+        """Post-rpc interceptor for get_entry_link
+
+        DEPRECATED. Please use the `post_get_entry_link_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CatalogService server but before
+        it is returned to user code. This `post_get_entry_link` interceptor runs
+        before the `post_get_entry_link_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_entry_link_with_metadata(
+        self,
+        response: catalog.EntryLink,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[catalog.EntryLink, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_entry_link
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CatalogService server but before it is returned to user code.
+
+        We recommend only using this `post_get_entry_link_with_metadata`
+        interceptor in new development instead of the `post_get_entry_link` interceptor.
+        When both interceptors are used, this `post_get_entry_link_with_metadata` interceptor runs after the
+        `post_get_entry_link` interceptor. The (possibly modified) response returned by
+        `post_get_entry_link` will be passed to
+        `post_get_entry_link_with_metadata`.
         """
         return response, metadata
 
@@ -1605,9 +1761,9 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
     """REST backend synchronous transport for CatalogService.
 
     The primary resources offered by this service are
-    EntryGroups, EntryTypes, AspectTypes, and Entries. They
-    collectively let data administrators organize, manage, secure,
-    and catalog data located across cloud projects in their
+    EntryGroups, EntryTypes, AspectTypes, Entries and EntryLinks.
+    They collectively let data administrators organize, manage,
+    secure, and catalog data located across cloud projects in their
     organization in a variety of storage systems, including Cloud
     Storage and BigQuery.
 
@@ -1735,7 +1891,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     },
                     {
                         "method": "get",
-                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                        "uri": "/v1/{name=organizations/*/locations/*}/operations",
                     },
                 ],
             }
@@ -2329,6 +2485,160 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
+    class _CreateEntryLink(
+        _BaseCatalogServiceRestTransport._BaseCreateEntryLink, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.CreateEntryLink")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.CreateEntryLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> catalog.EntryLink:
+            r"""Call the create entry link method over HTTP.
+
+            Args:
+                request (~.catalog.CreateEntryLinkRequest):
+                    The request object. Request message for CreateEntryLink.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.catalog.EntryLink:
+                    EntryLink represents a link between
+                two Entries.
+
+            """
+
+            http_options = (
+                _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_entry_link(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.CreateEntryLink",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "CreateEntryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._CreateEntryLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = catalog.EntryLink()
+            pb_resp = catalog.EntryLink.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_entry_link(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_entry_link_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.EntryLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.create_entry_link",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "CreateEntryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateEntryType(
         _BaseCatalogServiceRestTransport._BaseCreateEntryType, CatalogServiceRestStub
     ):
@@ -2675,7 +2985,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             Args:
                 request (~.catalog.DeleteAspectTypeRequest):
-                    The request object. Delele AspectType Request.
+                    The request object. Delete AspectType Request.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3076,6 +3386,154 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
+    class _DeleteEntryLink(
+        _BaseCatalogServiceRestTransport._BaseDeleteEntryLink, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.DeleteEntryLink")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.DeleteEntryLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> catalog.EntryLink:
+            r"""Call the delete entry link method over HTTP.
+
+            Args:
+                request (~.catalog.DeleteEntryLinkRequest):
+                    The request object. Request message for DeleteEntryLink.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.catalog.EntryLink:
+                    EntryLink represents a link between
+                two Entries.
+
+            """
+
+            http_options = (
+                _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_entry_link(
+                request, metadata
+            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.DeleteEntryLink",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "DeleteEntryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._DeleteEntryLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = catalog.EntryLink()
+            pb_resp = catalog.EntryLink.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_entry_link(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_entry_link_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.EntryLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.delete_entry_link",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "DeleteEntryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteEntryType(
         _BaseCatalogServiceRestTransport._BaseDeleteEntryType, CatalogServiceRestStub
     ):
@@ -3116,7 +3574,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             Args:
                 request (~.catalog.DeleteEntryTypeRequest):
-                    The request object. Delele EntryType Request.
+                    The request object. Delete EntryType Request.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3662,6 +4120,152 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataplex.v1.CatalogService",
                         "rpcName": "GetEntryGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetEntryLink(
+        _BaseCatalogServiceRestTransport._BaseGetEntryLink, CatalogServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CatalogServiceRestTransport.GetEntryLink")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: catalog.GetEntryLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> catalog.EntryLink:
+            r"""Call the get entry link method over HTTP.
+
+            Args:
+                request (~.catalog.GetEntryLinkRequest):
+                    The request object. Request message for GetEntryLink.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.catalog.EntryLink:
+                    EntryLink represents a link between
+                two Entries.
+
+            """
+
+            http_options = (
+                _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_entry_link(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.CatalogServiceClient.GetEntryLink",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "GetEntryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CatalogServiceRestTransport._GetEntryLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = catalog.EntryLink()
+            pb_resp = catalog.EntryLink.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_entry_link(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_entry_link_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.EntryLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.CatalogServiceClient.get_entry_link",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                        "rpcName": "GetEntryLink",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -5625,6 +6229,14 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._CreateEntryGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_entry_link(
+        self,
+    ) -> Callable[[catalog.CreateEntryLinkRequest], catalog.EntryLink]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateEntryLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_entry_type(
         self,
     ) -> Callable[[catalog.CreateEntryTypeRequest], operations_pb2.Operation]:
@@ -5663,6 +6275,14 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._DeleteEntryGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_entry_link(
+        self,
+    ) -> Callable[[catalog.DeleteEntryLinkRequest], catalog.EntryLink]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteEntryLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_entry_type(
         self,
     ) -> Callable[[catalog.DeleteEntryTypeRequest], operations_pb2.Operation]:
@@ -5691,6 +6311,14 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEntryGroup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_entry_link(
+        self,
+    ) -> Callable[[catalog.GetEntryLinkRequest], catalog.EntryLink]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetEntryLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_entry_type(

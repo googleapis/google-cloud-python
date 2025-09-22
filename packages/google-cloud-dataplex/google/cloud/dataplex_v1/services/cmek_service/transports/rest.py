@@ -521,7 +521,8 @@ class CmekServiceRestStub:
 class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
     """REST backend synchronous transport for CmekService.
 
-    Dataplex Cmek Service
+    Dataplex Universal Catalog Customer Managed Encryption Keys
+    (CMEK) Service
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -647,7 +648,7 @@ class CmekServiceRestTransport(_BaseCmekServiceRestTransport):
                     },
                     {
                         "method": "get",
-                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                        "uri": "/v1/{name=organizations/*/locations/*}/operations",
                     },
                 ],
             }

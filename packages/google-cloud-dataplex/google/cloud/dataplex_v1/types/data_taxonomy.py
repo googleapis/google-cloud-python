@@ -479,7 +479,7 @@ class ListDataTaxonomiesRequest(proto.Message):
         parent (str):
             Required. The resource name of the DataTaxonomy location, of
             the form: projects/{project_number}/locations/{location_id}
-            where ``location_id`` refers to a GCP region.
+            where ``location_id`` refers to a Google Cloud region.
         page_size (int):
             Optional. Maximum number of DataTaxonomies to
             return. The service may return fewer than this

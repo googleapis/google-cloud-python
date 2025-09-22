@@ -33,9 +33,9 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dataplex_v1.types import catalog
+from google.cloud.dataplex_v1.types import business_glossary
 
-from .base import DEFAULT_CLIENT_INFO, CatalogServiceTransport
+from .base import DEFAULT_CLIENT_INFO, BusinessGlossaryServiceTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -73,7 +73,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                    "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
@@ -103,7 +103,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.cloud.dataplex.v1.CatalogService",
+                    "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
@@ -112,15 +112,16 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class CatalogServiceGrpcTransport(CatalogServiceTransport):
-    """gRPC backend transport for CatalogService.
+class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
+    """gRPC backend transport for BusinessGlossaryService.
 
-    The primary resources offered by this service are
-    EntryGroups, EntryTypes, AspectTypes, Entries and EntryLinks.
-    They collectively let data administrators organize, manage,
-    secure, and catalog data located across cloud projects in their
-    organization in a variety of storage systems, including Cloud
-    Storage and BigQuery.
+    BusinessGlossaryService provides APIs for managing business
+    glossary resources for enterprise customers.
+    The resources currently supported in Business Glossary are:
+
+    1. Glossary
+    2. GlossaryCategory
+    3. GlossaryTerm
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -347,15 +348,15 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         return self._operations_client
 
     @property
-    def create_entry_type(
+    def create_glossary(
         self,
-    ) -> Callable[[catalog.CreateEntryTypeRequest], operations_pb2.Operation]:
-        r"""Return a callable for the create entry type method over gRPC.
+    ) -> Callable[[business_glossary.CreateGlossaryRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create glossary method over gRPC.
 
-        Creates an EntryType.
+        Creates a new Glossary resource.
 
         Returns:
-            Callable[[~.CreateEntryTypeRequest],
+            Callable[[~.CreateGlossaryRequest],
                     ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -364,24 +365,24 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_entry_type" not in self._stubs:
-            self._stubs["create_entry_type"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/CreateEntryType",
-                request_serializer=catalog.CreateEntryTypeRequest.serialize,
+        if "create_glossary" not in self._stubs:
+            self._stubs["create_glossary"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/CreateGlossary",
+                request_serializer=business_glossary.CreateGlossaryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_entry_type"]
+        return self._stubs["create_glossary"]
 
     @property
-    def update_entry_type(
+    def update_glossary(
         self,
-    ) -> Callable[[catalog.UpdateEntryTypeRequest], operations_pb2.Operation]:
-        r"""Return a callable for the update entry type method over gRPC.
+    ) -> Callable[[business_glossary.UpdateGlossaryRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update glossary method over gRPC.
 
-        Updates an EntryType.
+        Updates a Glossary resource.
 
         Returns:
-            Callable[[~.UpdateEntryTypeRequest],
+            Callable[[~.UpdateGlossaryRequest],
                     ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -390,24 +391,26 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_entry_type" not in self._stubs:
-            self._stubs["update_entry_type"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/UpdateEntryType",
-                request_serializer=catalog.UpdateEntryTypeRequest.serialize,
+        if "update_glossary" not in self._stubs:
+            self._stubs["update_glossary"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/UpdateGlossary",
+                request_serializer=business_glossary.UpdateGlossaryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["update_entry_type"]
+        return self._stubs["update_glossary"]
 
     @property
-    def delete_entry_type(
+    def delete_glossary(
         self,
-    ) -> Callable[[catalog.DeleteEntryTypeRequest], operations_pb2.Operation]:
-        r"""Return a callable for the delete entry type method over gRPC.
+    ) -> Callable[[business_glossary.DeleteGlossaryRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete glossary method over gRPC.
 
-        Deletes an EntryType.
+        Deletes a Glossary resource. All the categories and
+        terms within the Glossary must be deleted before the
+        Glossary can be deleted.
 
         Returns:
-            Callable[[~.DeleteEntryTypeRequest],
+            Callable[[~.DeleteGlossaryRequest],
                     ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -416,25 +419,25 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_entry_type" not in self._stubs:
-            self._stubs["delete_entry_type"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/DeleteEntryType",
-                request_serializer=catalog.DeleteEntryTypeRequest.serialize,
+        if "delete_glossary" not in self._stubs:
+            self._stubs["delete_glossary"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/DeleteGlossary",
+                request_serializer=business_glossary.DeleteGlossaryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["delete_entry_type"]
+        return self._stubs["delete_glossary"]
 
     @property
-    def list_entry_types(
+    def get_glossary(
         self,
-    ) -> Callable[[catalog.ListEntryTypesRequest], catalog.ListEntryTypesResponse]:
-        r"""Return a callable for the list entry types method over gRPC.
+    ) -> Callable[[business_glossary.GetGlossaryRequest], business_glossary.Glossary]:
+        r"""Return a callable for the get glossary method over gRPC.
 
-        Lists EntryType resources in a project and location.
+        Gets a Glossary resource.
 
         Returns:
-            Callable[[~.ListEntryTypesRequest],
-                    ~.ListEntryTypesResponse]:
+            Callable[[~.GetGlossaryRequest],
+                    ~.Glossary]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -442,25 +445,28 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_entry_types" not in self._stubs:
-            self._stubs["list_entry_types"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/ListEntryTypes",
-                request_serializer=catalog.ListEntryTypesRequest.serialize,
-                response_deserializer=catalog.ListEntryTypesResponse.deserialize,
+        if "get_glossary" not in self._stubs:
+            self._stubs["get_glossary"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/GetGlossary",
+                request_serializer=business_glossary.GetGlossaryRequest.serialize,
+                response_deserializer=business_glossary.Glossary.deserialize,
             )
-        return self._stubs["list_entry_types"]
+        return self._stubs["get_glossary"]
 
     @property
-    def get_entry_type(
+    def list_glossaries(
         self,
-    ) -> Callable[[catalog.GetEntryTypeRequest], catalog.EntryType]:
-        r"""Return a callable for the get entry type method over gRPC.
+    ) -> Callable[
+        [business_glossary.ListGlossariesRequest],
+        business_glossary.ListGlossariesResponse,
+    ]:
+        r"""Return a callable for the list glossaries method over gRPC.
 
-        Gets an EntryType.
+        Lists Glossary resources in a project and location.
 
         Returns:
-            Callable[[~.GetEntryTypeRequest],
-                    ~.EntryType]:
+            Callable[[~.ListGlossariesRequest],
+                    ~.ListGlossariesResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -468,25 +474,28 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_entry_type" not in self._stubs:
-            self._stubs["get_entry_type"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/GetEntryType",
-                request_serializer=catalog.GetEntryTypeRequest.serialize,
-                response_deserializer=catalog.EntryType.deserialize,
+        if "list_glossaries" not in self._stubs:
+            self._stubs["list_glossaries"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/ListGlossaries",
+                request_serializer=business_glossary.ListGlossariesRequest.serialize,
+                response_deserializer=business_glossary.ListGlossariesResponse.deserialize,
             )
-        return self._stubs["get_entry_type"]
+        return self._stubs["list_glossaries"]
 
     @property
-    def create_aspect_type(
+    def create_glossary_category(
         self,
-    ) -> Callable[[catalog.CreateAspectTypeRequest], operations_pb2.Operation]:
-        r"""Return a callable for the create aspect type method over gRPC.
+    ) -> Callable[
+        [business_glossary.CreateGlossaryCategoryRequest],
+        business_glossary.GlossaryCategory,
+    ]:
+        r"""Return a callable for the create glossary category method over gRPC.
 
-        Creates an AspectType.
+        Creates a new GlossaryCategory resource.
 
         Returns:
-            Callable[[~.CreateAspectTypeRequest],
-                    ~.Operation]:
+            Callable[[~.CreateGlossaryCategoryRequest],
+                    ~.GlossaryCategory]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -494,25 +503,28 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_aspect_type" not in self._stubs:
-            self._stubs["create_aspect_type"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/CreateAspectType",
-                request_serializer=catalog.CreateAspectTypeRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "create_glossary_category" not in self._stubs:
+            self._stubs["create_glossary_category"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/CreateGlossaryCategory",
+                request_serializer=business_glossary.CreateGlossaryCategoryRequest.serialize,
+                response_deserializer=business_glossary.GlossaryCategory.deserialize,
             )
-        return self._stubs["create_aspect_type"]
+        return self._stubs["create_glossary_category"]
 
     @property
-    def update_aspect_type(
+    def update_glossary_category(
         self,
-    ) -> Callable[[catalog.UpdateAspectTypeRequest], operations_pb2.Operation]:
-        r"""Return a callable for the update aspect type method over gRPC.
+    ) -> Callable[
+        [business_glossary.UpdateGlossaryCategoryRequest],
+        business_glossary.GlossaryCategory,
+    ]:
+        r"""Return a callable for the update glossary category method over gRPC.
 
-        Updates an AspectType.
+        Updates a GlossaryCategory resource.
 
         Returns:
-            Callable[[~.UpdateAspectTypeRequest],
-                    ~.Operation]:
+            Callable[[~.UpdateGlossaryCategoryRequest],
+                    ~.GlossaryCategory]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -520,492 +532,27 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_aspect_type" not in self._stubs:
-            self._stubs["update_aspect_type"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/UpdateAspectType",
-                request_serializer=catalog.UpdateAspectTypeRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "update_glossary_category" not in self._stubs:
+            self._stubs["update_glossary_category"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/UpdateGlossaryCategory",
+                request_serializer=business_glossary.UpdateGlossaryCategoryRequest.serialize,
+                response_deserializer=business_glossary.GlossaryCategory.deserialize,
             )
-        return self._stubs["update_aspect_type"]
+        return self._stubs["update_glossary_category"]
 
     @property
-    def delete_aspect_type(
+    def delete_glossary_category(
         self,
-    ) -> Callable[[catalog.DeleteAspectTypeRequest], operations_pb2.Operation]:
-        r"""Return a callable for the delete aspect type method over gRPC.
+    ) -> Callable[[business_glossary.DeleteGlossaryCategoryRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete glossary category method over gRPC.
 
-        Deletes an AspectType.
-
-        Returns:
-            Callable[[~.DeleteAspectTypeRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_aspect_type" not in self._stubs:
-            self._stubs["delete_aspect_type"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/DeleteAspectType",
-                request_serializer=catalog.DeleteAspectTypeRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["delete_aspect_type"]
-
-    @property
-    def list_aspect_types(
-        self,
-    ) -> Callable[[catalog.ListAspectTypesRequest], catalog.ListAspectTypesResponse]:
-        r"""Return a callable for the list aspect types method over gRPC.
-
-        Lists AspectType resources in a project and location.
+        Deletes a GlossaryCategory resource. All the
+        GlossaryCategories and GlossaryTerms nested directly
+        under the specified GlossaryCategory will be moved one
+        level up to the parent in the hierarchy.
 
         Returns:
-            Callable[[~.ListAspectTypesRequest],
-                    ~.ListAspectTypesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_aspect_types" not in self._stubs:
-            self._stubs["list_aspect_types"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/ListAspectTypes",
-                request_serializer=catalog.ListAspectTypesRequest.serialize,
-                response_deserializer=catalog.ListAspectTypesResponse.deserialize,
-            )
-        return self._stubs["list_aspect_types"]
-
-    @property
-    def get_aspect_type(
-        self,
-    ) -> Callable[[catalog.GetAspectTypeRequest], catalog.AspectType]:
-        r"""Return a callable for the get aspect type method over gRPC.
-
-        Gets an AspectType.
-
-        Returns:
-            Callable[[~.GetAspectTypeRequest],
-                    ~.AspectType]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_aspect_type" not in self._stubs:
-            self._stubs["get_aspect_type"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/GetAspectType",
-                request_serializer=catalog.GetAspectTypeRequest.serialize,
-                response_deserializer=catalog.AspectType.deserialize,
-            )
-        return self._stubs["get_aspect_type"]
-
-    @property
-    def create_entry_group(
-        self,
-    ) -> Callable[[catalog.CreateEntryGroupRequest], operations_pb2.Operation]:
-        r"""Return a callable for the create entry group method over gRPC.
-
-        Creates an EntryGroup.
-
-        Returns:
-            Callable[[~.CreateEntryGroupRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_entry_group" not in self._stubs:
-            self._stubs["create_entry_group"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/CreateEntryGroup",
-                request_serializer=catalog.CreateEntryGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["create_entry_group"]
-
-    @property
-    def update_entry_group(
-        self,
-    ) -> Callable[[catalog.UpdateEntryGroupRequest], operations_pb2.Operation]:
-        r"""Return a callable for the update entry group method over gRPC.
-
-        Updates an EntryGroup.
-
-        Returns:
-            Callable[[~.UpdateEntryGroupRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_entry_group" not in self._stubs:
-            self._stubs["update_entry_group"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/UpdateEntryGroup",
-                request_serializer=catalog.UpdateEntryGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["update_entry_group"]
-
-    @property
-    def delete_entry_group(
-        self,
-    ) -> Callable[[catalog.DeleteEntryGroupRequest], operations_pb2.Operation]:
-        r"""Return a callable for the delete entry group method over gRPC.
-
-        Deletes an EntryGroup.
-
-        Returns:
-            Callable[[~.DeleteEntryGroupRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_entry_group" not in self._stubs:
-            self._stubs["delete_entry_group"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/DeleteEntryGroup",
-                request_serializer=catalog.DeleteEntryGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["delete_entry_group"]
-
-    @property
-    def list_entry_groups(
-        self,
-    ) -> Callable[[catalog.ListEntryGroupsRequest], catalog.ListEntryGroupsResponse]:
-        r"""Return a callable for the list entry groups method over gRPC.
-
-        Lists EntryGroup resources in a project and location.
-
-        Returns:
-            Callable[[~.ListEntryGroupsRequest],
-                    ~.ListEntryGroupsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_entry_groups" not in self._stubs:
-            self._stubs["list_entry_groups"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/ListEntryGroups",
-                request_serializer=catalog.ListEntryGroupsRequest.serialize,
-                response_deserializer=catalog.ListEntryGroupsResponse.deserialize,
-            )
-        return self._stubs["list_entry_groups"]
-
-    @property
-    def get_entry_group(
-        self,
-    ) -> Callable[[catalog.GetEntryGroupRequest], catalog.EntryGroup]:
-        r"""Return a callable for the get entry group method over gRPC.
-
-        Gets an EntryGroup.
-
-        Returns:
-            Callable[[~.GetEntryGroupRequest],
-                    ~.EntryGroup]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_entry_group" not in self._stubs:
-            self._stubs["get_entry_group"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/GetEntryGroup",
-                request_serializer=catalog.GetEntryGroupRequest.serialize,
-                response_deserializer=catalog.EntryGroup.deserialize,
-            )
-        return self._stubs["get_entry_group"]
-
-    @property
-    def create_entry(self) -> Callable[[catalog.CreateEntryRequest], catalog.Entry]:
-        r"""Return a callable for the create entry method over gRPC.
-
-        Creates an Entry.
-
-        Returns:
-            Callable[[~.CreateEntryRequest],
-                    ~.Entry]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_entry" not in self._stubs:
-            self._stubs["create_entry"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/CreateEntry",
-                request_serializer=catalog.CreateEntryRequest.serialize,
-                response_deserializer=catalog.Entry.deserialize,
-            )
-        return self._stubs["create_entry"]
-
-    @property
-    def update_entry(self) -> Callable[[catalog.UpdateEntryRequest], catalog.Entry]:
-        r"""Return a callable for the update entry method over gRPC.
-
-        Updates an Entry.
-
-        Returns:
-            Callable[[~.UpdateEntryRequest],
-                    ~.Entry]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_entry" not in self._stubs:
-            self._stubs["update_entry"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/UpdateEntry",
-                request_serializer=catalog.UpdateEntryRequest.serialize,
-                response_deserializer=catalog.Entry.deserialize,
-            )
-        return self._stubs["update_entry"]
-
-    @property
-    def delete_entry(self) -> Callable[[catalog.DeleteEntryRequest], catalog.Entry]:
-        r"""Return a callable for the delete entry method over gRPC.
-
-        Deletes an Entry.
-
-        Returns:
-            Callable[[~.DeleteEntryRequest],
-                    ~.Entry]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_entry" not in self._stubs:
-            self._stubs["delete_entry"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/DeleteEntry",
-                request_serializer=catalog.DeleteEntryRequest.serialize,
-                response_deserializer=catalog.Entry.deserialize,
-            )
-        return self._stubs["delete_entry"]
-
-    @property
-    def list_entries(
-        self,
-    ) -> Callable[[catalog.ListEntriesRequest], catalog.ListEntriesResponse]:
-        r"""Return a callable for the list entries method over gRPC.
-
-        Lists Entries within an EntryGroup.
-
-        Returns:
-            Callable[[~.ListEntriesRequest],
-                    ~.ListEntriesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_entries" not in self._stubs:
-            self._stubs["list_entries"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/ListEntries",
-                request_serializer=catalog.ListEntriesRequest.serialize,
-                response_deserializer=catalog.ListEntriesResponse.deserialize,
-            )
-        return self._stubs["list_entries"]
-
-    @property
-    def get_entry(self) -> Callable[[catalog.GetEntryRequest], catalog.Entry]:
-        r"""Return a callable for the get entry method over gRPC.
-
-        Gets an Entry.
-
-        Returns:
-            Callable[[~.GetEntryRequest],
-                    ~.Entry]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_entry" not in self._stubs:
-            self._stubs["get_entry"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/GetEntry",
-                request_serializer=catalog.GetEntryRequest.serialize,
-                response_deserializer=catalog.Entry.deserialize,
-            )
-        return self._stubs["get_entry"]
-
-    @property
-    def lookup_entry(self) -> Callable[[catalog.LookupEntryRequest], catalog.Entry]:
-        r"""Return a callable for the lookup entry method over gRPC.
-
-        Looks up an entry by name using the permission on the
-        source system.
-
-        Returns:
-            Callable[[~.LookupEntryRequest],
-                    ~.Entry]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "lookup_entry" not in self._stubs:
-            self._stubs["lookup_entry"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/LookupEntry",
-                request_serializer=catalog.LookupEntryRequest.serialize,
-                response_deserializer=catalog.Entry.deserialize,
-            )
-        return self._stubs["lookup_entry"]
-
-    @property
-    def search_entries(
-        self,
-    ) -> Callable[[catalog.SearchEntriesRequest], catalog.SearchEntriesResponse]:
-        r"""Return a callable for the search entries method over gRPC.
-
-        Searches for Entries matching the given query and
-        scope.
-
-        Returns:
-            Callable[[~.SearchEntriesRequest],
-                    ~.SearchEntriesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "search_entries" not in self._stubs:
-            self._stubs["search_entries"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/SearchEntries",
-                request_serializer=catalog.SearchEntriesRequest.serialize,
-                response_deserializer=catalog.SearchEntriesResponse.deserialize,
-            )
-        return self._stubs["search_entries"]
-
-    @property
-    def create_metadata_job(
-        self,
-    ) -> Callable[[catalog.CreateMetadataJobRequest], operations_pb2.Operation]:
-        r"""Return a callable for the create metadata job method over gRPC.
-
-        Creates a metadata job. For example, use a metadata
-        job to import metadata from a third-party system into
-        Dataplex Universal Catalog.
-
-        Returns:
-            Callable[[~.CreateMetadataJobRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_metadata_job" not in self._stubs:
-            self._stubs["create_metadata_job"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/CreateMetadataJob",
-                request_serializer=catalog.CreateMetadataJobRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["create_metadata_job"]
-
-    @property
-    def get_metadata_job(
-        self,
-    ) -> Callable[[catalog.GetMetadataJobRequest], catalog.MetadataJob]:
-        r"""Return a callable for the get metadata job method over gRPC.
-
-        Gets a metadata job.
-
-        Returns:
-            Callable[[~.GetMetadataJobRequest],
-                    ~.MetadataJob]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_metadata_job" not in self._stubs:
-            self._stubs["get_metadata_job"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/GetMetadataJob",
-                request_serializer=catalog.GetMetadataJobRequest.serialize,
-                response_deserializer=catalog.MetadataJob.deserialize,
-            )
-        return self._stubs["get_metadata_job"]
-
-    @property
-    def list_metadata_jobs(
-        self,
-    ) -> Callable[[catalog.ListMetadataJobsRequest], catalog.ListMetadataJobsResponse]:
-        r"""Return a callable for the list metadata jobs method over gRPC.
-
-        Lists metadata jobs.
-
-        Returns:
-            Callable[[~.ListMetadataJobsRequest],
-                    ~.ListMetadataJobsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_metadata_jobs" not in self._stubs:
-            self._stubs["list_metadata_jobs"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/ListMetadataJobs",
-                request_serializer=catalog.ListMetadataJobsRequest.serialize,
-                response_deserializer=catalog.ListMetadataJobsResponse.deserialize,
-            )
-        return self._stubs["list_metadata_jobs"]
-
-    @property
-    def cancel_metadata_job(
-        self,
-    ) -> Callable[[catalog.CancelMetadataJobRequest], empty_pb2.Empty]:
-        r"""Return a callable for the cancel metadata job method over gRPC.
-
-        Cancels a metadata job.
-
-        If you cancel a metadata import job that is in progress,
-        the changes in the job might be partially applied. We
-        recommend that you reset the state of the entry groups
-        in your project by running another metadata job that
-        reverts the changes from the canceled job.
-
-        Returns:
-            Callable[[~.CancelMetadataJobRequest],
+            Callable[[~.DeleteGlossaryCategoryRequest],
                     ~.Empty]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -1014,25 +561,28 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "cancel_metadata_job" not in self._stubs:
-            self._stubs["cancel_metadata_job"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/CancelMetadataJob",
-                request_serializer=catalog.CancelMetadataJobRequest.serialize,
+        if "delete_glossary_category" not in self._stubs:
+            self._stubs["delete_glossary_category"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/DeleteGlossaryCategory",
+                request_serializer=business_glossary.DeleteGlossaryCategoryRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["cancel_metadata_job"]
+        return self._stubs["delete_glossary_category"]
 
     @property
-    def create_entry_link(
+    def get_glossary_category(
         self,
-    ) -> Callable[[catalog.CreateEntryLinkRequest], catalog.EntryLink]:
-        r"""Return a callable for the create entry link method over gRPC.
+    ) -> Callable[
+        [business_glossary.GetGlossaryCategoryRequest],
+        business_glossary.GlossaryCategory,
+    ]:
+        r"""Return a callable for the get glossary category method over gRPC.
 
-        Creates an Entry Link.
+        Gets a GlossaryCategory resource.
 
         Returns:
-            Callable[[~.CreateEntryLinkRequest],
-                    ~.EntryLink]:
+            Callable[[~.GetGlossaryCategoryRequest],
+                    ~.GlossaryCategory]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -1040,25 +590,28 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_entry_link" not in self._stubs:
-            self._stubs["create_entry_link"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/CreateEntryLink",
-                request_serializer=catalog.CreateEntryLinkRequest.serialize,
-                response_deserializer=catalog.EntryLink.deserialize,
+        if "get_glossary_category" not in self._stubs:
+            self._stubs["get_glossary_category"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/GetGlossaryCategory",
+                request_serializer=business_glossary.GetGlossaryCategoryRequest.serialize,
+                response_deserializer=business_glossary.GlossaryCategory.deserialize,
             )
-        return self._stubs["create_entry_link"]
+        return self._stubs["get_glossary_category"]
 
     @property
-    def delete_entry_link(
+    def list_glossary_categories(
         self,
-    ) -> Callable[[catalog.DeleteEntryLinkRequest], catalog.EntryLink]:
-        r"""Return a callable for the delete entry link method over gRPC.
+    ) -> Callable[
+        [business_glossary.ListGlossaryCategoriesRequest],
+        business_glossary.ListGlossaryCategoriesResponse,
+    ]:
+        r"""Return a callable for the list glossary categories method over gRPC.
 
-        Deletes an Entry Link.
+        Lists GlossaryCategory resources in a Glossary.
 
         Returns:
-            Callable[[~.DeleteEntryLinkRequest],
-                    ~.EntryLink]:
+            Callable[[~.ListGlossaryCategoriesRequest],
+                    ~.ListGlossaryCategoriesResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -1066,25 +619,27 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_entry_link" not in self._stubs:
-            self._stubs["delete_entry_link"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/DeleteEntryLink",
-                request_serializer=catalog.DeleteEntryLinkRequest.serialize,
-                response_deserializer=catalog.EntryLink.deserialize,
+        if "list_glossary_categories" not in self._stubs:
+            self._stubs["list_glossary_categories"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/ListGlossaryCategories",
+                request_serializer=business_glossary.ListGlossaryCategoriesRequest.serialize,
+                response_deserializer=business_glossary.ListGlossaryCategoriesResponse.deserialize,
             )
-        return self._stubs["delete_entry_link"]
+        return self._stubs["list_glossary_categories"]
 
     @property
-    def get_entry_link(
+    def create_glossary_term(
         self,
-    ) -> Callable[[catalog.GetEntryLinkRequest], catalog.EntryLink]:
-        r"""Return a callable for the get entry link method over gRPC.
+    ) -> Callable[
+        [business_glossary.CreateGlossaryTermRequest], business_glossary.GlossaryTerm
+    ]:
+        r"""Return a callable for the create glossary term method over gRPC.
 
-        Gets an Entry Link.
+        Creates a new GlossaryTerm resource.
 
         Returns:
-            Callable[[~.GetEntryLinkRequest],
-                    ~.EntryLink]:
+            Callable[[~.CreateGlossaryTermRequest],
+                    ~.GlossaryTerm]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -1092,13 +647,124 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_entry_link" not in self._stubs:
-            self._stubs["get_entry_link"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.CatalogService/GetEntryLink",
-                request_serializer=catalog.GetEntryLinkRequest.serialize,
-                response_deserializer=catalog.EntryLink.deserialize,
+        if "create_glossary_term" not in self._stubs:
+            self._stubs["create_glossary_term"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/CreateGlossaryTerm",
+                request_serializer=business_glossary.CreateGlossaryTermRequest.serialize,
+                response_deserializer=business_glossary.GlossaryTerm.deserialize,
             )
-        return self._stubs["get_entry_link"]
+        return self._stubs["create_glossary_term"]
+
+    @property
+    def update_glossary_term(
+        self,
+    ) -> Callable[
+        [business_glossary.UpdateGlossaryTermRequest], business_glossary.GlossaryTerm
+    ]:
+        r"""Return a callable for the update glossary term method over gRPC.
+
+        Updates a GlossaryTerm resource.
+
+        Returns:
+            Callable[[~.UpdateGlossaryTermRequest],
+                    ~.GlossaryTerm]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_glossary_term" not in self._stubs:
+            self._stubs["update_glossary_term"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/UpdateGlossaryTerm",
+                request_serializer=business_glossary.UpdateGlossaryTermRequest.serialize,
+                response_deserializer=business_glossary.GlossaryTerm.deserialize,
+            )
+        return self._stubs["update_glossary_term"]
+
+    @property
+    def delete_glossary_term(
+        self,
+    ) -> Callable[[business_glossary.DeleteGlossaryTermRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete glossary term method over gRPC.
+
+        Deletes a GlossaryTerm resource.
+
+        Returns:
+            Callable[[~.DeleteGlossaryTermRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_glossary_term" not in self._stubs:
+            self._stubs["delete_glossary_term"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/DeleteGlossaryTerm",
+                request_serializer=business_glossary.DeleteGlossaryTermRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_glossary_term"]
+
+    @property
+    def get_glossary_term(
+        self,
+    ) -> Callable[
+        [business_glossary.GetGlossaryTermRequest], business_glossary.GlossaryTerm
+    ]:
+        r"""Return a callable for the get glossary term method over gRPC.
+
+        Gets a GlossaryTerm resource.
+
+        Returns:
+            Callable[[~.GetGlossaryTermRequest],
+                    ~.GlossaryTerm]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_glossary_term" not in self._stubs:
+            self._stubs["get_glossary_term"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/GetGlossaryTerm",
+                request_serializer=business_glossary.GetGlossaryTermRequest.serialize,
+                response_deserializer=business_glossary.GlossaryTerm.deserialize,
+            )
+        return self._stubs["get_glossary_term"]
+
+    @property
+    def list_glossary_terms(
+        self,
+    ) -> Callable[
+        [business_glossary.ListGlossaryTermsRequest],
+        business_glossary.ListGlossaryTermsResponse,
+    ]:
+        r"""Return a callable for the list glossary terms method over gRPC.
+
+        Lists GlossaryTerm resources in a Glossary.
+
+        Returns:
+            Callable[[~.ListGlossaryTermsRequest],
+                    ~.ListGlossaryTermsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_glossary_terms" not in self._stubs:
+            self._stubs["list_glossary_terms"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.BusinessGlossaryService/ListGlossaryTerms",
+                request_serializer=business_glossary.ListGlossaryTermsRequest.serialize,
+                response_deserializer=business_glossary.ListGlossaryTermsResponse.deserialize,
+            )
+        return self._stubs["list_glossary_terms"]
 
     def close(self):
         self._logged_channel.close()
@@ -1214,4 +880,4 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         return "grpc"
 
 
-__all__ = ("CatalogServiceGrpcTransport",)
+__all__ = ("BusinessGlossaryServiceGrpcTransport",)

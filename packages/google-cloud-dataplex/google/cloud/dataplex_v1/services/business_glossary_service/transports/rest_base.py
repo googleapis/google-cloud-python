@@ -22,16 +22,16 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.dataplex_v1.types import data_taxonomy
-from google.cloud.dataplex_v1.types import data_taxonomy as gcd_data_taxonomy
+from google.cloud.dataplex_v1.types import business_glossary
 
-from .base import DEFAULT_CLIENT_INFO, DataTaxonomyServiceTransport
+from .base import DEFAULT_CLIENT_INFO, BusinessGlossaryServiceTransport
 
 
-class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
-    """Base REST backend transport for DataTaxonomyService.
+class _BaseBusinessGlossaryServiceRestTransport(BusinessGlossaryServiceTransport):
+    """Base REST backend transport for BusinessGlossaryService.
 
     Note: This class is not meant to be used directly. Use its sync and
     async sub-classes instead.
@@ -92,12 +92,12 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             api_audience=api_audience,
         )
 
-    class _BaseCreateDataAttribute:
+    class _BaseCreateGlossary:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "dataAttributeId": "",
+            "glossaryId": "",
         }
 
         @classmethod
@@ -113,15 +113,15 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/dataTaxonomies/*}/attributes",
-                    "body": "data_attribute",
+                    "uri": "/v1/{parent=projects/*/locations/*}/glossaries",
+                    "body": "glossary",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.CreateDataAttributeRequest.pb(request)
+            pb_request = business_glossary.CreateGlossaryRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -143,7 +143,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossary._get_unset_required_fields(
                     query_params
                 )
             )
@@ -151,12 +151,12 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseCreateDataAttributeBinding:
+    class _BaseCreateGlossaryCategory:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "dataAttributeBindingId": "",
+            "categoryId": "",
         }
 
         @classmethod
@@ -172,15 +172,15 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/dataAttributeBindings",
-                    "body": "data_attribute_binding",
+                    "uri": "/v1/{parent=projects/*/locations/*/glossaries/*}/categories",
+                    "body": "category",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.CreateDataAttributeBindingRequest.pb(request)
+            pb_request = business_glossary.CreateGlossaryCategoryRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -202,7 +202,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryCategory._get_unset_required_fields(
                     query_params
                 )
             )
@@ -210,12 +210,12 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseCreateDataTaxonomy:
+    class _BaseCreateGlossaryTerm:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "dataTaxonomyId": "",
+            "termId": "",
         }
 
         @classmethod
@@ -231,15 +231,15 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/dataTaxonomies",
-                    "body": "data_taxonomy",
+                    "uri": "/v1/{parent=projects/*/locations/*/glossaries/*}/terms",
+                    "body": "term",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcd_data_taxonomy.CreateDataTaxonomyRequest.pb(request)
+            pb_request = business_glossary.CreateGlossaryTermRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -261,7 +261,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseCreateGlossaryTerm._get_unset_required_fields(
                     query_params
                 )
             )
@@ -269,7 +269,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseDeleteDataAttribute:
+    class _BaseDeleteGlossary:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -288,14 +288,14 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/dataTaxonomies/*/attributes/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/glossaries/*}",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.DeleteDataAttributeRequest.pb(request)
+            pb_request = business_glossary.DeleteGlossaryRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -308,7 +308,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossary._get_unset_required_fields(
                     query_params
                 )
             )
@@ -316,56 +316,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseDeleteDataAttributeBinding:
-        def __hash__(self):  # pragma: NO COVER
-            return NotImplementedError("__hash__ must be implemented.")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "etag": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        @staticmethod
-        def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/dataAttributeBindings/*}",
-                },
-            ]
-            return http_options
-
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.DeleteDataAttributeBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_unset_required_fields(
-                    query_params
-                )
-            )
-
-            query_params["$alt"] = "json;enum-encoding=int"
-            return query_params
-
-    class _BaseDeleteDataTaxonomy:
+    class _BaseDeleteGlossaryCategory:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -384,14 +335,14 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/dataTaxonomies/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/glossaries/*/categories/*}",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.DeleteDataTaxonomyRequest.pb(request)
+            pb_request = business_glossary.DeleteGlossaryCategoryRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -404,7 +355,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryCategory._get_unset_required_fields(
                     query_params
                 )
             )
@@ -412,7 +363,54 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseGetDataAttribute:
+    class _BaseDeleteGlossaryTerm:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/glossaries/*/terms/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = business_glossary.DeleteGlossaryTermRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseBusinessGlossaryServiceRestTransport._BaseDeleteGlossaryTerm._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseGetGlossary:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -431,14 +429,14 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataTaxonomies/*/attributes/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/glossaries/*}",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.GetDataAttributeRequest.pb(request)
+            pb_request = business_glossary.GetGlossaryRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -451,7 +449,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossary._get_unset_required_fields(
                     query_params
                 )
             )
@@ -459,7 +457,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseGetDataAttributeBinding:
+    class _BaseGetGlossaryCategory:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -478,14 +476,14 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataAttributeBindings/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/glossaries/*/categories/*}",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.GetDataAttributeBindingRequest.pb(request)
+            pb_request = business_glossary.GetGlossaryCategoryRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -498,7 +496,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryCategory._get_unset_required_fields(
                     query_params
                 )
             )
@@ -506,7 +504,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseGetDataTaxonomy:
+    class _BaseGetGlossaryTerm:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -525,14 +523,14 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataTaxonomies/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/glossaries/*/terms/*}",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.GetDataTaxonomyRequest.pb(request)
+            pb_request = business_glossary.GetGlossaryTermRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -545,7 +543,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseGetGlossaryTerm._get_unset_required_fields(
                     query_params
                 )
             )
@@ -553,7 +551,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseListDataAttributeBindings:
+    class _BaseListGlossaries:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -572,14 +570,14 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/dataAttributeBindings",
+                    "uri": "/v1/{parent=projects/*/locations/*}/glossaries",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.ListDataAttributeBindingsRequest.pb(request)
+            pb_request = business_glossary.ListGlossariesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -592,7 +590,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaries._get_unset_required_fields(
                     query_params
                 )
             )
@@ -600,7 +598,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseListDataAttributes:
+    class _BaseListGlossaryCategories:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -619,14 +617,14 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/dataTaxonomies/*}/attributes",
+                    "uri": "/v1/{parent=projects/*/locations/*/glossaries/*}/categories",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.ListDataAttributesRequest.pb(request)
+            pb_request = business_glossary.ListGlossaryCategoriesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -639,7 +637,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryCategories._get_unset_required_fields(
                     query_params
                 )
             )
@@ -647,7 +645,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseListDataTaxonomies:
+    class _BaseListGlossaryTerms:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -666,14 +664,14 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/dataTaxonomies",
+                    "uri": "/v1/{parent=projects/*/locations/*/glossaries/*}/terms",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.ListDataTaxonomiesRequest.pb(request)
+            pb_request = business_glossary.ListGlossaryTermsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -686,7 +684,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseListGlossaryTerms._get_unset_required_fields(
                     query_params
                 )
             )
@@ -694,7 +692,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseUpdateDataAttribute:
+    class _BaseUpdateGlossary:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -715,15 +713,15 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v1/{data_attribute.name=projects/*/locations/*/dataTaxonomies/*/attributes/*}",
-                    "body": "data_attribute",
+                    "uri": "/v1/{glossary.name=projects/*/locations/*/glossaries/*}",
+                    "body": "glossary",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.UpdateDataAttributeRequest.pb(request)
+            pb_request = business_glossary.UpdateGlossaryRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -745,7 +743,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossary._get_unset_required_fields(
                     query_params
                 )
             )
@@ -753,7 +751,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseUpdateDataAttributeBinding:
+    class _BaseUpdateGlossaryCategory:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -774,15 +772,15 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v1/{data_attribute_binding.name=projects/*/locations/*/dataAttributeBindings/*}",
-                    "body": "data_attribute_binding",
+                    "uri": "/v1/{category.name=projects/*/locations/*/glossaries/*/categories/*}",
+                    "body": "category",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = data_taxonomy.UpdateDataAttributeBindingRequest.pb(request)
+            pb_request = business_glossary.UpdateGlossaryCategoryRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -804,7 +802,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryCategory._get_unset_required_fields(
                     query_params
                 )
             )
@@ -812,7 +810,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseUpdateDataTaxonomy:
+    class _BaseUpdateGlossaryTerm:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -833,15 +831,15 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v1/{data_taxonomy.name=projects/*/locations/*/dataTaxonomies/*}",
-                    "body": "data_taxonomy",
+                    "uri": "/v1/{term.name=projects/*/locations/*/glossaries/*/terms/*}",
+                    "body": "term",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcd_data_taxonomy.UpdateDataTaxonomyRequest.pb(request)
+            pb_request = business_glossary.UpdateGlossaryTermRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -863,7 +861,7 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
                 )
             )
             query_params.update(
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_unset_required_fields(
+                _BaseBusinessGlossaryServiceRestTransport._BaseUpdateGlossaryTerm._get_unset_required_fields(
                     query_params
                 )
             )
@@ -1045,4 +1043,4 @@ class _BaseDataTaxonomyServiceRestTransport(DataTaxonomyServiceTransport):
             return query_params
 
 
-__all__ = ("_BaseDataTaxonomyServiceRestTransport",)
+__all__ = ("_BaseBusinessGlossaryServiceRestTransport",)

@@ -71,19 +71,17 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.dataplex_v1.services.data_taxonomy_service import pagers
-from google.cloud.dataplex_v1.types import data_taxonomy
-from google.cloud.dataplex_v1.types import data_taxonomy as gcd_data_taxonomy
-from google.cloud.dataplex_v1.types import security, service
+from google.cloud.dataplex_v1.services.business_glossary_service import pagers
+from google.cloud.dataplex_v1.types import business_glossary, service
 
-from .transports.base import DEFAULT_CLIENT_INFO, DataTaxonomyServiceTransport
-from .transports.grpc import DataTaxonomyServiceGrpcTransport
-from .transports.grpc_asyncio import DataTaxonomyServiceGrpcAsyncIOTransport
-from .transports.rest import DataTaxonomyServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, BusinessGlossaryServiceTransport
+from .transports.grpc import BusinessGlossaryServiceGrpcTransport
+from .transports.grpc_asyncio import BusinessGlossaryServiceGrpcAsyncIOTransport
+from .transports.rest import BusinessGlossaryServiceRestTransport
 
 
-class DataTaxonomyServiceClientMeta(type):
-    """Metaclass for the DataTaxonomyService client.
+class BusinessGlossaryServiceClientMeta(type):
+    """Metaclass for the BusinessGlossaryService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -92,15 +90,15 @@ class DataTaxonomyServiceClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[DataTaxonomyServiceTransport]]
-    _transport_registry["grpc"] = DataTaxonomyServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = DataTaxonomyServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = DataTaxonomyServiceRestTransport
+    )  # type: Dict[str, Type[BusinessGlossaryServiceTransport]]
+    _transport_registry["grpc"] = BusinessGlossaryServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = BusinessGlossaryServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = BusinessGlossaryServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[DataTaxonomyServiceTransport]:
+    ) -> Type[BusinessGlossaryServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -119,10 +117,14 @@ class DataTaxonomyServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
-    """DataTaxonomyService enables attribute-based governance. The
-    resources currently offered include DataTaxonomy and
-    DataAttribute.
+class BusinessGlossaryServiceClient(metaclass=BusinessGlossaryServiceClientMeta):
+    """BusinessGlossaryService provides APIs for managing business
+    glossary resources for enterprise customers.
+    The resources currently supported in Business Glossary are:
+
+    1. Glossary
+    2. GlossaryCategory
+    3. GlossaryTerm
     """
 
     @staticmethod
@@ -175,7 +177,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DataTaxonomyServiceClient: The constructed client.
+            BusinessGlossaryServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -193,7 +195,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DataTaxonomyServiceClient: The constructed client.
+            BusinessGlossaryServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -202,79 +204,81 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> DataTaxonomyServiceTransport:
+    def transport(self) -> BusinessGlossaryServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            DataTaxonomyServiceTransport: The transport used by the client
+            BusinessGlossaryServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def data_attribute_path(
+    def glossary_path(
         project: str,
         location: str,
-        dataTaxonomy: str,
-        data_attribute_id: str,
+        glossary: str,
     ) -> str:
-        """Returns a fully-qualified data_attribute string."""
-        return "projects/{project}/locations/{location}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}".format(
+        """Returns a fully-qualified glossary string."""
+        return "projects/{project}/locations/{location}/glossaries/{glossary}".format(
             project=project,
             location=location,
-            dataTaxonomy=dataTaxonomy,
-            data_attribute_id=data_attribute_id,
+            glossary=glossary,
         )
 
     @staticmethod
-    def parse_data_attribute_path(path: str) -> Dict[str, str]:
-        """Parses a data_attribute path into its component segments."""
+    def parse_glossary_path(path: str) -> Dict[str, str]:
+        """Parses a glossary path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataTaxonomies/(?P<dataTaxonomy>.+?)/attributes/(?P<data_attribute_id>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/glossaries/(?P<glossary>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def data_attribute_binding_path(
+    def glossary_category_path(
         project: str,
         location: str,
-        data_attribute_binding_id: str,
+        glossary: str,
+        glossary_category: str,
     ) -> str:
-        """Returns a fully-qualified data_attribute_binding string."""
-        return "projects/{project}/locations/{location}/dataAttributeBindings/{data_attribute_binding_id}".format(
+        """Returns a fully-qualified glossary_category string."""
+        return "projects/{project}/locations/{location}/glossaries/{glossary}/categories/{glossary_category}".format(
             project=project,
             location=location,
-            data_attribute_binding_id=data_attribute_binding_id,
+            glossary=glossary,
+            glossary_category=glossary_category,
         )
 
     @staticmethod
-    def parse_data_attribute_binding_path(path: str) -> Dict[str, str]:
-        """Parses a data_attribute_binding path into its component segments."""
+    def parse_glossary_category_path(path: str) -> Dict[str, str]:
+        """Parses a glossary_category path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataAttributeBindings/(?P<data_attribute_binding_id>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/glossaries/(?P<glossary>.+?)/categories/(?P<glossary_category>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def data_taxonomy_path(
+    def glossary_term_path(
         project: str,
         location: str,
-        data_taxonomy_id: str,
+        glossary: str,
+        glossary_term: str,
     ) -> str:
-        """Returns a fully-qualified data_taxonomy string."""
-        return "projects/{project}/locations/{location}/dataTaxonomies/{data_taxonomy_id}".format(
+        """Returns a fully-qualified glossary_term string."""
+        return "projects/{project}/locations/{location}/glossaries/{glossary}/terms/{glossary_term}".format(
             project=project,
             location=location,
-            data_taxonomy_id=data_taxonomy_id,
+            glossary=glossary,
+            glossary_term=glossary_term,
         )
 
     @staticmethod
-    def parse_data_taxonomy_path(path: str) -> Dict[str, str]:
-        """Parses a data_taxonomy path into its component segments."""
+    def parse_glossary_term_path(path: str) -> Dict[str, str]:
+        """Parses a glossary_term path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataTaxonomies/(?P<data_taxonomy_id>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/glossaries/(?P<glossary>.+?)/terms/(?P<glossary_term>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -498,15 +502,17 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = DataTaxonomyServiceClient._DEFAULT_UNIVERSE
+            _default_universe = BusinessGlossaryServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = DataTaxonomyServiceClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = BusinessGlossaryServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = DataTaxonomyServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
+            api_endpoint = (
+                BusinessGlossaryServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=universe_domain
+                )
             )
         return api_endpoint
 
@@ -526,7 +532,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = DataTaxonomyServiceClient._DEFAULT_UNIVERSE
+        universe_domain = BusinessGlossaryServiceClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -600,14 +606,14 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         transport: Optional[
             Union[
                 str,
-                DataTaxonomyServiceTransport,
-                Callable[..., DataTaxonomyServiceTransport],
+                BusinessGlossaryServiceTransport,
+                Callable[..., BusinessGlossaryServiceTransport],
             ]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the data taxonomy service client.
+        """Instantiates the business glossary service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -615,10 +621,10 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,DataTaxonomyServiceTransport,Callable[..., DataTaxonomyServiceTransport]]]):
+            transport (Optional[Union[str,BusinessGlossaryServiceTransport,Callable[..., BusinessGlossaryServiceTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the DataTaxonomyServiceTransport constructor.
+                arguments as used in the BusinessGlossaryServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -671,11 +677,13 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = DataTaxonomyServiceClient._read_environment_variables()
-        self._client_cert_source = DataTaxonomyServiceClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
+        ) = BusinessGlossaryServiceClient._read_environment_variables()
+        self._client_cert_source = (
+            BusinessGlossaryServiceClient._get_client_cert_source(
+                self._client_options.client_cert_source, self._use_client_cert
+            )
         )
-        self._universe_domain = DataTaxonomyServiceClient._get_universe_domain(
+        self._universe_domain = BusinessGlossaryServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -696,9 +704,9 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, DataTaxonomyServiceTransport)
+        transport_provided = isinstance(transport, BusinessGlossaryServiceTransport)
         if transport_provided:
-            # transport is a DataTaxonomyServiceTransport instance.
+            # transport is a BusinessGlossaryServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -709,12 +717,12 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(DataTaxonomyServiceTransport, transport)
+            self._transport = cast(BusinessGlossaryServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
         self._api_endpoint = (
             self._api_endpoint
-            or DataTaxonomyServiceClient._get_api_endpoint(
+            or BusinessGlossaryServiceClient._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
@@ -733,12 +741,12 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 )
 
             transport_init: Union[
-                Type[DataTaxonomyServiceTransport],
-                Callable[..., DataTaxonomyServiceTransport],
+                Type[BusinessGlossaryServiceTransport],
+                Callable[..., BusinessGlossaryServiceTransport],
             ] = (
-                DataTaxonomyServiceClient.get_transport_class(transport)
+                BusinessGlossaryServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., DataTaxonomyServiceTransport], transport)
+                else cast(Callable[..., BusinessGlossaryServiceTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -758,9 +766,9 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 std_logging.DEBUG
             ):  # pragma: NO COVER
                 _LOGGER.debug(
-                    "Created client `google.cloud.dataplex_v1.DataTaxonomyServiceClient`.",
+                    "Created client `google.cloud.dataplex_v1.BusinessGlossaryServiceClient`.",
                     extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "universeDomain": getattr(
                             self._transport._credentials, "universe_domain", ""
                         ),
@@ -771,25 +779,23 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                     }
                     if hasattr(self._transport, "_credentials")
                     else {
-                        "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                        "serviceName": "google.cloud.dataplex.v1.BusinessGlossaryService",
                         "credentialsType": None,
                     },
                 )
 
-    def create_data_taxonomy(
+    def create_glossary(
         self,
-        request: Optional[
-            Union[gcd_data_taxonomy.CreateDataTaxonomyRequest, dict]
-        ] = None,
+        request: Optional[Union[business_glossary.CreateGlossaryRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        data_taxonomy: Optional[gcd_data_taxonomy.DataTaxonomy] = None,
-        data_taxonomy_id: Optional[str] = None,
+        glossary: Optional[business_glossary.Glossary] = None,
+        glossary_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Create a DataTaxonomy resource.
+        r"""Creates a new Glossary resource.
 
         .. code-block:: python
 
@@ -802,18 +808,18 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_create_data_taxonomy():
+            def sample_create_glossary():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.CreateDataTaxonomyRequest(
+                request = dataplex_v1.CreateGlossaryRequest(
                     parent="parent_value",
-                    data_taxonomy_id="data_taxonomy_id_value",
+                    glossary_id="glossary_id_value",
                 )
 
                 # Make the request
-                operation = client.create_data_taxonomy(request=request)
+                operation = client.create_glossary(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -823,29 +829,27 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateDataTaxonomyRequest, dict]):
-                The request object. Create DataTaxonomy request.
+            request (Union[google.cloud.dataplex_v1.types.CreateGlossaryRequest, dict]):
+                The request object. Create Glossary Request
             parent (str):
+                Required. The parent resource where this Glossary will
+                be created. Format:
+                projects/{project_id_or_number}/locations/{location_id}
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data_taxonomy (google.cloud.dataplex_v1.types.DataTaxonomy):
-                Required. DataTaxonomy resource.
-                This corresponds to the ``data_taxonomy`` field
+            glossary (google.cloud.dataplex_v1.types.Glossary):
+                Required. The Glossary to create.
+                This corresponds to the ``glossary`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data_taxonomy_id (str):
-                Required. DataTaxonomy identifier.
+            glossary_id (str):
+                Required. Glossary ID: Glossary
+                identifier.
 
-                - Must contain only lowercase letters, numbers and
-                  hyphens.
-                - Must start with a letter.
-                - Must be between 1-63 characters.
-                - Must end with a number or a letter.
-                - Must be unique within the Project.
-
-                This corresponds to the ``data_taxonomy_id`` field
+                This corresponds to the ``glossary_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -860,21 +864,16 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.DataTaxonomy` DataTaxonomy represents a set of hierarchical DataAttributes resources,
-                   grouped with a common theme Eg:
-                   'SensitiveDataTaxonomy' can have attributes to manage
-                   PII data. It is defined at project level.
+                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.Glossary` A Glossary represents a collection of GlossaryCategories and GlossaryTerms
+                   defined by the user. Glossary is a top level resource
+                   and is the Google Cloud parent resource of all the
+                   GlossaryCategories and GlossaryTerms within it.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.create_data_taxonomy is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, data_taxonomy, data_taxonomy_id]
+        flattened_params = [parent, glossary, glossary_id]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -886,20 +885,20 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcd_data_taxonomy.CreateDataTaxonomyRequest):
-            request = gcd_data_taxonomy.CreateDataTaxonomyRequest(request)
+        if not isinstance(request, business_glossary.CreateGlossaryRequest):
+            request = business_glossary.CreateGlossaryRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
                 request.parent = parent
-            if data_taxonomy is not None:
-                request.data_taxonomy = data_taxonomy
-            if data_taxonomy_id is not None:
-                request.data_taxonomy_id = data_taxonomy_id
+            if glossary is not None:
+                request.glossary = glossary
+            if glossary_id is not None:
+                request.glossary_id = glossary_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_data_taxonomy]
+        rpc = self._transport._wrapped_methods[self._transport.create_glossary]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -922,26 +921,24 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            gcd_data_taxonomy.DataTaxonomy,
+            business_glossary.Glossary,
             metadata_type=service.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
-    def update_data_taxonomy(
+    def update_glossary(
         self,
-        request: Optional[
-            Union[gcd_data_taxonomy.UpdateDataTaxonomyRequest, dict]
-        ] = None,
+        request: Optional[Union[business_glossary.UpdateGlossaryRequest, dict]] = None,
         *,
-        data_taxonomy: Optional[gcd_data_taxonomy.DataTaxonomy] = None,
+        glossary: Optional[business_glossary.Glossary] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Updates a DataTaxonomy resource.
+        r"""Updates a Glossary resource.
 
         .. code-block:: python
 
@@ -954,16 +951,16 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_update_data_taxonomy():
+            def sample_update_glossary():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.UpdateDataTaxonomyRequest(
+                request = dataplex_v1.UpdateGlossaryRequest(
                 )
 
                 # Make the request
-                operation = client.update_data_taxonomy(request=request)
+                operation = client.update_glossary(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -973,17 +970,21 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateDataTaxonomyRequest, dict]):
-                The request object. Update DataTaxonomy request.
-            data_taxonomy (google.cloud.dataplex_v1.types.DataTaxonomy):
-                Required. Only fields specified in ``update_mask`` are
-                updated.
+            request (Union[google.cloud.dataplex_v1.types.UpdateGlossaryRequest, dict]):
+                The request object. Update Glossary Request
+            glossary (google.cloud.dataplex_v1.types.Glossary):
+                Required. The Glossary to update. The Glossary's
+                ``name`` field is used to identify the Glossary to
+                update. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
-                This corresponds to the ``data_taxonomy`` field
+                This corresponds to the ``glossary`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Mask of fields to update.
+                Required. The list of fields to
+                update.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -999,21 +1000,16 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.DataTaxonomy` DataTaxonomy represents a set of hierarchical DataAttributes resources,
-                   grouped with a common theme Eg:
-                   'SensitiveDataTaxonomy' can have attributes to manage
-                   PII data. It is defined at project level.
+                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.Glossary` A Glossary represents a collection of GlossaryCategories and GlossaryTerms
+                   defined by the user. Glossary is a top level resource
+                   and is the Google Cloud parent resource of all the
+                   GlossaryCategories and GlossaryTerms within it.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.update_data_taxonomy is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [data_taxonomy, update_mask]
+        flattened_params = [glossary, update_mask]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1025,24 +1021,24 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcd_data_taxonomy.UpdateDataTaxonomyRequest):
-            request = gcd_data_taxonomy.UpdateDataTaxonomyRequest(request)
+        if not isinstance(request, business_glossary.UpdateGlossaryRequest):
+            request = business_glossary.UpdateGlossaryRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if data_taxonomy is not None:
-                request.data_taxonomy = data_taxonomy
+            if glossary is not None:
+                request.glossary = glossary
             if update_mask is not None:
                 request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_data_taxonomy]
+        rpc = self._transport._wrapped_methods[self._transport.update_glossary]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("data_taxonomy.name", request.data_taxonomy.name),)
+                (("glossary.name", request.glossary.name),)
             ),
         )
 
@@ -1061,25 +1057,25 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            gcd_data_taxonomy.DataTaxonomy,
+            business_glossary.Glossary,
             metadata_type=service.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
-    def delete_data_taxonomy(
+    def delete_glossary(
         self,
-        request: Optional[Union[data_taxonomy.DeleteDataTaxonomyRequest, dict]] = None,
+        request: Optional[Union[business_glossary.DeleteGlossaryRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Deletes a DataTaxonomy resource. All attributes
-        within the DataTaxonomy must be deleted before the
-        DataTaxonomy can be deleted.
+        r"""Deletes a Glossary resource. All the categories and
+        terms within the Glossary must be deleted before the
+        Glossary can be deleted.
 
         .. code-block:: python
 
@@ -1092,17 +1088,17 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_delete_data_taxonomy():
+            def sample_delete_glossary():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.DeleteDataTaxonomyRequest(
+                request = dataplex_v1.DeleteGlossaryRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                operation = client.delete_data_taxonomy(request=request)
+                operation = client.delete_glossary(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -1112,11 +1108,11 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteDataTaxonomyRequest, dict]):
-                The request object. Delete DataTaxonomy request.
+            request (Union[google.cloud.dataplex_v1.types.DeleteGlossaryRequest, dict]):
+                The request object. Delete Glossary Request
             name (str):
-                Required. The resource name of the DataTaxonomy:
-                projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
+                Required. The name of the Glossary to delete. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1145,11 +1141,6 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                       }
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.delete_data_taxonomy is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1165,8 +1156,8 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.DeleteDataTaxonomyRequest):
-            request = data_taxonomy.DeleteDataTaxonomyRequest(request)
+        if not isinstance(request, business_glossary.DeleteGlossaryRequest):
+            request = business_glossary.DeleteGlossaryRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1174,7 +1165,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_data_taxonomy]
+        rpc = self._transport._wrapped_methods[self._transport.delete_glossary]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1204,146 +1195,16 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_data_taxonomies(
+    def get_glossary(
         self,
-        request: Optional[Union[data_taxonomy.ListDataTaxonomiesRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListDataTaxonomiesPager:
-        r"""Lists DataTaxonomy resources in a project and
-        location.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dataplex_v1
-
-            def sample_list_data_taxonomies():
-                # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
-
-                # Initialize request argument(s)
-                request = dataplex_v1.ListDataTaxonomiesRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_data_taxonomies(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.cloud.dataplex_v1.types.ListDataTaxonomiesRequest, dict]):
-                The request object. List DataTaxonomies request.
-            parent (str):
-                Required. The resource name of the DataTaxonomy
-                location, of the form:
-                projects/{project_number}/locations/{location_id} where
-                ``location_id`` refers to a Google Cloud region.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.dataplex_v1.services.data_taxonomy_service.pagers.ListDataTaxonomiesPager:
-                List DataTaxonomies response.
-
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        warnings.warn(
-            "DataTaxonomyServiceClient.list_data_taxonomies is deprecated",
-            DeprecationWarning,
-        )
-
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.ListDataTaxonomiesRequest):
-            request = data_taxonomy.ListDataTaxonomiesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_data_taxonomies]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListDataTaxonomiesPager(
-            method=rpc,
-            request=request,
-            response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def get_data_taxonomy(
-        self,
-        request: Optional[Union[data_taxonomy.GetDataTaxonomyRequest, dict]] = None,
+        request: Optional[Union[business_glossary.GetGlossaryRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> data_taxonomy.DataTaxonomy:
-        r"""Retrieves a DataTaxonomy resource.
+    ) -> business_glossary.Glossary:
+        r"""Gets a Glossary resource.
 
         .. code-block:: python
 
@@ -1356,25 +1217,27 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_get_data_taxonomy():
+            def sample_get_glossary():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.GetDataTaxonomyRequest(
+                request = dataplex_v1.GetGlossaryRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_data_taxonomy(request=request)
+                response = client.get_glossary(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.GetDataTaxonomyRequest, dict]):
-                The request object. Get DataTaxonomy request.
+            request (Union[google.cloud.dataplex_v1.types.GetGlossaryRequest, dict]):
+                The request object. Get Glossary Request
             name (str):
+                Required. The name of the Glossary to retrieve. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1388,20 +1251,16 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.dataplex_v1.types.DataTaxonomy:
-                DataTaxonomy represents a set of
-                hierarchical DataAttributes resources,
-                grouped with a common theme Eg:
-                'SensitiveDataTaxonomy' can have
-                attributes to manage PII data. It is
-                defined at project level.
+            google.cloud.dataplex_v1.types.Glossary:
+                A Glossary represents a collection of
+                GlossaryCategories and GlossaryTerms
+                defined by the user. Glossary is a top
+                level resource and is the Google Cloud
+                parent resource of all the
+                GlossaryCategories and GlossaryTerms
+                within it.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.get_data_taxonomy is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1417,8 +1276,8 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.GetDataTaxonomyRequest):
-            request = data_taxonomy.GetDataTaxonomyRequest(request)
+        if not isinstance(request, business_glossary.GetGlossaryRequest):
+            request = business_glossary.GetGlossaryRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1426,7 +1285,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_data_taxonomy]
+        rpc = self._transport._wrapped_methods[self._transport.get_glossary]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1448,20 +1307,16 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         # Done; return the response.
         return response
 
-    def create_data_attribute_binding(
+    def list_glossaries(
         self,
-        request: Optional[
-            Union[data_taxonomy.CreateDataAttributeBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[business_glossary.ListGlossariesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        data_attribute_binding: Optional[data_taxonomy.DataAttributeBinding] = None,
-        data_attribute_binding_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
-        r"""Create a DataAttributeBinding resource.
+    ) -> pagers.ListGlossariesPager:
+        r"""Lists Glossary resources in a project and location.
 
         .. code-block:: python
 
@@ -1474,58 +1329,32 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_create_data_attribute_binding():
+            def sample_list_glossaries():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                data_attribute_binding = dataplex_v1.DataAttributeBinding()
-                data_attribute_binding.resource = "resource_value"
-
-                request = dataplex_v1.CreateDataAttributeBindingRequest(
+                request = dataplex_v1.ListGlossariesRequest(
                     parent="parent_value",
-                    data_attribute_binding_id="data_attribute_binding_id_value",
-                    data_attribute_binding=data_attribute_binding,
                 )
 
                 # Make the request
-                operation = client.create_data_attribute_binding(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
+                page_result = client.list_glossaries(request=request)
 
                 # Handle the response
-                print(response)
+                for response in page_result:
+                    print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateDataAttributeBindingRequest, dict]):
-                The request object. Create DataAttributeBinding request.
+            request (Union[google.cloud.dataplex_v1.types.ListGlossariesRequest, dict]):
+                The request object. List Glossaries Request
             parent (str):
-                Required. The resource name of the parent data taxonomy
-                projects/{project_number}/locations/{location_id}
+                Required. The parent, which has this collection of
+                Glossaries. Format:
+                projects/{project_id_or_number}/locations/{location_id}
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            data_attribute_binding (google.cloud.dataplex_v1.types.DataAttributeBinding):
-                Required. DataAttributeBinding
-                resource.
-
-                This corresponds to the ``data_attribute_binding`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            data_attribute_binding_id (str):
-                Required. DataAttributeBinding identifier.
-
-                - Must contain only lowercase letters, numbers and
-                  hyphens.
-                - Must start with a letter.
-                - Must be between 1-63 characters.
-                - Must end with a number or a letter.
-                - Must be unique within the Location.
-
-                This corresponds to the ``data_attribute_binding_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1537,22 +1366,18 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
+            google.cloud.dataplex_v1.services.business_glossary_service.pagers.ListGlossariesPager:
+                List Glossaries Response
 
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.DataAttributeBinding` DataAttributeBinding represents binding of attributes to resources. Eg: Bind
-                   'CustomerInfo' entity with 'PII' attribute.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.create_data_attribute_binding is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, data_attribute_binding, data_attribute_binding_id]
+        flattened_params = [parent]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1564,22 +1389,16 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.CreateDataAttributeBindingRequest):
-            request = data_taxonomy.CreateDataAttributeBindingRequest(request)
+        if not isinstance(request, business_glossary.ListGlossariesRequest):
+            request = business_glossary.ListGlossariesRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
                 request.parent = parent
-            if data_attribute_binding is not None:
-                request.data_attribute_binding = data_attribute_binding
-            if data_attribute_binding_id is not None:
-                request.data_attribute_binding_id = data_attribute_binding_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_data_attribute_binding
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_glossaries]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1598,30 +1417,34 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            data_taxonomy.DataAttributeBinding,
-            metadata_type=service.OperationMetadata,
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListGlossariesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def update_data_attribute_binding(
+    def create_glossary_category(
         self,
         request: Optional[
-            Union[data_taxonomy.UpdateDataAttributeBindingRequest, dict]
+            Union[business_glossary.CreateGlossaryCategoryRequest, dict]
         ] = None,
         *,
-        data_attribute_binding: Optional[data_taxonomy.DataAttributeBinding] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        parent: Optional[str] = None,
+        category: Optional[business_glossary.GlossaryCategory] = None,
+        category_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
-        r"""Updates a DataAttributeBinding resource.
+    ) -> business_glossary.GlossaryCategory:
+        r"""Creates a new GlossaryCategory resource.
 
         .. code-block:: python
 
@@ -1634,40 +1457,178 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_update_data_attribute_binding():
+            def sample_create_glossary_category():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                data_attribute_binding = dataplex_v1.DataAttributeBinding()
-                data_attribute_binding.resource = "resource_value"
+                category = dataplex_v1.GlossaryCategory()
+                category.parent = "parent_value"
 
-                request = dataplex_v1.UpdateDataAttributeBindingRequest(
-                    data_attribute_binding=data_attribute_binding,
+                request = dataplex_v1.CreateGlossaryCategoryRequest(
+                    parent="parent_value",
+                    category_id="category_id_value",
+                    category=category,
                 )
 
                 # Make the request
-                operation = client.update_data_attribute_binding(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
+                response = client.create_glossary_category(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateDataAttributeBindingRequest, dict]):
-                The request object. Update DataAttributeBinding request.
-            data_attribute_binding (google.cloud.dataplex_v1.types.DataAttributeBinding):
-                Required. Only fields specified in ``update_mask`` are
-                updated.
+            request (Union[google.cloud.dataplex_v1.types.CreateGlossaryCategoryRequest, dict]):
+                The request object. Creates a new GlossaryCategory under
+                the specified Glossary.
+            parent (str):
+                Required. The parent resource where this
+                GlossaryCategory will be created. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+                where ``locationId`` refers to a Google Cloud region.
 
-                This corresponds to the ``data_attribute_binding`` field
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            category (google.cloud.dataplex_v1.types.GlossaryCategory):
+                Required. The GlossaryCategory to
+                create.
+
+                This corresponds to the ``category`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            category_id (str):
+                Required. GlossaryCategory
+                identifier.
+
+                This corresponds to the ``category_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.GlossaryCategory:
+                A GlossaryCategory represents a
+                collection of GlossaryCategories and
+                GlossaryTerms within a Glossary that are
+                related to each other.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, category, category_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.CreateGlossaryCategoryRequest):
+            request = business_glossary.CreateGlossaryCategoryRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if category is not None:
+                request.category = category
+            if category_id is not None:
+                request.category_id = category_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_glossary_category]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_glossary_category(
+        self,
+        request: Optional[
+            Union[business_glossary.UpdateGlossaryCategoryRequest, dict]
+        ] = None,
+        *,
+        category: Optional[business_glossary.GlossaryCategory] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> business_glossary.GlossaryCategory:
+        r"""Updates a GlossaryCategory resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_update_glossary_category():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceClient()
+
+                # Initialize request argument(s)
+                category = dataplex_v1.GlossaryCategory()
+                category.parent = "parent_value"
+
+                request = dataplex_v1.UpdateGlossaryCategoryRequest(
+                    category=category,
+                )
+
+                # Make the request
+                response = client.update_glossary_category(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.UpdateGlossaryCategoryRequest, dict]):
+                The request object. Update GlossaryCategory Request
+            category (google.cloud.dataplex_v1.types.GlossaryCategory):
+                Required. The GlossaryCategory to update. The
+                GlossaryCategory's ``name`` field is used to identify
+                the GlossaryCategory to update. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+
+                This corresponds to the ``category`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Mask of fields to update.
+                Required. The list of fields to
+                update.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1680,22 +1641,17 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.DataAttributeBinding` DataAttributeBinding represents binding of attributes to resources. Eg: Bind
-                   'CustomerInfo' entity with 'PII' attribute.
+            google.cloud.dataplex_v1.types.GlossaryCategory:
+                A GlossaryCategory represents a
+                collection of GlossaryCategories and
+                GlossaryTerms within a Glossary that are
+                related to each other.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.update_data_attribute_binding is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [data_attribute_binding, update_mask]
+        flattened_params = [category, update_mask]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1707,26 +1663,24 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.UpdateDataAttributeBindingRequest):
-            request = data_taxonomy.UpdateDataAttributeBindingRequest(request)
+        if not isinstance(request, business_glossary.UpdateGlossaryCategoryRequest):
+            request = business_glossary.UpdateGlossaryCategoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if data_attribute_binding is not None:
-                request.data_attribute_binding = data_attribute_binding
+            if category is not None:
+                request.category = category
             if update_mask is not None:
                 request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_data_attribute_binding
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_glossary_category]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("data_attribute_binding.name", request.data_attribute_binding.name),)
+                (("category.name", request.category.name),)
             ),
         )
 
@@ -1741,31 +1695,24 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            data_taxonomy.DataAttributeBinding,
-            metadata_type=service.OperationMetadata,
-        )
-
         # Done; return the response.
         return response
 
-    def delete_data_attribute_binding(
+    def delete_glossary_category(
         self,
         request: Optional[
-            Union[data_taxonomy.DeleteDataAttributeBindingRequest, dict]
+            Union[business_glossary.DeleteGlossaryCategoryRequest, dict]
         ] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
-        r"""Deletes a DataAttributeBinding resource. All
-        attributes within the DataAttributeBinding must be
-        deleted before the DataAttributeBinding can be deleted.
+    ) -> None:
+        r"""Deletes a GlossaryCategory resource. All the
+        GlossaryCategories and GlossaryTerms nested directly
+        under the specified GlossaryCategory will be moved one
+        level up to the parent in the hierarchy.
 
         .. code-block:: python
 
@@ -1778,32 +1725,25 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_delete_data_attribute_binding():
+            def sample_delete_glossary_category():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.DeleteDataAttributeBindingRequest(
+                request = dataplex_v1.DeleteGlossaryCategoryRequest(
                     name="name_value",
-                    etag="etag_value",
                 )
 
                 # Make the request
-                operation = client.delete_data_attribute_binding(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
+                client.delete_glossary_category(request=request)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteDataAttributeBindingRequest, dict]):
-                The request object. Delete DataAttributeBinding request.
+            request (Union[google.cloud.dataplex_v1.types.DeleteGlossaryCategoryRequest, dict]):
+                The request object. Delete GlossaryCategory Request
             name (str):
-                Required. The resource name of the DataAttributeBinding:
-                projects/{project_number}/locations/{location_id}/dataAttributeBindings/{data_attribute_binding_id}
+                Required. The name of the GlossaryCategory to delete.
+                Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1815,28 +1755,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
-
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.delete_data_attribute_binding is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1852,8 +1771,8 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.DeleteDataAttributeBindingRequest):
-            request = data_taxonomy.DeleteDataAttributeBindingRequest(request)
+        if not isinstance(request, business_glossary.DeleteGlossaryCategoryRequest):
+            request = business_glossary.DeleteGlossaryCategoryRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1861,9 +1780,116 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_data_attribute_binding
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_glossary_category]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def get_glossary_category(
+        self,
+        request: Optional[
+            Union[business_glossary.GetGlossaryCategoryRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> business_glossary.GlossaryCategory:
+        r"""Gets a GlossaryCategory resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_get_glossary_category():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetGlossaryCategoryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_glossary_category(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.GetGlossaryCategoryRequest, dict]):
+                The request object. Get GlossaryCategory Request
+            name (str):
+                Required. The name of the GlossaryCategory to retrieve.
+                Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.GlossaryCategory:
+                A GlossaryCategory represents a
+                collection of GlossaryCategories and
+                GlossaryTerms within a Glossary that are
+                related to each other.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.GetGlossaryCategoryRequest):
+            request = business_glossary.GetGlossaryCategoryRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_glossary_category]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1882,30 +1908,21 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            empty_pb2.Empty,
-            metadata_type=service.OperationMetadata,
-        )
-
         # Done; return the response.
         return response
 
-    def list_data_attribute_bindings(
+    def list_glossary_categories(
         self,
         request: Optional[
-            Union[data_taxonomy.ListDataAttributeBindingsRequest, dict]
+            Union[business_glossary.ListGlossaryCategoriesRequest, dict]
         ] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListDataAttributeBindingsPager:
-        r"""Lists DataAttributeBinding resources in a project and
-        location.
+    ) -> pagers.ListGlossaryCategoriesPager:
+        r"""Lists GlossaryCategory resources in a Glossary.
 
         .. code-block:: python
 
@@ -1918,28 +1935,30 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_list_data_attribute_bindings():
+            def sample_list_glossary_categories():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.ListDataAttributeBindingsRequest(
+                request = dataplex_v1.ListGlossaryCategoriesRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_data_attribute_bindings(request=request)
+                page_result = client.list_glossary_categories(request=request)
 
                 # Handle the response
                 for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListDataAttributeBindingsRequest, dict]):
-                The request object. List DataAttributeBindings request.
+            request (Union[google.cloud.dataplex_v1.types.ListGlossaryCategoriesRequest, dict]):
+                The request object. List GlossaryCategories Request
             parent (str):
-                Required. The resource name of the Location:
-                projects/{project_number}/locations/{location_id}
+                Required. The parent, which has this collection of
+                GlossaryCategories. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+                Location is the Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1953,19 +1972,14 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.dataplex_v1.services.data_taxonomy_service.pagers.ListDataAttributeBindingsPager:
-                List DataAttributeBindings response.
+            google.cloud.dataplex_v1.services.business_glossary_service.pagers.ListGlossaryCategoriesPager:
+                List GlossaryCategories Response
 
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.list_data_attribute_bindings is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1981,8 +1995,8 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.ListDataAttributeBindingsRequest):
-            request = data_taxonomy.ListDataAttributeBindingsRequest(request)
+        if not isinstance(request, business_glossary.ListGlossaryCategoriesRequest):
+            request = business_glossary.ListGlossaryCategoriesRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1990,9 +2004,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_data_attribute_bindings
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_glossary_categories]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2013,7 +2025,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers.ListDataAttributeBindingsPager(
+        response = pagers.ListGlossaryCategoriesPager(
             method=rpc,
             request=request,
             response=response,
@@ -2025,136 +2037,20 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_data_attribute_binding(
+    def create_glossary_term(
         self,
         request: Optional[
-            Union[data_taxonomy.GetDataAttributeBindingRequest, dict]
+            Union[business_glossary.CreateGlossaryTermRequest, dict]
         ] = None,
         *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> data_taxonomy.DataAttributeBinding:
-        r"""Retrieves a DataAttributeBinding resource.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dataplex_v1
-
-            def sample_get_data_attribute_binding():
-                # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
-
-                # Initialize request argument(s)
-                request = dataplex_v1.GetDataAttributeBindingRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_data_attribute_binding(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.dataplex_v1.types.GetDataAttributeBindingRequest, dict]):
-                The request object. Get DataAttributeBinding request.
-            name (str):
-                Required. The resource name of the DataAttributeBinding:
-                projects/{project_number}/locations/{location_id}/dataAttributeBindings/{data_attribute_binding_id}
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.dataplex_v1.types.DataAttributeBinding:
-                DataAttributeBinding represents
-                binding of attributes to resources. Eg:
-                Bind 'CustomerInfo' entity with 'PII'
-                attribute.
-
-        """
-        warnings.warn(
-            "DataTaxonomyServiceClient.get_data_attribute_binding is deprecated",
-            DeprecationWarning,
-        )
-
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.GetDataAttributeBindingRequest):
-            request = data_taxonomy.GetDataAttributeBindingRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_data_attribute_binding
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def create_data_attribute(
-        self,
-        request: Optional[Union[data_taxonomy.CreateDataAttributeRequest, dict]] = None,
-        *,
         parent: Optional[str] = None,
-        data_attribute: Optional[data_taxonomy.DataAttribute] = None,
-        data_attribute_id: Optional[str] = None,
+        term: Optional[business_glossary.GlossaryTerm] = None,
+        term_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
-        r"""Create a DataAttribute resource.
+    ) -> business_glossary.GlossaryTerm:
+        r"""Creates a new GlossaryTerm resource.
 
         .. code-block:: python
 
@@ -2167,52 +2063,47 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_create_data_attribute():
+            def sample_create_glossary_term():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.CreateDataAttributeRequest(
+                term = dataplex_v1.GlossaryTerm()
+                term.parent = "parent_value"
+
+                request = dataplex_v1.CreateGlossaryTermRequest(
                     parent="parent_value",
-                    data_attribute_id="data_attribute_id_value",
+                    term_id="term_id_value",
+                    term=term,
                 )
 
                 # Make the request
-                operation = client.create_data_attribute(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
+                response = client.create_glossary_term(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.CreateDataAttributeRequest, dict]):
-                The request object. Create DataAttribute request.
+            request (Union[google.cloud.dataplex_v1.types.CreateGlossaryTermRequest, dict]):
+                The request object. Creates a new GlossaryTerm under the
+                specified Glossary.
             parent (str):
-                Required. The resource name of the parent data taxonomy
-                projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
+                Required. The parent resource where the GlossaryTerm
+                will be created. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data_attribute (google.cloud.dataplex_v1.types.DataAttribute):
-                Required. DataAttribute resource.
-                This corresponds to the ``data_attribute`` field
+            term (google.cloud.dataplex_v1.types.GlossaryTerm):
+                Required. The GlossaryTerm to create.
+                This corresponds to the ``term`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data_attribute_id (str):
-                Required. DataAttribute identifier.
-
-                - Must contain only lowercase letters, numbers and
-                  hyphens.
-                - Must start with a letter.
-                - Must be between 1-63 characters.
-                - Must end with a number or a letter.
-                - Must be unique within the DataTaxonomy.
-
-                This corresponds to the ``data_attribute_id`` field
+            term_id (str):
+                Required. GlossaryTerm identifier.
+                This corresponds to the ``term_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2224,26 +2115,18 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.DataAttribute` Denotes one dataAttribute in a dataTaxonomy, for example, PII.
-                   DataAttribute resources can be defined in a
-                   hierarchy. A single dataAttribute resource can
-                   contain specs of multiple types
-
-                   :literal:`` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
+            google.cloud.dataplex_v1.types.GlossaryTerm:
+                GlossaryTerms are the core of
+                Glossary. A GlossaryTerm holds a rich
+                text description that can be attached to
+                Entries or specific columns to enrich
+                them.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.create_data_attribute is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, data_attribute, data_attribute_id]
+        flattened_params = [parent, term, term_id]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -2255,20 +2138,20 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.CreateDataAttributeRequest):
-            request = data_taxonomy.CreateDataAttributeRequest(request)
+        if not isinstance(request, business_glossary.CreateGlossaryTermRequest):
+            request = business_glossary.CreateGlossaryTermRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
                 request.parent = parent
-            if data_attribute is not None:
-                request.data_attribute = data_attribute
-            if data_attribute_id is not None:
-                request.data_attribute_id = data_attribute_id
+            if term is not None:
+                request.term = term
+            if term_id is not None:
+                request.term_id = term_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_data_attribute]
+        rpc = self._transport._wrapped_methods[self._transport.create_glossary_term]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2287,28 +2170,22 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            data_taxonomy.DataAttribute,
-            metadata_type=service.OperationMetadata,
-        )
-
         # Done; return the response.
         return response
 
-    def update_data_attribute(
+    def update_glossary_term(
         self,
-        request: Optional[Union[data_taxonomy.UpdateDataAttributeRequest, dict]] = None,
+        request: Optional[
+            Union[business_glossary.UpdateGlossaryTermRequest, dict]
+        ] = None,
         *,
-        data_attribute: Optional[data_taxonomy.DataAttribute] = None,
+        term: Optional[business_glossary.GlossaryTerm] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
-        r"""Updates a DataAttribute resource.
+    ) -> business_glossary.GlossaryTerm:
+        r"""Updates a GlossaryTerm resource.
 
         .. code-block:: python
 
@@ -2321,36 +2198,40 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_update_data_attribute():
+            def sample_update_glossary_term():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.UpdateDataAttributeRequest(
+                term = dataplex_v1.GlossaryTerm()
+                term.parent = "parent_value"
+
+                request = dataplex_v1.UpdateGlossaryTermRequest(
+                    term=term,
                 )
 
                 # Make the request
-                operation = client.update_data_attribute(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
+                response = client.update_glossary_term(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.UpdateDataAttributeRequest, dict]):
-                The request object. Update DataAttribute request.
-            data_attribute (google.cloud.dataplex_v1.types.DataAttribute):
-                Required. Only fields specified in ``update_mask`` are
-                updated.
+            request (Union[google.cloud.dataplex_v1.types.UpdateGlossaryTermRequest, dict]):
+                The request object. Update GlossaryTerm Request
+            term (google.cloud.dataplex_v1.types.GlossaryTerm):
+                Required. The GlossaryTerm to update. The GlossaryTerm's
+                ``name`` field is used to identify the GlossaryTerm to
+                update. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
 
-                This corresponds to the ``data_attribute`` field
+                This corresponds to the ``term`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Mask of fields to update.
+                Required. The list of fields to
+                update.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2363,26 +2244,18 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.DataAttribute` Denotes one dataAttribute in a dataTaxonomy, for example, PII.
-                   DataAttribute resources can be defined in a
-                   hierarchy. A single dataAttribute resource can
-                   contain specs of multiple types
-
-                   :literal:`` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
+            google.cloud.dataplex_v1.types.GlossaryTerm:
+                GlossaryTerms are the core of
+                Glossary. A GlossaryTerm holds a rich
+                text description that can be attached to
+                Entries or specific columns to enrich
+                them.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.update_data_attribute is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [data_attribute, update_mask]
+        flattened_params = [term, update_mask]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -2394,24 +2267,24 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.UpdateDataAttributeRequest):
-            request = data_taxonomy.UpdateDataAttributeRequest(request)
+        if not isinstance(request, business_glossary.UpdateGlossaryTermRequest):
+            request = business_glossary.UpdateGlossaryTermRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if data_attribute is not None:
-                request.data_attribute = data_attribute
+            if term is not None:
+                request.term = term
             if update_mask is not None:
                 request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_data_attribute]
+        rpc = self._transport._wrapped_methods[self._transport.update_glossary_term]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("data_attribute.name", request.data_attribute.name),)
+                (("term.name", request.term.name),)
             ),
         )
 
@@ -2426,27 +2299,21 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            data_taxonomy.DataAttribute,
-            metadata_type=service.OperationMetadata,
-        )
-
         # Done; return the response.
         return response
 
-    def delete_data_attribute(
+    def delete_glossary_term(
         self,
-        request: Optional[Union[data_taxonomy.DeleteDataAttributeRequest, dict]] = None,
+        request: Optional[
+            Union[business_glossary.DeleteGlossaryTermRequest, dict]
+        ] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
-        r"""Deletes a Data Attribute resource.
+    ) -> None:
+        r"""Deletes a GlossaryTerm resource.
 
         .. code-block:: python
 
@@ -2459,31 +2326,25 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_delete_data_attribute():
+            def sample_delete_glossary_term():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.DeleteDataAttributeRequest(
+                request = dataplex_v1.DeleteGlossaryTermRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                operation = client.delete_data_attribute(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
+                client.delete_glossary_term(request=request)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.DeleteDataAttributeRequest, dict]):
-                The request object. Delete DataAttribute request.
+            request (Union[google.cloud.dataplex_v1.types.DeleteGlossaryTermRequest, dict]):
+                The request object. Delete GlossaryTerm Request
             name (str):
-                Required. The resource name of the DataAttribute:
-                projects/{project_number}/locations/{location_id}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
+                Required. The name of the GlossaryTerm to delete.
+                Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2495,28 +2356,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
-
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.delete_data_attribute is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2532,8 +2372,8 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.DeleteDataAttributeRequest):
-            request = data_taxonomy.DeleteDataAttributeRequest(request)
+        if not isinstance(request, business_glossary.DeleteGlossaryTermRequest):
+            request = business_glossary.DeleteGlossaryTermRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -2541,7 +2381,115 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_data_attribute]
+        rpc = self._transport._wrapped_methods[self._transport.delete_glossary_term]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def get_glossary_term(
+        self,
+        request: Optional[Union[business_glossary.GetGlossaryTermRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> business_glossary.GlossaryTerm:
+        r"""Gets a GlossaryTerm resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_get_glossary_term():
+                # Create a client
+                client = dataplex_v1.BusinessGlossaryServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetGlossaryTermRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_glossary_term(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.GetGlossaryTermRequest, dict]):
+                The request object. Get GlossaryTerm Request
+            name (str):
+                Required. The name of the GlossaryTerm to retrieve.
+                Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.GlossaryTerm:
+                GlossaryTerms are the core of
+                Glossary. A GlossaryTerm holds a rich
+                text description that can be attached to
+                Entries or specific columns to enrich
+                them.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, business_glossary.GetGlossaryTermRequest):
+            request = business_glossary.GetGlossaryTermRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_glossary_term]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2560,27 +2508,21 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            empty_pb2.Empty,
-            metadata_type=service.OperationMetadata,
-        )
-
         # Done; return the response.
         return response
 
-    def list_data_attributes(
+    def list_glossary_terms(
         self,
-        request: Optional[Union[data_taxonomy.ListDataAttributesRequest, dict]] = None,
+        request: Optional[
+            Union[business_glossary.ListGlossaryTermsRequest, dict]
+        ] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListDataAttributesPager:
-        r"""Lists Data Attribute resources in a DataTaxonomy.
+    ) -> pagers.ListGlossaryTermsPager:
+        r"""Lists GlossaryTerm resources in a Glossary.
 
         .. code-block:: python
 
@@ -2593,28 +2535,30 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataplex_v1
 
-            def sample_list_data_attributes():
+            def sample_list_glossary_terms():
                 # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
+                client = dataplex_v1.BusinessGlossaryServiceClient()
 
                 # Initialize request argument(s)
-                request = dataplex_v1.ListDataAttributesRequest(
+                request = dataplex_v1.ListGlossaryTermsRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_data_attributes(request=request)
+                page_result = client.list_glossary_terms(request=request)
 
                 # Handle the response
                 for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.dataplex_v1.types.ListDataAttributesRequest, dict]):
-                The request object. List DataAttributes request.
+            request (Union[google.cloud.dataplex_v1.types.ListGlossaryTermsRequest, dict]):
+                The request object. List GlossaryTerms Request
             parent (str):
-                Required. The resource name of the DataTaxonomy:
-                projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
+                Required. The parent, which has this collection of
+                GlossaryTerms. Format:
+                projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2628,19 +2572,14 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.dataplex_v1.services.data_taxonomy_service.pagers.ListDataAttributesPager:
-                List DataAttributes response.
+            google.cloud.dataplex_v1.services.business_glossary_service.pagers.ListGlossaryTermsPager:
+                List GlossaryTerms Response
 
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
 
         """
-        warnings.warn(
-            "DataTaxonomyServiceClient.list_data_attributes is deprecated",
-            DeprecationWarning,
-        )
-
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2656,8 +2595,8 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.ListDataAttributesRequest):
-            request = data_taxonomy.ListDataAttributesRequest(request)
+        if not isinstance(request, business_glossary.ListGlossaryTermsRequest):
+            request = business_glossary.ListGlossaryTermsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -2665,7 +2604,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_data_attributes]
+        rpc = self._transport._wrapped_methods[self._transport.list_glossary_terms]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2686,7 +2625,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers.ListDataAttributesPager(
+        response = pagers.ListGlossaryTermsPager(
             method=rpc,
             request=request,
             response=response,
@@ -2698,123 +2637,7 @@ class DataTaxonomyServiceClient(metaclass=DataTaxonomyServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_data_attribute(
-        self,
-        request: Optional[Union[data_taxonomy.GetDataAttributeRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> data_taxonomy.DataAttribute:
-        r"""Retrieves a Data Attribute resource.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import dataplex_v1
-
-            def sample_get_data_attribute():
-                # Create a client
-                client = dataplex_v1.DataTaxonomyServiceClient()
-
-                # Initialize request argument(s)
-                request = dataplex_v1.GetDataAttributeRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_data_attribute(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.dataplex_v1.types.GetDataAttributeRequest, dict]):
-                The request object. Get DataAttribute request.
-            name (str):
-                Required. The resource name of the dataAttribute:
-                projects/{project_number}/locations/{location_id}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.dataplex_v1.types.DataAttribute:
-                Denotes one dataAttribute in a dataTaxonomy, for example, PII.
-                   DataAttribute resources can be defined in a
-                   hierarchy. A single dataAttribute resource can
-                   contain specs of multiple types
-
-                   :literal:`` PII   - ResourceAccessSpec :                 - readers :foo@bar.com   - DataAccessSpec :                 - readers :bar@foo.com`\ \`
-
-        """
-        warnings.warn(
-            "DataTaxonomyServiceClient.get_data_attribute is deprecated",
-            DeprecationWarning,
-        )
-
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, data_taxonomy.GetDataAttributeRequest):
-            request = data_taxonomy.GetDataAttributeRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_data_attribute]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._validate_universe_domain()
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def __enter__(self) -> "DataTaxonomyServiceClient":
+    def __enter__(self) -> "BusinessGlossaryServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -3182,4 +3005,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = ("DataTaxonomyServiceClient",)
+__all__ = ("BusinessGlossaryServiceClient",)
