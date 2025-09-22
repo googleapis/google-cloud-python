@@ -118,7 +118,8 @@ class _LoggingClientAIOInterceptor(
 class DeploymentGrpcAsyncIOTransport(DeploymentTransport):
     """gRPC AsyncIO backend transport for Deployment.
 
-    Service describing handlers for resources
+    Deployment service allows users to manage deployments of
+    Frameworks and Cloud Controls on a target resource.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -355,8 +356,8 @@ class DeploymentGrpcAsyncIOTransport(DeploymentTransport):
     ]:
         r"""Return a callable for the create framework deployment method over gRPC.
 
-        Creates a new FrameworkDeployment in a given project
-        and location.
+        Creates a new FrameworkDeployment in a given parent
+        resource.
 
         Returns:
             Callable[[~.CreateFrameworkDeploymentRequest],
@@ -447,8 +448,8 @@ class DeploymentGrpcAsyncIOTransport(DeploymentTransport):
     ]:
         r"""Return a callable for the list framework deployments method over gRPC.
 
-        Lists FrameworkDeployments in a given parent and
-        location.
+        Lists FrameworkDeployments in a given parent
+        resource.
 
         Returns:
             Callable[[~.ListFrameworkDeploymentsRequest],
@@ -510,7 +511,8 @@ class DeploymentGrpcAsyncIOTransport(DeploymentTransport):
     ]:
         r"""Return a callable for the list cloud control deployments method over gRPC.
 
-        Lists CloudControlDeployments under a given parent.
+        Lists CloudControlDeployments in a given parent
+        resource.
 
         Returns:
             Callable[[~.ListCloudControlDeploymentsRequest],

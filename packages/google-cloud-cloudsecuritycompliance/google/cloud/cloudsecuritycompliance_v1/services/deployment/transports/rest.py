@@ -587,7 +587,8 @@ class DeploymentRestStub:
 class DeploymentRestTransport(_BaseDeploymentRestTransport):
     """REST backend synchronous transport for Deployment.
 
-    Service describing handlers for resources
+    Deployment service allows users to manage deployments of
+    Frameworks and Cloud Controls on a target resource.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -760,7 +761,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 Args:
                     request (~.deployment.CreateFrameworkDeploymentRequest):
                         The request object. Request message for
-                    CreateFrameworkDeployment.
+                    CreateFrameworkDeployment API.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1074,9 +1075,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Returns:
                     ~.deployment.CloudControlDeployment:
-                        CloudControlDeployment is a resource
-                    that represents a deployment using a
-                    cloud control.
+                        CloudControlDeployment represents
+                    deployment of a CloudControl on a target
+                    resource. Supported target resources are
+                    organizations/{organization},
+                    folders/{folder}, and
+                    projects/{project}.
 
             """
 
@@ -1226,9 +1230,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             Returns:
                 ~.deployment.FrameworkDeployment:
-                    FrameworkDeployment is a resource
-                that represents a deployment using a
-                framework.
+                    FrameworkDeployment represents
+                deployment of a Framework on a target
+                resource. Supported target resources are
+                organizations/{organization},
+                folders/{folder}, and
+                projects/{project}.
 
             """
 
@@ -1378,8 +1385,8 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Returns:
                     ~.deployment.ListCloudControlDeploymentsResponse:
-                        Message for response to listing
-                    CloudControlDeployments.
+                        Response message for
+                    ListCloudControlDeployments.
 
             """
 
@@ -1535,8 +1542,8 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
                 Returns:
                     ~.deployment.ListFrameworkDeploymentsResponse:
-                        Message for response to listing
-                    FrameworkDeployments.
+                        Response message for
+                    ListFrameworkDeployments.
 
             """
 

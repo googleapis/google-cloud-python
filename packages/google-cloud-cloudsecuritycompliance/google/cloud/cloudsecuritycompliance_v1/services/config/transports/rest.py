@@ -706,7 +706,8 @@ class ConfigRestStub:
 class ConfigRestTransport(_BaseConfigRestTransport):
     """REST backend synchronous transport for Config.
 
-    Service describing handlers for config resources
+    Config Service manages compliance frameworks, cloud controls,
+    and their configurations.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -823,7 +824,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.CreateCloudControlRequest):
-                    The request object. Message for creating a CloudControl
+                    The request object. Request message for creating a
+                CloudControl
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -834,9 +836,14 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Returns:
                 ~.common.CloudControl:
-                    A CloudControl is a GCP-provided
-                parameterized concept which is used to
-                satisfy a Security or Compliance intent.
+                    A CloudControl is the fundamental unit encapsulating the
+                rules to meet a specific security or compliance intent.
+                It can contain various rule types (like Organization
+                Policies, CEL expressions, etc.) enabling different
+                enforcement modes (Preventive, Detective, Audit).
+                CloudControls are often parameterized for reusability
+                and can be either BUILT_IN (provided by Google) or
+                CUSTOM (defined by the user).
 
             """
 
@@ -982,7 +989,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.CreateFrameworkRequest):
-                    The request object. Message for creating a Framework
+                    The request object. Request message for creating a
+                Framework
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -993,9 +1001,14 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Returns:
                 ~.common.Framework:
-                    Framework is a collection of
-                CloudControls which represents
-                industry/GCP/Customer defined
+                    A Framework is a collection of
+                CloudControls to address security and
+                compliance requirements. Frameworks can
+                be used for prevention, detection, and
+                auditing. They can be either built-in,
+                industry-standard frameworks provided by
+                GCP/AZURE/AWS (e.g., NIST, FedRAMP) or
+                custom frameworks created by users.
 
             """
 
@@ -1140,7 +1153,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.DeleteCloudControlRequest):
-                    The request object. Message for deleting a CloudControl.
+                    The request object. Request message for deleting a
+                CloudControl.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1250,7 +1264,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.DeleteFrameworkRequest):
-                    The request object. Message for deleting a Framework
+                    The request object. Request message for deleting a
+                Framework.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1362,7 +1377,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.GetCloudControlRequest):
-                    The request object. Message for getting a CloudControl.
+                    The request object. Request message for getting a
+                CloudControl.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1373,9 +1389,14 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Returns:
                 ~.common.CloudControl:
-                    A CloudControl is a GCP-provided
-                parameterized concept which is used to
-                satisfy a Security or Compliance intent.
+                    A CloudControl is the fundamental unit encapsulating the
+                rules to meet a specific security or compliance intent.
+                It can contain various rule types (like Organization
+                Policies, CEL expressions, etc.) enabling different
+                enforcement modes (Preventive, Detective, Audit).
+                CloudControls are often parameterized for reusability
+                and can be either BUILT_IN (provided by Google) or
+                CUSTOM (defined by the user).
 
             """
 
@@ -1513,7 +1534,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.GetFrameworkRequest):
-                    The request object. Message for getting a Framework.
+                    The request object. Request message for getting a
+                Framework.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1524,9 +1546,14 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Returns:
                 ~.common.Framework:
-                    Framework is a collection of
-                CloudControls which represents
-                industry/GCP/Customer defined
+                    A Framework is a collection of
+                CloudControls to address security and
+                compliance requirements. Frameworks can
+                be used for prevention, detection, and
+                auditing. They can be either built-in,
+                industry-standard frameworks provided by
+                GCP/AZURE/AWS (e.g., NIST, FedRAMP) or
+                custom frameworks created by users.
 
             """
 
@@ -1664,7 +1691,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.ListCloudControlsRequest):
-                    The request object. Request message for [ListCloudControls][].
+                    The request object. Request message for listing
+                CloudControls.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1816,7 +1844,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.ListFrameworksRequest):
-                    The request object. Request message for [ListFrameworks][].
+                    The request object. Request message for listing
+                Frameworks.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1827,7 +1856,10 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Returns:
                 ~.config.ListFrameworksResponse:
-                    Response message for [ListFrameworks][].
+                    Response message for listing
+                Frameworks. Contains a paginated list of
+                Framework resources.
+
             """
 
             http_options = (
@@ -1965,7 +1997,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.UpdateCloudControlRequest):
-                    The request object. Message for updating a CloudControl.
+                    The request object. Request message for
+                UpdateCloudControl.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1976,9 +2009,14 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Returns:
                 ~.common.CloudControl:
-                    A CloudControl is a GCP-provided
-                parameterized concept which is used to
-                satisfy a Security or Compliance intent.
+                    A CloudControl is the fundamental unit encapsulating the
+                rules to meet a specific security or compliance intent.
+                It can contain various rule types (like Organization
+                Policies, CEL expressions, etc.) enabling different
+                enforcement modes (Preventive, Detective, Audit).
+                CloudControls are often parameterized for reusability
+                and can be either BUILT_IN (provided by Google) or
+                CUSTOM (defined by the user).
 
             """
 
@@ -2124,7 +2162,8 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Args:
                 request (~.config.UpdateFrameworkRequest):
-                    The request object. Message for updating a Framework
+                    The request object. Request message for updating a
+                Framework.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2135,9 +2174,14 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             Returns:
                 ~.common.Framework:
-                    Framework is a collection of
-                CloudControls which represents
-                industry/GCP/Customer defined
+                    A Framework is a collection of
+                CloudControls to address security and
+                compliance requirements. Frameworks can
+                be used for prevention, detection, and
+                auditing. They can be either built-in,
+                industry-standard frameworks provided by
+                GCP/AZURE/AWS (e.g., NIST, FedRAMP) or
+                custom frameworks created by users.
 
             """
 

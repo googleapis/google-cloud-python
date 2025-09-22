@@ -42,12 +42,13 @@ __protobuf__ = proto.module(
 
 
 class ListFrameworksRequest(proto.Message):
-    r"""Request message for [ListFrameworks][].
+    r"""Request message for listing Frameworks.
 
     Attributes:
         parent (str):
             Required. The parent resource name, in the format
-            ``organizations/{organization}/locations/{location}``.
+            ``organizations/{organization}/locations/{location}``. Only
+            global location is supported.
         page_size (int):
             Optional. The maximum number of frameworks to return. The
             default value is ``500``.
@@ -75,13 +76,12 @@ class ListFrameworksRequest(proto.Message):
 
 
 class ListFrameworksResponse(proto.Message):
-    r"""Response message for [ListFrameworks][].
+    r"""Response message for listing Frameworks.
+    Contains a paginated list of Framework resources.
 
     Attributes:
         frameworks (MutableSequence[google.cloud.cloudsecuritycompliance_v1.types.Framework]):
-            The list of
-            [Framework][google.cloud.cloudsecuritycompliance.v1.Framework]
-            resources.
+            The list of Framework resources.
         next_page_token (str):
             A pagination token. To retrieve the next page
             of results, call the method again with this
@@ -104,14 +104,14 @@ class ListFrameworksResponse(proto.Message):
 
 
 class GetFrameworkRequest(proto.Message):
-    r"""Message for getting a Framework.
+    r"""Request message for getting a Framework.
 
     Attributes:
         name (str):
             Required. The name of the framework to retrieve. Format:
             organizations/{organization}/locations/{location}/frameworks/{framework_id}
         major_revision_id (int):
-            Optional. The Framework major revision to retrieve. If not
+            Optional. The Framework major version to retrieve. If not
             specified, the most recently updated revision_id is
             retrieved.
     """
@@ -127,7 +127,7 @@ class GetFrameworkRequest(proto.Message):
 
 
 class CreateFrameworkRequest(proto.Message):
-    r"""Message for creating a Framework
+    r"""Request message for creating a Framework
 
     Attributes:
         parent (str):
@@ -158,7 +158,7 @@ class CreateFrameworkRequest(proto.Message):
 
 
 class UpdateFrameworkRequest(proto.Message):
-    r"""Message for updating a Framework
+    r"""Request message for updating a Framework.
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -171,7 +171,7 @@ class UpdateFrameworkRequest(proto.Message):
         framework (google.cloud.cloudsecuritycompliance_v1.types.Framework):
             Required. The resource being updated
         major_revision_id (int):
-            Optional. The major revision ID of the
+            Optional. The major version ID of the
             framework to update.
     """
 
@@ -192,7 +192,7 @@ class UpdateFrameworkRequest(proto.Message):
 
 
 class DeleteFrameworkRequest(proto.Message):
-    r"""Message for deleting a Framework
+    r"""Request message for deleting a Framework.
 
     Attributes:
         name (str):
@@ -207,7 +207,7 @@ class DeleteFrameworkRequest(proto.Message):
 
 
 class ListCloudControlsRequest(proto.Message):
-    r"""Request message for [ListCloudControls][].
+    r"""Request message for listing CloudControls.
 
     Attributes:
         parent (str):
@@ -271,7 +271,7 @@ class ListCloudControlsResponse(proto.Message):
 
 
 class GetCloudControlRequest(proto.Message):
-    r"""Message for getting a CloudControl.
+    r"""Request message for getting a CloudControl.
 
     Attributes:
         name (str):
@@ -287,7 +287,7 @@ class GetCloudControlRequest(proto.Message):
 
 
 class CreateCloudControlRequest(proto.Message):
-    r"""Message for creating a CloudControl
+    r"""Request message for creating a CloudControl
 
     Attributes:
         parent (str):
@@ -317,7 +317,7 @@ class CreateCloudControlRequest(proto.Message):
 
 
 class UpdateCloudControlRequest(proto.Message):
-    r"""Message for updating a CloudControl.
+    r"""Request message for UpdateCloudControl.
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -351,7 +351,7 @@ class UpdateCloudControlRequest(proto.Message):
 
 
 class DeleteCloudControlRequest(proto.Message):
-    r"""Message for deleting a CloudControl.
+    r"""Request message for deleting a CloudControl.
 
     Attributes:
         name (str):
