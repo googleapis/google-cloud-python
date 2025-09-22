@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 from bigframes.core.compile.sqlglot.compiler import SQLGlotCompiler
+import bigframes.core.compile.sqlglot.expressions.ai_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.array_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.blob_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.comparison_ops  # noqa: F401
