@@ -171,7 +171,7 @@ def format(session):
 @_calculate_duration
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.install("docutils", "pygments")
+    session.install("setuptools", "docutils", "pygments")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
