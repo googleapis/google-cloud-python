@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.5.1...google-cloud-kms-v3.6.0) (2025-09-22)
+
+
+### Features
+
+* Add PublicKeyFormat enums XWING_RAW_BYTES (used for KEM_XWING) and DER ([186cef2](https://github.com/googleapis/google-cloud-python/commit/186cef27be0e3b6669ed86d7ce064b90bfd545dc))
+* Support KEY_ENCAPSULATION purpose and quantum-safe algorithms ML_KEM_768, ML_KEM_1024 and KEM_XWING ([186cef2](https://github.com/googleapis/google-cloud-python/commit/186cef27be0e3b6669ed86d7ce064b90bfd545dc))
+
 ## [3.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.5.0...google-cloud-kms-v3.5.1) (2025-05-20)
 
 
