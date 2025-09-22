@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.58.0](https://github.com/googleapis/python-spanner/compare/v3.57.0...v3.58.0) (2025-09-10)
+
+
+### Features
+
+* **spanner:** Support setting read lock mode ([#1404](https://github.com/googleapis/python-spanner/issues/1404)) ([ee24c6e](https://github.com/googleapis/python-spanner/commit/ee24c6ee2643bc74d52e9f0a924b80a830fa2697))
+
+
+### Dependencies
+
+* Remove Python 3.7 and 3.8 as supported runtimes ([#1395](https://github.com/googleapis/python-spanner/issues/1395)) ([fc93792](https://github.com/googleapis/python-spanner/commit/fc9379232224f56d29d2e36559a756c05a5478ff))
+
 ## [3.57.0](https://github.com/googleapis/python-spanner/compare/v3.56.0...v3.57.0) (2025-08-14)
 
 
