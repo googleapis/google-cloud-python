@@ -562,3 +562,15 @@ replacements:
                   - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"``
                   - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}"``
     count: 2
+  - paths: [
+      packages/google-cloud-capacityplanner/google/cloud/capacityplanner_v1beta/types/usage_service.py,
+    ]
+    before: |
+      The format is:
+
+                projects/{project}/locations/{location} or
+                organizations/{organization}/locations/{location} or
+                folders/{folder}/locations/{location}
+    after: |
+      The format is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
+    count: 5
