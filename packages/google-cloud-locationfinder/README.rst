@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Cloud Location Finder API
+===========================================
 
 |preview| |pypi| |versions|
 
-`google-cloud-locationfinder`: 
+`Cloud Location Finder API`_: Cloud Location Finder lets you identify and filter cloud locations in regions and zones across Google Cloud, Google Distributed Cloud, Microsoft Azure, Amazon Web Services, and Oracle Cloud Infrastructure based on proximity, geographic location, and carbon footprint.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-locationfinder/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-locationfinder.svg
    :target: https://pypi.org/project/google-cloud-locationfinder/
-.. _`google-cloud-locationfinder`: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-locationfinder
+.. _Cloud Location Finder API: https://issuetracker.google.com/issues/new?component=1569265&template=1988535
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-locationfinder/latest/summary_overview
-.. _Product Documentation: https://cloud.google.com/maps-platform/location-finder/
+.. _Product Documentation:  https://issuetracker.google.com/issues/new?component=1569265&template=1988535
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Location Finder API.`_
+3. `Enable the Cloud Location Finder API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Location Finder API.: https://console.cloud.google.com/flows/enableapi?apiid=locationfinder.googleapis.com
+.. _Enable the Cloud Location Finder API.:  https://issuetracker.google.com/issues/new?component=1569265&template=1988535
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Cloud Location Finder API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Cloud Location Finder API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Cloud Location Finder API Product documentation:  https://issuetracker.google.com/issues/new?component=1569265&template=1988535
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
