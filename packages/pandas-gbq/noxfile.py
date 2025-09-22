@@ -412,6 +412,103 @@ def prerelease_deps(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @_calculate_duration
+def core_deps_from_source(session):
+    session.install(
+        # https://arrow.apache.org/docs/developers/python.html#installing-nightly-packages
+        "--extra-index-url",
+        "https://pypi.fury.io/arrow-nightlies/",
+        "--prefer-binary",
+        "--pre",
+        "--upgrade",
+        "pyarrow",
+    )
+    session.install(
+        "--prefer-binary",
+        "--pre",
+        "--upgrade",
+        "google-cloud-core",
+        "google-resumable-media",
+        # Exclude version 1.49.0rc1 which has a known issue. See https://github.com/grpc/grpc/pull/30642
+        "grpcio!=1.49.0rc1",
+        "pandas",
+    )
+    session.install(
+        "freezegun",
+        "google-cloud-datacatalog",
+        "google-cloud-storage",
+        "google-cloud-testutils",
+        "IPython",
+        "mock",
+        "psutil",
+        "pytest",
+        "pytest-cov",
+    )
+
+    # Install python-bigquery from main to detect
+    # any potential breaking changes. For context, see:
+    # https://github.com/googleapis/python-bigquery-pandas/issues/854
+    session.install("https://github.com/googleapis/python-bigquery/archive/main.zip")
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    # We use --no-deps to ensure that pre-release versions aren't overwritten
+    # by the version ranges in setup.py.
+    session.install(*constraints_deps)
+    session.install("--no-deps", "-e", ".[all]")
+
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2358): `grpcio` and
+    # `grpcio-status` should be added to the list below so that they are installed from source,
+    # rather than PyPI.
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2357): `protobuf` should be
+    # added to the list below so that it is installed from source, rather than PyPI
+    # Note: If a dependency is added to the `core_dependencies_from_source` list,
+    # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
+    core_dependencies_from_source = [
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/python-api-core.git",
+        "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
+        "google-cloud-bigquery-storage @ git+https://github.com/googleapis/google-cloud-python.git@main#subdirectory=packages/google-cloud-bigquery-storage",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/proto-plus-python.git",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    # Print out prerelease package versions.
+    session.run("python", "-m", "pip", "freeze")
+
+    # Run all tests, except a few samples tests which require extra dependencies.
+    session.run(
+        "py.test",
+        "--quiet",
+        "-W default::PendingDeprecationWarning",
+        f"--junitxml=prerelease_unit_{session.python}_sponge_log.xml",
+        os.path.join("tests", "unit"),
+        *session.posargs,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def cover(session):
     """Run the final coverage report.
 
