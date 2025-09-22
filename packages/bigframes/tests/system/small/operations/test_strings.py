@@ -236,7 +236,20 @@ def test_reverse(scalars_dfs):
 
 
 @pytest.mark.parametrize(
-    ["start", "stop"], [(0, 1), (3, 5), (100, 101), (None, 1), (0, 12), (0, None)]
+    ["start", "stop"],
+    [
+        (0, 1),
+        (3, 5),
+        (100, 101),
+        (None, 1),
+        (0, 12),
+        (0, None),
+        (None, -1),
+        (-1, None),
+        (-5, -1),
+        (1, -1),
+        (-10, 10),
+    ],
 )
 def test_slice(scalars_dfs, start, stop):
     scalars_df, scalars_pandas_df = scalars_dfs

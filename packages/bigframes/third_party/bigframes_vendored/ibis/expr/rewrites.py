@@ -206,21 +206,26 @@ def replace_parameter(_, params, **kwargs):
 @replace(p.StringSlice)
 def lower_stringslice(_, **kwargs):
     """Rewrite StringSlice in terms of Substring."""
-    if _.end is None:
-        return ops.Substring(_.arg, start=_.start)
     if _.start is None:
-        return ops.Substring(_.arg, start=0, length=_.end)
-    if (
-        isinstance(_.start, ops.Literal)
-        and isinstance(_.start.value, int)
-        and isinstance(_.end, ops.Literal)
-        and isinstance(_.end.value, int)
-    ):
-        # optimization for constant values
-        length = _.end.value - _.start.value
+        real_start = 0
     else:
-        length = ops.Subtract(_.end, _.start)
-    return ops.Substring(_.arg, start=_.start, length=length)
+        real_start = ops.IfElse(
+            ops.GreaterEqual(_.start, 0),
+            _.start,
+            ops.Greatest((0, ops.Add(ops.StringLength(_.arg), _.start))),
+        )
+
+    if _.end is None:
+        real_end = ops.StringLength(_.arg)
+    else:
+        real_end = ops.IfElse(
+            ops.GreaterEqual(_.end, 0),
+            _.end,
+            ops.Greatest((0, ops.Add(ops.StringLength(_.arg), _.end))),
+        )
+
+    length = ops.Greatest((0, ops.Subtract(real_end, real_start)))
+    return ops.Substring(_.arg, start=real_start, length=length)
 
 
 @replace(p.Analytic)
