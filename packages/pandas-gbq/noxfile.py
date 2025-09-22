@@ -318,7 +318,7 @@ def system(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @_calculate_duration
-def prerelease(session):
+def prerelease_deps(session):
     session.install(
         # https://arrow.apache.org/docs/developers/python.html#installing-nightly-packages
         "--extra-index-url",
