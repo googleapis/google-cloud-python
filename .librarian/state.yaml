@@ -197,6 +197,7 @@ libraries:
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
+      - tests/unit/gapic/card_v1/test_card.py
     remove_regex:
       - packages/google-apps-card
     tag_format: '{id}-v{version}'
