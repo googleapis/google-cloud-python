@@ -235,7 +235,9 @@ def default(session):
 def unit(session):
     """Run the unit test suite."""
     if session.python not in UNIT_TEST_PYTHON_VERSIONS:
-        session.skip(f"Testing of Python runtime {session.python} skipped because it's not in {UNIT_TEST_PYTHON_VERSIONS}")
+        session.skip(
+            f"Testing of Python runtime {session.python} skipped because it's not in {UNIT_TEST_PYTHON_VERSIONS}"
+        )
     default(session)
 
 
