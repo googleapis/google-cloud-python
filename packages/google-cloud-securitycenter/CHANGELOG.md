@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.39.0...google-cloud-securitycenter-v1.40.0) (2025-09-22)
+
+
+### Features
+
+* [google-cloud-securitycenter] add GCE to DeploymentPlatform enum ([#14401](https://github.com/googleapis/google-cloud-python/issues/14401)) ([6292106](https://github.com/googleapis/google-cloud-python/commit/6292106feea2036efd340b1503921a0f0c708797))
+
 ## [1.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.38.1...google-cloud-securitycenter-v1.39.0) (2025-07-02)
 
 
