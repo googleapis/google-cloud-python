@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Capacity Planner API
+======================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Capacity Planner API`_: Provides programmatic access to Capacity Planner features.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-capacityplanner/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-capacityplanner.svg
    :target: https://pypi.org/project/google-cloud-capacityplanner/
-.. _: 
+.. _Capacity Planner API: https://cloud.google.com/capacity-planner/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-capacityplanner/latest/summary_overview
-.. _Product Documentation:  
+.. _Product Documentation:  https://cloud.google.com/capacity-planner/docs
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Capacity Planner API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Capacity Planner API.:  https://cloud.google.com/capacity-planner/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Capacity Planner API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Capacity Planner API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Capacity Planner API Product documentation:  https://cloud.google.com/capacity-planner/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
