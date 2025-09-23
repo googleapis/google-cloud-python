@@ -45,6 +45,7 @@ logger = logging.getLogger()
 
 BUILD_REQUEST_FILE = "build-request.json"
 GENERATE_REQUEST_FILE = "generate-request.json"
+CONFIGURE_REQUEST_FILE = "configure-response.json"
 RELEASE_INIT_REQUEST_FILE = "release-init-request.json"
 STATE_YAML_FILE = "state.yaml"
 
@@ -144,7 +145,28 @@ def handle_configure(
     Raises:
         ValueError: If configuring a new library fails.
     """
-    # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
+    try:
+        # configure-request.json contains the library definitions.
+        request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
+        for library_config in request_data.get("libraries", []):
+            is_new_library_or_api = False
+            if "apis" in library_config:
+                for api in library_config["apis"]:
+                    if api.get("status") == "new":
+                        is_new_library_or_api = True
+                        # Delete the status field since we don't need to include it in `configure-response.json`.
+                        del api["status"]
+
+            if is_new_library_or_api:
+                library_id = _get_library_id(library_config)
+                # TODO: Add missing information for the configured library.
+                request_data[library_id] = library_config
+
+        # Write the new library configuration to configure-response.json.
+        _write_json_file(f"{librarian}/configure-response.json", request_data[library_id])
+
+    except Exception as e:
+        raise ValueError("Configuring a new library failed.") from e
     logger.info("'configure' command executed.")
 
 
