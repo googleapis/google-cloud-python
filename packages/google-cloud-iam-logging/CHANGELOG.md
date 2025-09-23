@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-iam-logging/#history
+
 ## [1.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-logging-v1.4.2...google-cloud-iam-logging-v1.4.3) (2025-06-11)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-edgecontainer/#history
+
 ## [0.5.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.17...google-cloud-edgecontainer-v0.5.18) (2025-06-11)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-gke-connect-gateway/#history
+
 ## [0.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-connect-gateway-v0.10.3...google-cloud-gke-connect-gateway-v0.10.4) (2025-06-11)
 
 

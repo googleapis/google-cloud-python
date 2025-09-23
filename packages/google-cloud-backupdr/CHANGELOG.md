@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-backupdr/#history
+
 ## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.2.4...google-cloud-backupdr-v0.2.5) (2025-07-23)
 
 

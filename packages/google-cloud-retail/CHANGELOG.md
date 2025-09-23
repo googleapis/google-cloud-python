@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-retail/#history
+
 ## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.5.0...google-cloud-retail-v2.6.0) (2025-09-08)
 
 

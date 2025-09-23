@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-securesourcemanager/#history
+
 ## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.16...google-cloud-securesourcemanager-v0.1.17) (2025-08-06)
 
 

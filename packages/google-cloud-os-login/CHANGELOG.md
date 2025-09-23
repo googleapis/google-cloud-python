@@ -2,6 +2,10 @@
 
 [PyPI History][1]
 
+[1]: https://pypi.org/project/google-cloud-os-login/#history
+
+[PyPI History][1]
+
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
 ## [2.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.17.1...google-cloud-os-login-v2.17.2) (2025-06-11)

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-iap/#history
+
 ## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.17.0...google-cloud-iap-v1.17.1) (2025-05-29)
 
 

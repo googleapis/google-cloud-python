@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-eventarc-publishing/#history
+
 ## [0.6.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.18...google-cloud-eventarc-publishing-v0.6.19) (2025-06-11)
 
 

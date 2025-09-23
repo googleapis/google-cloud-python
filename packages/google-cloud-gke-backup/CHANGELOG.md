@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-gke-backup/#history
+
 ## [0.5.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.18...google-cloud-gke-backup-v0.5.19) (2025-05-15)
 
 

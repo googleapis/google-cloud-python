@@ -79,6 +79,8 @@ class Component(proto.Enum):
             Iceberg.
         JUPYTER (1):
             The Jupyter Notebook.
+        JUPYTER_KERNEL_GATEWAY (22):
+            The Jupyter Kernel Gateway.
         PIG (21):
             The Pig component.
         PRESTO (6):
@@ -105,6 +107,7 @@ class Component(proto.Enum):
     HUDI = 18
     ICEBERG = 19
     JUPYTER = 1
+    JUPYTER_KERNEL_GATEWAY = 22
     PIG = 21
     PRESTO = 6
     TRINO = 17

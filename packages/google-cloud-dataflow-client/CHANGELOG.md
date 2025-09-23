@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-dataflow-client/#history
+
 ## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.17...google-cloud-dataflow-client-v0.9.0) (2025-05-08)
 
 

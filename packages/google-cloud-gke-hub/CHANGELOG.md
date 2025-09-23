@@ -1,5 +1,16 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-gke-hub/#history
+
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.17.3...google-cloud-gke-hub-v1.18.0) (2025-09-22)
+
+
+### Features
+
+* add k8s_git_version field ([ea55384](https://github.com/googleapis/google-cloud-python/commit/ea55384dc5c80deb2b6b3f01dd9abbdc882e5e79))
+
 ## [1.17.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.17.2...google-cloud-gke-hub-v1.17.3) (2025-06-11)
 
 

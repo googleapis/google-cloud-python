@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-maps-fleetengine-delivery/#history
+
 ## [0.2.13](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.12...google-maps-fleetengine-delivery-v0.2.13) (2025-07-10)
 
 

@@ -148,6 +148,11 @@ class DataChatServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_conversation: gapic_v1.method.wrap_method(
+                self.update_conversation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_conversation: gapic_v1.method.wrap_method(
                 self.get_conversation,
                 default_timeout=None,
@@ -218,6 +223,15 @@ class DataChatServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [gcg_conversation.CreateConversationRequest],
+        Union[gcg_conversation.Conversation, Awaitable[gcg_conversation.Conversation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_conversation(
+        self,
+    ) -> Callable[
+        [gcg_conversation.UpdateConversationRequest],
         Union[gcg_conversation.Conversation, Awaitable[gcg_conversation.Conversation]],
     ]:
         raise NotImplementedError()

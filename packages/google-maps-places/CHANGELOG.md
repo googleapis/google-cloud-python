@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-maps-places/#history
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.2.1...google-maps-places-v0.2.2) (2025-07-02)
 
 

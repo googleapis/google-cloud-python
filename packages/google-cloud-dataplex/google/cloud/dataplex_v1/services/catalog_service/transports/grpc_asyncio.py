@@ -122,9 +122,9 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     """gRPC AsyncIO backend transport for CatalogService.
 
     The primary resources offered by this service are
-    EntryGroups, EntryTypes, AspectTypes, and Entries. They
-    collectively let data administrators organize, manage, secure,
-    and catalog data located across cloud projects in their
+    EntryGroups, EntryTypes, AspectTypes, Entries and EntryLinks.
+    They collectively let data administrators organize, manage,
+    secure, and catalog data located across cloud projects in their
     organization in a variety of storage systems, including Cloud
     Storage and BigQuery.
 
@@ -963,8 +963,8 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         r"""Return a callable for the create metadata job method over gRPC.
 
         Creates a metadata job. For example, use a metadata
-        job to import Dataplex Catalog entries and aspects from
-        a third-party system into Dataplex.
+        job to import metadata from a third-party system into
+        Dataplex Universal Catalog.
 
         Returns:
             Callable[[~.CreateMetadataJobRequest],
@@ -1069,6 +1069,84 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["cancel_metadata_job"]
+
+    @property
+    def create_entry_link(
+        self,
+    ) -> Callable[[catalog.CreateEntryLinkRequest], Awaitable[catalog.EntryLink]]:
+        r"""Return a callable for the create entry link method over gRPC.
+
+        Creates an Entry Link.
+
+        Returns:
+            Callable[[~.CreateEntryLinkRequest],
+                    Awaitable[~.EntryLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_entry_link" not in self._stubs:
+            self._stubs["create_entry_link"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/CreateEntryLink",
+                request_serializer=catalog.CreateEntryLinkRequest.serialize,
+                response_deserializer=catalog.EntryLink.deserialize,
+            )
+        return self._stubs["create_entry_link"]
+
+    @property
+    def delete_entry_link(
+        self,
+    ) -> Callable[[catalog.DeleteEntryLinkRequest], Awaitable[catalog.EntryLink]]:
+        r"""Return a callable for the delete entry link method over gRPC.
+
+        Deletes an Entry Link.
+
+        Returns:
+            Callable[[~.DeleteEntryLinkRequest],
+                    Awaitable[~.EntryLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_entry_link" not in self._stubs:
+            self._stubs["delete_entry_link"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/DeleteEntryLink",
+                request_serializer=catalog.DeleteEntryLinkRequest.serialize,
+                response_deserializer=catalog.EntryLink.deserialize,
+            )
+        return self._stubs["delete_entry_link"]
+
+    @property
+    def get_entry_link(
+        self,
+    ) -> Callable[[catalog.GetEntryLinkRequest], Awaitable[catalog.EntryLink]]:
+        r"""Return a callable for the get entry link method over gRPC.
+
+        Gets an Entry Link.
+
+        Returns:
+            Callable[[~.GetEntryLinkRequest],
+                    Awaitable[~.EntryLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_entry_link" not in self._stubs:
+            self._stubs["get_entry_link"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/GetEntryLink",
+                request_serializer=catalog.GetEntryLinkRequest.serialize,
+                response_deserializer=catalog.EntryLink.deserialize,
+            )
+        return self._stubs["get_entry_link"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
@@ -1310,6 +1388,21 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
             ),
             self.cancel_metadata_job: self._wrap_method(
                 self.cancel_metadata_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_entry_link: self._wrap_method(
+                self.create_entry_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_entry_link: self._wrap_method(
+                self.delete_entry_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_entry_link: self._wrap_method(
+                self.get_entry_link,
                 default_timeout=None,
                 client_info=client_info,
             ),

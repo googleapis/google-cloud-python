@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-confidentialcomputing/#history
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.18...google-cloud-confidentialcomputing-v0.5.0) (2025-09-08)
 
 

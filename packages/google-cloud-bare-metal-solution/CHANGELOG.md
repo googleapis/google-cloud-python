@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-bare-metal-solution/#history
+
 ## [1.10.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.10.2...google-cloud-bare-metal-solution-v1.10.3) (2025-06-11)
 
 

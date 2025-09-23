@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-dataproc-metastore/#history
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.18.3...google-cloud-dataproc-metastore-v1.19.0) (2025-08-06)
 
 

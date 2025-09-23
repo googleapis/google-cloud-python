@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-recaptcha-enterprise/#history
+
 ## [1.28.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.28.1...google-cloud-recaptcha-enterprise-v1.28.2) (2025-06-11)
 
 

@@ -14,5 +14,13 @@
 #
 
 packages_to_onboard: [
+  "google-ads-admanager",
+  "google-ads-marketingplatform-admin",
+  "google-ai-generativelanguage",
+  "google-analytics-admin",
+  "google-analytics-data",
+  "google-cloud-dlp",
+  "google-cloud-eventarc",
+  "google-cloud-video-live-stream",
   "pandas-gbq",
 ]

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-area120-tables/#history
+
 ## [0.11.17](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.16...google-area120-tables-v0.11.17) (2025-06-11)
 
 

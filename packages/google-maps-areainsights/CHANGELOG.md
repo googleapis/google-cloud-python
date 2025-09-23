@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-maps-areainsights/#history
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.7...google-maps-areainsights-v0.1.8) (2025-04-24)
 
 

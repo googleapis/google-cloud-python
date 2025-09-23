@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-functions/#history
+
 ## [1.20.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.20.3...google-cloud-functions-v1.20.4) (2025-06-11)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-gke-multicloud/#history
+
 ## [0.6.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.20...google-cloud-gke-multicloud-v0.6.21) (2025-06-11)
 
 

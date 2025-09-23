@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-tpu/#history
+
 ## [1.23.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.23.1...google-cloud-tpu-v1.23.2) (2025-06-11)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-alloydb/#history
+
 ## [0.4.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.8...google-cloud-alloydb-v0.4.9) (2025-08-29)
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-ai-generativelanguage/#history
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.18...google-ai-generativelanguage-v0.7.0) (2025-08-29)
 
 

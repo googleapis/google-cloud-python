@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-maintenance-api/#history
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-maintenance-api-v0.1.0...google-cloud-maintenance-api-v0.1.1) (2025-07-23)
 
 

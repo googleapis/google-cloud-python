@@ -113,7 +113,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class ConfigGrpcTransport(ConfigTransport):
     """gRPC backend transport for Config.
 
-    Service describing handlers for config resources
+    Config Service manages compliance frameworks, cloud controls,
+    and their configurations.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -328,7 +329,10 @@ class ConfigGrpcTransport(ConfigTransport):
     ) -> Callable[[config.ListFrameworksRequest], config.ListFrameworksResponse]:
         r"""Return a callable for the list frameworks method over gRPC.
 
-        Lists Frameworks in a given organization.
+        Lists all Frameworks (both Built-in and Custom)
+        available within a given parent resource. This method
+        supports pagination. The latest major version of each
+        Framework is returned.
 
         Returns:
             Callable[[~.ListFrameworksRequest],
@@ -352,7 +356,13 @@ class ConfigGrpcTransport(ConfigTransport):
     def get_framework(self) -> Callable[[config.GetFrameworkRequest], common.Framework]:
         r"""Return a callable for the get framework method over gRPC.
 
-        Gets details of a single Framework.
+        Gets details of a single Framework. This method retrieves a
+        Framework resource, which can be either Built-in or Custom,
+        identified by its name.
+
+        By default, the latest major version of the Framework is
+        returned. A specific major version can be retrieved by
+        specifying the ``major_revision_id`` in the request.
 
         Returns:
             Callable[[~.GetFrameworkRequest],
@@ -378,7 +388,9 @@ class ConfigGrpcTransport(ConfigTransport):
     ) -> Callable[[config.CreateFrameworkRequest], common.Framework]:
         r"""Return a callable for the create framework method over gRPC.
 
-        Creates a single framework for a given resource.
+        Creates a new Framework with type ``Custom`` under a given
+        parent resource. Frameworks with type ``Built-in`` are managed
+        by Google and cannot be created through this API.
 
         Returns:
             Callable[[~.CreateFrameworkRequest],
@@ -404,7 +416,19 @@ class ConfigGrpcTransport(ConfigTransport):
     ) -> Callable[[config.UpdateFrameworkRequest], common.Framework]:
         r"""Return a callable for the update framework method over gRPC.
 
-        Updates a single Framework.
+        Updates a single Framework. This method allows for partial
+        updates of a Framework resource. The fields to be updated are
+        specified using the ``update_mask``.
+
+        - If an ``update_mask`` is provided, only the fields specified
+          in the mask will be updated.
+        - If no ``update_mask`` is provided, all fields present in the
+          request's ``framework`` body will be used to overwrite the
+          existing resource.
+
+        This operation can only be performed on Frameworks with type
+        ``CUSTOM``. A successful update will result in a new version of
+        the Framework.
 
         Returns:
             Callable[[~.UpdateFrameworkRequest],
@@ -430,7 +454,14 @@ class ConfigGrpcTransport(ConfigTransport):
     ) -> Callable[[config.DeleteFrameworkRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete framework method over gRPC.
 
-        Deletes a single Framework.
+        Deletes a single Custom Framework, including all its minor and
+        minor revisions.
+
+        - This operation can only be performed on Frameworks with type
+          ``CUSTOM``. Built-in Frameworks cannot be deleted.
+        - The Framework cannot be deleted if it is currently deployed on
+          any resource.
+        - This action is permanent and cannot be undone.
 
         Returns:
             Callable[[~.DeleteFrameworkRequest],
@@ -456,7 +487,10 @@ class ConfigGrpcTransport(ConfigTransport):
     ) -> Callable[[config.ListCloudControlsRequest], config.ListCloudControlsResponse]:
         r"""Return a callable for the list cloud controls method over gRPC.
 
-        Lists CloudControls in a given organization.
+        Lists all CloudControls (both Built-in and Custom)
+        available within a given parent resource. This method
+        supports pagination. The latest major version of each
+        CloudControl is returned.
 
         Returns:
             Callable[[~.ListCloudControlsRequest],
@@ -482,7 +516,13 @@ class ConfigGrpcTransport(ConfigTransport):
     ) -> Callable[[config.GetCloudControlRequest], common.CloudControl]:
         r"""Return a callable for the get cloud control method over gRPC.
 
-        Gets details of a single CloudControl.
+        Gets details of a single CloudControl. This method retrieves a
+        CloudControl resource, which can be either Built-in or Custom,
+        identified by its name.
+
+        By default, the latest major version of the CloudControl is
+        returned. A specific major version can be retrieved by
+        specifying the ``major_revision_id`` in the request.
 
         Returns:
             Callable[[~.GetCloudControlRequest],
@@ -508,7 +548,9 @@ class ConfigGrpcTransport(ConfigTransport):
     ) -> Callable[[config.CreateCloudControlRequest], common.CloudControl]:
         r"""Return a callable for the create cloud control method over gRPC.
 
-        Creates a single CloudControl for a given resource.
+        Creates a new CloudControl with type ``Custom`` under a given
+        parent resource. ``Built-in`` CloudControls are managed by
+        Google and cannot be created through this API.
 
         Returns:
             Callable[[~.CreateCloudControlRequest],
@@ -534,7 +576,18 @@ class ConfigGrpcTransport(ConfigTransport):
     ) -> Callable[[config.UpdateCloudControlRequest], common.CloudControl]:
         r"""Return a callable for the update cloud control method over gRPC.
 
-        Updates a single CloudControl.
+        Updates a single CloudControl. This method allows for partial
+        updates of a Custom CloudControl resource. Built-in
+        CloudControls cannot be updated.
+
+        - If an ``update_mask`` is provided, only the fields specified
+          in the mask will be updated.
+        - If no ``update_mask`` is provided, all fields present in the
+          request's ``cloud_control`` body will be used to overwrite the
+          existing resource.
+
+        A successful update will result in a new version of the
+        CloudControl.
 
         Returns:
             Callable[[~.UpdateCloudControlRequest],
@@ -560,7 +613,14 @@ class ConfigGrpcTransport(ConfigTransport):
     ) -> Callable[[config.DeleteCloudControlRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete cloud control method over gRPC.
 
-        Deletes a single CloudControl.
+        Deletes a single Custom CloudControl, including all its major
+        and minor revisions.
+
+        - This operation can only be performed on CloudControls with
+          type ``CUSTOM``. Built-in CloudControls cannot be deleted.
+        - The CloudControl cannot be deleted if any of its revisions are
+          currently referenced by any Framework.
+        - This action is permanent and cannot be undone.
 
         Returns:
             Callable[[~.DeleteCloudControlRequest],

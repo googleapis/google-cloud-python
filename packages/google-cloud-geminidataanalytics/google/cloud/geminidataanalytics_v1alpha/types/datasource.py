@@ -354,15 +354,18 @@ class Schema(proto.Message):
             Optional. A textual description of the
             table's content and purpose. For example:
             "Contains information about customer orders in
-            our e-commerce store.".
+            our e-commerce store." Currently only used for
+            BigQuery data sources.
         synonyms (MutableSequence[str]):
             Optional. A list of alternative names or synonyms that can
             be used to refer to the table. For example: ["sales",
-            "orders", "purchases"]
+            "orders", "purchases"]. Currently only used for BigQuery
+            data sources.
         tags (MutableSequence[str]):
             Optional. A list of tags or keywords associated with the
             table, used for categorization. For example: ["transaction",
-            "revenue", "customer_data"]
+            "revenue", "customer_data"]. Currently only used for
+            BigQuery data sources.
         display_name (str):
             Optional. Table display_name (same as label in
             cloud/data_analytics/anarres/data/looker/proto/model_explore.proto),
@@ -417,11 +420,13 @@ class Field(proto.Message):
         synonyms (MutableSequence[str]):
             Optional. A list of alternative names or synonyms that can
             be used to refer to this field. For example: ["id",
-            "customerid", "cust_id"]
+            "customerid", "cust_id"]. Currently only used for BigQuery
+            data sources.
         tags (MutableSequence[str]):
             Optional. A list of tags or keywords associated with the
             field, used for categorization. For example: ["identifier",
-            "customer", "pii"]
+            "customer", "pii"]. Currently only used for BigQuery data
+            sources.
         display_name (str):
             Optional. Field display_name (same as label in
         subfields (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Field]):

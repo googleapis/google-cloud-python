@@ -1,4 +1,9 @@
 # Changelog
+
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-billing-budgets/#history
+
 ## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.17.1...google-cloud-billing-budgets-v1.17.2) (2025-06-11)
 
 

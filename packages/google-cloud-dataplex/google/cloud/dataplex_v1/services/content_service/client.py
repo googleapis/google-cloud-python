@@ -117,7 +117,9 @@ class ContentServiceClientMeta(type):
 
 
 class ContentServiceClient(metaclass=ContentServiceClientMeta):
-    """ContentService manages Notebook and SQL Scripts for Dataplex."""
+    """ContentService manages Notebook and SQL Scripts for Dataplex
+    Universal Catalog.
+    """
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):

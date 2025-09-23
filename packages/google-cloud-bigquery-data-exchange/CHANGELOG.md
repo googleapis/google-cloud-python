@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-bigquery-data-exchange/#history
+
 ## [0.5.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.19...google-cloud-bigquery-data-exchange-v0.5.20) (2025-06-11)
 
 

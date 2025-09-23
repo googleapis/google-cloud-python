@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-modelarmor/#history
+
 ## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.7...google-cloud-modelarmor-v0.2.8) (2025-08-06)
 
 

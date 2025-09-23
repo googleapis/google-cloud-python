@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-parametermanager/#history
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.4...google-cloud-parametermanager-v0.1.5) (2025-06-23)
 
 

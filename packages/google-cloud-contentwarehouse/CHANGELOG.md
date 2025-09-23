@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-contentwarehouse/#history
+
 ## [0.7.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.15...google-cloud-contentwarehouse-v0.7.16) (2025-06-11)
 
 

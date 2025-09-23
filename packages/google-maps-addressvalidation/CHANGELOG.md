@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-maps-addressvalidation/#history
+
 ## [0.3.20](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.19...google-maps-addressvalidation-v0.3.20) (2025-07-16)
 
 

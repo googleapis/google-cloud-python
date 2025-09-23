@@ -1,5 +1,67 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-dataplex/#history
+
+## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.11.0...google-cloud-dataplex-v2.12.0) (2025-09-22)
+
+
+### Features
+
+* A new field `catalog_publishing_enabled` is added to message `.google.cloud.dataplex.v1.DataQualitySpec` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `catalog_publishing_status` is added to message `.google.cloud.dataplex.v1.DataQualityResult` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `catalog_publishing_status` is added to message `.google.cloud.dataplex.v1.DataScanEvent` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `created_entry_links` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `deleted_entry_links` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `dimensions` is added to message `.google.cloud.dataplex.v1.DataQualityColumnResult` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `entry_link_types` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `entry_link` is added to message `.google.cloud.dataplex.v1.ImportItem` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `glossaries` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `passed` is added to message `.google.cloud.dataplex.v1.DataQualityColumnResult` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `project` is added to message `.google.cloud.dataplex.v1.DataDiscoverySpec` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `referenced_entry_scopes` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new field `unchanged_entry_links` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `CreateEntryLinkRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `CreateGlossaryCategoryRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `CreateGlossaryRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `CreateGlossaryTermRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `DataScanCatalogPublishingStatus` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `DeleteEntryLinkRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `DeleteGlossaryCategoryRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `DeleteGlossaryRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `DeleteGlossaryTermRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `EntryLink` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `GetEntryLinkRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `GetGlossaryCategoryRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `GetGlossaryRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `GetGlossaryTermRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `Glossary` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `GlossaryCategory` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `GlossaryTerm` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `ListGlossariesRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `ListGlossariesResponse` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `ListGlossaryCategoriesRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `ListGlossaryCategoriesResponse` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `ListGlossaryTermsRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `ListGlossaryTermsResponse` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `UpdateGlossaryCategoryRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `UpdateGlossaryRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new message `UpdateGlossaryTermRequest` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new method `CreateEntryLink` is added to service `CatalogService` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new method `DeleteEntryLink` is added to service `CatalogService` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new method `GetEntryLink` is added to service `CatalogService` ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new resource_definition `dataplex.googleapis.com/EntryLink` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new resource_definition `dataplex.googleapis.com/Glossary` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new resource_definition `dataplex.googleapis.com/GlossaryCategory` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new resource_definition `dataplex.googleapis.com/GlossaryTerm` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+* A new service `BusinessGlossaryService` is added ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+
+
+### Documentation
+
+* various documentation updates ([94387fb](https://github.com/googleapis/google-cloud-python/commit/94387fbab5eb311da34cebfbd6f5f599f8078a18))
+
 ## [2.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.10.2...google-cloud-dataplex-v2.11.0) (2025-07-10)
 
 

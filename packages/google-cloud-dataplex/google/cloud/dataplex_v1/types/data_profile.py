@@ -45,11 +45,10 @@ class DataProfileSpec(proto.Message):
 
             100.
         row_filter (str):
-            Optional. A filter applied to all rows in a single DataScan
-            job. The filter needs to be a valid SQL expression for a
-            `WHERE clause in GoogleSQL
-            syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause>`__.
-
+            Optional. A filter applied to all rows in a
+            single DataScan job. The filter needs to be a
+            valid SQL expression for a WHERE clause in
+            BigQuery standard SQL syntax.
             Example: col1 >= 0 AND col2 < 10
         post_scan_actions (google.cloud.dataplex_v1.types.DataProfileSpec.PostScanActions):
             Optional. Actions to take upon job
@@ -85,7 +84,6 @@ class DataProfileSpec(proto.Message):
                     Optional. The BigQuery table to export DataProfileScan
                     results to. Format:
                     //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
-                    or projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
             """
 
             results_table: str = proto.Field(
@@ -151,11 +149,13 @@ class DataProfileResult(proto.Message):
 
     Attributes:
         row_count (int):
-            The count of rows scanned.
+            Output only. The count of rows scanned.
         profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile):
-            The profile information per field.
+            Output only. The profile information per
+            field.
         scanned_data (google.cloud.dataplex_v1.types.ScannedData):
-            The data scanned for this result.
+            Output only. The data scanned for this
+            result.
         post_scan_actions_result (google.cloud.dataplex_v1.types.DataProfileResult.PostScanActionsResult):
             Output only. The result of post scan actions.
     """
@@ -166,8 +166,8 @@ class DataProfileResult(proto.Message):
 
         Attributes:
             fields (MutableSequence[google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field]):
-                List of fields with structural and profile
-                information for each field.
+                Output only. List of fields with structural
+                and profile information for each field.
         """
 
         class Field(proto.Message):
@@ -175,23 +175,23 @@ class DataProfileResult(proto.Message):
 
             Attributes:
                 name (str):
-                    The name of the field.
+                    Output only. The name of the field.
                 type_ (str):
-                    The data type retrieved from the schema of the data source.
-                    For instance, for a BigQuery native table, it is the
-                    `BigQuery Table
+                    Output only. The data type retrieved from the schema of the
+                    data source. For instance, for a BigQuery native table, it
+                    is the `BigQuery Table
                     Schema <https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema>`__.
-                    For a Dataplex Entity, it is the `Entity
+                    For a Dataplex Universal Catalog Entity, it is the `Entity
                     Schema <https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3>`__.
                 mode (str):
-                    The mode of the field. Possible values include:
+                    Output only. The mode of the field. Possible values include:
 
                     - REQUIRED, if it is a required field.
                     - NULLABLE, if it is an optional field.
                     - REPEATED, if it is a repeated field.
                 profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo):
-                    Profile information for the corresponding
-                    field.
+                    Output only. Profile information for the
+                    corresponding field.
             """
 
             class ProfileInfo(proto.Message):
@@ -206,22 +206,23 @@ class DataProfileResult(proto.Message):
 
                 Attributes:
                     null_ratio (float):
-                        Ratio of rows with null value against total
-                        scanned rows.
+                        Output only. Ratio of rows with null value
+                        against total scanned rows.
                     distinct_ratio (float):
-                        Ratio of rows with distinct values against
-                        total scanned rows. Not available for complex
+                        Output only. Ratio of rows with distinct
+                        values against total scanned rows. Not available
+                        for complex non-groupable field type, including
+                        RECORD, ARRAY, GEOGRAPHY, and JSON, as well as
+                        fields with REPEATABLE mode.
+                    top_n_values (MutableSequence[google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.TopNValue]):
+                        Output only. The list of top N non-null
+                        values, frequency and ratio with which they
+                        occur in the scanned data. N is 10 or equal to
+                        the number of distinct values in the field,
+                        whichever is smaller. Not available for complex
                         non-groupable field type, including RECORD,
                         ARRAY, GEOGRAPHY, and JSON, as well as fields
                         with REPEATABLE mode.
-                    top_n_values (MutableSequence[google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.TopNValue]):
-                        The list of top N non-null values, frequency
-                        and ratio with which they occur in the scanned
-                        data. N is 10 or equal to the number of distinct
-                        values in the field, whichever is smaller. Not
-                        available for complex non-groupable field type,
-                        including RECORD, ARRAY, GEOGRAPHY, and JSON, as
-                        well as fields with REPEATABLE mode.
                     string_profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo):
                         String type field information.
 
@@ -241,14 +242,14 @@ class DataProfileResult(proto.Message):
 
                     Attributes:
                         min_length (int):
-                            Minimum length of non-null values in the
-                            scanned data.
+                            Output only. Minimum length of non-null
+                            values in the scanned data.
                         max_length (int):
-                            Maximum length of non-null values in the
-                            scanned data.
+                            Output only. Maximum length of non-null
+                            values in the scanned data.
                         average_length (float):
-                            Average length of non-null values in the
-                            scanned data.
+                            Output only. Average length of non-null
+                            values in the scanned data.
                     """
 
                     min_length: int = proto.Field(
@@ -269,34 +270,35 @@ class DataProfileResult(proto.Message):
 
                     Attributes:
                         average (float):
-                            Average of non-null values in the scanned
-                            data. NaN, if the field has a NaN.
+                            Output only. Average of non-null values in
+                            the scanned data. NaN, if the field has a NaN.
                         standard_deviation (float):
-                            Standard deviation of non-null values in the
-                            scanned data. NaN, if the field has a NaN.
+                            Output only. Standard deviation of non-null
+                            values in the scanned data. NaN, if the field
+                            has a NaN.
                         min_ (int):
-                            Minimum of non-null values in the scanned
-                            data. NaN, if the field has a NaN.
+                            Output only. Minimum of non-null values in
+                            the scanned data. NaN, if the field has a NaN.
                         quartiles (MutableSequence[int]):
-                            A quartile divides the number of data points
-                            into four parts, or quarters, of more-or-less
-                            equal size. Three main quartiles used are: The
-                            first quartile (Q1) splits off the lowest 25% of
-                            data from the highest 75%. It is also known as
-                            the lower or 25th empirical quartile, as 25% of
-                            the data is below this point. The second
-                            quartile (Q2) is the median of a data set. So,
-                            50% of the data lies below this point. The third
-                            quartile (Q3) splits off the highest 25% of data
-                            from the lowest 75%. It is known as the upper or
-                            75th empirical quartile, as 75% of the data lies
-                            below this point. Here, the quartiles is
-                            provided as an ordered list of approximate
-                            quartile values for the scanned data, occurring
-                            in order Q1, median, Q3.
+                            Output only. A quartile divides the number of
+                            data points into four parts, or quarters, of
+                            more-or-less equal size. Three main quartiles
+                            used are: The first quartile (Q1) splits off the
+                            lowest 25% of data from the highest 75%. It is
+                            also known as the lower or 25th empirical
+                            quartile, as 25% of the data is below this
+                            point. The second quartile (Q2) is the median of
+                            a data set. So, 50% of the data lies below this
+                            point. The third quartile (Q3) splits off the
+                            highest 25% of data from the lowest 75%. It is
+                            known as the upper or 75th empirical quartile,
+                            as 75% of the data lies below this point. Here,
+                            the quartiles is provided as an ordered list of
+                            approximate quartile values for the scanned
+                            data, occurring in order Q1, median, Q3.
                         max_ (int):
-                            Maximum of non-null values in the scanned
-                            data. NaN, if the field has a NaN.
+                            Output only. Maximum of non-null values in
+                            the scanned data. NaN, if the field has a NaN.
                     """
 
                     average: float = proto.Field(
@@ -325,34 +327,35 @@ class DataProfileResult(proto.Message):
 
                     Attributes:
                         average (float):
-                            Average of non-null values in the scanned
-                            data. NaN, if the field has a NaN.
+                            Output only. Average of non-null values in
+                            the scanned data. NaN, if the field has a NaN.
                         standard_deviation (float):
-                            Standard deviation of non-null values in the
-                            scanned data. NaN, if the field has a NaN.
+                            Output only. Standard deviation of non-null
+                            values in the scanned data. NaN, if the field
+                            has a NaN.
                         min_ (float):
-                            Minimum of non-null values in the scanned
-                            data. NaN, if the field has a NaN.
+                            Output only. Minimum of non-null values in
+                            the scanned data. NaN, if the field has a NaN.
                         quartiles (MutableSequence[float]):
-                            A quartile divides the number of data points
-                            into four parts, or quarters, of more-or-less
-                            equal size. Three main quartiles used are: The
-                            first quartile (Q1) splits off the lowest 25% of
-                            data from the highest 75%. It is also known as
-                            the lower or 25th empirical quartile, as 25% of
-                            the data is below this point. The second
-                            quartile (Q2) is the median of a data set. So,
-                            50% of the data lies below this point. The third
-                            quartile (Q3) splits off the highest 25% of data
-                            from the lowest 75%. It is known as the upper or
-                            75th empirical quartile, as 75% of the data lies
-                            below this point. Here, the quartiles is
-                            provided as an ordered list of quartile values
-                            for the scanned data, occurring in order Q1,
-                            median, Q3.
+                            Output only. A quartile divides the number of
+                            data points into four parts, or quarters, of
+                            more-or-less equal size. Three main quartiles
+                            used are: The first quartile (Q1) splits off the
+                            lowest 25% of data from the highest 75%. It is
+                            also known as the lower or 25th empirical
+                            quartile, as 25% of the data is below this
+                            point. The second quartile (Q2) is the median of
+                            a data set. So, 50% of the data lies below this
+                            point. The third quartile (Q3) splits off the
+                            highest 25% of data from the lowest 75%. It is
+                            known as the upper or 75th empirical quartile,
+                            as 75% of the data lies below this point. Here,
+                            the quartiles is provided as an ordered list of
+                            quartile values for the scanned data, occurring
+                            in order Q1, median, Q3.
                         max_ (float):
-                            Maximum of non-null values in the scanned
-                            data. NaN, if the field has a NaN.
+                            Output only. Maximum of non-null values in
+                            the scanned data. NaN, if the field has a NaN.
                     """
 
                     average: float = proto.Field(
@@ -381,14 +384,15 @@ class DataProfileResult(proto.Message):
 
                     Attributes:
                         value (str):
-                            String value of a top N non-null value.
+                            Output only. String value of a top N non-null
+                            value.
                         count (int):
-                            Count of the corresponding value in the
-                            scanned data.
+                            Output only. Count of the corresponding value
+                            in the scanned data.
                         ratio (float):
-                            Ratio of the corresponding value in the field
-                            against the total number of rows in the scanned
-                            data.
+                            Output only. Ratio of the corresponding value
+                            in the field against the total number of rows in
+                            the scanned data.
                     """
 
                     value: str = proto.Field(

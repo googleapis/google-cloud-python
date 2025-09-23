@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-vm-migration/#history
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vm-migration-v1.11.3...google-cloud-vm-migration-v1.12.0) (2025-09-08)
 
 

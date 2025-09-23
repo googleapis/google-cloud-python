@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/grpc-google-iam-v1/#history
+
 ## [0.14.2](https://github.com/googleapis/google-cloud-python/compare/grpc-google-iam-v1-v0.14.1...grpc-google-iam-v1-v0.14.2) (2025-03-15)
 
 

@@ -1,5 +1,27 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-apihub/#history
+
+## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apihub-v0.2.6...google-cloud-apihub-v0.2.7) (2025-09-22)
+
+
+### Features
+
+* Add full lifecycle management for API Operations within API Versions (Create, Update, Delete) ([24d4f37](https://github.com/googleapis/google-cloud-python/commit/24d4f37adcd333552c834fd6a4fcfb41522c90df))
+* Add new fields and enums to resources to support richer metadata, including source tracking (SourceMetadata), plugin configurations (AuthConfig, ConfigVariable), new attributes, and additional deployment details ([24d4f37](https://github.com/googleapis/google-cloud-python/commit/24d4f37adcd333552c834fd6a4fcfb41522c90df))
+* Enable Deletion of ApiHub Instances via the Provisioning service ([24d4f37](https://github.com/googleapis/google-cloud-python/commit/24d4f37adcd333552c834fd6a4fcfb41522c90df))
+* Enhance list filtering options across various resources (APIs, Versions, Specs, Operations, Deployments) with support for user-defined attributes ([24d4f37](https://github.com/googleapis/google-cloud-python/commit/24d4f37adcd333552c834fd6a4fcfb41522c90df))
+* Introduce new services for data collection (ApiHubCollect) and curation (ApiHubCurate) ([24d4f37](https://github.com/googleapis/google-cloud-python/commit/24d4f37adcd333552c834fd6a4fcfb41522c90df))
+* Make CMEK configuration optional for ApiHub Instances, defaulting to GMEK ([24d4f37](https://github.com/googleapis/google-cloud-python/commit/24d4f37adcd333552c834fd6a4fcfb41522c90df))
+* Significantly expand Plugin and Plugin Instance management capabilities, including creation, execution, and lifecycle control ([24d4f37](https://github.com/googleapis/google-cloud-python/commit/24d4f37adcd333552c834fd6a4fcfb41522c90df))
+
+
+### Documentation
+
+* Update field descriptions, comments, and links in existing services ([24d4f37](https://github.com/googleapis/google-cloud-python/commit/24d4f37adcd333552c834fd6a4fcfb41522c90df))
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apihub-v0.2.5...google-cloud-apihub-v0.2.6) (2025-06-11)
 
 

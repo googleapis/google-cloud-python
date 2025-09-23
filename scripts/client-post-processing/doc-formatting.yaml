@@ -548,3 +548,17 @@ replacements:
                   Set empty values to clear the metadata. Refer
                   to documentation in
     count: 1
+  - paths: [
+      packages/google-cloud-dataplex/google/cloud/dataplex_v1/types/business_glossary.py,
+    ]
+    before: |
+      Examples of using a filter are:
+      \            -------------------------------\n
+      \            ``immediate_parent="projects/\{project_id_or_number\}/locations/\{location_id\}/glossaries/\{glossary_id\}"``
+      \            -------------------------------------------------------------------------------------------------------\n
+      \            ``immediate_parent="projects/\{project_id_or_number\}/locations/\{location_id\}/glossaries/\{glossary_id\}/categories/\{category_id\}"``
+    after: |
+      Examples of using a filter are:\n
+                  - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"``
+                  - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}"``
+    count: 2

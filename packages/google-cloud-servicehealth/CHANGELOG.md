@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-servicehealth/#history
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.11...google-cloud-servicehealth-v0.1.12) (2025-03-15)
 
 

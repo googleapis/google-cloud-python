@@ -188,6 +188,16 @@ class LivestreamServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.start_distribution: gapic_v1.method.wrap_method(
+                self.start_distribution,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.stop_distribution: gapic_v1.method.wrap_method(
+                self.stop_distribution,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.create_input: gapic_v1.method.wrap_method(
                 self.create_input,
                 default_timeout=60.0,
@@ -228,6 +238,11 @@ class LivestreamServiceTransport(abc.ABC):
             ),
             self.update_input: gapic_v1.method.wrap_method(
                 self.update_input,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.preview_input: gapic_v1.method.wrap_method(
+                self.preview_input,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -299,47 +314,65 @@ class LivestreamServiceTransport(abc.ABC):
             ),
             self.create_clip: gapic_v1.method.wrap_method(
                 self.create_clip,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_clip: gapic_v1.method.wrap_method(
                 self.delete_clip,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_dvr_session: gapic_v1.method.wrap_method(
                 self.create_dvr_session,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_dvr_sessions: gapic_v1.method.wrap_method(
                 self.list_dvr_sessions,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_dvr_session: gapic_v1.method.wrap_method(
                 self.get_dvr_session,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_dvr_session: gapic_v1.method.wrap_method(
                 self.delete_dvr_session,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_dvr_session: gapic_v1.method.wrap_method(
                 self.update_dvr_session,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_asset: gapic_v1.method.wrap_method(
                 self.create_asset,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_asset: gapic_v1.method.wrap_method(
                 self.delete_asset,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_asset: gapic_v1.method.wrap_method(
@@ -386,7 +419,7 @@ class LivestreamServiceTransport(abc.ABC):
             ),
             self.update_pool: gapic_v1.method.wrap_method(
                 self.update_pool,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_location: gapic_v1.method.wrap_method(
@@ -499,6 +532,24 @@ class LivestreamServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def start_distribution(
+        self,
+    ) -> Callable[
+        [service.StartDistributionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stop_distribution(
+        self,
+    ) -> Callable[
+        [service.StopDistributionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def create_input(
         self,
     ) -> Callable[
@@ -539,6 +590,15 @@ class LivestreamServiceTransport(abc.ABC):
     ) -> Callable[
         [service.UpdateInputRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def preview_input(
+        self,
+    ) -> Callable[
+        [service.PreviewInputRequest],
+        Union[service.PreviewInputResponse, Awaitable[service.PreviewInputResponse]],
     ]:
         raise NotImplementedError()
 

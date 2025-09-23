@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-migrationcenter/#history
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.14...google-cloud-migrationcenter-v0.1.15) (2025-06-11)
 
 

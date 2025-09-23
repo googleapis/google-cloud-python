@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-dms/#history
+
 ## [1.12.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.12.3...google-cloud-dms-v1.12.4) (2025-06-11)
 
 

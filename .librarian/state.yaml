@@ -1,191 +1,191 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
 libraries:
-  image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
-libraries:
-- id: google-cloud-dlp
-  version: 3.32.0
-  last_generated_commit: f8776fec04e336527ba7279d960105533a1c4e21
-  apis:
-  - path: google/privacy/dlp/v2
-    service_config: dlp_v2.yaml
-  source_roots:
-  - packages/google-cloud-dlp
-  preserve_regex:
-  - packages/google-cloud-dlp/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-cloud-dlp
-  tag_format: '{id}-v{version}'
-- id: google-cloud-eventarc
-  version: 1.15.3
-  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-  apis:
-  - path: google/cloud/eventarc/v1
-  source_roots:
-  - packages/google-cloud-eventarc
-  preserve_regex:
-  - packages/google-cloud-eventarc/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-cloud-eventarc
-  tag_format: '{id}-v{version}'
-- id: google-cloud-video-live-stream
-  version: 1.12.0
-  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-  apis:
-  - path: google/cloud/video/livestream/v1
-  source_roots:
-  - packages/google-cloud-video-live-stream
-  preserve_regex:
-  - packages/google-cloud-video-live-stream/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-cloud-video-live-stream
-  tag_format: '{id}-v{version}'
-- id: google-ads-marketingplatform-admin
-  version: 0.1.6
-  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-  apis:
-  - path: google/marketingplatform/admin/v1alpha
-  source_roots:
-  - packages/google-ads-marketingplatform-admin
-  preserve_regex:
-  - packages/google-ads-marketingplatform-admin/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-ads-marketingplatform-admin
-  tag_format: '{id}-v{version}'
-- id: google-ai-generativelanguage
-  version: 0.7.0
-  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-  apis:
-  - path: google/ai/generativelanguage/v1
-  - path: google/ai/generativelanguage/v1beta
-  - path: google/ai/generativelanguage/v1beta3
-  - path: google/ai/generativelanguage/v1beta2
-  - path: google/ai/generativelanguage/v1alpha
-  source_roots:
-  - packages/google-ai-generativelanguage
-  preserve_regex:
-  - packages/google-ai-generativelanguage/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-ai-generativelanguage
-  tag_format: '{id}-v{version}'
-- id: google-analytics-admin
-  version: 0.25.0
-  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-  apis:
-  - path: google/analytics/admin/v1beta
-  - path: google/analytics/admin/v1alpha
-  source_roots:
-  - packages/google-analytics-admin
-  preserve_regex:
-  - packages/google-analytics-admin/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-analytics-admin
-  tag_format: '{id}-v{version}'
-- id: google-analytics-data
-  version: 0.18.19
-  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-  apis:
-  - path: google/analytics/data/v1alpha
-  - path: google/analytics/data/v1beta
-  source_roots:
-  - packages/google-analytics-data
-  preserve_regex:
-  - packages/google-analytics-data/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-analytics-data
-  tag_format: '{id}-v{version}'
-- id: google-cloud-bigquery-storage
-  version: 2.33.1
-  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-  apis:
-  - path: google/cloud/bigquery/storage/v1beta2
-  - path: google/cloud/bigquery/storage/v1alpha
-  - path: google/cloud/bigquery/storage/v1beta
-  - path: google/cloud/bigquery/storage/v1
-  source_roots:
-  - packages/google-cloud-bigquery-storage
-  preserve_regex:
-  - packages/google-cloud-bigquery-storage/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-cloud-bigquery-storage
-  tag_format: '{id}-v{version}'
-- id: pandas-gbq
-  version: 0.29.2
-  last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-  apis: []
-  source_roots:
-    - packages/pandas-gbq
-  preserve_regex: []
-  remove_regex: []
-  tag_format: '{id}-v{version}'
+  - id: google-cloud-dlp
+    version: 3.32.0
+    last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
+    apis:
+      - path: google/privacy/dlp/v2
+        service_config: dlp_v2.yaml
+    source_roots:
+      - packages/google-cloud-dlp
+    preserve_regex:
+      - packages/google-cloud-dlp/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - tar.gz
+      - gapic_version.py
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-dlp
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-eventarc
+    version: 1.15.3
+    last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
+    apis:
+      - path: google/cloud/eventarc/v1
+        service_config: eventarc_v1.yaml
+    source_roots:
+      - packages/google-cloud-eventarc
+    preserve_regex:
+      - packages/google-cloud-eventarc/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - tar.gz
+      - gapic_version.py
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-eventarc
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-video-live-stream
+    version: 1.12.0
+    last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
+    apis:
+      - path: google/cloud/video/livestream/v1
+        service_config: livestream_v1.yaml
+    source_roots:
+      - packages/google-cloud-video-live-stream
+    preserve_regex:
+      - packages/google-cloud-video-live-stream/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - tar.gz
+      - gapic_version.py
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-video-live-stream
+    tag_format: '{id}-v{version}'
+  - id: google-ads-marketingplatform-admin
+    version: 0.1.6
+    last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
+    apis:
+      - path: google/marketingplatform/admin/v1alpha
+        service_config: marketingplatformadmin_v1alpha.yaml
+    source_roots:
+      - packages/google-ads-marketingplatform-admin
+    preserve_regex:
+      - packages/google-ads-marketingplatform-admin/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - tar.gz
+      - gapic_version.py
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-ads-marketingplatform-admin
+    tag_format: '{id}-v{version}'
+  - id: google-ai-generativelanguage
+    version: 0.7.0
+    last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
+    apis:
+      - path: google/ai/generativelanguage/v1
+        service_config: generativelanguage_v1.yaml
+      - path: google/ai/generativelanguage/v1beta
+        service_config: generativelanguage_v1beta.yaml
+      - path: google/ai/generativelanguage/v1beta3
+        service_config: generativelanguage_v1beta3.yaml
+      - path: google/ai/generativelanguage/v1beta2
+        service_config: generativelanguage_v1beta2.yaml
+      - path: google/ai/generativelanguage/v1alpha
+        service_config: generativelanguage_v1alpha.yaml
+    source_roots:
+      - packages/google-ai-generativelanguage
+    preserve_regex:
+      - packages/google-ai-generativelanguage/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - tar.gz
+      - gapic_version.py
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-ai-generativelanguage
+    tag_format: '{id}-v{version}'
+  - id: google-analytics-admin
+    version: 0.25.0
+    last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
+    apis:
+      - path: google/analytics/admin/v1beta
+        service_config: analyticsadmin_v1beta.yaml
+      - path: google/analytics/admin/v1alpha
+        service_config: analyticsadmin_v1alpha.yaml
+    source_roots:
+      - packages/google-analytics-admin
+    preserve_regex:
+      - packages/google-analytics-admin/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - tar.gz
+      - gapic_version.py
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-analytics-admin
+    tag_format: '{id}-v{version}'
+  - id: google-analytics-data
+    version: 0.18.19
+    last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
+    apis:
+      - path: google/analytics/data/v1alpha
+        service_config: analyticsdata_v1alpha.yaml
+      - path: google/analytics/data/v1beta
+        service_config: analyticsdata_v1beta.yaml
+    source_roots:
+      - packages/google-analytics-data
+    preserve_regex:
+      - packages/google-analytics-data/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - tar.gz
+      - gapic_version.py
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-analytics-data
+    tag_format: '{id}-v{version}'
+  - id: google-ads-admanager
+    version: 0.3.0
+    last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
+    apis:
+      - path: google/ads/admanager/v1
+        service_config: admanager_v1.yaml
+    source_roots:
+      - packages/google-ads-admanager
+    preserve_regex:
+      - packages/google-ads-admanager/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - tar.gz
+      - gapic_version.py
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-ads-admanager
+    tag_format: '{id}-v{version}'
+  - id: pandas-gbq
+    version: 0.29.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis: []
+    source_roots:
+      - packages/pandas-gbq
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'

@@ -130,7 +130,8 @@ class Environment(proto.Message):
 
             Attributes:
                 image_version (str):
-                    Required. Dataplex Image version.
+                    Required. Dataplex Universal Catalog Image
+                    version.
                 java_libraries (MutableSequence[str]):
                     Optional. List of Java jars to be included in
                     the runtime environment. Valid input includes

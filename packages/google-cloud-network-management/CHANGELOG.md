@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-network-management/#history
+
 ## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.27.0...google-cloud-network-management-v1.28.0) (2025-08-10)
 
 

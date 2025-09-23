@@ -79,7 +79,7 @@ class CreateDataScanRequest(proto.Message):
             Required. The resource name of the parent location:
             ``projects/{project}/locations/{location_id}`` where
             ``project`` refers to a *project_id* or *project_number* and
-            ``location_id`` refers to a GCP region.
+            ``location_id`` refers to a Google Cloud region.
         data_scan (google.cloud.dataplex_v1.types.DataScan):
             Required. DataScan resource.
         data_scan_id (str):
@@ -153,7 +153,8 @@ class DeleteDataScanRequest(proto.Message):
             Required. The resource name of the dataScan:
             ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
             where ``project`` refers to a *project_id* or
-            *project_number* and ``location_id`` refers to a GCP region.
+            *project_number* and ``location_id`` refers to a Google
+            Cloud region.
         force (bool):
             Optional. If set to true, any child resources
             of this data scan will also be deleted.
@@ -179,7 +180,8 @@ class GetDataScanRequest(proto.Message):
             Required. The resource name of the dataScan:
             ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
             where ``project`` refers to a *project_id* or
-            *project_number* and ``location_id`` refers to a GCP region.
+            *project_number* and ``location_id`` refers to a Google
+            Cloud region.
         view (google.cloud.dataplex_v1.types.GetDataScanRequest.DataScanView):
             Optional. Select the DataScan view to return. Defaults to
             ``BASIC``.
@@ -219,7 +221,7 @@ class ListDataScansRequest(proto.Message):
             Required. The resource name of the parent location:
             ``projects/{project}/locations/{location_id}`` where
             ``project`` refers to a *project_id* or *project_number* and
-            ``location_id`` refers to a GCP region.
+            ``location_id`` refers to a Google Cloud region.
         page_size (int):
             Optional. Maximum number of dataScans to
             return. The service may return fewer than this
@@ -303,7 +305,8 @@ class RunDataScanRequest(proto.Message):
             Required. The resource name of the DataScan:
             ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``.
             where ``project`` refers to a *project_id* or
-            *project_number* and ``location_id`` refers to a GCP region.
+            *project_number* and ``location_id`` refers to a Google
+            Cloud region.
 
             Only **OnDemand** data scans are allowed.
     """
@@ -337,7 +340,8 @@ class GetDataScanJobRequest(proto.Message):
             Required. The resource name of the DataScanJob:
             ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}``
             where ``project`` refers to a *project_id* or
-            *project_number* and ``location_id`` refers to a GCP region.
+            *project_number* and ``location_id`` refers to a Google
+            Cloud region.
         view (google.cloud.dataplex_v1.types.GetDataScanJobRequest.DataScanJobView):
             Optional. Select the DataScanJob view to return. Defaults to
             ``BASIC``.
@@ -377,7 +381,8 @@ class ListDataScanJobsRequest(proto.Message):
             Required. The resource name of the parent environment:
             ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
             where ``project`` refers to a *project_id* or
-            *project_number* and ``location_id`` refers to a GCP region.
+            *project_number* and ``location_id`` refers to a Google
+            Cloud region.
         page_size (int):
             Optional. Maximum number of DataScanJobs to
             return. The service may return fewer than this
@@ -483,8 +488,8 @@ class GenerateDataQualityRulesResponse(proto.Message):
     Attributes:
         rule (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRule]):
             The data quality rules that Dataplex
-            generates based on the results of a data
-            profiling scan.
+            Universal Catalog generates based on the results
+            of a data profiling scan.
     """
 
     rule: MutableSequence[data_quality.DataQualityRule] = proto.RepeatedField(
@@ -527,7 +532,8 @@ class DataScan(proto.Message):
             scan, of the form:
             ``projects/{project}/locations/{location_id}/dataScans/{datascan_id}``,
             where ``project`` refers to a *project_id* or
-            *project_number* and ``location_id`` refers to a GCP region.
+            *project_number* and ``location_id`` refers to a Google
+            Cloud region.
         uid (str):
             Output only. System generated globally unique
             ID for the scan. This ID will be different if
@@ -768,7 +774,8 @@ class DataScanJob(proto.Message):
             DataScanJob, of the form:
             ``projects/{project}/locations/{location_id}/dataScans/{datascan_id}/jobs/{job_id}``,
             where ``project`` refers to a *project_id* or
-            *project_number* and ``location_id`` refers to a GCP region.
+            *project_number* and ``location_id`` refers to a Google
+            Cloud region.
         uid (str):
             Output only. System generated globally unique
             ID for the DataScanJob.

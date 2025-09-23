@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-maps-solar/#history
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.1.8...google-maps-solar-v0.1.9) (2025-08-29)
 
 

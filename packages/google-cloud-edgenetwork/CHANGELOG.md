@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-edgenetwork/#history
+
 ## [0.1.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.17...google-cloud-edgenetwork-v0.1.18) (2025-06-11)
 
 

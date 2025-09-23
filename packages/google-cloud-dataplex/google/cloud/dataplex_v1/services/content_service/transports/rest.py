@@ -640,7 +640,8 @@ class ContentServiceRestStub:
 class ContentServiceRestTransport(_BaseContentServiceRestTransport):
     """REST backend synchronous transport for ContentService.
 
-    ContentService manages Notebook and SQL Scripts for Dataplex.
+    ContentService manages Notebook and SQL Scripts for Dataplex
+    Universal Catalog.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

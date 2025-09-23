@@ -56,7 +56,8 @@ class Context(proto.Message):
             Optional. A list of example queries,
             providing examples of relevant and commonly used
             SQL queries and their corresponding natural
-            language queries optionally present.
+            language queries optionally present. Currently
+            only used for BigQuery data sources.
     """
 
     system_instruction: str = proto.Field(
@@ -83,6 +84,7 @@ class Context(proto.Message):
 class ExampleQuery(proto.Message):
     r"""Example of relevant and commonly used SQL query and its
     corresponding natural language queries optionally present.
+    Currently only used for BigQuery data sources.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

@@ -87,7 +87,6 @@ def configure_state_yaml() -> None:
                         "samples/README.txt",
                         "tar.gz",
                         "gapic_version.py",
-                        "samples/generated_samples/snippet_metadata_",
                         "scripts/client-post-processing",
                         "samples/snippets/README.rst",
                         "tests/system",

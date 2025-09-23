@@ -115,7 +115,35 @@ def _write_json_file(path: str, updated_content: Dict):
         f.write("\n")
 
 
-def handle_configure():
+def handle_configure(
+    librarian: str = LIBRARIAN_DIR,
+    source: str = SOURCE_DIR,
+    repo: str = REPO_DIR,
+    input: str = INPUT_DIR,
+):
+    """Onboards a new library by completing its configuration.
+
+    This function reads a partial library definition from `configure-request.json`,
+    fills in missing fields like the version, source roots, and preservation
+    rules, and writes the complete configuration to `configure-response.json`.
+    It ensures that new libraries conform to the repository's standard structure.
+
+    See https://github.com/googleapis/librarian/blob/main/doc/container-contract.md#configure-container-command
+
+    Args:
+        librarian(str): Path to the directory in the container which contains
+            the librarian configuration.
+        source(str): Path to the directory in the container which contains
+            API protos.
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+        input(str): The path to the directory in the container
+            which contains additional generator input.
+
+    Raises:
+        ValueError: If configuring a new library fails.
+    """
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
     logger.info("'configure' command executed.")
 
@@ -223,11 +251,6 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
         f"{output}/{path_to_library}/**/gapic_version.py", recursive=True
     ):  # pragma: NO COVER
         os.remove(gapic_version_file)
-
-    for snippet_metadata_file in glob.glob(
-        f"{output}/{path_to_library}/samples/generated_samples/snippet_metadata*.json"
-    ):  # pragma: NO COVER
-        os.remove(snippet_metadata_file)
 
 
 def handle_generate(
@@ -412,7 +435,7 @@ def _run_nox_sessions(library_id: str, repo: str):
     Args:
         library_id(str): The library id under test.
         repo(str): This directory will contain all directories that make up a
-            library, the .librarian folder, and any global file declared in
+            library, the .librarian folder, and any global files declared in
             the config.yaml.
     """
     sessions = [
@@ -1002,7 +1025,14 @@ if __name__ == "__main__":  # pragma: NO COVER
     args = parser.parse_args()
 
     # Pass specific arguments to the handler functions for generate/build
-    if args.command == "generate":
+    if args.command == "configure":
+        args.func(
+            librarian=args.librarian,
+            source=args.source,
+            repo=args.repo,
+            input=args.input,
+        )
+    elif args.command == "generate":
         args.func(
             librarian=args.librarian,
             source=args.source,

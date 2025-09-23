@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-beyondcorp-clientgateways/#history
+
 ## [0.4.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-clientgateways-v0.4.16...google-cloud-beyondcorp-clientgateways-v0.4.17) (2025-06-11)
 
 

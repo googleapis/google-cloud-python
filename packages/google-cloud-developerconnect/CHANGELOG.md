@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-developerconnect/#history
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.9...google-cloud-developerconnect-v0.1.10) (2025-07-02)
 
 

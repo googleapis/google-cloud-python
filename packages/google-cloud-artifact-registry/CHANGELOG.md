@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-artifact-registry/#history
+
 ## [1.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.16.0...google-cloud-artifact-registry-v1.16.1) (2025-06-11)
 
 

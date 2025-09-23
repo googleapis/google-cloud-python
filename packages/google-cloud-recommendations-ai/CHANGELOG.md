@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-recommendations-ai/#history
+
 ## [0.10.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.17...google-cloud-recommendations-ai-v0.10.18) (2025-06-11)
 
 

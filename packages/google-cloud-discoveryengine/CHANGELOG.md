@@ -1,5 +1,21 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-discoveryengine/#history
+
+## [0.13.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.11...google-cloud-discoveryengine-v0.13.12) (2025-09-22)
+
+
+### Features
+
+* Added `ranking_expression_backed` and `rank_signals` fields related to the Custom Ranking feature ([3bfaf76](https://github.com/googleapis/google-cloud-python/commit/3bfaf7619ba8acc1c9a43490298be057e99ac839))
+
+
+### Documentation
+
+* A comment for field `ranking_expression` in messages `.google.cloud.discoveryengine.v1alpha.SearchRequest` and `.google.cloud.discoveryengine.v1beta.SearchRequest` is changed to support the Custom Ranking use case ([3bfaf76](https://github.com/googleapis/google-cloud-python/commit/3bfaf7619ba8acc1c9a43490298be057e99ac839))
+
 ## [0.13.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.10...google-cloud-discoveryengine-v0.13.11) (2025-07-26)
 
 

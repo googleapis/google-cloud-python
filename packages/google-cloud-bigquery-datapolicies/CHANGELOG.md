@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-bigquery-datapolicies/#history
+
 ## [0.6.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.15...google-cloud-bigquery-datapolicies-v0.6.16) (2025-07-23)
 
 

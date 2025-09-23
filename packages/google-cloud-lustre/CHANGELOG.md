@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-lustre/#history
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-lustre-v0.1.1...google-cloud-lustre-v0.1.2) (2025-07-16)
 
 

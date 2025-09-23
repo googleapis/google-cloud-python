@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-source-context/#history
+
 ## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.7.0...google-cloud-source-context-v1.7.1) (2025-03-15)
 
 

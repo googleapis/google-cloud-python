@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-video-stitcher/#history
+
 ## [0.7.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.17...google-cloud-video-stitcher-v0.7.18) (2025-06-11)
 
 

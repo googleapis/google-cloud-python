@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-privilegedaccessmanager/#history
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-privilegedaccessmanager-v0.1.8...google-cloud-privilegedaccessmanager-v0.1.9) (2025-08-06)
 
 

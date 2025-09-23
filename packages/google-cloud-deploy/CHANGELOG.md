@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-deploy/#history
+
 ## [2.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.7.0...google-cloud-deploy-v2.7.1) (2025-05-08)
 
 

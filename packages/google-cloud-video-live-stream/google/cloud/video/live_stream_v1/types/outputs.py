@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -27,6 +28,10 @@ __protobuf__ = proto.module(
         "ElementaryStream",
         "MuxStream",
         "Manifest",
+        "DistributionStream",
+        "Distribution",
+        "SrtPushOutputEndpoint",
+        "RtmpPushOutputEndpoint",
         "SpriteSheet",
         "PreprocessingConfig",
         "VideoStream",
@@ -257,6 +262,201 @@ class Manifest(proto.Message):
     )
 
 
+class DistributionStream(proto.Message):
+    r"""Multiplexing settings for output streams used in
+    [Distribution][google.cloud.video.livestream.v1.Distribution].
+
+    Attributes:
+        key (str):
+            Required. A unique key for this distribution
+            stream. The key must be 1-63 characters in
+            length. The key must begin and end with a letter
+            (regardless of case) or a number, but can
+            contain dashes or underscores in between.
+        container (str):
+            Required. The container format.
+
+            Supported container formats:
+
+            - ``ts``, must contain exactly one audio stream and up to
+              one video stream.
+            - ``flv``, must contain at most one audio stream and at most
+              one video stream.
+        elementary_streams (MutableSequence[str]):
+            Required. List of ``ElementaryStream``
+            [key][google.cloud.video.livestream.v1.ElementaryStream.key]s
+            multiplexed in this stream. Must contain at least one audio
+            stream and up to one video stream.
+    """
+
+    key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    container: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    elementary_streams: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class Distribution(proto.Message):
+    r"""Distribution configuration.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        key (str):
+            Required. A unique key for this distribution.
+            The key must be 1-63 characters in length. The
+            key must begin and end with a letter (regardless
+            of case) or a number, but can contain dashes or
+            underscores in between.
+        distribution_stream (str):
+            Required. ``DistributionStream``
+            [key][google.cloud.video.livestream.v1.DistributionStream.key]s
+            that should appear in this distribution output.
+
+            - For SRT protocol, only ``ts`` distribution streams can be
+              specified.
+            - For RTMP protocol, only ``flv`` distribution streams can
+              be specified.
+        state (google.cloud.video.live_stream_v1.types.Distribution.State):
+            Output only. State of the distribution.
+        error (google.rpc.status_pb2.Status):
+            Output only. Only present when the ``state`` is ``ERROR``.
+            The reason for the error state of the distribution.
+        srt_push (google.cloud.video.live_stream_v1.types.SrtPushOutputEndpoint):
+            Output endpoint using SRT_PUSH.
+
+            This field is a member of `oneof`_ ``endpoint``.
+        rtmp_push (google.cloud.video.live_stream_v1.types.RtmpPushOutputEndpoint):
+            Output endpoint using RTMP_PUSH.
+
+            This field is a member of `oneof`_ ``endpoint``.
+    """
+
+    class State(proto.Enum):
+        r"""State of this distribution.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State is not specified.
+            ERROR (5):
+                Distribution has trouble to produce or
+                deliver the output.
+            NOT_READY (6):
+                Distribution is not ready to be started.
+            READY (7):
+                Distribution is ready to be started.
+            AWAITING_INPUT (8):
+                Distribution is already started and is
+                waiting for input.
+            DISTRIBUTING (9):
+                Distribution is already started and is
+                generating output.
+        """
+        STATE_UNSPECIFIED = 0
+        ERROR = 5
+        NOT_READY = 6
+        READY = 7
+        AWAITING_INPUT = 8
+        DISTRIBUTING = 9
+
+    key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    distribution_stream: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
+    srt_push: "SrtPushOutputEndpoint" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="endpoint",
+        message="SrtPushOutputEndpoint",
+    )
+    rtmp_push: "RtmpPushOutputEndpoint" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="endpoint",
+        message="RtmpPushOutputEndpoint",
+    )
+
+
+class SrtPushOutputEndpoint(proto.Message):
+    r"""Configurations for an output endpoint using SRT_PUSH as the
+    streaming protocol.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        uri (str):
+            Required. The full URI of the remote SRT
+            server.
+        passphrase_secret_version (str):
+            The name of the Secret Version containing the SRT encryption
+            passphrase, which is stored in Google Secret Manager. It
+            should be in the format of
+            ``projects/{project}/secrets/{secret_id}/versions/{version_number}``.
+
+            This field is a member of `oneof`_ ``passphrase_source``.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    passphrase_secret_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="passphrase_source",
+    )
+
+
+class RtmpPushOutputEndpoint(proto.Message):
+    r"""Configurations for an output endpoint using RTMP_PUSH as the
+    streaming protocol.
+
+    Attributes:
+        uri (str):
+            Required. The full URI of the remote RTMP server. For
+            example: ``rtmp://192.168.123.321/live/my-stream`` or
+            ``rtmp://somedomain.com/someapp``.
+        stream_key (str):
+            Required. Stream key for RTMP protocol.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    stream_key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class SpriteSheet(proto.Message):
     r"""Sprite sheet configuration.
 
@@ -466,11 +666,20 @@ class PreprocessingConfig(proto.Message):
 class VideoStream(proto.Message):
     r"""Video stream resource.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         h264 (google.cloud.video.live_stream_v1.types.VideoStream.H264CodecSettings):
             H264 codec settings.
+
+            This field is a member of `oneof`_ ``codec_settings``.
+        h265 (google.cloud.video.live_stream_v1.types.VideoStream.H265CodecSettings):
+            H265 codec settings.
 
             This field is a member of `oneof`_ ``codec_settings``.
     """
@@ -488,10 +697,10 @@ class VideoStream(proto.Message):
         Attributes:
             width_pixels (int):
                 Required. The width of the video in pixels. Must be an even
-                integer. Valid range is [320, 1920].
+                integer. Valid range is [320, 4096].
             height_pixels (int):
                 Required. The height of the video in pixels. Must be an even
-                integer. Valid range is [180, 1080].
+                integer. Valid range is [180, 2160].
             frame_rate (float):
                 Required. The target video frame rate in frames per second
                 (FPS). Must be less than or equal to 60. Will default to the
@@ -509,6 +718,8 @@ class VideoStream(proto.Message):
                   3,000,000 (3 Mbps).
                 - For HD resolution (<= 1080p), must be <=
                   15,000,000 (15 Mbps).
+                - For UHD resolution (<= 2160p), must be <=
+                  25,000,000 (25 Mbps).
             allow_open_gop (bool):
                 Specifies whether an open Group of Pictures (GOP) structure
                 should be allowed or not. The default is ``false``.
@@ -652,11 +863,157 @@ class VideoStream(proto.Message):
             number=16,
         )
 
+    class H265CodecSettings(proto.Message):
+        r"""H265 codec settings.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            width_pixels (int):
+                Optional. The width of the video in pixels. Must be an even
+                integer. When not specified, the width is adjusted to match
+                the specified height and input aspect ratio. If both are
+                omitted, the input width is used. Valid range is [320,
+                4096].
+            height_pixels (int):
+                Optional. The height of the video in pixels. Must be an even
+                integer. When not specified, the height is adjusted to match
+                the specified width and input aspect ratio. If both are
+                omitted, the input height is used. Valid range is [180,
+                2160].
+            frame_rate (float):
+                Required. The target video frame rate in frames per second
+                (FPS). Must be less than or equal to 120. Will default to
+                the input frame rate if larger than the input frame rate.
+                The API will generate an output FPS that is divisible by the
+                input FPS, and smaller or equal to the target FPS. See
+                `Calculating frame
+                rate <https://cloud.google.com/transcoder/docs/concepts/frame-rate>`__
+                for more information.
+            bitrate_bps (int):
+                Required. The video bitrate in bits per
+                second. Minimum value is 10,000.
+
+                - For SD resolution (< 720p), must be <=
+                  3,000,000 (3 Mbps).
+                - For HD resolution (<= 1080p), must be <=
+                  15,000,000 (15 Mbps).
+                - For UHD resolution (<= 2160p), must be <=
+                  25,000,000 (25 Mbps).
+            gop_frame_count (int):
+                Optional. Select the GOP size based on the specified frame
+                count. If GOP frame count is set instead of GOP duration,
+                GOP duration will be calculated by
+                ``gopFrameCount``/``frameRate``. The calculated GOP duration
+                must satisfy the limitations on ``gopDuration`` as well.
+                Valid range is [60, 600].
+
+                This field is a member of `oneof`_ ``gop_mode``.
+            gop_duration (google.protobuf.duration_pb2.Duration):
+                Optional. Select the GOP size based on the specified
+                duration. The default is ``2s``. Note that ``gopDuration``
+                must be less than or equal to
+                [segment_duration][google.cloud.video.livestream.v1.SegmentSettings.segment_duration],
+                and
+                [segment_duration][google.cloud.video.livestream.v1.SegmentSettings.segment_duration]
+                must be divisible by ``gopDuration``. Valid range is [2s,
+                20s].
+
+                All video streams in the same channel must have the same GOP
+                size.
+
+                This field is a member of `oneof`_ ``gop_mode``.
+            vbv_size_bits (int):
+                Optional. Size of the Video Buffering Verifier (VBV) buffer
+                in bits. Must be greater than zero. The default is equal to
+                [bitrate_bps][google.cloud.video.livestream.v1.VideoStream.H265CodecSettings.bitrate_bps].
+            vbv_fullness_bits (int):
+                Optional. Initial fullness of the Video Buffering Verifier
+                (VBV) buffer in bits. Must be greater than zero. The default
+                is equal to 90% of
+                [vbv_size_bits][google.cloud.video.livestream.v1.VideoStream.H265CodecSettings.vbv_size_bits].
+            b_pyramid (bool):
+                Optional. Allow B-pyramid for reference frame selection.
+                This may not be supported on all decoders. The default is
+                ``false``.
+            b_frame_count (int):
+                Optional. The number of consecutive B-frames. Must be
+                greater than or equal to zero. Must be less than
+                [gop_frame_count][google.cloud.video.livestream.v1.VideoStream.H265CodecSettings.gop_frame_count]
+                if set. The default is 0.
+            aq_strength (float):
+                Optional. Specify the intensity of the
+                adaptive quantizer (AQ). Must be between 0 and
+                1, where 0 disables the quantizer and 1
+                maximizes the quantizer. A higher value equals a
+                lower bitrate but smoother image. The default is
+                0.
+        """
+
+        width_pixels: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        height_pixels: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        frame_rate: float = proto.Field(
+            proto.DOUBLE,
+            number=3,
+        )
+        bitrate_bps: int = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        gop_frame_count: int = proto.Field(
+            proto.INT32,
+            number=7,
+            oneof="gop_mode",
+        )
+        gop_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            oneof="gop_mode",
+            message=duration_pb2.Duration,
+        )
+        vbv_size_bits: int = proto.Field(
+            proto.INT32,
+            number=9,
+        )
+        vbv_fullness_bits: int = proto.Field(
+            proto.INT32,
+            number=10,
+        )
+        b_pyramid: bool = proto.Field(
+            proto.BOOL,
+            number=11,
+        )
+        b_frame_count: int = proto.Field(
+            proto.INT32,
+            number=12,
+        )
+        aq_strength: float = proto.Field(
+            proto.DOUBLE,
+            number=13,
+        )
+
     h264: H264CodecSettings = proto.Field(
         proto.MESSAGE,
         number=20,
         oneof="codec_settings",
         message=H264CodecSettings,
+    )
+    h265: H265CodecSettings = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        oneof="codec_settings",
+        message=H265CodecSettings,
     )
 
 
@@ -796,11 +1153,95 @@ class TextStream(proto.Message):
 
             - ``cea608``
             - ``cea708``
+            - ``webvtt``
+        language_code (str):
+            Optional. The BCP-47 language code, such as ``en-US`` or
+            ``sr-Latn``. For more information, see
+            https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+        display_name (str):
+            Optional. The name for this particular text
+            stream that will be added to the HLS/DASH
+            manifest.
+        output_cea_channel (str):
+            Optional. The channel of the closed caption in the output
+            stream. This field should only be set when textstream is
+            used for partner distribution. Must be one of ``CC1``,
+            ``CC2``, ``CC3``, and ``CC4``, if the
+            [codec][google.cloud.video.livestream.v1.TextStream.codec]
+            is ``cea608``; Must be one between ``SERVICE1`` and
+            ``SERVICE63``, if the
+            [codec][google.cloud.video.livestream.v1.TextStream.codec]
+            is ``cea708``.
+        mapping_ (MutableSequence[google.cloud.video.live_stream_v1.types.TextStream.TextMapping]):
+            Optional. The mapping for the input streams
+            and text tracks.
     """
+
+    class TextMapping(proto.Message):
+        r"""The mapping for the input streams and text tracks.
+
+        Attributes:
+            input_key (str):
+                Optional. The ``Channel``
+                [InputAttachment.key][google.cloud.video.livestream.v1.InputAttachment.key]
+                that identifies the input that this text mapping applies to.
+            input_track (int):
+                Optional. The zero-based index of the track
+                in the input stream.
+            input_cea_channel (str):
+                Optional. The channel of the closed caption in the input
+                stream. If this field is set, the output
+                [codec][google.cloud.video.livestream.v1.TextStream.codec]
+                must be ``webvtt``. Must be one of ``CC1``, ``CC2``,
+                ``CC3``, and ``CC4``, if the codec of the input closed
+                caption is ``cea608``; Must be one between ``SERVICE1`` and
+                ``SERVICE64``, if the codec of the input closed caption is
+                ``cea708``.
+            from_language_code (str):
+                Optional. The BCP-47 source language code, such as ``en-US``
+                or ``sr-Latn``. If differ from the textStream's language
+                code, enable translation. For more information on BCP-47
+                language codes, see
+                https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+        """
+
+        input_key: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        input_track: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        input_cea_channel: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        from_language_code: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
 
     codec: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    output_cea_channel: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    mapping_: MutableSequence[TextMapping] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=TextMapping,
     )
 
 

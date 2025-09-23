@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-datacatalog-lineage/#history
+
 ## [0.3.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.13...google-cloud-datacatalog-lineage-v0.3.14) (2025-06-11)
 
 

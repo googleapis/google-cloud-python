@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-gdchardwaremanagement/#history
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.12...google-cloud-gdchardwaremanagement-v0.1.13) (2025-08-29)
 
 

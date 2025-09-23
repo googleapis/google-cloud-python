@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/googleapis-common-protos/#history
+
 ## [1.70.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.69.2...googleapis-common-protos-v1.70.0) (2025-04-12)
 
 

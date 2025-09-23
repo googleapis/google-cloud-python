@@ -21,6 +21,8 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dataplex_v1.types import datascans_common
+
 __protobuf__ = proto.module(
     package="google.cloud.dataplex.v1",
     manifest={
@@ -434,8 +436,9 @@ class JobEvent(proto.Message):
             EXECUTION_TRIGGER_UNSPECIFIED (0):
                 The job execution trigger is unspecified.
             TASK_CONFIG (1):
-                The job was triggered by Dataplex based on
-                trigger spec from task definition.
+                The job was triggered by Dataplex Universal
+                Catalog based on trigger spec from task
+                definition.
             RUN_REQUEST (2):
                 The job was triggered by the explicit call of
                 Task API.
@@ -837,6 +840,9 @@ class DataScanEvent(proto.Message):
             This field is a member of `oneof`_ ``appliedConfigs``.
         post_scan_actions_result (google.cloud.dataplex_v1.types.DataScanEvent.PostScanActionsResult):
             The result of post scan actions.
+        catalog_publishing_status (google.cloud.dataplex_v1.types.DataScanCatalogPublishingStatus):
+            The status of publishing the data scan as
+            Dataplex Universal Catalog metadata.
     """
 
     class ScanType(proto.Enum):
@@ -872,7 +878,7 @@ class DataScanEvent(proto.Message):
             CANCELLED (4):
                 Data scan job was cancelled.
             CREATED (5):
-                Data scan job was createed.
+                Data scan job was created.
         """
         STATE_UNSPECIFIED = 0
         STARTED = 1
@@ -1179,6 +1185,13 @@ class DataScanEvent(proto.Message):
         proto.MESSAGE,
         number=11,
         message=PostScanActionsResult,
+    )
+    catalog_publishing_status: datascans_common.DataScanCatalogPublishingStatus = (
+        proto.Field(
+            proto.MESSAGE,
+            number=13,
+            message=datascans_common.DataScanCatalogPublishingStatus,
+        )
     )
 
 

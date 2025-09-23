@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-vmwareengine/#history
+
 ## [1.8.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.8.2...google-cloud-vmwareengine-v1.8.3) (2025-06-11)
 
 

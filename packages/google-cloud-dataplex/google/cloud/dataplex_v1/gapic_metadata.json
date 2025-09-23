@@ -5,6 +5,250 @@
   "protoPackage": "google.cloud.dataplex.v1",
   "schema": "1.0",
   "services": {
+    "BusinessGlossaryService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BusinessGlossaryServiceClient",
+          "rpcs": {
+            "CreateGlossary": {
+              "methods": [
+                "create_glossary"
+              ]
+            },
+            "CreateGlossaryCategory": {
+              "methods": [
+                "create_glossary_category"
+              ]
+            },
+            "CreateGlossaryTerm": {
+              "methods": [
+                "create_glossary_term"
+              ]
+            },
+            "DeleteGlossary": {
+              "methods": [
+                "delete_glossary"
+              ]
+            },
+            "DeleteGlossaryCategory": {
+              "methods": [
+                "delete_glossary_category"
+              ]
+            },
+            "DeleteGlossaryTerm": {
+              "methods": [
+                "delete_glossary_term"
+              ]
+            },
+            "GetGlossary": {
+              "methods": [
+                "get_glossary"
+              ]
+            },
+            "GetGlossaryCategory": {
+              "methods": [
+                "get_glossary_category"
+              ]
+            },
+            "GetGlossaryTerm": {
+              "methods": [
+                "get_glossary_term"
+              ]
+            },
+            "ListGlossaries": {
+              "methods": [
+                "list_glossaries"
+              ]
+            },
+            "ListGlossaryCategories": {
+              "methods": [
+                "list_glossary_categories"
+              ]
+            },
+            "ListGlossaryTerms": {
+              "methods": [
+                "list_glossary_terms"
+              ]
+            },
+            "UpdateGlossary": {
+              "methods": [
+                "update_glossary"
+              ]
+            },
+            "UpdateGlossaryCategory": {
+              "methods": [
+                "update_glossary_category"
+              ]
+            },
+            "UpdateGlossaryTerm": {
+              "methods": [
+                "update_glossary_term"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BusinessGlossaryServiceAsyncClient",
+          "rpcs": {
+            "CreateGlossary": {
+              "methods": [
+                "create_glossary"
+              ]
+            },
+            "CreateGlossaryCategory": {
+              "methods": [
+                "create_glossary_category"
+              ]
+            },
+            "CreateGlossaryTerm": {
+              "methods": [
+                "create_glossary_term"
+              ]
+            },
+            "DeleteGlossary": {
+              "methods": [
+                "delete_glossary"
+              ]
+            },
+            "DeleteGlossaryCategory": {
+              "methods": [
+                "delete_glossary_category"
+              ]
+            },
+            "DeleteGlossaryTerm": {
+              "methods": [
+                "delete_glossary_term"
+              ]
+            },
+            "GetGlossary": {
+              "methods": [
+                "get_glossary"
+              ]
+            },
+            "GetGlossaryCategory": {
+              "methods": [
+                "get_glossary_category"
+              ]
+            },
+            "GetGlossaryTerm": {
+              "methods": [
+                "get_glossary_term"
+              ]
+            },
+            "ListGlossaries": {
+              "methods": [
+                "list_glossaries"
+              ]
+            },
+            "ListGlossaryCategories": {
+              "methods": [
+                "list_glossary_categories"
+              ]
+            },
+            "ListGlossaryTerms": {
+              "methods": [
+                "list_glossary_terms"
+              ]
+            },
+            "UpdateGlossary": {
+              "methods": [
+                "update_glossary"
+              ]
+            },
+            "UpdateGlossaryCategory": {
+              "methods": [
+                "update_glossary_category"
+              ]
+            },
+            "UpdateGlossaryTerm": {
+              "methods": [
+                "update_glossary_term"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BusinessGlossaryServiceClient",
+          "rpcs": {
+            "CreateGlossary": {
+              "methods": [
+                "create_glossary"
+              ]
+            },
+            "CreateGlossaryCategory": {
+              "methods": [
+                "create_glossary_category"
+              ]
+            },
+            "CreateGlossaryTerm": {
+              "methods": [
+                "create_glossary_term"
+              ]
+            },
+            "DeleteGlossary": {
+              "methods": [
+                "delete_glossary"
+              ]
+            },
+            "DeleteGlossaryCategory": {
+              "methods": [
+                "delete_glossary_category"
+              ]
+            },
+            "DeleteGlossaryTerm": {
+              "methods": [
+                "delete_glossary_term"
+              ]
+            },
+            "GetGlossary": {
+              "methods": [
+                "get_glossary"
+              ]
+            },
+            "GetGlossaryCategory": {
+              "methods": [
+                "get_glossary_category"
+              ]
+            },
+            "GetGlossaryTerm": {
+              "methods": [
+                "get_glossary_term"
+              ]
+            },
+            "ListGlossaries": {
+              "methods": [
+                "list_glossaries"
+              ]
+            },
+            "ListGlossaryCategories": {
+              "methods": [
+                "list_glossary_categories"
+              ]
+            },
+            "ListGlossaryTerms": {
+              "methods": [
+                "list_glossary_terms"
+              ]
+            },
+            "UpdateGlossary": {
+              "methods": [
+                "update_glossary"
+              ]
+            },
+            "UpdateGlossaryCategory": {
+              "methods": [
+                "update_glossary_category"
+              ]
+            },
+            "UpdateGlossaryTerm": {
+              "methods": [
+                "update_glossary_term"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CatalogService": {
       "clients": {
         "grpc": {
@@ -28,6 +272,11 @@
             "CreateEntryGroup": {
               "methods": [
                 "create_entry_group"
+              ]
+            },
+            "CreateEntryLink": {
+              "methods": [
+                "create_entry_link"
               ]
             },
             "CreateEntryType": {
@@ -55,6 +304,11 @@
                 "delete_entry_group"
               ]
             },
+            "DeleteEntryLink": {
+              "methods": [
+                "delete_entry_link"
+              ]
+            },
             "DeleteEntryType": {
               "methods": [
                 "delete_entry_type"
@@ -73,6 +327,11 @@
             "GetEntryGroup": {
               "methods": [
                 "get_entry_group"
+              ]
+            },
+            "GetEntryLink": {
+              "methods": [
+                "get_entry_link"
               ]
             },
             "GetEntryType": {
@@ -165,6 +424,11 @@
                 "create_entry_group"
               ]
             },
+            "CreateEntryLink": {
+              "methods": [
+                "create_entry_link"
+              ]
+            },
             "CreateEntryType": {
               "methods": [
                 "create_entry_type"
@@ -190,6 +454,11 @@
                 "delete_entry_group"
               ]
             },
+            "DeleteEntryLink": {
+              "methods": [
+                "delete_entry_link"
+              ]
+            },
             "DeleteEntryType": {
               "methods": [
                 "delete_entry_type"
@@ -208,6 +477,11 @@
             "GetEntryGroup": {
               "methods": [
                 "get_entry_group"
+              ]
+            },
+            "GetEntryLink": {
+              "methods": [
+                "get_entry_link"
               ]
             },
             "GetEntryType": {
@@ -300,6 +574,11 @@
                 "create_entry_group"
               ]
             },
+            "CreateEntryLink": {
+              "methods": [
+                "create_entry_link"
+              ]
+            },
             "CreateEntryType": {
               "methods": [
                 "create_entry_type"
@@ -325,6 +604,11 @@
                 "delete_entry_group"
               ]
             },
+            "DeleteEntryLink": {
+              "methods": [
+                "delete_entry_link"
+              ]
+            },
             "DeleteEntryType": {
               "methods": [
                 "delete_entry_type"
@@ -343,6 +627,11 @@
             "GetEntryGroup": {
               "methods": [
                 "get_entry_group"
+              ]
+            },
+            "GetEntryLink": {
+              "methods": [
+                "get_entry_link"
               ]
             },
             "GetEntryType": {
