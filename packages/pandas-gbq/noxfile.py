@@ -519,6 +519,7 @@ def core_deps_from_source(session):
             *session.posargs,
         )
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @_calculate_duration
 def cover(session):
