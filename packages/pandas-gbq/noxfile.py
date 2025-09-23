@@ -498,7 +498,7 @@ def core_deps_from_source(session):
     # Print out prerelease package versions.
     session.run("python", "-m", "pip", "freeze")
 
-    # Run all tests, except a few samples tests which require extra dependencies.
+    # Run unit tests only
     session.run(
         "py.test",
         "--quiet",
