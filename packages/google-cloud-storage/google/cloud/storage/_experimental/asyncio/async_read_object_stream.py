@@ -22,7 +22,7 @@ if you want to use these APIs.
 
 """
 
-from typing import Any, Optional
+from typing import Optional
 from google.cloud import _storage_v2
 from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage._experimental.asyncio.async_abstract_object_stream import (
@@ -94,15 +94,42 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         )
 
     async def open(self) -> None:
-        pass
+        """Opens the bidi-gRPC connection to read from the object.
+
+        This method sends an initial request to start the stream and receives
+        the first response containing metadata and a read handle.
+        """
+        await self.socket_like_rpc.open()  # this is actually 1 send
+        response = await self.socket_like_rpc.recv()
+        if self.generation_number is None:
+            self.generation_number = response.metadata.generation
+
+        self.read_handle = response.read_handle
 
     async def close(self) -> None:
-        pass
+        """Closes the bidi-gRPC connection."""
+        await self.socket_like_rpc.close()
 
     async def send(
         self, bidi_read_object_request: _storage_v2.BidiReadObjectRequest
     ) -> None:
-        pass
+        """Sends a request message on the stream.
 
-    async def recv(self) -> Any:
-        pass
+        Args:
+            bidi_read_object_request (:class:`~google.cloud._storage_v2.types.BidiReadObjectRequest`):
+                The request message to send. This is typically used to specify
+                the read offset and limit.
+        """
+        await self.socket_like_rpc.send(bidi_read_object_request)
+
+    async def recv(self) -> _storage_v2.BidiReadObjectResponse:
+        """Receives a response from the stream.
+
+        This method waits for the next message from the server, which could
+        contain object data or metadata.
+
+        Returns:
+            :class:`~google.cloud._storage_v2.types.BidiReadObjectResponse`:
+                The response message from the server.
+        """
+        return await self.socket_like_rpc.recv()
