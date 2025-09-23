@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/pandas-gbq/#history
+
 ## [0.29.2](https://github.com/googleapis/python-bigquery-pandas/compare/v0.29.1...v0.29.2) (2025-07-10)
 
 
