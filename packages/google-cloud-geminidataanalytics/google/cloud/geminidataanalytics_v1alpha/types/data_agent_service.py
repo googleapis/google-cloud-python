@@ -175,10 +175,14 @@ class ListAccessibleDataAgentsRequest(proto.Message):
             CREATOR_ONLY (2):
                 Only agents created by the user calling the
                 API will be returned.
+            NOT_CREATOR_ONLY (3):
+                Only agents not created by the user calling
+                the API will be returned.
         """
         CREATOR_FILTER_UNSPECIFIED = 0
         NONE = 1
         CREATOR_ONLY = 2
+        NOT_CREATOR_ONLY = 3
 
     parent: str = proto.Field(
         proto.STRING,
