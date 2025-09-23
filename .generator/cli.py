@@ -45,7 +45,7 @@ logger = logging.getLogger()
 
 BUILD_REQUEST_FILE = "build-request.json"
 GENERATE_REQUEST_FILE = "generate-request.json"
-CONFIGURE_REQUEST_FILE = "configure-response.json"
+CONFIGURE_REQUEST_FILE = "configure-request.json"
 RELEASE_INIT_REQUEST_FILE = "release-init-request.json"
 STATE_YAML_FILE = "state.yaml"
 
