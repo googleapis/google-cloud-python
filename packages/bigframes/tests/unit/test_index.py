@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
 import pytest
 
 from bigframes.testing import mocks
@@ -38,3 +39,13 @@ def test_index_rename_inplace_returns_none(monkeypatch: pytest.MonkeyPatch):
     # Make sure the linked DataFrame is updated, too.
     assert dataframe.index.name == "my_index_name"
     assert index.name == "my_index_name"
+
+
+def test_index_to_list(monkeypatch: pytest.MonkeyPatch):
+    pd_index = pd.Index([1, 2, 3], name="my_index")
+    df = mocks.create_dataframe(
+        monkeypatch,
+        data={"my_index": [1, 2, 3]},
+    ).set_index("my_index")
+    bf_index = df.index
+    assert bf_index.to_list() == pd_index.to_list()

@@ -638,6 +638,12 @@ def test_index_item_with_empty(session):
         bf_idx_empty.item()
 
 
+def test_index_to_list(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.index.to_list()
+    pd_result = scalars_pandas_df_index.index.to_list()
+    assert bf_result == pd_result
+
+
 @pytest.mark.parametrize(
     ("key", "value"),
     [

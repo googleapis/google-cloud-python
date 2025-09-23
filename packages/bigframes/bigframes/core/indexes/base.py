@@ -740,6 +740,9 @@ class Index(vendored_pandas_index.Index):
 
     __array__ = to_numpy
 
+    def to_list(self, *, allow_large_results: Optional[bool] = None) -> list:
+        return self.to_pandas(allow_large_results=allow_large_results).to_list()
+
     def __len__(self):
         return self.shape[0]
 
