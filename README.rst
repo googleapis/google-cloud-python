@@ -1255,6 +1255,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Location Finder API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-locationfinder>`_
+     - preview
+     - |PyPI-google-cloud-locationfinder|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1569265>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1569265&template=1988535>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Maintenance API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-maintenance-api>`_
      - preview
      - |PyPI-google-cloud-maintenance-api|
@@ -1962,6 +1968,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-maps-fleetengine| image:: https://img.shields.io/pypi/v/google-maps-fleetengine.svg
      :target: https://pypi.org/project/google-maps-fleetengine
+.. |PyPI-google-cloud-locationfinder| image:: https://img.shields.io/pypi/v/google-cloud-locationfinder.svg
+     :target: https://pypi.org/project/google-cloud-locationfinder
 .. |PyPI-google-cloud-maintenance-api| image:: https://img.shields.io/pypi/v/google-cloud-maintenance-api.svg
      :target: https://pypi.org/project/google-cloud-maintenance-api
 .. |PyPI-google-cloud-lustre| image:: https://img.shields.io/pypi/v/google-cloud-lustre.svg
