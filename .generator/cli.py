@@ -307,13 +307,21 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
     """
 
     path_to_library = f"packages/{library_id}"
+    repo_metadata_path = f"{input}/{path_to_library}/.repo-metadata.json"
 
     # We need to create these directories so that we can copy files necessary for post-processing.
-    os.makedirs(f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True)
-    shutil.copy(
-        f"{input}/{path_to_library}/.repo-metadata.json",
-        f"{output}/{path_to_library}/.repo-metadata.json",
+    os.makedirs(
+        f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True
     )
+    # TODO(ohmayr): if `.repo-metadata.json` for a library exists in
+    # ``.librarian/generator-input`, then we override the generated `.repo-metadata.json`
+    # with what we have in `generator-input`. Remove this logic once the
+    # generated `.repo-metadata.json` file is completely backfilled.
+    if os.path.exists(repo_metadata_path):
+        shutil.copy(
+            repo_metadata_path,
+            f"{output}/{path_to_library}/.repo-metadata.json",
+        )
 
     # copy post-procesing files
     for post_processing_file in glob.glob(

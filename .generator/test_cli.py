@@ -724,13 +724,28 @@ def test_invalid_json(mocker):
         _read_json_file("fake/path.json")
 
 
-def test_copy_files_needed_for_post_processing_success(mocker):
+def test_copy_files_needed_for_post_processing_copies_metadata_if_exists(mocker):
+    """Tests that .repo-metadata.json is copied if it exists."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
+    mocker.patch("os.path.exists", return_value=True)
+
     _copy_files_needed_for_post_processing("output", "input", "library_id")
 
-    mock_makedirs.assert_called()
     mock_shutil_copy.assert_called_once()
+    mock_makedirs.assert_called()
+
+
+def test_copy_files_needed_for_post_processing_skips_metadata_if_not_exists(mocker):
+    """Tests that .repo-metadata.json is not copied if it does not exist."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mocker.patch("os.path.exists", return_value=False)
+
+    _copy_files_needed_for_post_processing("output", "input", "library_id")
+
+    mock_shutil_copy.assert_not_called()
+    mock_makedirs.assert_called()
 
 
 def test_clean_up_files_after_post_processing_success(mocker):
