@@ -1975,23 +1975,43 @@ def ai_generate_bool(
     *values: ibis_types.Value, op: ops.AIGenerateBool
 ) -> ibis_types.StructValue:
 
-    prompt: dict[str, ibis_types.Value | str] = {}
-    column_ref_idx = 0
-
-    for idx, elem in enumerate(op.prompt_context):
-        if elem is None:
-            prompt[f"_field_{idx + 1}"] = values[column_ref_idx]
-            column_ref_idx += 1
-        else:
-            prompt[f"_field_{idx + 1}"] = elem
-
     return ai_ops.AIGenerateBool(
-        ibis.struct(prompt),  # type: ignore
+        _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
         op.request_type.upper(),  # type: ignore
         op.model_params,  # type: ignore
     ).to_expr()
+
+
+@scalar_op_compiler.register_nary_op(ops.AIGenerateInt, pass_op=True)
+def ai_generate_int(
+    *values: ibis_types.Value, op: ops.AIGenerateBool
+) -> ibis_types.StructValue:
+
+    return ai_ops.AIGenerateInt(
+        _construct_prompt(values, op.prompt_context),  # type: ignore
+        op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.request_type.upper(),  # type: ignore
+        op.model_params,  # type: ignore
+    ).to_expr()
+
+
+def _construct_prompt(
+    col_refs: tuple[ibis_types.Value], prompt_context: tuple[str | None]
+) -> ibis_types.StructValue:
+    prompt: dict[str, ibis_types.Value | str] = {}
+    column_ref_idx = 0
+
+    for idx, elem in enumerate(prompt_context):
+        if elem is None:
+            prompt[f"_field_{idx + 1}"] = col_refs[column_ref_idx]
+            column_ref_idx += 1
+        else:
+            prompt[f"_field_{idx + 1}"] = elem
+
+    return ibis.struct(prompt)
 
 
 @scalar_op_compiler.register_nary_op(ops.RowKey, pass_op=True)

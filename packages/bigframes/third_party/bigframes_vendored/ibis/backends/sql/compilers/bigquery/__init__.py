@@ -1105,9 +1105,14 @@ class BigQueryCompiler(SQLGlotCompiler):
         return self.agg.string_agg(expr, sep, where=where)
 
     def visit_AIGenerateBool(self, op, **kwargs):
-        func_name = "AI.GENERATE_BOOL"
+        return sge.func("AI.GENERATE_BOOL", *self._compile_ai_args(**kwargs))
 
+    def visit_AIGenerateInt(self, op, **kwargs):
+        return sge.func("AI.GENERATE_INT", *self._compile_ai_args(**kwargs))
+
+    def _compile_ai_args(self, **kwargs):
         args = []
+
         for key, val in kwargs.items():
             if val is None:
                 continue
@@ -1117,7 +1122,7 @@ class BigQueryCompiler(SQLGlotCompiler):
 
             args.append(sge.Kwarg(this=sge.Identifier(this=key), expression=val))
 
-        return sge.func(func_name, *args)
+        return args
 
     def visit_FirstNonNullValue(self, op, *, arg):
         return sge.IgnoreNulls(this=sge.FirstValue(this=arg))

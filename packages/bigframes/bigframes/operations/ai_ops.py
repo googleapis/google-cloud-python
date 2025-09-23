@@ -28,7 +28,6 @@ from bigframes.operations import base_ops
 class AIGenerateBool(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate_bool"
 
-    # None are the placeholders for column references.
     prompt_context: Tuple[str | None, ...]
     connection_id: str
     endpoint: str | None
@@ -40,6 +39,28 @@ class AIGenerateBool(base_ops.NaryOp):
             pa.struct(
                 (
                     pa.field("result", pa.bool_()),
+                    pa.field("full_response", dtypes.JSON_ARROW_TYPE),
+                    pa.field("status", pa.string()),
+                )
+            )
+        )
+
+
+@dataclasses.dataclass(frozen=True)
+class AIGenerateInt(base_ops.NaryOp):
+    name: ClassVar[str] = "ai_generate_int"
+
+    prompt_context: Tuple[str | None, ...]
+    connection_id: str
+    endpoint: str | None
+    request_type: Literal["dedicated", "shared", "unspecified"]
+    model_params: str | None
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return pd.ArrowDtype(
+            pa.struct(
+                (
+                    pa.field("result", pa.int64()),
                     pa.field("full_response", dtypes.JSON_ARROW_TYPE),
                     pa.field("status", pa.string()),
                 )

@@ -13,9 +13,10 @@
 # limitations under the License.
 
 import json
-import sys
 
+from packaging import version
 import pytest
+import sqlglot
 
 from bigframes import dataframe
 from bigframes import operations as ops
@@ -45,14 +46,59 @@ def test_ai_generate_bool(scalar_types_df: dataframe.DataFrame, snapshot):
 def test_ai_generate_bool_with_model_param(
     scalar_types_df: dataframe.DataFrame, snapshot
 ):
-    if sys.version_info < (3, 10):
+    if version.Version(sqlglot.__version__) < version.Version("25.18.0"):
         pytest.skip(
-            "Skip test because SQLGLot cannot compile model params to JSON at this env."
+            "Skip test because SQLGLot cannot compile model params to JSON at this version."
         )
 
     col_name = "string_col"
 
     op = ops.AIGenerateBool(
+        prompt_context=(None, " is the same as ", None),
+        connection_id="test_connection_id",
+        endpoint=None,
+        request_type="shared",
+        model_params=json.dumps(dict()),
+    )
+
+    sql = utils._apply_unary_ops(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_generate_int(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIGenerateInt(
+        # The prompt does not make semantic sense but we only care about syntax correctness.
+        prompt_context=(None, " is the same as ", None),
+        connection_id="test_connection_id",
+        endpoint="gemini-2.5-flash",
+        request_type="shared",
+        model_params=None,
+    )
+
+    sql = utils._apply_unary_ops(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_generate_int_with_model_param(
+    scalar_types_df: dataframe.DataFrame, snapshot
+):
+    if version.Version(sqlglot.__version__) < version.Version("25.18.0"):
+        pytest.skip(
+            "Skip test because SQLGLot cannot compile model params to JSON at this version."
+        )
+
+    col_name = "string_col"
+
+    op = ops.AIGenerateInt(
+        # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
         connection_id="test_connection_id",
         endpoint=None,

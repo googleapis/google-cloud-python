@@ -30,3 +30,22 @@ class AIGenerateBool(Value):
         return dt.Struct.from_tuples(
             (("result", dt.bool), ("full_resposne", dt.string), ("status", dt.string))
         )
+
+
+@public
+class AIGenerateInt(Value):
+    """Generate integers based on the prompt"""
+
+    prompt: Value
+    connection_id: Value[dt.String]
+    endpoint: Optional[Value[dt.String]]
+    request_type: Value[dt.String]
+    model_params: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.Struct.from_tuples(
+            (("result", dt.int64), ("full_resposne", dt.string), ("status", dt.string))
+        )
