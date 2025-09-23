@@ -44,7 +44,6 @@ from cli import (
     _get_library_dist_name,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
-    _get_library_version,
     _get_new_library_config,
     _get_previous_version,
     _add_new_library_version,
@@ -322,7 +321,6 @@ def test_get_new_library_config_empty_input():
 
 def test_prepare_new_library_config(mocker):
     """Tests the preparation of a new library's configuration."""
-    mocker.patch("cli._get_library_version", return_value="1.2.3")
     raw_config = {
         "id": "google-cloud-language",
         "apis": [{"path": "google/cloud/language/v1", "status": "new"}],
@@ -341,12 +339,11 @@ def test_prepare_new_library_config(mocker):
     assert "packages/google-cloud-language/CHANGELOG.md" in prepared_config["preserve_regex"]
     assert prepared_config["remove_regex"] == ["packages/google-cloud-language"]
     assert prepared_config["tag_format"] == "{{id}}-v{{version}}"
-    assert prepared_config["version"] == "1.2.3"
+    assert prepared_config["version"] == "0.0.0"
 
 
 def test_prepare_new_library_config_preserves_existing_values(mocker):
     """Tests that existing values in the config are not overwritten."""
-    mocker.patch("cli._get_library_version", return_value="1.2.3")
     raw_config = {
         "id": "google-cloud-language",
         "apis": [{"path": "google/cloud/language/v1", "status": "new"}],
@@ -369,57 +366,18 @@ def test_prepare_new_library_config_preserves_existing_values(mocker):
     assert prepared_config["version"] == "4.5.6"
 
 
-def test_get_library_version_success(mocker):
-    """Tests successful extraction of a version from a file."""
-    mock_rglob = mocker.patch(
-        "pathlib.Path.rglob", return_value=[pathlib.Path("repo/gapic_version.py")]
-    )
-    mocker.patch("cli._read_text_file", return_value='__version__ = "1.2.3"')
-    version = _get_library_version("google-cloud-language", "repo")
-    assert version == "1.2.3"
-    mock_rglob.assert_called_once_with("**/gapic_version.py")
-
-
-def test_get_library_version_no_file(mocker):
-    """Tests failure when gapic_version.py is not found."""
-    mocker.patch("pathlib.Path.rglob", return_value=[])
-    with pytest.raises(ValueError, match="Could not find gapic_version.py"):
-        _get_library_version("google-cloud-language", "repo")
-
-
-def test_get_library_version_no_version_in_file(mocker):
-    """Tests failure when the version string is not in the file."""
-    mocker.patch(
-        "pathlib.Path.rglob", return_value=[pathlib.Path("repo/gapic_version.py")]
-    )
-    mocker.patch("cli._read_text_file", return_value="some_other_content = 'foo'")
-    with pytest.raises(ValueError, match="Could not extract version"):
-        _get_library_version("google-cloud-language", "repo")
-
-
 def test_add_new_library_version_populates_version(mocker):
     """Tests that the version is populated if it's missing."""
-    mock_get_version = mocker.patch("cli._get_library_version", return_value="1.2.3")
     config = {"version": ""}
-    _add_new_library_version(config, "google-cloud-language", "repo")
-    assert config["version"] == "1.2.3"
-    mock_get_version.assert_called_once_with("google-cloud-language", "repo")
+    _add_new_library_version(config)
+    assert config["version"] == "0.0.0"
 
 
 def test_add_new_library_version_preserves_version():
     """Tests that an existing version is preserved."""
     config = {"version": "4.5.6"}
-    _add_new_library_version(config, "google-cloud-language", "repo")
+    _add_new_library_version(config)
     assert config["version"] == "4.5.6"
-
-
-def test_add_new_library_version_populates_missing_key(mocker):
-    """Tests that the version is populated if the key is missing."""
-    mock_get_version = mocker.patch("cli._get_library_version", return_value="1.2.3")
-    config = {}  # No 'version' key
-    _add_new_library_version(config, "google-cloud-language", "repo")
-    assert config["version"] == "1.2.3"
-    mock_get_version.assert_called_once_with("google-cloud-language", "repo")
 
 
 def test_get_library_id_success():
