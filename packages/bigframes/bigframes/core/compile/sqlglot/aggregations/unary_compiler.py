@@ -56,6 +56,18 @@ def _(
     return apply_window_if_present(sge.func("MAX", column.expr), window)
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.MedianOp)
+def _(
+    op: agg_ops.MedianOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    approx_quantiles = sge.func("APPROX_QUANTILES", column.expr, sge.convert(2))
+    return sge.Bracket(
+        this=approx_quantiles, expressions=[sge.func("OFFSET", sge.convert(1))]
+    )
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.MinOp)
 def _(
     op: agg_ops.MinOp,

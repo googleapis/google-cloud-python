@@ -1919,10 +1919,22 @@ def test_mean(scalars_dfs):
     assert math.isclose(pd_result, bf_result)
 
 
-def test_median(scalars_dfs):
+@pytest.mark.parametrize(
+    ("col_name"),
+    [
+        "int64_col",
+        # Non-numeric column
+        "bytes_col",
+        "date_col",
+        "datetime_col",
+        "time_col",
+        "timestamp_col",
+        "string_col",
+    ],
+)
+def test_median(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
-    col_name = "int64_col"
-    bf_result = scalars_df[col_name].median()
+    bf_result = scalars_df[col_name].median(exact=False)
     pd_max = scalars_pandas_df[col_name].max()
     pd_min = scalars_pandas_df[col_name].min()
     # Median is approximate, so just check for plausibility.
@@ -1932,7 +1944,7 @@ def test_median(scalars_dfs):
 def test_median_exact(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_col"
-    bf_result = scalars_df[col_name].median(exact=True)
+    bf_result = scalars_df[col_name].median()
     pd_result = scalars_pandas_df[col_name].median()
     assert math.isclose(pd_result, bf_result)
 

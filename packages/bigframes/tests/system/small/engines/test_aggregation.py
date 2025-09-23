@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud import bigquery
 import pytest
 
 from bigframes.core import agg_expressions, array_value, expression, identifiers, nodes
 import bigframes.operations.aggregations as agg_ops
-from bigframes.session import polars_executor
+from bigframes.session import direct_gbq_execution, polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
 
 pytest.importorskip("polars")
@@ -82,6 +83,21 @@ def test_engines_unary_aggregates(
 ):
     node = apply_agg_to_all_valid(scalars_array_value, op).node
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
+
+
+def test_sql_engines_median_op_aggregates(
+    scalars_array_value: array_value.ArrayValue,
+    bigquery_client: bigquery.Client,
+):
+    node = apply_agg_to_all_valid(
+        scalars_array_value,
+        agg_ops.MedianOp(),
+    ).node
+    left_engine = direct_gbq_execution.DirectGbqExecutor(bigquery_client)
+    right_engine = direct_gbq_execution.DirectGbqExecutor(
+        bigquery_client, compiler="sqlglot"
+    )
+    assert_equivalence_execution(node, left_engine, right_engine)
 
 
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)

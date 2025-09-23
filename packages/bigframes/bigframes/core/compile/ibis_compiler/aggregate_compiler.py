@@ -175,15 +175,11 @@ def _(
 
 
 @compile_unary_agg.register
-@numeric_op
 def _(
     op: agg_ops.MedianOp,
     column: ibis_types.NumericColumn,
     window=None,
 ) -> ibis_types.NumericValue:
-    # TODO(swast): Allow switching between exact and approximate median.
-    # For now, the best we can do is an approximate median when we're doing
-    # an aggregation, as PERCENTILE_CONT is only an analytic function.
     return cast(ibis_types.NumericValue, column.approx_median())
 
 
