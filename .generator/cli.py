@@ -186,6 +186,7 @@ def _get_new_library_config(request_data: Dict) -> Dict:
                 return library_config
     return {}
 
+
 def _get_library_version(library_id: str, repo: str) -> str:
     """Gets the library version from its gapic_version.py file.
 
@@ -218,7 +219,7 @@ def _add_new_library_version(
         library_id(str): The id of the library.
         repo(str): The path to the repository.
     """
-    if len(library_config["version"]) == 0:
+    if "version" not in library_config or not library_config["version"]:
         library_config["version"] = _get_library_version(library_id, repo)
 
 
