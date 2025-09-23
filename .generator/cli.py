@@ -186,14 +186,50 @@ def _get_new_library_config(request_data: Dict) -> Dict:
                 return library_config
     return {}
 
+def _get_library_version(library_id: str, repo: str) -> str:
+    """Gets the library version from its gapic_version.py file.
 
-def _prepare_new_library_config(library_config: Dict) -> Dict:
+    Args:
+        library_id(str): The id of the library.
+        repo(str): The path to the repository.
+
+    Returns:
+        str: The version of the library.
+    """
+    library_path = Path(f"{repo}/packages/{library_id}")
+    gapic_version_files = list(library_path.rglob("**/gapic_version.py"))
+    if not gapic_version_files:
+        raise ValueError(f"Could not find gapic_version.py for {library_id}")
+
+    content = _read_text_file(gapic_version_files[0])
+    match = re.search(r"__version__\s*=\s*[\"']([^\"']+)[\"']", content)
+    if not match:
+        raise ValueError(f"Could not extract version from {gapic_version_files[0]}")
+    return match.group(1)
+
+
+def _add_new_library_version(
+    library_config: Dict, library_id: str, repo: str
+) -> None:
+    """Adds the library version to the configuration if it's not present.
+
+    Args:
+        library_config(Dict): The library configuration.
+        library_id(str): The id of the library.
+        repo(str): The path to the repository.
+    """
+    if len(library_config["version"]) == 0:
+        library_config["version"] = _get_library_version(library_id, repo)
+
+
+def _prepare_new_library_config(library_config: Dict, repo: str) -> Dict:
     """
     Prepares the new library's configuration by removing temporary keys and
     adding default values.
 
     Args:
         library_config (Dict): The raw library configuration.
+        repo (str): The path to the repository.
 
     Returns:
         Dict: The prepared library configuration.
@@ -209,6 +245,7 @@ def _prepare_new_library_config(library_config: Dict) -> Dict:
     _add_new_library_preserve_regex(library_config, library_id)
     _add_new_library_remove_regex(library_config, library_id)
     _add_new_library_tag_format(library_config)
+    _add_new_library_version(library_config, library_id, repo)
 
     return library_config
 
@@ -246,7 +283,7 @@ def handle_configure(
         # configure-request.json contains the library definitions.
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
         new_library_config = _get_new_library_config(request_data)
-        prepared_config = _prepare_new_library_config(new_library_config)
+        prepared_config = _prepare_new_library_config(new_library_config, repo)
 
         # Write the new library configuration to configure-response.json.
         _write_json_file(f"{librarian}/configure-response.json", prepared_config)
