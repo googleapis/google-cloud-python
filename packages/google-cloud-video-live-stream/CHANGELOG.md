@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-video-live-stream/#history
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.12.0...google-cloud-video-live-stream-v1.13.0) (2025-09-23)
+
+
+### Documentation
+
+* [google-cloud-video-live-stream] Update requirements of resource ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+
+
+### Features
+
+* [google-cloud-video-live-stream] Added H.265 (HEVC) codec support ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added UHD (4k) resolution support ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added Auto Transcription support ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added PreviewInput method used ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+* [google-cloud-video-live-stream] Added UpdateEncryptions event to ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.11.1...google-cloud-video-live-stream-v1.12.0) (2025-05-15)
 
 
