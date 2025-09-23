@@ -2,7 +2,7 @@ Please refer to each API's `CHANGELOG.md` file under the `packages/` directory
 
 Changelogs
 -----
-- [google-ads-admanager==0.3.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-admanager/CHANGELOG.md)
+- [google-ads-admanager==0.4.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-admanager/CHANGELOG.md)
 - [google-ads-marketingplatform-admin==0.1.6](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-marketingplatform-admin/CHANGELOG.md)
 - [google-ai-generativelanguage==0.6.18](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage/CHANGELOG.md)
 - [google-analytics-admin==0.24.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-analytics-admin/CHANGELOG.md)
@@ -93,7 +93,7 @@ Changelogs
 - [google-cloud-enterpriseknowledgegraph==0.3.17](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-enterpriseknowledgegraph/CHANGELOG.md)
 - [google-cloud-essential-contacts==1.10.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-essential-contacts/CHANGELOG.md)
 - [google-cloud-eventarc-publishing==0.6.19](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc-publishing/CHANGELOG.md)
-- [google-cloud-eventarc==1.15.3](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc/CHANGELOG.md)
+- [google-cloud-eventarc==1.16.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc/CHANGELOG.md)
 - [google-cloud-filestore==1.13.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-filestore/CHANGELOG.md)
 - [google-cloud-financialservices==0.1.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-financialservices/CHANGELOG.md)
 - [google-cloud-functions==1.20.4](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-functions/CHANGELOG.md)
@@ -184,7 +184,7 @@ Changelogs
 - [google-cloud-tpu==1.23.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-tpu/CHANGELOG.md)
 - [google-cloud-trace==1.16.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-trace/CHANGELOG.md)
 - [google-cloud-translate==3.21.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-translate/CHANGELOG.md)
-- [google-cloud-video-live-stream==1.12.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-live-stream/CHANGELOG.md)
+- [google-cloud-video-live-stream==1.13.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-live-stream/CHANGELOG.md)
 - [google-cloud-video-stitcher==0.7.18](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-stitcher/CHANGELOG.md)
 - [google-cloud-video-transcoder==1.16.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-transcoder/CHANGELOG.md)
 - [google-cloud-videointelligence==2.16.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-videointelligence/CHANGELOG.md)
