@@ -114,31 +114,103 @@ def _write_json_file(path: str, updated_content: Dict):
     with open(path, "w") as f:
         json.dump(updated_content, f, indent=2)
         f.write("\n")
- 
+
+def _add_new_library_source_roots(library_config: Dict, library_id: str) -> None:
+    """Adds the default source_roots to the library configuration if not present.
+
+    Args:
+        library_config(Dict): The library configuration.
+        library_id(str): The id of the library.
+    """
+    if library_config["source_roots"] is None:
+        library_config["source_roots"] = [f"packages/{library_id}"]
+
+
+def _add_new_library_preserve_regex(library_config: Dict, library_id: str) -> None:
+    """Adds the default preserve_regex to the library configuration if not present.
+
+    Args:
+        library_config(Dict): The library configuration.
+        library_id(str): The id of the library.
+    """
+    if library_config["preserve_regex"] is None:
+        library_config["preserve_regex"] = [
+            f"packages/{library_id}/CHANGELOG.md",
+            "docs/CHANGELOG.md",
+            "docs/README.rst",
+            "samples/README.txt",
+            "tar.gz",
+            "gapic_version.py",
+            "scripts/client-post-processing",
+            "samples/snippets/README.rst",
+            "tests/system",
+        ]
+
+
+def _add_new_library_remove_regex(library_config: Dict, library_id: str) -> None:
+    """Adds the default remove_regex to the library configuration if not present.
+
+    Args:
+        library_config(Dict): The library configuration.
+        library_id(str): The id of the library.
+    """
+    if library_config["remove_regex"] is None:
+        library_config["remove_regex"] = [f"packages/{library_id}"]
+
+
+def _add_new_library_tag_format(library_config: Dict) -> None:
+    """Adds the default tag_format to the library configuration if not present.
+
+    Args:
+        library_config(Dict): The library configuration.
+    """
+    if "tag_format" not in library_config:
+        library_config["tag_format"] = "{{id}}-v{{version}}"
+
+
 def _get_new_library_config(request_data: Dict) -> Dict:
-    """Returns the configuration for a new library.
+    """Finds and returns the configuration for a new library.
 
     Args:
         request_data(Dict): The request data from which to extract the new
         library config.
 
     Returns:
-        Dict: The configuration of a new library.
+        Dict: The unmodified configuration of a new library, or an empty
+        dictionary if not found.
     """
-    new_library_config = {}
     for library_config in request_data.get("libraries", []):
         all_apis = library_config.get("apis", [])
         for api in all_apis:
             if api.get("status") == "new":
-                new_library_config = library_config
-                break
-    
+                return library_config
+    return {}
+
+
+def _prepare_new_library_config(library_config: Dict) -> Dict:
+    """
+    Prepares the new library's configuration by removing temporary keys and
+    adding default values.
+
+    Args:
+        library_config (Dict): The raw library configuration.
+
+    Returns:
+        Dict: The prepared library configuration.
+    """
     # remove status key from new library config.
-    all_apis = new_library_config.get("apis", [])
+    all_apis = library_config.get("apis", [])
     for api in all_apis:
-        del api["status"]
-    
-    return new_library_config
+        if "status" in api:
+            del api["status"]
+
+    library_id = _get_library_id(library_config)
+    _add_new_library_source_roots(library_config, library_id)
+    _add_new_library_preserve_regex(library_config, library_id)
+    _add_new_library_remove_regex(library_config, library_id)
+    _add_new_library_tag_format(library_config)
+
+    return library_config
 
 
 def handle_configure(
@@ -174,9 +246,10 @@ def handle_configure(
         # configure-request.json contains the library definitions.
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
         new_library_config = _get_new_library_config(request_data)
+        prepared_config = _prepare_new_library_config(new_library_config)
 
         # Write the new library configuration to configure-response.json.
-        _write_json_file(f"{librarian}/configure-response.json", new_library_config)
+        _write_json_file(f"{librarian}/configure-response.json", prepared_config)
 
     except Exception as e:
         raise ValueError("Configuring a new library failed.") from e
