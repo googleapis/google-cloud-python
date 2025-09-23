@@ -566,47 +566,13 @@ replacements:
       packages/google-cloud-capacityplanner/google/cloud/capacityplanner_v1beta/types/usage_service.py,
     ]
     before: |
-      The format is:
-      \
-      \                projects/{project}/locations/{location} or
-      \            organizations/{organization}/locations/{location}
-      \            or     folders/{folder}/locations/{location}
+      The format[\s]+is:\n
+      \            [\s]+projects/\{project\}/locations/\{location\} or
+      \            organizations/\{organization\}/locations/\{location\}
+      \            or[\s]+folders/\{folder\}/locations/\{location\}
     after: |
-      The format is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
-    count: 1
-  - paths: [
-      packages/google-cloud-capacityplanner/google/cloud/capacityplanner_v1beta/types/usage_service.py,
-    ]
-    before: |
-      The format is:
-      \
-      \            projects/{project}/locations/{location} or
-      \            organizations/{organization}/locations/{location}
-      \            or folders/{folder}/locations/{location}
-    after: |
-      The format is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
-    count: 2
-  - paths: [
-      packages/google-cloud-capacityplanner/google/cloud/capacityplanner_v1beta/types/usage_service.py,
-    ]
-    before: |
-      The format is:
-      \
-      \               projects/{project}/locations/{location} or
-      \            organizations/{organization}/locations/{location}
-      \            or    folders/{folder}/locations/{location}
-    after: |
-      The format is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
-    count: 2
-  - paths: [
-      packages/google-cloud-capacityplanner/google/cloud/capacityplanner_v1beta/types/usage_service.py,
-    ]
-    before: |
-      is:
-      \
-      \               projects/{project}/locations/{location} or
-      \            organizations/{organization}/locations/{location}
-      \            or    folders/{folder}/locations/{location}
-    after: |
-      is: projects/{project}/locations/{location} or organizations/{organization}/locations/{location} or folders/{folder}/locations/{location}
-    count: 1
+      The format is:\n
+                  projects/{project}/locations/{location} or
+                  organizations/{organization}/locations/{location}
+                  or folders/{folder}/locations/{location}
+    count: 4
