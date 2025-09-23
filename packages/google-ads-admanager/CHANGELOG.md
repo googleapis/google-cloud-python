@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-ads-admanager/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.3.0...google-ads-admanager-v0.4.0) (2025-09-23)
+
+
+### Bug Fixes
+
+* Moved Company enums to a separate file (#14455) ([f9fc5fccd48d87af3edb9668e5e962d097457d58](https://github.com/googleapis/google-cloud-python/commit/f9fc5fccd48d87af3edb9668e5e962d097457d58))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.2.6...google-ads-admanager-v0.3.0) (2025-07-02)
 
 
