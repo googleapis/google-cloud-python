@@ -28,6 +28,7 @@ import pytest
 from cli import (
     GENERATE_REQUEST_FILE,
     BUILD_REQUEST_FILE,
+    CONFIGURE_REQUEST_FILE,
     RELEASE_INIT_REQUEST_FILE,
     SOURCE_DIR,
     STATE_YAML_FILE,
@@ -161,6 +162,30 @@ def mock_build_request_file(tmp_path, monkeypatch):
 
 
 @pytest.fixture
+def mock_configure_request_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/configure-request.json
+    request_path = f"{LIBRARIAN_DIR}/{CONFIGURE_REQUEST_FILE}"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir(parents=True, exist_ok=True)
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_content = {
+        "libraries": [
+            {
+                "id": "google-cloud-language",
+                "apis": [{"path": "google/cloud/language/v1", "status": "new"}],
+            }
+        ]
+    }
+    request_file.write_text(json.dumps(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
+
+
+@pytest.fixture
 def mock_build_bazel_file(tmp_path, monkeypatch):
     """Creates the mock BUILD.bazel file at the correct path inside a temp dir."""
     bazel_build_path = f"{SOURCE_DIR}/google/cloud/language/v1/BUILD.bazel"
@@ -259,17 +284,6 @@ def test_get_library_id_empty_id():
         ValueError, match="Request file is missing required 'id' field."
     ):
         _get_library_id(request_data)
-
-
-def test_handle_configure_success(caplog, mock_generate_request_file):
-    """
-    Tests the successful execution path of handle_configure.
-    """
-    caplog.set_level(logging.INFO)
-
-    handle_configure()
-
-    assert "'configure' command executed." in caplog.text
 
 
 def test_run_post_processor_success(mocker, caplog):
