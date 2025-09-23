@@ -498,16 +498,26 @@ def core_deps_from_source(session):
     # Print out prerelease package versions.
     session.run("python", "-m", "pip", "freeze")
 
-    # Run unit tests only
+    # Run unit tests
     session.run(
         "py.test",
         "--quiet",
         "-W default::PendingDeprecationWarning",
-        f"--junitxml=prerelease_unit_{session.python}_sponge_log.xml",
+        f"--junitxml=core_deps_from_source_unit_{session.python}_sponge_log.xml",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
 
+    # Skip system tests when running in Github Actions since there are no credentials
+    if os.environ.get("GITHUB_ACTIONS", "false") == "false":
+        session.run(
+            "py.test",
+            "--quiet",
+            "-W default::PendingDeprecationWarning",
+            f"--junitxml=core_deps_from_source_system_{session.python}_sponge_log.xml",
+            os.path.join("tests", "system"),
+            *session.posargs,
+        )
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @_calculate_duration
