@@ -19,6 +19,8 @@ packages_to_onboard: [
   "google-ai-generativelanguage",
   "google-analytics-admin",
   "google-analytics-data",
+  "google-apps-card",
+  "google-apps-chat",
   "google-cloud-dlp",
   "google-cloud-eventarc",
   "google-cloud-video-live-stream",
