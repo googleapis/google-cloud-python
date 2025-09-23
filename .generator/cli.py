@@ -933,6 +933,7 @@ def _process_changelog(
     type_key = "type"
     source_commit_hash_key = "source_commit_hash"
     subject_key = "subject"
+    body_key = "body"
     library_changes.sort(key=lambda x: x[type_key])
     grouped_changes = itertools.groupby(library_changes, key=lambda x: x[type_key])
 
@@ -948,7 +949,7 @@ def _process_changelog(
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
                 commit_link = f"([{change[source_commit_hash_key]}]({_REPO_URL}/commit/{change[source_commit_hash_key]}))"
-                entry_parts.append(f"* {change[subject_key]} {commit_link}")
+                entry_parts.append(f"* {change[subject_key]} {change[body_key]} {commit_link}")
 
     new_entry_text = "\n".join(entry_parts)
     anchor_pattern = re.compile(
