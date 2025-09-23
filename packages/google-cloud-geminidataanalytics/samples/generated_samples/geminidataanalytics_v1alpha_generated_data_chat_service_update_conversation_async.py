@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for RetrieveBigQueryRecentRelevantTables
+# Snippet for UpdateConversation
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-geminidataanalytics
 
 
-# [START geminidataanalytics_v1alpha_generated_ContextRetrievalService_RetrieveBigQueryRecentRelevantTables_async]
+# [START geminidataanalytics_v1alpha_generated_DataChatService_UpdateConversation_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,22 @@
 from google.cloud import geminidataanalytics_v1alpha
 
 
-async def sample_retrieve_big_query_recent_relevant_tables():
+async def sample_update_conversation():
     # Create a client
-    client = geminidataanalytics_v1alpha.ContextRetrievalServiceAsyncClient()
+    client = geminidataanalytics_v1alpha.DataChatServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = geminidataanalytics_v1alpha.RetrieveBigQueryRecentRelevantTablesRequest(
-        parent="parent_value",
+    conversation = geminidataanalytics_v1alpha.Conversation()
+    conversation.agents = ['agents_value1', 'agents_value2']
+
+    request = geminidataanalytics_v1alpha.UpdateConversationRequest(
+        conversation=conversation,
     )
 
     # Make the request
-    response = await client.retrieve_big_query_recent_relevant_tables(request=request)
+    response = await client.update_conversation(request=request)
 
     # Handle the response
     print(response)
 
-# [END geminidataanalytics_v1alpha_generated_ContextRetrievalService_RetrieveBigQueryRecentRelevantTables_async]
+# [END geminidataanalytics_v1alpha_generated_DataChatService_UpdateConversation_async]
