@@ -81,7 +81,7 @@ _MOCK_LIBRARY_CHANGES = [
     {
         "type": "fix",
         "subject": "some fix",
-        "body": "",
+        "body": "some body",
         "piper_cl_number": "786353208",
         "source_commit_hash": "1231532e7d19c8d71709ec3b502e5d81340fb661",
     },
@@ -304,7 +304,10 @@ def test_get_new_library_config_not_found():
     """Tests that an empty dictionary is returned when no new library is found."""
     request_data = {
         "libraries": [
-            {"id": "existing-library", "apis": [{"path": "path/v1", "status": "existing"}]},
+            {
+                "id": "existing-library",
+                "apis": [{"path": "path/v1", "status": "existing"}],
+            },
         ]
     }
     config = _get_new_library_config(request_data)
@@ -333,7 +336,10 @@ def test_prepare_new_library_config():
     assert "status" not in prepared_config["apis"][0]
     # Check that defaults are added
     assert prepared_config["source_roots"] == ["packages/google-cloud-language"]
-    assert "packages/google-cloud-language/CHANGELOG.md" in prepared_config["preserve_regex"]
+    assert (
+        "packages/google-cloud-language/CHANGELOG.md"
+        in prepared_config["preserve_regex"]
+    )
     assert prepared_config["remove_regex"] == ["packages/google-cloud-language"]
     assert prepared_config["tag_format"] == "{{id}}-v{{version}}"
 
@@ -957,12 +963,12 @@ def test_process_changelog_success():
     expected_result = f"""# Changelog\n[PyPI History][1]\n[1]: https://pypi.org/project/google-cloud-language/#history\n
 ## [1.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.2...google-cloud-language-v1.2.3) ({current_date})\n\n
 ### Documentation\n
-* fix typo in BranchRule comment ([9461532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/9461532e7d19c8d71709ec3b502e5d81340fb661))\n\n
+* fix typo in BranchRule comment  ([9461532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/9461532e7d19c8d71709ec3b502e5d81340fb661))\n\n
 ### Features\n
-* add new UpdateRepository API ([9461532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/9461532e7d19c8d71709ec3b502e5d81340fb661))\n\n
+* add new UpdateRepository API This adds the ability to update a repository's properties. ([9461532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/9461532e7d19c8d71709ec3b502e5d81340fb661))\n\n
 ### Bug Fixes\n
-* some fix ([1231532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/1231532e7d19c8d71709ec3b502e5d81340fb661))
-* another fix ([1241532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/1241532e7d19c8d71709ec3b502e5d81340fb661))\n
+* some fix some body ([1231532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/1231532e7d19c8d71709ec3b502e5d81340fb661))
+* another fix  ([1241532e7d19c8d71709ec3b502e5d81340fb661](https://github.com/googleapis/google-cloud-python/commit/1241532e7d19c8d71709ec3b502e5d81340fb661))\n
 ## [1.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v1.2.1...google-cloud-language-v1.2.2) (2025-06-11)"""
     version = "1.2.3"
     previous_version = "1.2.2"
