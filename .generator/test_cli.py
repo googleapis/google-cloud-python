@@ -44,6 +44,7 @@ from cli import (
     _get_library_dist_name,
     _get_library_id,
     _get_libraries_to_prepare_for_release,
+    _get_new_library_config,
     _get_previous_version,
     _process_changelog,
     _process_version_file,
@@ -162,15 +163,9 @@ def mock_build_request_file(tmp_path, monkeypatch):
 
 
 @pytest.fixture
-def mock_configure_request_file(tmp_path, monkeypatch):
-    """Creates the mock request file at the correct path inside a temp dir."""
-    # Create the path as expected by the script: .librarian/configure-request.json
-    request_path = f"{LIBRARIAN_DIR}/{CONFIGURE_REQUEST_FILE}"
-    request_dir = tmp_path / os.path.dirname(request_path)
-    request_dir.mkdir(parents=True, exist_ok=True)
-    request_file = request_dir / os.path.basename(request_path)
-
-    request_content = {
+def mock_configure_request_data():
+    """Returns mock data for configure-request.json."""
+    return {
         "libraries": [
             {
                 "id": "google-cloud-language",
@@ -178,7 +173,18 @@ def mock_configure_request_file(tmp_path, monkeypatch):
             }
         ]
     }
-    request_file.write_text(json.dumps(request_content))
+
+
+@pytest.fixture
+def mock_configure_request_file(tmp_path, monkeypatch, mock_configure_request_data):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/configure-request.json
+    request_path = f"{LIBRARIAN_DIR}/{CONFIGURE_REQUEST_FILE}"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir(parents=True, exist_ok=True)
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_file.write_text(json.dumps(mock_configure_request_data))
 
     # Change the current working directory to the temp path for the test.
     monkeypatch.chdir(tmp_path)
@@ -259,6 +265,52 @@ def mock_state_file(tmp_path, monkeypatch):
     # Change the current working directory to the temp path for the test.
     monkeypatch.chdir(tmp_path)
     return request_file
+
+
+def test_handle_configure(mock_configure_request_file, mocker):
+    """Tests the successful execution path of handle_configure."""
+    mock_write_json = mocker.patch("cli._write_json_file")
+
+    handle_configure()
+
+    # Verify that the correct configuration is written to the response file.
+    expected_config = {
+        "id": "google-cloud-language",
+        "apis": [{"path": "google/cloud/language/v1"}],
+    }
+    mock_write_json.assert_called_once_with(
+        f"{LIBRARIAN_DIR}/configure-response.json", expected_config
+    )
+
+
+def test_handle_configure_failure(mocker):
+    """Tests that handle_configure raises ValueError on failure."""
+    with pytest.raises(ValueError, match="Configuring a new library failed."):
+        handle_configure()
+
+
+def test_get_new_library_config_new_library_found(mock_configure_request_data):
+    """Tests that the new library configuration is returned when found."""
+    config = _get_new_library_config(mock_configure_request_data)
+    assert config["id"] == "google-cloud-language"
+    assert "status" not in config["apis"][0]
+
+
+def test_get_new_library_config_no_new_library():
+    """Tests that an empty dictionary is returned when no new library is found."""
+    request_data = {
+        "libraries": [
+            {"id": "existing-library", "apis": [{"path": "path/v1", "status": "existing"}]},
+        ]
+    }
+    config = _get_new_library_config(request_data)
+    assert config == {}
+
+
+def test_get_new_library_config_empty_input():
+    """Tests that an empty dictionary is returned for empty input."""
+    config = _get_new_library_config({})
+    assert config == {}
 
 
 def test_get_library_id_success():

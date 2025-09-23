@@ -114,6 +114,31 @@ def _write_json_file(path: str, updated_content: Dict):
     with open(path, "w") as f:
         json.dump(updated_content, f, indent=2)
         f.write("\n")
+ 
+def _get_new_library_config(request_data: Dict) -> Dict:
+    """Returns the configuration for a new library.
+
+    Args:
+        request_data(Dict): The request data from which to extract the new
+        library config.
+
+    Returns:
+        Dict: The configuration of a new library.
+    """
+    new_library_config = {}
+    for library_config in request_data.get("libraries", []):
+        all_apis = library_config.get("apis", [])
+        for api in all_apis:
+            if api.get("status") == "new":
+                new_library_config = library_config
+                break
+    
+    # remove status key from new library config.
+    all_apis = new_library_config.get("apis", [])
+    for api in all_apis:
+        del api["status"]
+    
+    return new_library_config
 
 
 def handle_configure(
@@ -148,22 +173,10 @@ def handle_configure(
     try:
         # configure-request.json contains the library definitions.
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
-        for library_config in request_data.get("libraries", []):
-            is_new_library_or_api = False
-            if "apis" in library_config:
-                for api in library_config["apis"]:
-                    if api.get("status") == "new":
-                        is_new_library_or_api = True
-                        # Delete the status field since we don't need to include it in `configure-response.json`.
-                        del api["status"]
-
-            if is_new_library_or_api:
-                library_id = _get_library_id(library_config)
-                # TODO: Add missing information for the configured library.
-                request_data[library_id] = library_config
+        new_library_config = _get_new_library_config(request_data)
 
         # Write the new library configuration to configure-response.json.
-        _write_json_file(f"{librarian}/configure-response.json", request_data[library_id])
+        _write_json_file(f"{librarian}/configure-response.json", new_library_config)
 
     except Exception as e:
         raise ValueError("Configuring a new library failed.") from e
