@@ -22,7 +22,7 @@ libraries:
       - packages/google-cloud-dlp
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc
-    version: 1.15.3
+    version: 1.16.0
     last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
     apis:
       - path: google/cloud/eventarc/v1
@@ -43,7 +43,7 @@ libraries:
       - packages/google-cloud-eventarc
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-live-stream
-    version: 1.12.0
+    version: 1.13.0
     last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
     apis:
       - path: google/cloud/video/livestream/v1
@@ -160,7 +160,7 @@ libraries:
       - packages/google-analytics-data
     tag_format: '{id}-v{version}'
   - id: google-ads-admanager
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: d89b4d093fa1526255dbc724495c3bdb0e5dd384
     apis:
       - path: google/ads/admanager/v1
@@ -185,6 +185,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/apps/card/v1
+        service_config: ""
     source_roots:
       - packages/google-apps-card
     preserve_regex:
@@ -206,6 +207,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/chat/v1
+        service_config: ""
     source_roots:
       - packages/google-apps-chat
     preserve_regex:
