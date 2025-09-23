@@ -28,6 +28,7 @@ from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGr
 from google.cloud.storage._experimental.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
 )
+from google.cloud.storage._experimental.asyncio.bidi_async import AsyncBidiRpc
 
 
 class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
@@ -36,7 +37,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
     This class provides a unix socket-like interface to a GCS ``Object``, with
     methods like ``open``, ``close``, ``send``, and ``recv``.
 
-    :type client: :class:`~google.cloud.storage.asyncio.AsyncGrpcClient.grpc_client`
+    :type client: :class:`~google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client`
     :param client: async grpc client to use for making API requests.
 
     :type bucket_name: str
@@ -76,6 +77,21 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         )
         self.client: AsyncGrpcClient.grpc_client = client
         self.read_handle: Optional[bytes] = read_handle
+
+        self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
+
+        self.rpc = self.client._client._transport._wrapped_methods[
+            self.client._client._transport.bidi_read_object
+        ]
+        first_bidi_read_req = _storage_v2.BidiReadObjectRequest(
+            read_object_spec=_storage_v2.BidiReadObjectSpec(
+                bucket=self._full_bucket_name, object=object_name
+            ),
+        )
+        self.metadata = (("x-goog-request-params", f"bucket={self._full_bucket_name}"),)
+        self.socket_like_rpc = AsyncBidiRpc(
+            self.rpc, initial_request=first_bidi_read_req, metadata=self.metadata
+        )
 
     async def open(self) -> None:
         pass

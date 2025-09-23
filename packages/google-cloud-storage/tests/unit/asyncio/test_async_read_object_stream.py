@@ -14,52 +14,47 @@
 
 import pytest
 from unittest import mock
+from google.cloud import _storage_v2
 
-from google.cloud.storage._experimental.asyncio.async_abstract_object_stream import (
-    _AsyncAbstractObjectStream,
-)
 from google.cloud.storage._experimental.asyncio.async_read_object_stream import (
     _AsyncReadObjectStream,
 )
 
 
-def test_inheritance():
-    """Test that _AsyncReadObjectStream inherits from _AsyncAbstractObjectStream."""
-    assert issubclass(_AsyncReadObjectStream, _AsyncAbstractObjectStream)
-
-
-def test_init():
-    """Test the constructor of _AsyncReadObjectStream."""
-    mock_client = mock.Mock(name="client")
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_read_object_stream.AsyncBidiRpc"
+)
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+def test_init_with_bucket_object_generation(mock_client, mock_async_bidi_rpc):
+    # initialize with bucket, object_name and generation number.  & client.
     bucket_name = "test-bucket"
     object_name = "test-object"
-    generation = 12345
-    read_handle = "some-handle"
+    generation_number = 12345
+    mock_client._client._transport.bidi_read_object = "bidi_read_object_rpc"
+    mock_client._client._transport._wrapped_methods = {
+        "bidi_read_object_rpc": mock.sentinel.A
+    }
 
-    # Test with all parameters
-    stream = _AsyncReadObjectStream(
-        mock_client,
+    read_obj_stream = _AsyncReadObjectStream(
+        client=mock_client,
         bucket_name=bucket_name,
         object_name=object_name,
-        generation_number=generation,
-        read_handle=read_handle,
+        generation_number=generation_number,
     )
-
-    assert stream.client is mock_client
-    assert stream.bucket_name == bucket_name
-    assert stream.object_name == object_name
-    assert stream.generation_number == generation
-    assert stream.read_handle == read_handle
-
-    # Test with default parameters
-    stream_defaults = _AsyncReadObjectStream(
-        mock_client, bucket_name=bucket_name, object_name=object_name
+    full_bucket_name = f"projects/_/buckets/{bucket_name}"
+    first_bidi_read_req = _storage_v2.BidiReadObjectRequest(
+        read_object_spec=_storage_v2.BidiReadObjectSpec(
+            bucket=full_bucket_name, object=object_name
+        ),
     )
-    assert stream_defaults.client is mock_client
-    assert stream_defaults.bucket_name is bucket_name
-    assert stream_defaults.object_name is object_name
-    assert stream_defaults.generation_number is None
-    assert stream_defaults.read_handle is None
+    mock_async_bidi_rpc.assert_called_once_with(
+        mock.sentinel.A,
+        initial_request=first_bidi_read_req,
+        metadata=(("x-goog-request-params", f"bucket={full_bucket_name}"),),
+    )
+    assert read_obj_stream.socket_like_rpc is mock_async_bidi_rpc.return_value
 
 
 def test_init_with_invalid_parameters():
@@ -67,20 +62,3 @@ def test_init_with_invalid_parameters():
 
     with pytest.raises(ValueError):
         _AsyncReadObjectStream(None, bucket_name=None, object_name=None)
-
-
-@pytest.mark.asyncio
-async def test_async_methods_are_awaitable():
-    """Test that the async methods exist and are awaitable."""
-    mock_client = mock.Mock(name="client")
-    stream = _AsyncReadObjectStream(mock_client, "bucket", "object")
-
-    # These methods are currently empty, but we can test they are awaitable
-    # and don't raise exceptions.
-    try:
-        await stream.open()
-        await stream.close()
-        await stream.send(mock.Mock())
-        await stream.recv()
-    except Exception as e:
-        pytest.fail(f"Async methods should be awaitable without errors. Raised: {e}")
