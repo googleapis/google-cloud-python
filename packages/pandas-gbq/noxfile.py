@@ -400,14 +400,16 @@ def prerelease_deps(session):
         *session.posargs,
     )
 
-    session.run(
-        "py.test",
-        "--quiet",
-        "-W default::PendingDeprecationWarning",
-        f"--junitxml=prerelease_system_{session.python}_sponge_log.xml",
-        os.path.join("tests", "system"),
-        *session.posargs,
-    )
+    # Skip system tests when running in Github Actions since there are no credentials
+    if os.environ.get("GITHUB_ACTIONS", "false") == "true":
+        session.run(
+            "py.test",
+            "--quiet",
+            "-W default::PendingDeprecationWarning",
+            f"--junitxml=prerelease_system_{session.python}_sponge_log.xml",
+            os.path.join("tests", "system"),
+            *session.posargs,
+        )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
