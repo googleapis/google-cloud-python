@@ -330,7 +330,7 @@ def test_prepare_new_library_config(mocker):
         "version": "",
     }
 
-    prepared_config = _prepare_new_library_config(raw_config, "repo")
+    prepared_config = _prepare_new_library_config(raw_config)
 
     # Check that status is removed
     assert "status" not in prepared_config["apis"][0]
@@ -354,7 +354,7 @@ def test_prepare_new_library_config_preserves_existing_values(mocker):
         "version": "4.5.6",
     }
 
-    prepared_config = _prepare_new_library_config(raw_config, "repo")
+    prepared_config = _prepare_new_library_config(raw_config)
 
     # Check that status is removed
     assert "status" not in prepared_config["apis"][0]

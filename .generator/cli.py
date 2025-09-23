@@ -199,14 +199,13 @@ def _add_new_library_version(
         library_config["version"] = "0.0.0"
 
 
-def _prepare_new_library_config(library_config: Dict, repo: str) -> Dict:
+def _prepare_new_library_config(library_config: Dict) -> Dict:
     """
     Prepares the new library's configuration by removing temporary keys and
     adding default values.
 
     Args:
         library_config (Dict): The raw library configuration.
-        repo (str): The path to the repository.
 
     Returns:
         Dict: The prepared library configuration.
@@ -260,7 +259,7 @@ def handle_configure(
         # configure-request.json contains the library definitions.
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
         new_library_config = _get_new_library_config(request_data)
-        prepared_config = _prepare_new_library_config(new_library_config, repo)
+        prepared_config = _prepare_new_library_config(new_library_config)
 
         # Write the new library configuration to configure-response.json.
         _write_json_file(f"{librarian}/configure-response.json", prepared_config)
