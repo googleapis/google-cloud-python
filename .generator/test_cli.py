@@ -37,9 +37,11 @@ from cli import (
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
+    _create_repo_metadata_from_service_config,
     _determine_generator_command,
     _determine_library_namespace,
     _generate_api,
+    _generate_repo_metadata_file,
     _get_api_generator_options,
     _get_library_dist_name,
     _get_library_id,
@@ -1069,6 +1071,52 @@ def test_determine_library_namespace_success(
 
     namespace = _determine_library_namespace(gapic_parent_path, pkg_root_path)
     assert namespace == expected_namespace
+
+
+def test_create_repo_metadata_from_service_config():
+    """Tests the creation of .repo-metadata.json content."""
+    service_config_name = "service_config.yaml"
+    api_path = "google/cloud/language/v1"
+    source = "/source"
+    library_id = "google-cloud-language"
+
+    metadata = _create_repo_metadata_from_service_config(
+        service_config_name, api_path, source, library_id
+    )
+
+    assert metadata["language"] == "python"
+    assert metadata["library_type"] == "GAPIC_AUTO"
+    assert metadata["repo"] == "googleapis/google-cloud-python"
+
+
+def test_generate_repo_metadata_file(mocker):
+    """Tests the generation of the .repo-metadata.json file."""
+    mock_write_json = mocker.patch("cli._write_json_file")
+    mock_create_metadata = mocker.patch(
+        "cli._create_repo_metadata_from_service_config",
+        return_value={"repo": "googleapis/google-cloud-python"},
+    )
+    mocker.patch("os.makedirs")
+
+    output = "/output"
+    library_id = "google-cloud-language"
+    source = "/source"
+    apis = [
+        {
+            "service_config": "service_config.yaml",
+            "path": "google/cloud/language/v1",
+        }
+    ]
+
+    _generate_repo_metadata_file(output, library_id, source, apis)
+
+    mock_create_metadata.assert_called_once_with(
+        "service_config.yaml", "google/cloud/language/v1", source, library_id
+    )
+    mock_write_json.assert_called_once_with(
+        f"{output}/packages/{library_id}/.repo-metadata.json",
+        {"repo": "googleapis/google-cloud-python"},
+    )
 
 
 def test_determine_library_namespace_fails_not_subpath():

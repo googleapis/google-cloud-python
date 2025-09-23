@@ -359,6 +359,68 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     ):  # pragma: NO COVER
         os.remove(gapic_version_file)
 
+def _create_repo_metadata_from_service_config(
+    service_config_name: str, api_path: str, source: str, library_id: str
+) -> Dict:
+    """Creates the .repo-metadata.json content from the service config.
+
+    Args:
+        service_config_name (str): The name of the service config file.
+        api_path (str): The path to the API.
+        source (str): The path to the source directory.
+        library_id (str): The ID of the library.
+
+    Returns:
+        Dict: The content of the .repo-metadata.json file.
+    """
+    full_service_config_path = f"{source}/{api_path}/{service_config_name}"
+
+    # TODO(ohmayr): Read the api service config to backfill .repo-metadata.json
+    return {
+        "api_shortname": "",
+        "name_pretty": "",
+        "product_documentation": "",
+        "api_description": "",
+        "client_documentation": "",
+        "issue_tracker": "",
+        "release_level": "",
+        "language": "python",
+        "library_type": "GAPIC_AUTO",
+        "repo": "googleapis/google-cloud-python",
+        "distribution_name": "",
+        "api_id": "",
+    }
+
+
+def _generate_repo_metadata_file(
+    output: str, library_id: str, source: str, apis: List[Dict]
+):
+    """Generates the .repo-metadata.json file from the primary API service config.
+
+    Args:
+        output (str): The path to the output directory.
+        library_id (str): The ID of the library.
+        source (str): The path to the source directory.
+        apis (List[Dict]): A list of APIs to generate.
+    """
+    path_to_library = f"packages/{library_id}"
+    output_repo_metadata = f"{output}/{path_to_library}/.repo-metadata.json"
+
+    os.makedirs(f"{output}/{path_to_library}", exist_ok=True)
+
+    # TODO(ohmayr): Programatically determine the primary api to be used to
+    # to determine the information for metadata. For now, let's use the first
+    # api in the list.
+    primary_api = apis[0]
+
+    metadata_content = _create_repo_metadata_from_service_config(
+        primary_api.get("service_config"),
+        primary_api.get("path"),
+        source,
+        library_id,
+    )
+    _write_json_file(output_repo_metadata, metadata_content)
+
 
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
@@ -397,6 +459,7 @@ def handle_generate(
             api_path = api.get("path")
             if api_path:
                 _generate_api(api_path, library_id, source, output)
+        _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _copy_files_needed_for_post_processing(output, input, library_id)
         _run_post_processor(output, library_id)
         _clean_up_files_after_post_processing(output, library_id)
