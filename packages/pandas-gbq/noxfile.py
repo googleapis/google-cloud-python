@@ -401,7 +401,7 @@ def prerelease_deps(session):
     )
 
     # Skip system tests when running in Github Actions since there are no credentials
-    if os.environ.get("GITHUB_ACTIONS", "false") == "true":
+    if os.environ.get("GITHUB_ACTIONS", "false") == "false":
         session.run(
             "py.test",
             "--quiet",
