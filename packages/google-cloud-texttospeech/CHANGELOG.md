@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.30.0...google-cloud-texttospeech-v2.31.0) (2025-09-24)
+
+
+### Features
+
+* [google-cloud-texttospeech] add Gemini TTS Multispeaker API fields ([#14535](https://github.com/googleapis/google-cloud-python/issues/14535)) ([5339bcb](https://github.com/googleapis/google-cloud-python/commit/5339bcb6d42eae4ae6d4b4ccdf9b3cbc2ddec7b1))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.29.0...google-cloud-texttospeech-v2.30.0) (2025-09-22)
 
 

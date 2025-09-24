@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.21.0...google-cloud-dataproc-v5.22.0) (2025-09-24)
+
+
+### Features
+
+* [google-cloud-dataproc] Added support for JUPYTER_KERNEL_GATEWAY component ([#14516](https://github.com/googleapis/google-cloud-python/issues/14516)) ([741d1c5](https://github.com/googleapis/google-cloud-python/commit/741d1c5d018360dbfb0fd1d69f6af27fec8e436b))
+
 ## [5.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.20.0...google-cloud-dataproc-v5.21.0) (2025-07-02)
 
 
