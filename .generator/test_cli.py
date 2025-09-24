@@ -460,7 +460,8 @@ def test_get_api_generator_options_all_options():
         "transport": "grpc+rest",
         "opt_args": ["single_arg", "another_arg"],
     }
-    options = _get_api_generator_options(api_path, py_gapic_config)
+    gapic_version = "1.2.99"
+    options = _get_api_generator_options(api_path, py_gapic_config, gapic_version)
 
     expected = [
         "retry-config=google/cloud/language/v1/config.json",
@@ -469,6 +470,7 @@ def test_get_api_generator_options_all_options():
         "transport=grpc+rest",
         "single_arg",
         "another_arg",
+        "gapic-version=1.2.99",
     ]
     assert sorted(options) == sorted(expected)
 
@@ -479,9 +481,10 @@ def test_get_api_generator_options_minimal_options():
     py_gapic_config = {
         "transport": "grpc",
     }
-    options = _get_api_generator_options(api_path, py_gapic_config)
+    gapic_version = "1.2.99"
+    options = _get_api_generator_options(api_path, py_gapic_config, gapic_version)
 
-    expected = ["transport=grpc"]
+    expected = ["transport=grpc", "gapic-version=1.2.99"]
     assert options == expected
 
 
@@ -549,6 +552,7 @@ def test_generate_api_success(mocker, caplog):
     LIBRARY_ID = "google-cloud-language"
     SOURCE = "source"
     OUTPUT = "output"
+    gapic_version = "1.2.99"
 
     mock_read_bazel_build_py_rule = mocker.patch("cli._read_bazel_build_py_rule")
     mock_get_api_generator_options = mocker.patch("cli._get_api_generator_options")
@@ -556,7 +560,7 @@ def test_generate_api_success(mocker, caplog):
     mock_run_generator_command = mocker.patch("cli._run_generator_command")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
 
-    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT)
+    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version)
 
     mock_read_bazel_build_py_rule.assert_called_once()
     mock_get_api_generator_options.assert_called_once()
