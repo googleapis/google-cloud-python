@@ -188,9 +188,7 @@ def _get_new_library_config(request_data: Dict) -> Dict:
     return {}
 
 
-def _add_new_library_version(
-    library_config: Dict
-) -> None:
+def _add_new_library_version(library_config: Dict) -> None:
     """Adds the library version to the configuration if it's not present.
 
     Args:
@@ -383,6 +381,19 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
         os.remove(gapic_version_file)
 
 
+def _determine_release_level_from_api_path(api_path: str) -> str:
+    """Determines the release level from the API path.
+
+    Args:
+        api_path (str): The path to the API.
+
+    Returns:
+        str: The release level, which can be 'alpha', 'beta', or 'stable'.
+    """
+    version = Path(api_path).name
+    return next((level for level in ["beta", "alpha"] if level in version), "stable")
+
+
 def _create_repo_metadata_from_service_config(
     service_config_name: str, api_path: str, source: str, library_id: str
 ) -> Dict:
@@ -408,11 +419,10 @@ def _create_repo_metadata_from_service_config(
     api_shortname = service_config.get("name", "").split(".")[0]
     documentation = service_config.get("documentation", {})
     api_description = documentation.get("summary", "")
-    issue_tracker = service_config.get("new_issue_uri", "https://github.com/googleapis/google-cloud-python/issues")
-
-    # TODO(ohmayr): Determine release level from api_path
-    release_level = "stable"
-
+    issue_tracker = service_config.get(
+        "new_issue_uri", "https://github.com/googleapis/google-cloud-python/issues"
+    )
+    release_level = _determine_release_level_from_api_path(api_path)
 
     return {
         "api_shortname": api_shortname,
