@@ -40,6 +40,7 @@ from cli import (
     _create_repo_metadata_from_service_config,
     _determine_generator_command,
     _determine_library_namespace,
+    _determine_release_level,
     _generate_api,
     _generate_repo_metadata_file,
     _get_api_generator_options,
@@ -581,6 +582,7 @@ def test_handle_generate_success(
     mock_clean_up_files_after_post_processing = mocker.patch(
         "cli._clean_up_files_after_post_processing"
     )
+    mocker.patch("cli._generate_repo_metadata_file")
 
     handle_generate()
 
@@ -1108,12 +1110,45 @@ def test_determine_library_namespace_success(
     assert namespace == expected_namespace
 
 
-def test_create_repo_metadata_from_service_config():
+def test_determine_release_level_alpha_is_preview():
+    """Tests that the release level is preview for alpha versions."""
+    api_path = "google/cloud/language/v1alpha1"
+    release_level = _determine_release_level(api_path)
+    assert release_level == "preview"
+
+
+def test_determine_release_level_beta_is_preview():
+    """Tests that the release level is preview for beta versions."""
+    api_path = "google/cloud/language/v1beta1"
+    release_level = _determine_release_level(api_path)
+    assert release_level == "preview"
+
+
+def test_determine_release_level_stable():
+    """Tests that the release level is stable."""
+    api_path = "google/cloud/language/v1"
+    release_level = _determine_release_level(api_path)
+    assert release_level == "stable"
+
+
+def test_create_repo_metadata_from_service_config(mocker):
     """Tests the creation of .repo-metadata.json content."""
     service_config_name = "service_config.yaml"
     api_path = "google/cloud/language/v1"
     source = "/source"
     library_id = "google-cloud-language"
+
+    mock_yaml_content = {
+        "name": "google.cloud.language.v1",
+        "title": "Cloud Natural Language API",
+        "publishing": {
+            "documentation_uri": "https://cloud.google.com/natural-language/docs"
+        },
+        "documentation": {"summary": "A comprehensive summary."},
+        "new_issue_uri": "https://example.com/issues",
+    }
+    mocker.patch("builtins.open", mocker.mock_open(read_data=""))
+    mocker.patch("yaml.safe_load", return_value=mock_yaml_content)
 
     metadata = _create_repo_metadata_from_service_config(
         service_config_name, api_path, source, library_id

@@ -188,9 +188,7 @@ def _get_new_library_config(request_data: Dict) -> Dict:
     return {}
 
 
-def _add_new_library_version(
-    library_config: Dict
-) -> None:
+def _add_new_library_version(library_config: Dict) -> None:
     """Adds the library version to the configuration if it's not present.
 
     Args:
@@ -383,6 +381,24 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
         os.remove(gapic_version_file)
 
 
+def _determine_release_level(api_path: str) -> str:
+    # TODO(https://github.com/googleapis/librarian/issues/2352): Determine if
+    # this logic can be used to set the release level.
+    # For now, we set the release_level as "preview" for newly generated clients.
+    """Determines the release level from the API path.
+
+    Args:
+        api_path (str): The path to the API.
+
+    Returns:
+        str: The release level, which can be 'preview' or 'stable'.
+    """
+    version = Path(api_path).name
+    if "beta" in version or "alpha" in version:
+        return "preview"
+    return "stable"
+
+
 def _create_repo_metadata_from_service_config(
     service_config_name: str, api_path: str, source: str, library_id: str
 ) -> Dict:
@@ -398,22 +414,39 @@ def _create_repo_metadata_from_service_config(
         Dict: The content of the .repo-metadata.json file.
     """
     full_service_config_path = f"{source}/{api_path}/{service_config_name}"
+    with open(full_service_config_path, "r") as f:
+        service_config = yaml.safe_load(f)
 
-    # TODO(https://github.com/googleapis/librarian/issues/2332): Read the api
-    # service config to backfill `.repo-metadata.json`.
+    api_id = service_config.get("name", {})
+    publishing = service_config.get("publishing", {})
+    name_pretty = service_config.get("title", "")
+    product_documentation = publishing.get("documentation_uri", "")
+    api_shortname = service_config.get("name", "").split(".")[0]
+    documentation = service_config.get("documentation", {})
+    api_description = documentation.get("summary", "")
+    issue_tracker = service_config.get(
+        "new_issue_uri", "https://github.com/googleapis/google-cloud-python/issues"
+    )
+
+    # TODO(https://github.com/googleapis/librarian/issues/2352): Determine if
+    # `_determine_release_level` can be used to
+    # set the release level. For now, we set the release_level as "preview" for
+    # newly generated clients.
+    release_level = "preview"
+
     return {
-        "api_shortname": "",
-        "name_pretty": "",
-        "product_documentation": "",
-        "api_description": "",
-        "client_documentation": "",
-        "issue_tracker": "",
-        "release_level": "",
+        "api_shortname": api_shortname,
+        "name_pretty": name_pretty,
+        "product_documentation": product_documentation,
+        "api_description": api_description,
+        "client_documentation": f"https://cloud.google.com/python/docs/reference/{library_id}/latest",
+        "issue_tracker": issue_tracker,
+        "release_level": release_level,
         "language": "python",
         "library_type": "GAPIC_AUTO",
         "repo": "googleapis/google-cloud-python",
-        "distribution_name": "",
-        "api_id": "",
+        "distribution_name": library_id,
+        "api_id": api_id,
     }
 
 
