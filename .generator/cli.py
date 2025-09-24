@@ -398,22 +398,37 @@ def _create_repo_metadata_from_service_config(
         Dict: The content of the .repo-metadata.json file.
     """
     full_service_config_path = f"{source}/{api_path}/{service_config_name}"
+    with open(full_service_config_path, "r") as f:
+        service_config = yaml.safe_load(f)
+
+    publishing = service_config.get("publishing", {})
+    name_pretty = service_config.get("title", "")
+    product_documentation = publishing.get("product_documentation", "")
+    api_shortname = service_config.get("name", "").split(".")[0]
+    distribution_name = publishing.get("library_name", library_id)
+    documentation = service_config.get("documentation", {})
+    api_description = documentation.get("summary", "")
+    issue_tracker = service_config.get("new_issue_uri", "https://github.com/googleapis/google-cloud-python/issues")
+
+    # TODO(ohmayr): Determine release level from api_path
+    release_level = "stable"
+
 
     # TODO(https://github.com/googleapis/librarian/issues/2332): Read the api
     # service config to backfill `.repo-metadata.json`.
     return {
-        "api_shortname": "",
-        "name_pretty": "",
-        "product_documentation": "",
-        "api_description": "",
-        "client_documentation": "",
-        "issue_tracker": "",
-        "release_level": "",
+        "api_shortname": api_shortname,
+        "name_pretty": name_pretty,
+        "product_documentation": product_documentation,
+        "api_description": api_description,
+        "client_documentation": f"https://cloud.google.com/python/docs/reference/{distribution_name}/latest",
+        "issue_tracker": issue_tracker,
+        "release_level": release_level,
         "language": "python",
         "library_type": "GAPIC_AUTO",
         "repo": "googleapis/google-cloud-python",
-        "distribution_name": "",
-        "api_id": "",
+        "distribution_name": distribution_name,
+        "api_id": "",  # This can be added later if needed
     }
 
 
