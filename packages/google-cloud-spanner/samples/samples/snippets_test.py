@@ -197,7 +197,9 @@ def test_create_instance_with_autoscaling_config(capsys, lci_instance_id):
     retry_429(instance.delete)()
 
 
-def test_create_and_update_instance_default_backup_schedule_type(capsys, lci_instance_id):
+def test_create_and_update_instance_default_backup_schedule_type(
+    capsys, lci_instance_id
+):
     retry_429(snippets.create_instance_without_default_backup_schedules)(
         lci_instance_id,
     )
@@ -252,8 +254,7 @@ def test_create_database_with_encryption_config(
     assert kms_key_name in out
 
 
-@pytest.mark.skip(reason="skipped since the KMS keys are not added on test "
-                         "project")
+@pytest.mark.skip(reason="skipped since the KMS keys are not added on test " "project")
 def test_create_database_with_multiple_kms_keys(
     capsys,
     multi_region_instance,
@@ -989,6 +990,13 @@ def test_set_custom_timeout_and_retry(capsys, instance_id, sample_database):
     snippets.set_custom_timeout_and_retry(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "SingerId: 1, AlbumId: 1, AlbumTitle: Total Junk" in out
+
+
+@pytest.mark.dependency(depends=["insert_data"])
+def test_isolated_level_options(capsys, instance_id, sample_database):
+    snippets.isolation_level_options(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "1 record(s) updated." in out
 
 
 @pytest.mark.dependency(

@@ -24,25 +24,26 @@ from enum import Enum
 
 # [START spanner_create_full_backup_schedule]
 def create_full_backup_schedule(
-        instance_id: str,
-        database_id: str,
-        schedule_id: str,
+    instance_id: str,
+    database_id: str,
+    schedule_id: str,
 ) -> None:
     from datetime import timedelta
     from google.cloud import spanner
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup_schedule as backup_schedule_pb
-    from google.cloud.spanner_admin_database_v1.types import \
-        CreateBackupEncryptionConfig, FullBackupSpec
+    from google.cloud.spanner_admin_database_v1.types import (
+        backup_schedule as backup_schedule_pb,
+    )
+    from google.cloud.spanner_admin_database_v1.types import (
+        CreateBackupEncryptionConfig,
+        FullBackupSpec,
+    )
 
     client = spanner.Client()
     database_admin_api = client.database_admin_api
 
     request = backup_schedule_pb.CreateBackupScheduleRequest(
         parent=database_admin_api.database_path(
-            client.project,
-            instance_id,
-            database_id
+            client.project, instance_id, database_id
         ),
         backup_schedule_id=schedule_id,
         backup_schedule=backup_schedule_pb.BackupSchedule(
@@ -62,30 +63,32 @@ def create_full_backup_schedule(
     response = database_admin_api.create_backup_schedule(request)
     print(f"Created full backup schedule: {response}")
 
+
 # [END spanner_create_full_backup_schedule]
 
 
 # [START spanner_create_incremental_backup_schedule]
 def create_incremental_backup_schedule(
-        instance_id: str,
-        database_id: str,
-        schedule_id: str,
+    instance_id: str,
+    database_id: str,
+    schedule_id: str,
 ) -> None:
     from datetime import timedelta
     from google.cloud import spanner
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup_schedule as backup_schedule_pb
-    from google.cloud.spanner_admin_database_v1.types import \
-        CreateBackupEncryptionConfig, IncrementalBackupSpec
+    from google.cloud.spanner_admin_database_v1.types import (
+        backup_schedule as backup_schedule_pb,
+    )
+    from google.cloud.spanner_admin_database_v1.types import (
+        CreateBackupEncryptionConfig,
+        IncrementalBackupSpec,
+    )
 
     client = spanner.Client()
     database_admin_api = client.database_admin_api
 
     request = backup_schedule_pb.CreateBackupScheduleRequest(
         parent=database_admin_api.database_path(
-            client.project,
-            instance_id,
-            database_id
+            client.project, instance_id, database_id
         ),
         backup_schedule_id=schedule_id,
         backup_schedule=backup_schedule_pb.BackupSchedule(
@@ -105,14 +108,16 @@ def create_incremental_backup_schedule(
     response = database_admin_api.create_backup_schedule(request)
     print(f"Created incremental backup schedule: {response}")
 
+
 # [END spanner_create_incremental_backup_schedule]
 
 
 # [START spanner_list_backup_schedules]
 def list_backup_schedules(instance_id: str, database_id: str) -> None:
     from google.cloud import spanner
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup_schedule as backup_schedule_pb
+    from google.cloud.spanner_admin_database_v1.types import (
+        backup_schedule as backup_schedule_pb,
+    )
 
     client = spanner.Client()
     database_admin_api = client.database_admin_api
@@ -128,18 +133,20 @@ def list_backup_schedules(instance_id: str, database_id: str) -> None:
     for backup_schedule in database_admin_api.list_backup_schedules(request):
         print(f"Backup schedule: {backup_schedule}")
 
+
 # [END spanner_list_backup_schedules]
 
 
 # [START spanner_get_backup_schedule]
 def get_backup_schedule(
-        instance_id: str,
-        database_id: str,
-        schedule_id: str,
+    instance_id: str,
+    database_id: str,
+    schedule_id: str,
 ) -> None:
     from google.cloud import spanner
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup_schedule as backup_schedule_pb
+    from google.cloud.spanner_admin_database_v1.types import (
+        backup_schedule as backup_schedule_pb,
+    )
 
     client = spanner.Client()
     database_admin_api = client.database_admin_api
@@ -156,21 +163,24 @@ def get_backup_schedule(
     response = database_admin_api.get_backup_schedule(request)
     print(f"Backup schedule: {response}")
 
+
 # [END spanner_get_backup_schedule]
 
 
 # [START spanner_update_backup_schedule]
 def update_backup_schedule(
-        instance_id: str,
-        database_id: str,
-        schedule_id: str,
+    instance_id: str,
+    database_id: str,
+    schedule_id: str,
 ) -> None:
     from datetime import timedelta
     from google.cloud import spanner
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup_schedule as backup_schedule_pb
-    from google.cloud.spanner_admin_database_v1.types import \
-        CreateBackupEncryptionConfig
+    from google.cloud.spanner_admin_database_v1.types import (
+        backup_schedule as backup_schedule_pb,
+    )
+    from google.cloud.spanner_admin_database_v1.types import (
+        CreateBackupEncryptionConfig,
+    )
     from google.protobuf.field_mask_pb2 import FieldMask
 
     client = spanner.Client()
@@ -206,18 +216,20 @@ def update_backup_schedule(
     response = database_admin_api.update_backup_schedule(request)
     print(f"Updated backup schedule: {response}")
 
+
 # [END spanner_update_backup_schedule]
 
 
 # [START spanner_delete_backup_schedule]
 def delete_backup_schedule(
-        instance_id: str,
-        database_id: str,
-        schedule_id: str,
+    instance_id: str,
+    database_id: str,
+    schedule_id: str,
 ) -> None:
     from google.cloud import spanner
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup_schedule as backup_schedule_pb
+    from google.cloud.spanner_admin_database_v1.types import (
+        backup_schedule as backup_schedule_pb,
+    )
 
     client = spanner.Client()
     database_admin_api = client.database_admin_api
@@ -233,6 +245,7 @@ def delete_backup_schedule(
 
     database_admin_api.delete_backup_schedule(request)
     print("Deleted backup schedule")
+
 
 # [END spanner_delete_backup_schedule]
 

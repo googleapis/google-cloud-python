@@ -116,6 +116,7 @@ def create_backup_with_encryption_key(
 
 # [END spanner_create_backup_with_encryption_key]
 
+
 # [START spanner_create_backup_with_MR_CMEK]
 def create_backup_with_multiple_kms_keys(
     instance_id, database_id, backup_id, kms_key_names
@@ -245,6 +246,7 @@ def restore_database_with_encryption_key(
 
 
 # [END spanner_restore_backup_with_encryption_key]
+
 
 # [START spanner_restore_backup_with_MR_CMEK]
 def restore_database_with_multiple_kms_keys(
@@ -696,6 +698,7 @@ def copy_backup(instance_id, backup_id, source_backup_path):
 
 
 # [END spanner_copy_backup]
+
 
 # [START spanner_copy_backup_with_MR_CMEK]
 def copy_backup_with_multiple_kms_keys(

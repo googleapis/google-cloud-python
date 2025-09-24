@@ -75,11 +75,11 @@ def create_instance(instance_id):
 
 # [END spanner_create_instance]
 
+
 # [START spanner_update_instance]
 def update_instance(instance_id):
     """Updates an instance."""
-    from google.cloud.spanner_admin_instance_v1.types import \
-        spanner_instance_admin
+    from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 
     spanner_client = spanner.Client()
 
@@ -366,6 +366,7 @@ def create_database_with_encryption_key(instance_id, database_id, kms_key_name):
 
 # [END spanner_create_database_with_encryption_key]
 
+
 # [START spanner_create_database_with_MR_CMEK]
 def create_database_with_multiple_kms_keys(instance_id, database_id, kms_key_names):
     """Creates a database with tables using multiple KMS keys(CMEK)."""
@@ -408,6 +409,7 @@ def create_database_with_multiple_kms_keys(instance_id, database_id, kms_key_nam
 
 
 # [END spanner_create_database_with_MR_CMEK]
+
 
 # [START spanner_create_database_with_default_leader]
 def create_database_with_default_leader(instance_id, database_id, default_leader):
@@ -1591,7 +1593,11 @@ def log_commit_stats(instance_id, database_id):
             super().__init__("commit_stats_sample")
 
         def info(self, msg, *args, **kwargs):
-            if "extra" in kwargs and kwargs["extra"] and "commit_stats" in kwargs["extra"]:
+            if (
+                "extra" in kwargs
+                and kwargs["extra"]
+                and "commit_stats" in kwargs["extra"]
+            ):
                 self.last_commit_stats = kwargs["extra"]["commit_stats"]
             super().info(msg, *args, **kwargs)
 
@@ -3176,6 +3182,56 @@ def directed_read_options(
     # [END spanner_directed_read]
 
 
+def isolation_level_options(
+    instance_id,
+    database_id,
+):
+    from google.cloud.spanner_v1 import TransactionOptions, DefaultTransactionOptions
+
+    """
+    Shows how to run a Read Write transaction with isolation level options.
+    """
+    # [START spanner_isolation_level]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    # The isolation level specified at the client-level will be applied to all RW transactions.
+    isolation_options_for_client = TransactionOptions.IsolationLevel.SERIALIZABLE
+
+    spanner_client = spanner.Client(
+        default_transaction_options=DefaultTransactionOptions(
+            isolation_level=isolation_options_for_client
+        )
+    )
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    # The isolation level specified at the request level takes precedence over the isolation level configured at the client level.
+    isolation_options_for_transaction = (
+        TransactionOptions.IsolationLevel.REPEATABLE_READ
+    )
+
+    def update_albums_with_isolation(transaction):
+        # Read an AlbumTitle.
+        results = transaction.execute_sql(
+            "SELECT AlbumTitle from Albums WHERE SingerId = 1 and AlbumId = 1"
+        )
+        for result in results:
+            print("Current Album Title: {}".format(*result))
+
+        # Update the AlbumTitle.
+        row_ct = transaction.execute_update(
+            "UPDATE Albums SET AlbumTitle = 'A New Title' WHERE SingerId = 1 and AlbumId = 1"
+        )
+
+        print("{} record(s) updated.".format(row_ct))
+
+    database.run_in_transaction(
+        update_albums_with_isolation, isolation_level=isolation_options_for_transaction
+    )
+    # [END spanner_isolation_level]
+
+
 def set_custom_timeout_and_retry(instance_id, database_id):
     """Executes a snapshot read with custom timeout and retry."""
     # [START spanner_set_custom_timeout_and_retry]
@@ -3288,14 +3344,14 @@ def create_instance_without_default_backup_schedules(instance_id):
     )
 
     operation = spanner_client.instance_admin_api.create_instance(
-      parent=spanner_client.project_name,
-      instance_id=instance_id,
-      instance=spanner_instance_admin.Instance(
-          config=config_name,
-          display_name="This is a display name.",
-          node_count=1,
-          default_backup_schedule_type=spanner_instance_admin.Instance.DefaultBackupScheduleType.NONE,  # Optional
-      ),
+        parent=spanner_client.project_name,
+        instance_id=instance_id,
+        instance=spanner_instance_admin.Instance(
+            config=config_name,
+            display_name="This is a display name.",
+            node_count=1,
+            default_backup_schedule_type=spanner_instance_admin.Instance.DefaultBackupScheduleType.NONE,  # Optional
+        ),
     )
 
     print("Waiting for operation to complete...")
@@ -3314,13 +3370,11 @@ def update_instance_default_backup_schedule_type(instance_id):
     name = "{}/instances/{}".format(spanner_client.project_name, instance_id)
 
     operation = spanner_client.instance_admin_api.update_instance(
-      instance=spanner_instance_admin.Instance(
-          name=name,
-          default_backup_schedule_type=spanner_instance_admin.Instance.DefaultBackupScheduleType.AUTOMATIC,  # Optional
-      ),
-      field_mask=field_mask_pb2.FieldMask(
-          paths=["default_backup_schedule_type"]
-      ),
+        instance=spanner_instance_admin.Instance(
+            name=name,
+            default_backup_schedule_type=spanner_instance_admin.Instance.DefaultBackupScheduleType.AUTOMATIC,  # Optional
+        ),
+        field_mask=field_mask_pb2.FieldMask(paths=["default_backup_schedule_type"]),
     )
 
     print("Waiting for operation to complete...")
@@ -3581,7 +3635,9 @@ def add_split_points(instance_id, database_id):
         database=database_admin_api.database_path(
             spanner_client.project, instance_id, database_id
         ),
-        statements=["CREATE INDEX IF NOT EXISTS SingersByFirstLastName ON Singers(FirstName, LastName)"],
+        statements=[
+            "CREATE INDEX IF NOT EXISTS SingersByFirstLastName ON Singers(FirstName, LastName)"
+        ],
     )
 
     operation = database_admin_api.update_database_ddl(request)
@@ -3638,7 +3694,6 @@ def add_split_points(instance_id, database_id):
                             values=[struct_pb2.Value(string_value="38")]
                         )
                     ),
-
                 ],
             ),
         ],
@@ -3799,6 +3854,9 @@ if __name__ == "__main__":  # noqa: C901
     enable_fine_grained_access_parser.add_argument("--title", default="condition title")
     subparsers.add_parser("directed_read_options", help=directed_read_options.__doc__)
     subparsers.add_parser(
+        "isolation_level_options", help=isolation_level_options.__doc__
+    )
+    subparsers.add_parser(
         "set_custom_timeout_and_retry", help=set_custom_timeout_and_retry.__doc__
     )
     subparsers.add_parser("add_proto_type_columns", help=add_proto_type_columns.__doc__)
@@ -3958,6 +4016,8 @@ if __name__ == "__main__":  # noqa: C901
         )
     elif args.command == "directed_read_options":
         directed_read_options(args.instance_id, args.database_id)
+    elif args.command == "isolation_level_options":
+        isolation_level_options(args.instance_id, args.database_id)
     elif args.command == "set_custom_timeout_and_retry":
         set_custom_timeout_and_retry(args.instance_id, args.database_id)
     elif args.command == "create_instance_with_autoscaling_config":

@@ -69,8 +69,7 @@ def create_instance(instance_id):
 def create_database(instance_id, database_id):
     """Creates a PostgreSql database and tables for sample data."""
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -91,8 +90,7 @@ def create_database(instance_id, database_id):
 
 
 def create_table_using_ddl(database_name):
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     request = spanner_database_admin.UpdateDatabaseDdlRequest(
@@ -240,8 +238,7 @@ def read_data(instance_id, database_id):
 def add_column(instance_id, database_id):
     """Adds a new column to the Albums table in the example database."""
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -441,8 +438,7 @@ def read_data_with_index(instance_id, database_id):
 def add_storing_index(instance_id, database_id):
     """Adds an storing index to the example database."""
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -1091,8 +1087,7 @@ def create_table_with_datatypes(instance_id, database_id):
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -1476,8 +1471,7 @@ def add_jsonb_column(instance_id, database_id):
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -1593,8 +1587,7 @@ def query_data_with_jsonb_parameter(instance_id, database_id):
 def create_sequence(instance_id, database_id):
     """Creates the Sequence and insert data"""
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -1651,8 +1644,7 @@ def create_sequence(instance_id, database_id):
 def alter_sequence(instance_id, database_id):
     """Alters the Sequence and insert data"""
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -1703,8 +1695,7 @@ def alter_sequence(instance_id, database_id):
 def drop_sequence(instance_id, database_id):
     """Drops the Sequence"""
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api

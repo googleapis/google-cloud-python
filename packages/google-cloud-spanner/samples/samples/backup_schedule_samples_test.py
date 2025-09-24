@@ -33,9 +33,9 @@ def database_id():
 
 @pytest.mark.dependency(name="create_full_backup_schedule")
 def test_create_full_backup_schedule(
-        capsys,
-        sample_instance,
-        sample_database,
+    capsys,
+    sample_instance,
+    sample_database,
 ) -> None:
     samples.create_full_backup_schedule(
         sample_instance.instance_id,
@@ -53,9 +53,9 @@ def test_create_full_backup_schedule(
 
 @pytest.mark.dependency(name="create_incremental_backup_schedule")
 def test_create_incremental_backup_schedule(
-        capsys,
-        sample_instance,
-        sample_database,
+    capsys,
+    sample_instance,
+    sample_database,
 ) -> None:
     samples.create_incremental_backup_schedule(
         sample_instance.instance_id,
@@ -71,14 +71,16 @@ def test_create_incremental_backup_schedule(
     ) in out
 
 
-@pytest.mark.dependency(depends=[
-    "create_full_backup_schedule",
-    "create_incremental_backup_schedule",
-])
+@pytest.mark.dependency(
+    depends=[
+        "create_full_backup_schedule",
+        "create_incremental_backup_schedule",
+    ]
+)
 def test_list_backup_schedules(
-        capsys,
-        sample_instance,
-        sample_database,
+    capsys,
+    sample_instance,
+    sample_database,
 ) -> None:
     samples.list_backup_schedules(
         sample_instance.instance_id,
@@ -99,9 +101,9 @@ def test_list_backup_schedules(
 
 @pytest.mark.dependency(depends=["create_full_backup_schedule"])
 def test_get_backup_schedule(
-        capsys,
-        sample_instance,
-        sample_database,
+    capsys,
+    sample_instance,
+    sample_database,
 ) -> None:
     samples.get_backup_schedule(
         sample_instance.instance_id,
@@ -118,9 +120,9 @@ def test_get_backup_schedule(
 
 @pytest.mark.dependency(depends=["create_full_backup_schedule"])
 def test_update_backup_schedule(
-        capsys,
-        sample_instance,
-        sample_database,
+    capsys,
+    sample_instance,
+    sample_database,
 ) -> None:
     samples.update_backup_schedule(
         sample_instance.instance_id,
@@ -136,14 +138,16 @@ def test_update_backup_schedule(
     ) in out
 
 
-@pytest.mark.dependency(depends=[
-    "create_full_backup_schedule",
-    "create_incremental_backup_schedule",
-])
+@pytest.mark.dependency(
+    depends=[
+        "create_full_backup_schedule",
+        "create_incremental_backup_schedule",
+    ]
+)
 def test_delete_backup_schedule(
-        capsys,
-        sample_instance,
-        sample_database,
+    capsys,
+    sample_instance,
+    sample_database,
 ) -> None:
     samples.delete_backup_schedule(
         sample_instance.instance_id,
