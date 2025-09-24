@@ -814,6 +814,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-capacityplanner": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-capacityplanner",
+            "extra-files": [
+                "google/cloud/capacityplanner/gapic_version.py",
+                "google/cloud/capacityplanner_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.capacityplanner.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-certificate-manager": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

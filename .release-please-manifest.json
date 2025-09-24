@@ -46,6 +46,7 @@
     "packages/google-cloud-billing-budgets": "1.17.2",
     "packages/google-cloud-binary-authorization": "1.13.2",
     "packages/google-cloud-build": "3.32.0",
+    "packages/google-cloud-capacityplanner": "0.0.0",
     "packages/google-cloud-certificate-manager": "1.10.2",
     "packages/google-cloud-channel": "1.23.0",
     "packages/google-cloud-chronicle": "0.1.0",
