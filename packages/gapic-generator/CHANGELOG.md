@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.27.0](https://github.com/googleapis/gapic-generator-python/compare/v1.26.2...v1.27.0) (2025-09-24)
+
+
+### Features
+
+* Add gapic-version generator option ([#2440](https://github.com/googleapis/gapic-generator-python/issues/2440)) ([75eb349](https://github.com/googleapis/gapic-generator-python/commit/75eb349efcb907dc443b6e8a2c11b2056a476009))
+
 ## [1.26.2](https://github.com/googleapis/gapic-generator-python/compare/v1.26.1...v1.26.2) (2025-08-30)
 
 
