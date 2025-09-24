@@ -56,6 +56,33 @@ def test_max(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_mean(scalar_types_df: bpd.DataFrame, snapshot):
+    col_names = ["int64_col", "bool_col", "duration_col"]
+    bf_df = scalar_types_df[col_names]
+    bf_df["duration_col"] = bpd.to_timedelta(bf_df["duration_col"], unit="us")
+
+    # The `to_timedelta` creates a new mapping for the column id.
+    col_names.insert(0, "rowindex")
+    name2id = {
+        col_name: col_id
+        for col_name, col_id in zip(col_names, bf_df._block.expr.column_ids)
+    }
+
+    agg_ops_map = {
+        "int64_col": agg_ops.MeanOp().as_expr(name2id["int64_col"]),
+        "bool_col": agg_ops.MeanOp().as_expr(name2id["bool_col"]),
+        "duration_col": agg_ops.MeanOp().as_expr(name2id["duration_col"]),
+        "int64_col_w_floor": agg_ops.MeanOp(should_floor_result=True).as_expr(
+            name2id["int64_col"]
+        ),
+    }
+    sql = _apply_unary_agg_ops(
+        bf_df, list(agg_ops_map.values()), list(agg_ops_map.keys())
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_median(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df
     ops_map = {

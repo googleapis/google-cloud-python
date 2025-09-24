@@ -56,6 +56,26 @@ def _(
     return apply_window_if_present(sge.func("MAX", column.expr), window)
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.MeanOp)
+def _(
+    op: agg_ops.MeanOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    expr = column.expr
+    if column.dtype == dtypes.BOOL_DTYPE:
+        expr = sge.Cast(this=expr, to="INT64")
+
+    expr = sge.func("AVG", expr)
+
+    should_floor_result = (
+        op.should_floor_result or column.dtype == dtypes.TIMEDELTA_DTYPE
+    )
+    if should_floor_result:
+        expr = sge.Cast(this=sge.func("FLOOR", expr), to="INT64")
+    return apply_window_if_present(expr, window)
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.MedianOp)
 def _(
     op: agg_ops.MedianOp,
