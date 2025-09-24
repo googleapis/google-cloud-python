@@ -121,9 +121,6 @@ deadline on the retry object.
 """
 
 job_retry_reasons = (
-    "rateLimitExceeded",
-    "backendError",
-    "internalError",
     "jobBackendError",
     "jobInternalError",
     "jobRateLimitExceeded",
