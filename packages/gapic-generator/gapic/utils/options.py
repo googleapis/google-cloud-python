@@ -50,6 +50,7 @@ class Options:
     service_yaml_config: Dict[str, Any] = dataclasses.field(default_factory=dict)
     rest_numeric_enums: bool = False
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
+    gapic_version: str = "0.0.0"
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = "python-gapic-"
@@ -71,6 +72,7 @@ class Options:
             # proto plus dependencies delineated by '+'
             # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
             "proto-plus-deps",
+            "gapic-version",  # A version string following https://peps.python.org/pep-0440
         )
     )
 
@@ -197,6 +199,7 @@ class Options:
             service_yaml_config=service_yaml_config,
             rest_numeric_enums=bool(opts.pop("rest-numeric-enums", False)),
             proto_plus_deps=proto_plus_deps,
+            gapic_version=opts.pop("gapic-version", ["0.0.0"]).pop(),
         )
 
         # Note: if we ever need to recursively check directories for sample

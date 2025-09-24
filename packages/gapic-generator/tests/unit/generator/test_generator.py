@@ -563,7 +563,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
             "apis": [{"id": "google.mollusca.v1", "version": "v1"}],
             "language": "PYTHON",
             "name": "mollusc-cephalopod-teuthida-",
-            "version": "0.1.0",
+            "version": "0.0.0",
         },
         "snippets": [
             {
@@ -725,7 +725,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
             "apis": [{"id": "google.mollusca.v1", "version": "v1"}],
             "language": "PYTHON",
             "name": "mollusc-cephalopod-teuthida-",
-            "version": "0.1.0",
+            "version": "0.0.0",
         },
         "snippets": [
             {

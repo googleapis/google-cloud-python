@@ -267,7 +267,7 @@ def test_get_metadata_json(sample_str):
             "apis": [{"id": "google.mollusca", "version": "v1"}],
             "language": "PYTHON",
             "name": "google-mollusca",
-            "version": "0.1.0",
+            "version": "0.0.0",
         },
         "snippets": [
             {

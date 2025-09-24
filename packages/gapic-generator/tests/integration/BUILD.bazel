@@ -55,6 +55,7 @@ py_gapic_library(
     grpc_service_config = "cloudasset_grpc_service_config.json",
     opt_args = [
         "autogen-snippets",
+        "gapic-version=1.2.99",
     ],
     service_yaml = "cloudasset_v1.yaml",
     transport = "grpc+rest",

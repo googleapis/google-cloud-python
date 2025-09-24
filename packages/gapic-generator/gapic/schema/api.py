@@ -378,6 +378,7 @@ class API:
     all_protos: Mapping[str, Proto]
     service_yaml_config: service_pb2.Service
     subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
+    gapic_version: str = "0.0.0"
 
     @classmethod
     def build(
@@ -493,12 +494,16 @@ class API:
         ParseDict(
             opts.service_yaml_config, service_yaml_config, ignore_unknown_fields=True
         )
+        gapic_version = opts.gapic_version
 
         # Third pass for various selective GAPIC settings; these require
         # settings in the service.yaml and so we build the API object
         # before doing another pass.
         api = cls(
-            naming=naming, all_protos=protos, service_yaml_config=service_yaml_config
+            naming=naming,
+            all_protos=protos,
+            service_yaml_config=service_yaml_config,
+            gapic_version=gapic_version,
         )
 
         if package in api.all_library_settings:

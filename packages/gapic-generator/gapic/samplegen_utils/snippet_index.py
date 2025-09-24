@@ -119,9 +119,7 @@ class SnippetIndex:
         )
         self.metadata_index.client_library.language = snippet_metadata_pb2.Language.PYTHON  # type: ignore
 
-        # This is just a placeholder.  release-please is responsible for
-        # updating the metadata file to the correct library version.
-        self.metadata_index.client_library.version = "0.1.0"
+        self.metadata_index.client_library.version = api_schema.gapic_version
 
         self.metadata_index.client_library.apis.append(
             snippet_metadata_pb2.Api(  # type: ignore
