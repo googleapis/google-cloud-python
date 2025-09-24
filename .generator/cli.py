@@ -414,8 +414,6 @@ def _create_repo_metadata_from_service_config(
     release_level = "stable"
 
 
-    # TODO(https://github.com/googleapis/librarian/issues/2332): Read the api
-    # service config to backfill `.repo-metadata.json`.
     return {
         "api_shortname": api_shortname,
         "name_pretty": name_pretty,
