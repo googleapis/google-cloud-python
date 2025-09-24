@@ -1,6 +1,4 @@
 {
-    "packages/google-apps-card": "0.1.8",
-    "packages/google-apps-chat": "0.2.9",
     "packages/google-apps-events-subscriptions": "0.2.2",
     "packages/google-apps-meet": "0.1.16",
     "packages/google-apps-script-type": "0.3.15",
