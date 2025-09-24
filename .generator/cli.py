@@ -381,7 +381,7 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
         os.remove(gapic_version_file)
 
 
-def _determine_release_level_from_api_path(api_path: str) -> str:
+def _determine_release_level(api_path: str) -> str:
     # TODO(https://github.com/googleapis/librarian/issues/2352): Determine if
     # this logic can be used to set the release level.
     # For now, we set the release_level as "preview" for newly generated clients.
@@ -429,7 +429,7 @@ def _create_repo_metadata_from_service_config(
     )
 
     # TODO(https://github.com/googleapis/librarian/issues/2352): Determine if
-    # `_determine_release_level_from_api_path` can be used to
+    # `_determine_release_level` can be used to
     # set the release level. For now, we set the release_level as "preview" for
     # newly generated clients.
     release_level = "preview"
