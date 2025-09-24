@@ -115,6 +115,7 @@ def _write_json_file(path: str, updated_content: Dict):
         json.dump(updated_content, f, indent=2)
         f.write("\n")
 
+
 def _add_new_library_source_roots(library_config: Dict, library_id: str) -> None:
     """Adds the default source_roots to the library configuration if not present.
 
@@ -320,13 +321,22 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
     """
 
     path_to_library = f"packages/{library_id}"
+    repo_metadata_path = f"{input}/{path_to_library}/.repo-metadata.json"
 
     # We need to create these directories so that we can copy files necessary for post-processing.
-    os.makedirs(f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True)
-    shutil.copy(
-        f"{input}/{path_to_library}/.repo-metadata.json",
-        f"{output}/{path_to_library}/.repo-metadata.json",
+    os.makedirs(
+        f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True
     )
+    # TODO(https://github.com/googleapis/librarian/issues/2334):
+    # if `.repo-metadata.json` for a library exists in
+    # `.librarian/generator-input`, then we override the generated `.repo-metadata.json`
+    # with what we have in `generator-input`. Remove this logic once the
+    # generated `.repo-metadata.json` file is completely backfilled.
+    if os.path.exists(repo_metadata_path):
+        shutil.copy(
+            repo_metadata_path,
+            f"{output}/{path_to_library}/.repo-metadata.json",
+        )
 
     # copy post-procesing files
     for post_processing_file in glob.glob(
@@ -373,6 +383,78 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
         os.remove(gapic_version_file)
 
 
+def _create_repo_metadata_from_service_config(
+    service_config_name: str, api_path: str, source: str, library_id: str
+) -> Dict:
+    """Creates the .repo-metadata.json content from the service config.
+
+    Args:
+        service_config_name (str): The name of the service config file.
+        api_path (str): The path to the API.
+        source (str): The path to the source directory.
+        library_id (str): The ID of the library.
+
+    Returns:
+        Dict: The content of the .repo-metadata.json file.
+    """
+    full_service_config_path = f"{source}/{api_path}/{service_config_name}"
+
+    # TODO(https://github.com/googleapis/librarian/issues/2332): Read the api
+    # service config to backfill `.repo-metadata.json`.
+    return {
+        "api_shortname": "",
+        "name_pretty": "",
+        "product_documentation": "",
+        "api_description": "",
+        "client_documentation": "",
+        "issue_tracker": "",
+        "release_level": "",
+        "language": "python",
+        "library_type": "GAPIC_AUTO",
+        "repo": "googleapis/google-cloud-python",
+        "distribution_name": "",
+        "api_id": "",
+    }
+
+
+def _generate_repo_metadata_file(
+    output: str, library_id: str, source: str, apis: List[Dict]
+):
+    """Generates the .repo-metadata.json file from the primary API service config.
+
+    Args:
+        output (str): The path to the output directory.
+        library_id (str): The ID of the library.
+        source (str): The path to the source directory.
+        apis (List[Dict]): A list of APIs to generate.
+    """
+    path_to_library = f"packages/{library_id}"
+    output_repo_metadata = f"{output}/{path_to_library}/.repo-metadata.json"
+
+    # TODO(https://github.com/googleapis/librarian/issues/2334)): If `.repo-metadata.json`
+    # already exists in the `output` dir, then this means that it has been successfully copied
+    # over from the `input` dir and we can skip the logic here. Remove the following logic
+    # once we clean up all the `.repo-metadata.json` files from `.librarian/generator-input`.
+    if os.path.exists(output_repo_metadata):
+        return
+
+    os.makedirs(f"{output}/{path_to_library}", exist_ok=True)
+
+    # TODO(https://github.com/googleapis/librarian/issues/2333): Programatically
+    # determine the primary api to be used to
+    # to determine the information for metadata. For now, let's use the first
+    # api in the list.
+    primary_api = apis[0]
+
+    metadata_content = _create_repo_metadata_from_service_config(
+        primary_api.get("service_config"),
+        primary_api.get("path"),
+        source,
+        library_id,
+    )
+    _write_json_file(output_repo_metadata, metadata_content)
+
+
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
@@ -411,6 +493,7 @@ def handle_generate(
             if api_path:
                 _generate_api(api_path, library_id, source, output)
         _copy_files_needed_for_post_processing(output, input, library_id)
+        _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
         _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
@@ -961,7 +1044,9 @@ def _process_changelog(
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
                 commit_link = f"([{change[source_commit_hash_key]}]({_REPO_URL}/commit/{change[source_commit_hash_key]}))"
-                entry_parts.append(f"* {change[subject_key]} {change[body_key]} {commit_link}")
+                entry_parts.append(
+                    f"* {change[subject_key]} {change[body_key]} {commit_link}"
+                )
 
     new_entry_text = "\n".join(entry_parts)
     anchor_pattern = re.compile(

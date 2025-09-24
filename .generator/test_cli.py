@@ -37,9 +37,11 @@ from cli import (
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
+    _create_repo_metadata_from_service_config,
     _determine_generator_command,
     _determine_library_namespace,
     _generate_api,
+    _generate_repo_metadata_file,
     _get_api_generator_options,
     _get_library_dist_name,
     _get_library_id,
@@ -742,13 +744,28 @@ def test_invalid_json(mocker):
         _read_json_file("fake/path.json")
 
 
-def test_copy_files_needed_for_post_processing_success(mocker):
+def test_copy_files_needed_for_post_processing_copies_metadata_if_exists(mocker):
+    """Tests that .repo-metadata.json is copied if it exists."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
+    mocker.patch("os.path.exists", return_value=True)
+
     _copy_files_needed_for_post_processing("output", "input", "library_id")
 
-    mock_makedirs.assert_called()
     mock_shutil_copy.assert_called_once()
+    mock_makedirs.assert_called()
+
+
+def test_copy_files_needed_for_post_processing_skips_metadata_if_not_exists(mocker):
+    """Tests that .repo-metadata.json is not copied if it does not exist."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mocker.patch("os.path.exists", return_value=False)
+
+    _copy_files_needed_for_post_processing("output", "input", "library_id")
+
+    mock_shutil_copy.assert_not_called()
+    mock_makedirs.assert_called()
 
 
 def test_clean_up_files_after_post_processing_success(mocker):
@@ -1089,6 +1106,64 @@ def test_determine_library_namespace_success(
 
     namespace = _determine_library_namespace(gapic_parent_path, pkg_root_path)
     assert namespace == expected_namespace
+
+
+def test_create_repo_metadata_from_service_config():
+    """Tests the creation of .repo-metadata.json content."""
+    service_config_name = "service_config.yaml"
+    api_path = "google/cloud/language/v1"
+    source = "/source"
+    library_id = "google-cloud-language"
+
+    metadata = _create_repo_metadata_from_service_config(
+        service_config_name, api_path, source, library_id
+    )
+
+    assert metadata["language"] == "python"
+    assert metadata["library_type"] == "GAPIC_AUTO"
+    assert metadata["repo"] == "googleapis/google-cloud-python"
+
+
+def test_generate_repo_metadata_file(mocker):
+    """Tests the generation of the .repo-metadata.json file."""
+    mock_write_json = mocker.patch("cli._write_json_file")
+    mock_create_metadata = mocker.patch(
+        "cli._create_repo_metadata_from_service_config",
+        return_value={"repo": "googleapis/google-cloud-python"},
+    )
+    mocker.patch("os.makedirs")
+
+    output = "/output"
+    library_id = "google-cloud-language"
+    source = "/source"
+    apis = [
+        {
+            "service_config": "service_config.yaml",
+            "path": "google/cloud/language/v1",
+        }
+    ]
+
+    _generate_repo_metadata_file(output, library_id, source, apis)
+
+    mock_create_metadata.assert_called_once_with(
+        "service_config.yaml", "google/cloud/language/v1", source, library_id
+    )
+    mock_write_json.assert_called_once_with(
+        f"{output}/packages/{library_id}/.repo-metadata.json",
+        {"repo": "googleapis/google-cloud-python"},
+    )
+
+
+def test_generate_repo_metadata_file_skips_if_exists(mocker):
+    """Tests that the generation of the .repo-metadata.json file is skipped if it already exists."""
+    mock_write_json = mocker.patch("cli._write_json_file")
+    mock_create_metadata = mocker.patch("cli._create_repo_metadata_from_service_config")
+    mocker.patch("os.path.exists", return_value=True)
+
+    _generate_repo_metadata_file("output", "library_id", "source", [])
+
+    mock_create_metadata.assert_not_called()
+    mock_write_json.assert_not_called()
 
 
 def test_determine_library_namespace_fails_not_subpath():
