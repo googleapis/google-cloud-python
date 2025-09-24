@@ -401,11 +401,11 @@ def _create_repo_metadata_from_service_config(
     with open(full_service_config_path, "r") as f:
         service_config = yaml.safe_load(f)
 
+    api_id = service_config.get("name", {})
     publishing = service_config.get("publishing", {})
     name_pretty = service_config.get("title", "")
-    product_documentation = publishing.get("product_documentation", "")
+    product_documentation = publishing.get("documentation_uri", "")
     api_shortname = service_config.get("name", "").split(".")[0]
-    distribution_name = publishing.get("library_name", library_id)
     documentation = service_config.get("documentation", {})
     api_description = documentation.get("summary", "")
     issue_tracker = service_config.get("new_issue_uri", "https://github.com/googleapis/google-cloud-python/issues")
@@ -419,14 +419,14 @@ def _create_repo_metadata_from_service_config(
         "name_pretty": name_pretty,
         "product_documentation": product_documentation,
         "api_description": api_description,
-        "client_documentation": f"https://cloud.google.com/python/docs/reference/{distribution_name}/latest",
+        "client_documentation": f"https://cloud.google.com/python/docs/reference/{library_id}/latest",
         "issue_tracker": issue_tracker,
         "release_level": release_level,
         "language": "python",
         "library_type": "GAPIC_AUTO",
         "repo": "googleapis/google-cloud-python",
-        "distribution_name": distribution_name,
-        "api_id": "",  # This can be added later if needed
+        "distribution_name": library_id,
+        "api_id": api_id,
     }
 
 
