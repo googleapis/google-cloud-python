@@ -382,6 +382,9 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
 
 
 def _determine_release_level_from_api_path(api_path: str) -> str:
+    # TODO(https://github.com/googleapis/librarian/issues/2352): Determine if
+    # this logic can be used to set the release level.
+    # For now, we set the release_level as "preview" for newly generated clients.
     """Determines the release level from the API path.
 
     Args:
@@ -424,7 +427,12 @@ def _create_repo_metadata_from_service_config(
     issue_tracker = service_config.get(
         "new_issue_uri", "https://github.com/googleapis/google-cloud-python/issues"
     )
-    release_level = _determine_release_level_from_api_path(api_path)
+
+    # TODO(https://github.com/googleapis/librarian/issues/2352): Determine if
+    # `_determine_release_level_from_api_path` can be used to
+    # set the release level. For now, we set the release_level as "preview" for
+    # newly generated clients.
+    release_level = "preview"
 
     return {
         "api_shortname": api_shortname,
