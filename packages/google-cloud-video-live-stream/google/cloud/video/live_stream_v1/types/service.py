@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "UpdateChannelRequest",
         "StartChannelRequest",
         "StopChannelRequest",
+        "StartDistributionRequest",
+        "StopDistributionRequest",
         "CreateInputRequest",
         "ListInputsRequest",
         "ListInputsResponse",
@@ -65,6 +67,8 @@ __protobuf__ = proto.module(
         "OperationMetadata",
         "GetPoolRequest",
         "UpdatePoolRequest",
+        "PreviewInputRequest",
+        "PreviewInputResponse",
     },
 )
 
@@ -79,9 +83,13 @@ class CreateAssetRequest(proto.Message):
         asset (google.cloud.video.live_stream_v1.types.Asset):
             Required. The asset resource to be created.
         asset_id (str):
-            Required. The ID of the asset resource to be created. This
-            value must be 1-63 characters, begin and end with
-            ``[a-z0-9]``, could contain dashes (-) in between.
+            Required. The ID of the asset resource to be created.
+
+            This value must be 1-63 characters, begin and end with a
+            lower-case letter or a number, and consist of only
+            lower-case letters, numbers, and hyphens. In other words, it
+            must match the following regex:
+            ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
         request_id (str):
             A request ID to identify requests. Specify a unique request
             ID so that if you must retry your request, the server will
@@ -255,9 +263,13 @@ class CreateChannelRequest(proto.Message):
         channel (google.cloud.video.live_stream_v1.types.Channel):
             Required. The channel resource to be created.
         channel_id (str):
-            Required. The ID of the channel resource to be created. This
-            value must be 1-63 characters, begin and end with
-            ``[a-z0-9]``, could contain dashes (-) in between.
+            Required. The ID of the channel resource to be created.
+
+            This value must be 1-63 characters, begin and end with a
+            lower-case letter or a number, and consist of only
+            lower-case letters, numbers, and hyphens. In other words, it
+            must match the following regex:
+            ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
         request_id (str):
             A request ID to identify requests. Specify a unique request
             ID so that if you must retry your request, the server will
@@ -573,6 +585,96 @@ class StopChannelRequest(proto.Message):
     )
 
 
+class StartDistributionRequest(proto.Message):
+    r"""Request message for "LivestreamService.StartDistribution".
+
+    Attributes:
+        name (str):
+            Required. The name of the channel resource, in the form of:
+            ``projects/{project}/locations/{location}/channels/{channelId}``.
+        distribution_keys (MutableSequence[str]):
+            Optional. A list of keys to identify the
+            distribution configuration in the channel
+            resource. If left empty, all the distributions
+            in the channel specification will be started.
+        request_id (str):
+            Optional. A request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. The server will guarantee that for at least
+            60 minutes since the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    distribution_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class StopDistributionRequest(proto.Message):
+    r"""Request message for "LivestreamService.StopDistribution".
+
+    Attributes:
+        name (str):
+            Required. The name of the channel resource, in the form of:
+            ``projects/{project}/locations/{location}/channels/{channelId}``.
+        distribution_keys (MutableSequence[str]):
+            Optional. A list of key to identify the
+            distribution configuration in the channel
+            resource. If left empty, all the distributions
+            in the channel specification will be stopped.
+        request_id (str):
+            Optional. A request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. The server will guarantee that for at least
+            60 minutes since the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    distribution_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class CreateInputRequest(proto.Message):
     r"""Request message for "LivestreamService.CreateInput".
 
@@ -583,9 +685,13 @@ class CreateInputRequest(proto.Message):
         input (google.cloud.video.live_stream_v1.types.Input):
             Required. The input resource to be created.
         input_id (str):
-            Required. The ID of the input resource to be created. This
-            value must be 1-63 characters, begin and end with
-            ``[a-z0-9]``, could contain dashes (-) in between.
+            Required. The ID of the input resource to be created.
+
+            This value must be 1-63 characters, begin and end with a
+            lower-case letter or a number, and consist of only
+            lower-case letters, numbers, and hyphens. In other words, it
+            must match the following regex:
+            ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
         request_id (str):
             A request ID to identify requests. Specify a unique request
             ID so that if you must retry your request, the server will
@@ -824,9 +930,13 @@ class CreateEventRequest(proto.Message):
         event (google.cloud.video.live_stream_v1.types.Event):
             Required. The event resource to be created.
         event_id (str):
-            Required. The ID of the event resource to be created. This
-            value must be 1-63 characters, begin and end with
-            ``[a-z0-9]``, could contain dashes (-) in between.
+            Required. The ID of the event resource to be created.
+
+            This value must be 1-63 characters, begin and end with a
+            lower-case letter or a number, and consist of only
+            lower-case letters, numbers, and hyphens. In other words, it
+            must match the following regex:
+            ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
         request_id (str):
             A request ID to identify requests. Specify a unique request
             ID so that if you must retry your request, the server will
@@ -1099,12 +1209,13 @@ class CreateClipRequest(proto.Message):
             Required. The parent resource name, in the following form:
             ``projects/{project}/locations/{location}/channels/{channel}``.
         clip_id (str):
-            Required. Id of the requesting object in the
-            following form:
+            Required. The ID of the clip resource to be created.
 
-            1. 1 character minimum, 63 characters maximum
-            2. Only contains letters, digits, underscores,
-                and hyphens
+            This value must be 1-63 characters, begin and end with a
+            lower-case letter or a number, and consist of only
+            lower-case letters, numbers, and hyphens. In other words, it
+            must match the following regex:
+            ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
         clip (google.cloud.video.live_stream_v1.types.Clip):
             Required. The resource being created
         request_id (str):
@@ -1282,12 +1393,13 @@ class CreateDvrSessionRequest(proto.Message):
             Required. The parent resource name, in the following form:
             ``projects/{project}/locations/{location}/channels/{channelId}``.
         dvr_session_id (str):
-            Required. Id of the requesting object in the
-            following form:
+            Required. The ID of the DVR session resource to be created.
 
-            1. 1 character minimum, 63 characters maximum
-            2. Only contains letters, digits, underscores,
-                and hyphens
+            This value must be 1-63 characters, begin and end with a
+            lower-case letter or a number, and consist of only
+            lower-case letters, numbers, and hyphens. In other words, it
+            must match the following regex:
+            ``^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$``.
         dvr_session (google.cloud.video.live_stream_v1.types.DvrSession):
             Required. The resource being created
         request_id (str):
@@ -1539,6 +1651,45 @@ class UpdatePoolRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class PreviewInputRequest(proto.Message):
+    r"""Request message for "LivestreamService.PreviewInput".
+
+    Attributes:
+        name (str):
+            Required. The name of the input resource, in the form of:
+            ``projects/{project}/locations/{location}/inputs/{inputId}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PreviewInputResponse(proto.Message):
+    r"""Response message for "LivestreamService.PreviewInput".
+
+    Attributes:
+        uri (str):
+            URI to display the preview content.
+        bearer_token (str):
+            A bearer token used to authenticate
+            connections that display the preview content.
+            The token expires after one hour. For HTTP
+            connections, this token should be included as a
+            bearer token inside the Authorization header.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    bearer_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

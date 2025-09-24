@@ -26,6 +26,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/cloud/eventarc/v1
+        service_config: eventarc_v1.yaml
     source_roots:
       - packages/google-cloud-eventarc
     preserve_regex:
@@ -43,9 +44,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-live-stream
     version: 1.12.0
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: c4e80cd2d3321cc37cf1c3713bb02529857728d1
     apis:
       - path: google/cloud/video/livestream/v1
+        service_config: livestream_v1.yaml
     source_roots:
       - packages/google-cloud-video-live-stream
     preserve_regex:
@@ -66,6 +68,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/marketingplatform/admin/v1alpha
+        service_config: marketingplatformadmin_v1alpha.yaml
     source_roots:
       - packages/google-ads-marketingplatform-admin
     preserve_regex:
@@ -86,10 +89,15 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/ai/generativelanguage/v1
+        service_config: generativelanguage_v1.yaml
       - path: google/ai/generativelanguage/v1beta
+        service_config: generativelanguage_v1beta.yaml
       - path: google/ai/generativelanguage/v1beta3
+        service_config: generativelanguage_v1beta3.yaml
       - path: google/ai/generativelanguage/v1beta2
+        service_config: generativelanguage_v1beta2.yaml
       - path: google/ai/generativelanguage/v1alpha
+        service_config: generativelanguage_v1alpha.yaml
     source_roots:
       - packages/google-ai-generativelanguage
     preserve_regex:
@@ -110,7 +118,9 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/analytics/admin/v1beta
+        service_config: analyticsadmin_v1beta.yaml
       - path: google/analytics/admin/v1alpha
+        service_config: analyticsadmin_v1alpha.yaml
     source_roots:
       - packages/google-analytics-admin
     preserve_regex:
@@ -131,7 +141,9 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/analytics/data/v1alpha
+        service_config: analyticsdata_v1alpha.yaml
       - path: google/analytics/data/v1beta
+        service_config: analyticsdata_v1beta.yaml
     source_roots:
       - packages/google-analytics-data
     preserve_regex:
@@ -152,6 +164,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/ads/admanager/v1
+        service_config: admanager_v1.yaml
     source_roots:
       - packages/google-ads-admanager
     preserve_regex:

@@ -543,6 +543,63 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
         return self._stubs["stop_channel"]
 
     @property
+    def start_distribution(
+        self,
+    ) -> Callable[
+        [service.StartDistributionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the start distribution method over gRPC.
+
+        Starts distribution which delivers outputs to the
+        destination indicated by the Distribution configuration.
+
+        Returns:
+            Callable[[~.StartDistributionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "start_distribution" not in self._stubs:
+            self._stubs["start_distribution"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/StartDistribution",
+                request_serializer=service.StartDistributionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["start_distribution"]
+
+    @property
+    def stop_distribution(
+        self,
+    ) -> Callable[
+        [service.StopDistributionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the stop distribution method over gRPC.
+
+        Stops the specified distribution.
+
+        Returns:
+            Callable[[~.StopDistributionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stop_distribution" not in self._stubs:
+            self._stubs["stop_distribution"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/StopDistribution",
+                request_serializer=service.StopDistributionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["stop_distribution"]
+
+    @property
     def create_input(
         self,
     ) -> Callable[[service.CreateInputRequest], Awaitable[operations_pb2.Operation]]:
@@ -672,6 +729,34 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_input"]
+
+    @property
+    def preview_input(
+        self,
+    ) -> Callable[
+        [service.PreviewInputRequest], Awaitable[service.PreviewInputResponse]
+    ]:
+        r"""Return a callable for the preview input method over gRPC.
+
+        Preview the streaming content of the specified input.
+
+        Returns:
+            Callable[[~.PreviewInputRequest],
+                    Awaitable[~.PreviewInputResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "preview_input" not in self._stubs:
+            self._stubs["preview_input"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/PreviewInput",
+                request_serializer=service.PreviewInputRequest.serialize,
+                response_deserializer=service.PreviewInputResponse.deserialize,
+            )
+        return self._stubs["preview_input"]
 
     @property
     def create_event(
@@ -1235,6 +1320,16 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.start_distribution: self._wrap_method(
+                self.start_distribution,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.stop_distribution: self._wrap_method(
+                self.stop_distribution,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.create_input: self._wrap_method(
                 self.create_input,
                 default_timeout=60.0,
@@ -1275,6 +1370,11 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
             ),
             self.update_input: self._wrap_method(
                 self.update_input,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.preview_input: self._wrap_method(
+                self.preview_input,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -1346,47 +1446,65 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
             ),
             self.create_clip: self._wrap_method(
                 self.create_clip,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_clip: self._wrap_method(
                 self.delete_clip,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_dvr_session: self._wrap_method(
                 self.create_dvr_session,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_dvr_sessions: self._wrap_method(
                 self.list_dvr_sessions,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_dvr_session: self._wrap_method(
                 self.get_dvr_session,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_dvr_session: self._wrap_method(
                 self.delete_dvr_session,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_dvr_session: self._wrap_method(
                 self.update_dvr_session,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_asset: self._wrap_method(
                 self.create_asset,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_asset: self._wrap_method(
                 self.delete_asset,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_asset: self._wrap_method(
@@ -1433,7 +1551,7 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
             ),
             self.update_pool: self._wrap_method(
                 self.update_pool,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_location: self._wrap_method(

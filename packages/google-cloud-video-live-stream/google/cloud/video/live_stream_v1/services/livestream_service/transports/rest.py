@@ -271,6 +271,14 @@ class LivestreamServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_preview_input(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_preview_input(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_start_channel(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -279,11 +287,27 @@ class LivestreamServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_start_distribution(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_start_distribution(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_stop_channel(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_stop_channel(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_stop_distribution(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_stop_distribution(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1433,6 +1457,52 @@ class LivestreamServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_preview_input(
+        self,
+        request: service.PreviewInputRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.PreviewInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for preview_input
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_preview_input(
+        self, response: service.PreviewInputResponse
+    ) -> service.PreviewInputResponse:
+        """Post-rpc interceptor for preview_input
+
+        DEPRECATED. Please use the `post_preview_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code. This `post_preview_input` interceptor runs
+        before the `post_preview_input_with_metadata` interceptor.
+        """
+        return response
+
+    def post_preview_input_with_metadata(
+        self,
+        response: service.PreviewInputResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.PreviewInputResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for preview_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_preview_input_with_metadata`
+        interceptor in new development instead of the `post_preview_input` interceptor.
+        When both interceptors are used, this `post_preview_input_with_metadata` interceptor runs after the
+        `post_preview_input` interceptor. The (possibly modified) response returned by
+        `post_preview_input` will be passed to
+        `post_preview_input_with_metadata`.
+        """
+        return response, metadata
+
     def pre_start_channel(
         self,
         request: service.StartChannelRequest,
@@ -1479,6 +1549,54 @@ class LivestreamServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_start_distribution(
+        self,
+        request: service.StartDistributionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.StartDistributionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for start_distribution
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_start_distribution(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for start_distribution
+
+        DEPRECATED. Please use the `post_start_distribution_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code. This `post_start_distribution` interceptor runs
+        before the `post_start_distribution_with_metadata` interceptor.
+        """
+        return response
+
+    def post_start_distribution_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_distribution
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_start_distribution_with_metadata`
+        interceptor in new development instead of the `post_start_distribution` interceptor.
+        When both interceptors are used, this `post_start_distribution_with_metadata` interceptor runs after the
+        `post_start_distribution` interceptor. The (possibly modified) response returned by
+        `post_start_distribution` will be passed to
+        `post_start_distribution_with_metadata`.
+        """
+        return response, metadata
+
     def pre_stop_channel(
         self,
         request: service.StopChannelRequest,
@@ -1522,6 +1640,54 @@ class LivestreamServiceRestInterceptor:
         `post_stop_channel` interceptor. The (possibly modified) response returned by
         `post_stop_channel` will be passed to
         `post_stop_channel_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_stop_distribution(
+        self,
+        request: service.StopDistributionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.StopDistributionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for stop_distribution
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_stop_distribution(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for stop_distribution
+
+        DEPRECATED. Please use the `post_stop_distribution_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code. This `post_stop_distribution` interceptor runs
+        before the `post_stop_distribution_with_metadata` interceptor.
+        """
+        return response
+
+    def post_stop_distribution_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for stop_distribution
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_stop_distribution_with_metadata`
+        interceptor in new development instead of the `post_stop_distribution` interceptor.
+        When both interceptors are used, this `post_stop_distribution_with_metadata` interceptor runs after the
+        `post_stop_distribution` interceptor. The (possibly modified) response returned by
+        `post_stop_distribution` will be passed to
+        `post_stop_distribution_with_metadata`.
         """
         return response, metadata
 
@@ -5702,6 +5868,159 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
+    class _PreviewInput(
+        _BaseLivestreamServiceRestTransport._BasePreviewInput, LivestreamServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("LivestreamServiceRestTransport.PreviewInput")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.PreviewInputRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> service.PreviewInputResponse:
+            r"""Call the preview input method over HTTP.
+
+            Args:
+                request (~.service.PreviewInputRequest):
+                    The request object. Request message for
+                "LivestreamService.PreviewInput".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.service.PreviewInputResponse:
+                    Response message for
+                "LivestreamService.PreviewInput"
+
+            """
+
+            http_options = (
+                _BaseLivestreamServiceRestTransport._BasePreviewInput._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_preview_input(request, metadata)
+            transcoded_request = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.PreviewInput",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "PreviewInput",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = LivestreamServiceRestTransport._PreviewInput._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.PreviewInputResponse()
+            pb_resp = service.PreviewInputResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_preview_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_preview_input_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.PreviewInputResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.preview_input",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "PreviewInput",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _StartChannel(
         _BaseLivestreamServiceRestTransport._BaseStartChannel, LivestreamServiceRestStub
     ):
@@ -5854,6 +6173,161 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
+    class _StartDistribution(
+        _BaseLivestreamServiceRestTransport._BaseStartDistribution,
+        LivestreamServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("LivestreamServiceRestTransport.StartDistribution")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.StartDistributionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the start distribution method over HTTP.
+
+            Args:
+                request (~.service.StartDistributionRequest):
+                    The request object. Request message for
+                "LivestreamService.StartDistribution".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_start_distribution(
+                request, metadata
+            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.StartDistribution",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "StartDistribution",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = LivestreamServiceRestTransport._StartDistribution._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_start_distribution(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_distribution_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.start_distribution",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "StartDistribution",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _StopChannel(
         _BaseLivestreamServiceRestTransport._BaseStopChannel, LivestreamServiceRestStub
     ):
@@ -6000,6 +6474,161 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
                         "rpcName": "StopChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _StopDistribution(
+        _BaseLivestreamServiceRestTransport._BaseStopDistribution,
+        LivestreamServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("LivestreamServiceRestTransport.StopDistribution")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.StopDistributionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the stop distribution method over HTTP.
+
+            Args:
+                request (~.service.StopDistributionRequest):
+                    The request object. Request message for
+                "LivestreamService.StopDistribution".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_stop_distribution(
+                request, metadata
+            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.StopDistribution",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "StopDistribution",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = LivestreamServiceRestTransport._StopDistribution._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_stop_distribution(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stop_distribution_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.stop_distribution",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "StopDistribution",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -6803,6 +7432,14 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
         return self._ListInputs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def preview_input(
+        self,
+    ) -> Callable[[service.PreviewInputRequest], service.PreviewInputResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._PreviewInput(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def start_channel(
         self,
     ) -> Callable[[service.StartChannelRequest], operations_pb2.Operation]:
@@ -6811,12 +7448,28 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
         return self._StartChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def start_distribution(
+        self,
+    ) -> Callable[[service.StartDistributionRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StartDistribution(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def stop_channel(
         self,
     ) -> Callable[[service.StopChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopChannel(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stop_distribution(
+        self,
+    ) -> Callable[[service.StopDistributionRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StopDistribution(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_channel(
