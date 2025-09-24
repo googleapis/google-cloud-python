@@ -3,6 +3,7 @@
 # all of the message and gRPC definitions.
 
 from google.longrunning.operations_pb2_grpc import *
+from google.longrunning.operations_proto_pb2 import *
 from google.longrunning.operations_proto_pb2 import (
     _CANCELOPERATIONREQUEST,
     _DELETEOPERATIONREQUEST,
@@ -13,4 +14,3 @@ from google.longrunning.operations_proto_pb2 import (
     _OPERATIONINFO,
     _OPERATIONS,
 )
-from google.longrunning.operations_proto_pb2 import *
