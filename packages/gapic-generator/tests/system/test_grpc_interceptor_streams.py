@@ -37,8 +37,10 @@ def test_unary_stream(intercepted_echo_grpc):
     response_metadata = [
         (metadata.key, metadata.value) for metadata in responses.trailing_metadata()
     ]
+    assert intercepted_metadata[0] in interceptor.request_metadata
     assert intercepted_metadata[0] in response_metadata
-    interceptor.response_metadata = response_metadata
+    interceptor._read_response_metadata_stream()
+    assert intercepted_metadata[0] in interceptor.response_metadata
 
 
 def test_stream_stream(intercepted_echo_grpc):
@@ -54,5 +56,7 @@ def test_stream_stream(intercepted_echo_grpc):
     response_metadata = [
         (metadata.key, metadata.value) for metadata in responses.trailing_metadata()
     ]
+    assert intercepted_metadata[0] in interceptor.request_metadata
     assert intercepted_metadata[0] in response_metadata
-    interceptor.response_metadata = response_metadata
+    interceptor._read_response_metadata_stream()
+    assert intercepted_metadata[0] in interceptor.response_metadata

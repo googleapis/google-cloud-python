@@ -17,6 +17,7 @@ import grpc
 from unittest import mock
 import os
 import pytest
+import pytest_asyncio
 
 from typing import Sequence, Tuple
 
@@ -60,6 +61,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     except:
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = False
 
+    _GRPC_VERSION = grpc.__version__
+
     # TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
     # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
     def async_anonymous_credentials():
@@ -79,7 +82,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     def event_loop():
         return asyncio.get_event_loop()
 
-    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    @pytest_asyncio.fixture(params=["grpc_asyncio", "rest_asyncio"])
     def async_echo(use_mtls, request, event_loop):
         transport = request.param
         if transport == "rest_asyncio" and not HAS_ASYNC_REST_ECHO_TRANSPORT:
@@ -94,7 +97,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             credentials=async_anonymous_credentials(),
         )
 
-    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    @pytest_asyncio.fixture(params=["grpc_asyncio", "rest_asyncio"])
     def async_identity(use_mtls, request, event_loop):
         transport = request.param
         if transport == "rest_asyncio" and not HAS_ASYNC_REST_IDENTITY_TRANSPORT:
@@ -310,8 +313,17 @@ class EchoMetadataClientGrpcInterceptor(
 
     def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
+            # https://grpc.github.io/grpc/python/glossary.html#term-metadata.
+            # For sync, `ClientCallDetails.metadata` is a list.
+            # Whereas for async, `ClientCallDetails.metadata` is a mapping.
+            # https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.Metadata
             client_call_details.metadata.append((self._key, self._value))
             self.request_metadata = client_call_details.metadata
+
+    def _read_response_metadata_stream(self):
+        # Access the metadata via the original stream object
+        if hasattr(self, "_original_stream"):
+            self.response_metadata = self._original_stream.trailing_metadata()
 
     def intercept_unary_unary(self, continuation, client_call_details, request):
         self._add_request_metadata(client_call_details)
@@ -323,6 +335,7 @@ class EchoMetadataClientGrpcInterceptor(
     def intercept_unary_stream(self, continuation, client_call_details, request):
         self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request)
+        self._original_stream = response_it
         return response_it
 
     def intercept_stream_unary(
@@ -337,6 +350,7 @@ class EchoMetadataClientGrpcInterceptor(
     ):
         self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request_iterator)
+        self._original_stream = response_it
         return response_it
 
 
@@ -354,8 +368,21 @@ class EchoMetadataClientGrpcAsyncInterceptor(
 
     async def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
-            client_call_details.metadata.append((self._key, self._value))
-            self.request_metadata = client_call_details.metadata
+            # As of gRPC 1.75.0 and newer,
+            # https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.Metadata
+            # Note that for async, `ClientCallDetails.metadata` is a mapping.
+            # Whereas for sync, `ClientCallDetails.metadata` is a list.
+            # https://grpc.github.io/grpc/python/glossary.html#term-metadata.
+            # Prior to gRPC 1.75.0, `ClientCallDetails.metadata` is a list
+            # for both sync and async.
+            grpc_major, grpc_minor = [
+                int(part) for part in _GRPC_VERSION.split(".")[0:2]
+            ]
+            if grpc_major == 1 and grpc_minor < 75:
+                client_call_details.metadata.append((self._key, self._value))
+            else:
+                client_call_details.metadata[self._key] = self._value
+            self.request_metadata = list(client_call_details.metadata)
 
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         await self._add_request_metadata(client_call_details)
@@ -407,8 +434,8 @@ def intercepted_echo_grpc(use_mtls):
     return EchoClient(transport=transport), interceptor
 
 
-@pytest.fixture
-def intercepted_echo_grpc_async():
+@pytest_asyncio.fixture
+async def intercepted_echo_grpc_async():
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.

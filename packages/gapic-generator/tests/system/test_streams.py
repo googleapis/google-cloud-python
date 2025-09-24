@@ -19,6 +19,9 @@ import threading
 from google import showcase
 
 
+# `_METADATA` will be sent as part of the request, and the
+# showcase server will echo it (since it has key 'showcase-trailer') as trailing
+# metadata.
 _METADATA = (("showcase-trailer", "hello world"),)
 
 
