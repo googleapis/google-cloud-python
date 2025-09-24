@@ -4,6 +4,55 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.3.0...google-cloud-geminidataanalytics-v0.4.0) (2025-09-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing message `RetrieveBigQueryTableContextsRequest` is removed
+* An existing message `RetrieveBigQueryTableContextsResponse` is removed
+* An existing message `RetrieveBigQueryTableContextsFromRecentTablesRequest` is removed
+* An existing message `RetrieveBigQueryTableContextsFromRecentTablesResponse` is removed
+* An existing message `RetrieveBigQueryTableSuggestedDescriptionsRequest` is removed
+* An existing message `RetrieveBigQueryTableSuggestedDescriptionsResponse` is removed
+* An existing message `RetrieveBigQueryTableSuggestedExamplesRequest` is removed
+* An existing message `RetrieveBigQueryTableSuggestedExamplesResponse` is removed
+* An existing message `RetrieveBigQueryRecentRelevantTablesRequest` is removed
+* An existing message `RetrieveBigQueryRecentRelevantTablesResponse` is removed
+* An existing message `DirectLookup` is removed
+* An existing message `TableCandidate` is removed
+* An existing service `ContextRetrievalService` is removed
+
+### Bug Fixes
+
+* An existing message `DirectLookup` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryRecentRelevantTablesRequest` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryRecentRelevantTablesResponse` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryTableContextsFromRecentTablesRequest` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryTableContextsFromRecentTablesResponse` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryTableContextsRequest` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryTableContextsResponse` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryTableSuggestedDescriptionsRequest` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryTableSuggestedDescriptionsResponse` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryTableSuggestedExamplesRequest` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `RetrieveBigQueryTableSuggestedExamplesResponse` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing message `TableCandidate` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* An existing service `ContextRetrievalService` is removed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+
+
+### Documentation
+
+* A comment for field `description` in message `.google.cloud.geminidataanalytics.v1alpha.Schema` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* A comment for field `example_queries` in message `.google.cloud.geminidataanalytics.v1alpha.Context` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* A comment for field `filter` in message `.google.cloud.geminidataanalytics.v1alpha.ListConversationsRequest` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* A comment for field `name` in message `.google.cloud.geminidataanalytics.v1alpha.Conversation` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* A comment for field `name` in message `.google.cloud.geminidataanalytics.v1alpha.DataAgent` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* A comment for field `synonyms` in message `.google.cloud.geminidataanalytics.v1alpha.Field` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* A comment for field `synonyms` in message `.google.cloud.geminidataanalytics.v1alpha.Schema` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* A comment for field `tags` in message `.google.cloud.geminidataanalytics.v1alpha.Field` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* A comment for field `tags` in message `.google.cloud.geminidataanalytics.v1alpha.Schema` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+* A comment for message `ExampleQuery` is changed ([a336184](https://github.com/googleapis/google-cloud-python/commit/a336184b9e2f327251ff1785283b3eebf1a36b6d))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.2.0...google-cloud-geminidataanalytics-v0.3.0) (2025-08-29)
 
 
