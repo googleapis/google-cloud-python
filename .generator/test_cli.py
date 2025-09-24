@@ -40,7 +40,7 @@ from cli import (
     _create_repo_metadata_from_service_config,
     _determine_generator_command,
     _determine_library_namespace,
-    _determine_release_level_from_api_path,
+    _determine_release_level,
     _generate_api,
     _generate_repo_metadata_file,
     _get_api_generator_options,
@@ -1113,21 +1113,21 @@ def test_determine_library_namespace_success(
 def test_determine_release_level_alpha_is_preview():
     """Tests that the release level is preview for alpha versions."""
     api_path = "google/cloud/language/v1alpha1"
-    release_level = _determine_release_level_from_api_path(api_path)
+    release_level = _determine_release_level(api_path)
     assert release_level == "preview"
 
 
 def test_determine_release_level_beta_is_preview():
     """Tests that the release level is preview for beta versions."""
     api_path = "google/cloud/language/v1beta1"
-    release_level = _determine_release_level_from_api_path(api_path)
+    release_level = _determine_release_level(api_path)
     assert release_level == "preview"
 
 
 def test_determine_release_level_stable():
     """Tests that the release level is stable."""
     api_path = "google/cloud/language/v1"
-    release_level = _determine_release_level_from_api_path(api_path)
+    release_level = _determine_release_level(api_path)
     assert release_level == "stable"
 
 
