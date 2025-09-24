@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-eventarc/#history
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.15.3...google-cloud-eventarc-v1.16.0) (2025-09-24)
+
+
+### Documentation
+
+* [google-cloud-eventarc] correct some comments  ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+
+
+### Features
+
+* [google-cloud-eventarc] add new fields to Eventarc resources  ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+
+
+### Bug Fixes
+
+* [google-cloud-eventarc] upgrade gRPC service registration func An update to Go gRPC Protobuf generation will change service
+registration function signatures to use an interface instead of a
+concrete type in generated .pb.go service files. This change should
+affect very few client library users. See release notes advisories in
+https://github.com/googleapis/google-cloud-go/pull/11025. ([26730096e491346f02af2a82138224a110485e74](https://github.com/googleapis/google-cloud-python/commit/26730096e491346f02af2a82138224a110485e74))
+
 ## [1.15.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.15.2...google-cloud-eventarc-v1.15.3) (2025-06-11)
 
 
