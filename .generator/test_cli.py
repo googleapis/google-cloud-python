@@ -1134,6 +1134,18 @@ def test_generate_repo_metadata_file(mocker):
     )
 
 
+def test_generate_repo_metadata_file_skips_if_exists(mocker):
+    """Tests that the generation of the .repo-metadata.json file is skipped if it already exists."""
+    mock_write_json = mocker.patch("cli._write_json_file")
+    mock_create_metadata = mocker.patch("cli._create_repo_metadata_from_service_config")
+    mocker.patch("os.path.exists", return_value=True)
+
+    _generate_repo_metadata_file("output", "library_id", "source", [])
+
+    mock_create_metadata.assert_not_called()
+    mock_write_json.assert_not_called()
+
+
 def test_determine_library_namespace_fails_not_subpath():
     """Tests that a ValueError is raised if the gapic path is not inside the package root."""
     pkg_root_path = Path("repo/packages/my-lib")

@@ -418,6 +418,13 @@ def _generate_repo_metadata_file(
     path_to_library = f"packages/{library_id}"
     output_repo_metadata = f"{output}/{path_to_library}/.repo-metadata.json"
 
+    # TODO(https://github.com/googleapis/librarian/issues/2334)): If `.repo-metadata.json`
+    # already exists in the `output` dir, then this means that it has been successfully copied
+    # over from the `input` dir and we can skip the logic here. Remove the following logic
+    # once we clean up all the `.repo-metadata.json` files from `.librarian/generator-input`.
+    if os.path.exists(output_repo_metadata):
+        return
+
     os.makedirs(f"{output}/{path_to_library}", exist_ok=True)
 
     # TODO(https://github.com/googleapis/librarian/issues/2333): Programatically
@@ -472,8 +479,8 @@ def handle_generate(
             api_path = api.get("path")
             if api_path:
                 _generate_api(api_path, library_id, source, output)
-        _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _copy_files_needed_for_post_processing(output, input, library_id)
+        _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
         _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
