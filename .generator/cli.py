@@ -187,6 +187,18 @@ def _get_new_library_config(request_data: Dict) -> Dict:
     return {}
 
 
+def _add_new_library_version(
+    library_config: Dict
+) -> None:
+    """Adds the library version to the configuration if it's not present.
+
+    Args:
+        library_config(Dict): The library configuration.
+    """
+    if "version" not in library_config or not library_config["version"]:
+        library_config["version"] = "0.0.0"
+
+
 def _prepare_new_library_config(library_config: Dict) -> Dict:
     """
     Prepares the new library's configuration by removing temporary keys and
@@ -209,6 +221,7 @@ def _prepare_new_library_config(library_config: Dict) -> Dict:
     _add_new_library_preserve_regex(library_config, library_id)
     _add_new_library_remove_regex(library_config, library_id)
     _add_new_library_tag_format(library_config)
+    _add_new_library_version(library_config)
 
     return library_config
 

@@ -46,6 +46,7 @@ from cli import (
     _get_libraries_to_prepare_for_release,
     _get_new_library_config,
     _get_previous_version,
+    _add_new_library_version,
     _prepare_new_library_config,
     _process_changelog,
     _process_version_file,
@@ -171,6 +172,7 @@ def mock_configure_request_data():
             {
                 "id": "google-cloud-language",
                 "apis": [{"path": "google/cloud/language/v1", "status": "new"}],
+                "version": "",
             }
         ]
     }
@@ -320,7 +322,7 @@ def test_get_new_library_config_empty_input():
     assert config == {}
 
 
-def test_prepare_new_library_config():
+def test_prepare_new_library_config(mocker):
     """Tests the preparation of a new library's configuration."""
     raw_config = {
         "id": "google-cloud-language",
@@ -328,6 +330,7 @@ def test_prepare_new_library_config():
         "source_roots": None,
         "preserve_regex": None,
         "remove_regex": None,
+        "version": "",
     }
 
     prepared_config = _prepare_new_library_config(raw_config)
@@ -342,9 +345,10 @@ def test_prepare_new_library_config():
     )
     assert prepared_config["remove_regex"] == ["packages/google-cloud-language"]
     assert prepared_config["tag_format"] == "{{id}}-v{{version}}"
+    assert prepared_config["version"] == "0.0.0"
 
 
-def test_prepare_new_library_config_preserves_existing_values():
+def test_prepare_new_library_config_preserves_existing_values(mocker):
     """Tests that existing values in the config are not overwritten."""
     raw_config = {
         "id": "google-cloud-language",
@@ -353,6 +357,7 @@ def test_prepare_new_library_config_preserves_existing_values():
         "preserve_regex": ["custom/regex"],
         "remove_regex": ["custom/remove"],
         "tag_format": "custom-format-{{version}}",
+        "version": "4.5.6",
     }
 
     prepared_config = _prepare_new_library_config(raw_config)
@@ -364,6 +369,21 @@ def test_prepare_new_library_config_preserves_existing_values():
     assert prepared_config["preserve_regex"] == ["custom/regex"]
     assert prepared_config["remove_regex"] == ["custom/remove"]
     assert prepared_config["tag_format"] == "custom-format-{{version}}"
+    assert prepared_config["version"] == "4.5.6"
+
+
+def test_add_new_library_version_populates_version(mocker):
+    """Tests that the version is populated if it's missing."""
+    config = {"version": ""}
+    _add_new_library_version(config)
+    assert config["version"] == "0.0.0"
+
+
+def test_add_new_library_version_preserves_version():
+    """Tests that an existing version is preserved."""
+    config = {"version": "4.5.6"}
+    _add_new_library_version(config)
+    assert config["version"] == "4.5.6"
 
 
 def test_get_library_id_success():
