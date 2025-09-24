@@ -24,14 +24,6 @@ pytest.importorskip("polars")
 pytest.importorskip("pandas", minversion="2.0.0")
 
 
-# All tests in this file require polars to be installed to pass.
-@pytest.fixture(scope="module")
-def polars_session():
-    from bigframes.testing import polars_session
-
-    return polars_session.TestSession()
-
-
 @pytest.fixture(scope="module")
 def small_inline_frame() -> pd.DataFrame:
     df = pd.DataFrame(

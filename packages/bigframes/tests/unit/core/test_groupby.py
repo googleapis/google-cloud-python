@@ -23,14 +23,6 @@ pytest.importorskip("polars")
 pytest.importorskip("pandas", minversion="2.0.0")
 
 
-# All tests in this file require polars to be installed to pass.
-@pytest.fixture(scope="module")
-def polars_session():
-    from bigframes.testing import polars_session
-
-    return polars_session.TestSession()
-
-
 def test_groupby_df_iter_by_key_singular(polars_session):
     pd_df = pd.DataFrame({"colA": ["a", "a", "b", "c", "c"], "colB": [1, 2, 3, 4, 5]})
     bf_df = bpd.DataFrame(pd_df, session=polars_session)

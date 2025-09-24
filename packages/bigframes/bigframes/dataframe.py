@@ -2006,6 +2006,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         self._set_block(block)
 
+    @overload
     def drop(
         self,
         labels: typing.Any = None,
@@ -2014,7 +2015,33 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         index: typing.Any = None,
         columns: Union[blocks.Label, Sequence[blocks.Label]] = None,
         level: typing.Optional[LevelType] = None,
+        inplace: Literal[False] = False,
     ) -> DataFrame:
+        ...
+
+    @overload
+    def drop(
+        self,
+        labels: typing.Any = None,
+        *,
+        axis: typing.Union[int, str] = 0,
+        index: typing.Any = None,
+        columns: Union[blocks.Label, Sequence[blocks.Label]] = None,
+        level: typing.Optional[LevelType] = None,
+        inplace: Literal[True],
+    ) -> None:
+        ...
+
+    def drop(
+        self,
+        labels: typing.Any = None,
+        *,
+        axis: typing.Union[int, str] = 0,
+        index: typing.Any = None,
+        columns: Union[blocks.Label, Sequence[blocks.Label]] = None,
+        level: typing.Optional[LevelType] = None,
+        inplace: bool = False,
+    ) -> Optional[DataFrame]:
         if labels:
             if index or columns:
                 raise ValueError("Cannot specify both 'labels' and 'index'/'columns")
@@ -2056,7 +2083,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                         inverse_condition_id, ops.invert_op
                     )
             elif isinstance(index, indexes.Index):
-                return self._drop_by_index(index)
+                dropped_block = self._drop_by_index(index)._get_block()
+                if inplace:
+                    self._set_block(dropped_block)
+                    return None
+                return DataFrame(dropped_block)
             else:
                 block, condition_id = block.project_expr(
                     ops.ne_op.as_expr(level_id, ex.const(index))
@@ -2068,7 +2099,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             block = block.drop_columns(self._sql_names(columns))
         if index is None and not columns:
             raise ValueError("Must specify 'labels' or 'index'/'columns")
-        return DataFrame(block)
+
+        if inplace:
+            self._set_block(block)
+            return None
+        else:
+            return DataFrame(block)
 
     def _drop_by_index(self, index: indexes.Index) -> DataFrame:
         block = index._block
