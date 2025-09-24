@@ -1110,18 +1110,18 @@ def test_determine_library_namespace_success(
     assert namespace == expected_namespace
 
 
-def test_determine_release_level_alpha():
-    """Tests that the release level is alpha."""
+def test_determine_release_level_alpha_is_preview():
+    """Tests that the release level is preview for alpha versions."""
     api_path = "google/cloud/language/v1alpha1"
     release_level = _determine_release_level_from_api_path(api_path)
-    assert release_level == "alpha"
+    assert release_level == "preview"
 
 
-def test_determine_release_level_beta():
-    """Tests that the release level is beta."""
+def test_determine_release_level_beta_is_preview():
+    """Tests that the release level is preview for beta versions."""
     api_path = "google/cloud/language/v1beta1"
     release_level = _determine_release_level_from_api_path(api_path)
-    assert release_level == "beta"
+    assert release_level == "preview"
 
 
 def test_determine_release_level_stable():

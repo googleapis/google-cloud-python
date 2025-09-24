@@ -388,10 +388,12 @@ def _determine_release_level_from_api_path(api_path: str) -> str:
         api_path (str): The path to the API.
 
     Returns:
-        str: The release level, which can be 'alpha', 'beta', or 'stable'.
+        str: The release level, which can be 'preview' or 'stable'.
     """
     version = Path(api_path).name
-    return next((level for level in ["beta", "alpha"] if level in version), "stable")
+    if "beta" in version or "alpha" in version:
+        return "preview"
+    return "stable"
 
 
 def _create_repo_metadata_from_service_config(
