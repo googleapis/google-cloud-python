@@ -444,7 +444,6 @@ def _create_repo_metadata_from_service_config(
         # TODO(https://github.com/googleapis/librarian/issues/2369):
         # Remove the dependency on `default_version` for Python post processor.
         "default_version": Path(api_path).name,
-        "codeowner_team": "",
         "api_shortname": api_shortname,
     }
 
