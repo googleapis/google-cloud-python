@@ -519,6 +519,8 @@ class RankOp(UnaryWindowOp):
 
 @dataclasses.dataclass(frozen=True)
 class DenseRankOp(UnaryWindowOp):
+    name: ClassVar[str] = "dense_rank"
+
     @property
     def skips_nulls(self):
         return False

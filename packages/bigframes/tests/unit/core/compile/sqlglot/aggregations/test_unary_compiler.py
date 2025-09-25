@@ -17,7 +17,14 @@ import typing
 import pytest
 
 from bigframes.core import agg_expressions as agg_exprs
-from bigframes.core import array_value, identifiers, nodes
+from bigframes.core import (
+    array_value,
+    expression,
+    identifiers,
+    nodes,
+    ordering,
+    window_spec,
+)
 from bigframes.operations import aggregations as agg_ops
 import bigframes.pandas as bpd
 
@@ -38,11 +45,41 @@ def _apply_unary_agg_ops(
     return sql
 
 
+def _apply_unary_window_op(
+    obj: bpd.DataFrame,
+    op: agg_exprs.UnaryAggregation,
+    window_spec: window_spec.WindowSpec,
+    new_name: str,
+) -> str:
+    win_node = nodes.WindowOpNode(
+        obj._block.expr.node,
+        expression=op,
+        window_spec=window_spec,
+        output_name=identifiers.ColumnId(new_name),
+    )
+    result = array_value.ArrayValue(win_node).select_columns([new_name])
+
+    sql = result.session._executor.to_sql(result, enable_cache=False)
+    return sql
+
+
 def test_count(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]
     agg_expr = agg_ops.CountOp().as_expr(col_name)
     sql = _apply_unary_agg_ops(bf_df, [agg_expr], [col_name])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_dense_rank(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "int64_col"
+    bf_df = scalar_types_df[[col_name]]
+    agg_expr = agg_exprs.UnaryAggregation(
+        agg_ops.DenseRankOp(), expression.deref(col_name)
+    )
+    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    sql = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -100,6 +137,17 @@ def test_min(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[[col_name]]
     agg_expr = agg_ops.MinOp().as_expr(col_name)
     sql = _apply_unary_agg_ops(bf_df, [agg_expr], [col_name])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_rank(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "int64_col"
+    bf_df = scalar_types_df[[col_name]]
+    agg_expr = agg_exprs.UnaryAggregation(agg_ops.RankOp(), expression.deref(col_name))
+
+    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    sql = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
 
     snapshot.assert_match(sql, "out.sql")
 
