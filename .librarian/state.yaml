@@ -13,6 +13,7 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
@@ -32,6 +33,7 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
@@ -51,6 +53,7 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
@@ -70,6 +73,7 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
@@ -97,6 +101,7 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
@@ -118,6 +123,7 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
@@ -139,6 +145,7 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
@@ -158,6 +165,7 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
@@ -177,6 +185,7 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
@@ -197,28 +206,10 @@ libraries:
       - docs/CHANGELOG.md
       - docs/README.rst
       - samples/README.txt
+      - tar.gz
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
     remove_regex:
       - packages/google-apps-chat
-    tag_format: '{id}-v{version}'
-  - id: google-cloud-gkerecommender
-    version: 0.0.0
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
-    apis:
-      - path: google/cloud/gkerecommender/v1
-        service_config: gkerecommender_v1.yaml
-    source_roots:
-      - packages/google-cloud-gkerecommender
-    preserve_regex:
-      - packages/google-cloud-gkerecommender/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
-    remove_regex:
-      - packages/google-cloud-gkerecommender
     tag_format: '{id}-v{version}'
