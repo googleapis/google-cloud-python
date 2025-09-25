@@ -3,3 +3,5 @@ gapic-generator>=1.27.0
 nox
 starlark-pyo3>=2025.1
 build
+black==23.7.0
+isort==5.11.0
