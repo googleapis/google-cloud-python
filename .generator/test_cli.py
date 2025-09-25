@@ -347,7 +347,7 @@ def test_prepare_new_library_config(mocker):
         in prepared_config["preserve_regex"]
     )
     assert prepared_config["remove_regex"] == ["packages/google-cloud-language"]
-    assert prepared_config["tag_format"] == "{{id}}-v{{version}}"
+    assert prepared_config["tag_format"] == "{id}-v{version}"
     assert prepared_config["version"] == "0.0.0"
 
 
