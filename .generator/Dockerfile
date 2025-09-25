@@ -39,7 +39,7 @@ RUN apt-get update && \
 # Install multiple Python versions from source. `make altinstall` is used to
 # prevent replacing the system's default python binary.
 # TODO(http://github.com/googleapis/gapic-generator-python/issues/2435): Remove `3.10.18` when the linked issue is resolved.
-RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.13.5; do \
+RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.13.7; do \
     wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
     tar -xvf Python-${PYTHON_VERSION}.tgz && \
     cd Python-${PYTHON_VERSION} && \
