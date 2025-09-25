@@ -63,5 +63,6 @@ packages_to_onboard: [
   "google-cloud-vmwareengine",
   "google-cloud-vpc-access",
   "google-cloud-websecurityscanner",
-  "google-cloud-workstations"
+  "google-cloud-workstations",
+  "googleapis-common-protos",
 ]
