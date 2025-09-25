@@ -441,6 +441,8 @@ def _create_repo_metadata_from_service_config(
         "repo": "googleapis/google-cloud-python",
         "distribution_name": library_id,
         "api_id": api_id,
+        # TODO(https://github.com/googleapis/librarian/issues/2369):
+        # Remove the dependency on `default_version` for Python post processor.
         "default_version": Path(api_path).name,
         "codeowner_team": "",
         "api_shortname": api_shortname,
