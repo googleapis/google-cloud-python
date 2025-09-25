@@ -429,10 +429,10 @@ def _create_repo_metadata_from_service_config(
     release_level = "preview"
 
     return {
-        "api_shortname": api_shortname,
+        "name": library_id,
         "name_pretty": name_pretty,
-        "product_documentation": product_documentation,
         "api_description": api_description,
+        "product_documentation": product_documentation,
         "client_documentation": f"https://cloud.google.com/python/docs/reference/{library_id}/latest",
         "issue_tracker": issue_tracker,
         "release_level": release_level,
@@ -441,8 +441,8 @@ def _create_repo_metadata_from_service_config(
         "repo": "googleapis/google-cloud-python",
         "distribution_name": library_id,
         "api_id": api_id,
-        "name": library_id,
         "default_version": Path(api_path).name,
+        "api_shortname": api_shortname,
     }
 
 
