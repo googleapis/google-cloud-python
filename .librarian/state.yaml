@@ -169,7 +169,7 @@ libraries:
     last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/apps/card/v1
-        service_config: ''
+        service_config: ""
     source_roots:
       - packages/google-apps-card
     preserve_regex:
@@ -205,10 +205,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-events-subscriptions
     version: 0.2.2
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/apps/events/subscriptions/v1
+        service_config: workspaceevents_v1.yaml
       - path: google/apps/events/subscriptions/v1beta
+        service_config: workspaceevents_v1beta.yaml
     source_roots:
       - packages/google-apps-events-subscriptions
     preserve_regex:
@@ -224,10 +226,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-meet
     version: 0.1.16
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/apps/meet/v2beta
+        service_config: meet_v2beta.yaml
       - path: google/apps/meet/v2
+        service_config: meet_v2.yaml
     source_roots:
       - packages/google-apps-meet
     preserve_regex:
@@ -243,15 +247,22 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-script-type
     version: 0.3.15
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/apps/script/type
+        service_config: ""
       - path: google/apps/script/type/gmail
+        service_config: ""
       - path: google/apps/script/type/docs
+        service_config: ""
       - path: google/apps/script/type/drive
+        service_config: ""
       - path: google/apps/script/type/sheets
+        service_config: ""
       - path: google/apps/script/type/calendar
+        service_config: ""
       - path: google/apps/script/type/slides
+        service_config: ""
     source_roots:
       - packages/google-apps-script-type
     preserve_regex:
@@ -274,9 +285,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-area120-tables
     version: 0.11.17
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/area120/tables/v1alpha1
+        service_config: area120tables_v1alpha1.yaml
     source_roots:
       - packages/google-area120-tables
     preserve_regex:
@@ -292,9 +304,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-access-approval
     version: 1.16.2
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/cloud/accessapproval/v1
+        service_config: accessapproval_v1.yaml
     source_roots:
       - packages/google-cloud-access-approval
     preserve_regex:
@@ -310,9 +323,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-advisorynotifications
     version: 0.3.16
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/cloud/advisorynotifications/v1
+        service_config: advisorynotifications_v1.yaml
     source_roots:
       - packages/google-cloud-advisorynotifications
     preserve_regex:
@@ -328,11 +342,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
     version: 0.4.9
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/cloud/alloydb/v1beta
+        service_config: alloydb_v1beta.yaml
       - path: google/cloud/alloydb/v1
+        service_config: alloydb_v1.yaml
       - path: google/cloud/alloydb/v1alpha
+        service_config: alloydb_v1alpha.yaml
     source_roots:
       - packages/google-cloud-alloydb
     preserve_regex:
@@ -348,11 +365,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb-connectors
     version: 0.1.11
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/cloud/alloydb/connectors/v1
+        service_config: connectors_v1.yaml
       - path: google/cloud/alloydb/connectors/v1alpha
+        service_config: connectors_v1alpha.yaml
       - path: google/cloud/alloydb/connectors/v1beta
+        service_config: connectors_v1beta.yaml
     source_roots:
       - packages/google-cloud-alloydb-connectors
     preserve_regex:
@@ -369,9 +389,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-api-gateway
     version: 1.12.2
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/cloud/apigateway/v1
+        service_config: apigateway_v1.yaml
     source_roots:
       - packages/google-cloud-api-gateway
     preserve_regex:
@@ -387,9 +408,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-api-keys
     version: 0.5.17
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/api/apikeys/v2
+        service_config: apikeys_v2.yaml
     source_roots:
       - packages/google-cloud-api-keys
     preserve_regex:
