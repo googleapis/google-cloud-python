@@ -1161,6 +1161,8 @@ def test_create_repo_metadata_from_service_config(mocker):
     assert metadata["language"] == "python"
     assert metadata["library_type"] == "GAPIC_AUTO"
     assert metadata["repo"] == "googleapis/google-cloud-python"
+    assert metadata["name"] == library_id
+    assert metadata["default_version"] == "v1"
 
 
 def test_generate_repo_metadata_file(mocker):
