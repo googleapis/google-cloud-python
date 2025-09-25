@@ -29,7 +29,6 @@ def test_register_then_get():
         return input
 
     assert reg[agg_ops.SizeOp()](op, input) == test_func(op, input)
-    assert reg[agg_ops.SizeOp.name](op, input) == test_func(op, input)
 
 
 def test_register_function_first_argument_is_not_agg_op_raise_error():

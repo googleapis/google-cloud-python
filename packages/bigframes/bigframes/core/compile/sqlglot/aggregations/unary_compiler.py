@@ -38,6 +38,37 @@ def compile(
     return UNARY_OP_REGISTRATION[op](op, column, window=window)
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.ApproxQuartilesOp)
+def _(
+    op: agg_ops.ApproxQuartilesOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    if window is not None:
+        raise NotImplementedError("Approx Quartiles with windowing is not supported.")
+    # APPROX_QUANTILES returns an array of the quartiles, so we need to index it.
+    # The op.quartile is 1-based for the quartile, but array is 0-indexed.
+    # The quartiles are Q0, Q1, Q2, Q3, Q4. op.quartile is 1, 2, or 3.
+    # The array has 5 elements (for N=4 intervals).
+    # So we want the element at index `op.quartile`.
+    approx_quantiles_expr = sge.func("APPROX_QUANTILES", column.expr, sge.convert(4))
+    return sge.Bracket(
+        this=approx_quantiles_expr,
+        expressions=[sge.func("OFFSET", sge.convert(op.quartile))],
+    )
+
+
+@UNARY_OP_REGISTRATION.register(agg_ops.ApproxTopCountOp)
+def _(
+    op: agg_ops.ApproxTopCountOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    if window is not None:
+        raise NotImplementedError("Approx top count with windowing is not supported.")
+    return sge.func("APPROX_TOP_COUNT", column.expr, sge.convert(op.number))
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.CountOp)
 def _(
     op: agg_ops.CountOp,
@@ -109,13 +140,23 @@ def _(
     return apply_window_if_present(sge.func("MIN", column.expr), window)
 
 
-@UNARY_OP_REGISTRATION.register(agg_ops.SizeUnaryOp)
+@UNARY_OP_REGISTRATION.register(agg_ops.QuantileOp)
 def _(
-    op: agg_ops.SizeUnaryOp,
-    _,
+    op: agg_ops.QuantileOp,
+    column: typed_expr.TypedExpr,
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
-    return apply_window_if_present(sge.func("COUNT", sge.convert(1)), window)
+    # TODO: Support interpolation argument
+    # TODO: Support percentile_disc
+    result: sge.Expression = sge.func("PERCENTILE_CONT", column.expr, sge.convert(op.q))
+    if window is None:
+        # PERCENTILE_CONT is a navigation function, not an aggregate function, so it always needs an OVER clause.
+        result = sge.Window(this=result)
+    else:
+        result = apply_window_if_present(result, window)
+    if op.should_floor_result:
+        result = sge.Cast(this=sge.func("FLOOR", result), to="INT64")
+    return result
 
 
 @UNARY_OP_REGISTRATION.register(agg_ops.RankOp)
@@ -128,6 +169,15 @@ def _(
     return apply_window_if_present(
         sge.func("RANK"), window, include_framing_clauses=False
     )
+
+
+@UNARY_OP_REGISTRATION.register(agg_ops.SizeUnaryOp)
+def _(
+    op: agg_ops.SizeUnaryOp,
+    _,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    return apply_window_if_present(sge.func("COUNT", sge.convert(1)), window)
 
 
 @UNARY_OP_REGISTRATION.register(agg_ops.SumOp)

@@ -63,6 +63,30 @@ def _apply_unary_window_op(
     return sql
 
 
+def test_approx_quartiles(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "int64_col"
+    bf_df = scalar_types_df[[col_name]]
+    agg_ops_map = {
+        "q1": agg_ops.ApproxQuartilesOp(quartile=1).as_expr(col_name),
+        "q2": agg_ops.ApproxQuartilesOp(quartile=2).as_expr(col_name),
+        "q3": agg_ops.ApproxQuartilesOp(quartile=3).as_expr(col_name),
+    }
+    sql = _apply_unary_agg_ops(
+        bf_df, list(agg_ops_map.values()), list(agg_ops_map.keys())
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_approx_top_count(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "int64_col"
+    bf_df = scalar_types_df[[col_name]]
+    agg_expr = agg_ops.ApproxTopCountOp(number=10).as_expr(col_name)
+    sql = _apply_unary_agg_ops(bf_df, [agg_expr], [col_name])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_count(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]
@@ -137,6 +161,22 @@ def test_min(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[[col_name]]
     agg_expr = agg_ops.MinOp().as_expr(col_name)
     sql = _apply_unary_agg_ops(bf_df, [agg_expr], [col_name])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_quantile(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "int64_col"
+    bf_df = scalar_types_df[[col_name]]
+    agg_ops_map = {
+        "quantile": agg_ops.QuantileOp(q=0.5).as_expr(col_name),
+        "quantile_floor": agg_ops.QuantileOp(q=0.5, should_floor_result=True).as_expr(
+            col_name
+        ),
+    }
+    sql = _apply_unary_agg_ops(
+        bf_df, list(agg_ops_map.values()), list(agg_ops_map.keys())
+    )
 
     snapshot.assert_match(sql, "out.sql")
 
