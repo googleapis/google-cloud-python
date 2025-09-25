@@ -221,4 +221,4 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-gkerecommender
-    tag_format: '{{id}}-v{{version}}'
+    tag_format: '{id}-v{version}'
