@@ -140,7 +140,6 @@ def _add_new_library_preserve_regex(library_config: Dict, library_id: str) -> No
             "docs/CHANGELOG.md",
             "docs/README.rst",
             "samples/README.txt",
-            "tar.gz",
             "scripts/client-post-processing",
             "samples/snippets/README.rst",
             "tests/system",
