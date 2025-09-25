@@ -164,7 +164,7 @@ def _add_new_library_tag_format(library_config: Dict) -> None:
         library_config(Dict): The library configuration.
     """
     if "tag_format" not in library_config:
-        library_config["tag_format"] = "{{id}}-v{{version}}"
+        library_config["tag_format"] = "{id}-v{version}"
 
 
 def _get_new_library_config(request_data: Dict) -> Dict:
