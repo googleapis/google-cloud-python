@@ -27,15 +27,9 @@ import bigframes_vendored.constants as constants
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 
-import bigframes.clients
-import bigframes.core.compile
-import bigframes.core.compile.default_ordering
 import bigframes.core.sql
-import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.session._io.bigquery
-import bigframes.session.clients
-import bigframes.version
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:

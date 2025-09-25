@@ -28,7 +28,7 @@ import numpy as np
 import pandas as pd
 
 from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
-import bigframes.core.compile.default_ordering
+import bigframes.core.compile.ibis_compiler.default_ordering
 from bigframes.core.compile.ibis_compiler.scalar_op_compiler import (
     scalar_op_compiler,  # TODO(tswast): avoid import of variables
 )
@@ -1064,7 +1064,7 @@ def isin_op_impl(x: ibis_types.Value, op: ops.IsInOp):
     if op.match_nulls and contains_nulls:
         return x.isnull() | x.isin(matchable_ibis_values)
     else:
-        return x.isin(matchable_ibis_values).fillna(False)
+        return x.isin(matchable_ibis_values).fill_null(ibis.literal(False))
 
 
 @scalar_op_compiler.register_unary_op(ops.ToDatetimeOp, pass_op=True)
@@ -1383,8 +1383,8 @@ def eq_nulls_match_op(
         left = x.cast(ibis_dtypes.str).fill_null(literal)
         right = y.cast(ibis_dtypes.str).fill_null(literal)
     else:
-        left = x.cast(ibis_dtypes.str).fillna(literal)
-        right = y.cast(ibis_dtypes.str).fillna(literal)
+        left = x.cast(ibis_dtypes.str).fill_null(literal)
+        right = y.cast(ibis_dtypes.str).fill_null(literal)
 
     return left == right
 
@@ -1813,7 +1813,7 @@ def fillna_op(
     if hasattr(x, "fill_null"):
         return x.fill_null(typing.cast(ibis_types.Scalar, y))
     else:
-        return x.fillna(typing.cast(ibis_types.Scalar, y))
+        return x.fill_null(typing.cast(ibis_types.Scalar, y))
 
 
 @scalar_op_compiler.register_binary_op(ops.round_op)
@@ -2016,7 +2016,7 @@ def _construct_prompt(
 
 @scalar_op_compiler.register_nary_op(ops.RowKey, pass_op=True)
 def rowkey_op_impl(*values: ibis_types.Value, op: ops.RowKey) -> ibis_types.Value:
-    return bigframes.core.compile.default_ordering.gen_row_key(values)
+    return bigframes.core.compile.ibis_compiler.default_ordering.gen_row_key(values)
 
 
 # Helpers
