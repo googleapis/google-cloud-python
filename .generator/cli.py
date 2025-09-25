@@ -442,6 +442,7 @@ def _create_repo_metadata_from_service_config(
         "distribution_name": library_id,
         "api_id": api_id,
         "default_version": Path(api_path).name,
+        "codeowner_team": "",
         "api_shortname": api_shortname,
     }
 
