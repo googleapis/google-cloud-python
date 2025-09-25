@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.22.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.21.0...v2.22.0) (2025-09-25)
+
+
+### Features
+
+* Add `GroupBy.__iter__` ([#1394](https://github.com/googleapis/python-bigquery-dataframes/issues/1394)) ([c56a78c](https://github.com/googleapis/python-bigquery-dataframes/commit/c56a78cd509a535d4998d5b9a99ec3ecd334b883))
+* Add ai.generate_int to bigframes.bigquery package ([#2109](https://github.com/googleapis/python-bigquery-dataframes/issues/2109)) ([af6b862](https://github.com/googleapis/python-bigquery-dataframes/commit/af6b862de5c3921684210ec169338815f45b19dd))
+* Add Groupby.describe() ([#2088](https://github.com/googleapis/python-bigquery-dataframes/issues/2088)) ([328a765](https://github.com/googleapis/python-bigquery-dataframes/commit/328a765e746138806a021bea22475e8c03512aeb))
+* Implement `Index.to_list()` ([#2106](https://github.com/googleapis/python-bigquery-dataframes/issues/2106)) ([60056ca](https://github.com/googleapis/python-bigquery-dataframes/commit/60056ca06511f99092647fe55fc02eeab486b4ca))
+* Implement inplace parameter for `DataFrame.drop` ([#2105](https://github.com/googleapis/python-bigquery-dataframes/issues/2105)) ([3487f13](https://github.com/googleapis/python-bigquery-dataframes/commit/3487f13d12e34999b385c2e11551b5e27bfbf4ff))
+* Support callable for series map method ([#2100](https://github.com/googleapis/python-bigquery-dataframes/issues/2100)) ([ac25618](https://github.com/googleapis/python-bigquery-dataframes/commit/ac25618feed2da11fe4fb85058d498d262c085c0))
+* Support df.info() with null index ([#2094](https://github.com/googleapis/python-bigquery-dataframes/issues/2094)) ([fb81eea](https://github.com/googleapis/python-bigquery-dataframes/commit/fb81eeaf13af059f32cb38e7f117fb3504243d51))
+
+
+### Bug Fixes
+
+* Avoid ibis fillna warning in compiler ([#2113](https://github.com/googleapis/python-bigquery-dataframes/issues/2113)) ([7ef667b](https://github.com/googleapis/python-bigquery-dataframes/commit/7ef667b0f46f13bcc8ad4f2ed8f81278132b5aec))
+* Negative start and stop parameter values in Series.str.slice() ([#2104](https://github.com/googleapis/python-bigquery-dataframes/issues/2104)) ([f57a348](https://github.com/googleapis/python-bigquery-dataframes/commit/f57a348f1935a4e2bb14c501bb4c47cd552d102a))
+* Throw type error for incomparable join keys ([#2098](https://github.com/googleapis/python-bigquery-dataframes/issues/2098)) ([9dc9695](https://github.com/googleapis/python-bigquery-dataframes/commit/9dc96959a84b751d18b290129c2926df6e50b3f5))
+* Transformers with non-standard column names throw errors ([#2089](https://github.com/googleapis/python-bigquery-dataframes/issues/2089)) ([a2daa3f](https://github.com/googleapis/python-bigquery-dataframes/commit/a2daa3fffe6743327edb9f4c74db93198bd12f8e))
+
 ## [2.21.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.20.0...v2.21.0) (2025-09-17)
 
 
