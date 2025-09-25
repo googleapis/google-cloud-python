@@ -85,7 +85,6 @@ def configure_state_yaml() -> None:
                         "docs/CHANGELOG.md",
                         "docs/README.rst",
                         "samples/README.txt",
-                        "tar.gz",
                         "scripts/client-post-processing",
                         "samples/snippets/README.rst",
                         "tests/system",
