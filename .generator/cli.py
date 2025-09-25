@@ -141,7 +141,6 @@ def _add_new_library_preserve_regex(library_config: Dict, library_id: str) -> No
             "docs/README.rst",
             "samples/README.txt",
             "tar.gz",
-            "gapic_version.py",
             "scripts/client-post-processing",
             "samples/snippets/README.rst",
             "tests/system",
@@ -375,11 +374,6 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     ):  # pragma: NO COVER
         os.remove(post_processing_file)
 
-    for gapic_version_file in glob.glob(
-        f"{output}/{path_to_library}/**/gapic_version.py", recursive=True
-    ):  # pragma: NO COVER
-        os.remove(gapic_version_file)
-
 
 def _determine_release_level(api_path: str) -> str:
     # TODO(https://github.com/googleapis/librarian/issues/2352): Determine if
@@ -521,10 +515,11 @@ def handle_generate(
         request_data = _read_json_file(f"{librarian}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         apis_to_generate = request_data.get("apis", [])
+        version = request_data.get("version")
         for api in apis_to_generate:
             api_path = api.get("path")
             if api_path:
-                _generate_api(api_path, library_id, source, output)
+                _generate_api(api_path, library_id, source, output, version)
         _copy_files_needed_for_post_processing(output, input, library_id)
         _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
@@ -555,13 +550,17 @@ def _read_bazel_build_py_rule(api_path: str, source: str) -> Dict:
     return result[py_gapic_entries[0]]
 
 
-def _get_api_generator_options(api_path: str, py_gapic_config: Dict) -> List[str]:
+def _get_api_generator_options(
+    api_path: str, py_gapic_config: Dict, gapic_version: str
+) -> List[str]:
     """
     Extracts generator options from the parsed Python GAPIC rule configuration.
 
     Args:
         api_path (str): The relative path to the API directory.
         py_gapic_config (Dict): The parsed attributes of the Python GAPIC rule.
+        gapic_version(str): The desired version number for the GAPIC client library
+            in a format which follows PEP-440.
 
     Returns:
         List[str]: A list of formatted generator options (e.g., ['retry-config=...', 'transport=...']).
@@ -586,11 +585,12 @@ def _get_api_generator_options(api_path: str, py_gapic_config: Dict) -> List[str
                 # Other options use the value directly
                 generator_options.append(f"{protoc_key}={config_value}")
 
+    # The value of `opt_args` in the `py_gapic` bazel rule is already a list of strings.
+    optional_arguments = py_gapic_config.get("opt_args", [])
+    # Specify `gapic-version` using the version from `state.yaml`
+    optional_arguments.extend([f"gapic-version={gapic_version}"])
     # Add optional arguments
-    optional_arguments = py_gapic_config.get("opt_args", None)
-    if optional_arguments:
-        # opt_args in Bazel rule is already a list of strings
-        generator_options.extend(optional_arguments)
+    generator_options.extend(optional_arguments)
 
     return generator_options
 
@@ -642,7 +642,9 @@ def _run_generator_command(generator_command: str, source: str):
     )
 
 
-def _generate_api(api_path: str, library_id: str, source: str, output: str):
+def _generate_api(
+    api_path: str, library_id: str, source: str, output: str, gapic_version: str
+):
     """
     Handles the generation and staging process for a single API path.
 
@@ -651,9 +653,13 @@ def _generate_api(api_path: str, library_id: str, source: str, output: str):
         library_id (str): The ID of the library being generated.
         source (str): Path to the directory containing API protos.
         output (str): Path to the output directory where code should be staged.
+        gapic_version(str): The desired version number for the GAPIC client library
+            in a format which follows PEP-440.
     """
     py_gapic_config = _read_bazel_build_py_rule(api_path, source)
-    generator_options = _get_api_generator_options(api_path, py_gapic_config)
+    generator_options = _get_api_generator_options(
+        api_path, py_gapic_config, gapic_version=gapic_version
+    )
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         generator_command = _determine_generator_command(
