@@ -25,7 +25,6 @@ import bigframes.core.ordering as ordering_spec
 def apply_window_if_present(
     value: sge.Expression,
     window: typing.Optional[window_spec.WindowSpec] = None,
-    include_framing_clauses: bool = True,
 ) -> sge.Expression:
     if window is None:
         return value
@@ -65,7 +64,7 @@ def apply_window_if_present(
     if not window.bounds and not order:
         return sge.Window(this=value, partition_by=group_by)
 
-    if not window.bounds and not include_framing_clauses:
+    if not window.bounds:
         return sge.Window(this=value, partition_by=group_by, order=order)
 
     kind = (

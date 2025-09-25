@@ -63,7 +63,7 @@ def compile_analytic(
     window: window_spec.WindowSpec,
 ) -> sge.Expression:
     if isinstance(aggregate, agg_expressions.NullaryAggregation):
-        return nullary_compiler.compile(aggregate.op)
+        return nullary_compiler.compile(aggregate.op, window)
     if isinstance(aggregate, agg_expressions.UnaryAggregation):
         column = typed_expr.TypedExpr(
             scalar_compiler.scalar_op_compiler.compile_expression(aggregate.arg),
