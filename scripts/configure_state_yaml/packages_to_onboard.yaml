@@ -26,6 +26,7 @@ packages_to_onboard: [
   "google-apps-script-type",
   "google-area120-tables",
   "google-cloud-access-approval",
+  "google-cloud-access-context-manager",
   "google-cloud-advisorynotifications",
   "google-cloud-alloydb",
   "google-cloud-alloydb-connectors",
