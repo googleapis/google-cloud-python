@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-alloydb-connect_ors",
+    "distribution_name": "google-cloud-alloydb-connectors",
     "api_id": "connectors.googleapis.com",
     "default_version": "v1",
     "api_shortname": "connectors"
