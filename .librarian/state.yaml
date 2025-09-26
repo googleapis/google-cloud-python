@@ -614,3 +614,191 @@ libraries:
     remove_regex:
       - packages/google-cloud-batch
     tag_format: '{id}-v{version}'
+  - id: google-cloud-support
+    version: 0.1.19
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/support/v2beta
+      - path: google/cloud/support/v2
+    source_roots:
+      - packages/google-cloud-support
+    preserve_regex:
+      - packages/google-cloud-support/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-support
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-talent
+    version: 2.17.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/talent/v4beta1
+      - path: google/cloud/talent/v4
+    source_roots:
+      - packages/google-cloud-talent
+    preserve_regex:
+      - packages/google-cloud-talent/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-talent
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-tpu
+    version: 1.23.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/tpu/v2alpha1
+      - path: google/cloud/tpu/v2
+      - path: google/cloud/tpu/v1
+    source_roots:
+      - packages/google-cloud-tpu
+    preserve_regex:
+      - packages/google-cloud-tpu/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-tpu
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-video-transcoder
+    version: 1.17.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/video/transcoder/v1
+    source_roots:
+      - packages/google-cloud-video-transcoder
+    preserve_regex:
+      - packages/google-cloud-video-transcoder/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-video-transcoder
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-visionai
+    version: 0.1.10
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/visionai/v1alpha1
+      - path: google/cloud/visionai/v1
+    source_roots:
+      - packages/google-cloud-visionai
+    preserve_regex:
+      - packages/google-cloud-visionai/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-visionai
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-vm-migration
+    version: 1.12.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/vmmigration/v1
+    source_roots:
+      - packages/google-cloud-vm-migration
+    preserve_regex:
+      - packages/google-cloud-vm-migration/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-vm-migration
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-vmwareengine
+    version: 1.8.3
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/vmwareengine/v1
+    source_roots:
+      - packages/google-cloud-vmwareengine
+    preserve_regex:
+      - packages/google-cloud-vmwareengine/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-vmwareengine
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-vpc-access
+    version: 1.13.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/vpcaccess/v1
+    source_roots:
+      - packages/google-cloud-vpc-access
+    preserve_regex:
+      - packages/google-cloud-vpc-access/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-vpc-access
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-websecurityscanner
+    version: 1.17.3
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/websecurityscanner/v1alpha
+      - path: google/cloud/websecurityscanner/v1beta
+      - path: google/cloud/websecurityscanner/v1
+    source_roots:
+      - packages/google-cloud-websecurityscanner
+    preserve_regex:
+      - packages/google-cloud-websecurityscanner/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-websecurityscanner
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-workstations
+    version: 0.5.15
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/workstations/v1beta
+      - path: google/cloud/workstations/v1
+    source_roots:
+      - packages/google-cloud-workstations
+    preserve_regex:
+      - packages/google-cloud-workstations/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-workstations
+    tag_format: '{id}-v{version}'
