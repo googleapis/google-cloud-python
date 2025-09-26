@@ -66,3 +66,25 @@ class AIGenerateInt(base_ops.NaryOp):
                 )
             )
         )
+
+
+@dataclasses.dataclass(frozen=True)
+class AIGenerateDouble(base_ops.NaryOp):
+    name: ClassVar[str] = "ai_generate_double"
+
+    prompt_context: Tuple[str | None, ...]
+    connection_id: str
+    endpoint: str | None
+    request_type: Literal["dedicated", "shared", "unspecified"]
+    model_params: str | None
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return pd.ArrowDtype(
+            pa.struct(
+                (
+                    pa.field("result", pa.float64()),
+                    pa.field("full_response", dtypes.JSON_ARROW_TYPE),
+                    pa.field("status", pa.string()),
+                )
+            )
+        )

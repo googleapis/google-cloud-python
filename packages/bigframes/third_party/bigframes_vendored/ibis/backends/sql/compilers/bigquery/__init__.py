@@ -1110,6 +1110,9 @@ class BigQueryCompiler(SQLGlotCompiler):
     def visit_AIGenerateInt(self, op, **kwargs):
         return sge.func("AI.GENERATE_INT", *self._compile_ai_args(**kwargs))
 
+    def visit_AIGenerateDouble(self, op, **kwargs):
+        return sge.func("AI.GENERATE_DOUBLE", *self._compile_ai_args(**kwargs))
+
     def _compile_ai_args(self, **kwargs):
         args = []
 

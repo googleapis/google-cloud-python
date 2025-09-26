@@ -146,5 +146,44 @@ def test_ai_generate_int_multi_model(session):
     )
 
 
+def test_ai_generate_double(session):
+    s = bpd.Series(["Cat"], session=session)
+    prompt = ("How many legs does a ", s, " have?")
+
+    result = bbq.ai.generate_double(prompt, endpoint="gemini-2.5-flash")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == pd.ArrowDtype(
+        pa.struct(
+            (
+                pa.field("result", pa.float64()),
+                pa.field("full_response", dtypes.JSON_ARROW_TYPE),
+                pa.field("status", pa.string()),
+            )
+        )
+    )
+
+
+def test_ai_generate_double_multi_model(session):
+    df = session.from_glob_path(
+        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+    )
+
+    result = bbq.ai.generate_double(
+        ("How many animals are there in the picture ", df["image"])
+    )
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == pd.ArrowDtype(
+        pa.struct(
+            (
+                pa.field("result", pa.float64()),
+                pa.field("full_response", dtypes.JSON_ARROW_TYPE),
+                pa.field("status", pa.string()),
+            )
+        )
+    )
+
+
 def _contains_no_nulls(s: series.Series) -> bool:
     return len(s) == s.count()

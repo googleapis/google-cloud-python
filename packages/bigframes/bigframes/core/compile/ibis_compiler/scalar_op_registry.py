@@ -1986,10 +1986,24 @@ def ai_generate_bool(
 
 @scalar_op_compiler.register_nary_op(ops.AIGenerateInt, pass_op=True)
 def ai_generate_int(
-    *values: ibis_types.Value, op: ops.AIGenerateBool
+    *values: ibis_types.Value, op: ops.AIGenerateInt
 ) -> ibis_types.StructValue:
 
     return ai_ops.AIGenerateInt(
+        _construct_prompt(values, op.prompt_context),  # type: ignore
+        op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.request_type.upper(),  # type: ignore
+        op.model_params,  # type: ignore
+    ).to_expr()
+
+
+@scalar_op_compiler.register_nary_op(ops.AIGenerateDouble, pass_op=True)
+def ai_generate_double(
+    *values: ibis_types.Value, op: ops.AIGenerateDouble
+) -> ibis_types.StructValue:
+
+    return ai_ops.AIGenerateDouble(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore

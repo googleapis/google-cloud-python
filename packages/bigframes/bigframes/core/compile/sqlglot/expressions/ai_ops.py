@@ -40,6 +40,13 @@ def _(*exprs: TypedExpr, op: ops.AIGenerateInt) -> sge.Expression:
     return sge.func("AI.GENERATE_INT", *args)
 
 
+@register_nary_op(ops.AIGenerateDouble, pass_op=True)
+def _(*exprs: TypedExpr, op: ops.AIGenerateDouble) -> sge.Expression:
+    args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)
+
+    return sge.func("AI.GENERATE_DOUBLE", *args)
+
+
 def _construct_prompt(
     exprs: tuple[TypedExpr, ...], prompt_context: tuple[str | None, ...]
 ) -> sge.Kwarg:
