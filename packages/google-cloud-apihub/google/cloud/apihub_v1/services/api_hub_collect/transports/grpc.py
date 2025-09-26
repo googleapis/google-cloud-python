@@ -19,7 +19,7 @@ import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -30,9 +30,9 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.apihub_v1.types import host_project_registration_service
+from google.cloud.apihub_v1.types import collect_service
 
-from .base import DEFAULT_CLIENT_INFO, HostProjectRegistrationServiceTransport
+from .base import DEFAULT_CLIENT_INFO, ApiHubCollectTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -70,7 +70,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.HostProjectRegistrationService",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCollect",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
@@ -100,7 +100,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.HostProjectRegistrationService",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCollect",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
@@ -109,13 +109,12 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class HostProjectRegistrationServiceGrpcTransport(
-    HostProjectRegistrationServiceTransport
-):
-    """gRPC backend transport for HostProjectRegistrationService.
+class ApiHubCollectGrpcTransport(ApiHubCollectTransport):
+    """gRPC backend transport for ApiHubCollect.
 
-    This service is used for managing the host project
-    registrations.
+    This service exposes methods used for collecting various
+    types of data from different first party and third party sources
+    and push it to Hub's collect layer.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -198,6 +197,7 @@ class HostProjectRegistrationServiceGrpcTransport(
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -325,56 +325,33 @@ class HostProjectRegistrationServiceGrpcTransport(
         return self._grpc_channel
 
     @property
-    def create_host_project_registration(
-        self,
-    ) -> Callable[
-        [host_project_registration_service.CreateHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
-    ]:
-        r"""Return a callable for the create host project
-        registration method over gRPC.
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
 
-        Create a host project registration.
-        A Google cloud project can be registered as a host
-        project if it is not attached as a runtime project to
-        another host project. A project can be registered as a
-        host project only once. Subsequent register calls for
-        the same project will fail.
-
-        Returns:
-            Callable[[~.CreateHostProjectRegistrationRequest],
-                    ~.HostProjectRegistration]:
-                A function that, when called, will call the underlying RPC
-                on the server.
+        This property caches on the instance; repeated calls return the same
+        client.
         """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_host_project_registration" not in self._stubs:
-            self._stubs[
-                "create_host_project_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/CreateHostProjectRegistration",
-                request_serializer=host_project_registration_service.CreateHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
             )
-        return self._stubs["create_host_project_registration"]
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
-    def get_host_project_registration(
+    def collect_api_data(
         self,
-    ) -> Callable[
-        [host_project_registration_service.GetHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
-    ]:
-        r"""Return a callable for the get host project registration method over gRPC.
+    ) -> Callable[[collect_service.CollectApiDataRequest], operations_pb2.Operation]:
+        r"""Return a callable for the collect api data method over gRPC.
 
-        Get a host project registration.
+        Collect API data from a source and push it to Hub's
+        collect layer.
 
         Returns:
-            Callable[[~.GetHostProjectRegistrationRequest],
-                    ~.HostProjectRegistration]:
+            Callable[[~.CollectApiDataRequest],
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -382,47 +359,13 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_host_project_registration" not in self._stubs:
-            self._stubs[
-                "get_host_project_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/GetHostProjectRegistration",
-                request_serializer=host_project_registration_service.GetHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+        if "collect_api_data" not in self._stubs:
+            self._stubs["collect_api_data"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCollect/CollectApiData",
+                request_serializer=collect_service.CollectApiDataRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["get_host_project_registration"]
-
-    @property
-    def list_host_project_registrations(
-        self,
-    ) -> Callable[
-        [host_project_registration_service.ListHostProjectRegistrationsRequest],
-        host_project_registration_service.ListHostProjectRegistrationsResponse,
-    ]:
-        r"""Return a callable for the list host project
-        registrations method over gRPC.
-
-        Lists host project registrations.
-
-        Returns:
-            Callable[[~.ListHostProjectRegistrationsRequest],
-                    ~.ListHostProjectRegistrationsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_host_project_registrations" not in self._stubs:
-            self._stubs[
-                "list_host_project_registrations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/ListHostProjectRegistrations",
-                request_serializer=host_project_registration_service.ListHostProjectRegistrationsRequest.serialize,
-                response_deserializer=host_project_registration_service.ListHostProjectRegistrationsResponse.deserialize,
-            )
-        return self._stubs["list_host_project_registrations"]
+        return self._stubs["collect_api_data"]
 
     def close(self):
         self._logged_channel.close()
@@ -538,4 +481,4 @@ class HostProjectRegistrationServiceGrpcTransport(
         return "grpc"
 
 
-__all__ = ("HostProjectRegistrationServiceGrpcTransport",)
+__all__ = ("ApiHubCollectGrpcTransport",)

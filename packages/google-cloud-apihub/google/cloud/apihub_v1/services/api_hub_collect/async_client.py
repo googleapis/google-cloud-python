@@ -48,14 +48,12 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.apihub_v1.types import common_fields, provisioning_service
+from google.cloud.apihub_v1.types import collect_service, common_fields
 
-from .client import ProvisioningClient
-from .transports.base import DEFAULT_CLIENT_INFO, ProvisioningTransport
-from .transports.grpc_asyncio import ProvisioningGrpcAsyncIOTransport
+from .client import ApiHubCollectClient
+from .transports.base import DEFAULT_CLIENT_INFO, ApiHubCollectTransport
+from .transports.grpc_asyncio import ApiHubCollectGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -67,43 +65,64 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class ProvisioningAsyncClient:
-    """This service is used for managing the data plane provisioning
-    of the API hub.
+class ApiHubCollectAsyncClient:
+    """This service exposes methods used for collecting various
+    types of data from different first party and third party sources
+    and push it to Hub's collect layer.
     """
 
-    _client: ProvisioningClient
+    _client: ApiHubCollectClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = ProvisioningClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = ProvisioningClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = ProvisioningClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = ProvisioningClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = ApiHubCollectClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = ApiHubCollectClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = ApiHubCollectClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = ApiHubCollectClient._DEFAULT_UNIVERSE
 
-    api_hub_instance_path = staticmethod(ProvisioningClient.api_hub_instance_path)
-    parse_api_hub_instance_path = staticmethod(
-        ProvisioningClient.parse_api_hub_instance_path
+    api_path = staticmethod(ApiHubCollectClient.api_path)
+    parse_api_path = staticmethod(ApiHubCollectClient.parse_api_path)
+    api_operation_path = staticmethod(ApiHubCollectClient.api_operation_path)
+    parse_api_operation_path = staticmethod(
+        ApiHubCollectClient.parse_api_operation_path
     )
+    attribute_path = staticmethod(ApiHubCollectClient.attribute_path)
+    parse_attribute_path = staticmethod(ApiHubCollectClient.parse_attribute_path)
+    definition_path = staticmethod(ApiHubCollectClient.definition_path)
+    parse_definition_path = staticmethod(ApiHubCollectClient.parse_definition_path)
+    deployment_path = staticmethod(ApiHubCollectClient.deployment_path)
+    parse_deployment_path = staticmethod(ApiHubCollectClient.parse_deployment_path)
+    plugin_instance_path = staticmethod(ApiHubCollectClient.plugin_instance_path)
+    parse_plugin_instance_path = staticmethod(
+        ApiHubCollectClient.parse_plugin_instance_path
+    )
+    spec_path = staticmethod(ApiHubCollectClient.spec_path)
+    parse_spec_path = staticmethod(ApiHubCollectClient.parse_spec_path)
+    version_path = staticmethod(ApiHubCollectClient.version_path)
+    parse_version_path = staticmethod(ApiHubCollectClient.parse_version_path)
     common_billing_account_path = staticmethod(
-        ProvisioningClient.common_billing_account_path
+        ApiHubCollectClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        ProvisioningClient.parse_common_billing_account_path
+        ApiHubCollectClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(ProvisioningClient.common_folder_path)
-    parse_common_folder_path = staticmethod(ProvisioningClient.parse_common_folder_path)
-    common_organization_path = staticmethod(ProvisioningClient.common_organization_path)
+    common_folder_path = staticmethod(ApiHubCollectClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ApiHubCollectClient.parse_common_folder_path
+    )
+    common_organization_path = staticmethod(
+        ApiHubCollectClient.common_organization_path
+    )
     parse_common_organization_path = staticmethod(
-        ProvisioningClient.parse_common_organization_path
+        ApiHubCollectClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(ProvisioningClient.common_project_path)
+    common_project_path = staticmethod(ApiHubCollectClient.common_project_path)
     parse_common_project_path = staticmethod(
-        ProvisioningClient.parse_common_project_path
+        ApiHubCollectClient.parse_common_project_path
     )
-    common_location_path = staticmethod(ProvisioningClient.common_location_path)
+    common_location_path = staticmethod(ApiHubCollectClient.common_location_path)
     parse_common_location_path = staticmethod(
-        ProvisioningClient.parse_common_location_path
+        ApiHubCollectClient.parse_common_location_path
     )
 
     @classmethod
@@ -117,9 +136,9 @@ class ProvisioningAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ProvisioningAsyncClient: The constructed client.
+            ApiHubCollectAsyncClient: The constructed client.
         """
-        return ProvisioningClient.from_service_account_info.__func__(ProvisioningAsyncClient, info, *args, **kwargs)  # type: ignore
+        return ApiHubCollectClient.from_service_account_info.__func__(ApiHubCollectAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -133,9 +152,9 @@ class ProvisioningAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ProvisioningAsyncClient: The constructed client.
+            ApiHubCollectAsyncClient: The constructed client.
         """
-        return ProvisioningClient.from_service_account_file.__func__(ProvisioningAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return ApiHubCollectClient.from_service_account_file.__func__(ApiHubCollectAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -173,14 +192,14 @@ class ProvisioningAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return ProvisioningClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return ApiHubCollectClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> ProvisioningTransport:
+    def transport(self) -> ApiHubCollectTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            ProvisioningTransport: The transport used by the client instance.
+            ApiHubCollectTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -203,19 +222,19 @@ class ProvisioningAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = ProvisioningClient.get_transport_class
+    get_transport_class = ApiHubCollectClient.get_transport_class
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[str, ProvisioningTransport, Callable[..., ProvisioningTransport]]
+            Union[str, ApiHubCollectTransport, Callable[..., ApiHubCollectTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the provisioning async client.
+        """Instantiates the api hub collect async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -223,10 +242,10 @@ class ProvisioningAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,ProvisioningTransport,Callable[..., ProvisioningTransport]]]):
+            transport (Optional[Union[str,ApiHubCollectTransport,Callable[..., ApiHubCollectTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the ProvisioningTransport constructor.
+                arguments as used in the ApiHubCollectTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -264,7 +283,7 @@ class ProvisioningAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = ProvisioningClient(
+        self._client = ApiHubCollectClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
@@ -275,9 +294,9 @@ class ProvisioningAsyncClient:
             std_logging.DEBUG
         ):  # pragma: NO COVER
             _LOGGER.debug(
-                "Created client `google.cloud.apihub_v1.ProvisioningAsyncClient`.",
+                "Created client `google.cloud.apihub_v1.ApiHubCollectAsyncClient`.",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.Provisioning",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCollect",
                     "universeDomain": getattr(
                         self._client._transport._credentials, "universe_domain", ""
                     ),
@@ -288,25 +307,24 @@ class ProvisioningAsyncClient:
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
-                    "serviceName": "google.cloud.apihub.v1.Provisioning",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCollect",
                     "credentialsType": None,
                 },
             )
 
-    async def create_api_hub_instance(
+    async def collect_api_data(
         self,
-        request: Optional[
-            Union[provisioning_service.CreateApiHubInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[collect_service.CollectApiDataRequest, dict]] = None,
         *,
-        parent: Optional[str] = None,
-        api_hub_instance: Optional[common_fields.ApiHubInstance] = None,
-        api_hub_instance_id: Optional[str] = None,
+        location: Optional[str] = None,
+        collection_type: Optional[collect_service.CollectionType] = None,
+        api_data: Optional[collect_service.ApiData] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Provisions instance resources for the API Hub.
+        r"""Collect API data from a source and push it to Hub's
+        collect layer.
 
         .. code-block:: python
 
@@ -319,17 +337,24 @@ class ProvisioningAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import apihub_v1
 
-            async def sample_create_api_hub_instance():
+            async def sample_collect_api_data():
                 # Create a client
-                client = apihub_v1.ProvisioningAsyncClient()
+                client = apihub_v1.ApiHubCollectAsyncClient()
 
                 # Initialize request argument(s)
-                request = apihub_v1.CreateApiHubInstanceRequest(
-                    parent="parent_value",
+                api_data = apihub_v1.ApiData()
+                api_data.api_metadata_list.api_metadata.api.display_name = "display_name_value"
+
+                request = apihub_v1.CollectApiDataRequest(
+                    location="location_value",
+                    collection_type="COLLECTION_TYPE_DELETE",
+                    plugin_instance="plugin_instance_value",
+                    action_id="action_id_value",
+                    api_data=api_data,
                 )
 
                 # Make the request
-                operation = client.create_api_hub_instance(request=request)
+                operation = client.collect_api_data(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -339,33 +364,29 @@ class ProvisioningAsyncClient:
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.apihub_v1.types.CreateApiHubInstanceRequest, dict]]):
-                The request object. The
-                [CreateApiHubInstance][google.cloud.apihub.v1.Provisioning.CreateApiHubInstance]
-                method's request.
-            parent (:class:`str`):
-                Required. The parent resource for the Api Hub instance
-                resource. Format:
+            request (Optional[Union[google.cloud.apihub_v1.types.CollectApiDataRequest, dict]]):
+                The request object. The CollectApiData method's request.
+            location (:class:`str`):
+                Required. The regional location of the API hub instance
+                and its resources. Format:
                 ``projects/{project}/locations/{location}``
 
-                This corresponds to the ``parent`` field
+                This corresponds to the ``location`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            api_hub_instance (:class:`google.cloud.apihub_v1.types.ApiHubInstance`):
-                Required. The ApiHub instance.
-                This corresponds to the ``api_hub_instance`` field
+            collection_type (:class:`google.cloud.apihub_v1.types.CollectionType`):
+                Required. The type of collection. Applies to all entries
+                in
+                [api_data][google.cloud.apihub.v1.CollectApiDataRequest.api_data].
+
+                This corresponds to the ``collection_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            api_hub_instance_id (:class:`str`):
-                Optional. Identifier to assign to the Api Hub instance.
-                Must be unique within scope of the parent resource. If
-                the field is not provided, system generated id will be
-                used.
+            api_data (:class:`google.cloud.apihub_v1.types.ApiData`):
+                Required. The API data to be
+                collected.
 
-                This value should be 4-40 characters, and valid
-                characters are ``/[a-z][A-Z][0-9]-_/``.
-
-                This corresponds to the ``api_hub_instance_id`` field
+                This corresponds to the ``api_data`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -380,15 +401,15 @@ class ProvisioningAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.apihub_v1.types.ApiHubInstance` An ApiHubInstance represents the instance resources of the API Hub.
-                   Currently, only one ApiHub instance is allowed for
-                   each project.
+                The result type for the operation will be
+                :class:`google.cloud.apihub_v1.types.CollectApiDataResponse`
+                The CollectApiData method's response.
 
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, api_hub_instance, api_hub_instance_id]
+        flattened_params = [location, collection_type, api_data]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -400,28 +421,28 @@ class ProvisioningAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, provisioning_service.CreateApiHubInstanceRequest):
-            request = provisioning_service.CreateApiHubInstanceRequest(request)
+        if not isinstance(request, collect_service.CollectApiDataRequest):
+            request = collect_service.CollectApiDataRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if parent is not None:
-            request.parent = parent
-        if api_hub_instance is not None:
-            request.api_hub_instance = api_hub_instance
-        if api_hub_instance_id is not None:
-            request.api_hub_instance_id = api_hub_instance_id
+        if location is not None:
+            request.location = location
+        if collection_type is not None:
+            request.collection_type = collection_type
+        if api_data is not None:
+            request.api_data = api_data
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_api_hub_instance
+            self._client._transport.collect_api_data
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),
         )
 
         # Validate the universe domain.
@@ -439,381 +460,8 @@ class ProvisioningAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            common_fields.ApiHubInstance,
+            collect_service.CollectApiDataResponse,
             metadata_type=common_fields.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def delete_api_hub_instance(
-        self,
-        request: Optional[
-            Union[provisioning_service.DeleteApiHubInstanceRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Deletes the API hub instance.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import apihub_v1
-
-            async def sample_delete_api_hub_instance():
-                # Create a client
-                client = apihub_v1.ProvisioningAsyncClient()
-
-                # Initialize request argument(s)
-                request = apihub_v1.DeleteApiHubInstanceRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                operation = client.delete_api_hub_instance(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.apihub_v1.types.DeleteApiHubInstanceRequest, dict]]):
-                The request object. The
-                [DeleteApiHubInstance][google.cloud.apihub.v1.Provisioning.DeleteApiHubInstance]
-                method's request.
-            name (:class:`str`):
-                Required. The name of the Api Hub instance to delete.
-                Format:
-                ``projects/{project}/locations/{location}/apiHubInstances/{apiHubInstance}``.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, provisioning_service.DeleteApiHubInstanceRequest):
-            request = provisioning_service.DeleteApiHubInstanceRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_api_hub_instance
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            empty_pb2.Empty,
-            metadata_type=common_fields.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_api_hub_instance(
-        self,
-        request: Optional[
-            Union[provisioning_service.GetApiHubInstanceRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> common_fields.ApiHubInstance:
-        r"""Gets details of a single API Hub instance.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import apihub_v1
-
-            async def sample_get_api_hub_instance():
-                # Create a client
-                client = apihub_v1.ProvisioningAsyncClient()
-
-                # Initialize request argument(s)
-                request = apihub_v1.GetApiHubInstanceRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_api_hub_instance(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.apihub_v1.types.GetApiHubInstanceRequest, dict]]):
-                The request object. The
-                [GetApiHubInstance][google.cloud.apihub.v1.Provisioning.GetApiHubInstance]
-                method's request.
-            name (:class:`str`):
-                Required. The name of the Api Hub instance to retrieve.
-                Format:
-                ``projects/{project}/locations/{location}/apiHubInstances/{apiHubInstance}``.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.apihub_v1.types.ApiHubInstance:
-                An ApiHubInstance represents the
-                instance resources of the API Hub.
-                Currently, only one ApiHub instance is
-                allowed for each project.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, provisioning_service.GetApiHubInstanceRequest):
-            request = provisioning_service.GetApiHubInstanceRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_api_hub_instance
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def lookup_api_hub_instance(
-        self,
-        request: Optional[
-            Union[provisioning_service.LookupApiHubInstanceRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> provisioning_service.LookupApiHubInstanceResponse:
-        r"""Looks up an Api Hub instance in a given GCP project.
-        There will always be only one Api Hub instance for a GCP
-        project across all locations.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import apihub_v1
-
-            async def sample_lookup_api_hub_instance():
-                # Create a client
-                client = apihub_v1.ProvisioningAsyncClient()
-
-                # Initialize request argument(s)
-                request = apihub_v1.LookupApiHubInstanceRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = await client.lookup_api_hub_instance(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.apihub_v1.types.LookupApiHubInstanceRequest, dict]]):
-                The request object. The
-                [LookupApiHubInstance][google.cloud.apihub.v1.Provisioning.LookupApiHubInstance]
-                method's request.
-            parent (:class:`str`):
-                Required. There will always be only one Api Hub instance
-                for a GCP project across all locations. The parent
-                resource for the Api Hub instance resource. Format:
-                ``projects/{project}/locations/{location}``
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.apihub_v1.types.LookupApiHubInstanceResponse:
-                The
-                   [LookupApiHubInstance][google.cloud.apihub.v1.Provisioning.LookupApiHubInstance]
-                   method's response.\`
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, provisioning_service.LookupApiHubInstanceRequest):
-            request = provisioning_service.LookupApiHubInstanceRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.lookup_api_hub_instance
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1150,7 +798,7 @@ class ProvisioningAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "ProvisioningAsyncClient":
+    async def __aenter__(self) -> "ApiHubCollectAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -1165,4 +813,4 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("ProvisioningAsyncClient",)
+__all__ = ("ApiHubCollectAsyncClient",)

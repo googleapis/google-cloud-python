@@ -46,17 +46,15 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.apihub_v1.services.runtime_project_attachment_service import pagers
-from google.cloud.apihub_v1.types import runtime_project_attachment_service
+from google.cloud.apihub_v1.services.api_hub_curate import pagers
+from google.cloud.apihub_v1.types import curate_service
 
-from .client import RuntimeProjectAttachmentServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    RuntimeProjectAttachmentServiceTransport,
-)
-from .transports.grpc_asyncio import RuntimeProjectAttachmentServiceGrpcAsyncIOTransport
+from .client import ApiHubCurateClient
+from .transports.base import DEFAULT_CLIENT_INFO, ApiHubCurateTransport
+from .transports.grpc_asyncio import ApiHubCurateGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -68,57 +66,45 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class RuntimeProjectAttachmentServiceAsyncClient:
-    """This service is used for managing the runtime project
-    attachments.
+class ApiHubCurateAsyncClient:
+    """This service is used for managing curations for processing
+    API data consumed from collect layer.
     """
 
-    _client: RuntimeProjectAttachmentServiceClient
+    _client: ApiHubCurateClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = RuntimeProjectAttachmentServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = RuntimeProjectAttachmentServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        RuntimeProjectAttachmentServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
-    _DEFAULT_UNIVERSE = RuntimeProjectAttachmentServiceClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = ApiHubCurateClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = ApiHubCurateClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = ApiHubCurateClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = ApiHubCurateClient._DEFAULT_UNIVERSE
 
-    runtime_project_attachment_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.runtime_project_attachment_path
-    )
-    parse_runtime_project_attachment_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_runtime_project_attachment_path
+    curation_path = staticmethod(ApiHubCurateClient.curation_path)
+    parse_curation_path = staticmethod(ApiHubCurateClient.parse_curation_path)
+    plugin_instance_path = staticmethod(ApiHubCurateClient.plugin_instance_path)
+    parse_plugin_instance_path = staticmethod(
+        ApiHubCurateClient.parse_plugin_instance_path
     )
     common_billing_account_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_billing_account_path
+        ApiHubCurateClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_billing_account_path
+        ApiHubCurateClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_organization_path
-    )
+    common_folder_path = staticmethod(ApiHubCurateClient.common_folder_path)
+    parse_common_folder_path = staticmethod(ApiHubCurateClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ApiHubCurateClient.common_organization_path)
     parse_common_organization_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_organization_path
+        ApiHubCurateClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_project_path
-    )
+    common_project_path = staticmethod(ApiHubCurateClient.common_project_path)
     parse_common_project_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_project_path
+        ApiHubCurateClient.parse_common_project_path
     )
-    common_location_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.common_location_path
-    )
+    common_location_path = staticmethod(ApiHubCurateClient.common_location_path)
     parse_common_location_path = staticmethod(
-        RuntimeProjectAttachmentServiceClient.parse_common_location_path
+        ApiHubCurateClient.parse_common_location_path
     )
 
     @classmethod
@@ -132,9 +118,9 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            RuntimeProjectAttachmentServiceAsyncClient: The constructed client.
+            ApiHubCurateAsyncClient: The constructed client.
         """
-        return RuntimeProjectAttachmentServiceClient.from_service_account_info.__func__(RuntimeProjectAttachmentServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return ApiHubCurateClient.from_service_account_info.__func__(ApiHubCurateAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -148,9 +134,9 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            RuntimeProjectAttachmentServiceAsyncClient: The constructed client.
+            ApiHubCurateAsyncClient: The constructed client.
         """
-        return RuntimeProjectAttachmentServiceClient.from_service_account_file.__func__(RuntimeProjectAttachmentServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return ApiHubCurateClient.from_service_account_file.__func__(ApiHubCurateAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -188,14 +174,14 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return RuntimeProjectAttachmentServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return ApiHubCurateClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> RuntimeProjectAttachmentServiceTransport:
+    def transport(self) -> ApiHubCurateTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            RuntimeProjectAttachmentServiceTransport: The transport used by the client instance.
+            ApiHubCurateTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -218,23 +204,19 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = RuntimeProjectAttachmentServiceClient.get_transport_class
+    get_transport_class = ApiHubCurateClient.get_transport_class
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                RuntimeProjectAttachmentServiceTransport,
-                Callable[..., RuntimeProjectAttachmentServiceTransport],
-            ]
+            Union[str, ApiHubCurateTransport, Callable[..., ApiHubCurateTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the runtime project attachment service async client.
+        """Instantiates the api hub curate async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -242,10 +224,10 @@ class RuntimeProjectAttachmentServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,RuntimeProjectAttachmentServiceTransport,Callable[..., RuntimeProjectAttachmentServiceTransport]]]):
+            transport (Optional[Union[str,ApiHubCurateTransport,Callable[..., ApiHubCurateTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the RuntimeProjectAttachmentServiceTransport constructor.
+                arguments as used in the ApiHubCurateTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -283,7 +265,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = RuntimeProjectAttachmentServiceClient(
+        self._client = ApiHubCurateClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
@@ -294,9 +276,9 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             std_logging.DEBUG
         ):  # pragma: NO COVER
             _LOGGER.debug(
-                "Created client `google.cloud.apihub_v1.RuntimeProjectAttachmentServiceAsyncClient`.",
+                "Created client `google.cloud.apihub_v1.ApiHubCurateAsyncClient`.",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCurate",
                     "universeDomain": getattr(
                         self._client._transport._credentials, "universe_domain", ""
                     ),
@@ -307,30 +289,25 @@ class RuntimeProjectAttachmentServiceAsyncClient:
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
-                    "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCurate",
                     "credentialsType": None,
                 },
             )
 
-    async def create_runtime_project_attachment(
+    async def create_curation(
         self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[curate_service.CreateCurationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        runtime_project_attachment: Optional[
-            runtime_project_attachment_service.RuntimeProjectAttachment
-        ] = None,
-        runtime_project_attachment_id: Optional[str] = None,
+        curation: Optional[curate_service.Curation] = None,
+        curation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> runtime_project_attachment_service.RuntimeProjectAttachment:
-        r"""Attaches a runtime project to the host project.
+    ) -> curate_service.Curation:
+        r"""Create a curation resource in the API hub.
+        Once a curation resource is created, plugin instances
+        can start using it.
 
         .. code-block:: python
 
@@ -343,55 +320,59 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import apihub_v1
 
-            async def sample_create_runtime_project_attachment():
+            async def sample_create_curation():
                 # Create a client
-                client = apihub_v1.RuntimeProjectAttachmentServiceAsyncClient()
+                client = apihub_v1.ApiHubCurateAsyncClient()
 
                 # Initialize request argument(s)
-                runtime_project_attachment = apihub_v1.RuntimeProjectAttachment()
-                runtime_project_attachment.runtime_project = "runtime_project_value"
+                curation = apihub_v1.Curation()
+                curation.display_name = "display_name_value"
+                curation.endpoint.application_integration_endpoint_details.uri = "uri_value"
+                curation.endpoint.application_integration_endpoint_details.trigger_id = "trigger_id_value"
 
-                request = apihub_v1.CreateRuntimeProjectAttachmentRequest(
+                request = apihub_v1.CreateCurationRequest(
                     parent="parent_value",
-                    runtime_project_attachment_id="runtime_project_attachment_id_value",
-                    runtime_project_attachment=runtime_project_attachment,
+                    curation=curation,
                 )
 
                 # Make the request
-                response = await client.create_runtime_project_attachment(request=request)
+                response = await client.create_curation(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.apihub_v1.types.CreateRuntimeProjectAttachmentRequest, dict]]):
-                The request object. The
-                [CreateRuntimeProjectAttachment][google.cloud.apihub.v1.RuntimeProjectAttachmentService.CreateRuntimeProjectAttachment]
-                method's request.
+            request (Optional[Union[google.cloud.apihub_v1.types.CreateCurationRequest, dict]]):
+                The request object. The [CreateCuration][ApiHub.CreateCuration] method's
+                request.
             parent (:class:`str`):
-                Required. The parent resource for the Runtime Project
-                Attachment. Format:
-                ``projects/{project}/locations/{location}``
+                Required. The parent resource for the curation resource.
+                Format: ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            runtime_project_attachment (:class:`google.cloud.apihub_v1.types.RuntimeProjectAttachment`):
-                Required. The Runtime Project
-                Attachment to create.
+            curation (:class:`google.cloud.apihub_v1.types.Curation`):
+                Required. The curation resource to
+                create.
 
-                This corresponds to the ``runtime_project_attachment`` field
+                This corresponds to the ``curation`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            runtime_project_attachment_id (:class:`str`):
-                Required. The ID to use for the Runtime Project
-                Attachment, which will become the final component of the
-                Runtime Project Attachment's name. The ID must be the
-                same as the project ID of the Google cloud project
-                specified in the
-                runtime_project_attachment.runtime_project field.
+            curation_id (:class:`str`):
+                Optional. The ID to use for the curation resource, which
+                will become the final component of the curations's
+                resource name. This field is optional.
 
-                This corresponds to the ``runtime_project_attachment_id`` field
+                - If provided, the same will be used. The service will
+                  throw an error if the specified ID is already used by
+                  another curation resource in the API hub.
+                - If not provided, a system generated ID will be used.
+
+                This value should be 4-500 characters, and valid
+                characters are /[a-z][A-Z][0-9]-\_/.
+
+                This corresponds to the ``curation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -403,24 +384,13 @@ class RuntimeProjectAttachmentServiceAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.apihub_v1.types.RuntimeProjectAttachment:
-                Runtime project attachment represents
-                an attachment from the runtime project
-                to the host project. Api Hub looks for
-                deployments in the attached runtime
-                projects and creates corresponding
-                resources in Api Hub for the discovered
-                deployments.
-
+            google.cloud.apihub_v1.types.Curation:
+                A curation resource in the API Hub.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            runtime_project_attachment,
-            runtime_project_attachment_id,
-        ]
+        flattened_params = [parent, curation, curation_id]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -432,27 +402,22 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest,
-        ):
-            request = runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest(
-                request
-            )
+        if not isinstance(request, curate_service.CreateCurationRequest):
+            request = curate_service.CreateCurationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if parent is not None:
             request.parent = parent
-        if runtime_project_attachment is not None:
-            request.runtime_project_attachment = runtime_project_attachment
-        if runtime_project_attachment_id is not None:
-            request.runtime_project_attachment_id = runtime_project_attachment_id
+        if curation is not None:
+            request.curation = curation
+        if curation_id is not None:
+            request.curation_id = curation_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_runtime_project_attachment
+            self._client._transport.create_curation
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -475,21 +440,16 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_runtime_project_attachment(
+    async def get_curation(
         self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[curate_service.GetCurationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> runtime_project_attachment_service.RuntimeProjectAttachment:
-        r"""Gets a runtime project attachment.
+    ) -> curate_service.Curation:
+        r"""Get curation resource details.
 
         .. code-block:: python
 
@@ -502,30 +462,28 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import apihub_v1
 
-            async def sample_get_runtime_project_attachment():
+            async def sample_get_curation():
                 # Create a client
-                client = apihub_v1.RuntimeProjectAttachmentServiceAsyncClient()
+                client = apihub_v1.ApiHubCurateAsyncClient()
 
                 # Initialize request argument(s)
-                request = apihub_v1.GetRuntimeProjectAttachmentRequest(
+                request = apihub_v1.GetCurationRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = await client.get_runtime_project_attachment(request=request)
+                response = await client.get_curation(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.apihub_v1.types.GetRuntimeProjectAttachmentRequest, dict]]):
-                The request object. The
-                [GetRuntimeProjectAttachment][google.cloud.apihub.v1.RuntimeProjectAttachmentService.GetRuntimeProjectAttachment]
-                method's request.
+            request (Optional[Union[google.cloud.apihub_v1.types.GetCurationRequest, dict]]):
+                The request object. The [GetCuration][ApiHub.GetCuration] method's request.
             name (:class:`str`):
-                Required. The name of the API resource to retrieve.
+                Required. The name of the curation resource to retrieve.
                 Format:
-                ``projects/{project}/locations/{location}/runtimeProjectAttachments/{runtime_project_attachment}``
+                ``projects/{project}/locations/{location}/curations/{curation}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -539,15 +497,8 @@ class RuntimeProjectAttachmentServiceAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.apihub_v1.types.RuntimeProjectAttachment:
-                Runtime project attachment represents
-                an attachment from the runtime project
-                to the host project. Api Hub looks for
-                deployments in the attached runtime
-                projects and creates corresponding
-                resources in Api Hub for the discovered
-                deployments.
-
+            google.cloud.apihub_v1.types.Curation:
+                A curation resource in the API Hub.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -564,15 +515,8 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest,
-        ):
-            request = (
-                runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest(
-                    request
-                )
-            )
+        if not isinstance(request, curate_service.GetCurationRequest):
+            request = curate_service.GetCurationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -582,7 +526,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_runtime_project_attachment
+            self._client._transport.get_curation
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -605,21 +549,16 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_runtime_project_attachments(
+    async def list_curations(
         self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[curate_service.ListCurationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListRuntimeProjectAttachmentsAsyncPager:
-        r"""List runtime projects attached to the host project.
+    ) -> pagers.ListCurationsAsyncPager:
+        r"""List curation resources in the API hub.
 
         .. code-block:: python
 
@@ -632,30 +571,29 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import apihub_v1
 
-            async def sample_list_runtime_project_attachments():
+            async def sample_list_curations():
                 # Create a client
-                client = apihub_v1.RuntimeProjectAttachmentServiceAsyncClient()
+                client = apihub_v1.ApiHubCurateAsyncClient()
 
                 # Initialize request argument(s)
-                request = apihub_v1.ListRuntimeProjectAttachmentsRequest(
+                request = apihub_v1.ListCurationsRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_runtime_project_attachments(request=request)
+                page_result = client.list_curations(request=request)
 
                 # Handle the response
                 async for response in page_result:
                     print(response)
 
         Args:
-            request (Optional[Union[google.cloud.apihub_v1.types.ListRuntimeProjectAttachmentsRequest, dict]]):
-                The request object. The
-                [ListRuntimeProjectAttachments][google.cloud.apihub.v1.RuntimeProjectAttachmentService.ListRuntimeProjectAttachments]
-                method's request.
+            request (Optional[Union[google.cloud.apihub_v1.types.ListCurationsRequest, dict]]):
+                The request object. The [ListCurations][ApiHub.ListCurations] method's
+                request.
             parent (:class:`str`):
                 Required. The parent, which owns this collection of
-                runtime project attachments. Format:
+                curation resources. Format:
                 ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
@@ -670,10 +608,9 @@ class RuntimeProjectAttachmentServiceAsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.apihub_v1.services.runtime_project_attachment_service.pagers.ListRuntimeProjectAttachmentsAsyncPager:
-                The
-                   [ListRuntimeProjectAttachments][google.cloud.apihub.v1.RuntimeProjectAttachmentService.ListRuntimeProjectAttachments]
-                   method's response.
+            google.cloud.apihub_v1.services.api_hub_curate.pagers.ListCurationsAsyncPager:
+                The [ListCurations][ApiHub.ListCurations] method's
+                response.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -694,15 +631,8 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
-        ):
-            request = (
-                runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(
-                    request
-                )
-            )
+        if not isinstance(request, curate_service.ListCurationsRequest):
+            request = curate_service.ListCurationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -712,7 +642,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_runtime_project_attachments
+            self._client._transport.list_curations
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -734,7 +664,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers.ListRuntimeProjectAttachmentsAsyncPager(
+        response = pagers.ListCurationsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -746,23 +676,26 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_runtime_project_attachment(
+    async def update_curation(
         self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[curate_service.UpdateCurationRequest, dict]] = None,
         *,
-        name: Optional[str] = None,
+        curation: Optional[curate_service.Curation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
-        r"""Delete a runtime project attachment in the API Hub.
-        This call will detach the runtime project from the host
-        project.
+    ) -> curate_service.Curation:
+        r"""Update a curation resource in the API hub. The following fields
+        in the [curation][google.cloud.apihub.v1.Curation] can be
+        updated:
+
+        - [display_name][google.cloud.apihub.v1.Curation.display_name]
+        - [description][google.cloud.apihub.v1.Curation.description]
+
+        The
+        [update_mask][google.cloud.apihub.v1.UpdateApiRequest.update_mask]
+        should be used to specify the fields being updated.
 
         .. code-block:: python
 
@@ -775,27 +708,156 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import apihub_v1
 
-            async def sample_delete_runtime_project_attachment():
+            async def sample_update_curation():
                 # Create a client
-                client = apihub_v1.RuntimeProjectAttachmentServiceAsyncClient()
+                client = apihub_v1.ApiHubCurateAsyncClient()
 
                 # Initialize request argument(s)
-                request = apihub_v1.DeleteRuntimeProjectAttachmentRequest(
+                curation = apihub_v1.Curation()
+                curation.display_name = "display_name_value"
+                curation.endpoint.application_integration_endpoint_details.uri = "uri_value"
+                curation.endpoint.application_integration_endpoint_details.trigger_id = "trigger_id_value"
+
+                request = apihub_v1.UpdateCurationRequest(
+                    curation=curation,
+                )
+
+                # Make the request
+                response = await client.update_curation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.apihub_v1.types.UpdateCurationRequest, dict]]):
+                The request object. The [UpdateCuration][ApiHub.UpdateCuration] method's
+                request.
+            curation (:class:`google.cloud.apihub_v1.types.Curation`):
+                Required. The curation resource to update.
+
+                The curation resource's ``name`` field is used to
+                identify the curation resource to update. Format:
+                ``projects/{project}/locations/{location}/curations/{curation}``
+
+                This corresponds to the ``curation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.apihub_v1.types.Curation:
+                A curation resource in the API Hub.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [curation, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, curate_service.UpdateCurationRequest):
+            request = curate_service.UpdateCurationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if curation is not None:
+            request.curation = curation
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_curation
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("curation.name", request.curation.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_curation(
+        self,
+        request: Optional[Union[curate_service.DeleteCurationRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Delete a curation resource in the API hub. A curation
+        can only be deleted if it's not being used by any plugin
+        instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import apihub_v1
+
+            async def sample_delete_curation():
+                # Create a client
+                client = apihub_v1.ApiHubCurateAsyncClient()
+
+                # Initialize request argument(s)
+                request = apihub_v1.DeleteCurationRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                await client.delete_runtime_project_attachment(request=request)
+                await client.delete_curation(request=request)
 
         Args:
-            request (Optional[Union[google.cloud.apihub_v1.types.DeleteRuntimeProjectAttachmentRequest, dict]]):
-                The request object. The
-                [DeleteRuntimeProjectAttachment][google.cloud.apihub.v1.RuntimeProjectAttachmentService.DeleteRuntimeProjectAttachment]
-                method's request.
+            request (Optional[Union[google.cloud.apihub_v1.types.DeleteCurationRequest, dict]]):
+                The request object. The [DeleteCuration][ApiHub.DeleteCuration] method's
+                request.
             name (:class:`str`):
-                Required. The name of the Runtime Project Attachment to
-                delete. Format:
-                ``projects/{project}/locations/{location}/runtimeProjectAttachments/{runtime_project_attachment}``
+                Required. The name of the curation resource to delete.
+                Format:
+                ``projects/{project}/locations/{location}/curations/{curation}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -823,13 +885,8 @@ class RuntimeProjectAttachmentServiceAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest,
-        ):
-            request = runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest(
-                request
-            )
+        if not isinstance(request, curate_service.DeleteCurationRequest):
+            request = curate_service.DeleteCurationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -839,7 +896,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_runtime_project_attachment
+            self._client._transport.delete_curation
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -858,132 +915,6 @@ class RuntimeProjectAttachmentServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-
-    async def lookup_runtime_project_attachment(
-        self,
-        request: Optional[
-            Union[
-                runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest,
-                dict,
-            ]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse:
-        r"""Look up a runtime project attachment. This API can be
-        called in the context of any project.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import apihub_v1
-
-            async def sample_lookup_runtime_project_attachment():
-                # Create a client
-                client = apihub_v1.RuntimeProjectAttachmentServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = apihub_v1.LookupRuntimeProjectAttachmentRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.lookup_runtime_project_attachment(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.apihub_v1.types.LookupRuntimeProjectAttachmentRequest, dict]]):
-                The request object. The
-                [LookupRuntimeProjectAttachment][google.cloud.apihub.v1.RuntimeProjectAttachmentService.LookupRuntimeProjectAttachment]
-                method's request.
-            name (:class:`str`):
-                Required. Runtime project ID to look up runtime project
-                attachment for. Lookup happens across all regions.
-                Expected format:
-                ``projects/{project}/locations/{location}``.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.apihub_v1.types.LookupRuntimeProjectAttachmentResponse:
-                The
-                   [ListRuntimeProjectAttachments][google.cloud.apihub.v1.RuntimeProjectAttachmentService.ListRuntimeProjectAttachments]
-                   method's response.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest,
-        ):
-            request = runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest(
-                request
-            )
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.lookup_runtime_project_attachment
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
 
     async def list_operations(
         self,
@@ -1316,7 +1247,7 @@ class RuntimeProjectAttachmentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "RuntimeProjectAttachmentServiceAsyncClient":
+    async def __aenter__(self) -> "ApiHubCurateAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -1331,4 +1262,4 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("RuntimeProjectAttachmentServiceAsyncClient",)
+__all__ = ("ApiHubCurateAsyncClient",)

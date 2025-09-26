@@ -13,26 +13,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
-import google.auth  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.apihub_v1.types import host_project_registration_service
+from google.cloud.apihub_v1.types import curate_service
 
-from .base import DEFAULT_CLIENT_INFO, HostProjectRegistrationServiceTransport
+from .base import DEFAULT_CLIENT_INFO, ApiHubCurateTransport
+from .grpc import ApiHubCurateGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -44,8 +49,10 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
-    def intercept_unary_unary(self, continuation, client_call_details, request):
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
         logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
             std_logging.DEBUG
         )
@@ -70,22 +77,22 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.HostProjectRegistrationService",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCurate",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
                 },
             )
-        response = continuation(client_call_details, request)
+        response = await continuation(client_call_details, request)
         if logging_enabled:  # pragma: NO COVER
-            response_metadata = response.trailing_metadata()
+            response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
             metadata = (
                 dict([(k, str(v)) for k, v in response_metadata])
                 if response_metadata
                 else None
             )
-            result = response.result()
+            result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
             elif isinstance(result, google.protobuf.message.Message):
@@ -98,10 +105,10 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
                 "status": "OK",
             }
             _LOGGER.debug(
-                f"Received response for {client_call_details.method}.",
+                f"Received response to rpc {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.HostProjectRegistrationService",
-                    "rpcName": client_call_details.method,
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCurate",
+                    "rpcName": str(client_call_details.method),
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
                 },
@@ -109,13 +116,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class HostProjectRegistrationServiceGrpcTransport(
-    HostProjectRegistrationServiceTransport
-):
-    """gRPC backend transport for HostProjectRegistrationService.
+class ApiHubCurateGrpcAsyncIOTransport(ApiHubCurateTransport):
+    """gRPC AsyncIO backend transport for ApiHubCurate.
 
-    This service is used for managing the host project
-    registrations.
+    This service is used for managing curations for processing
+    API data consumed from collect layer.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -125,7 +130,50 @@ class HostProjectRegistrationServiceGrpcTransport(
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "apihub.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
 
     def __init__(
         self,
@@ -134,7 +182,7 @@ class HostProjectRegistrationServiceGrpcTransport(
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -158,9 +206,10 @@ class HostProjectRegistrationServiceGrpcTransport(
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if a ``channel`` instance is provided.
-            channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[Union[aio.Channel, Callable[..., aio.Channel]]]):
                 A ``Channel`` instance through which to make calls, or a Callable
                 that constructs and returns one. If set to None, ``self.create_channel``
                 is used to create the channel. If a Callable is given, it will be called
@@ -190,7 +239,7 @@ class HostProjectRegistrationServiceGrpcTransport(
                 be used for service account credentials.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -204,14 +253,13 @@ class HostProjectRegistrationServiceGrpcTransport(
         if client_cert_source:
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
-        if isinstance(channel, grpc.Channel):
+        if isinstance(channel, aio.Channel):
             # Ignore credentials if a channel was passed.
             credentials = None
             self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -264,86 +312,40 @@ class HostProjectRegistrationServiceGrpcTransport(
                 ],
             )
 
-        self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
-
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "apihub.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
-
     @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service."""
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
+        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def create_host_project_registration(
+    def create_curation(
         self,
     ) -> Callable[
-        [host_project_registration_service.CreateHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
+        [curate_service.CreateCurationRequest], Awaitable[curate_service.Curation]
     ]:
-        r"""Return a callable for the create host project
-        registration method over gRPC.
+        r"""Return a callable for the create curation method over gRPC.
 
-        Create a host project registration.
-        A Google cloud project can be registered as a host
-        project if it is not attached as a runtime project to
-        another host project. A project can be registered as a
-        host project only once. Subsequent register calls for
-        the same project will fail.
+        Create a curation resource in the API hub.
+        Once a curation resource is created, plugin instances
+        can start using it.
 
         Returns:
-            Callable[[~.CreateHostProjectRegistrationRequest],
-                    ~.HostProjectRegistration]:
+            Callable[[~.CreateCurationRequest],
+                    Awaitable[~.Curation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -351,30 +353,27 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_host_project_registration" not in self._stubs:
-            self._stubs[
-                "create_host_project_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/CreateHostProjectRegistration",
-                request_serializer=host_project_registration_service.CreateHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+        if "create_curation" not in self._stubs:
+            self._stubs["create_curation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/CreateCuration",
+                request_serializer=curate_service.CreateCurationRequest.serialize,
+                response_deserializer=curate_service.Curation.deserialize,
             )
-        return self._stubs["create_host_project_registration"]
+        return self._stubs["create_curation"]
 
     @property
-    def get_host_project_registration(
+    def get_curation(
         self,
     ) -> Callable[
-        [host_project_registration_service.GetHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
+        [curate_service.GetCurationRequest], Awaitable[curate_service.Curation]
     ]:
-        r"""Return a callable for the get host project registration method over gRPC.
+        r"""Return a callable for the get curation method over gRPC.
 
-        Get a host project registration.
+        Get curation resource details.
 
         Returns:
-            Callable[[~.GetHostProjectRegistrationRequest],
-                    ~.HostProjectRegistration]:
+            Callable[[~.GetCurationRequest],
+                    Awaitable[~.Curation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -382,31 +381,28 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_host_project_registration" not in self._stubs:
-            self._stubs[
-                "get_host_project_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/GetHostProjectRegistration",
-                request_serializer=host_project_registration_service.GetHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+        if "get_curation" not in self._stubs:
+            self._stubs["get_curation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/GetCuration",
+                request_serializer=curate_service.GetCurationRequest.serialize,
+                response_deserializer=curate_service.Curation.deserialize,
             )
-        return self._stubs["get_host_project_registration"]
+        return self._stubs["get_curation"]
 
     @property
-    def list_host_project_registrations(
+    def list_curations(
         self,
     ) -> Callable[
-        [host_project_registration_service.ListHostProjectRegistrationsRequest],
-        host_project_registration_service.ListHostProjectRegistrationsResponse,
+        [curate_service.ListCurationsRequest],
+        Awaitable[curate_service.ListCurationsResponse],
     ]:
-        r"""Return a callable for the list host project
-        registrations method over gRPC.
+        r"""Return a callable for the list curations method over gRPC.
 
-        Lists host project registrations.
+        List curation resources in the API hub.
 
         Returns:
-            Callable[[~.ListHostProjectRegistrationsRequest],
-                    ~.ListHostProjectRegistrationsResponse]:
+            Callable[[~.ListCurationsRequest],
+                    Awaitable[~.ListCurationsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -414,18 +410,150 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_host_project_registrations" not in self._stubs:
-            self._stubs[
-                "list_host_project_registrations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/ListHostProjectRegistrations",
-                request_serializer=host_project_registration_service.ListHostProjectRegistrationsRequest.serialize,
-                response_deserializer=host_project_registration_service.ListHostProjectRegistrationsResponse.deserialize,
+        if "list_curations" not in self._stubs:
+            self._stubs["list_curations"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/ListCurations",
+                request_serializer=curate_service.ListCurationsRequest.serialize,
+                response_deserializer=curate_service.ListCurationsResponse.deserialize,
             )
-        return self._stubs["list_host_project_registrations"]
+        return self._stubs["list_curations"]
+
+    @property
+    def update_curation(
+        self,
+    ) -> Callable[
+        [curate_service.UpdateCurationRequest], Awaitable[curate_service.Curation]
+    ]:
+        r"""Return a callable for the update curation method over gRPC.
+
+        Update a curation resource in the API hub. The following fields
+        in the [curation][google.cloud.apihub.v1.Curation] can be
+        updated:
+
+        - [display_name][google.cloud.apihub.v1.Curation.display_name]
+        - [description][google.cloud.apihub.v1.Curation.description]
+
+        The
+        [update_mask][google.cloud.apihub.v1.UpdateApiRequest.update_mask]
+        should be used to specify the fields being updated.
+
+        Returns:
+            Callable[[~.UpdateCurationRequest],
+                    Awaitable[~.Curation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_curation" not in self._stubs:
+            self._stubs["update_curation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/UpdateCuration",
+                request_serializer=curate_service.UpdateCurationRequest.serialize,
+                response_deserializer=curate_service.Curation.deserialize,
+            )
+        return self._stubs["update_curation"]
+
+    @property
+    def delete_curation(
+        self,
+    ) -> Callable[[curate_service.DeleteCurationRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete curation method over gRPC.
+
+        Delete a curation resource in the API hub. A curation
+        can only be deleted if it's not being used by any plugin
+        instance.
+
+        Returns:
+            Callable[[~.DeleteCurationRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_curation" not in self._stubs:
+            self._stubs["delete_curation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/DeleteCuration",
+                request_serializer=curate_service.DeleteCurationRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_curation"]
+
+    def _prep_wrapped_messages(self, client_info):
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        self._wrapped_methods = {
+            self.create_curation: self._wrap_method(
+                self.create_curation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_curation: self._wrap_method(
+                self.get_curation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_curations: self._wrap_method(
+                self.list_curations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_curation: self._wrap_method(
+                self.update_curation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_curation: self._wrap_method(
+                self.delete_curation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        self._logged_channel.close()
+        return self._logged_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(
@@ -533,9 +661,5 @@ class HostProjectRegistrationServiceGrpcTransport(
             )
         return self._stubs["get_location"]
 
-    @property
-    def kind(self) -> str:
-        return "grpc"
 
-
-__all__ = ("HostProjectRegistrationServiceGrpcTransport",)
+__all__ = ("ApiHubCurateGrpcAsyncIOTransport",)

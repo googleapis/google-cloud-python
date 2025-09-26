@@ -25,14 +25,15 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.apihub_v1.types import host_project_registration_service
+from google.cloud.apihub_v1.types import curate_service
 
-from .base import DEFAULT_CLIENT_INFO, HostProjectRegistrationServiceTransport
+from .base import DEFAULT_CLIENT_INFO, ApiHubCurateTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -70,7 +71,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.HostProjectRegistrationService",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCurate",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
@@ -100,7 +101,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.HostProjectRegistrationService",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubCurate",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
@@ -109,13 +110,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class HostProjectRegistrationServiceGrpcTransport(
-    HostProjectRegistrationServiceTransport
-):
-    """gRPC backend transport for HostProjectRegistrationService.
+class ApiHubCurateGrpcTransport(ApiHubCurateTransport):
+    """gRPC backend transport for ApiHubCurate.
 
-    This service is used for managing the host project
-    registrations.
+    This service is used for managing curations for processing
+    API data consumed from collect layer.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -325,25 +324,18 @@ class HostProjectRegistrationServiceGrpcTransport(
         return self._grpc_channel
 
     @property
-    def create_host_project_registration(
+    def create_curation(
         self,
-    ) -> Callable[
-        [host_project_registration_service.CreateHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
-    ]:
-        r"""Return a callable for the create host project
-        registration method over gRPC.
+    ) -> Callable[[curate_service.CreateCurationRequest], curate_service.Curation]:
+        r"""Return a callable for the create curation method over gRPC.
 
-        Create a host project registration.
-        A Google cloud project can be registered as a host
-        project if it is not attached as a runtime project to
-        another host project. A project can be registered as a
-        host project only once. Subsequent register calls for
-        the same project will fail.
+        Create a curation resource in the API hub.
+        Once a curation resource is created, plugin instances
+        can start using it.
 
         Returns:
-            Callable[[~.CreateHostProjectRegistrationRequest],
-                    ~.HostProjectRegistration]:
+            Callable[[~.CreateCurationRequest],
+                    ~.Curation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -351,30 +343,25 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_host_project_registration" not in self._stubs:
-            self._stubs[
-                "create_host_project_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/CreateHostProjectRegistration",
-                request_serializer=host_project_registration_service.CreateHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+        if "create_curation" not in self._stubs:
+            self._stubs["create_curation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/CreateCuration",
+                request_serializer=curate_service.CreateCurationRequest.serialize,
+                response_deserializer=curate_service.Curation.deserialize,
             )
-        return self._stubs["create_host_project_registration"]
+        return self._stubs["create_curation"]
 
     @property
-    def get_host_project_registration(
+    def get_curation(
         self,
-    ) -> Callable[
-        [host_project_registration_service.GetHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
-    ]:
-        r"""Return a callable for the get host project registration method over gRPC.
+    ) -> Callable[[curate_service.GetCurationRequest], curate_service.Curation]:
+        r"""Return a callable for the get curation method over gRPC.
 
-        Get a host project registration.
+        Get curation resource details.
 
         Returns:
-            Callable[[~.GetHostProjectRegistrationRequest],
-                    ~.HostProjectRegistration]:
+            Callable[[~.GetCurationRequest],
+                    ~.Curation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -382,31 +369,27 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_host_project_registration" not in self._stubs:
-            self._stubs[
-                "get_host_project_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/GetHostProjectRegistration",
-                request_serializer=host_project_registration_service.GetHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+        if "get_curation" not in self._stubs:
+            self._stubs["get_curation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/GetCuration",
+                request_serializer=curate_service.GetCurationRequest.serialize,
+                response_deserializer=curate_service.Curation.deserialize,
             )
-        return self._stubs["get_host_project_registration"]
+        return self._stubs["get_curation"]
 
     @property
-    def list_host_project_registrations(
+    def list_curations(
         self,
     ) -> Callable[
-        [host_project_registration_service.ListHostProjectRegistrationsRequest],
-        host_project_registration_service.ListHostProjectRegistrationsResponse,
+        [curate_service.ListCurationsRequest], curate_service.ListCurationsResponse
     ]:
-        r"""Return a callable for the list host project
-        registrations method over gRPC.
+        r"""Return a callable for the list curations method over gRPC.
 
-        Lists host project registrations.
+        List curation resources in the API hub.
 
         Returns:
-            Callable[[~.ListHostProjectRegistrationsRequest],
-                    ~.ListHostProjectRegistrationsResponse]:
+            Callable[[~.ListCurationsRequest],
+                    ~.ListCurationsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -414,15 +397,76 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_host_project_registrations" not in self._stubs:
-            self._stubs[
-                "list_host_project_registrations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/ListHostProjectRegistrations",
-                request_serializer=host_project_registration_service.ListHostProjectRegistrationsRequest.serialize,
-                response_deserializer=host_project_registration_service.ListHostProjectRegistrationsResponse.deserialize,
+        if "list_curations" not in self._stubs:
+            self._stubs["list_curations"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/ListCurations",
+                request_serializer=curate_service.ListCurationsRequest.serialize,
+                response_deserializer=curate_service.ListCurationsResponse.deserialize,
             )
-        return self._stubs["list_host_project_registrations"]
+        return self._stubs["list_curations"]
+
+    @property
+    def update_curation(
+        self,
+    ) -> Callable[[curate_service.UpdateCurationRequest], curate_service.Curation]:
+        r"""Return a callable for the update curation method over gRPC.
+
+        Update a curation resource in the API hub. The following fields
+        in the [curation][google.cloud.apihub.v1.Curation] can be
+        updated:
+
+        - [display_name][google.cloud.apihub.v1.Curation.display_name]
+        - [description][google.cloud.apihub.v1.Curation.description]
+
+        The
+        [update_mask][google.cloud.apihub.v1.UpdateApiRequest.update_mask]
+        should be used to specify the fields being updated.
+
+        Returns:
+            Callable[[~.UpdateCurationRequest],
+                    ~.Curation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_curation" not in self._stubs:
+            self._stubs["update_curation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/UpdateCuration",
+                request_serializer=curate_service.UpdateCurationRequest.serialize,
+                response_deserializer=curate_service.Curation.deserialize,
+            )
+        return self._stubs["update_curation"]
+
+    @property
+    def delete_curation(
+        self,
+    ) -> Callable[[curate_service.DeleteCurationRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete curation method over gRPC.
+
+        Delete a curation resource in the API hub. A curation
+        can only be deleted if it's not being used by any plugin
+        instance.
+
+        Returns:
+            Callable[[~.DeleteCurationRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_curation" not in self._stubs:
+            self._stubs["delete_curation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubCurate/DeleteCuration",
+                request_serializer=curate_service.DeleteCurationRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_curation"]
 
     def close(self):
         self._logged_channel.close()
@@ -538,4 +582,4 @@ class HostProjectRegistrationServiceGrpcTransport(
         return "grpc"
 
 
-__all__ = ("HostProjectRegistrationServiceGrpcTransport",)
+__all__ = ("ApiHubCurateGrpcTransport",)

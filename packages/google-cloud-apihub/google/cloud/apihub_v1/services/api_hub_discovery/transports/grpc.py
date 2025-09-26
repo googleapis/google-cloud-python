@@ -30,9 +30,9 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.apihub_v1.types import host_project_registration_service
+from google.cloud.apihub_v1.types import common_fields, discovery_service
 
-from .base import DEFAULT_CLIENT_INFO, HostProjectRegistrationServiceTransport
+from .base import DEFAULT_CLIENT_INFO, ApiHubDiscoveryTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -70,7 +70,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.HostProjectRegistrationService",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubDiscovery",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
@@ -100,7 +100,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.cloud.apihub.v1.HostProjectRegistrationService",
+                    "serviceName": "google.cloud.apihub.v1.ApiHubDiscovery",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
@@ -109,13 +109,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class HostProjectRegistrationServiceGrpcTransport(
-    HostProjectRegistrationServiceTransport
-):
-    """gRPC backend transport for HostProjectRegistrationService.
+class ApiHubDiscoveryGrpcTransport(ApiHubDiscoveryTransport):
+    """gRPC backend transport for ApiHubDiscovery.
 
-    This service is used for managing the host project
-    registrations.
+    This service exposes methods used to manage
+    DiscoveredApiObservations and DiscoveredApiOperations.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -325,25 +323,21 @@ class HostProjectRegistrationServiceGrpcTransport(
         return self._grpc_channel
 
     @property
-    def create_host_project_registration(
+    def list_discovered_api_observations(
         self,
     ) -> Callable[
-        [host_project_registration_service.CreateHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
+        [discovery_service.ListDiscoveredApiObservationsRequest],
+        discovery_service.ListDiscoveredApiObservationsResponse,
     ]:
-        r"""Return a callable for the create host project
-        registration method over gRPC.
+        r"""Return a callable for the list discovered api
+        observations method over gRPC.
 
-        Create a host project registration.
-        A Google cloud project can be registered as a host
-        project if it is not attached as a runtime project to
-        another host project. A project can be registered as a
-        host project only once. Subsequent register calls for
-        the same project will fail.
+        Lists all the DiscoveredAPIObservations in a given
+        project and location.
 
         Returns:
-            Callable[[~.CreateHostProjectRegistrationRequest],
-                    ~.HostProjectRegistration]:
+            Callable[[~.ListDiscoveredApiObservationsRequest],
+                    ~.ListDiscoveredApiObservationsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -351,30 +345,31 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_host_project_registration" not in self._stubs:
+        if "list_discovered_api_observations" not in self._stubs:
             self._stubs[
-                "create_host_project_registration"
+                "list_discovered_api_observations"
             ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/CreateHostProjectRegistration",
-                request_serializer=host_project_registration_service.CreateHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+                "/google.cloud.apihub.v1.ApiHubDiscovery/ListDiscoveredApiObservations",
+                request_serializer=discovery_service.ListDiscoveredApiObservationsRequest.serialize,
+                response_deserializer=discovery_service.ListDiscoveredApiObservationsResponse.deserialize,
             )
-        return self._stubs["create_host_project_registration"]
+        return self._stubs["list_discovered_api_observations"]
 
     @property
-    def get_host_project_registration(
+    def get_discovered_api_observation(
         self,
     ) -> Callable[
-        [host_project_registration_service.GetHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
+        [discovery_service.GetDiscoveredApiObservationRequest],
+        common_fields.DiscoveredApiObservation,
     ]:
-        r"""Return a callable for the get host project registration method over gRPC.
+        r"""Return a callable for the get discovered api observation method over gRPC.
 
-        Get a host project registration.
+        Gets a DiscoveredAPIObservation in a given project,
+        location and ApiObservation.
 
         Returns:
-            Callable[[~.GetHostProjectRegistrationRequest],
-                    ~.HostProjectRegistration]:
+            Callable[[~.GetDiscoveredApiObservationRequest],
+                    ~.DiscoveredApiObservation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -382,31 +377,31 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_host_project_registration" not in self._stubs:
+        if "get_discovered_api_observation" not in self._stubs:
             self._stubs[
-                "get_host_project_registration"
+                "get_discovered_api_observation"
             ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/GetHostProjectRegistration",
-                request_serializer=host_project_registration_service.GetHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+                "/google.cloud.apihub.v1.ApiHubDiscovery/GetDiscoveredApiObservation",
+                request_serializer=discovery_service.GetDiscoveredApiObservationRequest.serialize,
+                response_deserializer=common_fields.DiscoveredApiObservation.deserialize,
             )
-        return self._stubs["get_host_project_registration"]
+        return self._stubs["get_discovered_api_observation"]
 
     @property
-    def list_host_project_registrations(
+    def list_discovered_api_operations(
         self,
     ) -> Callable[
-        [host_project_registration_service.ListHostProjectRegistrationsRequest],
-        host_project_registration_service.ListHostProjectRegistrationsResponse,
+        [discovery_service.ListDiscoveredApiOperationsRequest],
+        discovery_service.ListDiscoveredApiOperationsResponse,
     ]:
-        r"""Return a callable for the list host project
-        registrations method over gRPC.
+        r"""Return a callable for the list discovered api operations method over gRPC.
 
-        Lists host project registrations.
+        Lists all the DiscoveredAPIOperations in a given
+        project, location and ApiObservation.
 
         Returns:
-            Callable[[~.ListHostProjectRegistrationsRequest],
-                    ~.ListHostProjectRegistrationsResponse]:
+            Callable[[~.ListDiscoveredApiOperationsRequest],
+                    ~.ListDiscoveredApiOperationsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -414,15 +409,47 @@ class HostProjectRegistrationServiceGrpcTransport(
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_host_project_registrations" not in self._stubs:
+        if "list_discovered_api_operations" not in self._stubs:
             self._stubs[
-                "list_host_project_registrations"
+                "list_discovered_api_operations"
             ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/ListHostProjectRegistrations",
-                request_serializer=host_project_registration_service.ListHostProjectRegistrationsRequest.serialize,
-                response_deserializer=host_project_registration_service.ListHostProjectRegistrationsResponse.deserialize,
+                "/google.cloud.apihub.v1.ApiHubDiscovery/ListDiscoveredApiOperations",
+                request_serializer=discovery_service.ListDiscoveredApiOperationsRequest.serialize,
+                response_deserializer=discovery_service.ListDiscoveredApiOperationsResponse.deserialize,
             )
-        return self._stubs["list_host_project_registrations"]
+        return self._stubs["list_discovered_api_operations"]
+
+    @property
+    def get_discovered_api_operation(
+        self,
+    ) -> Callable[
+        [discovery_service.GetDiscoveredApiOperationRequest],
+        common_fields.DiscoveredApiOperation,
+    ]:
+        r"""Return a callable for the get discovered api operation method over gRPC.
+
+        Gets a DiscoveredAPIOperation in a given project,
+        location, ApiObservation and ApiOperation.
+
+        Returns:
+            Callable[[~.GetDiscoveredApiOperationRequest],
+                    ~.DiscoveredApiOperation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_discovered_api_operation" not in self._stubs:
+            self._stubs[
+                "get_discovered_api_operation"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHubDiscovery/GetDiscoveredApiOperation",
+                request_serializer=discovery_service.GetDiscoveredApiOperationRequest.serialize,
+                response_deserializer=common_fields.DiscoveredApiOperation.deserialize,
+            )
+        return self._stubs["get_discovered_api_operation"]
 
     def close(self):
         self._logged_channel.close()
@@ -538,4 +565,4 @@ class HostProjectRegistrationServiceGrpcTransport(
         return "grpc"
 
 
-__all__ = ("HostProjectRegistrationServiceGrpcTransport",)
+__all__ = ("ApiHubDiscoveryGrpcTransport",)

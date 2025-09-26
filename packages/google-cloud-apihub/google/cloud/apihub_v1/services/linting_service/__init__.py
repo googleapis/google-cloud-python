@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .async_client import LintingServiceAsyncClient
 from .client import LintingServiceClient
 
-__all__ = ("LintingServiceClient",)
+__all__ = (
+    "LintingServiceClient",
+    "LintingServiceAsyncClient",
+)

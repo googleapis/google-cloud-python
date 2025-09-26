@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .async_client import ApiHubDiscoveryAsyncClient
 from .client import ApiHubDiscoveryClient
 
-__all__ = ("ApiHubDiscoveryClient",)
+__all__ = (
+    "ApiHubDiscoveryClient",
+    "ApiHubDiscoveryAsyncClient",
+)

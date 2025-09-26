@@ -69,6 +69,8 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.cloud.apihub_v1.types import collect_service, common_fields
 
 from .transports.base import DEFAULT_CLIENT_INFO, ApiHubCollectTransport
+from .transports.grpc import ApiHubCollectGrpcTransport
+from .transports.grpc_asyncio import ApiHubCollectGrpcAsyncIOTransport
 from .transports.rest import ApiHubCollectRestTransport
 
 
@@ -81,6 +83,8 @@ class ApiHubCollectClientMeta(type):
     """
 
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ApiHubCollectTransport]]
+    _transport_registry["grpc"] = ApiHubCollectGrpcTransport
+    _transport_registry["grpc_asyncio"] = ApiHubCollectGrpcAsyncIOTransport
     _transport_registry["rest"] = ApiHubCollectRestTransport
 
     def get_transport_class(
