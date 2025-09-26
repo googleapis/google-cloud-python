@@ -935,11 +935,13 @@ class API:
 
             # Check to see if selective gapic generation methods are valid.
             selective_gapic_errors = {}
+            # TODO(https://github.com/googleapis/gapic-generator-python/issues/2446):
+            # Workaround issue in Python 3.14 related to code coverage by adding `# pragma: no branch`
             for (
                 method_name
             ) in (
                 library_settings.python_settings.common.selective_gapic_generation.methods
-            ):
+            ):  # pragma: no branch
                 if method_name not in self.all_methods:
                     selective_gapic_errors[method_name] = "Method does not exist."
                 elif not method_name.startswith(library_settings.version):

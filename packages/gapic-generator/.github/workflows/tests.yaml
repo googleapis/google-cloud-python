@@ -16,8 +16,40 @@ concurrency:
 env:
   SHOWCASE_VERSION: 0.35.0
   PROTOC_VERSION: 3.20.2
+  OLDEST_PYTHON: 3.7
+  LATEST_STABLE_PYTHON: 3.13
+  PRE_RELEASE_PYTHON: 3.14
+  ALL_PYTHON: "['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
+
+permissions:
+  contents: read
 
 jobs:
+  # `all_python_setup` amd `python_config` are a workaround for a known issue where it's not possible to use environment variables outside of `steps`.
+  # Some jobs set up a text matrix which is outside of `steps` and environment variables can't be used directly. 
+  # This requires a workaround based on the discussion in:
+  # https://github.com/actions/runner/issues/2372
+  # The limitation is captured here where certain job configurations don't have access to `env`
+  # https://docs.github.com/en/enterprise-cloud@latest/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#context-availability 
+  all_python_setup:
+    runs-on: ubuntu-latest
+    outputs:
+      all_python: ${{ env.ALL_PYTHON }}
+    steps:
+    - name: Set up all python
+      id: all_python
+      run: |
+        echo 'all_python={{ "${{ env.ALL_PYTHON }}" }}'
+  python_config:
+    runs-on: ubuntu-latest
+    outputs:
+      oldest_python: ${{ env.OLDEST_PYTHON }}
+      latest_stable_python: ${{ env.LATEST_STABLE_PYTHON }}
+    steps:
+    - name: Print env variables for `python_config`
+      run: |
+        echo 'oldest_python={{ "${{ env.OLDEST_PYTHON }}" }}'
+        echo 'latest_stable_python={{ "${{ env.LATEST_STABLE_PYTHON }}" }}'
   docs:
     runs-on: ubuntu-latest
     steps:
@@ -49,11 +81,15 @@ jobs:
       - name: Build the documentation.
         run: nox -s docfx
   mypy:
+    needs: all_python_setup
     strategy:
       matrix:
         # Run mypy on all of the supported python versions listed in setup.py
         # https://github.com/python/mypy/blob/master/setup.py
-        python: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
+        exclude:
+          # Remove once https://github.com/googleapis/gapic-generator-python/issues/2303 is fixed
+          - python: '3.7'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -62,16 +98,18 @@ jobs:
         with:
           python-version: "${{ matrix.python }}"
           cache: 'pip'
+          allow-prereleases: true
       - name: Install nox.
         run: python -m pip install nox
       - name: Check type annotations.
         run: nox -s mypy-${{ matrix.python }}
   showcase:
+    needs: python_config
     strategy:
       # Run showcase tests on the lowest and highest supported runtimes
       matrix:
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `showcase_w_rest_async` target when async rest is GA.
-        python: ["3.7", "3.13"]
+        python: ["${{ needs.python_config.outputs.oldest_python }}", "${{ needs.python_config.outputs.latest_stable_python }}"]
         target: [showcase, showcase_w_rest_async]
         logging_scope: ["", "google"]
 
@@ -126,10 +164,10 @@ jobs:
         run: |
           sudo mkdir -p /tmp/workspace/tests/cert/
           sudo chown -R ${USER} /tmp/workspace/
-      - name: Set up Python "3.13"
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
           cache: 'pip'
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
@@ -160,9 +198,10 @@ jobs:
             nox -s ${{ matrix.target }}
   # TODO(yon-mg): add compute unit tests
   showcase-unit:
+    needs: all_python_setup
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `_w_rest_async` variant when async rest is GA.
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
         logging_scope: ["", "google"]
@@ -177,6 +216,7 @@ jobs:
         with:
           python-version: "${{ matrix.python }}"
           cache: 'pip'
+          allow-prereleases: true
       - name: Install system dependencies.
         run: |
             sudo apt-get update
@@ -200,10 +240,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python "3.13"
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -228,10 +268,10 @@ jobs:
         variant: ['', _alternative_templates]
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python "3.13"
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -250,13 +290,14 @@ jobs:
       - name: Typecheck the generated output.
         run: nox -s showcase_mypy${{ matrix.variant }}
   snippetgen:
+    needs: all_python_setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python "3.13"
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -267,10 +308,10 @@ jobs:
       - name: Check autogenerated snippets.
         run: nox -s snippetgen
   unit:
+    needs: all_python_setup
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
-
+        python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
     # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
     runs-on: ubuntu-22.04
@@ -279,8 +320,9 @@ jobs:
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python }}
+          python-version: "${{ matrix.python }}"
           cache: 'pip'
+          allow-prereleases: true
       - name: Install pandoc
         run: |
             sudo apt-get update
@@ -291,11 +333,11 @@ jobs:
       - name: Run unit tests.
         run: nox -s unit-${{ matrix.python }}
   fragment:
+    needs: all_python_setup
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
         variant: ['', _alternative_templates]
-
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
     # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
     runs-on: ubuntu-22.04
@@ -304,8 +346,9 @@ jobs:
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python }}
+          python-version: "${{ matrix.python }}"
           cache: 'pip'
+          allow-prereleases: true
       - name: Install pandoc
         run: |
             sudo apt-get update
@@ -348,29 +391,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python 3.13
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: ${{ env.LATEST_STABLE_PYTHON }}
           cache: 'pip'
       - name: Install nox.
         run: |
             python -m pip install nox
       - name: Run blacken and lint on the generated output.
         run: |
-          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-3.13 blacken lint
-          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-3.13 blacken lint
-          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-3.13 blacken lint
-          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-3.13 blacken lint
-          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-3.13 blacken lint
+          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
   goldens-unit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python 3.13
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
           cache: 'pip'
       - name: Install nox.
         run: |
@@ -380,19 +423,20 @@ jobs:
         # in order to run unit tests
         # See https://github.com/googleapis/gapic-generator-python/issues/1806
         run: |
-          nox -f tests/integration/goldens/credentials/noxfile.py -s unit-3.13
-          nox -f tests/integration/goldens/eventarc/noxfile.py -s unit-3.13
-          nox -f tests/integration/goldens/logging/noxfile.py -s unit-3.13
-          nox -f tests/integration/goldens/redis/noxfile.py -s unit-3.13
+          nox -f tests/integration/goldens/credentials/noxfile.py -s unit-${{ env.LATEST_STABLE_PYTHON }}
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s unit-${{ env.LATEST_STABLE_PYTHON }}
+          nox -f tests/integration/goldens/logging/noxfile.py -s unit-${{ env.LATEST_STABLE_PYTHON }}
+          nox -f tests/integration/goldens/redis/noxfile.py -s unit-${{ env.LATEST_STABLE_PYTHON }}
   goldens-prerelease:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python 3.13
+      - name: Set up Python ${{ env.PRE_RELEASE_PYTHON }}
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "${{ env.PRE_RELEASE_PYTHON }}"
           cache: 'pip'
+          allow-prereleases: true
       - name: Install nox.
         run: |
             python -m pip install nox
@@ -409,10 +453,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python "3.13"
+      - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "${{ env.LATEST_STABLE_PYTHON }}"
           cache: 'pip'
       - name: Install nox.
         run: |
