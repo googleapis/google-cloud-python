@@ -57,7 +57,7 @@ async def main(project_id, instance_id, table_id):
     # Create a column family with GC policy : most recent N versions
     # Define the GC policy to retain only the most recent 2 versions
     max_versions_rule = column_family.MaxVersionsGCRule(2)
-    column_family_id = "cf1"
+    column_family_id = b"cf1"
     column_families = {column_family_id: max_versions_rule}
     if not admin_table.exists():
         admin_table.create(column_families=column_families)
@@ -70,9 +70,9 @@ async def main(project_id, instance_id, table_id):
         wait_for_table(admin_table)
         # [START bigtable_async_hw_write_rows]
         print("Writing some greetings to the table.")
-        greetings = ["Hello World!", "Hello Cloud Bigtable!", "Hello Python!"]
+        greetings = [b"Hello World!", b"Hello Cloud Bigtable!", b"Hello Python!"]
         mutations = []
-        column = "greeting"
+        column = b"greeting"
         for i, value in enumerate(greetings):
             # Note: This example uses sequential numeric IDs for simplicity,
             # but this can result in poor performance in a production
@@ -84,7 +84,7 @@ async def main(project_id, instance_id, table_id):
             # the best performance, see the documentation:
             #
             #     https://cloud.google.com/bigtable/docs/schema-design
-            row_key = "greeting{}".format(i).encode()
+            row_key = f"greeting{i}".encode()
             row_mutation = bigtable.data.RowMutationEntry(
                 row_key, bigtable.data.SetCell(column_family_id, column, value)
             )
