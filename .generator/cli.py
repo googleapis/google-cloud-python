@@ -330,6 +330,7 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
     os.makedirs(
         f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True
     )
+    # TODO(https://github.com/googleapis/synthtool/pull/2126): Remove once this PR is merged
     # This is needed to avoid the following error for proto-only libraries
     # Traceback (most recent call last):
     # File "/app/./cli.py", line 535, in handle_generate
