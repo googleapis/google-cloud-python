@@ -169,7 +169,7 @@ libraries:
     last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/apps/card/v1
-        service_config: ""
+        service_config: ''
     source_roots:
       - packages/google-apps-card
     preserve_regex:
@@ -250,19 +250,19 @@ libraries:
     last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
     apis:
       - path: google/apps/script/type
-        service_config: ""
+        service_config: ''
       - path: google/apps/script/type/gmail
-        service_config: ""
+        service_config: ''
       - path: google/apps/script/type/docs
-        service_config: ""
+        service_config: ''
       - path: google/apps/script/type/drive
-        service_config: ""
+        service_config: ''
       - path: google/apps/script/type/sheets
-        service_config: ""
+        service_config: ''
       - path: google/apps/script/type/calendar
-        service_config: ""
+        service_config: ''
       - path: google/apps/script/type/slides
-        service_config: ""
+        service_config: ''
     source_roots:
       - packages/google-apps-script-type
     preserve_regex:
@@ -424,4 +424,193 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-api-keys
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-apigee-connect
+    version: 1.12.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/apigeeconnect/v1
+    source_roots:
+      - packages/google-cloud-apigee-connect
+    preserve_regex:
+      - packages/google-cloud-apigee-connect/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-apigee-connect
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-apigee-registry
+    version: 0.6.18
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/apigeeregistry/v1
+    source_roots:
+      - packages/google-cloud-apigee-registry
+    preserve_regex:
+      - packages/google-cloud-apigee-registry/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-apigee-registry
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-appengine-admin
+    version: 1.14.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/appengine/v1
+    source_roots:
+      - packages/google-cloud-appengine-admin
+    preserve_regex:
+      - packages/google-cloud-appengine-admin/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-appengine-admin
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-appengine-logging
+    version: 1.6.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/appengine/logging/v1
+    source_roots:
+      - packages/google-cloud-appengine-logging
+    preserve_regex:
+      - packages/google-cloud-appengine-logging/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/gapic/appengine_logging_v1/test_appengine_logging_v1.py
+    remove_regex:
+      - packages/google-cloud-appengine-logging
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-apphub
+    version: 0.1.10
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/apphub/v1
+    source_roots:
+      - packages/google-cloud-apphub
+    preserve_regex:
+      - packages/google-cloud-apphub/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-apphub
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-artifact-registry
+    version: 1.16.1
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/devtools/artifactregistry/v1
+      - path: google/devtools/artifactregistry/v1beta2
+    source_roots:
+      - packages/google-cloud-artifact-registry
+    preserve_regex:
+      - packages/google-cloud-artifact-registry/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-artifact-registry
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-automl
+    version: 2.16.4
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/automl/v1beta1
+      - path: google/cloud/automl/v1
+    source_roots:
+      - packages/google-cloud-automl
+    preserve_regex:
+      - packages/google-cloud-automl/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - docs/automl_v1beta1/tables.rst
+      - google/cloud/automl_v1beta1/services/tables
+      - samples/README
+      - tests/unit/test_gcs_client_v1beta1.py
+      - tests/unit/test_tables_client_v1beta1.py
+    remove_regex:
+      - packages/google-cloud-automl
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-backupdr
+    version: 0.2.5
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/backupdr/v1
+    source_roots:
+      - packages/google-cloud-backupdr
+    preserve_regex:
+      - packages/google-cloud-backupdr/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-backupdr
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-bare-metal-solution
+    version: 1.10.3
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/baremetalsolution/v2
+    source_roots:
+      - packages/google-cloud-bare-metal-solution
+    preserve_regex:
+      - packages/google-cloud-bare-metal-solution/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-bare-metal-solution
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-batch
+    version: 0.17.37
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/batch/v1alpha
+      - path: google/cloud/batch/v1
+    source_roots:
+      - packages/google-cloud-batch
+    preserve_regex:
+      - packages/google-cloud-batch/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-batch
     tag_format: '{id}-v{version}'
