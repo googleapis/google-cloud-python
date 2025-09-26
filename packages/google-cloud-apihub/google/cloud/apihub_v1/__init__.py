@@ -18,18 +18,26 @@ from google.cloud.apihub_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.api_hub import ApiHubClient
-from .services.api_hub_collect import ApiHubCollectClient
-from .services.api_hub_curate import ApiHubCurateClient
-from .services.api_hub_dependencies import ApiHubDependenciesClient
-from .services.api_hub_discovery import ApiHubDiscoveryClient
-from .services.api_hub_plugin import ApiHubPluginClient
+from .services.api_hub import ApiHubAsyncClient, ApiHubClient
+from .services.api_hub_collect import ApiHubCollectAsyncClient, ApiHubCollectClient
+from .services.api_hub_curate import ApiHubCurateAsyncClient, ApiHubCurateClient
+from .services.api_hub_dependencies import (
+    ApiHubDependenciesAsyncClient,
+    ApiHubDependenciesClient,
+)
+from .services.api_hub_discovery import (
+    ApiHubDiscoveryAsyncClient,
+    ApiHubDiscoveryClient,
+)
+from .services.api_hub_plugin import ApiHubPluginAsyncClient, ApiHubPluginClient
 from .services.host_project_registration_service import (
+    HostProjectRegistrationServiceAsyncClient,
     HostProjectRegistrationServiceClient,
 )
-from .services.linting_service import LintingServiceClient
-from .services.provisioning import ProvisioningClient
+from .services.linting_service import LintingServiceAsyncClient, LintingServiceClient
+from .services.provisioning import ProvisioningAsyncClient, ProvisioningClient
 from .services.runtime_project_attachment_service import (
+    RuntimeProjectAttachmentServiceAsyncClient,
     RuntimeProjectAttachmentServiceClient,
 )
 from .types.apihub_service import (
@@ -227,6 +235,16 @@ from .types.runtime_project_attachment_service import (
 )
 
 __all__ = (
+    "ApiHubAsyncClient",
+    "ApiHubCollectAsyncClient",
+    "ApiHubCurateAsyncClient",
+    "ApiHubDependenciesAsyncClient",
+    "ApiHubDiscoveryAsyncClient",
+    "ApiHubPluginAsyncClient",
+    "HostProjectRegistrationServiceAsyncClient",
+    "LintingServiceAsyncClient",
+    "ProvisioningAsyncClient",
+    "RuntimeProjectAttachmentServiceAsyncClient",
     "APIMetadata",
     "ActionExecutionDetail",
     "ActionType",

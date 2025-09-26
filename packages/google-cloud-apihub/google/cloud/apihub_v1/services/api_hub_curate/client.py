@@ -70,6 +70,8 @@ from google.cloud.apihub_v1.services.api_hub_curate import pagers
 from google.cloud.apihub_v1.types import curate_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, ApiHubCurateTransport
+from .transports.grpc import ApiHubCurateGrpcTransport
+from .transports.grpc_asyncio import ApiHubCurateGrpcAsyncIOTransport
 from .transports.rest import ApiHubCurateRestTransport
 
 
@@ -82,6 +84,8 @@ class ApiHubCurateClientMeta(type):
     """
 
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ApiHubCurateTransport]]
+    _transport_registry["grpc"] = ApiHubCurateGrpcTransport
+    _transport_registry["grpc_asyncio"] = ApiHubCurateGrpcAsyncIOTransport
     _transport_registry["rest"] = ApiHubCurateRestTransport
 
     def get_transport_class(

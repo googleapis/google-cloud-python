@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,13 +28,92 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.apihub_v1.types import apihub_service, common_fields
 
 from .base import DEFAULT_CLIENT_INFO, ApiHubTransport
 from .grpc import ApiHubGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.apihub.v1.ApiHub",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.apihub.v1.ApiHub",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
@@ -228,7 +311,13 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -262,7 +351,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_api" not in self._stubs:
-            self._stubs["create_api"] = self.grpc_channel.unary_unary(
+            self._stubs["create_api"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/CreateApi",
                 request_serializer=apihub_service.CreateApiRequest.serialize,
                 response_deserializer=common_fields.Api.deserialize,
@@ -289,7 +378,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_api" not in self._stubs:
-            self._stubs["get_api"] = self.grpc_channel.unary_unary(
+            self._stubs["get_api"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/GetApi",
                 request_serializer=apihub_service.GetApiRequest.serialize,
                 response_deserializer=common_fields.Api.deserialize,
@@ -317,7 +406,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_apis" not in self._stubs:
-            self._stubs["list_apis"] = self.grpc_channel.unary_unary(
+            self._stubs["list_apis"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/ListApis",
                 request_serializer=apihub_service.ListApisRequest.serialize,
                 response_deserializer=apihub_service.ListApisResponse.deserialize,
@@ -331,17 +420,18 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         r"""Return a callable for the update api method over gRPC.
 
         Update an API resource in the API hub. The following fields in
-        the [API][] can be updated:
+        the [API][google.cloud.apihub.v1.Api] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Api.display_name]
-        -  [description][google.cloud.apihub.v1.Api.description]
-        -  [owner][google.cloud.apihub.v1.Api.owner]
-        -  [documentation][google.cloud.apihub.v1.Api.documentation]
-        -  [target_user][google.cloud.apihub.v1.Api.target_user]
-        -  [team][google.cloud.apihub.v1.Api.team]
-        -  [business_unit][google.cloud.apihub.v1.Api.business_unit]
-        -  [maturity_level][google.cloud.apihub.v1.Api.maturity_level]
-        -  [attributes][google.cloud.apihub.v1.Api.attributes]
+        - [display_name][google.cloud.apihub.v1.Api.display_name]
+        - [description][google.cloud.apihub.v1.Api.description]
+        - [owner][google.cloud.apihub.v1.Api.owner]
+        - [documentation][google.cloud.apihub.v1.Api.documentation]
+        - [target_user][google.cloud.apihub.v1.Api.target_user]
+        - [team][google.cloud.apihub.v1.Api.team]
+        - [business_unit][google.cloud.apihub.v1.Api.business_unit]
+        - [maturity_level][google.cloud.apihub.v1.Api.maturity_level]
+        - [api_style][google.cloud.apihub.v1.Api.api_style]
+        - [attributes][google.cloud.apihub.v1.Api.attributes]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateApiRequest.update_mask]
@@ -361,7 +451,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_api" not in self._stubs:
-            self._stubs["update_api"] = self.grpc_channel.unary_unary(
+            self._stubs["update_api"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/UpdateApi",
                 request_serializer=apihub_service.UpdateApiRequest.serialize,
                 response_deserializer=common_fields.Api.deserialize,
@@ -388,7 +478,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_api" not in self._stubs:
-            self._stubs["delete_api"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_api"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/DeleteApi",
                 request_serializer=apihub_service.DeleteApiRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -417,7 +507,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_version" not in self._stubs:
-            self._stubs["create_version"] = self.grpc_channel.unary_unary(
+            self._stubs["create_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/CreateVersion",
                 request_serializer=apihub_service.CreateVersionRequest.serialize,
                 response_deserializer=common_fields.Version.deserialize,
@@ -446,7 +536,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_version" not in self._stubs:
-            self._stubs["get_version"] = self.grpc_channel.unary_unary(
+            self._stubs["get_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/GetVersion",
                 request_serializer=apihub_service.GetVersionRequest.serialize,
                 response_deserializer=common_fields.Version.deserialize,
@@ -475,7 +565,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_versions" not in self._stubs:
-            self._stubs["list_versions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_versions"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/ListVersions",
                 request_serializer=apihub_service.ListVersionsRequest.serialize,
                 response_deserializer=apihub_service.ListVersionsResponse.deserialize,
@@ -494,14 +584,14 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         [version][google.cloud.apihub.v1.Version] can be updated
         currently:
 
-        -  [display_name][google.cloud.apihub.v1.Version.display_name]
-        -  [description][google.cloud.apihub.v1.Version.description]
-        -  [documentation][google.cloud.apihub.v1.Version.documentation]
-        -  [deployments][google.cloud.apihub.v1.Version.deployments]
-        -  [lifecycle][google.cloud.apihub.v1.Version.lifecycle]
-        -  [compliance][google.cloud.apihub.v1.Version.compliance]
-        -  [accreditation][google.cloud.apihub.v1.Version.accreditation]
-        -  [attributes][google.cloud.apihub.v1.Version.attributes]
+        - [display_name][google.cloud.apihub.v1.Version.display_name]
+        - [description][google.cloud.apihub.v1.Version.description]
+        - [documentation][google.cloud.apihub.v1.Version.documentation]
+        - [deployments][google.cloud.apihub.v1.Version.deployments]
+        - [lifecycle][google.cloud.apihub.v1.Version.lifecycle]
+        - [compliance][google.cloud.apihub.v1.Version.compliance]
+        - [accreditation][google.cloud.apihub.v1.Version.accreditation]
+        - [attributes][google.cloud.apihub.v1.Version.attributes]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateVersionRequest.update_mask]
@@ -518,7 +608,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_version" not in self._stubs:
-            self._stubs["update_version"] = self.grpc_channel.unary_unary(
+            self._stubs["update_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/UpdateVersion",
                 request_serializer=apihub_service.UpdateVersionRequest.serialize,
                 response_deserializer=common_fields.Version.deserialize,
@@ -546,7 +636,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_version" not in self._stubs:
-            self._stubs["delete_version"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/DeleteVersion",
                 request_serializer=apihub_service.DeleteVersionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -594,7 +684,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_spec" not in self._stubs:
-            self._stubs["create_spec"] = self.grpc_channel.unary_unary(
+            self._stubs["create_spec"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/CreateSpec",
                 request_serializer=apihub_service.CreateSpecRequest.serialize,
                 response_deserializer=common_fields.Spec.deserialize,
@@ -623,7 +713,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_spec" not in self._stubs:
-            self._stubs["get_spec"] = self.grpc_channel.unary_unary(
+            self._stubs["get_spec"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/GetSpec",
                 request_serializer=apihub_service.GetSpecRequest.serialize,
                 response_deserializer=common_fields.Spec.deserialize,
@@ -651,7 +741,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_spec_contents" not in self._stubs:
-            self._stubs["get_spec_contents"] = self.grpc_channel.unary_unary(
+            self._stubs["get_spec_contents"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/GetSpecContents",
                 request_serializer=apihub_service.GetSpecContentsRequest.serialize,
                 response_deserializer=common_fields.SpecContents.deserialize,
@@ -680,7 +770,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_specs" not in self._stubs:
-            self._stubs["list_specs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_specs"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/ListSpecs",
                 request_serializer=apihub_service.ListSpecsRequest.serialize,
                 response_deserializer=apihub_service.ListSpecsResponse.deserialize,
@@ -696,12 +786,12 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         Update spec. The following fields in the
         [spec][google.cloud.apihub.v1.Spec] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Spec.display_name]
-        -  [source_uri][google.cloud.apihub.v1.Spec.source_uri]
-        -  [lint_response][google.cloud.apihub.v1.Spec.lint_response]
-        -  [attributes][google.cloud.apihub.v1.Spec.attributes]
-        -  [contents][google.cloud.apihub.v1.Spec.contents]
-        -  [spec_type][google.cloud.apihub.v1.Spec.spec_type]
+        - [display_name][google.cloud.apihub.v1.Spec.display_name]
+        - [source_uri][google.cloud.apihub.v1.Spec.source_uri]
+        - [lint_response][google.cloud.apihub.v1.Spec.lint_response]
+        - [attributes][google.cloud.apihub.v1.Spec.attributes]
+        - [contents][google.cloud.apihub.v1.Spec.contents]
+        - [spec_type][google.cloud.apihub.v1.Spec.spec_type]
 
         In case of an OAS spec, updating spec contents can lead to:
 
@@ -728,7 +818,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_spec" not in self._stubs:
-            self._stubs["update_spec"] = self.grpc_channel.unary_unary(
+            self._stubs["update_spec"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/UpdateSpec",
                 request_serializer=apihub_service.UpdateSpecRequest.serialize,
                 response_deserializer=common_fields.Spec.deserialize,
@@ -756,12 +846,43 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_spec" not in self._stubs:
-            self._stubs["delete_spec"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_spec"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/DeleteSpec",
                 request_serializer=apihub_service.DeleteSpecRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_spec"]
+
+    @property
+    def create_api_operation(
+        self,
+    ) -> Callable[
+        [apihub_service.CreateApiOperationRequest],
+        Awaitable[common_fields.ApiOperation],
+    ]:
+        r"""Return a callable for the create api operation method over gRPC.
+
+        Create an apiOperation in an API version.
+        An apiOperation can be created only if the version has
+        no apiOperations which were created by parsing a spec.
+
+        Returns:
+            Callable[[~.CreateApiOperationRequest],
+                    Awaitable[~.ApiOperation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_api_operation" not in self._stubs:
+            self._stubs["create_api_operation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHub/CreateApiOperation",
+                request_serializer=apihub_service.CreateApiOperationRequest.serialize,
+                response_deserializer=common_fields.ApiOperation.deserialize,
+            )
+        return self._stubs["create_api_operation"]
 
     @property
     def get_api_operation(
@@ -785,7 +906,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_api_operation" not in self._stubs:
-            self._stubs["get_api_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_api_operation"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/GetApiOperation",
                 request_serializer=apihub_service.GetApiOperationRequest.serialize,
                 response_deserializer=common_fields.ApiOperation.deserialize,
@@ -814,12 +935,91 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_api_operations" not in self._stubs:
-            self._stubs["list_api_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_api_operations"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/ListApiOperations",
                 request_serializer=apihub_service.ListApiOperationsRequest.serialize,
                 response_deserializer=apihub_service.ListApiOperationsResponse.deserialize,
             )
         return self._stubs["list_api_operations"]
+
+    @property
+    def update_api_operation(
+        self,
+    ) -> Callable[
+        [apihub_service.UpdateApiOperationRequest],
+        Awaitable[common_fields.ApiOperation],
+    ]:
+        r"""Return a callable for the update api operation method over gRPC.
+
+        Update an operation in an API version. The following fields in
+        the [ApiOperation resource][google.cloud.apihub.v1.ApiOperation]
+        can be updated:
+
+        - [details.description][ApiOperation.details.description]
+        - [details.documentation][ApiOperation.details.documentation]
+        - [details.http_operation.path][ApiOperation.details.http_operation.path.path]
+        - [details.http_operation.method][ApiOperation.details.http_operation.method]
+        - [details.deprecated][ApiOperation.details.deprecated]
+        - [attributes][google.cloud.apihub.v1.ApiOperation.attributes]
+
+        The
+        [update_mask][google.cloud.apihub.v1.UpdateApiOperationRequest.update_mask]
+        should be used to specify the fields being updated.
+
+        An operation can be updated only if the operation was created
+        via
+        [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+        API. If the operation was created by parsing the spec, then it
+        can be edited by updating the spec.
+
+        Returns:
+            Callable[[~.UpdateApiOperationRequest],
+                    Awaitable[~.ApiOperation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_api_operation" not in self._stubs:
+            self._stubs["update_api_operation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHub/UpdateApiOperation",
+                request_serializer=apihub_service.UpdateApiOperationRequest.serialize,
+                response_deserializer=common_fields.ApiOperation.deserialize,
+            )
+        return self._stubs["update_api_operation"]
+
+    @property
+    def delete_api_operation(
+        self,
+    ) -> Callable[
+        [apihub_service.DeleteApiOperationRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete api operation method over gRPC.
+
+        Delete an operation in an API version and we can
+        delete only the operations created via create API. If
+        the operation was created by parsing the spec, then it
+        can be deleted by editing or deleting the spec.
+
+        Returns:
+            Callable[[~.DeleteApiOperationRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_api_operation" not in self._stubs:
+            self._stubs["delete_api_operation"] = self._logged_channel.unary_unary(
+                "/google.cloud.apihub.v1.ApiHub/DeleteApiOperation",
+                request_serializer=apihub_service.DeleteApiOperationRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_api_operation"]
 
     @property
     def get_definition(
@@ -842,7 +1042,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_definition" not in self._stubs:
-            self._stubs["get_definition"] = self.grpc_channel.unary_unary(
+            self._stubs["get_definition"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/GetDefinition",
                 request_serializer=apihub_service.GetDefinitionRequest.serialize,
                 response_deserializer=common_fields.Definition.deserialize,
@@ -872,7 +1072,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_deployment" not in self._stubs:
-            self._stubs["create_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["create_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/CreateDeployment",
                 request_serializer=apihub_service.CreateDeploymentRequest.serialize,
                 response_deserializer=common_fields.Deployment.deserialize,
@@ -901,7 +1101,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_deployment" not in self._stubs:
-            self._stubs["get_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["get_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/GetDeployment",
                 request_serializer=apihub_service.GetDeploymentRequest.serialize,
                 response_deserializer=common_fields.Deployment.deserialize,
@@ -930,7 +1130,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_deployments" not in self._stubs:
-            self._stubs["list_deployments"] = self.grpc_channel.unary_unary(
+            self._stubs["list_deployments"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/ListDeployments",
                 request_serializer=apihub_service.ListDeploymentsRequest.serialize,
                 response_deserializer=apihub_service.ListDeploymentsResponse.deserialize,
@@ -949,19 +1149,23 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         fields in the [deployment
         resource][google.cloud.apihub.v1.Deployment] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Deployment.display_name]
-        -  [description][google.cloud.apihub.v1.Deployment.description]
-        -  [documentation][google.cloud.apihub.v1.Deployment.documentation]
-        -  [deployment_type][google.cloud.apihub.v1.Deployment.deployment_type]
-        -  [resource_uri][google.cloud.apihub.v1.Deployment.resource_uri]
-        -  [endpoints][google.cloud.apihub.v1.Deployment.endpoints]
-        -  [slo][google.cloud.apihub.v1.Deployment.slo]
-        -  [environment][google.cloud.apihub.v1.Deployment.environment]
-        -  [attributes][google.cloud.apihub.v1.Deployment.attributes]
-
-        The
-        [update_mask][google.cloud.apihub.v1.UpdateDeploymentRequest.update_mask]
-        should be used to specify the fields being updated.
+        - [display_name][google.cloud.apihub.v1.Deployment.display_name]
+        - [description][google.cloud.apihub.v1.Deployment.description]
+        - [documentation][google.cloud.apihub.v1.Deployment.documentation]
+        - [deployment_type][google.cloud.apihub.v1.Deployment.deployment_type]
+        - [resource_uri][google.cloud.apihub.v1.Deployment.resource_uri]
+        - [endpoints][google.cloud.apihub.v1.Deployment.endpoints]
+        - [slo][google.cloud.apihub.v1.Deployment.slo]
+        - [environment][google.cloud.apihub.v1.Deployment.environment]
+        - [attributes][google.cloud.apihub.v1.Deployment.attributes]
+        - [source_project]
+          [google.cloud.apihub.v1.Deployment.source_project]
+        - [source_environment]
+          [google.cloud.apihub.v1.Deployment.source_environment]
+        - [management_url][google.cloud.apihub.v1.Deployment.management_url]
+        - [source_uri][google.cloud.apihub.v1.Deployment.source_uri] The
+          [update_mask][google.cloud.apihub.v1.UpdateDeploymentRequest.update_mask]
+          should be used to specify the fields being updated.
 
         Returns:
             Callable[[~.UpdateDeploymentRequest],
@@ -974,7 +1178,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_deployment" not in self._stubs:
-            self._stubs["update_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["update_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/UpdateDeployment",
                 request_serializer=apihub_service.UpdateDeploymentRequest.serialize,
                 response_deserializer=common_fields.Deployment.deserialize,
@@ -1000,7 +1204,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_deployment" not in self._stubs:
-            self._stubs["delete_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/DeleteDeployment",
                 request_serializer=apihub_service.DeleteDeploymentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1036,7 +1240,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_attribute" not in self._stubs:
-            self._stubs["create_attribute"] = self.grpc_channel.unary_unary(
+            self._stubs["create_attribute"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/CreateAttribute",
                 request_serializer=apihub_service.CreateAttributeRequest.serialize,
                 response_deserializer=common_fields.Attribute.deserialize,
@@ -1064,7 +1268,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_attribute" not in self._stubs:
-            self._stubs["get_attribute"] = self.grpc_channel.unary_unary(
+            self._stubs["get_attribute"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/GetAttribute",
                 request_serializer=apihub_service.GetAttributeRequest.serialize,
                 response_deserializer=common_fields.Attribute.deserialize,
@@ -1082,25 +1286,25 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         Update the attribute. The following fields in the [Attribute
         resource][google.cloud.apihub.v1.Attribute] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Attribute.display_name]
-           The display name can be updated for user defined attributes
-           only.
-        -  [description][google.cloud.apihub.v1.Attribute.description]
-           The description can be updated for user defined attributes
-           only.
-        -  [allowed_values][google.cloud.apihub.v1.Attribute.allowed_values]
-           To update the list of allowed values, clients need to use the
-           fetched list of allowed values and add or remove values to or
-           from the same list. The mutable allowed values can be updated
-           for both user defined and System defined attributes. The
-           immutable allowed values cannot be updated or deleted. The
-           updated list of allowed values cannot be empty. If an allowed
-           value that is already used by some resource's attribute is
-           deleted, then the association between the resource and the
-           attribute value will also be deleted.
-        -  [cardinality][google.cloud.apihub.v1.Attribute.cardinality]
-           The cardinality can be updated for user defined attributes
-           only. Cardinality can only be increased during an update.
+        - [display_name][google.cloud.apihub.v1.Attribute.display_name]
+          The display name can be updated for user defined attributes
+          only.
+        - [description][google.cloud.apihub.v1.Attribute.description]
+          The description can be updated for user defined attributes
+          only.
+        - [allowed_values][google.cloud.apihub.v1.Attribute.allowed_values]
+          To update the list of allowed values, clients need to use the
+          fetched list of allowed values and add or remove values to or
+          from the same list. The mutable allowed values can be updated
+          for both user defined and System defined attributes. The
+          immutable allowed values cannot be updated or deleted. The
+          updated list of allowed values cannot be empty. If an allowed
+          value that is already used by some resource's attribute is
+          deleted, then the association between the resource and the
+          attribute value will also be deleted.
+        - [cardinality][google.cloud.apihub.v1.Attribute.cardinality]
+          The cardinality can be updated for user defined attributes
+          only. Cardinality can only be increased during an update.
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateAttributeRequest.update_mask]
@@ -1117,7 +1321,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_attribute" not in self._stubs:
-            self._stubs["update_attribute"] = self.grpc_channel.unary_unary(
+            self._stubs["update_attribute"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/UpdateAttribute",
                 request_serializer=apihub_service.UpdateAttributeRequest.serialize,
                 response_deserializer=common_fields.Attribute.deserialize,
@@ -1147,7 +1351,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_attribute" not in self._stubs:
-            self._stubs["delete_attribute"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_attribute"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/DeleteAttribute",
                 request_serializer=apihub_service.DeleteAttributeRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1176,7 +1380,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_attributes" not in self._stubs:
-            self._stubs["list_attributes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_attributes"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/ListAttributes",
                 request_serializer=apihub_service.ListAttributesRequest.serialize,
                 response_deserializer=apihub_service.ListAttributesResponse.deserialize,
@@ -1205,7 +1409,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_resources" not in self._stubs:
-            self._stubs["search_resources"] = self.grpc_channel.unary_unary(
+            self._stubs["search_resources"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/SearchResources",
                 request_serializer=apihub_service.SearchResourcesRequest.serialize,
                 response_deserializer=apihub_service.SearchResourcesResponse.deserialize,
@@ -1233,7 +1437,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_external_api" not in self._stubs:
-            self._stubs["create_external_api"] = self.grpc_channel.unary_unary(
+            self._stubs["create_external_api"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/CreateExternalApi",
                 request_serializer=apihub_service.CreateExternalApiRequest.serialize,
                 response_deserializer=common_fields.ExternalApi.deserialize,
@@ -1262,7 +1466,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_external_api" not in self._stubs:
-            self._stubs["get_external_api"] = self.grpc_channel.unary_unary(
+            self._stubs["get_external_api"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/GetExternalApi",
                 request_serializer=apihub_service.GetExternalApiRequest.serialize,
                 response_deserializer=common_fields.ExternalApi.deserialize,
@@ -1280,11 +1484,11 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         Update an External API resource in the API hub. The following
         fields can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.ExternalApi.display_name]
-        -  [description][google.cloud.apihub.v1.ExternalApi.description]
-        -  [documentation][google.cloud.apihub.v1.ExternalApi.documentation]
-        -  [endpoints][google.cloud.apihub.v1.ExternalApi.endpoints]
-        -  [paths][google.cloud.apihub.v1.ExternalApi.paths]
+        - [display_name][google.cloud.apihub.v1.ExternalApi.display_name]
+        - [description][google.cloud.apihub.v1.ExternalApi.description]
+        - [documentation][google.cloud.apihub.v1.ExternalApi.documentation]
+        - [endpoints][google.cloud.apihub.v1.ExternalApi.endpoints]
+        - [paths][google.cloud.apihub.v1.ExternalApi.paths]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateExternalApiRequest.update_mask]
@@ -1301,7 +1505,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_external_api" not in self._stubs:
-            self._stubs["update_external_api"] = self.grpc_channel.unary_unary(
+            self._stubs["update_external_api"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/UpdateExternalApi",
                 request_serializer=apihub_service.UpdateExternalApiRequest.serialize,
                 response_deserializer=common_fields.ExternalApi.deserialize,
@@ -1329,7 +1533,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_external_api" not in self._stubs:
-            self._stubs["delete_external_api"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_external_api"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/DeleteExternalApi",
                 request_serializer=apihub_service.DeleteExternalApiRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1358,7 +1562,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_external_apis" not in self._stubs:
-            self._stubs["list_external_apis"] = self.grpc_channel.unary_unary(
+            self._stubs["list_external_apis"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.ApiHub/ListExternalApis",
                 request_serializer=apihub_service.ListExternalApisRequest.serialize,
                 response_deserializer=apihub_service.ListExternalApisResponse.deserialize,
@@ -1368,12 +1572,12 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_api: gapic_v1.method_async.wrap_method(
+            self.create_api: self._wrap_method(
                 self.create_api,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_api: gapic_v1.method_async.wrap_method(
+            self.get_api: self._wrap_method(
                 self.get_api,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1387,7 +1591,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_apis: gapic_v1.method_async.wrap_method(
+            self.list_apis: self._wrap_method(
                 self.list_apis,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1401,22 +1605,22 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_api: gapic_v1.method_async.wrap_method(
+            self.update_api: self._wrap_method(
                 self.update_api,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_api: gapic_v1.method_async.wrap_method(
+            self.delete_api: self._wrap_method(
                 self.delete_api,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_version: gapic_v1.method_async.wrap_method(
+            self.create_version: self._wrap_method(
                 self.create_version,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_version: gapic_v1.method_async.wrap_method(
+            self.get_version: self._wrap_method(
                 self.get_version,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1430,7 +1634,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_versions: gapic_v1.method_async.wrap_method(
+            self.list_versions: self._wrap_method(
                 self.list_versions,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1444,22 +1648,22 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_version: gapic_v1.method_async.wrap_method(
+            self.update_version: self._wrap_method(
                 self.update_version,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_version: gapic_v1.method_async.wrap_method(
+            self.delete_version: self._wrap_method(
                 self.delete_version,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_spec: gapic_v1.method_async.wrap_method(
+            self.create_spec: self._wrap_method(
                 self.create_spec,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_spec: gapic_v1.method_async.wrap_method(
+            self.get_spec: self._wrap_method(
                 self.get_spec,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1473,7 +1677,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_spec_contents: gapic_v1.method_async.wrap_method(
+            self.get_spec_contents: self._wrap_method(
                 self.get_spec_contents,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1487,7 +1691,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_specs: gapic_v1.method_async.wrap_method(
+            self.list_specs: self._wrap_method(
                 self.list_specs,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1501,17 +1705,22 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_spec: gapic_v1.method_async.wrap_method(
+            self.update_spec: self._wrap_method(
                 self.update_spec,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_spec: gapic_v1.method_async.wrap_method(
+            self.delete_spec: self._wrap_method(
                 self.delete_spec,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_api_operation: gapic_v1.method_async.wrap_method(
+            self.create_api_operation: self._wrap_method(
+                self.create_api_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_api_operation: self._wrap_method(
                 self.get_api_operation,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1525,7 +1734,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_api_operations: gapic_v1.method_async.wrap_method(
+            self.list_api_operations: self._wrap_method(
                 self.list_api_operations,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1539,7 +1748,17 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_definition: gapic_v1.method_async.wrap_method(
+            self.update_api_operation: self._wrap_method(
+                self.update_api_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_api_operation: self._wrap_method(
+                self.delete_api_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_definition: self._wrap_method(
                 self.get_definition,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1553,12 +1772,12 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_deployment: gapic_v1.method_async.wrap_method(
+            self.create_deployment: self._wrap_method(
                 self.create_deployment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_deployment: gapic_v1.method_async.wrap_method(
+            self.get_deployment: self._wrap_method(
                 self.get_deployment,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1572,7 +1791,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_deployments: gapic_v1.method_async.wrap_method(
+            self.list_deployments: self._wrap_method(
                 self.list_deployments,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1586,22 +1805,22 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_deployment: gapic_v1.method_async.wrap_method(
+            self.update_deployment: self._wrap_method(
                 self.update_deployment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_deployment: gapic_v1.method_async.wrap_method(
+            self.delete_deployment: self._wrap_method(
                 self.delete_deployment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_attribute: gapic_v1.method_async.wrap_method(
+            self.create_attribute: self._wrap_method(
                 self.create_attribute,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_attribute: gapic_v1.method_async.wrap_method(
+            self.get_attribute: self._wrap_method(
                 self.get_attribute,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1615,17 +1834,17 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_attribute: gapic_v1.method_async.wrap_method(
+            self.update_attribute: self._wrap_method(
                 self.update_attribute,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_attribute: gapic_v1.method_async.wrap_method(
+            self.delete_attribute: self._wrap_method(
                 self.delete_attribute,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_attributes: gapic_v1.method_async.wrap_method(
+            self.list_attributes: self._wrap_method(
                 self.list_attributes,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1639,7 +1858,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.search_resources: gapic_v1.method_async.wrap_method(
+            self.search_resources: self._wrap_method(
                 self.search_resources,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1653,12 +1872,12 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_external_api: gapic_v1.method_async.wrap_method(
+            self.create_external_api: self._wrap_method(
                 self.create_external_api,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_external_api: gapic_v1.method_async.wrap_method(
+            self.get_external_api: self._wrap_method(
                 self.get_external_api,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1672,17 +1891,17 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_external_api: gapic_v1.method_async.wrap_method(
+            self.update_external_api: self._wrap_method(
                 self.update_external_api,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_external_api: gapic_v1.method_async.wrap_method(
+            self.delete_external_api: self._wrap_method(
                 self.delete_external_api,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_external_apis: gapic_v1.method_async.wrap_method(
+            self.list_external_apis: self._wrap_method(
                 self.list_external_apis,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1696,10 +1915,49 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(
@@ -1711,7 +1969,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1728,7 +1986,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1745,7 +2003,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1764,7 +2022,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1783,7 +2041,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1800,7 +2058,7 @@ class ApiHubGrpcAsyncIOTransport(ApiHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

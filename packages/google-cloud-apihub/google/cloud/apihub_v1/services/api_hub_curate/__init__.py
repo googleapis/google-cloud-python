@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .async_client import ApiHubCurateAsyncClient
 from .client import ApiHubCurateClient
 
-__all__ = ("ApiHubCurateClient",)
+__all__ = (
+    "ApiHubCurateClient",
+    "ApiHubCurateAsyncClient",
+)

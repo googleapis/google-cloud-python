@@ -72,6 +72,8 @@ from .transports.base import (
     DEFAULT_CLIENT_INFO,
     RuntimeProjectAttachmentServiceTransport,
 )
+from .transports.grpc import RuntimeProjectAttachmentServiceGrpcTransport
+from .transports.grpc_asyncio import RuntimeProjectAttachmentServiceGrpcAsyncIOTransport
 from .transports.rest import RuntimeProjectAttachmentServiceRestTransport
 
 
@@ -86,6 +88,10 @@ class RuntimeProjectAttachmentServiceClientMeta(type):
     _transport_registry = (
         OrderedDict()
     )  # type: Dict[str, Type[RuntimeProjectAttachmentServiceTransport]]
+    _transport_registry["grpc"] = RuntimeProjectAttachmentServiceGrpcTransport
+    _transport_registry[
+        "grpc_asyncio"
+    ] = RuntimeProjectAttachmentServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = RuntimeProjectAttachmentServiceRestTransport
 
     def get_transport_class(

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -34,6 +35,7 @@ from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import google.protobuf
 
 from google.cloud.apihub_v1 import gapic_version as package_version
 
@@ -53,6 +55,15 @@ from google.cloud.apihub_v1.types import apihub_service, common_fields
 from .client import ApiHubClient
 from .transports.base import DEFAULT_CLIENT_INFO, ApiHubTransport
 from .transports.grpc_asyncio import ApiHubGrpcAsyncIOTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class ApiHubAsyncClient:
@@ -79,6 +90,8 @@ class ApiHubAsyncClient:
     parse_deployment_path = staticmethod(ApiHubClient.parse_deployment_path)
     external_api_path = staticmethod(ApiHubClient.external_api_path)
     parse_external_api_path = staticmethod(ApiHubClient.parse_external_api_path)
+    plugin_instance_path = staticmethod(ApiHubClient.plugin_instance_path)
+    parse_plugin_instance_path = staticmethod(ApiHubClient.parse_plugin_instance_path)
     spec_path = staticmethod(ApiHubClient.spec_path)
     parse_spec_path = staticmethod(ApiHubClient.parse_spec_path)
     version_path = staticmethod(ApiHubClient.version_path)
@@ -263,6 +276,28 @@ class ApiHubAsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.apihub_v1.ApiHubAsyncClient`.",
+                extra={
+                    "serviceName": "google.cloud.apihub.v1.ApiHub",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.cloud.apihub.v1.ApiHub",
+                    "credentialsType": None,
+                },
+            )
+
     async def create_api(
         self,
         request: Optional[Union[apihub_service.CreateApiRequest, dict]] = None,
@@ -272,7 +307,7 @@ class ApiHubAsyncClient:
         api_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Api:
         r"""Create an API resource in the API hub.
         Once an API resource is created, versions can be added
@@ -329,13 +364,13 @@ class ApiHubAsyncClient:
                 become the final component of the API's resource name.
                 This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another API resource in the API hub.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another API resource in the API hub.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``api_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -343,8 +378,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Api:
@@ -353,7 +390,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, api, api_id])
+        flattened_params = [parent, api, api_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -407,7 +447,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Api:
         r"""Get API resource details including the API versions
         contained in it.
@@ -453,8 +493,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Api:
@@ -463,7 +505,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -511,7 +556,7 @@ class ApiHubAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListApisAsyncPager:
         r"""List API resources in the API hub.
 
@@ -557,8 +602,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.services.api_hub.pagers.ListApisAsyncPager:
@@ -572,7 +619,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -634,20 +684,21 @@ class ApiHubAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Api:
         r"""Update an API resource in the API hub. The following fields in
-        the [API][] can be updated:
+        the [API][google.cloud.apihub.v1.Api] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Api.display_name]
-        -  [description][google.cloud.apihub.v1.Api.description]
-        -  [owner][google.cloud.apihub.v1.Api.owner]
-        -  [documentation][google.cloud.apihub.v1.Api.documentation]
-        -  [target_user][google.cloud.apihub.v1.Api.target_user]
-        -  [team][google.cloud.apihub.v1.Api.team]
-        -  [business_unit][google.cloud.apihub.v1.Api.business_unit]
-        -  [maturity_level][google.cloud.apihub.v1.Api.maturity_level]
-        -  [attributes][google.cloud.apihub.v1.Api.attributes]
+        - [display_name][google.cloud.apihub.v1.Api.display_name]
+        - [description][google.cloud.apihub.v1.Api.description]
+        - [owner][google.cloud.apihub.v1.Api.owner]
+        - [documentation][google.cloud.apihub.v1.Api.documentation]
+        - [target_user][google.cloud.apihub.v1.Api.target_user]
+        - [team][google.cloud.apihub.v1.Api.team]
+        - [business_unit][google.cloud.apihub.v1.Api.business_unit]
+        - [maturity_level][google.cloud.apihub.v1.Api.maturity_level]
+        - [api_style][google.cloud.apihub.v1.Api.api_style]
+        - [attributes][google.cloud.apihub.v1.Api.attributes]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateApiRequest.update_mask]
@@ -709,8 +760,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Api:
@@ -719,7 +772,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([api, update_mask])
+        flattened_params = [api, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -771,7 +827,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Delete an API resource in the API hub. API can only
         be deleted if all underlying versions are deleted.
@@ -814,13 +870,18 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -869,7 +930,7 @@ class ApiHubAsyncClient:
         version_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Version:
         r"""Create an API version for an API resource in the API
         hub.
@@ -926,13 +987,16 @@ class ApiHubAsyncClient:
                 become the final component of the version's resource
                 name. This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another version in the API resource.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another version in the API resource.
+                - If not provided, a system generated id will be used.
 
-                This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                This value should be 4-500 characters, overall resource
+                name which will be of format
+                ``projects/{project}/locations/{location}/apis/{api}/versions/{version}``,
+                its length is limited to 700 characters and valid
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``version_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -940,8 +1004,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Version:
@@ -953,7 +1019,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, version, version_id])
+        flattened_params = [parent, version, version_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1007,7 +1076,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Version:
         r"""Get details about the API version of an API resource.
         This will include information about the specs and
@@ -1056,8 +1125,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Version:
@@ -1069,7 +1140,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1119,7 +1193,7 @@ class ApiHubAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListVersionsAsyncPager:
         r"""List API versions of an API resource in the API hub.
 
@@ -1166,8 +1240,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.services.api_hub.pagers.ListVersionsAsyncPager:
@@ -1181,7 +1257,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1243,20 +1322,20 @@ class ApiHubAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Version:
         r"""Update API version. The following fields in the
         [version][google.cloud.apihub.v1.Version] can be updated
         currently:
 
-        -  [display_name][google.cloud.apihub.v1.Version.display_name]
-        -  [description][google.cloud.apihub.v1.Version.description]
-        -  [documentation][google.cloud.apihub.v1.Version.documentation]
-        -  [deployments][google.cloud.apihub.v1.Version.deployments]
-        -  [lifecycle][google.cloud.apihub.v1.Version.lifecycle]
-        -  [compliance][google.cloud.apihub.v1.Version.compliance]
-        -  [accreditation][google.cloud.apihub.v1.Version.accreditation]
-        -  [attributes][google.cloud.apihub.v1.Version.attributes]
+        - [display_name][google.cloud.apihub.v1.Version.display_name]
+        - [description][google.cloud.apihub.v1.Version.description]
+        - [documentation][google.cloud.apihub.v1.Version.documentation]
+        - [deployments][google.cloud.apihub.v1.Version.deployments]
+        - [lifecycle][google.cloud.apihub.v1.Version.lifecycle]
+        - [compliance][google.cloud.apihub.v1.Version.compliance]
+        - [accreditation][google.cloud.apihub.v1.Version.accreditation]
+        - [attributes][google.cloud.apihub.v1.Version.attributes]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateVersionRequest.update_mask]
@@ -1316,8 +1395,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Version:
@@ -1329,7 +1410,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([version, update_mask])
+        flattened_params = [version, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1383,7 +1467,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Delete an API version. Version can only be deleted if
         all underlying specs, operations, definitions and linked
@@ -1427,13 +1511,18 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1482,7 +1571,7 @@ class ApiHubAsyncClient:
         spec_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Spec:
         r"""Add a spec to an API version in the API hub. Multiple specs can
         be added to an API version. Note, while adding a spec, at least
@@ -1562,13 +1651,16 @@ class ApiHubAsyncClient:
                 the final component of the spec's resource name. This
                 field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another spec in the API resource.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another spec in the API resource.
+                - If not provided, a system generated id will be used.
 
-                This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                This value should be 4-500 characters, overall resource
+                name which will be of format
+                ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}``,
+                its length is limited to 1000 characters and valid
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``spec_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1576,8 +1668,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Spec:
@@ -1591,7 +1685,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, spec, spec_id])
+        flattened_params = [parent, spec, spec_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1645,7 +1742,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Spec:
         r"""Get details about the information parsed from a spec. Note that
         this method does not return the raw spec contents. Use
@@ -1692,8 +1789,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Spec:
@@ -1707,7 +1806,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1755,7 +1857,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.SpecContents:
         r"""Get spec contents.
 
@@ -1801,8 +1903,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.SpecContents:
@@ -1811,7 +1915,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1861,7 +1968,7 @@ class ApiHubAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSpecsAsyncPager:
         r"""List specs corresponding to a particular API
         resource.
@@ -1907,8 +2014,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.services.api_hub.pagers.ListSpecsAsyncPager:
@@ -1922,7 +2031,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1984,17 +2096,17 @@ class ApiHubAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Spec:
         r"""Update spec. The following fields in the
         [spec][google.cloud.apihub.v1.Spec] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Spec.display_name]
-        -  [source_uri][google.cloud.apihub.v1.Spec.source_uri]
-        -  [lint_response][google.cloud.apihub.v1.Spec.lint_response]
-        -  [attributes][google.cloud.apihub.v1.Spec.attributes]
-        -  [contents][google.cloud.apihub.v1.Spec.contents]
-        -  [spec_type][google.cloud.apihub.v1.Spec.spec_type]
+        - [display_name][google.cloud.apihub.v1.Spec.display_name]
+        - [source_uri][google.cloud.apihub.v1.Spec.source_uri]
+        - [lint_response][google.cloud.apihub.v1.Spec.lint_response]
+        - [attributes][google.cloud.apihub.v1.Spec.attributes]
+        - [contents][google.cloud.apihub.v1.Spec.contents]
+        - [spec_type][google.cloud.apihub.v1.Spec.spec_type]
 
         In case of an OAS spec, updating spec contents can lead to:
 
@@ -2066,8 +2178,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Spec:
@@ -2081,7 +2195,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([spec, update_mask])
+        flattened_params = [spec, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2135,7 +2252,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Delete a spec.
         Deleting a spec will also delete the associated
@@ -2179,13 +2296,18 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2225,6 +2347,167 @@ class ApiHubAsyncClient:
             metadata=metadata,
         )
 
+    async def create_api_operation(
+        self,
+        request: Optional[Union[apihub_service.CreateApiOperationRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        api_operation: Optional[common_fields.ApiOperation] = None,
+        api_operation_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> common_fields.ApiOperation:
+        r"""Create an apiOperation in an API version.
+        An apiOperation can be created only if the version has
+        no apiOperations which were created by parsing a spec.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import apihub_v1
+
+            async def sample_create_api_operation():
+                # Create a client
+                client = apihub_v1.ApiHubAsyncClient()
+
+                # Initialize request argument(s)
+                request = apihub_v1.CreateApiOperationRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_api_operation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.apihub_v1.types.CreateApiOperationRequest, dict]]):
+                The request object. The
+                [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+                method's request.
+            parent (:class:`str`):
+                Required. The parent resource for the operation
+                resource. Format:
+                ``projects/{project}/locations/{location}/apis/{api}/versions/{version}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            api_operation (:class:`google.cloud.apihub_v1.types.ApiOperation`):
+                Required. The operation resource to
+                create.
+
+                This corresponds to the ``api_operation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            api_operation_id (:class:`str`):
+                Optional. The ID to use for the operation resource,
+                which will become the final component of the operation's
+                resource name. This field is optional.
+
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another operation resource in the API hub.
+                - If not provided, a system generated id will be used.
+
+                This value should be 4-500 characters, overall resource
+                name which will be of format
+                ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}``,
+                its length is limited to 700 characters, and valid
+                characters are /[a-z][A-Z][0-9]-\_/.
+
+                This corresponds to the ``api_operation_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.apihub_v1.types.ApiOperation:
+                Represents an operation contained in
+                an API version in the API Hub. An
+                operation is added/updated/deleted in an
+                API version when a new spec is added or
+                an existing spec is updated/deleted in a
+                version. Currently, an operation will be
+                created only corresponding to OpenAPI
+                spec as parsing is supported for OpenAPI
+                spec.
+                Alternatively operations can be managed
+                via create,update and delete APIs,
+                creation of apiOperation can be possible
+                only for version with no parsed
+                operations and update/delete can be
+                possible only for operations created via
+                create API.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, api_operation, api_operation_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apihub_service.CreateApiOperationRequest):
+            request = apihub_service.CreateApiOperationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if api_operation is not None:
+            request.api_operation = api_operation
+        if api_operation_id is not None:
+            request.api_operation_id = api_operation_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_api_operation
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_api_operation(
         self,
         request: Optional[Union[apihub_service.GetApiOperationRequest, dict]] = None,
@@ -2232,7 +2515,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.ApiOperation:
         r"""Get details about a particular operation in API
         version.
@@ -2278,8 +2561,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.ApiOperation:
@@ -2292,12 +2577,22 @@ class ApiHubAsyncClient:
                 created only corresponding to OpenAPI
                 spec as parsing is supported for OpenAPI
                 spec.
+                Alternatively operations can be managed
+                via create,update and delete APIs,
+                creation of apiOperation can be possible
+                only for version with no parsed
+                operations and update/delete can be
+                possible only for operations created via
+                create API.
 
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2347,7 +2642,7 @@ class ApiHubAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListApiOperationsAsyncPager:
         r"""List operations in an API version.
 
@@ -2394,8 +2689,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.services.api_hub.pagers.ListApiOperationsAsyncPager:
@@ -2409,7 +2706,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2463,6 +2763,269 @@ class ApiHubAsyncClient:
         # Done; return the response.
         return response
 
+    async def update_api_operation(
+        self,
+        request: Optional[Union[apihub_service.UpdateApiOperationRequest, dict]] = None,
+        *,
+        api_operation: Optional[common_fields.ApiOperation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> common_fields.ApiOperation:
+        r"""Update an operation in an API version. The following fields in
+        the [ApiOperation resource][google.cloud.apihub.v1.ApiOperation]
+        can be updated:
+
+        - [details.description][ApiOperation.details.description]
+        - [details.documentation][ApiOperation.details.documentation]
+        - [details.http_operation.path][ApiOperation.details.http_operation.path.path]
+        - [details.http_operation.method][ApiOperation.details.http_operation.method]
+        - [details.deprecated][ApiOperation.details.deprecated]
+        - [attributes][google.cloud.apihub.v1.ApiOperation.attributes]
+
+        The
+        [update_mask][google.cloud.apihub.v1.UpdateApiOperationRequest.update_mask]
+        should be used to specify the fields being updated.
+
+        An operation can be updated only if the operation was created
+        via
+        [CreateApiOperation][google.cloud.apihub.v1.ApiHub.CreateApiOperation]
+        API. If the operation was created by parsing the spec, then it
+        can be edited by updating the spec.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import apihub_v1
+
+            async def sample_update_api_operation():
+                # Create a client
+                client = apihub_v1.ApiHubAsyncClient()
+
+                # Initialize request argument(s)
+                request = apihub_v1.UpdateApiOperationRequest(
+                )
+
+                # Make the request
+                response = await client.update_api_operation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.apihub_v1.types.UpdateApiOperationRequest, dict]]):
+                The request object. The
+                [UpdateApiOperation][google.cloud.apihub.v1.ApiHub.UpdateApiOperation]
+                method's request.
+            api_operation (:class:`google.cloud.apihub_v1.types.ApiOperation`):
+                Required. The apiOperation resource to update.
+
+                The operation resource's ``name`` field is used to
+                identify the operation resource to update. Format:
+                ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}``
+
+                This corresponds to the ``api_operation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.apihub_v1.types.ApiOperation:
+                Represents an operation contained in
+                an API version in the API Hub. An
+                operation is added/updated/deleted in an
+                API version when a new spec is added or
+                an existing spec is updated/deleted in a
+                version. Currently, an operation will be
+                created only corresponding to OpenAPI
+                spec as parsing is supported for OpenAPI
+                spec.
+                Alternatively operations can be managed
+                via create,update and delete APIs,
+                creation of apiOperation can be possible
+                only for version with no parsed
+                operations and update/delete can be
+                possible only for operations created via
+                create API.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [api_operation, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apihub_service.UpdateApiOperationRequest):
+            request = apihub_service.UpdateApiOperationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if api_operation is not None:
+            request.api_operation = api_operation
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_api_operation
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("api_operation.name", request.api_operation.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_api_operation(
+        self,
+        request: Optional[Union[apihub_service.DeleteApiOperationRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Delete an operation in an API version and we can
+        delete only the operations created via create API. If
+        the operation was created by parsing the spec, then it
+        can be deleted by editing or deleting the spec.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import apihub_v1
+
+            async def sample_delete_api_operation():
+                # Create a client
+                client = apihub_v1.ApiHubAsyncClient()
+
+                # Initialize request argument(s)
+                request = apihub_v1.DeleteApiOperationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_api_operation(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.apihub_v1.types.DeleteApiOperationRequest, dict]]):
+                The request object. The
+                [DeleteApiOperation][google.cloud.apihub.v1.ApiHub.DeleteApiOperation]
+                method's request.
+            name (:class:`str`):
+                Required. The name of the operation resource to delete.
+                Format:
+                ``projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, apihub_service.DeleteApiOperationRequest):
+            request = apihub_service.DeleteApiOperationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_api_operation
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     async def get_definition(
         self,
         request: Optional[Union[apihub_service.GetDefinitionRequest, dict]] = None,
@@ -2470,7 +3033,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Definition:
         r"""Get details about a definition in an API version.
 
@@ -2516,8 +3079,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Definition:
@@ -2534,7 +3099,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2586,7 +3154,7 @@ class ApiHubAsyncClient:
         deployment_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Deployment:
         r"""Create a deployment resource in the API hub.
         Once a deployment resource is created, it can be
@@ -2651,13 +3219,13 @@ class ApiHubAsyncClient:
                 which will become the final component of the
                 deployment's resource name. This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another deployment resource in the API hub.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another deployment resource in the API hub.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``deployment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2665,8 +3233,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Deployment:
@@ -2682,7 +3252,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, deployment, deployment_id])
+        flattened_params = [parent, deployment, deployment_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2736,7 +3309,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Deployment:
         r"""Get details about a deployment and the API versions
         linked to it.
@@ -2783,8 +3356,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Deployment:
@@ -2800,7 +3375,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2850,7 +3428,7 @@ class ApiHubAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListDeploymentsAsyncPager:
         r"""List deployment resources in the API hub.
 
@@ -2897,8 +3475,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.services.api_hub.pagers.ListDeploymentsAsyncPager:
@@ -2912,7 +3492,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -2974,25 +3557,29 @@ class ApiHubAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Deployment:
         r"""Update a deployment resource in the API hub. The following
         fields in the [deployment
         resource][google.cloud.apihub.v1.Deployment] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Deployment.display_name]
-        -  [description][google.cloud.apihub.v1.Deployment.description]
-        -  [documentation][google.cloud.apihub.v1.Deployment.documentation]
-        -  [deployment_type][google.cloud.apihub.v1.Deployment.deployment_type]
-        -  [resource_uri][google.cloud.apihub.v1.Deployment.resource_uri]
-        -  [endpoints][google.cloud.apihub.v1.Deployment.endpoints]
-        -  [slo][google.cloud.apihub.v1.Deployment.slo]
-        -  [environment][google.cloud.apihub.v1.Deployment.environment]
-        -  [attributes][google.cloud.apihub.v1.Deployment.attributes]
-
-        The
-        [update_mask][google.cloud.apihub.v1.UpdateDeploymentRequest.update_mask]
-        should be used to specify the fields being updated.
+        - [display_name][google.cloud.apihub.v1.Deployment.display_name]
+        - [description][google.cloud.apihub.v1.Deployment.description]
+        - [documentation][google.cloud.apihub.v1.Deployment.documentation]
+        - [deployment_type][google.cloud.apihub.v1.Deployment.deployment_type]
+        - [resource_uri][google.cloud.apihub.v1.Deployment.resource_uri]
+        - [endpoints][google.cloud.apihub.v1.Deployment.endpoints]
+        - [slo][google.cloud.apihub.v1.Deployment.slo]
+        - [environment][google.cloud.apihub.v1.Deployment.environment]
+        - [attributes][google.cloud.apihub.v1.Deployment.attributes]
+        - [source_project]
+          [google.cloud.apihub.v1.Deployment.source_project]
+        - [source_environment]
+          [google.cloud.apihub.v1.Deployment.source_environment]
+        - [management_url][google.cloud.apihub.v1.Deployment.management_url]
+        - [source_uri][google.cloud.apihub.v1.Deployment.source_uri] The
+          [update_mask][google.cloud.apihub.v1.UpdateDeploymentRequest.update_mask]
+          should be used to specify the fields being updated.
 
         .. code-block:: python
 
@@ -3052,8 +3639,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Deployment:
@@ -3069,7 +3658,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([deployment, update_mask])
+        flattened_params = [deployment, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3123,7 +3715,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Delete a deployment resource in the API hub.
 
@@ -3166,13 +3758,18 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3221,7 +3818,7 @@ class ApiHubAsyncClient:
         attribute_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Attribute:
         r"""Create a user defined attribute.
 
@@ -3252,7 +3849,7 @@ class ApiHubAsyncClient:
                 attribute = apihub_v1.Attribute()
                 attribute.display_name = "display_name_value"
                 attribute.scope = "PLUGIN"
-                attribute.data_type = "STRING"
+                attribute.data_type = "URI"
 
                 request = apihub_v1.CreateAttributeRequest(
                     parent="parent_value",
@@ -3287,13 +3884,13 @@ class ApiHubAsyncClient:
                 become the final component of the attribute's resource
                 name. This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another attribute resource in the API hub.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another attribute resource in the API hub.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``attribute_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3301,8 +3898,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Attribute:
@@ -3318,7 +3917,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, attribute, attribute_id])
+        flattened_params = [parent, attribute, attribute_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3372,7 +3974,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Attribute:
         r"""Get details about the attribute.
 
@@ -3417,8 +4019,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Attribute:
@@ -3434,7 +4038,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3485,30 +4092,30 @@ class ApiHubAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.Attribute:
         r"""Update the attribute. The following fields in the [Attribute
         resource][google.cloud.apihub.v1.Attribute] can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.Attribute.display_name]
-           The display name can be updated for user defined attributes
-           only.
-        -  [description][google.cloud.apihub.v1.Attribute.description]
-           The description can be updated for user defined attributes
-           only.
-        -  [allowed_values][google.cloud.apihub.v1.Attribute.allowed_values]
-           To update the list of allowed values, clients need to use the
-           fetched list of allowed values and add or remove values to or
-           from the same list. The mutable allowed values can be updated
-           for both user defined and System defined attributes. The
-           immutable allowed values cannot be updated or deleted. The
-           updated list of allowed values cannot be empty. If an allowed
-           value that is already used by some resource's attribute is
-           deleted, then the association between the resource and the
-           attribute value will also be deleted.
-        -  [cardinality][google.cloud.apihub.v1.Attribute.cardinality]
-           The cardinality can be updated for user defined attributes
-           only. Cardinality can only be increased during an update.
+        - [display_name][google.cloud.apihub.v1.Attribute.display_name]
+          The display name can be updated for user defined attributes
+          only.
+        - [description][google.cloud.apihub.v1.Attribute.description]
+          The description can be updated for user defined attributes
+          only.
+        - [allowed_values][google.cloud.apihub.v1.Attribute.allowed_values]
+          To update the list of allowed values, clients need to use the
+          fetched list of allowed values and add or remove values to or
+          from the same list. The mutable allowed values can be updated
+          for both user defined and System defined attributes. The
+          immutable allowed values cannot be updated or deleted. The
+          updated list of allowed values cannot be empty. If an allowed
+          value that is already used by some resource's attribute is
+          deleted, then the association between the resource and the
+          attribute value will also be deleted.
+        - [cardinality][google.cloud.apihub.v1.Attribute.cardinality]
+          The cardinality can be updated for user defined attributes
+          only. Cardinality can only be increased during an update.
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateAttributeRequest.update_mask]
@@ -3533,7 +4140,7 @@ class ApiHubAsyncClient:
                 attribute = apihub_v1.Attribute()
                 attribute.display_name = "display_name_value"
                 attribute.scope = "PLUGIN"
-                attribute.data_type = "STRING"
+                attribute.data_type = "URI"
 
                 request = apihub_v1.UpdateAttributeRequest(
                     attribute=attribute,
@@ -3570,8 +4177,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.Attribute:
@@ -3587,7 +4196,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([attribute, update_mask])
+        flattened_params = [attribute, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3641,7 +4253,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Delete an attribute.
 
@@ -3687,13 +4299,18 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3740,7 +4357,7 @@ class ApiHubAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAttributesAsyncPager:
         r"""List all attributes.
 
@@ -3786,8 +4403,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.services.api_hub.pagers.ListAttributesAsyncPager:
@@ -3801,7 +4420,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -3863,7 +4485,7 @@ class ApiHubAsyncClient:
         query: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchResourcesAsyncPager:
         r"""Search across API-Hub resources.
 
@@ -3923,8 +4545,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.services.api_hub.pagers.SearchResourcesAsyncPager:
@@ -3939,7 +4563,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([location, query])
+        flattened_params = [location, query]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4004,7 +4631,7 @@ class ApiHubAsyncClient:
         external_api_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.ExternalApi:
         r"""Create an External API resource in the API hub.
 
@@ -4063,13 +4690,13 @@ class ApiHubAsyncClient:
                 which will become the final component of the External
                 API's resource name. This field is optional.
 
-                -  If provided, the same will be used. The service will
-                   throw an error if the specified id is already used by
-                   another External API resource in the API hub.
-                -  If not provided, a system generated id will be used.
+                - If provided, the same will be used. The service will
+                  throw an error if the specified id is already used by
+                  another External API resource in the API hub.
+                - If not provided, a system generated id will be used.
 
                 This value should be 4-500 characters, and valid
-                characters are /[a-z][A-Z][0-9]-_/.
+                characters are /[a-z][A-Z][0-9]-\_/.
 
                 This corresponds to the ``external_api_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4077,8 +4704,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.ExternalApi:
@@ -4091,7 +4720,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, external_api, external_api_id])
+        flattened_params = [parent, external_api, external_api_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4145,7 +4777,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.ExternalApi:
         r"""Get details about an External API resource in the API
         hub.
@@ -4192,8 +4824,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.ExternalApi:
@@ -4206,7 +4840,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4257,16 +4894,16 @@ class ApiHubAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> common_fields.ExternalApi:
         r"""Update an External API resource in the API hub. The following
         fields can be updated:
 
-        -  [display_name][google.cloud.apihub.v1.ExternalApi.display_name]
-        -  [description][google.cloud.apihub.v1.ExternalApi.description]
-        -  [documentation][google.cloud.apihub.v1.ExternalApi.documentation]
-        -  [endpoints][google.cloud.apihub.v1.ExternalApi.endpoints]
-        -  [paths][google.cloud.apihub.v1.ExternalApi.paths]
+        - [display_name][google.cloud.apihub.v1.ExternalApi.display_name]
+        - [description][google.cloud.apihub.v1.ExternalApi.description]
+        - [documentation][google.cloud.apihub.v1.ExternalApi.documentation]
+        - [endpoints][google.cloud.apihub.v1.ExternalApi.endpoints]
+        - [paths][google.cloud.apihub.v1.ExternalApi.paths]
 
         The
         [update_mask][google.cloud.apihub.v1.UpdateExternalApiRequest.update_mask]
@@ -4326,8 +4963,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.types.ExternalApi:
@@ -4340,7 +4979,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([external_api, update_mask])
+        flattened_params = [external_api, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4394,7 +5036,7 @@ class ApiHubAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Delete an External API resource in the API hub.
 
@@ -4437,13 +5079,18 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4490,7 +5137,7 @@ class ApiHubAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListExternalApisAsyncPager:
         r"""List External API resources in the API hub.
 
@@ -4537,8 +5184,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.apihub_v1.services.api_hub.pagers.ListExternalApisAsyncPager:
@@ -4552,7 +5201,10 @@ class ApiHubAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -4612,7 +5264,7 @@ class ApiHubAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
 
@@ -4623,8 +5275,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.ListOperationsResponse:
                 Response message for ``ListOperations`` method.
@@ -4637,11 +5291,7 @@ class ApiHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4669,7 +5319,7 @@ class ApiHubAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
 
@@ -4680,8 +5330,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.Operation:
                 An ``Operation`` object.
@@ -4694,11 +5346,7 @@ class ApiHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4726,7 +5374,7 @@ class ApiHubAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
 
@@ -4742,8 +5390,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             None
         """
@@ -4755,11 +5405,7 @@ class ApiHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.delete_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4784,7 +5430,7 @@ class ApiHubAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
 
@@ -4799,8 +5445,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             None
         """
@@ -4812,11 +5460,7 @@ class ApiHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4841,7 +5485,7 @@ class ApiHubAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
 
@@ -4852,8 +5496,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.location_pb2.Location:
                 Location object.
@@ -4866,11 +5512,7 @@ class ApiHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4898,7 +5540,7 @@ class ApiHubAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
 
@@ -4909,8 +5551,10 @@ class ApiHubAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.location_pb2.ListLocationsResponse:
                 Response message for ``ListLocations`` method.
@@ -4923,11 +5567,7 @@ class ApiHubAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4959,6 +5599,9 @@ class ApiHubAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
+
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("ApiHubAsyncClient",)

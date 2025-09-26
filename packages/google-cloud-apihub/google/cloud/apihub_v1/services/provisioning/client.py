@@ -71,6 +71,8 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.cloud.apihub_v1.types import common_fields, provisioning_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, ProvisioningTransport
+from .transports.grpc import ProvisioningGrpcTransport
+from .transports.grpc_asyncio import ProvisioningGrpcAsyncIOTransport
 from .transports.rest import ProvisioningRestTransport
 
 
@@ -83,6 +85,8 @@ class ProvisioningClientMeta(type):
     """
 
     _transport_registry = OrderedDict()  # type: Dict[str, Type[ProvisioningTransport]]
+    _transport_registry["grpc"] = ProvisioningGrpcTransport
+    _transport_registry["grpc_asyncio"] = ProvisioningGrpcAsyncIOTransport
     _transport_registry["rest"] = ProvisioningRestTransport
 
     def get_transport_class(

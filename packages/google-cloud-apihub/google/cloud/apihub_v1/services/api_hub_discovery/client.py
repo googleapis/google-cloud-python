@@ -69,6 +69,8 @@ from google.cloud.apihub_v1.services.api_hub_discovery import pagers
 from google.cloud.apihub_v1.types import common_fields, discovery_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, ApiHubDiscoveryTransport
+from .transports.grpc import ApiHubDiscoveryGrpcTransport
+from .transports.grpc_asyncio import ApiHubDiscoveryGrpcAsyncIOTransport
 from .transports.rest import ApiHubDiscoveryRestTransport
 
 
@@ -83,6 +85,8 @@ class ApiHubDiscoveryClientMeta(type):
     _transport_registry = (
         OrderedDict()
     )  # type: Dict[str, Type[ApiHubDiscoveryTransport]]
+    _transport_registry["grpc"] = ApiHubDiscoveryGrpcTransport
+    _transport_registry["grpc_asyncio"] = ApiHubDiscoveryGrpcAsyncIOTransport
     _transport_registry["rest"] = ApiHubDiscoveryRestTransport
 
     def get_transport_class(
