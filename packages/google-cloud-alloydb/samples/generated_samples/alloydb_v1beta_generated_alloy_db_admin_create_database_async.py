@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpgradeCluster
+# Snippet for CreateDatabase
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-alloydb
 
 
-# [START alloydb_v1alpha_generated_AlloyDBAdmin_UpgradeCluster_sync]
+# [START alloydb_v1beta_generated_AlloyDBAdmin_CreateDatabase_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,27 +31,23 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import alloydb_v1alpha
+from google.cloud import alloydb_v1beta
 
 
-def sample_upgrade_cluster():
+async def sample_create_database():
     # Create a client
-    client = alloydb_v1alpha.AlloyDBAdminClient()
+    client = alloydb_v1beta.AlloyDBAdminAsyncClient()
 
     # Initialize request argument(s)
-    request = alloydb_v1alpha.UpgradeClusterRequest(
-        name="name_value",
-        version="POSTGRES_17",
+    request = alloydb_v1beta.CreateDatabaseRequest(
+        parent="parent_value",
+        database_id="database_id_value",
     )
 
     # Make the request
-    operation = client.upgrade_cluster(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = await client.create_database(request=request)
 
     # Handle the response
     print(response)
 
-# [END alloydb_v1alpha_generated_AlloyDBAdmin_UpgradeCluster_sync]
+# [END alloydb_v1beta_generated_AlloyDBAdmin_CreateDatabase_async]
