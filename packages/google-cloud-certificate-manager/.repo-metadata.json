@@ -11,7 +11,6 @@
     "distribution_name": "google-cloud-certificate-manager",
     "api_id": "certificatemanager.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "",
     "api_shortname": "certificatemanager",
     "api_description": "lets you acquire and manage TLS (SSL) certificates for use with Cloud Load Balancing."
 }

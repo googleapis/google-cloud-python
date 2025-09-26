@@ -11,7 +11,6 @@
     "distribution_name": "google-cloud-dataproc",
     "api_id": "dataproc.googleapis.com",
     "requires_billing": true,
-    "codeowner_team": "@googleapis/api-dataproc",
     "default_version": "v1",
     "api_shortname": "dataproc",
     "api_description": "is a faster, easier, more cost-effective way to run Apache Spark and Apache Hadoop."

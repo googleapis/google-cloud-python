@@ -12,6 +12,5 @@
     "distribution_name": "google-cloud-parallelstore",
     "api_id": "parallelstore.googleapis.com",
     "default_version": "v1beta",
-    "codeowner_team": "",
     "api_shortname": "parallelstore"
 }

@@ -12,6 +12,5 @@
     "distribution_name": "google-cloud-policytroubleshooter-iam",
     "api_id": "policytroubleshooter.googleapis.com",
     "default_version": "v3",
-    "codeowner_team": "",
     "api_shortname": "iam"
 }

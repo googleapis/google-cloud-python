@@ -13,6 +13,5 @@
     "api_id": "securitycenter.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "",
     "api_shortname": "securitycenter"
 }

@@ -12,7 +12,6 @@
     "api_id": "cloudresourcemanager.googleapis.com",
     "requires_billing": true,
     "default_version": "v3",
-    "codeowner_team": "",
     "api_shortname": "cloudresourcemanager",
     "api_description": "provides methods that you can use to programmatically manage your projects in the Google Cloud Platform."
 }

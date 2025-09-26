@@ -10,6 +10,5 @@
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-common",
     "default_version": "apiVersion",
-    "codeowner_team": "",
     "api_description": "This package contains generated Python types for google.cloud.common"
 }

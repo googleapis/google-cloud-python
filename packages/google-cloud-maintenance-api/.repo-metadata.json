@@ -12,6 +12,5 @@
     "distribution_name": "google-cloud-maintenance-api",
     "api_id": "api.googleapis.com",
     "default_version": "v1beta",
-    "codeowner_team": "",
     "api_shortname": "api"
 }

@@ -12,6 +12,5 @@
     "distribution_name": "google-cloud-saasplatform-saasservicemgmt",
     "api_id": "saasservicemgmt.googleapis.com",
     "default_version": "v1beta1",
-    "codeowner_team": "",
     "api_shortname": "saasservicemgmt"
 }
