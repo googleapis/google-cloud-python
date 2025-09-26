@@ -1365,18 +1365,22 @@ def test_get_staging_child_directory_gapic():
     # Standard v1
     api_path = "google/cloud/language/v1"
     expected = "v1"
-    assert _get_staging_child_directory(api_path) == expected
+    assert _get_staging_child_directory(api_path, False) == expected
 
 
 def test_get_staging_child_directory_proto_only():
     """
-    Tests the behavior for GAPIC clients when the last path segment
-    does not start with 'v' (should use the proto-only fallback structure).
+    Tests the behavior for proto-only clients.
     """
     # A non-versioned path segment
     api_path = "google/protobuf"
     expected = "protobuf-py/google/protobuf"
-    assert _get_staging_child_directory(api_path) == expected
+    assert _get_staging_child_directory(api_path, True) == expected
+
+    # A non-versioned path segment
+    api_path = "google/protobuf/v1"
+    expected = "v1-py/google/protobuf/v1"
+    assert _get_staging_child_directory(api_path, True) == expected
 
 
 def test_stage_proto_only_library(mocker):

@@ -330,6 +330,7 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
     os.makedirs(
         f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True
     )
+    # TODO(https://github.com/googleapis/synthtool/pull/2126): Remove once this PR is merged
     # This is needed to avoid the following error for proto-only libraries
     # Traceback (most recent call last):
     # File "/app/./cli.py", line 535, in handle_generate
@@ -691,7 +692,7 @@ def _run_protoc_command(generator_command: str, source: str):
     )
 
 
-def _get_staging_child_directory(api_path: str) -> str:
+def _get_staging_child_directory(api_path: str, is_proto_only_library: bool) -> str:
     """
     Determines the correct sub-path within 'owl-bot-staging' for the generated code.
 
@@ -701,13 +702,14 @@ def _get_staging_child_directory(api_path: str) -> str:
 
     Args:
         api_path (str): The relative path to the API directory (e.g., 'google/cloud/language/v1').
+        is_proto_only_library(bool): True, if this is a proto-only library.
 
     Returns:
         str: The sub-directory name to use for staging.
     """
 
     version_candidate = api_path.split("/")[-1]
-    if version_candidate.startswith("v"):
+    if version_candidate.startswith("v") and not is_proto_only_library:
         return version_candidate
     else:
         # Fallback for non-'v' version segment
@@ -790,7 +792,7 @@ def _generate_api(
         _run_protoc_command(command, source)
 
         # 3. Determine staging location
-        staging_child_directory = _get_staging_child_directory(api_path)
+        staging_child_directory = _get_staging_child_directory(api_path, is_proto_only_library)
         staging_dir = os.path.join(
             output, "owl-bot-staging", library_id, staging_child_directory
         )
