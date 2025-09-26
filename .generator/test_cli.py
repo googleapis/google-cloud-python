@@ -49,6 +49,7 @@ from cli import (
     _get_libraries_to_prepare_for_release,
     _get_new_library_config,
     _get_previous_version,
+    _get_staging_child_directory,
     _add_new_library_version,
     _prepare_new_library_config,
     _process_changelog,
@@ -57,9 +58,11 @@ from cli import (
     _read_json_file,
     _read_text_file,
     _run_individual_session,
-    _run_generator_command,
     _run_nox_sessions,
     _run_post_processor,
+    _run_protoc_command,
+    _stage_gapic_library,
+    _stage_proto_only_library,
     _update_changelog_for_library,
     _update_global_changelog,
     _update_version_for_library,
@@ -105,7 +108,7 @@ _MOCK_LIBRARY_CHANGES = [
     },
 ]
 
-_MOCK_BAZEL_CONTENT = """load(
+_MOCK_BAZEL_CONTENT_PY_GAPIC = """load(
     "@com_google_googleapis_imports//:imports.bzl",
     "py_gapic_assembly_pkg",
     "py_gapic_library",
@@ -124,6 +127,15 @@ py_gapic_library(
     opt_args = [
         "python-gapic-namespace=google.cloud",
     ],
+)"""
+
+_MOCK_BAZEL_CONTENT_PY_PROTO = """load(
+    "@com_google_googleapis_imports//:imports.bzl",
+    "py_proto_library",
+)
+
+py_proto_library(
+    name = "language_py_proto",
 )"""
 
 
@@ -205,7 +217,7 @@ def mock_build_bazel_file(tmp_path, monkeypatch):
     os.makedirs(bazel_build_dir, exist_ok=True)
     build_bazel_file = bazel_build_dir / os.path.basename(bazel_build_path)
 
-    build_bazel_file.write_text(_MOCK_BAZEL_CONTENT)
+    build_bazel_file.write_text(_MOCK_BAZEL_CONTENT_PY_GAPIC)
     return build_bazel_file
 
 
@@ -438,7 +450,7 @@ def test_read_bazel_build_py_rule_success(mocker, mock_build_bazel_file):
     # Use the empty string as the source path, since the fixture has set the CWD to the temporary root.
     source_dir = "source"
 
-    mocker.patch("cli._read_text_file", return_value=_MOCK_BAZEL_CONTENT)
+    mocker.patch("cli._read_text_file", return_value=_MOCK_BAZEL_CONTENT_PY_GAPIC)
     # The fixture already creates the file, so we just need to call the function
     py_gapic_config = _read_bazel_build_py_rule(api_path, source_dir)
 
@@ -449,6 +461,20 @@ def test_read_bazel_build_py_rule_success(mocker, mock_build_bazel_file):
     assert py_gapic_config["rest_numeric_enums"] is True
     assert py_gapic_config["transport"] == "grpc+rest"
     assert py_gapic_config["opt_args"] == ["python-gapic-namespace=google.cloud"]
+
+
+def test_read_bazel_build_py_rule_not_found(mocker, mock_build_bazel_file):
+    """Tests successful parsing of a valid BUILD.bazel file for a proto-only library."""
+    api_path = "google/cloud/language/v1"
+    # Use the empty string as the source path, since the fixture has set the CWD to the temporary root.
+    source_dir = "source"
+
+    mocker.patch("cli._read_text_file", return_value=_MOCK_BAZEL_CONTENT_PY_PROTO)
+    # The fixture already creates the file, so we just need to call the function
+    py_gapic_config = _read_bazel_build_py_rule(api_path, source_dir)
+
+    assert "language_py_gapic" not in py_gapic_config
+    assert py_gapic_config == {}
 
 
 def test_get_api_generator_options_all_options():
@@ -518,7 +544,7 @@ def test_determine_generator_command_no_options():
     assert command == expected_command_no_options
 
 
-def test_run_generator_command_success(mocker):
+def test_run_protoc_command_success(mocker):
     """Tests successful execution of the protoc command."""
     mock_run = mocker.patch(
         "cli.subprocess.run", return_value=MagicMock(stdout="ok", stderr="", check=True)
@@ -526,14 +552,14 @@ def test_run_generator_command_success(mocker):
     command = "protoc api/*.proto --python_gapic_out=/tmp/out"
     source = "/src"
 
-    _run_generator_command(command, source)
+    _run_protoc_command(command, source)
 
     mock_run.assert_called_once_with(
         [command], cwd=source, shell=True, check=True, capture_output=True, text=True
     )
 
 
-def test_run_generator_command_failure(mocker):
+def test_run_protoc_command_failure(mocker):
     """Tests failure when protoc command returns a non-zero exit code."""
     mock_run = mocker.patch(
         "cli.subprocess.run",
@@ -543,10 +569,10 @@ def test_run_generator_command_failure(mocker):
     source = "/src"
 
     with pytest.raises(subprocess.CalledProcessError):
-        _run_generator_command(command, source)
+        _run_protoc_command(command, source)
 
 
-def test_generate_api_success(mocker, caplog):
+def test_generate_api_success_py_gapic(mocker, caplog):
     caplog.set_level(logging.INFO)
 
     API_PATH = "google/cloud/language/v1"
@@ -555,18 +581,43 @@ def test_generate_api_success(mocker, caplog):
     OUTPUT = "output"
     gapic_version = "1.2.99"
 
-    mock_read_bazel_build_py_rule = mocker.patch("cli._read_bazel_build_py_rule")
-    mock_get_api_generator_options = mocker.patch("cli._get_api_generator_options")
-    mock_determine_generator_command = mocker.patch("cli._determine_generator_command")
-    mock_run_generator_command = mocker.patch("cli._run_generator_command")
+    mock_read_bazel_build_py_rule = mocker.patch(
+        "cli._read_bazel_build_py_rule",
+        return_value={
+            "py_gapic_library": {
+                "name": "language_py_gapic",
+            }
+        },
+    )
+    mock_run_protoc_command = mocker.patch("cli._run_protoc_command")
     mock_shutil_copytree = mocker.patch("shutil.copytree")
 
     _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version)
 
     mock_read_bazel_build_py_rule.assert_called_once()
-    mock_get_api_generator_options.assert_called_once()
-    mock_determine_generator_command.assert_called_once()
-    mock_run_generator_command.assert_called_once()
+    mock_run_protoc_command.assert_called_once()
+    mock_shutil_copytree.assert_called_once()
+
+
+def test_generate_api_success_py_proto(mocker, caplog):
+    caplog.set_level(logging.INFO)
+
+    API_PATH = "google/cloud/language/v1"
+    LIBRARY_ID = "google-cloud-language"
+    SOURCE = "source"
+    OUTPUT = "output"
+    gapic_version = "1.2.99"
+
+    mock_read_bazel_build_py_rule = mocker.patch(
+        "cli._read_bazel_build_py_rule", return_value={}
+    )
+    mock_run_protoc_command = mocker.patch("cli._run_protoc_command")
+    mock_shutil_copytree = mocker.patch("shutil.copytree")
+
+    _generate_api(API_PATH, LIBRARY_ID, SOURCE, OUTPUT, gapic_version)
+
+    mock_read_bazel_build_py_rule.assert_called_once()
+    mock_run_protoc_command.assert_called_once()
     mock_shutil_copytree.assert_called_once()
 
 
@@ -1304,3 +1355,89 @@ def test_verify_library_namespace_error_no_gapic_file(mocker, mock_path_class):
 
     # Verify the initial path logic still ran
     mock_path_class.assert_called_once_with("repo/packages/my-lib")
+
+
+def test_get_staging_child_directory_gapic():
+    """
+    Tests the behavior for GAPIC clients with standard 'v' prefix versioning.
+    Should return only the version segment (e.g., 'v1').
+    """
+    # Standard v1
+    api_path = "google/cloud/language/v1"
+    expected = "v1"
+    assert _get_staging_child_directory(api_path, False) == expected
+
+
+def test_get_staging_child_directory_proto_only():
+    """
+    Tests the behavior for proto-only clients.
+    """
+    # A non-versioned path segment
+    api_path = "google/protobuf"
+    expected = "protobuf-py/google/protobuf"
+    assert _get_staging_child_directory(api_path, True) == expected
+
+    # A non-versioned path segment
+    api_path = "google/protobuf/v1"
+    expected = "v1-py/google/protobuf/v1"
+    assert _get_staging_child_directory(api_path, True) == expected
+
+
+def test_stage_proto_only_library(mocker):
+    """
+    Tests the file operations for proto-only library staging.
+    It should call copytree once for generated files and copyfile for each proto file.
+    """
+    mock_shutil_copyfile = mocker.patch("shutil.copyfile")
+    mock_shutil_copytree = mocker.patch("shutil.copytree")
+    mock_glob_glob = mocker.patch("glob.glob")
+
+    # Mock glob.glob to return a list of fake proto files
+    mock_proto_files = [
+        "/home/source/google/cloud/common/types/common.proto",
+        "/home/source/google/cloud/common/types/status.proto",
+    ]
+    mock_glob_glob.return_value = mock_proto_files
+
+    # Define test parameters
+    api_path = "google/cloud/common/types"
+    source_dir = "/home/source"
+    tmp_dir = "/tmp/protoc_output"
+    staging_dir = "/output/staging/types"
+
+    _stage_proto_only_library(api_path, source_dir, tmp_dir, staging_dir)
+
+    # Assertion 1: Check copytree was called exactly once to move generated Python files
+    mock_shutil_copytree.assert_called_once_with(
+        f"{tmp_dir}/{api_path}", staging_dir, dirs_exist_ok=True
+    )
+
+    # Assertion 2: Check glob.glob was called correctly
+    expected_glob_path = f"{source_dir}/{api_path}/*.proto"
+    mock_glob_glob.assert_called_once_with(expected_glob_path)
+
+    # Assertion 3: Check copyfile was called once for each proto file found by glob
+    assert mock_shutil_copyfile.call_count == len(mock_proto_files)
+
+    # Check the exact arguments for copyfile calls
+    mock_shutil_copyfile.assert_any_call(
+        mock_proto_files[0], f"{staging_dir}/{os.path.basename(mock_proto_files[0])}"
+    )
+    mock_shutil_copyfile.assert_any_call(
+        mock_proto_files[1], f"{staging_dir}/{os.path.basename(mock_proto_files[1])}"
+    )
+
+
+def test_stage_gapic_library(mocker):
+    """
+    Tests that _stage_gapic_library correctly calls shutil.copytree once,
+    copying everything from the temporary directory to the staging directory.
+    """
+    tmp_dir = "/tmp/gapic_output"
+    staging_dir = "/output/staging/v1"
+
+    mock_shutil_copytree = mocker.patch("shutil.copytree")
+    _stage_gapic_library(tmp_dir, staging_dir)
+
+    # Assertion: Check copytree was called exactly once with the correct arguments
+    mock_shutil_copytree.assert_called_once_with(tmp_dir, staging_dir)
