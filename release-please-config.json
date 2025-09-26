@@ -122,7 +122,6 @@
                 "google/cloud/asset_v1/gapic_version.py",
                 "google/cloud/asset_v1p1beta1/gapic_version.py",
                 "google/cloud/asset_v1p2beta1/gapic_version.py",
-                "google/cloud/asset_v1p4beta1/gapic_version.py",
                 "google/cloud/asset_v1p5beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
