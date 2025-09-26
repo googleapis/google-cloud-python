@@ -57,7 +57,7 @@ def main(project_id, instance_id, table_id):
     # Create a column family with GC policy : most recent N versions
     # Define the GC policy to retain only the most recent 2 versions
     max_versions_rule = bigtable.column_family.MaxVersionsGCRule(2)
-    column_family_id = "cf1"
+    column_family_id = b"cf1"
     column_families = {column_family_id: max_versions_rule}
     if not table.exists():
         table.create(column_families=column_families)
@@ -71,9 +71,9 @@ def main(project_id, instance_id, table_id):
 
         # [START bigtable_hw_write_rows]
         print("Writing some greetings to the table.")
-        greetings = ["Hello World!", "Hello Cloud Bigtable!", "Hello Python!"]
+        greetings = [b"Hello World!", b"Hello Cloud Bigtable!", b"Hello Python!"]
         rows = []
-        column = "greeting".encode()
+        column = b"greeting"
         for i, value in enumerate(greetings):
             # Note: This example uses sequential numeric IDs for simplicity,
             # but this can result in poor performance in a production
@@ -85,10 +85,10 @@ def main(project_id, instance_id, table_id):
             # the best performance, see the documentation:
             #
             #     https://cloud.google.com/bigtable/docs/schema-design
-            row_key = "greeting{}".format(i).encode()
+            row_key = f"greeting{i}".encode()
             row = table.direct_row(row_key)
             row.set_cell(
-                column_family_id, column, value, timestamp=datetime.datetime.utcnow()
+                column_family_id, column, value, timestamp=datetime.datetime.utcnow(),
             )
             rows.append(row)
         table.mutate_rows(rows)
@@ -103,10 +103,10 @@ def main(project_id, instance_id, table_id):
         # [START bigtable_hw_get_with_filter]
         # [START bigtable_hw_get_by_key]
         print("Getting a single greeting by row key.")
-        key = "greeting0".encode()
+        key = b"greeting0"
 
         row = table.read_row(key, row_filter)
-        cell = row.cells[column_family_id][column][0]
+        cell = row.cells[column_family_id.decode("utf-8")][column][0]
         print(cell.value.decode("utf-8"))
         # [END bigtable_hw_get_by_key]
         # [END bigtable_hw_get_with_filter]
@@ -117,7 +117,8 @@ def main(project_id, instance_id, table_id):
         partial_rows = table.read_rows(filter_=row_filter)
 
         for row in partial_rows:
-            cell = row.cells[column_family_id][column][0]
+            column_family_id_str = column_family_id.decode("utf-8")
+            cell = row.cells[column_family_id_str][column][0]
             print(cell.value.decode("utf-8"))
         # [END bigtable_hw_scan_all]
         # [END bigtable_hw_scan_with_filter]
