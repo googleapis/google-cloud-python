@@ -26706,6 +26706,7 @@ def test_create_instance_rest_call_success(request_type):
             "outbound_public_ip_addresses_value2",
         ],
         "activation_policy": 1,
+        "connection_pool_config": {"enabled": True, "flags": {}, "pooler_count": 1305},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26975,6 +26976,7 @@ def test_create_secondary_instance_rest_call_success(request_type):
             "outbound_public_ip_addresses_value2",
         ],
         "activation_policy": 1,
+        "connection_pool_config": {"enabled": True, "flags": {}, "pooler_count": 1305},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -27259,6 +27261,11 @@ def test_batch_create_instances_rest_call_success(request_type):
                         "outbound_public_ip_addresses_value2",
                     ],
                     "activation_policy": 1,
+                    "connection_pool_config": {
+                        "enabled": True,
+                        "flags": {},
+                        "pooler_count": 1305,
+                    },
                 },
                 "request_id": "request_id_value",
                 "validate_only": True,
@@ -27542,6 +27549,7 @@ def test_update_instance_rest_call_success(request_type):
             "outbound_public_ip_addresses_value2",
         ],
         "activation_policy": 1,
+        "connection_pool_config": {"enabled": True, "flags": {}, "pooler_count": 1305},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32288,12 +32296,41 @@ def test_parse_connection_info_path():
     assert expected == actual
 
 
-def test_crypto_key_version_path():
+def test_crypto_key_path():
     project = "winkle"
     location = "nautilus"
     key_ring = "scallop"
     crypto_key = "abalone"
-    crypto_key_version = "squid"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = AlloyDBAdminClient.crypto_key_path(project, location, key_ring, crypto_key)
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "key_ring": "whelk",
+        "crypto_key": "octopus",
+    }
+    path = AlloyDBAdminClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlloyDBAdminClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_version_path():
+    project = "oyster"
+    location = "nudibranch"
+    key_ring = "cuttlefish"
+    crypto_key = "mussel"
+    crypto_key_version = "winkle"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
         project=project,
         location=location,
@@ -32309,11 +32346,11 @@ def test_crypto_key_version_path():
 
 def test_parse_crypto_key_version_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "key_ring": "octopus",
-        "crypto_key": "oyster",
-        "crypto_key_version": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "key_ring": "abalone",
+        "crypto_key": "squid",
+        "crypto_key_version": "clam",
     }
     path = AlloyDBAdminClient.crypto_key_version_path(**expected)
 
@@ -32323,10 +32360,10 @@ def test_parse_crypto_key_version_path():
 
 
 def test_database_path():
-    project = "cuttlefish"
-    location = "mussel"
-    cluster = "winkle"
-    database = "nautilus"
+    project = "whelk"
+    location = "octopus"
+    cluster = "oyster"
+    database = "nudibranch"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}".format(
         project=project,
         location=location,
@@ -32339,10 +32376,10 @@ def test_database_path():
 
 def test_parse_database_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "cluster": "squid",
-        "database": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "cluster": "winkle",
+        "database": "nautilus",
     }
     path = AlloyDBAdminClient.database_path(**expected)
 
@@ -32352,10 +32389,10 @@ def test_parse_database_path():
 
 
 def test_instance_path():
-    project = "whelk"
-    location = "octopus"
-    cluster = "oyster"
-    instance = "nudibranch"
+    project = "scallop"
+    location = "abalone"
+    cluster = "squid"
+    instance = "clam"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/instances/{instance}".format(
         project=project,
         location=location,
@@ -32368,10 +32405,10 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "cluster": "winkle",
-        "instance": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
+        "cluster": "oyster",
+        "instance": "nudibranch",
     }
     path = AlloyDBAdminClient.instance_path(**expected)
 
@@ -32381,8 +32418,8 @@ def test_parse_instance_path():
 
 
 def test_network_path():
-    project = "scallop"
-    network = "abalone"
+    project = "cuttlefish"
+    network = "mussel"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -32393,8 +32430,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "squid",
-        "network": "clam",
+        "project": "winkle",
+        "network": "nautilus",
     }
     path = AlloyDBAdminClient.network_path(**expected)
 
@@ -32403,10 +32440,38 @@ def test_parse_network_path():
     assert expected == actual
 
 
+def test_service_attachment_path():
+    project = "scallop"
+    region = "abalone"
+    service_attachment = "squid"
+    expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
+        project=project,
+        region=region,
+        service_attachment=service_attachment,
+    )
+    actual = AlloyDBAdminClient.service_attachment_path(
+        project, region, service_attachment
+    )
+    assert expected == actual
+
+
+def test_parse_service_attachment_path():
+    expected = {
+        "project": "clam",
+        "region": "whelk",
+        "service_attachment": "octopus",
+    }
+    path = AlloyDBAdminClient.service_attachment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlloyDBAdminClient.parse_service_attachment_path(path)
+    assert expected == actual
+
+
 def test_supported_database_flag_path():
-    project = "whelk"
-    location = "octopus"
-    flag = "oyster"
+    project = "oyster"
+    location = "nudibranch"
+    flag = "cuttlefish"
     expected = "projects/{project}/locations/{location}/flags/{flag}".format(
         project=project,
         location=location,
@@ -32418,9 +32483,9 @@ def test_supported_database_flag_path():
 
 def test_parse_supported_database_flag_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "flag": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "flag": "nautilus",
     }
     path = AlloyDBAdminClient.supported_database_flag_path(**expected)
 
@@ -32430,10 +32495,10 @@ def test_parse_supported_database_flag_path():
 
 
 def test_user_path():
-    project = "winkle"
-    location = "nautilus"
-    cluster = "scallop"
-    user = "abalone"
+    project = "scallop"
+    location = "abalone"
+    cluster = "squid"
+    user = "clam"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/users/{user}".format(
         project=project,
         location=location,
@@ -32446,10 +32511,10 @@ def test_user_path():
 
 def test_parse_user_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "cluster": "whelk",
-        "user": "octopus",
+        "project": "whelk",
+        "location": "octopus",
+        "cluster": "oyster",
+        "user": "nudibranch",
     }
     path = AlloyDBAdminClient.user_path(**expected)
 
@@ -32459,7 +32524,7 @@ def test_parse_user_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -32469,7 +32534,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "mussel",
     }
     path = AlloyDBAdminClient.common_billing_account_path(**expected)
 
@@ -32479,7 +32544,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -32489,7 +32554,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nautilus",
     }
     path = AlloyDBAdminClient.common_folder_path(**expected)
 
@@ -32499,7 +32564,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -32509,7 +32574,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "abalone",
     }
     path = AlloyDBAdminClient.common_organization_path(**expected)
 
@@ -32519,7 +32584,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -32529,7 +32594,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "clam",
     }
     path = AlloyDBAdminClient.common_project_path(**expected)
 
@@ -32539,8 +32604,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -32551,8 +32616,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = AlloyDBAdminClient.common_location_path(**expected)
 
