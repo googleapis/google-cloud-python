@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-assured-workloads/#history
 
+## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-assured-workloads-v1.15.2...google-cloud-assured-workloads-v2.0.0) (2025-09-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove google.cloud.assuredworkloads_v1beta1.types.assuredworkloads_v1beta1 ([#14572](https://github.com/googleapis/google-cloud-python/issues/14572))
+
+### Bug Fixes
+
+* remove google.cloud.assuredworkloads_v1beta1.types.assuredworkloads_v1beta1 ([#14572](https://github.com/googleapis/google-cloud-python/issues/14572)) ([0331173](https://github.com/googleapis/google-cloud-python/commit/03311730cef9630b31cf35f4213c8c597e538db2))
+
 ## [1.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-assured-workloads-v1.15.1...google-cloud-assured-workloads-v1.15.2) (2025-06-11)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-apihub/#history
 
+## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apihub-v0.2.7...google-cloud-apihub-v0.2.8) (2025-09-27)
+
+
+### Features
+
+* [google-cloud-apihub] enable grpc transport ([#14577](https://github.com/googleapis/google-cloud-python/issues/14577)) ([015634e](https://github.com/googleapis/google-cloud-python/commit/015634e3fe5c3305a49ad768f27c9e85c0f8e242))
+
 ## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apihub-v0.2.6...google-cloud-apihub-v0.2.7) (2025-09-22)
 
 
