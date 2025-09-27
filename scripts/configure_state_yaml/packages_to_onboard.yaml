@@ -43,5 +43,15 @@ packages_to_onboard: [
   "google-cloud-batch",
   "google-cloud-dlp",
   "google-cloud-eventarc",
+  "google-cloud-support",
+  "google-cloud-talent",
+  "google-cloud-tpu",
+  "google-cloud-video-transcoder",
   "google-cloud-video-live-stream",
+  "google-cloud-visionai",
+  "google-cloud-vm-migration",
+  "google-cloud-vmwareengine",
+  "google-cloud-vpc-access",
+  "google-cloud-websecurityscanner",
+  "google-cloud-workstations"
 ]
