@@ -342,7 +342,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
     version: 0.4.9
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 8cd780626041ecd4666974fd0c4099f1ad1ca01a
     apis:
       - path: google/cloud/alloydb/v1beta
         service_config: alloydb_v1beta.yaml
