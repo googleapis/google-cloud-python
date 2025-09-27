@@ -3781,7 +3781,10 @@ def test_insert_rest_call_success(request_type):
                 },
             },
             "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
+            "request_mirror_policy": {
+                "backend_service": "backend_service_value",
+                "mirror_percent": 0.1515,
+            },
             "retry_policy": {
                 "num_retries": 1197,
                 "per_try_timeout": {},
@@ -4333,7 +4336,10 @@ def test_patch_rest_call_success(request_type):
                 },
             },
             "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
+            "request_mirror_policy": {
+                "backend_service": "backend_service_value",
+                "mirror_percent": 0.1515,
+            },
             "retry_policy": {
                 "num_retries": 1197,
                 "per_try_timeout": {},
@@ -4754,7 +4760,10 @@ def test_update_rest_call_success(request_type):
                 },
             },
             "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
+            "request_mirror_policy": {
+                "backend_service": "backend_service_value",
+                "mirror_percent": 0.1515,
+            },
             "retry_policy": {
                 "num_retries": 1197,
                 "per_try_timeout": {},
@@ -5179,7 +5188,10 @@ def test_validate_rest_call_success(request_type):
                     },
                 },
                 "max_stream_duration": {},
-                "request_mirror_policy": {"backend_service": "backend_service_value"},
+                "request_mirror_policy": {
+                    "backend_service": "backend_service_value",
+                    "mirror_percent": 0.1515,
+                },
                 "retry_policy": {
                     "num_retries": 1197,
                     "per_try_timeout": {},
