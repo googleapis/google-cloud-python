@@ -11,6 +11,5 @@
     "distribution_name": "google-cloud-audit-log",
     "api_id": "",
     "default_version": "apiVersion",
-    "codeowner_team": "",
     "api_shortname": "auditlog"
 }

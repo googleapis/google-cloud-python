@@ -11,7 +11,6 @@
     "distribution_name": "google-cloud-memcache",
     "api_id": "memcache.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "",
     "api_shortname": "memcache",
     "api_description": "is a fully-managed in-memory data store service for Memcache."
 }

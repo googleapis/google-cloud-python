@@ -12,6 +12,5 @@
     "distribution_name": "apiPackage",
     "api_id": "apiName.googleapis.com",
     "default_version": "apiVersion",
-    "codeowner_team": "",
     "api_shortname": "apiName"
 }

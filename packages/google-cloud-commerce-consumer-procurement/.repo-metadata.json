@@ -12,6 +12,5 @@
   "distribution_name": "google-cloud-commerce-consumer-procurement",
   "api_id": "cloudcommerceconsumerprocurement.googleapis.com",
   "default_version": "v1",
-  "codeowner_team": "",
   "api_shortname": "procurement"
 }

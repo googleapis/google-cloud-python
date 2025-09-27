@@ -12,7 +12,6 @@
     "api_id": "recommender.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/cdpe-cloudai",
     "api_shortname": "recommender",
     "api_description": "delivers highly personalized product recommendations at scale."
 }

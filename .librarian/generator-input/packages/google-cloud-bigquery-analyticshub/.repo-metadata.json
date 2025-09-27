@@ -11,7 +11,6 @@
     "distribution_name": "google-cloud-bigquery-analyticshub",
     "api_id": "analyticshub.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "",
     "api_shortname": "analyticshub",
     "api_description": "Analytics Hub is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost. Curate a library of internal and external assets, including unique datasets like Google Trends, backed by the power of BigQuery."
 }

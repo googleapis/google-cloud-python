@@ -12,6 +12,5 @@
     "distribution_name": "google-cloud-iam",
     "api_id": "iam.googleapis.com",
     "default_version": "v2",
-    "codeowner_team": "",
     "api_shortname": "iamcredentials"
 }

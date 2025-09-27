@@ -12,6 +12,5 @@
   "distribution_name": "google-ai-generativelanguage",
   "api_id": "generativelanguage.googleapis.com",
   "default_version": "v1beta",
-  "codeowner_team": "",
   "api_shortname": "generativelanguage"
 }

@@ -12,7 +12,6 @@
     "api_id": "cloudscheduler.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/aap-dpes",
     "api_shortname": "cloudscheduler",
     "api_description": "lets you set up scheduled units of work to be executed at defined times or regular intervals. These work units are commonly known as cron jobs. Typical use cases might include sending out a report email on a daily basis, updating some cached data every 10 minutes, or updating some summary information once an hour."
 }

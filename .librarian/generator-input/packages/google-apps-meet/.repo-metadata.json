@@ -12,6 +12,5 @@
     "distribution_name": "google-apps-meet",
     "api_id": "meet.googleapis.com",
     "default_version": "v2",
-    "codeowner_team": "",
     "api_shortname": "meet"
 }

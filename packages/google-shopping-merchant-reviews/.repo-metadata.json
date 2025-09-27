@@ -12,6 +12,5 @@
     "distribution_name": "google-shopping-merchant-reviews",
     "api_id": "reviews.googleapis.com",
     "default_version": "v1beta",
-    "codeowner_team": "",
     "api_shortname": "reviews"
 }

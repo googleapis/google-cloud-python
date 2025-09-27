@@ -12,6 +12,5 @@
     "distribution_name": "google-cloud-configdelivery",
     "api_id": "configdelivery.googleapis.com",
     "default_version": "v1alpha",
-    "codeowner_team": "",
     "api_shortname": "configdelivery"
 }

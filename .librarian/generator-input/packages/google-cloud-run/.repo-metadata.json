@@ -11,7 +11,6 @@
     "distribution_name": "google-cloud-run",
     "api_id": "run.googleapis.com",
     "default_version": "v2",
-    "codeowner_team": "@googleapis/aap-dpes",
     "api_shortname": "run",
     "api_description": "is a managed compute platform that enables you to run containers that are invocable via requests or events."
 }

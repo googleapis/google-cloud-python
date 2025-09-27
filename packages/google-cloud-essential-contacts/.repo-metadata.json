@@ -11,7 +11,6 @@
     "distribution_name": "google-cloud-essential-contacts",
     "api_id": "essentialcontacts.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "",
     "api_shortname": "essentialcontacts",
     "api_description": "helps you customize who receives notifications by providing your own list of contacts in many Google Cloud services."
 }

@@ -12,6 +12,5 @@
     "distribution_name": "google-cloud-capacityplanner",
     "api_id": "capacityplanner.googleapis.com",
     "default_version": "v1beta",
-    "codeowner_team": "",
     "api_shortname": "capacityplanner"
 }

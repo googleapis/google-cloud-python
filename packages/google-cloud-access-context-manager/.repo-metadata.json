@@ -10,6 +10,5 @@
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-access-context-manager",
     "default_version": "apiVersion",
-    "codeowner_team": "",
     "api_shortname": "accesscontextmanager"
 }
