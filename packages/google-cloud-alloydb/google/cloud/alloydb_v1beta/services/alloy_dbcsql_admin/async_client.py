@@ -83,6 +83,8 @@ class AlloyDBCSQLAdminAsyncClient:
     parse_backup_path = staticmethod(AlloyDBCSQLAdminClient.parse_backup_path)
     cluster_path = staticmethod(AlloyDBCSQLAdminClient.cluster_path)
     parse_cluster_path = staticmethod(AlloyDBCSQLAdminClient.parse_cluster_path)
+    crypto_key_path = staticmethod(AlloyDBCSQLAdminClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(AlloyDBCSQLAdminClient.parse_crypto_key_path)
     crypto_key_version_path = staticmethod(
         AlloyDBCSQLAdminClient.crypto_key_version_path
     )

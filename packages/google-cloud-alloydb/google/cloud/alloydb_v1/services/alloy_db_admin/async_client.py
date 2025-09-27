@@ -91,6 +91,8 @@ class AlloyDBAdminAsyncClient:
     parse_connection_info_path = staticmethod(
         AlloyDBAdminClient.parse_connection_info_path
     )
+    crypto_key_path = staticmethod(AlloyDBAdminClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(AlloyDBAdminClient.parse_crypto_key_path)
     crypto_key_version_path = staticmethod(AlloyDBAdminClient.crypto_key_version_path)
     parse_crypto_key_version_path = staticmethod(
         AlloyDBAdminClient.parse_crypto_key_version_path
@@ -101,6 +103,10 @@ class AlloyDBAdminAsyncClient:
     parse_instance_path = staticmethod(AlloyDBAdminClient.parse_instance_path)
     network_path = staticmethod(AlloyDBAdminClient.network_path)
     parse_network_path = staticmethod(AlloyDBAdminClient.parse_network_path)
+    service_attachment_path = staticmethod(AlloyDBAdminClient.service_attachment_path)
+    parse_service_attachment_path = staticmethod(
+        AlloyDBAdminClient.parse_service_attachment_path
+    )
     supported_database_flag_path = staticmethod(
         AlloyDBAdminClient.supported_database_flag_path
     )
@@ -1243,7 +1249,7 @@ class AlloyDBAdminAsyncClient:
                 # Initialize request argument(s)
                 request = alloydb_v1.UpgradeClusterRequest(
                     name="name_value",
-                    version="POSTGRES_16",
+                    version="POSTGRES_17",
                 )
 
                 # Make the request
@@ -5142,8 +5148,7 @@ class AlloyDBAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.alloydb_v1.types.ListDatabasesRequest, dict]]):
-                The request object. Message for requesting list of
-                Databases.
+                The request object. Message for ListDatabases request.
             parent (:class:`str`):
                 Required. Parent value for
                 ListDatabasesRequest.
@@ -5161,8 +5166,8 @@ class AlloyDBAdminAsyncClient:
 
         Returns:
             google.cloud.alloydb_v1.services.alloy_db_admin.pagers.ListDatabasesAsyncPager:
-                Message for response to listing
-                Databases.
+                Message for ListDatabases response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

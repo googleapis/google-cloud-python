@@ -14942,6 +14942,371 @@ async def test_list_databases_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateDatabaseRequest,
+        dict,
+    ],
+)
+def test_create_database(request_type, transport: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.Database(
+            name="name_value",
+            charset="charset_value",
+            collation="collation_value",
+            character_type="character_type_value",
+            is_template=True,
+            database_template="database_template_value",
+            is_template_database=True,
+        )
+        response = client.create_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.CreateDatabaseRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Database)
+    assert response.name == "name_value"
+    assert response.charset == "charset_value"
+    assert response.collation == "collation_value"
+    assert response.character_type == "character_type_value"
+    assert response.is_template is True
+    assert response.database_template == "database_template_value"
+    assert response.is_template_database is True
+
+
+def test_create_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateDatabaseRequest(
+        parent="parent_value",
+        database_id="database_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateDatabaseRequest(
+            parent="parent_value",
+            database_id="database_id_value",
+        )
+
+
+def test_create_database_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AlloyDBAdminClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_database in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_database] = mock_rpc
+        request = {}
+        client.create_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_database_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = AlloyDBAdminAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_database
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_database
+        ] = mock_rpc
+
+        request = {}
+        await client.create_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_database_async(
+    transport: str = "grpc_asyncio", request_type=service.CreateDatabaseRequest
+):
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Database(
+                name="name_value",
+                charset="charset_value",
+                collation="collation_value",
+                character_type="character_type_value",
+                is_template=True,
+                database_template="database_template_value",
+                is_template_database=True,
+            )
+        )
+        response = await client.create_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.CreateDatabaseRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Database)
+    assert response.name == "name_value"
+    assert response.charset == "charset_value"
+    assert response.collation == "collation_value"
+    assert response.character_type == "character_type_value"
+    assert response.is_template is True
+    assert response.database_template == "database_template_value"
+    assert response.is_template_database is True
+
+
+@pytest.mark.asyncio
+async def test_create_database_async_from_dict():
+    await test_create_database_async(request_type=dict)
+
+
+def test_create_database_field_headers():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateDatabaseRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        call.return_value = resources.Database()
+        client.create_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_database_field_headers_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateDatabaseRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Database())
+        await client.create_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_database_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.Database()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_database(
+            parent="parent_value",
+            database=resources.Database(name="name_value"),
+            database_id="database_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].database
+        mock_val = resources.Database(name="name_value")
+        assert arg == mock_val
+        arg = args[0].database_id
+        mock_val = "database_id_value"
+        assert arg == mock_val
+
+
+def test_create_database_flattened_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_database(
+            service.CreateDatabaseRequest(),
+            parent="parent_value",
+            database=resources.Database(name="name_value"),
+            database_id="database_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_database_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.Database()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Database())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_database(
+            parent="parent_value",
+            database=resources.Database(name="name_value"),
+            database_id="database_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].database
+        mock_val = resources.Database(name="name_value")
+        assert arg == mock_val
+        arg = args[0].database_id
+        mock_val = "database_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_database_flattened_error_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_database(
+            service.CreateDatabaseRequest(),
+            parent="parent_value",
+            database=resources.Database(name="name_value"),
+            database_id="database_id_value",
+        )
+
+
 def test_list_clusters_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -22437,6 +22802,215 @@ def test_list_databases_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+def test_create_database_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = AlloyDBAdminClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_database in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_database] = mock_rpc
+
+        request = {}
+        client.create_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_database_rest_required_fields(
+    request_type=service.CreateDatabaseRequest,
+):
+    transport_class = transports.AlloyDBAdminRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["database_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "databaseId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "databaseId" in jsonified_request
+    assert jsonified_request["databaseId"] == request_init["database_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["databaseId"] = "database_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_database._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("database_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "databaseId" in jsonified_request
+    assert jsonified_request["databaseId"] == "database_id_value"
+
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.Database()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.Database.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_database(request)
+
+            expected_params = [
+                (
+                    "databaseId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_database_rest_unset_required_fields():
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_database._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("databaseId",))
+        & set(
+            (
+                "parent",
+                "databaseId",
+                "database",
+            )
+        )
+    )
+
+
+def test_create_database_rest_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Database()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            database=resources.Database(name="name_value"),
+            database_id="database_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.Database.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_database(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=projects/*/locations/*/clusters/*}/databases"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_database_rest_flattened_error(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_database(
+            service.CreateDatabaseRequest(),
+            parent="parent_value",
+            database=resources.Database(name="name_value"),
+            database_id="database_id_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AlloyDBAdminGrpcTransport(
@@ -23332,6 +23906,27 @@ def test_list_databases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListDatabasesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_database_empty_call_grpc():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        call.return_value = resources.Database()
+        client.create_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateDatabaseRequest()
 
         assert args[0] == request_msg
 
@@ -24372,6 +24967,39 @@ async def test_list_databases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListDatabasesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_database_empty_call_grpc_asyncio():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Database(
+                name="name_value",
+                charset="charset_value",
+                collation="collation_value",
+                character_type="character_type_value",
+                is_template=True,
+                database_template="database_template_value",
+                is_template_database=True,
+            )
+        )
+        await client.create_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateDatabaseRequest()
 
         assert args[0] == request_msg
 
@@ -26759,7 +27387,7 @@ def test_create_instance_rest_call_success(request_type):
             "outbound_public_ip_addresses_value2",
         ],
         "activation_policy": 1,
-        "connection_pool_config": {"enabled": True, "flags": {}},
+        "connection_pool_config": {"enabled": True, "flags": {}, "pooler_count": 1305},
         "gca_config": {"gca_entitlement": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -27034,7 +27662,7 @@ def test_create_secondary_instance_rest_call_success(request_type):
             "outbound_public_ip_addresses_value2",
         ],
         "activation_policy": 1,
-        "connection_pool_config": {"enabled": True, "flags": {}},
+        "connection_pool_config": {"enabled": True, "flags": {}, "pooler_count": 1305},
         "gca_config": {"gca_entitlement": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -27324,7 +27952,11 @@ def test_batch_create_instances_rest_call_success(request_type):
                         "outbound_public_ip_addresses_value2",
                     ],
                     "activation_policy": 1,
-                    "connection_pool_config": {"enabled": True, "flags": {}},
+                    "connection_pool_config": {
+                        "enabled": True,
+                        "flags": {},
+                        "pooler_count": 1305,
+                    },
                     "gca_config": {"gca_entitlement": 1},
                 },
                 "request_id": "request_id_value",
@@ -27613,7 +28245,7 @@ def test_update_instance_rest_call_success(request_type):
             "outbound_public_ip_addresses_value2",
         ],
         "activation_policy": 1,
-        "connection_pool_config": {"enabled": True, "flags": {}},
+        "connection_pool_config": {"enabled": True, "flags": {}, "pooler_count": 1305},
         "gca_config": {"gca_entitlement": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -30535,6 +31167,217 @@ def test_list_databases_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_create_database_rest_bad_request(request_type=service.CreateDatabaseRequest):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_database(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateDatabaseRequest,
+        dict,
+    ],
+)
+def test_create_database_rest_call_success(request_type):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request_init["database"] = {
+        "name": "name_value",
+        "charset": "charset_value",
+        "collation": "collation_value",
+        "character_type": "character_type_value",
+        "is_template": True,
+        "database_template": "database_template_value",
+        "is_template_database": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.CreateDatabaseRequest.meta.fields["database"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["database"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["database"][field])):
+                    del request_init["database"][field][i][subfield]
+            else:
+                del request_init["database"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Database(
+            name="name_value",
+            charset="charset_value",
+            collation="collation_value",
+            character_type="character_type_value",
+            is_template=True,
+            database_template="database_template_value",
+            is_template_database=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.Database.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_database(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Database)
+    assert response.name == "name_value"
+    assert response.charset == "charset_value"
+    assert response.collation == "collation_value"
+    assert response.character_type == "character_type_value"
+    assert response.is_template is True
+    assert response.database_template == "database_template_value"
+    assert response.is_template_database is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_database_rest_interceptors(null_interceptor):
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlloyDBAdminRestInterceptor(),
+    )
+    client = AlloyDBAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_create_database"
+    ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_create_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "pre_create_database"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.CreateDatabaseRequest.pb(service.CreateDatabaseRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = resources.Database.to_json(resources.Database())
+        req.return_value.content = return_value
+
+        request = service.CreateDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Database()
+        post_with_metadata.return_value = resources.Database(), metadata
+
+        client.create_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = AlloyDBAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -31666,6 +32509,26 @@ def test_list_databases_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_database_empty_call_rest():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        client.create_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
 def test_alloy_db_admin_rest_lro_client():
     client = AlloyDBAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -31753,6 +32616,7 @@ def test_alloy_db_admin_base_transport():
         "update_user",
         "delete_user",
         "list_databases",
+        "create_database",
         "get_location",
         "list_locations",
         "get_operation",
@@ -32130,6 +32994,9 @@ def test_alloy_db_admin_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_databases._session
     session2 = client2.transport.list_databases._session
     assert session1 != session2
+    session1 = client1.transport.create_database._session
+    session2 = client2.transport.create_database._session
+    assert session1 != session2
 
 
 def test_alloy_db_admin_grpc_transport_channel():
@@ -32367,12 +33234,41 @@ def test_parse_connection_info_path():
     assert expected == actual
 
 
-def test_crypto_key_version_path():
+def test_crypto_key_path():
     project = "winkle"
     location = "nautilus"
     key_ring = "scallop"
     crypto_key = "abalone"
-    crypto_key_version = "squid"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = AlloyDBAdminClient.crypto_key_path(project, location, key_ring, crypto_key)
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "key_ring": "whelk",
+        "crypto_key": "octopus",
+    }
+    path = AlloyDBAdminClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlloyDBAdminClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_version_path():
+    project = "oyster"
+    location = "nudibranch"
+    key_ring = "cuttlefish"
+    crypto_key = "mussel"
+    crypto_key_version = "winkle"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
         project=project,
         location=location,
@@ -32388,11 +33284,11 @@ def test_crypto_key_version_path():
 
 def test_parse_crypto_key_version_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "key_ring": "octopus",
-        "crypto_key": "oyster",
-        "crypto_key_version": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "key_ring": "abalone",
+        "crypto_key": "squid",
+        "crypto_key_version": "clam",
     }
     path = AlloyDBAdminClient.crypto_key_version_path(**expected)
 
@@ -32402,10 +33298,10 @@ def test_parse_crypto_key_version_path():
 
 
 def test_database_path():
-    project = "cuttlefish"
-    location = "mussel"
-    cluster = "winkle"
-    database = "nautilus"
+    project = "whelk"
+    location = "octopus"
+    cluster = "oyster"
+    database = "nudibranch"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}".format(
         project=project,
         location=location,
@@ -32418,10 +33314,10 @@ def test_database_path():
 
 def test_parse_database_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "cluster": "squid",
-        "database": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "cluster": "winkle",
+        "database": "nautilus",
     }
     path = AlloyDBAdminClient.database_path(**expected)
 
@@ -32431,10 +33327,10 @@ def test_parse_database_path():
 
 
 def test_instance_path():
-    project = "whelk"
-    location = "octopus"
-    cluster = "oyster"
-    instance = "nudibranch"
+    project = "scallop"
+    location = "abalone"
+    cluster = "squid"
+    instance = "clam"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/instances/{instance}".format(
         project=project,
         location=location,
@@ -32447,10 +33343,10 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "cluster": "winkle",
-        "instance": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
+        "cluster": "oyster",
+        "instance": "nudibranch",
     }
     path = AlloyDBAdminClient.instance_path(**expected)
 
@@ -32460,8 +33356,8 @@ def test_parse_instance_path():
 
 
 def test_network_path():
-    project = "scallop"
-    network = "abalone"
+    project = "cuttlefish"
+    network = "mussel"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -32472,8 +33368,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "squid",
-        "network": "clam",
+        "project": "winkle",
+        "network": "nautilus",
     }
     path = AlloyDBAdminClient.network_path(**expected)
 
@@ -32482,10 +33378,38 @@ def test_parse_network_path():
     assert expected == actual
 
 
+def test_service_attachment_path():
+    project = "scallop"
+    region = "abalone"
+    service_attachment = "squid"
+    expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
+        project=project,
+        region=region,
+        service_attachment=service_attachment,
+    )
+    actual = AlloyDBAdminClient.service_attachment_path(
+        project, region, service_attachment
+    )
+    assert expected == actual
+
+
+def test_parse_service_attachment_path():
+    expected = {
+        "project": "clam",
+        "region": "whelk",
+        "service_attachment": "octopus",
+    }
+    path = AlloyDBAdminClient.service_attachment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlloyDBAdminClient.parse_service_attachment_path(path)
+    assert expected == actual
+
+
 def test_supported_database_flag_path():
-    project = "whelk"
-    location = "octopus"
-    flag = "oyster"
+    project = "oyster"
+    location = "nudibranch"
+    flag = "cuttlefish"
     expected = "projects/{project}/locations/{location}/flags/{flag}".format(
         project=project,
         location=location,
@@ -32497,9 +33421,9 @@ def test_supported_database_flag_path():
 
 def test_parse_supported_database_flag_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "flag": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "flag": "nautilus",
     }
     path = AlloyDBAdminClient.supported_database_flag_path(**expected)
 
@@ -32509,10 +33433,10 @@ def test_parse_supported_database_flag_path():
 
 
 def test_user_path():
-    project = "winkle"
-    location = "nautilus"
-    cluster = "scallop"
-    user = "abalone"
+    project = "scallop"
+    location = "abalone"
+    cluster = "squid"
+    user = "clam"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/users/{user}".format(
         project=project,
         location=location,
@@ -32525,10 +33449,10 @@ def test_user_path():
 
 def test_parse_user_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "cluster": "whelk",
-        "user": "octopus",
+        "project": "whelk",
+        "location": "octopus",
+        "cluster": "oyster",
+        "user": "nudibranch",
     }
     path = AlloyDBAdminClient.user_path(**expected)
 
@@ -32538,7 +33462,7 @@ def test_parse_user_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -32548,7 +33472,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "mussel",
     }
     path = AlloyDBAdminClient.common_billing_account_path(**expected)
 
@@ -32558,7 +33482,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -32568,7 +33492,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nautilus",
     }
     path = AlloyDBAdminClient.common_folder_path(**expected)
 
@@ -32578,7 +33502,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -32588,7 +33512,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "abalone",
     }
     path = AlloyDBAdminClient.common_organization_path(**expected)
 
@@ -32598,7 +33522,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -32608,7 +33532,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "clam",
     }
     path = AlloyDBAdminClient.common_project_path(**expected)
 
@@ -32618,8 +33542,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -32630,8 +33554,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = AlloyDBAdminClient.common_location_path(**expected)
 

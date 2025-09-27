@@ -25,6 +25,11 @@
                 "create_cluster"
               ]
             },
+            "CreateDatabase": {
+              "methods": [
+                "create_database"
+              ]
+            },
             "CreateInstance": {
               "methods": [
                 "create_instance"
@@ -215,6 +220,11 @@
                 "create_cluster"
               ]
             },
+            "CreateDatabase": {
+              "methods": [
+                "create_database"
+              ]
+            },
             "CreateInstance": {
               "methods": [
                 "create_instance"
@@ -403,6 +413,11 @@
             "CreateCluster": {
               "methods": [
                 "create_cluster"
+              ]
+            },
+            "CreateDatabase": {
+              "methods": [
+                "create_database"
               ]
             },
             "CreateInstance": {

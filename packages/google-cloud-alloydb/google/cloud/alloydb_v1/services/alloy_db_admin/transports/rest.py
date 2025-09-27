@@ -5985,8 +5985,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             Args:
                 request (~.service.ListDatabasesRequest):
-                    The request object. Message for requesting list of
-                Databases.
+                    The request object. Message for ListDatabases request.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5997,9 +5996,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             Returns:
                 ~.service.ListDatabasesResponse:
-                    Message for response to listing
-                Databases.
-
+                    Message for ListDatabases response.
             """
 
             http_options = (
