@@ -741,7 +741,7 @@ def _stage_gapic_library(tmp_dir: str, staging_dir: str) -> None:
     """
     # For GAPIC, the generator output is flat in `tmp_dir` and includes all
     # necessary files like setup.py, client library, etc.
-    shutil.copytree(tmp_dir, staging_dir)
+    shutil.copytree(tmp_dir, staging_dir, dirs_exist_ok=True)
 
 
 def _generate_api(
