@@ -74,6 +74,7 @@ packages_to_onboard: [
   "google-cloud-texttospeech",
   "google-cloud-tpu",
   "google-cloud-trace",
+  "google-cloud-translate",
   "google-cloud-video-transcoder",
   "google-cloud-video-live-stream",
   "google-cloud-videointelligence",

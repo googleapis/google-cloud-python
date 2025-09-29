@@ -1400,3 +1400,28 @@ libraries:
     remove_regex:
       - packages/google-cloud-billing-budgets
     tag_format: '{id}-v{version}'
+  - id: google-cloud-translate
+    version: 3.21.1
+    last_generated_commit: eab82ec804dfd76372ca369910ccd0766ee02e5c
+    apis:
+      - path: google/cloud/translate/v3beta1
+        service_config: translate_v3beta1.yaml
+      - path: google/cloud/translate/v3
+        service_config: translate_v3.yaml
+    source_roots:
+      - packages/google-cloud-translate
+    preserve_regex:
+      - packages/google-cloud-translate/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - docs/client.rst
+      - docs/v2.rst
+      - google/cloud/translate_v2
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/v2
+    remove_regex:
+      - packages/google-cloud-translate
+    tag_format: '{id}-v{version}'

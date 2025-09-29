@@ -94,15 +94,40 @@ replacements:
       .. toctree::
           :maxdepth: 2
 
-          translate_v2/services_
-          translate_v2/types_
+          translate_v3/services_
+          translate_v3/types_
+
+      API Reference
+      -------------
+      .. toctree::
+          :maxdepth: 2
+
+          translate_v3beta1/services_
+          translate_v3beta1/types_
+    
     after: |
       API Reference
       -------------
       .. toctree::
           :maxdepth: 2
 
+          translate_v3/services_
+          translate_v3/types_
+
+      API Reference
+      -------------
+      .. toctree::
+          :maxdepth: 2
+
           v2
+
+      API Reference
+      -------------
+      .. toctree::
+          :maxdepth: 2
+
+          translate_v3beta1/services_
+          translate_v3beta1/types_
     count: 1
   - paths: [
       packages/google-cloud-speech/google/cloud/speech_v1/__init__.py,
