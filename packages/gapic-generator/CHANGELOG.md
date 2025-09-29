@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.27.1](https://github.com/googleapis/gapic-generator-python/compare/v1.27.0...v1.27.1) (2025-09-26)
+
+
+### Bug Fixes
+
+* Add testing for Python 3.14 Pre-release ([7f7d50e](https://github.com/googleapis/gapic-generator-python/commit/7f7d50e3154d548e8066d251b85a589afbf183d7))
+
 ## [1.27.0](https://github.com/googleapis/gapic-generator-python/compare/v1.26.2...v1.27.0) (2025-09-24)
 
 
