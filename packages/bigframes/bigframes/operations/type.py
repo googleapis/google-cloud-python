@@ -204,7 +204,7 @@ class Logical(BinaryTypeSignature):
             raise TypeError(f"Type {right_type} is not binary")
         if left_type != right_type:
             raise TypeError(
-                "Bitwise operands {left_type} and {right_type} do not match"
+                f"Bitwise operands {left_type} and {right_type} do not match"
             )
         return left_type
 
@@ -222,7 +222,7 @@ class VectorMetric(BinaryTypeSignature):
             raise TypeError(f"Type {right_type} is not array-like")
         if left_type != right_type:
             raise TypeError(
-                "Vector op operands {left_type} and {right_type} do not match"
+                f"Vector op operands {left_type} and {right_type} do not match"
             )
         return bigframes.dtypes.FLOAT_DTYPE
 

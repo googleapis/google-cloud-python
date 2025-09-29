@@ -17,6 +17,7 @@ from bigframes.core.compile.sqlglot.compiler import SQLGlotCompiler
 import bigframes.core.compile.sqlglot.expressions.ai_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.array_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.blob_ops  # noqa: F401
+import bigframes.core.compile.sqlglot.expressions.bool_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.comparison_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.date_ops  # noqa: F401
 import bigframes.core.compile.sqlglot.expressions.datetime_ops  # noqa: F401
