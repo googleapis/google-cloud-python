@@ -330,23 +330,6 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
     os.makedirs(
         f"{output}/{path_to_library}/scripts/client-post-processing", exist_ok=True
     )
-    # TODO(https://github.com/googleapis/synthtool/pull/2126): Remove once this PR is merged
-    # This is needed to avoid the following error for proto-only libraries
-    # Traceback (most recent call last):
-    # File "/app/./cli.py", line 535, in handle_generate
-    #     _run_post_processor(output, library_id)
-    # File "/app/./cli.py", line 300, in _run_post_processor
-    #     python_mono_repo.owlbot_main(path_to_library)
-    # File "/usr/local/lib/python3.9/site-packages/synthtool/languages/python_mono_repo.py", line 310, in owlbot_main
-    #     create_symlink_docs_readme(package_dir)
-    # File "/usr/local/lib/python3.9/site-packages/synthtool/languages/python_mono_repo.py", line 102, in create_symlink_docs_readme
-    #     create_symlink_in_docs_dir(package_dir, "README.rst")
-    # File "/usr/local/lib/python3.9/site-packages/synthtool/languages/python_mono_repo.py", line 82, in create_symlink_in_docs_dir
-    #     os.chdir(f"{package_dir}/docs")
-    # FileNotFoundError: [Errno 2] No such file or directory: 'packages/google-cloud-access-context-manager/docs'
-    os.makedirs(
-        f"{output}/{path_to_library}/docs", exist_ok=True
-    )
     # TODO(https://github.com/googleapis/librarian/issues/2334):
     # if `.repo-metadata.json` for a library exists in
     # `.librarian/generator-input`, then we override the generated `.repo-metadata.json`
