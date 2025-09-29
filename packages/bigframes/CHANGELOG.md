@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.23.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.22.0...v2.23.0) (2025-09-29)
+
+
+### Features
+
+* Add ai.generate_double to bigframes.bigquery package ([#2111](https://github.com/googleapis/python-bigquery-dataframes/issues/2111)) ([6b8154c](https://github.com/googleapis/python-bigquery-dataframes/commit/6b8154c578bb1a276e9cf8fe494d91f8cd6260f2))
+
+
+### Bug Fixes
+
+* Prevent invalid syntax for no-op .replace ops ([#2112](https://github.com/googleapis/python-bigquery-dataframes/issues/2112)) ([c311876](https://github.com/googleapis/python-bigquery-dataframes/commit/c311876b2adbc0b66ae5e463c6e56466c6a6a495))
+
+
+### Documentation
+
+* Add timedelta notebook sample ([#2124](https://github.com/googleapis/python-bigquery-dataframes/issues/2124)) ([d1a9888](https://github.com/googleapis/python-bigquery-dataframes/commit/d1a9888a2b47de6aca5dddc94d0c8f280344b58a))
+
 ## [2.22.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.21.0...v2.22.0) (2025-09-25)
 
 
