@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.41.0](https://github.com/googleapis/google-auth-library-python/compare/v2.40.3...v2.41.0) (2025-09-29)
+
+
+### Features
+
+* Add support for cachetools 6.0 ([#1773](https://github.com/googleapis/google-auth-library-python/issues/1773)) ([af18060](https://github.com/googleapis/google-auth-library-python/commit/af18060d521baf86c219d66a26631decb3b28e79))
+* Add trust boundary support for service accounts and impersonation. ([#1778](https://github.com/googleapis/google-auth-library-python/issues/1778)) ([99be2ce](https://github.com/googleapis/google-auth-library-python/commit/99be2ce19401296718f880c7a80cd2e841df78bf))
+
+
+### Bug Fixes
+
+* Deprecating [load_credentials_from_dict](https://googleapis.dev/python/google-auth/latest/reference/google.auth.html#google.auth.load_credentials_from_dict) ([58b66ec](https://github.com/googleapis/google-auth-library-python/commit/58b66ec8069bfe5304c7da512fe89a8e838ce1ca))
+* Deprecating [load_credentials_from_file](https://googleapis.dev/python/google-auth/latest/reference/google.auth.html#google.auth.load_credentials_from_file) ([58b66ec](https://github.com/googleapis/google-auth-library-python/commit/58b66ec8069bfe5304c7da512fe89a8e838ce1ca))
+* Fix type error in credentials.py for python 3.7 and 3.8 ([#1805](https://github.com/googleapis/google-auth-library-python/issues/1805)) ([c30a6a7](https://github.com/googleapis/google-auth-library-python/commit/c30a6a781d3e385598a0ac28a370a7f4800010cc))
+
+
+### Documentation
+
+* Update user guide to include x509 feature. ([#1802](https://github.com/googleapis/google-auth-library-python/issues/1802)) ([2d89ab4](https://github.com/googleapis/google-auth-library-python/commit/2d89ab4d85568564e1f462f5b463991ffd9b82b1))
+
 ## [2.40.3](https://github.com/googleapis/google-auth-library-python/compare/v2.40.2...v2.40.3) (2025-06-04)
 
 
