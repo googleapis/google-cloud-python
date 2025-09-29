@@ -41,6 +41,7 @@ packages_to_onboard: [
   "google-cloud-artifact-registry",
   "google-cloud-asset",
   "google-cloud-assured-workloads",
+  "google-cloud-audit-log",
   "google-cloud-automl",
   "google-cloud-backupdr",
   "google-cloud-bare-metal-solution",
