@@ -1213,4 +1213,190 @@ libraries:
     remove_regex:
       - ^packages/google-cloud-audit-log/google/.*/.*_pb2\.(?:py|pyi)$
     tag_format: '{id}-v{version}'
-  
+  - id: google-cloud-bigquery-biglake
+    version: 0.4.15
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/bigquery/biglake/v1alpha1
+      - path: google/cloud/bigquery/biglake/v1
+    source_roots:
+      - packages/google-cloud-bigquery-biglake
+    preserve_regex:
+      - packages/google-cloud-bigquery-biglake/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-bigquery-biglake
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-bigquery-connection
+    version: 1.18.3
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/bigquery/connection/v1
+    source_roots:
+      - packages/google-cloud-bigquery-connection
+    preserve_regex:
+      - packages/google-cloud-bigquery-connection/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-bigquery-connection
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-bigquery-data-exchange
+    version: 0.5.20
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/bigquery/dataexchange/v1beta1
+    source_roots:
+      - packages/google-cloud-bigquery-data-exchange
+    preserve_regex:
+      - packages/google-cloud-bigquery-data-exchange/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-bigquery-data-exchange
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-bigquery-datapolicies
+    version: 0.6.16
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/bigquery/datapolicies/v2beta1
+      - path: google/cloud/bigquery/datapolicies/v2
+      - path: google/cloud/bigquery/datapolicies/v1beta1
+      - path: google/cloud/bigquery/datapolicies/v1
+    source_roots:
+      - packages/google-cloud-bigquery-datapolicies
+    preserve_regex:
+      - packages/google-cloud-bigquery-datapolicies/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-bigquery-datapolicies
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-bigquery-datatransfer
+    version: 3.19.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/bigquery/datatransfer/v1
+    source_roots:
+      - packages/google-cloud-bigquery-datatransfer
+    preserve_regex:
+      - packages/google-cloud-bigquery-datatransfer/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-bigquery-datatransfer
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-bigquery-logging
+    version: 1.6.3
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/bigquery/logging/v1
+    source_roots:
+      - packages/google-cloud-bigquery-logging
+    preserve_regex:
+      - packages/google-cloud-bigquery-logging/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/gapic/bigquery_logging_v1/test_bigquery_logging_v1.py
+    remove_regex:
+      - packages/google-cloud-bigquery-logging
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-bigquery-migration
+    version: 0.11.15
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/bigquery/migration/v2alpha
+      - path: google/cloud/bigquery/migration/v2
+    source_roots:
+      - packages/google-cloud-bigquery-migration
+    preserve_regex:
+      - packages/google-cloud-bigquery-migration/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-bigquery-migration
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-bigquery-reservation
+    version: 1.19.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/bigquery/reservation/v1
+    source_roots:
+      - packages/google-cloud-bigquery-reservation
+    preserve_regex:
+      - packages/google-cloud-bigquery-reservation/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-bigquery-reservation
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-billing
+    version: 1.16.3
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/billing/v1
+    source_roots:
+      - packages/google-cloud-billing
+    preserve_regex:
+      - packages/google-cloud-billing/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-billing
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-billing-budgets
+    version: 1.17.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/billing/budgets/v1
+      - path: google/cloud/billing/budgets/v1beta1
+    source_roots:
+      - packages/google-cloud-billing-budgets
+    preserve_regex:
+      - packages/google-cloud-billing-budgets/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-billing-budgets
+    tag_format: '{id}-v{version}'
