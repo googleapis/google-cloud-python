@@ -1213,3 +1213,4 @@ libraries:
     remove_regex:
       - ^packages/google-cloud-audit-log/google/.*/.*_pb2\.(?:py|pyi)$
     tag_format: '{id}-v{version}'
+  
