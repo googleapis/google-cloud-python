@@ -300,6 +300,13 @@ def _run_post_processor(output: str, library_id: str):
         python_mono_repo.owlbot_main(path_to_library)
     else:
         raise SYNTHTOOL_IMPORT_ERROR  # pragma: NO COVER
+
+    # If there is no noxfile, run `isort`` and `black` on the output.
+    # This is required for proto-only libraries which are not GAPIC.
+    if not Path(f"{output}/{path_to_library}/noxfile.py").exists():
+        subprocess.run(["isort", output])
+        subprocess.run(["black", output])
+
     logger.info("Python post-processor ran successfully.")
 
 
@@ -541,7 +548,7 @@ def _read_bazel_build_py_rule(api_path: str, source: str) -> Dict:
         source (str): Path to the directory containing API protos.
 
     Returns:
-        Dict: A dictionary containing the parsed attributes of the `_py_gapic` rule.
+        Dict: A dictionary containing the parsed attributes of the `_py_gapic` rule, if found.
     """
     build_file_path = f"{source}/{api_path}/BUILD.bazel"
     content = _read_text_file(build_file_path)
@@ -549,8 +556,11 @@ def _read_bazel_build_py_rule(api_path: str, source: str) -> Dict:
     result = parse_googleapis_content.parse_content(content)
     py_gapic_entries = [key for key in result.keys() if key.endswith("_py_gapic")]
 
-    # Assuming only one _py_gapic rule per BUILD file for a given language
-    return result[py_gapic_entries[0]]
+    # Assuming at most one _py_gapic rule per BUILD file for a given language
+    if len(py_gapic_entries) > 0:
+        return result[py_gapic_entries[0]]
+    else:
+        return {}
 
 
 def _get_api_generator_options(
@@ -598,6 +608,26 @@ def _get_api_generator_options(
     return generator_options
 
 
+def _construct_protoc_command(api_path: str, tmp_dir: str) -> str:
+    """
+    Constructs the full protoc command string.
+
+    Args:
+        api_path (str): The relative path to the API directory.
+        tmp_dir (str): The temporary directory for protoc output.
+
+    Returns:
+        str: The complete protoc command string suitable for shell execution.
+    """
+    command_parts = [
+        f"protoc {api_path}/*.proto",
+        f"--python_out={tmp_dir}",
+        f"--pyi_out={tmp_dir}",
+    ]
+
+    return " ".join(command_parts)
+
+
 def _determine_generator_command(
     api_path: str, tmp_dir: str, generator_options: List[str]
 ) -> str:
@@ -626,7 +656,7 @@ def _determine_generator_command(
     return " ".join(command_parts)
 
 
-def _run_generator_command(generator_command: str, source: str):
+def _run_protoc_command(generator_command: str, source: str):
     """
     Executes the protoc generation command using subprocess.
 
@@ -645,6 +675,75 @@ def _run_generator_command(generator_command: str, source: str):
     )
 
 
+def _get_staging_child_directory(api_path: str, is_proto_only_library: bool) -> str:
+    """
+    Determines the correct sub-path within 'owl-bot-staging' for the generated code.
+
+    For proto-only libraries, the structure is usually just the proto directory,
+    e.g., 'thing-py/google/thing'.
+    For GAPIC libraries, it's typically the version segment, e.g., 'v1'.
+
+    Args:
+        api_path (str): The relative path to the API directory (e.g., 'google/cloud/language/v1').
+        is_proto_only_library(bool): True, if this is a proto-only library.
+
+    Returns:
+        str: The sub-directory name to use for staging.
+    """
+
+    version_candidate = api_path.split("/")[-1]
+    if version_candidate.startswith("v") and not is_proto_only_library:
+        return version_candidate
+    else:
+        # Fallback for non-'v' version segment
+        return f"{os.path.basename(api_path)}-py/{api_path}"
+
+
+def _stage_proto_only_library(
+    api_path: str, source_dir: str, tmp_dir: str, staging_dir: str
+) -> None:
+    """
+    Handles staging for proto-only libraries (e.g., common protos).
+
+    This involves copying the generated python files and the original proto files.
+
+    Args:
+        api_path (str): The relative path to the API directory.
+        source_dir (str): Path to the directory containing API protos.
+        tmp_dir (str): The temporary directory where protoc output was placed.
+        staging_dir (str): The final destination for the staged code.
+    """
+    # 1. Copy the generated Python files (e.g., *_pb2.py) from the protoc output
+    # The generated Python files are placed under a directory corresponding to `api_path`
+    # inside the temporary directory, since the protoc command ran with `api_path`
+    # specified.
+    shutil.copytree(f"{tmp_dir}/{api_path}", staging_dir, dirs_exist_ok=True)
+
+    # 2. Copy the original proto files to the staging directory
+    # This is typically done for proto-only libraries so that the protos are included
+    # in the distributed package.
+    proto_glob_path = f"{source_dir}/{api_path}/*.proto"
+    for proto_file in glob.glob(proto_glob_path):
+        # The glob is expected to find the file inside the source_dir.
+        # We copy only the filename to the target staging directory.
+        shutil.copyfile(proto_file, f"{staging_dir}/{os.path.basename(proto_file)}")
+
+
+def _stage_gapic_library(tmp_dir: str, staging_dir: str) -> None:
+    """
+    Handles staging for GAPIC client libraries.
+
+    This involves copying all contents from the temporary output directory.
+
+    Args:
+        tmp_dir (str): The temporary directory where protoc/GAPIC generator output was placed.
+        staging_dir (str): The final destination for the staged code.
+    """
+    # For GAPIC, the generator output is flat in `tmp_dir` and includes all
+    # necessary files like setup.py, client library, etc.
+    shutil.copytree(tmp_dir, staging_dir)
+
+
 def _generate_api(
     api_path: str, library_id: str, source: str, output: str, gapic_version: str
 ):
@@ -660,18 +759,32 @@ def _generate_api(
             in a format which follows PEP-440.
     """
     py_gapic_config = _read_bazel_build_py_rule(api_path, source)
-    generator_options = _get_api_generator_options(
-        api_path, py_gapic_config, gapic_version=gapic_version
-    )
+    is_proto_only_library = len(py_gapic_config) == 0
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        generator_command = _determine_generator_command(
-            api_path, tmp_dir, generator_options
+        # 1. Determine the command for code generation
+        if is_proto_only_library:
+            command = _construct_protoc_command(api_path, tmp_dir)
+        else:
+            generator_options = _get_api_generator_options(
+                api_path, py_gapic_config, gapic_version=gapic_version
+            )
+            command = _determine_generator_command(api_path, tmp_dir, generator_options)
+
+        # 2. Execute the code generation command
+        _run_protoc_command(command, source)
+
+        # 3. Determine staging location
+        staging_child_directory = _get_staging_child_directory(api_path, is_proto_only_library)
+        staging_dir = os.path.join(
+            output, "owl-bot-staging", library_id, staging_child_directory
         )
-        _run_generator_command(generator_command, source)
-        api_version = api_path.split("/")[-1]
-        staging_dir = os.path.join(output, "owl-bot-staging", library_id, api_version)
-        shutil.copytree(tmp_dir, staging_dir)
+
+        # 4. Stage the generated code
+        if is_proto_only_library:
+            _stage_proto_only_library(api_path, source, tmp_dir, staging_dir)
+        else:
+            _stage_gapic_library(tmp_dir, staging_dir)
 
 
 def _run_nox_sessions(library_id: str, repo: str):
