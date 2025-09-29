@@ -1188,3 +1188,17 @@ libraries:
     remove_regex:
       - packages/google-cloud-webrisk
     tag_format: '{id}-v{version}'
+  - id: google-cloud-access-context-manager
+    version: 0.2.2
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    apis:
+      - path: google/identity/accesscontextmanager/v1
+        service_config: accesscontextmanager_v1.yaml
+      - path: google/identity/accesscontextmanager/type
+        service_config: ""
+    source_roots:
+      - packages/google-cloud-access-context-manager
+    preserve_regex: []
+    remove_regex:
+      - ^packages/google-cloud-access-context-manager/google/.*/.*_pb2\.(?:py|pyi)$
+    tag_format: '{id}-v{version}'
