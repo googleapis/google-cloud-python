@@ -986,3 +986,25 @@ libraries:
     remove_regex:
       - packages/google-cloud-bigquery-analyticshub
     tag_format: '{id}-v{version}'
+  - id: googleapis-common-protos
+    version: 1.70.0
+    last_generated_commit: 31b413bc4feb03f6849c718048c2b9998561b5fa
+    apis:
+      - path: google/api
+        service_config: serviceconfig.yaml
+      - path: google/cloud/location
+        service_config: cloud.yaml
+      - path: google/logging/type
+        service_config: ""
+      - path: google/rpc
+        service_config: rpc_publish.yaml
+      - path: google/rpc/context
+        service_config: ""
+      - path: google/type
+        service_config: type.yaml
+    source_roots:
+      - packages/googleapis-common-protos
+    preserve_regex: []
+    remove_regex:
+      - ^packages/googleapis-common-protos/google/(?:api|cloud|rpc|type)/.*/.*_pb2\.(?:py|pyi)$
+    tag_format: '{id}-v{version}'
