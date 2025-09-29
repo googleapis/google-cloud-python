@@ -15,6 +15,7 @@
 import pytest
 from unittest import mock
 from unittest.mock import AsyncMock
+from google.cloud import _storage_v2
 
 from google.cloud.storage._experimental.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
@@ -28,52 +29,134 @@ _TEST_GENERATION_NUMBER = 123456789
 _TEST_READ_HANDLE = b"test-handle"
 
 
-@mock.patch(
-    "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
-)
-@mock.patch(
-    "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
-)
-@pytest.mark.asyncio
-async def test_create_mrd(mock_async_grpc_client, async_read_object_stream):
-    # Arrange
-    mock_stream_instance = async_read_object_stream.return_value
-    mock_stream_instance.open = AsyncMock()
-    mock_stream_instance.generation_number = _TEST_GENERATION_NUMBER
-    mock_stream_instance.read_handle = _TEST_READ_HANDLE
-
-    # act
-    mrd = await AsyncMultiRangeDownloader.create_mrd(
-        mock_async_grpc_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
-    )
-
-    # Assert
-    async_read_object_stream.assert_called_once_with(
-        client=mock_async_grpc_client,
+class TestAsyncMultiRangeDownloader:
+    # helper method
+    @pytest.mark.asyncio
+    async def _make_mock_mrd(
+        self,
+        mock_grpc_client,
+        mock_cls_async_read_object_stream,
         bucket_name=_TEST_BUCKET_NAME,
         object_name=_TEST_OBJECT_NAME,
-        generation_number=None,
-        read_handle=None,
+        generation_number=_TEST_GENERATION_NUMBER,
+        read_handle=_TEST_READ_HANDLE,
+    ):
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.open = AsyncMock()
+        mock_stream.generation_number = _TEST_GENERATION_NUMBER
+        mock_stream.read_handle = _TEST_READ_HANDLE
+
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            mock_grpc_client, bucket_name, object_name, generation_number, read_handle
+        )
+
+        return mrd
+
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
-    mock_stream_instance.open.assert_called_once()
-
-    assert mrd.client == mock_async_grpc_client
-    assert mrd.bucket_name == _TEST_BUCKET_NAME
-    assert mrd.object_name == _TEST_OBJECT_NAME
-    assert mrd.generation_number == _TEST_GENERATION_NUMBER
-    assert mrd.read_handle == _TEST_READ_HANDLE
-    assert mrd.read_obj_str is mock_stream_instance
-
-
-@mock.patch(
-    "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
-)
-@pytest.mark.asyncio
-async def test_download_ranges(mock_async_grpc_client):
-    """Test that download_ranges() raises NotImplementedError."""
-    mrd = AsyncMultiRangeDownloader(
-        mock_async_grpc_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
     )
+    @pytest.mark.asyncio
+    async def test_create_mrd(
+        self, mock_grpc_client, mock_cls_async_read_object_stream
+    ):
+        # Arrange & Act
+        mrd = await self._make_mock_mrd(
+            mock_grpc_client, mock_cls_async_read_object_stream
+        )
 
-    with pytest.raises(NotImplementedError):
-        await mrd.download_ranges([(0, 100, BytesIO())])
+        # Assert
+        mock_cls_async_read_object_stream.assert_called_once_with(
+            client=mock_grpc_client,
+            bucket_name=_TEST_BUCKET_NAME,
+            object_name=_TEST_OBJECT_NAME,
+            generation_number=_TEST_GENERATION_NUMBER,
+            read_handle=_TEST_READ_HANDLE,
+        )
+
+        mrd.read_obj_str.open.assert_called_once()
+
+        assert mrd.client == mock_grpc_client
+        assert mrd.bucket_name == _TEST_BUCKET_NAME
+        assert mrd.object_name == _TEST_OBJECT_NAME
+        assert mrd.generation_number == _TEST_GENERATION_NUMBER
+        assert mrd.read_handle == _TEST_READ_HANDLE
+
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges(
+        self, mock_grpc_client, mock_cls_async_read_object_stream
+    ):
+        # Arrange
+        mock_mrd = await self._make_mock_mrd(
+            mock_grpc_client, mock_cls_async_read_object_stream
+        )
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock()
+        mock_mrd.read_obj_str.recv.return_value = _storage_v2.BidiReadObjectResponse(
+            object_data_ranges=[
+                _storage_v2.ObjectRangeData(
+                    checksummed_data=_storage_v2.ChecksummedData(
+                        content=b"these_are_18_chars", crc32c=123
+                    ),
+                    range_end=True,
+                    read_range=_storage_v2.ReadRange(
+                        read_offset=0, read_length=18, read_id=0
+                    ),
+                )
+            ],
+        )
+
+        # Act
+        buffer = BytesIO()
+        results = await mock_mrd.download_ranges([(0, 18, buffer)])
+
+        # Assert
+        mock_mrd.read_obj_str.send.assert_called_once_with(
+            _storage_v2.BidiReadObjectRequest(
+                read_ranges=[
+                    _storage_v2.ReadRange(read_offset=0, read_length=18, read_id=0)
+                ]
+            )
+        )
+        assert len(results) == 1
+        assert results[0].bytes_requested == 18
+        assert results[0].bytes_written == 18
+        assert buffer.getvalue() == b"these_are_18_chars"
+
+    def create_read_ranges(self, num_ranges):
+        ranges = []
+        for i in range(num_ranges):
+            ranges.append(
+                _storage_v2.ReadRange(read_offset=i, read_length=1, read_id=i)
+            )
+        return ranges
+
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+    )
+    @pytest.mark.asyncio
+    async def test_downloading_ranges_with_more_than_1000_should_throw_error(
+        self, mock_grpc_client
+    ):
+        # Arrange
+        mrd = AsyncMultiRangeDownloader(
+            mock_grpc_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+
+        # Act + Assert
+        with pytest.raises(ValueError) as exc:
+            await mrd.download_ranges(self.create_read_ranges(1001))
+
+        # Assert
+        assert (
+            str(exc.value)
+            == "Invalid input - length of read_ranges cannot be more than 1000"
+        )
