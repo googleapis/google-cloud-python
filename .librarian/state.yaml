@@ -1059,6 +1059,7 @@ libraries:
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
+      - snippets/README.md
       - tests/system
     remove_regex:
       - packages/google-cloud-tasks
@@ -1078,6 +1079,7 @@ libraries:
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
+      - snippets/README.md
       - tests/system
     remove_regex:
       - packages/google-cloud-telcoautomation
@@ -1157,10 +1159,13 @@ libraries:
       - packages/google-cloud-vision/CHANGELOG.md
       - docs/CHANGELOG.md
       - docs/README.rst
+      - google/cloud/vision_helpers
       - samples/README.txt
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
+      - tests/unit/test_decorators.py
+      - tests/unit/tests_helpers.py
     remove_regex:
       - packages/google-cloud-vision
     tag_format: '{id}-v{version}'
