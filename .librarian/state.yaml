@@ -1007,4 +1007,179 @@ libraries:
     preserve_regex: []
     remove_regex:
       - ^packages/googleapis-common-protos/google/(?:api|cloud|rpc|type)/.*/.*_pb2\.(?:py|pyi)$
+  - id: google-cloud-storagebatchoperations
+    version: 0.1.3
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/storagebatchoperations/v1
+    source_roots:
+      - packages/google-cloud-storagebatchoperations
+    preserve_regex:
+      - packages/google-cloud-storagebatchoperations/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-storagebatchoperations
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-storageinsights
+    version: 0.1.16
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/storageinsights/v1
+    source_roots:
+      - packages/google-cloud-storageinsights
+    preserve_regex:
+      - packages/google-cloud-storageinsights/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-storageinsights
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-tasks
+    version: 2.19.3
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/tasks/v2beta2
+      - path: google/cloud/tasks/v2beta3
+      - path: google/cloud/tasks/v2
+    source_roots:
+      - packages/google-cloud-tasks
+    preserve_regex:
+      - packages/google-cloud-tasks/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-tasks
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-telcoautomation
+    version: 0.2.11
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/telcoautomation/v1
+      - path: google/cloud/telcoautomation/v1alpha1
+    source_roots:
+      - packages/google-cloud-telcoautomation
+    preserve_regex:
+      - packages/google-cloud-telcoautomation/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-telcoautomation
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-texttospeech
+    version: 2.31.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/texttospeech/v1
+      - path: google/cloud/texttospeech/v1beta1
+    source_roots:
+      - packages/google-cloud-texttospeech
+    preserve_regex:
+      - packages/google-cloud-texttospeech/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-texttospeech
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-trace
+    version: 1.16.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/devtools/cloudtrace/v2
+      - path: google/devtools/cloudtrace/v1
+    source_roots:
+      - packages/google-cloud-trace
+    preserve_regex:
+      - packages/google-cloud-trace/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-trace
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-videointelligence
+    version: 2.16.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/videointelligence/v1p3beta1
+      - path: google/cloud/videointelligence/v1
+      - path: google/cloud/videointelligence/v1p2beta1
+      - path: google/cloud/videointelligence/v1p1beta1
+      - path: google/cloud/videointelligence/v1beta2
+    source_roots:
+      - packages/google-cloud-videointelligence
+    preserve_regex:
+      - packages/google-cloud-videointelligence/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-videointelligence
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-vision
+    version: 3.10.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/vision/v1p3beta1
+      - path: google/cloud/vision/v1
+      - path: google/cloud/vision/v1p1beta1
+      - path: google/cloud/vision/v1p2beta1
+      - path: google/cloud/vision/v1p4beta1
+    source_roots:
+      - packages/google-cloud-vision
+    preserve_regex:
+      - packages/google-cloud-vision/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-vision
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-webrisk
+    version: 1.18.1
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/webrisk/v1beta1
+      - path: google/cloud/webrisk/v1
+    source_roots:
+      - packages/google-cloud-webrisk
+    preserve_regex:
+      - packages/google-cloud-webrisk/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-webrisk
     tag_format: '{id}-v{version}'
