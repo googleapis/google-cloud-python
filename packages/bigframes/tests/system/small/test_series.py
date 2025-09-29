@@ -733,10 +733,12 @@ def test_series_replace_nans_with_pd_na(scalars_dfs):
     (
         ({"Hello, World!": "Howdy, Planet!", "T": "R"},),
         ({},),
+        ({0: "Hello, World!"},),
     ),
     ids=[
         "non-empty",
         "empty",
+        "off-type",
     ],
 )
 def test_series_replace_dict(scalars_dfs, replacement_dict):

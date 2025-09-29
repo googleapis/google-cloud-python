@@ -1173,6 +1173,10 @@ def nary_remote_function_op_impl(
 
 @scalar_op_compiler.register_unary_op(ops.MapOp, pass_op=True)
 def map_op_impl(x: ibis_types.Value, op: ops.MapOp):
+    # this should probably be handled by a rewriter
+    if len(op.mappings) == 0:
+        return x
+
     case = ibis_api.case()
     for mapping in op.mappings:
         case = case.when(x == mapping[0], mapping[1])

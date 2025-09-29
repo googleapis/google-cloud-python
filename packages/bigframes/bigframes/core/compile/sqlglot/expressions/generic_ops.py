@@ -78,6 +78,8 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_unary_op(ops.MapOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.MapOp) -> sge.Expression:
+    if len(op.mappings) == 0:
+        return expr.expr
     return sge.Case(
         this=expr.expr,
         ifs=[
