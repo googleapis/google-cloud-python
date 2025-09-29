@@ -253,7 +253,15 @@ def _parse_token_data(token_content, format_type="text", subject_token_field_nam
 
 
 class Credentials(external_account.Credentials):
-    """External account credentials sourced from files and URLs."""
+    """External account credentials sourced from files and URLs.
+
+    **IMPORTANT**:
+    This class does not validate the credential configuration. A security
+    risk occurs when a credential configuration configured with malicious urls
+    is used.
+    When the credential configuration is accepted from an
+    untrusted source, you should validate it before using.
+    Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details."""
 
     def __init__(
         self,
@@ -497,6 +505,14 @@ class Credentials(external_account.Credentials):
     def from_info(cls, info, **kwargs):
         """Creates an Identity Pool Credentials instance from parsed external account info.
 
+        **IMPORTANT**:
+        This method does not validate the credential configuration. A security
+        risk occurs when a credential configuration configured with malicious urls
+        is used.
+        When the credential configuration is accepted from an
+        untrusted source, you should validate it before using with this method.
+        Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details.
+
         Args:
             info (Mapping[str, str]): The Identity Pool external account info in Google
                 format.
@@ -516,6 +532,14 @@ class Credentials(external_account.Credentials):
     @classmethod
     def from_file(cls, filename, **kwargs):
         """Creates an IdentityPool Credentials instance from an external account json file.
+
+        **IMPORTANT**:
+        This method does not validate the credential configuration. A security
+        risk occurs when a credential configuration configured with malicious urls
+        is used.
+        When the credential configuration is accepted from an
+        untrusted source, you should validate it before using with this method.
+        Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details.
 
         Args:
             filename (str): The path to the IdentityPool external account json file.

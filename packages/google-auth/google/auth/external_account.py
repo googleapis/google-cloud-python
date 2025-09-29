@@ -89,7 +89,14 @@ class Credentials(
     credentials for Google access token and authorizing requests to Google APIs.
     The base class implements the common logic for exchanging external account
     credentials for Google access tokens.
-    """
+
+    **IMPORTANT**:
+    This class does not validate the credential configuration. A security
+    risk occurs when a credential configuration configured with malicious urls
+    is used.
+    When the credential configuration is accepted from an
+    untrusted source, you should validate it before using.
+    Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details."""
 
     def __init__(
         self,
@@ -576,6 +583,14 @@ class Credentials(
     def from_info(cls, info, **kwargs):
         """Creates a Credentials instance from parsed external account info.
 
+        **IMPORTANT**:
+        This method does not validate the credential configuration. A security
+        risk occurs when a credential configuration configured with malicious urls
+        is used.
+        When the credential configuration is accepted from an
+        untrusted source, you should validate it before using with this method.
+        Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details.
+
         Args:
             info (Mapping[str, str]): The external account info in Google
                 format.
@@ -614,6 +629,14 @@ class Credentials(
     @classmethod
     def from_file(cls, filename, **kwargs):
         """Creates a Credentials instance from an external account json file.
+
+        **IMPORTANT**:
+        This method does not validate the credential configuration. A security
+        risk occurs when a credential configuration configured with malicious urls
+        is used.
+        When the credential configuration is accepted from an
+        untrusted source, you should validate it before using with this method.
+        Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details.
 
         Args:
             filename (str): The path to the external account json file.

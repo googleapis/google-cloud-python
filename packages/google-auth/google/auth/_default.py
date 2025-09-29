@@ -59,6 +59,38 @@ or "API not enabled" error. See the following page for troubleshooting: \
 https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds. \
 """
 
+_GENERIC_LOAD_METHOD_WARNING = """\
+The {} method is deprecated because of a potential security risk.
+
+This method does not validate the credential configuration. The security
+risk occurs when a credential configuration is accepted from a source that
+is not under your control and used without validation on your side.
+
+If you know that you will be loading credential configurations of a
+specific type, it is recommended to use a credential-type-specific
+load method.
+This will ensure that an unexpected credential type with potential for
+malicious intent is not loaded unintentionally. You might still have to do
+validation for certain credential types. Please follow the recommendations
+for that method. For example, if you want to load only service accounts,
+you can create the service account credentials explicitly:
+
+```
+from google.oauth2 import service_account
+creds = service_account.Credentials.from_service_account_file(filename)
+```
+
+If you are loading your credential configuration from an untrusted source and have
+not mitigated the risks (e.g. by validating the configuration yourself), make
+these changes as soon as possible to prevent security risks to your environment.
+
+Regardless of the method used, it is always your responsibility to validate
+configurations received from external sources.
+
+Refer to https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
+for more details.
+"""
+
 # The subject token type used for AWS external_account credentials.
 _AWS_SUBJECT_TOKEN_TYPE = "urn:ietf:params:aws:token-type:aws4_request"
 
@@ -74,6 +106,20 @@ def _warn_about_problematic_credentials(credentials):
 
     if credentials.client_id == _cloud_sdk.CLOUD_SDK_CLIENT_ID:
         warnings.warn(_CLOUD_SDK_CREDENTIALS_WARNING)
+
+
+def _warn_about_generic_load_method(method_name):  # pragma: NO COVER
+    """Warns that a generic load method is being used.
+
+    This is to discourage use of the generic load methods in favor of
+    more specific methods. The generic methods are more likely to lead to
+    security issues if the input is not validated.
+
+    Args:
+        method_name (str): The name of the method being used.
+    """
+
+    warnings.warn(_GENERIC_LOAD_METHOD_WARNING.format(method_name), DeprecationWarning)
 
 
 def load_credentials_from_file(
@@ -121,6 +167,8 @@ def load_credentials_from_file(
         google.auth.exceptions.DefaultCredentialsError: if the file is in the
             wrong format or is missing.
     """
+    _warn_about_generic_load_method("load_credentials_from_file")
+
     if not os.path.exists(filename):
         raise exceptions.DefaultCredentialsError(
             "File {} was not found.".format(filename)
@@ -184,6 +232,7 @@ def load_credentials_from_dict(
         google.auth.exceptions.DefaultCredentialsError: if the file is in the
             wrong format or is missing.
     """
+    _warn_about_generic_load_method("load_credentials_from_dict")
     if not isinstance(info, dict):
         raise exceptions.DefaultCredentialsError(
             "info object was of type {} but dict type was expected.".format(type(info))
