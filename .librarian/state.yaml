@@ -1202,3 +1202,15 @@ libraries:
     remove_regex:
       - ^packages/google-cloud-access-context-manager/google/.*/.*_pb2\.(?:py|pyi)$
     tag_format: '{id}-v{version}'
+  - id: google-cloud-audit-log
+    version: 0.3.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/audit
+    source_roots:
+      - packages/google-cloud-audit-log
+    preserve_regex: []
+    remove_regex:
+      - ^packages/google-cloud-audit-log/google/.*/.*_pb2\.(?:py|pyi)$
+    tag_format: '{id}-v{version}'
+  
