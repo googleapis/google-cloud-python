@@ -86,6 +86,7 @@ def configure_state_yaml() -> None:
                         "docs/README.rst",
                         "samples/README.txt",
                         "scripts/client-post-processing",
+                        "snippets/README",
                         "samples/snippets/README.rst",
                         "tests/system",
                     ],
