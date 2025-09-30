@@ -548,3 +548,31 @@ replacements:
                   Set empty values to clear the metadata. Refer
                   to documentation in
     count: 1
+  - paths: [
+      packages/google-cloud-dataplex/google/cloud/dataplex_v1/types/business_glossary.py,
+    ]
+    before: |
+      Examples of using a filter are:
+      \            -------------------------------\n
+      \            ``immediate_parent="projects/\{project_id_or_number\}/locations/\{location_id\}/glossaries/\{glossary_id\}"``
+      \            -------------------------------------------------------------------------------------------------------\n
+      \            ``immediate_parent="projects/\{project_id_or_number\}/locations/\{location_id\}/glossaries/\{glossary_id\}/categories/\{category_id\}"``
+    after: |
+      Examples of using a filter are:\n
+                  - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"``
+                  - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}"``
+    count: 2
+  - paths: [
+      packages/google-cloud-capacityplanner/google/cloud/capacityplanner_v1beta/types/usage_service.py,
+    ]
+    before: |
+      The format[\s]+is:\n
+      \            [\s]+projects/\{project\}/locations/\{location\} or
+      \            organizations/\{organization\}/locations/\{location\}
+      \            or[\s]+folders/\{folder\}/locations/\{location\}
+    after: |
+      The format is:\n
+                  projects/{project}/locations/{location} or
+                  organizations/{organization}/locations/{location}
+                  or folders/{folder}/locations/{location}
+    count: 4
