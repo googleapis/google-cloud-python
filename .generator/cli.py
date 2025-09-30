@@ -910,7 +910,7 @@ def _verify_library_namespace(library_id: str, repo: str):
     if not library_path.is_dir():
         raise ValueError(f"Error: Path is not a directory: {library_path}")
 
-    # Use a set to store unique parent directories of relevant files
+    # Use a set to store unique parent directories of relevant directories
     relevant_dirs = set()
 
     # Find all parent directories for 'gapic_version.py' files
