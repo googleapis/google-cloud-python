@@ -424,7 +424,7 @@ def _create_repo_metadata_from_service_config(
     api_shortname = service_config.get("name", "").split(".")[0]
     documentation = service_config.get("documentation", {})
     api_description = documentation.get("summary", "")
-    issue_tracker = service_config.get(
+    issue_tracker = publishing.get(
         "new_issue_uri", "https://github.com/googleapis/google-cloud-python/issues"
     )
 
