@@ -863,7 +863,8 @@ def _determine_library_namespace(
 def _verify_library_namespace(library_id: str, repo: str):
     """
     Verifies that all found package namespaces are one of
-    `google`, `google.cloud`, or `google.ads`.
+    the hardcoded `exception_namespaces` or
+    `valid_namespaces`.
 
     Args:
         library_id (str): The library id under test (e.g., "google-cloud-language").
