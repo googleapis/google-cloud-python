@@ -11,6 +11,5 @@
     "distribution_name": "google-cloud-network-services",
     "api_id": "networkservices.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "",
     "api_shortname": "networkservices"
 }

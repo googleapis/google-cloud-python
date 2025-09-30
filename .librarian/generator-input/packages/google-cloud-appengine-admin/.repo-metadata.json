@@ -11,7 +11,6 @@
     "distribution_name": "google-cloud-appengine-admin",
     "api_id": "appengine.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "@googleapis/aap-dpes",
     "api_shortname": "appengine",
     "api_description": "allows you to manage your App Engine applications."
 }

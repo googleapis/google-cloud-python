@@ -12,6 +12,5 @@
     "distribution_name": "google-shopping-type",
     "api_id": "type.googleapis.com",
     "default_version": "apiVersion",
-    "codeowner_team": "",
     "api_shortname": "type"
 }

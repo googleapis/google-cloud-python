@@ -11,7 +11,6 @@
     "distribution_name": "google-cloud-eventarc-publishing",
     "api_id": "eventarcpublishing.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "",
     "api_shortname": "eventarcpublishing",
     "api_description": "lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes."
 }

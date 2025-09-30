@@ -13,6 +13,5 @@
     "api_id": "bigqueryconnection.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/api-bigquery",
     "api_shortname": "bigqueryconnection"
 }

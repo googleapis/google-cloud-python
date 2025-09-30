@@ -11,6 +11,5 @@
     "distribution_name": "grpc-google-iam-v1",
     "api_id": "iam.googleapis.com",
     "default_version": "apiVersion",
-    "codeowner_team": "",
     "api_shortname": "iam"
 }

@@ -11,6 +11,5 @@
     "distribution_name": "google-cloud-bigquery-logging",
     "api_id": "",
     "default_version": "v1",
-    "codeowner_team": "@googleapis/api-bigquery",
     "api_shortname": "bigquerylogging"
 }
