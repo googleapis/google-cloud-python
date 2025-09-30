@@ -1057,6 +1057,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:826068>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=826068&template=1564577>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Capacity Planner API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-capacityplanner>`_
+     - preview
+     - |PyPI-google-cloud-capacityplanner|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1194830>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1194830>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Chat API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-apps-chat>`_
      - preview
      - |PyPI-google-apps-chat|
@@ -1902,6 +1908,8 @@ Libraries
      :target: https://pypi.org/project/pandas-gbq
 .. |PyPI-google-shopping-css| image:: https://img.shields.io/pypi/v/google-shopping-css.svg
      :target: https://pypi.org/project/google-shopping-css
+.. |PyPI-google-cloud-capacityplanner| image:: https://img.shields.io/pypi/v/google-cloud-capacityplanner.svg
+     :target: https://pypi.org/project/google-cloud-capacityplanner
 .. |PyPI-google-apps-chat| image:: https://img.shields.io/pypi/v/google-apps-chat.svg
      :target: https://pypi.org/project/google-apps-chat
 .. |PyPI-google-cloud-chronicle| image:: https://img.shields.io/pypi/v/google-cloud-chronicle.svg
