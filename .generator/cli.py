@@ -872,6 +872,7 @@ def _verify_library_namespace(library_id: str, repo: str):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/14376): Update the list of namespaces which are exceptions.
     exception_namespaces = [
         "google.area120",
+        "google.api",
         "google.apps.script",
         "google.apps.script.type",
         "google.cloud.alloydb",
@@ -883,14 +884,17 @@ def _verify_library_namespace(library_id: str, repo: str):
         "google.cloud.security",
         "google.cloud.video",
         "google.cloud.workflows",
+        "google.gapic",
+        "google.logging",
         "google.monitoring",
+        "google.rpc",
     ]
     valid_namespaces = [
         "google",
-        "google.analytics",
-        "google.apps",
         "google.ads",
         "google.ai",
+        "google.analytics",
+        "google.apps",
         "google.cloud",
         "google.geo",
         "google.maps",
@@ -899,28 +903,32 @@ def _verify_library_namespace(library_id: str, repo: str):
         *exception_namespaces,
     ]
     gapic_version_file = "gapic_version.py"
+    proto_file = "*.proto"
 
-    # This is now the "package root" path we will use for comparison
     library_path = Path(f"{repo}/packages/{library_id}")
 
     if not library_path.is_dir():
         raise ValueError(f"Error: Path is not a directory: {library_path}")
 
-    # Recursively glob (rglob) for all 'gapic_version.py' files
-    all_gapic_files = list(library_path.rglob(gapic_version_file))
+    # Use a set to store unique parent directories of relevant files
+    relevant_dirs = set()
 
-    if not all_gapic_files:
+    # Find all parent directories for 'gapic_version.py' files
+    for gapic_file in library_path.rglob(gapic_version_file):
+        relevant_dirs.add(gapic_file.parent)
+
+    # Find all parent directories for '*.proto' files
+    for proto_file in library_path.rglob(proto_file):
+        relevant_dirs.add(proto_file.parent)
+
+    if not relevant_dirs:
         raise ValueError(
             f"Error: namespace cannot be determined for {library_id}."
-            f" Library is missing a `{gapic_version_file}`."
+            f" Library is missing a `{gapic_version_file}` or `{proto_file}` file."
         )
 
-    for gapic_file in all_gapic_files:
-        # The directory we want is the parent of `gapic_version.py` file.
-        gapic_parent_dir = gapic_file.parent
-
-        # Pass both the specific dir and the package root for a safe relative comparison
-        library_namespace = _determine_library_namespace(gapic_parent_dir, library_path)
+    for relevant_dir in relevant_dirs:
+        library_namespace = _determine_library_namespace(relevant_dir, library_path)
 
         if library_namespace not in valid_namespaces:
             raise ValueError(

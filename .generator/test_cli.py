@@ -1321,7 +1321,7 @@ def test_verify_library_namespace_failure_invalid(mocker, mock_path_class):
     mock_instance.rglob.return_value = [mock_file]
 
     mock_determine_ns = mocker.patch(
-        "cli._determine_library_namespace", return_value="google.api"
+        "cli._determine_library_namespace", return_value="google.apis"
     )
 
     with pytest.raises(ValueError):
