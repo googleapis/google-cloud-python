@@ -1007,6 +1007,7 @@ libraries:
     preserve_regex: []
     remove_regex:
       - ^packages/googleapis-common-protos/google/(?:api|cloud|rpc|type)/.*/.*_pb2\.(?:py|pyi)$
+    tag_format: '{id}-v{version}'
   - id: google-cloud-storagebatchoperations
     version: 0.1.3
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
