@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.41.1](https://github.com/googleapis/google-auth-library-python/compare/v2.41.0...v2.41.1) (2025-09-30)
+
+
+### Bug Fixes
+
+* Suppress deprecation warning for ADC ([#1815](https://github.com/googleapis/google-auth-library-python/issues/1815)) ([751ce3f](https://github.com/googleapis/google-auth-library-python/commit/751ce3f625eb24029e9f0c59c081bdd3e18eb583))
+
 ## [2.41.0](https://github.com/googleapis/google-auth-library-python/compare/v2.40.3...v2.41.0) (2025-09-29)
 
 
