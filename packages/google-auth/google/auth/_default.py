@@ -305,15 +305,17 @@ def _get_gcloud_sdk_credentials(quota_project_id=None):
         _LOGGER.debug("Cloud SDK credentials not found on disk; not using them")
         return None, None
 
-    credentials, project_id = load_credentials_from_file(
-        credentials_filename, quota_project_id=quota_project_id
-    )
-    credentials._cred_file_path = credentials_filename
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        credentials, project_id = load_credentials_from_file(
+            credentials_filename, quota_project_id=quota_project_id
+        )
+        credentials._cred_file_path = credentials_filename
 
-    if not project_id:
-        project_id = _cloud_sdk.get_project_id()
+        if not project_id:
+            project_id = _cloud_sdk.get_project_id()
 
-    return credentials, project_id
+        return credentials, project_id
 
 
 def _get_explicit_environ_credentials(quota_project_id=None):
@@ -339,12 +341,15 @@ def _get_explicit_environ_credentials(quota_project_id=None):
         return _get_gcloud_sdk_credentials(quota_project_id=quota_project_id)
 
     if explicit_file is not None:
-        credentials, project_id = load_credentials_from_file(
-            os.environ[environment_vars.CREDENTIALS], quota_project_id=quota_project_id
-        )
-        credentials._cred_file_path = f"{explicit_file} file via the GOOGLE_APPLICATION_CREDENTIALS environment variable"
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            credentials, project_id = load_credentials_from_file(
+                os.environ[environment_vars.CREDENTIALS],
+                quota_project_id=quota_project_id,
+            )
+            credentials._cred_file_path = f"{explicit_file} file via the GOOGLE_APPLICATION_CREDENTIALS environment variable"
 
-        return credentials, project_id
+            return credentials, project_id
 
     else:
         return None, None

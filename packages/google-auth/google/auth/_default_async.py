@@ -20,6 +20,7 @@ Implements application default credentials and project ID detection.
 import io
 import json
 import os
+import warnings
 
 from google.auth import _default
 from google.auth import environment_vars
@@ -116,14 +117,16 @@ def _get_gcloud_sdk_credentials(quota_project_id=None):
     if not os.path.isfile(credentials_filename):
         return None, None
 
-    credentials, project_id = load_credentials_from_file(
-        credentials_filename, quota_project_id=quota_project_id
-    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        credentials, project_id = load_credentials_from_file(
+            credentials_filename, quota_project_id=quota_project_id
+        )
 
-    if not project_id:
-        project_id = _cloud_sdk.get_project_id()
+        if not project_id:
+            project_id = _cloud_sdk.get_project_id()
 
-    return credentials, project_id
+        return credentials, project_id
 
 
 def _get_explicit_environ_credentials(quota_project_id=None):
@@ -141,11 +144,14 @@ def _get_explicit_environ_credentials(quota_project_id=None):
         return _get_gcloud_sdk_credentials(quota_project_id=quota_project_id)
 
     if explicit_file is not None:
-        credentials, project_id = load_credentials_from_file(
-            os.environ[environment_vars.CREDENTIALS], quota_project_id=quota_project_id
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            credentials, project_id = load_credentials_from_file(
+                os.environ[environment_vars.CREDENTIALS],
+                quota_project_id=quota_project_id,
+            )
 
-        return credentials, project_id
+            return credentials, project_id
 
     else:
         return None, None
