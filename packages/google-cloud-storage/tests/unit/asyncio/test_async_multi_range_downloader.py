@@ -30,6 +30,14 @@ _TEST_READ_HANDLE = b"test-handle"
 
 
 class TestAsyncMultiRangeDownloader:
+    def create_read_ranges(self, num_ranges):
+        ranges = []
+        for i in range(num_ranges):
+            ranges.append(
+                _storage_v2.ReadRange(read_offset=i, read_length=1, read_id=i)
+            )
+        return ranges
+
     # helper method
     @pytest.mark.asyncio
     async def _make_mock_mrd(
@@ -77,12 +85,23 @@ class TestAsyncMultiRangeDownloader:
         )
 
         mrd.read_obj_str.open.assert_called_once()
+        # Assert
+        mock_cls_async_read_object_stream.assert_called_once_with(
+            client=mock_grpc_client,
+            bucket_name=_TEST_BUCKET_NAME,
+            object_name=_TEST_OBJECT_NAME,
+            generation_number=_TEST_GENERATION_NUMBER,
+            read_handle=_TEST_READ_HANDLE,
+        )
+
+        mrd.read_obj_str.open.assert_called_once()
 
         assert mrd.client == mock_grpc_client
         assert mrd.bucket_name == _TEST_BUCKET_NAME
         assert mrd.object_name == _TEST_OBJECT_NAME
         assert mrd.generation_number == _TEST_GENERATION_NUMBER
         assert mrd.read_handle == _TEST_READ_HANDLE
+        assert mrd.is_stream_open
 
     @mock.patch(
         "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
@@ -131,14 +150,6 @@ class TestAsyncMultiRangeDownloader:
         assert results[0].bytes_written == 18
         assert buffer.getvalue() == b"these_are_18_chars"
 
-    def create_read_ranges(self, num_ranges):
-        ranges = []
-        for i in range(num_ranges):
-            ranges.append(
-                _storage_v2.ReadRange(read_offset=i, read_length=1, read_id=i)
-            )
-        return ranges
-
     @mock.patch(
         "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
     )
@@ -160,3 +171,83 @@ class TestAsyncMultiRangeDownloader:
             str(exc.value)
             == "Invalid input - length of read_ranges cannot be more than 1000"
         )
+
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+    )
+    @pytest.mark.asyncio
+    async def test_opening_mrd_more_than_once_should_throw_error(
+        self, mock_grpc_client, mock_cls_async_read_object_stream
+    ):
+        # Arrange
+        mrd = await self._make_mock_mrd(
+            mock_grpc_client, mock_cls_async_read_object_stream
+        )  # mock mrd is already opened
+
+        # Act + Assert
+        with pytest.raises(ValueError) as exc:
+            await mrd.open()
+
+        # Assert
+        assert str(exc.value) == "Underlying bidi-gRPC stream is already open"
+
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+    )
+    @pytest.mark.asyncio
+    async def test_close_mrd(self, mock_grpc_client, mock_cls_async_read_object_stream):
+        # Arrange
+        mrd = await self._make_mock_mrd(
+            mock_grpc_client, mock_cls_async_read_object_stream
+        )  # mock mrd is already opened
+        mrd.read_obj_str.close = AsyncMock()
+
+        # Act
+        await mrd.close()
+
+        # Assert
+        assert not mrd.is_stream_open
+
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+    )
+    @pytest.mark.asyncio
+    async def test_close_mrd_not_opened_should_throw_error(self, mock_grpc_client):
+        # Arrange
+        mrd = AsyncMultiRangeDownloader(
+            mock_grpc_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+
+        # Act + Assert
+        with pytest.raises(ValueError) as exc:
+            await mrd.close()
+
+        # Assert
+        assert str(exc.value) == "Underlying bidi-gRPC stream is not open"
+        assert not mrd.is_stream_open
+
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+    )
+    @pytest.mark.asyncio
+    async def test_downloading_without_opening_should_throw_error(
+        self, mock_grpc_client
+    ):
+        # Arrange
+        mrd = AsyncMultiRangeDownloader(
+            mock_grpc_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+
+        # Act + Assert
+        with pytest.raises(ValueError) as exc:
+            await mrd.download_ranges([(0, 18, BytesIO())])
+
+        # Assert
+        assert str(exc.value) == "Underlying bidi-gRPC stream is not open"
+        assert not mrd.is_stream_open

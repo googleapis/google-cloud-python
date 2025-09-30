@@ -71,18 +71,36 @@ class AsyncMultiRangeDownloader:
             client, bucket_name="chandrasiri-rs", object_name="test_open9"
         )
         my_buff1 = open('my_fav_file.txt', 'wb')
+        my_buff1 = open('my_fav_file.txt', 'wb')
         my_buff2 = BytesIO()
         my_buff3 = BytesIO()
         my_buff4 = any_object_which_provides_BytesIO_like_interface()
         results_arr, error_obj = await mrd.download_ranges(
+        my_buff4 = any_object_which_provides_BytesIO_like_interface()
+        results_arr, error_obj = await mrd.download_ranges(
             [
+                # (start_byte, bytes_to_read, writeable_buffer)
                 # (start_byte, bytes_to_read, writeable_buffer)
                 (0, 100, my_buff1),
                 (100, 20, my_buff2),
                 (200, 123, my_buff3),
                 (300, 789, my_buff4),
+                (100, 20, my_buff2),
+                (200, 123, my_buff3),
+                (300, 789, my_buff4),
             ]
         )
+        if error_obj:
+            print("Error occurred: ")
+            print(error_obj)
+            print(
+                "please issue call to `download_ranges` with updated"
+                "`read_ranges` based on diff of (bytes_requested - bytes_written)"
+            )
+
+        for result in results_arr:
+            print("downloaded bytes", result)
+
         if error_obj:
             print("Error occurred: ")
             print(error_obj)
@@ -165,7 +183,8 @@ class AsyncMultiRangeDownloader:
         self.object_name = object_name
         self.generation_number = generation_number
         self.read_handle = read_handle
-        self.read_obj_str: _AsyncReadObjectStream = None
+        self.read_obj_str: Optional[_AsyncReadObjectStream] = None
+        self._is_stream_open: bool = False
 
     async def open(self) -> None:
         """Opens the bidi-gRPC connection to read from the object.
@@ -176,14 +195,19 @@ class AsyncMultiRangeDownloader:
         "Opening" constitutes fetching object metadata such as generation number
         and read handle and sets them as attributes if not already set.
         """
-        self.read_obj_str = _AsyncReadObjectStream(
-            client=self.client,
-            bucket_name=self.bucket_name,
-            object_name=self.object_name,
-            generation_number=self.generation_number,
-            read_handle=self.read_handle,
-        )
+        if self._is_stream_open:
+            raise ValueError("Underlying bidi-gRPC stream is already open")
+
+        if self.read_obj_str is None:
+            self.read_obj_str = _AsyncReadObjectStream(
+                client=self.client,
+                bucket_name=self.bucket_name,
+                object_name=self.object_name,
+                generation_number=self.generation_number,
+                read_handle=self.read_handle,
+            )
         await self.read_obj_str.open()
+        self._is_stream_open = True
         if self.generation_number is None:
             self.generation_number = self.read_obj_str.generation_number
         self.read_handle = self.read_obj_str.read_handle
@@ -206,10 +230,14 @@ class AsyncMultiRangeDownloader:
                   to a requested range.
 
         """
+
         if len(read_ranges) > 1000:
             raise ValueError(
                 "Invalid input - length of read_ranges cannot be more than 1000"
             )
+
+        if not self._is_stream_open:
+            raise ValueError("Underlying bidi-gRPC stream is not open")
 
         read_id_to_writable_buffer_dict = {}
         results = []
@@ -255,4 +283,18 @@ class AsyncMultiRangeDownloader:
                     del read_id_to_writable_buffer_dict[
                         object_data_range.read_range.read_id
                     ]
+
         return results
+
+    async def close(self):
+        """
+        Closes the underlying bidi-gRPC connection.
+        """
+        if not self._is_stream_open:
+            raise ValueError("Underlying bidi-gRPC stream is not open")
+        await self.read_obj_str.close()
+        self._is_stream_open = False
+
+    @property
+    def is_stream_open(self) -> bool:
+        return self._is_stream_open
