@@ -38,6 +38,17 @@ def compile(
     return UNARY_OP_REGISTRATION[op](op, column, window=window)
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.AllOp)
+def _(
+    op: agg_ops.AllOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    # BQ will return null for empty column, result would be false in pandas.
+    result = apply_window_if_present(sge.func("LOGICAL_AND", column.expr), window)
+    return sge.func("IFNULL", result, sge.true())
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.ApproxQuartilesOp)
 def _(
     op: agg_ops.ApproxQuartilesOp,
@@ -67,6 +78,15 @@ def _(
     if window is not None:
         raise NotImplementedError("Approx top count with windowing is not supported.")
     return sge.func("APPROX_TOP_COUNT", column.expr, sge.convert(op.number))
+
+
+@UNARY_OP_REGISTRATION.register(agg_ops.AnyValueOp)
+def _(
+    op: agg_ops.AnyValueOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    return apply_window_if_present(sge.func("ANY_VALUE", column.expr), window)
 
 
 @UNARY_OP_REGISTRATION.register(agg_ops.CountOp)
