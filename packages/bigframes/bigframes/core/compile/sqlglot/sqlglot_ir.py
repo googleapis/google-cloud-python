@@ -175,7 +175,7 @@ class SQLGlotIR:
         ), f"At least two select expressions must be provided, but got {selects}."
 
         existing_ctes: list[sge.CTE] = []
-        union_selects: list[sge.Select] = []
+        union_selects: list[sge.Expression] = []
         for select in selects:
             assert isinstance(
                 select, sge.Select
@@ -204,10 +204,14 @@ class SQLGlotIR:
                 sge.Select().select(*selections).from_(sge.Table(this=new_cte_name))
             )
 
-        union_expr = sg.union(
-            *union_selects,
-            distinct=False,
-            copy=False,
+        union_expr = typing.cast(
+            sge.Select,
+            functools.reduce(
+                lambda x, y: sge.Union(
+                    this=x, expression=y, distinct=False, copy=False
+                ),
+                union_selects,
+            ),
         )
         final_select_expr = sge.Select().select(sge.Star()).from_(union_expr.subquery())
         final_select_expr.set("with", sge.With(expressions=existing_ctes))

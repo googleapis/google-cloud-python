@@ -12,21 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
 import pytest
 
-import bigframes
+from bigframes.core import ordering
 import bigframes.pandas as bpd
 
 pytest.importorskip("pytest_snapshot")
 
 
-def test_compile_concat(
-    scalar_types_pandas_df: pd.DataFrame, compiler_session: bigframes.Session, snapshot
-):
+def test_compile_concat(scalar_types_df: bpd.DataFrame, snapshot):
     # TODO: concat two same dataframes, which SQL does not get reused.
-    # TODO: concat dataframes from a gbq table but trigger a windows compiler.
-    df1 = bpd.DataFrame(scalar_types_pandas_df, session=compiler_session)
-    df1 = df1[["rowindex", "int64_col", "string_col"]]
+    df1 = scalar_types_df[["rowindex", "int64_col", "string_col"]]
     concat_df = bpd.concat([df1, df1])
     snapshot.assert_match(concat_df.sql, "out.sql")
+
+
+def test_compile_concat_filter_sorted(scalar_types_df: bpd.DataFrame, snapshot):
+
+    scalars_array_value = scalar_types_df._block.expr
+    input_1 = scalars_array_value.select_columns(["float64_col", "int64_col"]).order_by(
+        [ordering.ascending_over("int64_col")]
+    )
+    input_2 = scalars_array_value.filter_by_id("bool_col").select_columns(
+        ["float64_col", "int64_too"]
+    )
+
+    result = input_1.concat([input_2, input_1, input_2])
+
+    new_names = ["float64_col", "int64_col"]
+    col_ids = {
+        old_name: new_name for old_name, new_name in zip(result.column_ids, new_names)
+    }
+    result = result.rename_columns(col_ids).select_columns(new_names)
+
+    sql = result.session._executor.to_sql(result, enable_cache=False)
+    snapshot.assert_match(sql, "out.sql")

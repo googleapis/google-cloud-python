@@ -24,7 +24,7 @@ pytest.importorskip("polars")
 REFERENCE_ENGINE = polars_executor.PolarsExecutor()
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_concat_self(
     scalars_array_value: array_value.ArrayValue,
     engine,
@@ -34,7 +34,7 @@ def test_engines_concat_self(
     assert_equivalence_execution(result.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_concat_filtered_sorted(
     scalars_array_value: array_value.ArrayValue,
     engine,
