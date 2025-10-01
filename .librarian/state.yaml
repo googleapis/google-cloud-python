@@ -1,6 +1,5 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
 libraries:
-- id: google-cloud-dlp
 - id: google-cloud-redis-cluster
   version: 0.1.15
   last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
