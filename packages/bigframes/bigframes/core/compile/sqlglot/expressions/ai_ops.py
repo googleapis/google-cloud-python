@@ -26,6 +26,13 @@ from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 register_nary_op = scalar_compiler.scalar_op_compiler.register_nary_op
 
 
+@register_nary_op(ops.AIGenerate, pass_op=True)
+def _(*exprs: TypedExpr, op: ops.AIGenerate) -> sge.Expression:
+    args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)
+
+    return sge.func("AI.GENERATE", *args)
+
+
 @register_nary_op(ops.AIGenerateBool, pass_op=True)
 def _(*exprs: TypedExpr, op: ops.AIGenerateBool) -> sge.Expression:
     args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)

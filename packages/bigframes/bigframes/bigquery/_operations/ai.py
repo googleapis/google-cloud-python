@@ -36,6 +36,80 @@ PROMPT_TYPE = Union[
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
+def generate(
+    prompt: PROMPT_TYPE,
+    *,
+    connection_id: str | None = None,
+    endpoint: str | None = None,
+    request_type: Literal["dedicated", "shared", "unspecified"] = "unspecified",
+    model_params: Mapping[Any, Any] | None = None,
+    # TODO(b/446974666) Add output_schema parameter
+) -> series.Series:
+    """
+    Returns the AI analysis based on the prompt, which can be any combination of text and unstructured data.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+        >>> country = bpd.Series(["Japan", "Canada"])
+        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only"))
+        0    {'result': 'Tokyo\\n', 'full_response': '{"cand...
+        1    {'result': 'Ottawa\\n', 'full_response': '{"can...
+        dtype: struct<result: string, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
+
+        >>> bbq.ai.generate(("What's the capital city of ", country, " one word only")).struct.field("result")
+        0     Tokyo\\n
+        1    Ottawa\\n
+        Name: result, dtype: string
+
+    Args:
+        prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
+            A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
+            or pandas Series.
+        connection_id (str, optional):
+            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            If not provided, the connection from the current session will be used.
+        endpoint (str, optional):
+            Specifies the Vertex AI endpoint to use for the model. For example `"gemini-2.5-flash"`. You can specify any
+            generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
+            uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML selects a recent stable
+            version of Gemini to use.
+        request_type (Literal["dedicated", "shared", "unspecified"]):
+            Specifies the type of inference request to send to the Gemini model. The request type determines what quota the request uses.
+            * "dedicated": function only uses Provisioned Throughput quota. The function returns the error Provisioned throughput is not
+            purchased or is not active if Provisioned Throughput quota isn't available.
+            * "shared": the function only uses dynamic shared quota (DSQ), even if you have purchased Provisioned Throughput quota.
+            * "unspecified": If you haven't purchased Provisioned Throughput quota, the function uses DSQ quota.
+            If you have purchased Provisioned Throughput quota, the function uses the Provisioned Throughput quota first.
+            If requests exceed the Provisioned Throughput quota, the overflow traffic uses DSQ quota.
+        model_params (Mapping[Any, Any]):
+            Provides additional parameters to the model. The MODEL_PARAMS value must conform to the generateContent request body format.
+
+    Returns:
+        bigframes.series.Series: A new struct Series with the result data. The struct contains these fields:
+        * "result": a STRING value containing the model's response to the prompt. The result is None if the request fails or is filtered by responsible AI.
+        * "full_response": a JSON value containing the response from the projects.locations.endpoints.generateContent call to the model.
+        The generated text is in the text element.
+        * "status": a STRING value that contains the API response status for the corresponding row. This value is empty if the operation was successful.
+    """
+
+    prompt_context, series_list = _separate_context_and_series(prompt)
+    assert len(series_list) > 0
+
+    operator = ai_ops.AIGenerate(
+        prompt_context=tuple(prompt_context),
+        connection_id=_resolve_connection_id(series_list[0], connection_id),
+        endpoint=endpoint,
+        request_type=request_type,
+        model_params=json.dumps(model_params) if model_params else None,
+    )
+
+    return series_list[0]._apply_nary_op(operator, series_list[1:])
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
 def generate_bool(
     prompt: PROMPT_TYPE,
     *,

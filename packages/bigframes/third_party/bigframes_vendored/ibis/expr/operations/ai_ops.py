@@ -14,6 +14,25 @@ from public import public
 
 
 @public
+class AIGenerate(Value):
+    """Generate content based on the prompt"""
+
+    prompt: Value
+    connection_id: Value[dt.String]
+    endpoint: Optional[Value[dt.String]]
+    request_type: Value[dt.String]
+    model_params: Optional[Value[dt.String]]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.Struct.from_tuples(
+            (("result", dt.string), ("full_resposne", dt.string), ("status", dt.string))
+        )
+
+
+@public
 class AIGenerateBool(Value):
     """Generate Bool based on the prompt"""
 
@@ -53,7 +72,7 @@ class AIGenerateInt(Value):
 
 @public
 class AIGenerateDouble(Value):
-    """Generate integers based on the prompt"""
+    """Generate doubles based on the prompt"""
 
     prompt: Value
     connection_id: Value[dt.String]

@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    AI.GENERATE_BOOL(
+    AI.GENERATE(
       prompt => (`bfcol_0`, ' is the same as ', `bfcol_0`),
       connection_id => 'bigframes-dev.us.bigframes-default-connection',
       endpoint => 'gemini-2.5-flash',

@@ -1974,6 +1974,20 @@ def struct_op_impl(
     return ibis_types.struct(data)
 
 
+@scalar_op_compiler.register_nary_op(ops.AIGenerate, pass_op=True)
+def ai_generate(
+    *values: ibis_types.Value, op: ops.AIGenerate
+) -> ibis_types.StructValue:
+
+    return ai_ops.AIGenerate(
+        _construct_prompt(values, op.prompt_context),  # type: ignore
+        op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.request_type.upper(),  # type: ignore
+        op.model_params,  # type: ignore
+    ).to_expr()
+
+
 @scalar_op_compiler.register_nary_op(ops.AIGenerateBool, pass_op=True)
 def ai_generate_bool(
     *values: ibis_types.Value, op: ops.AIGenerateBool

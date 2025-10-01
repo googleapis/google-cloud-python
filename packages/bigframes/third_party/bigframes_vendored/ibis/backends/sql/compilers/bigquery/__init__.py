@@ -1104,6 +1104,9 @@ class BigQueryCompiler(SQLGlotCompiler):
             expr = arg
         return self.agg.string_agg(expr, sep, where=where)
 
+    def visit_AIGenerate(self, op, **kwargs):
+        return sge.func("AI.GENERATE", *self._compile_ai_args(**kwargs))
+
     def visit_AIGenerateBool(self, op, **kwargs):
         return sge.func("AI.GENERATE_BOOL", *self._compile_ai_args(**kwargs))
 

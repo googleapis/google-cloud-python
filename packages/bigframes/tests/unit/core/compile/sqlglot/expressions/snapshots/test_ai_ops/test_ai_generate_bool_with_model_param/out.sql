@@ -7,7 +7,7 @@ WITH `bfcte_0` AS (
     *,
     AI.GENERATE_BOOL(
       prompt => (`bfcol_0`, ' is the same as ', `bfcol_0`),
-      connection_id => 'test_connection_id',
+      connection_id => 'bigframes-dev.us.bigframes-default-connection',
       request_type => 'SHARED',
       model_params => JSON '{}'
     ) AS `bfcol_1`

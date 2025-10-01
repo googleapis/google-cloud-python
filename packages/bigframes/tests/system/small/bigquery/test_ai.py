@@ -69,6 +69,24 @@ def test_ai_function_compile_model_params(session):
     )
 
 
+def test_ai_generate(session):
+    country = bpd.Series(["Japan", "Canada"], session=session)
+    prompt = ("What's the capital city of ", country, "? one word only")
+
+    result = bbq.ai.generate(prompt, endpoint="gemini-2.5-flash")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == pd.ArrowDtype(
+        pa.struct(
+            (
+                pa.field("result", pa.string()),
+                pa.field("full_response", dtypes.JSON_ARROW_TYPE),
+                pa.field("status", pa.string()),
+            )
+        )
+    )
+
+
 def test_ai_generate_bool(session):
     s1 = bpd.Series(["apple", "bear"], session=session)
     s2 = bpd.Series(["fruit", "tree"], session=session)

@@ -24,13 +24,56 @@ from bigframes.testing import utils
 
 pytest.importorskip("pytest_snapshot")
 
+CONNECTION_ID = "bigframes-dev.us.bigframes-default-connection"
+
+
+def test_ai_generate(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIGenerate(
+        prompt_context=(None, " is the same as ", None),
+        connection_id=CONNECTION_ID,
+        endpoint="gemini-2.5-flash",
+        request_type="shared",
+        model_params=None,
+    )
+
+    sql = utils._apply_unary_ops(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_generate_with_model_param(scalar_types_df: dataframe.DataFrame, snapshot):
+    if version.Version(sqlglot.__version__) < version.Version("25.18.0"):
+        pytest.skip(
+            "Skip test because SQLGLot cannot compile model params to JSON at this version."
+        )
+
+    col_name = "string_col"
+
+    op = ops.AIGenerate(
+        prompt_context=(None, " is the same as ", None),
+        connection_id=CONNECTION_ID,
+        endpoint=None,
+        request_type="shared",
+        model_params=json.dumps(dict()),
+    )
+
+    sql = utils._apply_unary_ops(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
 
 def test_ai_generate_bool(scalar_types_df: dataframe.DataFrame, snapshot):
     col_name = "string_col"
 
     op = ops.AIGenerateBool(
         prompt_context=(None, " is the same as ", None),
-        connection_id="test_connection_id",
+        connection_id=CONNECTION_ID,
         endpoint="gemini-2.5-flash",
         request_type="shared",
         model_params=None,
@@ -55,7 +98,7 @@ def test_ai_generate_bool_with_model_param(
 
     op = ops.AIGenerateBool(
         prompt_context=(None, " is the same as ", None),
-        connection_id="test_connection_id",
+        connection_id=CONNECTION_ID,
         endpoint=None,
         request_type="shared",
         model_params=json.dumps(dict()),
@@ -74,7 +117,7 @@ def test_ai_generate_int(scalar_types_df: dataframe.DataFrame, snapshot):
     op = ops.AIGenerateInt(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id="test_connection_id",
+        connection_id=CONNECTION_ID,
         endpoint="gemini-2.5-flash",
         request_type="shared",
         model_params=None,
@@ -100,7 +143,7 @@ def test_ai_generate_int_with_model_param(
     op = ops.AIGenerateInt(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id="test_connection_id",
+        connection_id=CONNECTION_ID,
         endpoint=None,
         request_type="shared",
         model_params=json.dumps(dict()),
@@ -119,7 +162,7 @@ def test_ai_generate_double(scalar_types_df: dataframe.DataFrame, snapshot):
     op = ops.AIGenerateDouble(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id="test_connection_id",
+        connection_id=CONNECTION_ID,
         endpoint="gemini-2.5-flash",
         request_type="shared",
         model_params=None,
@@ -145,7 +188,7 @@ def test_ai_generate_double_with_model_param(
     op = ops.AIGenerateDouble(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        connection_id="test_connection_id",
+        connection_id=CONNECTION_ID,
         endpoint=None,
         request_type="shared",
         model_params=json.dumps(dict()),

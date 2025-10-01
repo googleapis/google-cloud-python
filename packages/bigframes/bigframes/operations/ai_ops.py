@@ -25,6 +25,28 @@ from bigframes.operations import base_ops
 
 
 @dataclasses.dataclass(frozen=True)
+class AIGenerate(base_ops.NaryOp):
+    name: ClassVar[str] = "ai_generate"
+
+    prompt_context: Tuple[str | None, ...]
+    connection_id: str
+    endpoint: str | None
+    request_type: Literal["dedicated", "shared", "unspecified"]
+    model_params: str | None
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return pd.ArrowDtype(
+            pa.struct(
+                (
+                    pa.field("result", pa.string()),
+                    pa.field("full_response", dtypes.JSON_ARROW_TYPE),
+                    pa.field("status", pa.string()),
+                )
+            )
+        )
+
+
+@dataclasses.dataclass(frozen=True)
 class AIGenerateBool(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate_bool"
 

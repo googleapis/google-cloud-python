@@ -7,7 +7,7 @@ WITH `bfcte_0` AS (
     *,
     AI.GENERATE_DOUBLE(
       prompt => (`bfcol_0`, ' is the same as ', `bfcol_0`),
-      connection_id => 'test_connection_id',
+      connection_id => 'bigframes-dev.us.bigframes-default-connection',
       endpoint => 'gemini-2.5-flash',
       request_type => 'SHARED'
     ) AS `bfcol_1`
