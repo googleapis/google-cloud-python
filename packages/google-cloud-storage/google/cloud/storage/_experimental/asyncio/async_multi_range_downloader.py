@@ -71,43 +71,18 @@ class AsyncMultiRangeDownloader:
             client, bucket_name="chandrasiri-rs", object_name="test_open9"
         )
         my_buff1 = open('my_fav_file.txt', 'wb')
-        my_buff1 = open('my_fav_file.txt', 'wb')
         my_buff2 = BytesIO()
         my_buff3 = BytesIO()
         my_buff4 = any_object_which_provides_BytesIO_like_interface()
-        results_arr, error_obj = await mrd.download_ranges(
-        my_buff4 = any_object_which_provides_BytesIO_like_interface()
-        results_arr, error_obj = await mrd.download_ranges(
+        results_arr = await mrd.download_ranges(
             [
-                # (start_byte, bytes_to_read, writeable_buffer)
                 # (start_byte, bytes_to_read, writeable_buffer)
                 (0, 100, my_buff1),
                 (100, 20, my_buff2),
                 (200, 123, my_buff3),
                 (300, 789, my_buff4),
-                (100, 20, my_buff2),
-                (200, 123, my_buff3),
-                (300, 789, my_buff4),
             ]
         )
-        if error_obj:
-            print("Error occurred: ")
-            print(error_obj)
-            print(
-                "please issue call to `download_ranges` with updated"
-                "`read_ranges` based on diff of (bytes_requested - bytes_written)"
-            )
-
-        for result in results_arr:
-            print("downloaded bytes", result)
-
-        if error_obj:
-            print("Error occurred: ")
-            print(error_obj)
-            print(
-                "please issue call to `download_ranges` with updated"
-                "`read_ranges` based on diff of (bytes_requested - bytes_written)"
-            )
 
         for result in results_arr:
             print("downloaded bytes", result)
