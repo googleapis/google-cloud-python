@@ -1756,3 +1756,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-data-fusion
     tag_format: '{id}-v{version}'
+  - id: google-cloud-workflows
+    version: 1.18.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/workflows/executions/v1
+      - path: google/cloud/workflows/executions/v1beta
+      - path: google/cloud/workflows/v1
+      - path: google/cloud/workflows/v1beta
+    source_roots:
+      - packages/google-cloud-workflows
+    preserve_regex:
+      - packages/google-cloud-workflows/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-workflows
+    tag_format: '{id}-v{version}'

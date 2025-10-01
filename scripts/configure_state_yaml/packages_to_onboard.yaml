@@ -105,6 +105,7 @@ packages_to_onboard: [
   "google-cloud-vpc-access",
   "google-cloud-webrisk",
   "google-cloud-websecurityscanner",
+  "google-cloud-workflows",
   "google-cloud-workstations",
   "googleapis-common-protos",
 ]

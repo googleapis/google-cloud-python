@@ -741,7 +741,7 @@ def _stage_gapic_library(tmp_dir: str, staging_dir: str) -> None:
     """
     # For GAPIC, the generator output is flat in `tmp_dir` and includes all
     # necessary files like setup.py, client library, etc.
-    shutil.copytree(tmp_dir, staging_dir)
+    shutil.copytree(tmp_dir, staging_dir, dirs_exist_ok=True)
 
 
 def _generate_api(
@@ -775,7 +775,9 @@ def _generate_api(
         _run_protoc_command(command, source)
 
         # 3. Determine staging location
-        staging_child_directory = _get_staging_child_directory(api_path, is_proto_only_library)
+        staging_child_directory = _get_staging_child_directory(
+            api_path, is_proto_only_library
+        )
         staging_dir = os.path.join(
             output, "owl-bot-staging", library_id, staging_child_directory
         )
