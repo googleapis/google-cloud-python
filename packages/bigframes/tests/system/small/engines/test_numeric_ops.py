@@ -161,7 +161,7 @@ def test_engines_project_floordiv_durations(
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_project_mod(
     scalars_array_value: array_value.ArrayValue,
     engine,

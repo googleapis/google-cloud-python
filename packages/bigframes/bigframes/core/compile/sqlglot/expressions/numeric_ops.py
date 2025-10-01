@@ -323,6 +323,49 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return result
 
 
+@register_binary_op(ops.mod_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    # In BigQuery returned value has the same sign as X. In pandas, the sign of y is used, so we need to flip the result if sign(x) != sign(y)
+    left_expr = _coerce_bool_to_int(left)
+    right_expr = _coerce_bool_to_int(right)
+
+    # BigQuery MOD function doesn't support float types, so cast to BIGNUMERIC
+    if left.dtype == dtypes.FLOAT_DTYPE or right.dtype == dtypes.FLOAT_DTYPE:
+        left_expr = sge.Cast(this=left_expr, to="BIGNUMERIC")
+        right_expr = sge.Cast(this=right_expr, to="BIGNUMERIC")
+
+    # MOD(N, 0) will error in bigquery, but needs to return null
+    bq_mod = sge.Mod(this=left_expr, expression=right_expr)
+    zero_result = (
+        constants._NAN
+        if (left.dtype == dtypes.FLOAT_DTYPE or right.dtype == dtypes.FLOAT_DTYPE)
+        else constants._ZERO
+    )
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.EQ(this=right_expr, expression=constants._ZERO),
+                true=zero_result * left_expr,
+            ),
+            sge.If(
+                this=sge.and_(
+                    right_expr < constants._ZERO,
+                    bq_mod > constants._ZERO,
+                ),
+                true=right_expr + bq_mod,
+            ),
+            sge.If(
+                this=sge.and_(
+                    right_expr > constants._ZERO,
+                    bq_mod < constants._ZERO,
+                ),
+                true=right_expr + bq_mod,
+            ),
+        ],
+        default=bq_mod,
+    )
+
+
 @register_binary_op(ops.mul_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     left_expr = _coerce_bool_to_int(left)

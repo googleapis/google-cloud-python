@@ -287,6 +287,22 @@ def test_mul_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
+def test_mod_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "float64_col"]]
+
+    bf_df["int_mod_int"] = bf_df["int64_col"] % bf_df["int64_col"]
+    bf_df["int_mod_int_neg"] = bf_df["int64_col"] % -bf_df["int64_col"]
+    bf_df["int_mod_1"] = bf_df["int64_col"] % 1
+    bf_df["int_mod_0"] = bf_df["int64_col"] % 0
+
+    bf_df["float_mod_float"] = bf_df["float64_col"] % bf_df["float64_col"]
+    bf_df["float_mod_float_neg"] = bf_df["float64_col"] % -bf_df["float64_col"]
+    bf_df["float_mod_1"] = bf_df["float64_col"] % 1
+    bf_df["float_mod_0"] = bf_df["float64_col"] % 0
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
 def test_sub_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col", "bool_col"]]
 
