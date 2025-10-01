@@ -95,8 +95,15 @@ _NOOP_CALLABLES = (
     "proto_library",
     "java_proto_library",
     "genrule",
+    "gapic_yaml_from_disco",
+    "grpc_service_config_from_disco",
+    "proto_from_disco",
 )
 
+_GLOB_CALLABLES = (
+    "exports_files",
+    "glob",
+)
 
 def parse_content(content: str) -> dict:
     """Parses content from BUILD.bazel and returns a dictionary
@@ -119,11 +126,20 @@ def parse_content(content: str) -> dict:
     def noop_bazel_rule(**args):
         pass
 
-    for noop_callable in _NOOP_CALLABLES:
-        mod.add_callable(noop_callable, noop_bazel_rule)
+    def fake_glob(paths=[], **args):
+        return []
+
+    mod.add_callable("package", noop_bazel_rule)
+
+    for glob_callable in _GLOB_CALLABLES:
+        mod.add_callable(glob_callable, fake_glob)
 
     def load(name):
         mod = sl.Module()
+
+        for noop_callable in _NOOP_CALLABLES:
+            mod.add_callable(noop_callable, noop_bazel_rule)
+
         for callable_name in _CALLABLE_MAP.get(name, []):
             mod.add_callable(callable_name, bazel_target)
         return mod.freeze()
