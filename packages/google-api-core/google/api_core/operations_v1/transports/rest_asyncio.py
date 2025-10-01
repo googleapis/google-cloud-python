@@ -16,6 +16,7 @@
 
 import json
 from typing import Any, Callable, Coroutine, Dict, Optional, Sequence, Tuple
+import warnings
 
 from google.auth import __version__ as auth_version
 
@@ -29,6 +30,7 @@ except ImportError as e:  # pragma: NO COVER
 
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
+from google.api_core import general_helpers
 from google.api_core import path_template  # type: ignore
 from google.api_core import rest_helpers  # type: ignore
 from google.api_core import retry_async as retries_async  # type: ignore
@@ -96,6 +98,22 @@ class AsyncOperationsRestTransport(OperationsTransport):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided. This argument will be
+                removed in the next major version of `google-api-core`.
+
+                .. warning::
+                    Important: If you accept a credential configuration (credential JSON/File/Stream)
+                    from an external source for authentication to Google Cloud Platform, you must
+                    validate it before providing it to any Google API or client library. Providing an
+                    unvalidated credential configuration to Google APIs or libraries can compromise
+                    the security of your systems and data. For more information, refer to
+                    `Validate credential configurations from external sources`_.
+
+                .. _Validate credential configurations from external sources:
+
+                https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
@@ -113,6 +131,9 @@ class AsyncOperationsRestTransport(OperationsTransport):
                 "v1" by default.
 
         """
+        if credentials_file is not None:
+            warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
+
         unsupported_params = {
             # TODO(https://github.com/googleapis/python-api-core/issues/715): Add support for `credentials_file` to async REST transport.
             "google.api_core.client_options.ClientOptions.credentials_file": credentials_file,

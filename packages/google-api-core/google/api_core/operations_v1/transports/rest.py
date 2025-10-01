@@ -15,23 +15,26 @@
 #
 
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+import google.protobuf
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format  # type: ignore
+import grpc
 from requests import __version__ as requests_version
 
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
+from google.api_core import general_helpers
 from google.api_core import path_template  # type: ignore
 from google.api_core import rest_helpers  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format  # type: ignore
-import google.protobuf
 
-import grpc
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO, OperationsTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .base import OperationsTransport
 
 PROTOBUF_VERSION = google.protobuf.__version__
 
@@ -91,9 +94,10 @@ class OperationsRestTransport(OperationsTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
 
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if ``channel`` is provided. This argument will be
+                removed in the next major version of `google-api-core`.
 
                 .. warning::
                     Important: If you accept a credential configuration (credential JSON/File/Stream)
@@ -101,9 +105,9 @@ class OperationsRestTransport(OperationsTransport):
                     validate it before providing it to any Google API or client library. Providing an
                     unvalidated credential configuration to Google APIs or libraries can compromise
                     the security of your systems and data. For more information, refer to
-                    `Validate credential configurations from external sources`_.
+                    `Validate credential configuration from external sources`_.
 
-                .. _Validate credential configurations from external sources:
+                .. _Validate credential configuration from external sources:
 
                 https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
@@ -130,6 +134,9 @@ class OperationsRestTransport(OperationsTransport):
                 "v1" by default.
 
         """
+        if credentials_file is not None:
+            warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
+
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the

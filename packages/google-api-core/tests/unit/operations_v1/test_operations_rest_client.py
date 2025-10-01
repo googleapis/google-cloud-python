@@ -368,6 +368,22 @@ def test_operations_client_client_options(
             always_use_jwt_access=True,
         )
 
+    # Check the case credentials_file is provided
+    options = client_options.ClientOptions(credentials_file="credentials.json")
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file="credentials.json",
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+        )
+
 
 # TODO: Add support for mtls in async REST
 @pytest.mark.parametrize(
@@ -544,8 +560,23 @@ def test_operations_client_client_options_credentials_file(
             )
 
 
-def test_list_operations_rest():
-    client = _get_operations_client(is_async=False)
+@pytest.mark.parametrize(
+    "credentials_file",
+    [None, "credentials.json"],
+)
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+def test_list_operations_rest(google_auth_default, credentials_file):
+    sync_transport = transports.rest.OperationsRestTransport(
+        credentials_file=credentials_file,
+        http_options=HTTP_OPTIONS,
+    )
+
+    client = AbstractOperationsClient(transport=sync_transport)
+
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(_get_session_type(is_async=False), "request") as req:
         # Designate an appropriate value for the returned response.

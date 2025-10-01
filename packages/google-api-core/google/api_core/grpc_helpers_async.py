@@ -20,13 +20,14 @@ functions. This module is implementing the same surface with AsyncIO semantics.
 
 import asyncio
 import functools
+import warnings
 
 from typing import AsyncGenerator, Generic, Iterator, Optional, TypeVar
 
 import grpc
 from grpc import aio
 
-from google.api_core import exceptions, grpc_helpers
+from google.api_core import exceptions, general_helpers, grpc_helpers
 
 # denotes the proto response type for grpc calls
 P = TypeVar("P")
@@ -233,9 +234,10 @@ def create_channel(
             are passed to :func:`google.auth.default`.
         ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
             credentials. This can be used to specify different certificates.
-        credentials_file (str): A file with credentials that can be loaded with
+        credentials_file (str): Deprecated. A file with credentials that can be loaded with
             :func:`google.auth.load_credentials_from_file`. This argument is
-            mutually exclusive with credentials.
+            mutually exclusive with credentials. This argument will be
+            removed in the next major version of `google-api-core`.
 
             .. warning::
                 Important: If you accept a credential configuration (credential JSON/File/Stream)
@@ -279,6 +281,9 @@ def create_channel(
         google.api_core.DuplicateCredentialArgs: If both a credentials object and credentials_file are passed.
         ValueError: If `ssl_credentials` is set and `attempt_direct_path` is set to `True`.
     """
+
+    if credentials_file is not None:
+        warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
 
     # If `ssl_credentials` is set and `attempt_direct_path` is set to `True`,
     # raise ValueError as this is not yet supported.

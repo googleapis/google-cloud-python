@@ -13,20 +13,19 @@
 # limitations under the License.
 
 """Helpers for :mod:`grpc`."""
-from typing import Generic, Iterator, Optional, TypeVar
-
 import collections
 import functools
+from typing import Generic, Iterator, Optional, TypeVar
 import warnings
 
-import grpc
-
-from google.api_core import exceptions
 import google.auth
 import google.auth.credentials
 import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.protobuf
+import grpc
+
+from google.api_core import exceptions, general_helpers
 
 PROTOBUF_VERSION = google.protobuf.__version__
 
@@ -213,9 +212,10 @@ def _create_composite_credentials(
         credentials (google.auth.credentials.Credentials): The credentials. If
             not specified, then this function will attempt to ascertain the
             credentials from the environment using :func:`google.auth.default`.
-        credentials_file (str): A file with credentials that can be loaded with
+        credentials_file (str): Deprecated. A file with credentials that can be loaded with
             :func:`google.auth.load_credentials_from_file`. This argument is
-            mutually exclusive with credentials.
+            mutually exclusive with credentials. This argument will be
+            removed in the next major version of `google-api-core`.
 
             .. warning::
                 Important: If you accept a credential configuration (credential JSON/File/Stream)
@@ -245,6 +245,9 @@ def _create_composite_credentials(
     Raises:
         google.api_core.DuplicateCredentialArgs: If both a credentials object and credentials_file are passed.
     """
+    if credentials_file is not None:
+        warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
+
     if credentials and credentials_file:
         raise exceptions.DuplicateCredentialArgs(
             "'credentials' and 'credentials_file' are mutually exclusive."

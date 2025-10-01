@@ -16,12 +16,8 @@
 import abc
 import re
 from typing import Awaitable, Callable, Optional, Sequence, Union
+import warnings
 
-import google.api_core  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.api_core import version
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.longrunning import operations_pb2
@@ -30,6 +26,12 @@ import google.protobuf
 from google.protobuf import empty_pb2, json_format  # type: ignore
 from grpc import Compression
 
+import google.api_core  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import general_helpers
+from google.api_core import retry as retries  # type: ignore
+from google.api_core import version
 
 PROTOBUF_VERSION = google.protobuf.__version__
 
@@ -69,9 +71,10 @@ class OperationsTransport(abc.ABC):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
+                This argument is mutually exclusive with credentials. This argument will be
+                removed in the next major version of `google-api-core`.
 
                 .. warning::
                     Important: If you accept a credential configuration (credential JSON/File/Stream)
@@ -98,6 +101,9 @@ class OperationsTransport(abc.ABC):
                 "https", but for testing or local servers,
                 "http" can be specified.
         """
+        if credentials_file is not None:
+            warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
+
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
             raise ValueError(

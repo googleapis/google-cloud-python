@@ -49,6 +49,9 @@ You can also pass a mapping object.
 """
 
 from typing import Callable, Mapping, Optional, Sequence, Tuple
+import warnings
+
+from google.api_core import general_helpers
 
 
 class ClientOptions(object):
@@ -67,8 +70,9 @@ class ClientOptions(object):
             and ``client_encrypted_cert_source`` are mutually exclusive.
         quota_project_id (Optional[str]): A project name that a client's
             quota belongs to.
-        credentials_file (Optional[str]): A path to a file storing credentials.
-            ``credentials_file` and ``api_key`` are mutually exclusive.
+        credentials_file (Optional[str]): Deprecated. A path to a file storing credentials.
+            ``credentials_file` and ``api_key`` are mutually exclusive. This argument will be
+            removed in the next major version of `google-api-core`.
 
             .. warning::
                 Important: If you accept a credential configuration (credential JSON/File/Stream)
@@ -114,6 +118,9 @@ class ClientOptions(object):
         api_audience: Optional[str] = None,
         universe_domain: Optional[str] = None,
     ):
+        if credentials_file is not None:
+            warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
+
         if client_cert_source and client_encrypted_cert_source:
             raise ValueError(
                 "client_cert_source and client_encrypted_cert_source are mutually exclusive"
