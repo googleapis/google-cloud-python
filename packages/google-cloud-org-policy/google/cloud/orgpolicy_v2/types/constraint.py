@@ -60,9 +60,9 @@ class Constraint(proto.Message):
             Immutable. The resource name of the constraint. Must be in
             one of the following forms:
 
-            -  ``projects/{project_number}/constraints/{constraint_name}``
-            -  ``folders/{folder_id}/constraints/{constraint_name}``
-            -  ``organizations/{organization_id}/constraints/{constraint_name}``
+            - ``projects/{project_number}/constraints/{constraint_name}``
+            - ``folders/{folder_id}/constraints/{constraint_name}``
+            - ``organizations/{organization_id}/constraints/{constraint_name}``
 
             For example,
             "/projects/123/constraints/compute.disableSerialPortAccess".
@@ -163,7 +163,7 @@ class Constraint(proto.Message):
                 Format will be of the form : ``<service name>/<type>``
                 Example:
 
-                -  ``compute.googleapis.com/Instance``.
+                - ``compute.googleapis.com/Instance``.
             method_types (MutableSequence[google.cloud.orgpolicy_v2.types.Constraint.CustomConstraintDefinition.MethodType]):
                 All the operations being applied for this
                 constraint.
@@ -428,7 +428,7 @@ class CustomConstraint(proto.Message):
             Immutable. Name of the constraint. This is unique within the
             organization. Format of the name should be
 
-            -  ``organizations/{organization_id}/customConstraints/{custom_constraint_id}``
+            - ``organizations/{organization_id}/customConstraints/{custom_constraint_id}``
 
             Example:
             ``organizations/123/customConstraints/custom.createOnlyE2TypeVms``
@@ -442,7 +442,7 @@ class CustomConstraint(proto.Message):
             applies. Format will be of the form :
             ``<service name>/<type>`` Example:
 
-            -  ``compute.googleapis.com/Instance``.
+            - ``compute.googleapis.com/Instance``.
         method_types (MutableSequence[google.cloud.orgpolicy_v2.types.CustomConstraint.MethodType]):
             All the operations being applied for this
             constraint.

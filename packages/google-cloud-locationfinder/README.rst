@@ -3,7 +3,7 @@ Python Client for Cloud Location Finder API
 
 |preview| |pypi| |versions|
 
-`Cloud Location Finder API`_: Cloud Location Finder lets you identify and filter cloud locations in regions and zones across Google Cloud, Google Distributed Cloud, Microsoft Azure, Amazon Web Services, and Oracle Cloud Infrastructure based on proximity, geographic location, and carbon footprint.
+`Cloud Location Finder API`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Cloud Location Finder API
    :target: https://pypi.org/project/google-cloud-locationfinder/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-locationfinder.svg
    :target: https://pypi.org/project/google-cloud-locationfinder/
-.. _Cloud Location Finder API: https://issuetracker.google.com/issues/new?component=1569265&template=1988535
+.. _Cloud Location Finder API: https://cloud.google.com/location-finder/docs/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-locationfinder/latest/summary_overview
-.. _Product Documentation:  https://issuetracker.google.com/issues/new?component=1569265&template=1988535
+.. _Product Documentation:  https://cloud.google.com/location-finder/docs/overview
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Location Finder API.:  https://issuetracker.google.com/issues/new?component=1569265&template=1988535
+.. _Enable the Cloud Location Finder API.:  https://cloud.google.com/location-finder/docs/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Location Finder API Product documentation:  https://issuetracker.google.com/issues/new?component=1569265&template=1988535
+.. _Cloud Location Finder API Product documentation:  https://cloud.google.com/location-finder/docs/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
