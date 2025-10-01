@@ -1440,4 +1440,6 @@ def test_stage_gapic_library(mocker):
     _stage_gapic_library(tmp_dir, staging_dir)
 
     # Assertion: Check copytree was called exactly once with the correct arguments
-    mock_shutil_copytree.assert_called_once_with(tmp_dir, staging_dir)
+    mock_shutil_copytree.assert_called_once_with(
+        tmp_dir, staging_dir, dirs_exist_ok=True
+    )

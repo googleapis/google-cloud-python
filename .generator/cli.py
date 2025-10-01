@@ -775,7 +775,9 @@ def _generate_api(
         _run_protoc_command(command, source)
 
         # 3. Determine staging location
-        staging_child_directory = _get_staging_child_directory(api_path, is_proto_only_library)
+        staging_child_directory = _get_staging_child_directory(
+            api_path, is_proto_only_library
+        )
         staging_dir = os.path.join(
             output, "owl-bot-staging", library_id, staging_child_directory
         )
