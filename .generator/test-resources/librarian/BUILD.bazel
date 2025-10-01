@@ -13,6 +13,7 @@
 # limitations under the License.
 
 package(default_visibility = ["//visibility:public"])
+exports_files(glob(["*.yaml"]))
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load(
     "@com_google_googleapis_imports//:imports.bzl",
