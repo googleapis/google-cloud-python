@@ -122,7 +122,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -131,6 +131,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDisableXpnResource:
@@ -169,7 +170,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -178,7 +179,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -187,6 +188,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseEnableXpnHost:
@@ -224,7 +226,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -233,6 +235,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseEnableXpnResource:
@@ -271,7 +274,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -280,7 +283,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -289,6 +292,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -326,7 +330,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -335,6 +339,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetXpnHost:
@@ -372,7 +377,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -381,6 +386,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetXpnResources:
@@ -418,7 +424,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -427,6 +433,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseListXpnHosts:
@@ -465,7 +472,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -474,7 +481,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -483,6 +490,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseMoveDisk:
@@ -521,7 +529,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -530,7 +538,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -539,6 +547,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseMoveInstance:
@@ -577,7 +586,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -586,7 +595,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -595,6 +604,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetCloudArmorTier:
@@ -633,7 +643,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -642,7 +652,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -651,6 +661,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetCommonInstanceMetadata:
@@ -689,7 +700,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -698,7 +709,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -707,6 +718,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetDefaultNetworkTier:
@@ -745,7 +757,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -754,7 +766,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -763,6 +775,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetUsageExportBucket:
@@ -801,7 +814,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -810,7 +823,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -819,6 +832,7 @@ class _BaseProjectsRestTransport(ProjectsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

@@ -1066,7 +1066,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRegionUrlMapRequ
 
             response = client.delete(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1275,7 +1275,7 @@ def test_delete_unary_rest_required_fields(
 
             response = client.delete_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1476,7 +1476,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionUrlMapRequest):
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1680,7 +1680,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertRegionUrlMapRequ
 
             response = client.insert(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1886,7 +1886,7 @@ def test_insert_unary_rest_required_fields(
 
             response = client.insert_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2098,7 +2098,7 @@ def test_invalidate_cache_rest_required_fields(
 
             response = client.invalidate_cache(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2317,7 +2317,7 @@ def test_invalidate_cache_unary_rest_required_fields(
 
             response = client.invalidate_cache_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2531,7 +2531,7 @@ def test_list_rest_required_fields(request_type=compute.ListRegionUrlMapsRequest
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2801,7 +2801,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchRegionUrlMapReques
 
             response = client.patch(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3018,7 +3018,7 @@ def test_patch_unary_rest_required_fields(
 
             response = client.patch_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3233,7 +3233,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response = client.test_iam_permissions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3448,7 +3448,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateRegionUrlMapRequ
 
             response = client.update(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3665,7 +3665,7 @@ def test_update_unary_rest_required_fields(
 
             response = client.update_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3876,7 +3876,7 @@ def test_validate_rest_required_fields(
 
             response = client.validate(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

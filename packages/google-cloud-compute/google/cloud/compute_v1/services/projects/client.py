@@ -530,9 +530,6 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
                 If a Callable is given, it will be called with the same set of initialization
                 arguments as used in the ProjectsTransport constructor.
                 If set to None, a transport is chosen automatically.
-                NOTE: "rest" transport functionality is currently in a
-                beta state (preview). We welcome your feedback via an
-                issue in this library's source repository.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -2183,7 +2180,15 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Moves a persistent disk from one zone to another.
+        r"""Starting September 29, 2025, you can't use the moveDisk API on
+        new projects. To move a disk to a different region or zone,
+        follow the steps in `Change the location of a
+        disk <https://{$universe.dns_names.final_documentation_domain}/compute/docs/disks/migrate-to-hyperdisk#migrate-to-hd>`__.
+        Projects that already use the moveDisk API can continue usage
+        until September 29, 2026. Starting November 1, 2025, API
+        responses will include a warning message in the response body
+        about the upcoming deprecation. You can skip the message to
+        continue using the service without interruption.
 
         .. code-block:: python
 
@@ -2298,7 +2303,15 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Moves a persistent disk from one zone to another.
+        r"""Starting September 29, 2025, you can't use the moveDisk API on
+        new projects. To move a disk to a different region or zone,
+        follow the steps in `Change the location of a
+        disk <https://{$universe.dns_names.final_documentation_domain}/compute/docs/disks/migrate-to-hyperdisk#migrate-to-hd>`__.
+        Projects that already use the moveDisk API can continue usage
+        until September 29, 2026. Starting November 1, 2025, API
+        responses will include a warning message in the response body
+        about the upcoming deprecation. You can skip the message to
+        continue using the service without interruption.
 
         .. code-block:: python
 

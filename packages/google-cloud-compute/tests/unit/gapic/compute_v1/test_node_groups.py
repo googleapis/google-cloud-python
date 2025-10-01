@@ -1046,7 +1046,7 @@ def test_add_nodes_rest_required_fields(request_type=compute.AddNodesNodeGroupRe
 
             response = client.add_nodes(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1263,7 +1263,7 @@ def test_add_nodes_unary_rest_required_fields(
 
             response = client.add_nodes_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1477,7 +1477,7 @@ def test_aggregated_list_rest_required_fields(
 
             response = client.aggregated_list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1750,7 +1750,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteNodeGroupRequest
 
             response = client.delete(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1957,7 +1957,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteNodeGroupR
 
             response = client.delete_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2167,7 +2167,7 @@ def test_delete_nodes_rest_required_fields(
 
             response = client.delete_nodes(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2384,7 +2384,7 @@ def test_delete_nodes_unary_rest_required_fields(
 
             response = client.delete_nodes_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2592,7 +2592,7 @@ def test_get_rest_required_fields(request_type=compute.GetNodeGroupRequest):
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2797,7 +2797,7 @@ def test_get_iam_policy_rest_required_fields(
 
             response = client.get_iam_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3018,6 +3018,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertNodeGroupRequest
                     "initialNodeCount",
                     str(0),
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -3247,6 +3248,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertNodeGroupR
                     "initialNodeCount",
                     str(0),
                 ),
+                ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -3462,7 +3464,7 @@ def test_list_rest_required_fields(request_type=compute.ListNodeGroupsRequest):
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3737,7 +3739,7 @@ def test_list_nodes_rest_required_fields(
 
             response = client.list_nodes(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4018,7 +4020,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchNodeGroupRequest):
 
             response = client.patch(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4233,7 +4235,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchNodeGroupReq
 
             response = client.patch_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4454,7 +4456,7 @@ def test_perform_maintenance_rest_required_fields(
 
             response = client.perform_maintenance(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4675,7 +4677,7 @@ def test_perform_maintenance_unary_rest_required_fields(
 
             response = client.perform_maintenance_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4886,7 +4888,7 @@ def test_set_iam_policy_rest_required_fields(
 
             response = client.set_iam_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5105,7 +5107,7 @@ def test_set_node_template_rest_required_fields(
 
             response = client.set_node_template(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5324,7 +5326,7 @@ def test_set_node_template_unary_rest_required_fields(
 
             response = client.set_node_template_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5546,7 +5548,7 @@ def test_simulate_maintenance_event_rest_required_fields(
 
             response = client.simulate_maintenance_event(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5768,7 +5770,7 @@ def test_simulate_maintenance_event_unary_rest_required_fields(
 
             response = client.simulate_maintenance_event_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5983,7 +5985,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response = client.test_iam_permissions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

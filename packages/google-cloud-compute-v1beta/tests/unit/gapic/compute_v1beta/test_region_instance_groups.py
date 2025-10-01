@@ -1106,7 +1106,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionInstanceGroupReq
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1315,7 +1315,7 @@ def test_list_rest_required_fields(
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1591,7 +1591,7 @@ def test_list_instances_rest_required_fields(
 
             response = client.list_instances(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1888,7 +1888,7 @@ def test_set_named_ports_rest_required_fields(
 
             response = client.set_named_ports(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2105,7 +2105,7 @@ def test_set_named_ports_unary_rest_required_fields(
 
             response = client.set_named_ports_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2320,7 +2320,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response = client.test_iam_permissions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

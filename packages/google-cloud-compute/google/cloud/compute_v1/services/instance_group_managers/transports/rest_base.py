@@ -123,7 +123,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -132,7 +132,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -141,6 +141,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseAggregatedList:
@@ -178,7 +179,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -187,6 +188,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseApplyUpdatesToInstances:
@@ -227,7 +229,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -236,7 +238,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -245,6 +247,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseCreateInstances:
@@ -283,7 +286,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -292,7 +295,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -301,6 +304,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDelete:
@@ -338,7 +342,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -347,6 +351,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDeleteInstances:
@@ -385,7 +390,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -394,7 +399,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -403,6 +408,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDeletePerInstanceConfigs:
@@ -443,7 +449,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -452,7 +458,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -461,6 +467,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -498,7 +505,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -507,6 +514,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInsert:
@@ -545,7 +553,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -554,7 +562,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -563,6 +571,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -600,7 +609,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -609,6 +618,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseListErrors:
@@ -646,7 +656,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -655,6 +665,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseListManagedInstances:
@@ -694,7 +705,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -703,6 +714,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseListPerInstanceConfigs:
@@ -742,7 +754,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -751,6 +763,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatch:
@@ -789,7 +802,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -798,7 +811,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -807,6 +820,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatchPerInstanceConfigs:
@@ -847,7 +861,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -856,7 +870,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -865,6 +879,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseRecreateInstances:
@@ -905,7 +920,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -914,7 +929,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -923,6 +938,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseResize:
@@ -962,7 +978,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -971,6 +987,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseResumeInstances:
@@ -1009,7 +1026,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -1018,7 +1035,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -1027,6 +1044,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetInstanceTemplate:
@@ -1067,7 +1085,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -1076,7 +1094,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -1085,6 +1103,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetTargetPools:
@@ -1123,7 +1142,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -1132,7 +1151,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -1141,6 +1160,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseStartInstances:
@@ -1179,7 +1199,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -1188,7 +1208,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -1197,6 +1217,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseStopInstances:
@@ -1235,7 +1256,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -1244,7 +1265,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -1253,6 +1274,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSuspendInstances:
@@ -1291,7 +1313,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -1300,7 +1322,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -1309,6 +1331,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseUpdatePerInstanceConfigs:
@@ -1349,7 +1372,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -1358,7 +1381,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -1367,6 +1390,7 @@ class _BaseInstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

@@ -124,7 +124,7 @@ class _BaseGlobalOrganizationOperationsRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -133,6 +133,7 @@ class _BaseGlobalOrganizationOperationsRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -170,7 +171,7 @@ class _BaseGlobalOrganizationOperationsRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -179,6 +180,7 @@ class _BaseGlobalOrganizationOperationsRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -206,10 +208,11 @@ class _BaseGlobalOrganizationOperationsRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

@@ -122,7 +122,7 @@ class _BaseZoneOperationsRestTransport(ZoneOperationsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -131,6 +131,7 @@ class _BaseZoneOperationsRestTransport(ZoneOperationsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -168,7 +169,7 @@ class _BaseZoneOperationsRestTransport(ZoneOperationsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -177,6 +178,7 @@ class _BaseZoneOperationsRestTransport(ZoneOperationsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -214,7 +216,7 @@ class _BaseZoneOperationsRestTransport(ZoneOperationsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -223,6 +225,7 @@ class _BaseZoneOperationsRestTransport(ZoneOperationsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseWait:
@@ -260,7 +263,7 @@ class _BaseZoneOperationsRestTransport(ZoneOperationsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -269,6 +272,7 @@ class _BaseZoneOperationsRestTransport(ZoneOperationsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

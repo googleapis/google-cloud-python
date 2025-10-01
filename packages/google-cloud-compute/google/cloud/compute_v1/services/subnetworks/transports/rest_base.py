@@ -122,7 +122,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -131,6 +131,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDelete:
@@ -168,7 +169,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -177,6 +178,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseExpandIpCidrRange:
@@ -215,7 +217,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -224,7 +226,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -233,6 +235,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -270,7 +273,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -279,6 +282,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetIamPolicy:
@@ -316,7 +320,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -325,6 +329,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInsert:
@@ -363,7 +368,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -372,7 +377,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -381,6 +386,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -418,7 +424,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -427,6 +433,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseListUsable:
@@ -464,7 +471,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -473,6 +480,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatch:
@@ -511,7 +519,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -520,7 +528,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -529,6 +537,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetIamPolicy:
@@ -567,7 +576,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -576,7 +585,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -585,6 +594,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetPrivateIpGoogleAccess:
@@ -623,7 +633,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -632,7 +642,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -641,6 +651,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseTestIamPermissions:
@@ -679,7 +690,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -688,7 +699,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -697,6 +708,7 @@ class _BaseSubnetworksRestTransport(SubnetworksTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

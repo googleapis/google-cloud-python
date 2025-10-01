@@ -1030,7 +1030,7 @@ def test_disable_xpn_host_rest_required_fields(
 
             response = client.disable_xpn_host(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1215,7 +1215,7 @@ def test_disable_xpn_host_unary_rest_required_fields(
 
             response = client.disable_xpn_host_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1403,7 +1403,7 @@ def test_disable_xpn_resource_rest_required_fields(
 
             response = client.disable_xpn_resource(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1606,7 +1606,7 @@ def test_disable_xpn_resource_unary_rest_required_fields(
 
             response = client.disable_xpn_resource_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1804,7 +1804,7 @@ def test_enable_xpn_host_rest_required_fields(
 
             response = client.enable_xpn_host(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1987,7 +1987,7 @@ def test_enable_xpn_host_unary_rest_required_fields(
 
             response = client.enable_xpn_host_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2175,7 +2175,7 @@ def test_enable_xpn_resource_rest_required_fields(
 
             response = client.enable_xpn_resource(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2378,7 +2378,7 @@ def test_enable_xpn_resource_unary_rest_required_fields(
 
             response = client.enable_xpn_resource_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2568,7 +2568,7 @@ def test_get_rest_required_fields(request_type=compute.GetProjectRequest):
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2744,7 +2744,7 @@ def test_get_xpn_host_rest_required_fields(
 
             response = client.get_xpn_host(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2933,7 +2933,7 @@ def test_get_xpn_resources_rest_required_fields(
 
             response = client.get_xpn_resources(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3193,7 +3193,7 @@ def test_list_xpn_hosts_rest_required_fields(
 
             response = client.list_xpn_hosts(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3461,7 +3461,7 @@ def test_move_disk_rest_required_fields(request_type=compute.MoveDiskProjectRequ
 
             response = client.move_disk(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3659,7 +3659,7 @@ def test_move_disk_unary_rest_required_fields(
 
             response = client.move_disk_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3857,7 +3857,7 @@ def test_move_instance_rest_required_fields(
 
             response = client.move_instance(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4055,7 +4055,7 @@ def test_move_instance_unary_rest_required_fields(
 
             response = client.move_instance_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4257,7 +4257,7 @@ def test_set_cloud_armor_tier_rest_required_fields(
 
             response = client.set_cloud_armor_tier(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4460,7 +4460,7 @@ def test_set_cloud_armor_tier_unary_rest_required_fields(
 
             response = client.set_cloud_armor_tier_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4664,7 +4664,7 @@ def test_set_common_instance_metadata_rest_required_fields(
 
             response = client.set_common_instance_metadata(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4864,7 +4864,7 @@ def test_set_common_instance_metadata_unary_rest_required_fields(
 
             response = client.set_common_instance_metadata_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5066,7 +5066,7 @@ def test_set_default_network_tier_rest_required_fields(
 
             response = client.set_default_network_tier(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5270,7 +5270,7 @@ def test_set_default_network_tier_unary_rest_required_fields(
 
             response = client.set_default_network_tier_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5474,7 +5474,7 @@ def test_set_usage_export_bucket_rest_required_fields(
 
             response = client.set_usage_export_bucket(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5678,7 +5678,7 @@ def test_set_usage_export_bucket_unary_rest_required_fields(
 
             response = client.set_usage_export_bucket_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

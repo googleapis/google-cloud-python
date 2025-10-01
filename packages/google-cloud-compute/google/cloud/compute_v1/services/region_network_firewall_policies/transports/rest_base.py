@@ -127,7 +127,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -136,7 +136,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -145,6 +145,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseAddRule:
@@ -183,7 +184,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -192,7 +193,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -201,6 +202,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseCloneRules:
@@ -240,7 +242,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -249,6 +251,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDelete:
@@ -286,7 +289,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -295,6 +298,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -332,7 +336,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -341,6 +345,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetAssociation:
@@ -380,7 +385,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -389,6 +394,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetEffectiveFirewalls:
@@ -432,7 +438,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -441,6 +447,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetIamPolicy:
@@ -480,7 +487,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -489,6 +496,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetRule:
@@ -526,7 +534,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -535,6 +543,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInsert:
@@ -573,7 +582,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -582,7 +591,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -591,6 +600,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -628,7 +638,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -637,6 +647,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatch:
@@ -675,7 +686,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -684,7 +695,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -693,6 +704,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatchRule:
@@ -731,7 +743,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -740,7 +752,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -749,6 +761,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseRemoveAssociation:
@@ -788,7 +801,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -797,6 +810,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseRemoveRule:
@@ -836,7 +850,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -845,6 +859,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetIamPolicy:
@@ -885,7 +900,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -894,7 +909,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -903,6 +918,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseTestIamPermissions:
@@ -943,7 +959,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -952,7 +968,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -961,6 +977,7 @@ class _BaseRegionNetworkFirewallPoliciesRestTransport(
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

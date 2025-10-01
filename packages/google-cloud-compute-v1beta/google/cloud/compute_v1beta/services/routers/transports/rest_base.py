@@ -122,7 +122,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -131,6 +131,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDelete:
@@ -168,7 +169,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -177,6 +178,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDeleteRoutePolicy:
@@ -214,7 +216,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -223,6 +225,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -260,7 +263,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -269,6 +272,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetNatIpInfo:
@@ -306,7 +310,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -315,6 +319,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetNatMappingInfo:
@@ -352,7 +357,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -361,6 +366,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetRoutePolicy:
@@ -398,7 +404,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -407,6 +413,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetRouterStatus:
@@ -444,7 +451,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -453,6 +460,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInsert:
@@ -491,7 +499,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -500,7 +508,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -509,6 +517,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -546,7 +555,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -555,6 +564,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseListBgpRoutes:
@@ -592,7 +602,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -601,6 +611,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseListRoutePolicies:
@@ -638,7 +649,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -647,6 +658,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatch:
@@ -685,7 +697,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -694,7 +706,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -703,6 +715,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatchRoutePolicy:
@@ -741,7 +754,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -750,7 +763,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -759,6 +772,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePreview:
@@ -797,7 +811,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -806,7 +820,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -815,6 +829,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseTestIamPermissions:
@@ -853,7 +868,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -862,7 +877,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -871,6 +886,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseUpdate:
@@ -909,7 +925,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -918,7 +934,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -927,6 +943,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseUpdateRoutePolicy:
@@ -965,7 +982,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -974,7 +991,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -983,6 +1000,7 @@ class _BaseRoutersRestTransport(RoutersTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

@@ -123,7 +123,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -132,7 +132,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -141,6 +141,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseAggregatedList:
@@ -178,7 +179,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -187,6 +188,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDelete:
@@ -224,7 +226,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -233,6 +235,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDeleteSignedUrlKey:
@@ -272,7 +275,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -281,6 +284,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -318,7 +322,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -327,6 +331,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetEffectiveSecurityPolicies:
@@ -366,7 +371,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -375,6 +380,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetHealth:
@@ -413,7 +419,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -422,7 +428,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -431,6 +437,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetIamPolicy:
@@ -468,7 +475,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -477,6 +484,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInsert:
@@ -515,7 +523,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -524,7 +532,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -533,6 +541,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -570,7 +579,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -579,6 +588,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseListUsable:
@@ -616,7 +626,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -625,6 +635,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatch:
@@ -663,7 +674,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -672,7 +683,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -681,6 +692,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetEdgeSecurityPolicy:
@@ -719,7 +731,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -728,7 +740,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -737,6 +749,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetIamPolicy:
@@ -775,7 +788,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -784,7 +797,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -793,6 +806,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetSecurityPolicy:
@@ -831,7 +845,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -840,7 +854,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -849,6 +863,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseTestIamPermissions:
@@ -887,7 +902,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -896,7 +911,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -905,6 +920,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseUpdate:
@@ -943,7 +959,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -952,7 +968,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -961,6 +977,7 @@ class _BaseBackendServicesRestTransport(BackendServicesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

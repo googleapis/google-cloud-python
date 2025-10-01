@@ -122,7 +122,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -131,6 +131,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -168,7 +169,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -177,6 +178,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInsert:
@@ -215,7 +217,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -224,7 +226,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -233,6 +235,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -270,7 +273,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -279,6 +282,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetBackendService:
@@ -317,7 +321,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -326,7 +330,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -335,6 +339,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetCertificateMap:
@@ -373,7 +378,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -382,7 +387,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -391,6 +396,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetProxyHeader:
@@ -429,7 +435,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -438,7 +444,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -447,6 +453,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetSslCertificates:
@@ -485,7 +492,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -494,7 +501,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -503,6 +510,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetSslPolicy:
@@ -541,7 +549,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -550,7 +558,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -559,6 +567,7 @@ class _BaseTargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

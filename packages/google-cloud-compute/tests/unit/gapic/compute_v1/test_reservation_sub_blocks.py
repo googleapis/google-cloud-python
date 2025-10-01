@@ -1110,7 +1110,7 @@ def test_get_rest_required_fields(request_type=compute.GetReservationSubBlockReq
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1327,7 +1327,7 @@ def test_list_rest_required_fields(
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1619,7 +1619,7 @@ def test_perform_maintenance_rest_required_fields(
 
             response = client.perform_maintenance(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1840,7 +1840,7 @@ def test_perform_maintenance_unary_rest_required_fields(
 
             response = client.perform_maintenance_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

@@ -123,7 +123,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -132,7 +132,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -141,6 +141,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseAddInstance:
@@ -179,7 +180,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -188,7 +189,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -197,6 +198,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseAggregatedList:
@@ -234,7 +236,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -243,6 +245,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDelete:
@@ -280,7 +283,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -289,6 +292,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -326,7 +330,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -335,6 +339,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetHealth:
@@ -373,7 +378,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -382,7 +387,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -391,6 +396,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInsert:
@@ -429,7 +435,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -438,7 +444,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -447,6 +453,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -484,7 +491,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -493,6 +500,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseRemoveHealthCheck:
@@ -531,7 +539,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -540,7 +548,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -549,6 +557,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseRemoveInstance:
@@ -587,7 +596,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -596,7 +605,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -605,6 +614,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetBackup:
@@ -643,7 +653,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -652,7 +662,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -661,6 +671,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetSecurityPolicy:
@@ -699,7 +710,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -708,7 +719,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -717,6 +728,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseTestIamPermissions:
@@ -755,7 +767,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -764,7 +776,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -773,6 +785,7 @@ class _BaseTargetPoolsRestTransport(TargetPoolsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

@@ -1134,7 +1134,7 @@ def test_add_association_rest_required_fields(
 
             response = client.add_association(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1343,7 +1343,7 @@ def test_add_association_unary_rest_required_fields(
 
             response = client.add_association_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1547,7 +1547,7 @@ def test_add_rule_rest_required_fields(
 
             response = client.add_rule(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1746,7 +1746,7 @@ def test_add_rule_unary_rest_required_fields(
 
             response = client.add_rule_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1949,7 +1949,7 @@ def test_copy_rules_rest_required_fields(
 
             response = client.copy_rules(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2146,7 +2146,7 @@ def test_copy_rules_unary_rest_required_fields(
 
             response = client.copy_rules_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2338,7 +2338,7 @@ def test_delete_rest_required_fields(
 
             response = client.delete(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2522,7 +2522,7 @@ def test_delete_unary_rest_required_fields(
 
             response = client.delete_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2700,7 +2700,7 @@ def test_get_rest_required_fields(
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2880,7 +2880,7 @@ def test_get_association_rest_required_fields(
 
             response = client.get_association(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3060,7 +3060,7 @@ def test_get_rule_rest_required_fields(
 
             response = client.get_rule(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3245,7 +3245,7 @@ def test_insert_rest_required_fields(
 
             response = client.insert(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3450,7 +3450,7 @@ def test_insert_unary_rest_required_fields(
 
             response = client.insert_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3835,7 +3835,7 @@ def test_move_rest_required_fields(
 
             response = client.move(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4032,7 +4032,7 @@ def test_move_unary_rest_required_fields(
 
             response = client.move_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4180,7 +4180,12 @@ def test_patch_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4225,7 +4230,7 @@ def test_patch_rest_required_fields(
 
             response = client.patch(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4237,7 +4242,12 @@ def test_patch_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
         & set(
             (
                 "securityPolicy",
@@ -4387,7 +4397,12 @@ def test_patch_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4432,7 +4447,7 @@ def test_patch_unary_rest_required_fields(
 
             response = client.patch_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4444,7 +4459,12 @@ def test_patch_unary_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
         & set(
             (
                 "securityPolicy",
@@ -4598,6 +4618,7 @@ def test_patch_rule_rest_required_fields(
         (
             "priority",
             "request_id",
+            "update_mask",
         )
     )
     jsonified_request.update(unset_fields)
@@ -4644,7 +4665,7 @@ def test_patch_rule_rest_required_fields(
 
             response = client.patch_rule(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4660,6 +4681,7 @@ def test_patch_rule_rest_unset_required_fields():
             (
                 "priority",
                 "requestId",
+                "updateMask",
             )
         )
         & set(
@@ -4807,6 +4829,7 @@ def test_patch_rule_unary_rest_required_fields(
         (
             "priority",
             "request_id",
+            "update_mask",
         )
     )
     jsonified_request.update(unset_fields)
@@ -4853,7 +4876,7 @@ def test_patch_rule_unary_rest_required_fields(
 
             response = client.patch_rule_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4869,6 +4892,7 @@ def test_patch_rule_unary_rest_unset_required_fields():
             (
                 "priority",
                 "requestId",
+                "updateMask",
             )
         )
         & set(
@@ -5065,7 +5089,7 @@ def test_remove_association_rest_required_fields(
 
             response = client.remove_association(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5266,7 +5290,7 @@ def test_remove_association_unary_rest_required_fields(
 
             response = client.remove_association_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5463,7 +5487,7 @@ def test_remove_rule_rest_required_fields(
 
             response = client.remove_rule(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5660,7 +5684,7 @@ def test_remove_rule_unary_rest_required_fields(
 
             response = client.remove_rule_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

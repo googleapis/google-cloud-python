@@ -1097,7 +1097,7 @@ def test_get_rest_required_fields(request_type=compute.GetInterconnectLocationRe
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1295,7 +1295,7 @@ def test_list_rest_required_fields(
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1579,6 +1579,9 @@ def test_get_rest_call_success(request_type):
             name="name_value",
             peeringdb_facility_id="peeringdb_facility_id_value",
             self_link="self_link_value",
+            single_region_production_critical_peer_locations=[
+                "single_region_production_critical_peer_locations_value"
+            ],
             status="status_value",
             supports_pzs=True,
         )
@@ -1614,6 +1617,9 @@ def test_get_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.peeringdb_facility_id == "peeringdb_facility_id_value"
     assert response.self_link == "self_link_value"
+    assert response.single_region_production_critical_peer_locations == [
+        "single_region_production_critical_peer_locations_value"
+    ]
     assert response.status == "status_value"
     assert response.supports_pzs is True
 

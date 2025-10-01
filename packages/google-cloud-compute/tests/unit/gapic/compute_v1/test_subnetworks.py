@@ -1049,7 +1049,7 @@ def test_aggregated_list_rest_required_fields(
 
             response = client.aggregated_list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1325,7 +1325,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteSubnetworkReques
 
             response = client.delete(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1534,7 +1534,7 @@ def test_delete_unary_rest_required_fields(
 
             response = client.delete_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1748,7 +1748,7 @@ def test_expand_ip_cidr_range_rest_required_fields(
 
             response = client.expand_ip_cidr_range(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1969,7 +1969,7 @@ def test_expand_ip_cidr_range_unary_rest_required_fields(
 
             response = client.expand_ip_cidr_range_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2130,6 +2130,8 @@ def test_get_rest_required_fields(request_type=compute.GetSubnetworkRequest):
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("views",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2177,7 +2179,7 @@ def test_get_rest_required_fields(request_type=compute.GetSubnetworkRequest):
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2189,7 +2191,7 @@ def test_get_rest_unset_required_fields():
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("views",))
         & set(
             (
                 "project",
@@ -2382,7 +2384,7 @@ def test_get_iam_policy_rest_required_fields(
 
             response = client.get_iam_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2586,7 +2588,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertSubnetworkReques
 
             response = client.insert(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2792,7 +2794,7 @@ def test_insert_unary_rest_required_fields(
 
             response = client.insert_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2952,6 +2954,7 @@ def test_list_rest_required_fields(request_type=compute.ListSubnetworksRequest):
             "order_by",
             "page_token",
             "return_partial_success",
+            "views",
         )
     )
     jsonified_request.update(unset_fields)
@@ -2999,7 +3002,7 @@ def test_list_rest_required_fields(request_type=compute.ListSubnetworksRequest):
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3018,6 +3021,7 @@ def test_list_rest_unset_required_fields():
                 "orderBy",
                 "pageToken",
                 "returnPartialSuccess",
+                "views",
             )
         )
         & set(
@@ -3267,7 +3271,7 @@ def test_list_usable_rest_required_fields(
 
             response = client.list_usable(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3538,7 +3542,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchSubnetworkRequest)
 
             response = client.patch(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3763,7 +3767,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchSubnetworkRe
 
             response = client.patch_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3979,7 +3983,7 @@ def test_set_iam_policy_rest_required_fields(
 
             response = client.set_iam_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4201,7 +4205,7 @@ def test_set_private_ip_google_access_rest_required_fields(
 
             response = client.set_private_ip_google_access(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4423,7 +4427,7 @@ def test_set_private_ip_google_access_unary_rest_required_fields(
 
             response = client.set_private_ip_google_access_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4640,7 +4644,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response = client.test_iam_permissions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5777,6 +5781,21 @@ def test_insert_rest_call_success(request_type):
             "system_reserved_internal_ipv6_ranges_value1",
             "system_reserved_internal_ipv6_ranges_value2",
         ],
+        "utilization_details": {
+            "external_ipv6_instance_utilization": {
+                "total_allocated_ip": {"high": 416, "low": 338},
+                "total_free_ip": {},
+            },
+            "external_ipv6_lb_utilization": {},
+            "internal_ipv6_utilization": {},
+            "ipv4_utilizations": [
+                {
+                    "range_name": "range_name_value",
+                    "total_allocated_ip": 1892,
+                    "total_free_ip": 1373,
+                }
+            ],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6331,6 +6350,21 @@ def test_patch_rest_call_success(request_type):
             "system_reserved_internal_ipv6_ranges_value1",
             "system_reserved_internal_ipv6_ranges_value2",
         ],
+        "utilization_details": {
+            "external_ipv6_instance_utilization": {
+                "total_allocated_ip": {"high": 416, "low": 338},
+                "total_free_ip": {},
+            },
+            "external_ipv6_lb_utilization": {},
+            "internal_ipv6_utilization": {},
+            "ipv4_utilizations": [
+                {
+                    "range_name": "range_name_value",
+                    "total_allocated_ip": 1892,
+                    "total_free_ip": 1373,
+                }
+            ],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

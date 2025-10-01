@@ -1037,7 +1037,7 @@ def test_add_peering_rest_required_fields(
 
             response = client.add_peering(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1243,7 +1243,7 @@ def test_add_peering_unary_rest_required_fields(
 
             response = client.add_peering_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1446,7 +1446,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteNetworkRequest):
 
             response = client.delete(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1642,7 +1642,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteNetworkReq
 
             response = client.delete_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1832,7 +1832,7 @@ def test_get_rest_required_fields(request_type=compute.GetNetworkRequest):
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2031,7 +2031,7 @@ def test_get_effective_firewalls_rest_required_fields(
 
             response = client.get_effective_firewalls(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2224,7 +2224,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertNetworkRequest):
 
             response = client.insert(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2417,7 +2417,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertNetworkReq
 
             response = client.insert_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2613,7 +2613,7 @@ def test_list_rest_required_fields(request_type=compute.ListNetworksRequest):
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2884,7 +2884,7 @@ def test_list_peering_routes_rest_required_fields(
 
             response = client.list_peering_routes(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3155,7 +3155,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchNetworkRequest):
 
             response = client.patch(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3355,7 +3355,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchNetworkReque
 
             response = client.patch_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3557,7 +3557,7 @@ def test_remove_peering_rest_required_fields(
 
             response = client.remove_peering(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3763,7 +3763,7 @@ def test_remove_peering_unary_rest_required_fields(
 
             response = client.remove_peering_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3974,7 +3974,7 @@ def test_request_remove_peering_rest_required_fields(
 
             response = client.request_remove_peering(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4185,7 +4185,7 @@ def test_request_remove_peering_unary_rest_required_fields(
 
             response = client.request_remove_peering_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4395,7 +4395,7 @@ def test_switch_to_custom_mode_rest_required_fields(
 
             response = client.switch_to_custom_mode(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4598,7 +4598,7 @@ def test_switch_to_custom_mode_unary_rest_required_fields(
 
             response = client.switch_to_custom_mode_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4795,7 +4795,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response = client.test_iam_permissions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5001,7 +5001,7 @@ def test_update_peering_rest_required_fields(
 
             response = client.update_peering(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5207,7 +5207,7 @@ def test_update_peering_unary_rest_required_fields(
 
             response = client.update_peering_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

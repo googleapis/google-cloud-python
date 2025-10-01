@@ -1120,7 +1120,7 @@ def test_get_rest_required_fields(
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1321,7 +1321,7 @@ def test_list_rest_required_fields(
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1606,6 +1606,7 @@ def test_get_rest_call_success(request_type):
             lacp="lacp_value",
             max_lag_size100_gbps=1935,
             max_lag_size10_gbps=1887,
+            max_lag_size400_gbps=1938,
             name="name_value",
             peeringdb_facility_id="peeringdb_facility_id_value",
             remote_service="remote_service_value",
@@ -1641,6 +1642,7 @@ def test_get_rest_call_success(request_type):
     assert response.lacp == "lacp_value"
     assert response.max_lag_size100_gbps == 1935
     assert response.max_lag_size10_gbps == 1887
+    assert response.max_lag_size400_gbps == 1938
     assert response.name == "name_value"
     assert response.peeringdb_facility_id == "peeringdb_facility_id_value"
     assert response.remote_service == "remote_service_value"
