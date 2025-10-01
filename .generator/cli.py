@@ -694,9 +694,12 @@ def _get_staging_child_directory(api_path: str, is_proto_only_library: bool) -> 
     version_candidate = api_path.split("/")[-1]
     if version_candidate.startswith("v") and not is_proto_only_library:
         return version_candidate
-    else:
-        # Fallback for non-'v' version segment
+    elif is_proto_only_library:
+        # Fallback for non-'v' version segment for proto-only library
         return f"{os.path.basename(api_path)}-py/{api_path}"
+    else:
+        # Fallback for non-'v' version segment for GAPIC
+        return f"{os.path.basename(api_path)}-py"
 
 
 def _stage_proto_only_library(

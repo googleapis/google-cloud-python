@@ -1569,6 +1569,7 @@ libraries:
       - scripts/client-post-processing
       - samples/snippets/README.rst
       - tests/system
+      - tests/unit/gapic/common/test_common.py
     remove_regex:
       - packages/google-cloud-common
     tag_format: '{id}-v{version}'
