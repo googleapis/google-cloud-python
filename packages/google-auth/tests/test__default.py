@@ -14,6 +14,7 @@
 
 import json
 import os
+import warnings
 
 import mock
 import pytest  # type: ignore
@@ -398,7 +399,6 @@ def test_load_credentials_from_file_impersonated_passing_scopes():
 
 
 def test_load_credentials_from_file_impersonated_wrong_target_principal(tmpdir):
-
     with open(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE) as fh:
         impersonated_credentials_info = json.load(fh)
     impersonated_credentials_info[
@@ -414,7 +414,6 @@ def test_load_credentials_from_file_impersonated_wrong_target_principal(tmpdir):
 
 
 def test_load_credentials_from_file_impersonated_wrong_source_type(tmpdir):
-
     with open(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE) as fh:
         impersonated_credentials_info = json.load(fh)
     impersonated_credentials_info["source_credentials"]["type"] = "external_account"
@@ -1325,7 +1324,7 @@ def test_default_impersonated_service_account_set_default_scopes(get_adc_path):
     "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
 )
 def test_default_impersonated_service_account_set_both_scopes_and_default_scopes(
-    get_adc_path
+    get_adc_path,
 ):
     get_adc_path.return_value = IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE
     scopes = ["scope1", "scope2"]
@@ -1410,3 +1409,54 @@ def test_quota_gce_credentials(unused_get, unused_ping):
         quota_project_id=explicit_quota
     )
     assert credentials.quota_project_id == explicit_quota
+
+
+def test_load_credentials_from_file_deprecation_warning():
+    with pytest.warns(
+        DeprecationWarning, match="The load_credentials_from_file method is deprecated"
+    ):
+        _default.load_credentials_from_file(SERVICE_ACCOUNT_FILE)
+
+
+def test_load_credentials_from_dict_deprecation_warning():
+    with pytest.warns(
+        DeprecationWarning, match="The load_credentials_from_dict method is deprecated"
+    ):
+        _default.load_credentials_from_dict(SERVICE_ACCOUNT_FILE_DATA)
+
+
+@mock.patch("google.auth._cloud_sdk.get_project_id", return_value=None, autospec=True)
+@mock.patch("os.path.isfile", return_value=True, autospec=True)
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path",
+    return_value=SERVICE_ACCOUNT_FILE,
+    autospec=True,
+)
+def test_get_gcloud_sdk_credentials_suppresses_deprecation_warning(
+    get_adc_path, isfile, get_project_id
+):
+    with warnings.catch_warnings(record=True) as caught_warnings:
+        warnings.simplefilter("always")
+
+        _default._get_gcloud_sdk_credentials()
+
+        assert not any(
+            isinstance(w.message, DeprecationWarning)
+            and "load_credentials_from_file" in str(w.message)
+            for w in caught_warnings
+        )
+
+
+def test_get_explicit_environ_credentials_suppresses_deprecation_warning(monkeypatch):
+    monkeypatch.setenv(environment_vars.CREDENTIALS, SERVICE_ACCOUNT_FILE)
+
+    with warnings.catch_warnings(record=True) as caught_warnings:
+        warnings.simplefilter("always")
+
+        _default._get_explicit_environ_credentials()
+
+        assert not any(
+            isinstance(w.message, DeprecationWarning)
+            and "load_credentials_from_file" in str(w.message)
+            for w in caught_warnings
+        )
