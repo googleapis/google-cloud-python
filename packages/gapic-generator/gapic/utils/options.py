@@ -167,6 +167,16 @@ class Options:
             "TRUE",
         )
 
+        # `rest-numeric-enums` is False by default. Make sure users can also disable
+        # it by passing `rest-numeric-enums=False`.
+        rest_numeric_enums = opts.pop("rest-numeric-enums", ["False"])[0] in (
+            "True",
+            "true",
+            "T",
+            "t",
+            "TRUE",
+        )
+
         # NOTE: Snippets are not currently correct for the alternative (Ads) templates
         # so always disable snippetgen in that case
         # https://github.com/googleapis/gapic-generator-python/issues/1052
@@ -197,7 +207,7 @@ class Options:
             # transport should include desired transports delimited by '+', e.g. transport='grpc+rest'
             transport=opts.pop("transport", ["grpc"])[0].split("+"),
             service_yaml_config=service_yaml_config,
-            rest_numeric_enums=bool(opts.pop("rest-numeric-enums", False)),
+            rest_numeric_enums=rest_numeric_enums,
             proto_plus_deps=proto_plus_deps,
             gapic_version=opts.pop("gapic-version", ["0.0.0"]).pop(),
         )

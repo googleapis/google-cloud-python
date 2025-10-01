@@ -212,6 +212,9 @@ def test_options_bool_flags():
     options = Options.build("autogen-snippets=False")
     assert not options.autogen_snippets
 
+    options = Options.build("rest-numeric-enums=False")
+    assert not options.rest_numeric_enums
+
 
 def test_options_autogen_snippets_false_for_old_naming():
     # NOTE: Snippets are not currently correct for the alternative (Ads) templates
