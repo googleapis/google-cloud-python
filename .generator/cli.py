@@ -888,6 +888,7 @@ def _verify_library_namespace(library_id: str, repo: str):
         "google.cloud.video",
         "google.cloud.workflows",
         "google.gapic",
+        "google.identity.accesscontextmanager",
         "google.logging",
         "google.monitoring",
         "google.rpc",
