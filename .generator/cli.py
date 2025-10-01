@@ -591,6 +591,10 @@ def _get_api_generator_options(
     for bazel_key, protoc_key in config_key_map.items():
         config_value = py_gapic_config.get(bazel_key)
         if config_value is not None:
+            # There is logic in the generator that treats all values of
+            # `rest-numeric-enums` as True, so just omit it if we want it to be False
+            if bazel_key == 'rest_numeric_enums' and not config_value:
+                continue
             if bazel_key in ("service_yaml", "grpc_service_config"):
                 # These paths are relative to the source root
                 generator_options.append(f"{protoc_key}={api_path}/{config_value}")
