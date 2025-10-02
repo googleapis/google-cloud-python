@@ -90,7 +90,6 @@ _CALLABLE_MAP = {
 _NOOP_CALLABLES = (
     "package",
     "alias",
-    "py_test",
     "sh_binary",
     "java_proto_library",
     "genrule",
@@ -130,6 +129,7 @@ def parse_content(content: str) -> dict:
 
     mod.add_callable("package", noop_bazel_rule)
     mod.add_callable("proto_library", noop_bazel_rule)
+    mod.add_callable("py_test", noop_bazel_rule)
 
     for glob_callable in _GLOB_CALLABLES:
         mod.add_callable(glob_callable, fake_glob)
