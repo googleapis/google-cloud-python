@@ -1778,3 +1778,21 @@ libraries:
     remove_regex:
       - packages/google-cloud-workflows
     tag_format: '{id}-v{version}'
+  - id: google-cloud-video-stitcher
+    version: 0.7.18
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/video/stitcher/v1
+    source_roots:
+      - packages/google-cloud-video-stitcher
+    preserve_regex:
+      - packages/google-cloud-video-stitcher/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-video-stitcher
+    tag_format: '{id}-v{version}'
