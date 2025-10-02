@@ -152,8 +152,9 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`. This argument will be
+                removed in the next major version of this library.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -204,9 +205,10 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if a ``channel`` instance is provided.
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
+                This argument will be removed in the next major version of this library.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -1380,6 +1382,33 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
             )
         return self._stubs["list_databases"]
 
+    @property
+    def create_database(
+        self,
+    ) -> Callable[[service.CreateDatabaseRequest], Awaitable[resources.Database]]:
+        r"""Return a callable for the create database method over gRPC.
+
+        Creates a new Database in a given project, location,
+        and cluster.
+
+        Returns:
+            Callable[[~.CreateDatabaseRequest],
+                    Awaitable[~.Database]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_database" not in self._stubs:
+            self._stubs["create_database"] = self._logged_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/CreateDatabase",
+                request_serializer=service.CreateDatabaseRequest.serialize,
+                response_deserializer=resources.Database.deserialize,
+            )
+        return self._stubs["create_database"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1664,6 +1693,20 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
             ),
             self.list_databases: self._wrap_method(
                 self.list_databases,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_database: self._wrap_method(
+                self.create_database,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=60.0,
