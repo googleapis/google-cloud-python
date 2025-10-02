@@ -203,5 +203,49 @@ def test_ai_generate_double_multi_model(session):
     )
 
 
+def test_ai_if(session):
+    s1 = bpd.Series(["apple", "bear"], session=session)
+    s2 = bpd.Series(["fruit", "tree"], session=session)
+    prompt = (s1, " is a ", s2)
+
+    result = bbq.ai.if_(prompt)
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.BOOL_DTYPE
+
+
+def test_ai_if_multi_model(session):
+    df = session.from_glob_path(
+        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+    )
+
+    result = bbq.ai.if_((df["image"], " contains an animal"))
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.BOOL_DTYPE
+
+
+def test_ai_score(session):
+    s = bpd.Series(["Tiger", "Rabbit"], session=session)
+    prompt = ("Rank the relative weights of ", s, " on the scale from 1 to 3")
+
+    result = bbq.ai.score(prompt)
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.FLOAT_DTYPE
+
+
+def test_ai_score_multi_model(session):
+    df = session.from_glob_path(
+        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+    )
+    prompt = ("Rank the liveliness of ", df["image"], "on the scale from 1 to 3")
+
+    result = bbq.ai.score(prompt)
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.FLOAT_DTYPE
+
+
 def _contains_no_nulls(s: series.Series) -> bool:
     return len(s) == s.count()

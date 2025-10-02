@@ -54,6 +54,20 @@ def _(*exprs: TypedExpr, op: ops.AIGenerateDouble) -> sge.Expression:
     return sge.func("AI.GENERATE_DOUBLE", *args)
 
 
+@register_nary_op(ops.AIIf, pass_op=True)
+def _(*exprs: TypedExpr, op: ops.AIIf) -> sge.Expression:
+    args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)
+
+    return sge.func("AI.IF", *args)
+
+
+@register_nary_op(ops.AIScore, pass_op=True)
+def _(*exprs: TypedExpr, op: ops.AIScore) -> sge.Expression:
+    args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)
+
+    return sge.func("AI.SCORE", *args)
+
+
 def _construct_prompt(
     exprs: tuple[TypedExpr, ...], prompt_context: tuple[str | None, ...]
 ) -> sge.Kwarg:
@@ -83,10 +97,13 @@ def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
     if endpoit is not None:
         args.append(sge.Kwarg(this="endpoint", expression=sge.Literal.string(endpoit)))
 
-    request_type = typing.cast(str, op_args["request_type"]).upper()
-    args.append(
-        sge.Kwarg(this="request_type", expression=sge.Literal.string(request_type))
-    )
+    request_type = typing.cast(str, op_args.get("request_type", None))
+    if request_type is not None:
+        args.append(
+            sge.Kwarg(
+                this="request_type", expression=sge.Literal.string(request_type.upper())
+            )
+        )
 
     model_params = typing.cast(str, op_args.get("model_params", None))
     if model_params is not None:

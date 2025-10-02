@@ -19,6 +19,8 @@ from bigframes.operations.ai_ops import (
     AIGenerateBool,
     AIGenerateDouble,
     AIGenerateInt,
+    AIIf,
+    AIScore,
 )
 from bigframes.operations.array_ops import (
     ArrayIndexOp,
@@ -421,6 +423,8 @@ __all__ = [
     "AIGenerateBool",
     "AIGenerateDouble",
     "AIGenerateInt",
+    "AIIf",
+    "AIScore",
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",

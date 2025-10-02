@@ -110,3 +110,25 @@ class AIGenerateDouble(base_ops.NaryOp):
                 )
             )
         )
+
+
+@dataclasses.dataclass(frozen=True)
+class AIIf(base_ops.NaryOp):
+    name: ClassVar[str] = "ai_if"
+
+    prompt_context: Tuple[str | None, ...]
+    connection_id: str
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.BOOL_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class AIScore(base_ops.NaryOp):
+    name: ClassVar[str] = "ai_score"
+
+    prompt_context: Tuple[str | None, ...]
+    connection_id: str
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.FLOAT_DTYPE

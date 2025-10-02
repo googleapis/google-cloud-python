@@ -91,3 +91,31 @@ class AIGenerateDouble(Value):
                 ("status", dt.string),
             )
         )
+
+
+@public
+class AIIf(Value):
+    """Generate True/False based on the prompt"""
+
+    prompt: Value
+    connection_id: Value[dt.String]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.bool
+
+
+@public
+class AIScore(Value):
+    """Generate doubles based on the prompt"""
+
+    prompt: Value
+    connection_id: Value[dt.String]
+
+    shape = rlz.shape_like("prompt")
+
+    @attribute
+    def dtype(self) -> dt.Struct:
+        return dt.float64

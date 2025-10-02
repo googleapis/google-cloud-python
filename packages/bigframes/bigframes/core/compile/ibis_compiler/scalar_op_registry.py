@@ -2030,6 +2030,24 @@ def ai_generate_double(
     ).to_expr()
 
 
+@scalar_op_compiler.register_nary_op(ops.AIIf, pass_op=True)
+def ai_if(*values: ibis_types.Value, op: ops.AIIf) -> ibis_types.StructValue:
+
+    return ai_ops.AIIf(
+        _construct_prompt(values, op.prompt_context),  # type: ignore
+        op.connection_id,  # type: ignore
+    ).to_expr()
+
+
+@scalar_op_compiler.register_nary_op(ops.AIScore, pass_op=True)
+def ai_score(*values: ibis_types.Value, op: ops.AIScore) -> ibis_types.StructValue:
+
+    return ai_ops.AIScore(
+        _construct_prompt(values, op.prompt_context),  # type: ignore
+        op.connection_id,  # type: ignore
+    ).to_expr()
+
+
 def _construct_prompt(
     col_refs: tuple[ibis_types.Value], prompt_context: tuple[str | None]
 ) -> ibis_types.StructValue:

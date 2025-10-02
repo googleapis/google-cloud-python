@@ -337,6 +337,100 @@ def generate_double(
     return series_list[0]._apply_nary_op(operator, series_list[1:])
 
 
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
+def if_(
+    prompt: PROMPT_TYPE,
+    *,
+    connection_id: str | None = None,
+) -> series.Series:
+    """
+    Evaluates the prompt to True or False. Compared to `ai.generate_bool()`, this function
+    provides optimization such that not all rows are evaluated with the LLM.
+
+    **Examples:**
+    >>> import bigframes.pandas as bpd
+    >>> import bigframes.bigquery as bbq
+    >>> bpd.options.display.progress_bar = None
+    >>> us_state = bpd.Series(["Massachusetts", "Illinois", "Hawaii"])
+    >>> bbq.ai.if_((us_state, " has a city called Springfield"))
+    0     True
+    1     True
+    2    False
+    dtype: boolean
+
+    >>> us_state[bbq.ai.if_((us_state, " has a city called Springfield"))]
+    0    Massachusetts
+    1         Illinois
+    dtype: string
+
+    Args:
+        prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
+            A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
+            or pandas Series.
+        connection_id (str, optional):
+            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            If not provided, the connection from the current session will be used.
+
+    Returns:
+        bigframes.series.Series: A new series of bools.
+    """
+
+    prompt_context, series_list = _separate_context_and_series(prompt)
+    assert len(series_list) > 0
+
+    operator = ai_ops.AIIf(
+        prompt_context=tuple(prompt_context),
+        connection_id=_resolve_connection_id(series_list[0], connection_id),
+    )
+
+    return series_list[0]._apply_nary_op(operator, series_list[1:])
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
+def score(
+    prompt: PROMPT_TYPE,
+    *,
+    connection_id: str | None = None,
+) -> series.Series:
+    """
+    Computes a score based on rubrics described in natural language. It will return a double value.
+    There is no fixed range for the score returned. To get high quality results, provide a scoring
+    rubric with examples in the prompt.
+
+    **Examples:**
+    >>> import bigframes.pandas as bpd
+    >>> import bigframes.bigquery as bbq
+    >>> bpd.options.display.progress_bar = None
+    >>> animal = bpd.Series(["Tiger", "Rabbit", "Blue Whale"])
+    >>> bbq.ai.score(("Rank the relative weights of ", animal, " on the scale from 1 to 3")) # doctest: +SKIP
+    0    2.0
+    1    1.0
+    2    3.0
+    dtype: Float64
+
+    Args:
+        prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
+            A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
+            or pandas Series.
+        connection_id (str, optional):
+            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            If not provided, the connection from the current session will be used.
+
+    Returns:
+        bigframes.series.Series: A new series of double (float) values.
+    """
+
+    prompt_context, series_list = _separate_context_and_series(prompt)
+    assert len(series_list) > 0
+
+    operator = ai_ops.AIScore(
+        prompt_context=tuple(prompt_context),
+        connection_id=_resolve_connection_id(series_list[0], connection_id),
+    )
+
+    return series_list[0]._apply_nary_op(operator, series_list[1:])
+
+
 def _separate_context_and_series(
     prompt: PROMPT_TYPE,
 ) -> Tuple[List[str | None], List[series.Series]]:
