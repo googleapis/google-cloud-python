@@ -1796,3 +1796,359 @@ libraries:
     remove_regex:
       - packages/google-cloud-video-stitcher
     tag_format: '{id}-v{version}'
+  - id: google-cloud-redis-cluster
+    version: 0.1.15
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/redis/cluster/v1
+      - path: google/cloud/redis/cluster/v1beta1
+    source_roots:
+      - packages/google-cloud-redis-cluster
+    preserve_regex:
+      - packages/google-cloud-redis-cluster/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-redis-cluster
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-resource-manager
+    version: 1.14.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/resourcemanager/v3
+    source_roots:
+      - packages/google-cloud-resource-manager
+    preserve_regex:
+      - packages/google-cloud-resource-manager/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-resource-manager
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-retail
+    version: 2.6.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/retail/v2
+      - path: google/cloud/retail/v2alpha
+      - path: google/cloud/retail/v2beta
+    source_roots:
+      - packages/google-cloud-retail
+    preserve_regex:
+      - packages/google-cloud-retail/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-retail
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-run
+    version: 0.11.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/run/v2
+    source_roots:
+      - packages/google-cloud-run
+    preserve_regex:
+      - packages/google-cloud-run/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-run
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-saasplatform-saasservicemgmt
+    version: 0.1.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
+    source_roots:
+      - packages/google-cloud-saasplatform-saasservicemgmt
+    preserve_regex:
+      - packages/google-cloud-saasplatform-saasservicemgmt/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-saasplatform-saasservicemgmt
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-scheduler
+    version: 2.16.1
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/scheduler/v1
+      - path: google/cloud/scheduler/v1beta1
+    source_roots:
+      - packages/google-cloud-scheduler
+    preserve_regex:
+      - packages/google-cloud-scheduler/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-scheduler
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-securesourcemanager
+    version: 0.1.17
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/securesourcemanager/v1
+    source_roots:
+      - packages/google-cloud-securesourcemanager
+    preserve_regex:
+      - packages/google-cloud-securesourcemanager/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-securesourcemanager
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-securitycenter
+    version: 1.40.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/securitycenter/v2
+      - path: google/cloud/securitycenter/v1p1beta1
+      - path: google/cloud/securitycenter/v1beta1
+      - path: google/cloud/securitycenter/v1
+    source_roots:
+      - packages/google-cloud-securitycenter
+    preserve_regex:
+      - packages/google-cloud-securitycenter/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-securitycenter
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-securitycentermanagement
+    version: 0.1.22
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/securitycentermanagement/v1
+    source_roots:
+      - packages/google-cloud-securitycentermanagement
+    preserve_regex:
+      - packages/google-cloud-securitycentermanagement/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-securitycentermanagement
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-service-control
+    version: 1.16.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/api/servicecontrol/v2
+      - path: google/api/servicecontrol/v1
+    source_roots:
+      - packages/google-cloud-service-control
+    preserve_regex:
+      - packages/google-cloud-service-control/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-service-control
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-service-directory
+    version: 1.14.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/servicedirectory/v1
+      - path: google/cloud/servicedirectory/v1beta1
+    source_roots:
+      - packages/google-cloud-service-directory
+    preserve_regex:
+      - packages/google-cloud-service-directory/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-service-directory
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-service-management
+    version: 1.13.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/api/servicemanagement/v1
+    source_roots:
+      - packages/google-cloud-service-management
+    preserve_regex:
+      - packages/google-cloud-service-management/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-service-management
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-service-usage
+    version: 1.13.1
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/api/serviceusage/v1
+    source_roots:
+      - packages/google-cloud-service-usage
+    preserve_regex:
+      - packages/google-cloud-service-usage/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-service-usage
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-servicehealth
+    version: 0.1.12
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/servicehealth/v1
+    source_roots:
+      - packages/google-cloud-servicehealth
+    preserve_regex:
+      - packages/google-cloud-servicehealth/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-servicehealth
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-shell
+    version: 1.12.1
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/shell/v1
+    source_roots:
+      - packages/google-cloud-shell
+    preserve_regex:
+      - packages/google-cloud-shell/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-shell
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-source-context
+    version: 1.7.1
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/devtools/source/v1
+    source_roots:
+      - packages/google-cloud-source-context
+    preserve_regex:
+      - packages/google-cloud-source-context/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/gapic/source_context_v1/test_source_context_v1.py
+    remove_regex:
+      - packages/google-cloud-source-context
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-speech
+    version: 2.33.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/speech/v1
+      - path: google/cloud/speech/v2
+      - path: google/cloud/speech/v1p1beta1
+    source_roots:
+      - packages/google-cloud-speech
+    preserve_regex:
+      - packages/google-cloud-speech/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - google/cloud/speech_v1/helpers.py
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/test_helpers.py
+    remove_regex:
+      - packages/google-cloud-speech
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-storage-control
+    version: 1.7.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/storage/control/v2
+    source_roots:
+      - packages/google-cloud-storage-control
+    preserve_regex:
+      - packages/google-cloud-storage-control/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-storage-control
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-storage-transfer
+    version: 1.17.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/storagetransfer/v1
+    source_roots:
+      - packages/google-cloud-storage-transfer
+    preserve_regex:
+      - packages/google-cloud-storage-transfer/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-storage-transfer
+    tag_format: '{id}-v{version}'
