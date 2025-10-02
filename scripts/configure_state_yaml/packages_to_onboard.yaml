@@ -91,7 +91,6 @@ packages_to_onboard: [
   "google-cloud-run",
   "google-cloud-saasplatform-saasservicemgmt",
   "google-cloud-scheduler",
-  "google-cloud-secret-manager",
   "google-cloud-securesourcemanager",
   "google-cloud-securitycenter",
   "google-cloud-securitycentermanagement",
