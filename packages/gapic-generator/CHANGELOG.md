@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.27.2](https://github.com/googleapis/gapic-generator-python/compare/v1.27.1...v1.27.2) (2025-10-01)
+
+
+### Bug Fixes
+
+* Deprecate credentials_file ([#2454](https://github.com/googleapis/gapic-generator-python/issues/2454)) ([48c5f38](https://github.com/googleapis/gapic-generator-python/commit/48c5f3895aa638a1def7df3f96c749e746450680))
+* Resolve issue where rest-numeric-enums=False is not supported ([#2456](https://github.com/googleapis/gapic-generator-python/issues/2456)) ([3d24a50](https://github.com/googleapis/gapic-generator-python/commit/3d24a50ac992631649ad06bb2dc6c90abe88988a))
+
 ## [1.27.1](https://github.com/googleapis/gapic-generator-python/compare/v1.27.0...v1.27.1) (2025-09-26)
 
 
