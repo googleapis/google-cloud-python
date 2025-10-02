@@ -1128,7 +1128,7 @@ libraries:
       - samples/snippets/README.rst
       - tests/system
       - tests/unit/test_decorators.py
-      - tests/unit/tests_helpers.py
+      - tests/unit/test_helpers.py
     remove_regex:
       - packages/google-cloud-vision
     tag_format: '{id}-v{version}'
