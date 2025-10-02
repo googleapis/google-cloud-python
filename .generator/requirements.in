@@ -1,5 +1,5 @@
 click
-gapic-generator>=1.27.0
+gapic-generator>=1.27.2
 nox
 starlark-pyo3>=2025.1
 build
