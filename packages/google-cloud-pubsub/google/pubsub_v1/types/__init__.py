@@ -87,12 +87,13 @@ from .schema import (
     Encoding,
     SchemaView,
 )
+import google.api_core.timeout
 
 TimeoutType = Union[
     int,
     float,
-    "google.api_core.timeout.ConstantTimeout",
-    "google.api_core.timeout.ExponentialTimeout",
+    google.api_core.timeout.ConstantTimeout,
+    google.api_core.timeout.ExponentialTimeout,
 ]
 """The type of the timeout parameter of publisher client methods."""
 

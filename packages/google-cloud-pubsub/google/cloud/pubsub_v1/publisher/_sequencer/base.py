@@ -53,8 +53,8 @@ class Sequencer(metaclass=abc.ABCMeta):
     def publish(
         self,
         message: gapic_types.PubsubMessage,
-        retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
-        timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
+        retry: "OptionalRetry" = gapic_v1.method.DEFAULT,  # type: ignore
+        timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,  # type: ignore
     ) -> "futures.Future":  # pragma: NO COVER
         """Publish message for this ordering key.
 

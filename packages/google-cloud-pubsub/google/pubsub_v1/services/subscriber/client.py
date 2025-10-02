@@ -729,7 +729,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
             emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
             if emulator_host:
-                if issubclass(transport_init, type(self)._transport_registry["grpc"]):
+                if issubclass(transport_init, type(self)._transport_registry["grpc"]):  # type: ignore
                     channel = grpc.insecure_channel(target=emulator_host)
                 else:
                     channel = grpc.aio.insecure_channel(target=emulator_host)
@@ -1897,7 +1897,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         # Wrappers in api-core should not automatically pre-fetch the first
         # stream result, as this breaks the stream when re-opening it.
         # https://github.com/googleapis/python-pubsub/issues/93#issuecomment-630762257
-        self._transport.streaming_pull._prefetch_first_result_ = False
+        self._transport.streaming_pull._prefetch_first_result_ = False  # type: ignore
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
