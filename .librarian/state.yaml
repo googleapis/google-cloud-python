@@ -2830,25 +2830,6 @@ libraries:
     remove_regex:
       - packages/google-cloud-privilegedaccessmanager
     tag_format: '{id}-v{version}'
-  - id: google-cloud-public-ca
-    version: 0.3.18
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-    apis:
-      - path: google/cloud/security/publicca/v1
-      - path: google/cloud/security/publicca/v1beta1
-    source_roots:
-      - packages/google-cloud-public-ca
-    preserve_regex:
-      - packages/google-cloud-public-ca/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
-    remove_regex:
-      - packages/google-cloud-public-ca
-    tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
     version: 0.1.18
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
@@ -3530,4 +3511,23 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-gke-connect-gateway
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-security-publicca
+    version: 0.3.18
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/security/publicca/v1
+      - path: google/cloud/security/publicca/v1beta1
+    source_roots:
+      - packages/google-cloud-security-publicca
+    preserve_regex:
+      - packages/google-cloud-security-publicca/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-security-publicca
     tag_format: '{id}-v{version}'
