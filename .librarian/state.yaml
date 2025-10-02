@@ -2960,3 +2960,21 @@ libraries:
     remove_regex:
       - packages/google-cloud-redis
     tag_format: '{id}-v{version}'
+  - id: google-cloud-locationfinder
+    version: 0.1.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/locationfinder/v1
+    source_roots:
+      - packages/google-cloud-locationfinder
+    preserve_regex:
+      - packages/google-cloud-locationfinder/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-locationfinder
+    tag_format: '{id}-v{version}'

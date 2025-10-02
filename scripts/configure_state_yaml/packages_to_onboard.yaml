@@ -93,6 +93,7 @@ packages_to_onboard: [
   "google-cloud-language",
   "google-cloud-licensemanager",
   "google-cloud-life-sciences",
+  "google-cloud-locationfinder",
   "google-cloud-lustre",
   "google-cloud-maintenance-api",
   "google-cloud-managed-identities",
