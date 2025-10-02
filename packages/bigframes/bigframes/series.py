@@ -1039,7 +1039,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             block_ops.nsmallest(self._block, n, [self._value_column], keep=keep)
         )
 
-    def isin(self, values) -> "Series" | None:
+    def isin(self, values) -> "Series":
         if isinstance(values, Series):
             return Series(self._block.isin(values._block))
         if isinstance(values, indexes.Index):
@@ -1086,20 +1086,20 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     __rxor__ = __xor__
 
-    def __add__(self, other: float | int | Series) -> Series:
+    def __add__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.add(other)
 
     __add__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__add__)
 
-    def __radd__(self, other: float | int | Series) -> Series:
+    def __radd__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.radd(other)
 
     __radd__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__radd__)
 
-    def add(self, other: float | int | Series) -> Series:
+    def add(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.add_op)
 
-    def radd(self, other: float | int | Series) -> Series:
+    def radd(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.add_op, reverse=True)
 
     def __sub__(self, other: float | int | Series) -> Series:
@@ -1140,20 +1140,20 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     multiply = mul
     multiply.__doc__ = inspect.getdoc(vendored_pandas_series.Series.mul)
 
-    def __truediv__(self, other: float | int | Series) -> Series:
+    def __truediv__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.truediv(other)
 
     __truediv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__truediv__)
 
-    def __rtruediv__(self, other: float | int | Series) -> Series:
+    def __rtruediv__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.rtruediv(other)
 
     __rtruediv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rtruediv__)
 
-    def truediv(self, other: float | int | Series) -> Series:
+    def truediv(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.div_op)
 
-    def rtruediv(self, other: float | int | Series) -> Series:
+    def rtruediv(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.div_op, reverse=True)
 
     truediv.__doc__ = inspect.getdoc(vendored_pandas_series.Series.truediv)
@@ -1162,20 +1162,20 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     rdiv = rtruediv
     rdiv.__doc__ = inspect.getdoc(vendored_pandas_series.Series.rtruediv)
 
-    def __floordiv__(self, other: float | int | Series) -> Series:
+    def __floordiv__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.floordiv(other)
 
     __floordiv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__floordiv__)
 
-    def __rfloordiv__(self, other: float | int | Series) -> Series:
+    def __rfloordiv__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.rfloordiv(other)
 
     __rfloordiv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rfloordiv__)
 
-    def floordiv(self, other: float | int | Series) -> Series:
+    def floordiv(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.floordiv_op)
 
-    def rfloordiv(self, other: float | int | Series) -> Series:
+    def rfloordiv(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.floordiv_op, reverse=True)
 
     def __pow__(self, other: float | int | Series) -> Series:

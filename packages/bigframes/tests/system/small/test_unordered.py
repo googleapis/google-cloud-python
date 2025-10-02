@@ -195,15 +195,13 @@ def test_unordered_mode_no_ordering_error(unordered_session):
         df.merge(df, on="a").head(3)
 
 
-def test_unordered_mode_ambiguity_warning(unordered_session):
+def test_unordered_mode_allows_ambiguity(unordered_session):
     pd_df = pd.DataFrame(
         {"a": [1, 2, 3, 4, 5, 1], "b": [4, 5, 9, 3, 1, 6]}, dtype=pd.Int64Dtype()
     )
     pd_df.index = pd_df.index.astype(pd.Int64Dtype())
     df = bpd.DataFrame(pd_df, session=unordered_session)
-
-    with pytest.warns(bigframes.exceptions.AmbiguousWindowWarning):
-        df.merge(df, on="a").sort_values("b_x").head(3)
+    df.merge(df, on="a").sort_values("b_x").head(3)
 
 
 def test_unordered_mode_no_ambiguity_warning(unordered_session):

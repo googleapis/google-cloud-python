@@ -224,11 +224,6 @@ class ArrayValue:
     def slice(
         self, start: Optional[int], stop: Optional[int], step: Optional[int]
     ) -> ArrayValue:
-        if self.node.order_ambiguous and not (self.session._strictly_ordered):
-            msg = bfe.format_message(
-                "Window ordering may be ambiguous, this can cause unstable results."
-            )
-            warnings.warn(msg, bfe.AmbiguousWindowWarning)
         return ArrayValue(
             nodes.SliceNode(
                 self.node,
@@ -243,17 +238,6 @@ class ArrayValue:
         Convenience function to promote copy of column offsets to a value column. Can be used to reset index.
         """
         col_id = self._gen_namespaced_uid()
-        if self.node.order_ambiguous and not (self.session._strictly_ordered):
-            if not self.session._allows_ambiguity:
-                raise ValueError(
-                    "Generating offsets not supported in partial ordering mode"
-                )
-            else:
-                msg = bfe.format_message(
-                    "Window ordering may be ambiguous, this can cause unstable results."
-                )
-                warnings.warn(msg, category=bfe.AmbiguousWindowWarning)
-
         return (
             ArrayValue(
                 nodes.PromoteOffsetsNode(child=self.node, col_id=ids.ColumnId(col_id))
@@ -434,18 +418,6 @@ class ArrayValue:
         never_skip_nulls=False,
         skip_reproject_unsafe: bool = False,
     ):
-        # TODO: Support non-deterministic windowing
-        if window.is_row_bounded or not expression.op.order_independent:
-            if self.node.order_ambiguous and not self.session._strictly_ordered:
-                if not self.session._allows_ambiguity:
-                    raise ValueError(
-                        "Generating offsets not supported in partial ordering mode"
-                    )
-                else:
-                    msg = bfe.format_message(
-                        "Window ordering may be ambiguous, this can cause unstable results."
-                    )
-                    warnings.warn(msg, category=bfe.AmbiguousWindowWarning)
         output_name = self._gen_namespaced_uid()
         return (
             ArrayValue(

@@ -419,7 +419,7 @@ def test_blob_transcribe(
     actual = (
         audio_mm_df["audio"]
         .blob.audio_transcribe(
-            model_name=model_name,
+            model_name=model_name,  # type: ignore
             verbose=verbose,
         )
         .to_pandas()

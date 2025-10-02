@@ -28,6 +28,7 @@ import typing
 from typing import (
     Any,
     Callable,
+    cast,
     Dict,
     Hashable,
     Iterable,
@@ -94,8 +95,12 @@ if typing.TYPE_CHECKING:
 
     import bigframes.session
 
-    SingleItemValue = Union[bigframes.series.Series, int, float, str, Callable]
-    MultiItemValue = Union["DataFrame", Sequence[int | float | str | Callable]]
+    SingleItemValue = Union[
+        bigframes.series.Series, int, float, str, pandas.Timedelta, Callable
+    ]
+    MultiItemValue = Union[
+        "DataFrame", Sequence[int | float | str | pandas.Timedelta | Callable]
+    ]
 
 LevelType = typing.Hashable
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
@@ -581,11 +586,51 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _set_internal_query_job(self, query_job: Optional[bigquery.QueryJob]):
         self._query_job = query_job
 
+    @overload
+    def __getitem__(
+        self,
+        key: bigframes.series.Series,
+    ) -> DataFrame:
+        ...
+
+    @overload
+    def __getitem__(
+        self,
+        key: slice,
+    ) -> DataFrame:
+        ...
+
+    @overload
+    def __getitem__(
+        self,
+        key: List[str],
+    ) -> DataFrame:
+        ...
+
+    @overload
+    def __getitem__(
+        self,
+        key: List[blocks.Label],
+    ) -> DataFrame:
+        ...
+
+    @overload
+    def __getitem__(self, key: pandas.Index) -> DataFrame:
+        ...
+
+    @overload
+    def __getitem__(
+        self,
+        key: blocks.Label,
+    ) -> bigframes.series.Series:
+        ...
+
     def __getitem__(
         self,
         key: Union[
             blocks.Label,
-            Sequence[blocks.Label],
+            List[str],
+            List[blocks.Label],
             # Index of column labels can be treated the same as a sequence of column labels.
             pandas.Index,
             bigframes.series.Series,
@@ -601,32 +646,26 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if isinstance(key, slice):
             return self.iloc[key]
 
-        if isinstance(key, typing.Hashable):
+        # TODO(tswast): Fix this pylance warning: Class overlaps "Hashable"
+        # unsafely and could produce a match at runtime
+        if isinstance(key, blocks.Label):
             return self._getitem_label(key)
-        # Select a subset of columns or re-order columns.
-        # In Ibis after you apply a projection, any column objects from the
-        # table before the projection can't be combined with column objects
-        # from the table after the projection. This is because the table after
-        # a projection is considered a totally separate table expression.
-        #
-        # This is unexpected behavior for a pandas user, who expects their old
-        # Series objects to still work with the new / mutated DataFrame. We
-        # avoid applying a projection in Ibis until it's absolutely necessary
-        # to provide pandas-like semantics.
-        # TODO(swast): Do we need to apply implicit join when doing a
-        # projection?
 
-        # Select a number of columns as DF.
-        key = key if utils.is_list_like(key) else [key]  # type:ignore
+        if utils.is_list_like(key):
+            return self._getitem_columns(key)
+        else:
+            # TODO(tswast): What case is this supposed to be handling?
+            return self._getitem_columns([cast(Hashable, key)])
 
+    __getitem__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__getitem__)
+
+    def _getitem_columns(self, key: Sequence[blocks.Label]) -> DataFrame:
         selected_ids: Tuple[str, ...] = ()
         for label in key:
             col_ids = self._block.label_to_col_id[label]
             selected_ids = (*selected_ids, *col_ids)
 
         return DataFrame(self._block.select_columns(selected_ids))
-
-    __getitem__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__getitem__)
 
     def _getitem_label(self, key: blocks.Label):
         col_ids = self._block.cols_matching_label(key)

@@ -17,6 +17,9 @@ class NDFrame(indexing.IndexingMixin):
     size-mutable, labeled data structure
     """
 
+    # Explicitly mark the class as unhashable
+    __hash__ = None  # type: ignore
+
     # ----------------------------------------------------------------------
     # Axis
 
