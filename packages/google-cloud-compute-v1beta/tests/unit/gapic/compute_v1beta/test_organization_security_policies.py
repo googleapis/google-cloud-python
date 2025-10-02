@@ -4180,7 +4180,12 @@ def test_patch_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4237,7 +4242,12 @@ def test_patch_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
         & set(
             (
                 "securityPolicy",
@@ -4387,7 +4397,12 @@ def test_patch_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4444,7 +4459,12 @@ def test_patch_unary_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
         & set(
             (
                 "securityPolicy",
@@ -4598,6 +4618,7 @@ def test_patch_rule_rest_required_fields(
         (
             "priority",
             "request_id",
+            "update_mask",
         )
     )
     jsonified_request.update(unset_fields)
@@ -4660,6 +4681,7 @@ def test_patch_rule_rest_unset_required_fields():
             (
                 "priority",
                 "requestId",
+                "updateMask",
             )
         )
         & set(
@@ -4807,6 +4829,7 @@ def test_patch_rule_unary_rest_required_fields(
         (
             "priority",
             "request_id",
+            "update_mask",
         )
     )
     jsonified_request.update(unset_fields)
@@ -4869,6 +4892,7 @@ def test_patch_rule_unary_rest_unset_required_fields():
             (
                 "priority",
                 "requestId",
+                "updateMask",
             )
         )
         & set(
