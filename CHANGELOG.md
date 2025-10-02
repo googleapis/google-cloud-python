@@ -147,7 +147,7 @@ Changelogs
 - [google-cloud-private-ca==1.15.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-private-ca/CHANGELOG.md)
 - [google-cloud-private-catalog==0.9.18](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-private-catalog/CHANGELOG.md)
 - [google-cloud-privilegedaccessmanager==0.1.9](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-privilegedaccessmanager/CHANGELOG.md)
-- [google-cloud-public-ca==0.3.18](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-public-ca/CHANGELOG.md)
+- [google-cloud-security-publicca==0.3.18](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-security-publicca/CHANGELOG.md)
 - [google-cloud-quotas==0.1.18](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-quotas/CHANGELOG.md)
 - [google-cloud-rapidmigrationassessment==0.1.16](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-rapidmigrationassessment/CHANGELOG.md)
 - [google-cloud-recaptcha-enterprise==1.28.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-recaptcha-enterprise/CHANGELOG.md)
