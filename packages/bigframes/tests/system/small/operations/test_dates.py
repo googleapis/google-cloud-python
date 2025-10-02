@@ -15,8 +15,10 @@
 
 import datetime
 
+from packaging import version
 import pandas as pd
 import pandas.testing
+import pytest
 
 from bigframes import dtypes
 
@@ -70,4 +72,20 @@ def test_date_series_diff_agg(scalars_dfs):
     expected_result = pd_df["date_col"].diff().astype(dtypes.TIMEDELTA_DTYPE)
     pandas.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
+    )
+
+
+def test_date_can_cast_after_accessor(scalars_dfs):
+    if version.Version(pd.__version__) <= version.Version("2.1.0"):
+        pytest.skip("pd timezone conversion bug")
+    bf_df, pd_df = scalars_dfs
+
+    actual_result = bf_df["date_col"].dt.isocalendar().week.astype("Int64").to_pandas()
+    # convert to pd date type rather than arrow, as pandas doesn't handle arrow date well here
+    expected_result = (
+        pd.to_datetime(pd_df["date_col"]).dt.isocalendar().week.astype("Int64")
+    )
+
+    pandas.testing.assert_series_equal(
+        actual_result, expected_result, check_dtype=False, check_index_type=False
     )

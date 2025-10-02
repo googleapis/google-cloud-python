@@ -105,7 +105,7 @@ class ExtractTemporalField(Unary):
     """Extract a field from a temporal value."""
 
     arg: Value[dt.Temporal]
-    dtype = dt.int32
+    dtype = dt.int64
 
 
 @public

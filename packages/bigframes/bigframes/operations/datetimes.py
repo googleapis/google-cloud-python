@@ -23,7 +23,6 @@ import pandas
 
 from bigframes import dataframe, dtypes, series
 from bigframes.core import log_adapter
-from bigframes.core.reshape import concat
 import bigframes.operations as ops
 import bigframes.operations.base
 
@@ -79,13 +78,12 @@ class DatetimeMethods(
         return self._apply_unary_op(ops.month_op)
 
     def isocalendar(self) -> dataframe.DataFrame:
-        years = self._apply_unary_op(ops.iso_year_op)
-        weeks = self._apply_unary_op(ops.iso_week_op)
-        days = self._apply_unary_op(ops.iso_day_op)
-
-        result = concat.concat([years, weeks, days], axis=1)
-        result.columns = pandas.Index(["year", "week", "day"])
-        return result
+        iso_ops = [ops.iso_year_op, ops.iso_week_op, ops.iso_day_op]
+        labels = pandas.Index(["year", "week", "day"])
+        block = self._block.project_exprs(
+            [op.as_expr(self._value_column) for op in iso_ops], labels, drop=True
+        )
+        return dataframe.DataFrame(block)
 
     # Time accessors
     @property

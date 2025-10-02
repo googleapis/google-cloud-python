@@ -364,14 +364,14 @@ class ExtractFragment(ExtractURLField):
 class StringLength(StringUnary):
     """Compute the length of a string."""
 
-    dtype = dt.int32
+    dtype = dt.int64
 
 
 @public
 class StringAscii(StringUnary):
     """Compute the ASCII code of the first character of a string."""
 
-    dtype = dt.int32
+    dtype = dt.int64
 
 
 @public
