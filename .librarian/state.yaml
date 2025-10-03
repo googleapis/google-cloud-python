@@ -912,24 +912,6 @@ libraries:
     remove_regex:
       - packages/google-cloud-beyondcorp-clientgateways
     tag_format: '{id}-v{version}'
-  - id: google-cloud-biglake
-    version: 0.1.0
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-    apis:
-      - path: google/cloud/biglake/v1
-    source_roots:
-      - packages/google-cloud-biglake
-    preserve_regex:
-      - packages/google-cloud-biglake/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - samples/README.txt
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
-    remove_regex:
-      - packages/google-cloud-biglake
-    tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-analyticshub
     version: 0.4.20
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6

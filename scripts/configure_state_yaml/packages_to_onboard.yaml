@@ -51,7 +51,6 @@ packages_to_onboard: [
   "google-cloud-beyondcorp-appgateways",
   "google-cloud-beyondcorp-clientconnectorservices",
   "google-cloud-beyondcorp-clientgateways",
-  "google-cloud-biglake",
   "google-cloud-bigquery-analyticshub",
   "google-cloud-bigquery-biglake",
   "google-cloud-bigquery-connection",
