@@ -1579,6 +1579,9 @@ def test_get_rest_call_success(request_type):
             name="name_value",
             peeringdb_facility_id="peeringdb_facility_id_value",
             self_link="self_link_value",
+            single_region_production_critical_peer_locations=[
+                "single_region_production_critical_peer_locations_value"
+            ],
             status="status_value",
             supports_pzs=True,
         )
@@ -1614,6 +1617,9 @@ def test_get_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.peeringdb_facility_id == "peeringdb_facility_id_value"
     assert response.self_link == "self_link_value"
+    assert response.single_region_production_critical_peer_locations == [
+        "single_region_production_critical_peer_locations_value"
+    ]
     assert response.status == "status_value"
     assert response.supports_pzs is True
 
