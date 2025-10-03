@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Public Certificate Authority.
+This package includes clients for multiple versions of Public Certificate Authority API.
 By default, you will get version ``publicca_v1``.
 
 
@@ -26,7 +26,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-public-ca`` releases:
+For a list of all ``google-cloud-security-publicca`` releases:
 
 .. toctree::
     :maxdepth: 2
