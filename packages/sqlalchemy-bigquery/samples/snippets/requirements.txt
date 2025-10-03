@@ -3,7 +3,7 @@ certifi==2025.8.3
 charset-normalizer==3.4.3
 geoalchemy2===0.17.1; python_version == '3.9'
 geoalchemy2==0.18.0; python_version >= '3.10'
-google-api-core[grpc]==2.25.1
+google-api-core[grpc]==2.25.2
 google-auth==2.41.1
 google-cloud-bigquery==3.38.0; python_version >= '3.9'
 google-cloud-core==2.4.3
