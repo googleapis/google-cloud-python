@@ -69,6 +69,13 @@ class CloudEvent(proto.Message):
         proto_data (google.protobuf.any_pb2.Any):
             Optional. Proto data.
 
+            NOTE: The ``protoData`` field only functions as expected
+            when the payload is specifically a ``CloudEvent`` message
+            type, and can't be used for arbitrary protocol buffer
+            messages. For any other protocol buffer type, you must
+            serialize your proto message into bytes, and use the
+            ``binaryData`` field instead.
+
             This field is a member of `oneof`_ ``data``.
     """
 
