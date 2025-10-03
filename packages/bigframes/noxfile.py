@@ -8,7 +8,7 @@
 #
 #     https://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
+# Unless required by applicable law or agreed to in writing, software/
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
@@ -803,6 +803,7 @@ def notebook(session: nox.Session):
         "notebooks/generative_ai/bq_dataframes_llm_code_generation.ipynb",  # Needs BUCKET_URI.
         "notebooks/generative_ai/sentiment_analysis.ipynb",  # Too slow
         "notebooks/generative_ai/bq_dataframes_llm_gemini_2.ipynb",  # Gemini 2.0 backend hasn't ready in prod.
+        "notebooks/generative_ai/bq_dataframes_llm_vector_search.ipynb",  # Limited quota for vector index ddl statements on table.
         "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",  # Needs CONNECTION.
         # TODO(b/366290533): to protect BQML quota
         "notebooks/generative_ai/bq_dataframes_llm_claude3_museum_art.ipynb",
