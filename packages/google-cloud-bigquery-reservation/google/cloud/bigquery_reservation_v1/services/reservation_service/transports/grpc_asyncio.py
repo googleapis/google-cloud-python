@@ -25,6 +25,8 @@ from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
@@ -1144,6 +1146,240 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
             )
         return self._stubs["update_bi_reservation"]
 
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+        r"""Return a callable for the get iam policy method over gRPC.
+
+        Gets the access control policy for a resource. May return:
+
+        - A\ ``NOT_FOUND`` error if the resource doesn't exist or you
+          don't have the permission to view it.
+        - An empty policy if the resource exists but doesn't have a set
+          policy.
+
+        Supported resources are:
+
+        - Reservations
+        - ReservationAssignments
+
+        To call this method, you must have the following Google IAM
+        permissions:
+
+        - ``bigqueryreservation.reservations.getIamPolicy`` to get
+          policies on reservations.
+
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    Awaitable[~.Policy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+        r"""Return a callable for the set iam policy method over gRPC.
+
+        Sets an access control policy for a resource. Replaces any
+        existing policy.
+
+        Supported resources are:
+
+        - Reservations
+
+        To call this method, you must have the following Google IAM
+        permissions:
+
+        - ``bigqueryreservation.reservations.setIamPolicy`` to set
+          policies on reservations.
+
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    Awaitable[~.Policy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+
+        Gets your permissions on a resource. Returns an empty
+        set of permissions if the resource doesn't exist.
+
+        Supported resources are:
+
+        - Reservations
+
+        No Google IAM permissions are required to call this
+        method.
+
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    Awaitable[~.TestIamPermissionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/TestIamPermissions",
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
+
+    @property
+    def create_reservation_group(
+        self,
+    ) -> Callable[
+        [reservation.CreateReservationGroupRequest],
+        Awaitable[reservation.ReservationGroup],
+    ]:
+        r"""Return a callable for the create reservation group method over gRPC.
+
+        Creates a new reservation group.
+
+        Returns:
+            Callable[[~.CreateReservationGroupRequest],
+                    Awaitable[~.ReservationGroup]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_reservation_group" not in self._stubs:
+            self._stubs["create_reservation_group"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/CreateReservationGroup",
+                request_serializer=reservation.CreateReservationGroupRequest.serialize,
+                response_deserializer=reservation.ReservationGroup.deserialize,
+            )
+        return self._stubs["create_reservation_group"]
+
+    @property
+    def get_reservation_group(
+        self,
+    ) -> Callable[
+        [reservation.GetReservationGroupRequest],
+        Awaitable[reservation.ReservationGroup],
+    ]:
+        r"""Return a callable for the get reservation group method over gRPC.
+
+        Returns information about the reservation group.
+
+        Returns:
+            Callable[[~.GetReservationGroupRequest],
+                    Awaitable[~.ReservationGroup]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_reservation_group" not in self._stubs:
+            self._stubs["get_reservation_group"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/GetReservationGroup",
+                request_serializer=reservation.GetReservationGroupRequest.serialize,
+                response_deserializer=reservation.ReservationGroup.deserialize,
+            )
+        return self._stubs["get_reservation_group"]
+
+    @property
+    def delete_reservation_group(
+        self,
+    ) -> Callable[
+        [reservation.DeleteReservationGroupRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete reservation group method over gRPC.
+
+        Deletes a reservation. Returns
+        ``google.rpc.Code.FAILED_PRECONDITION`` when reservation has
+        assignments.
+
+        Returns:
+            Callable[[~.DeleteReservationGroupRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_reservation_group" not in self._stubs:
+            self._stubs["delete_reservation_group"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteReservationGroup",
+                request_serializer=reservation.DeleteReservationGroupRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_reservation_group"]
+
+    @property
+    def list_reservation_groups(
+        self,
+    ) -> Callable[
+        [reservation.ListReservationGroupsRequest],
+        Awaitable[reservation.ListReservationGroupsResponse],
+    ]:
+        r"""Return a callable for the list reservation groups method over gRPC.
+
+        Lists all the reservation groups for the project in
+        the specified location.
+
+        Returns:
+            Callable[[~.ListReservationGroupsRequest],
+                    Awaitable[~.ListReservationGroupsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_reservation_groups" not in self._stubs:
+            self._stubs["list_reservation_groups"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/ListReservationGroups",
+                request_serializer=reservation.ListReservationGroupsRequest.serialize,
+                response_deserializer=reservation.ListReservationGroupsResponse.deserialize,
+            )
+        return self._stubs["list_reservation_groups"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1355,6 +1591,41 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
             self.update_bi_reservation: self._wrap_method(
                 self.update_bi_reservation,
                 default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_reservation_group: self._wrap_method(
+                self.create_reservation_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_reservation_group: self._wrap_method(
+                self.get_reservation_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_reservation_group: self._wrap_method(
+                self.delete_reservation_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_reservation_groups: self._wrap_method(
+                self.list_reservation_groups,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
