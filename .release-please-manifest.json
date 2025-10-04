@@ -1,6 +1,6 @@
 {
-    "packages/google-cloud-access-context-manager": "0.2.2",
-    "packages/google-cloud-audit-log": "0.3.2",
+    "packages/google-cloud-access-context-manager": "0.2.3",
+    "packages/google-cloud-audit-log": "0.3.3",
     "packages/google-cloud-biglake": "0.1.0",
     "packages/google-cloud-bigquery-storage": "2.33.1",
     "packages/google-cloud-compute": "1.38.0",

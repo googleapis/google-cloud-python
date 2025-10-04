@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-audit-log/#history
 
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.3.2...google-cloud-audit-log-v0.3.3) (2025-10-04)
+
+
+### Bug Fixes
+
+* add *.proto files to google-cloud-audit-log ([#14587](https://github.com/googleapis/google-cloud-python/issues/14587)) ([76ce4a1](https://github.com/googleapis/google-cloud-python/commit/76ce4a1b206cb6956b32217f18cbaa08aafe97c6))
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.3.1...google-cloud-audit-log-v0.3.2) (2025-03-15)
 
 
