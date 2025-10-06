@@ -3875,7 +3875,7 @@ libraries:
     version: 0.2.11
     last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
     apis:
-      - path: maps/fleetengine/v1
+      - path: google/maps/fleetengine/v1
     source_roots:
       - packages/google-maps-fleetengine
     preserve_regex:
@@ -3893,7 +3893,7 @@ libraries:
     version: 0.2.13
     last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
     apis:
-      - path: maps/fleetengine/delivery/v1
+      - path: google/maps/fleetengine/delivery/v1
     source_roots:
       - packages/google-maps-fleetengine-delivery
     preserve_regex:
