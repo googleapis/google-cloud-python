@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import math
+import os
 import threading
 from typing import Literal, Mapping, Optional, Sequence, Tuple
 import warnings
@@ -58,7 +59,7 @@ QUERY_COMPLEXITY_LIMIT = 1e7
 MAX_SUBTREE_FACTORINGS = 5
 _MAX_CLUSTER_COLUMNS = 4
 MAX_SMALL_RESULT_BYTES = 10 * 1024 * 1024 * 1024  # 10G
-
+_MAX_READ_STREAMS = os.cpu_count()
 
 SourceIdMapping = Mapping[str, str]
 
@@ -323,7 +324,10 @@ class BigQueryCachingExecutor(executor.Executor):
             self.bqclient.update_table(table, ["schema"])
 
         return executor.ExecuteResult(
-            row_iter.to_arrow_iterable(),
+            row_iter.to_arrow_iterable(
+                bqstorage_client=self.bqstoragereadclient,
+                max_stream_count=_MAX_READ_STREAMS,
+            ),
             array_value.schema,
             query_job,
             total_bytes_processed=row_iter.total_bytes_processed,
@@ -668,7 +672,8 @@ class BigQueryCachingExecutor(executor.Executor):
 
         return executor.ExecuteResult(
             _arrow_batches=iterator.to_arrow_iterable(
-                bqstorage_client=self.bqstoragereadclient
+                bqstorage_client=self.bqstoragereadclient,
+                max_stream_count=_MAX_READ_STREAMS,
             ),
             schema=og_schema,
             query_job=query_job,
