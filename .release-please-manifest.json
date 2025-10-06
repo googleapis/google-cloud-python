@@ -1,6 +1,4 @@
 {
-    "packages/google-cloud-access-context-manager": "0.2.2",
-    "packages/google-cloud-audit-log": "0.3.2",
     "packages/google-cloud-biglake": "0.1.0",
     "packages/google-cloud-bigquery-storage": "2.33.1",
     "packages/google-cloud-compute": "1.38.0",
@@ -16,7 +14,6 @@
     "packages/google-cloud-org-policy": "1.14.0",
     "packages/google-cloud-os-login": "2.17.2",
     "packages/google-cloud-secret-manager": "2.24.0",
-    "packages/google-cloud-security-publicca": "0.0.0",
     "packages/google-geo-type": "0.3.13",
     "packages/google-maps-addressvalidation": "0.3.20",
     "packages/google-maps-areainsights": "0.1.8",

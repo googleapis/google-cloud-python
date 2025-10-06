@@ -1,19 +1,5 @@
 {
     "packages": {
-        "packages/google-cloud-access-context-manager": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-access-context-manager",
-            "extra-files": [],
-            "release-type": "python"
-        },
-        "packages/google-cloud-audit-log": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-audit-log",
-            "extra-files": [],
-            "release-type": "python"
-        },
         "packages/google-cloud-biglake": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -332,27 +318,6 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.secrets.v1beta1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-cloud-security-publicca": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-security-publicca",
-            "extra-files": [
-                "google/cloud/security/publicca/gapic_version.py",
-                "google/cloud/security/publicca_v1/gapic_version.py",
-                "google/cloud/security/publicca_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.security.publicca.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.security.publicca.v1beta1.json",
                     "type": "json"
                 }
             ],
