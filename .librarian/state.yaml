@@ -3816,3 +3816,185 @@ libraries:
     remove_regex:
       - packages/google-shopping-type/
     tag_format: '{id}-v{version}'
+  - id: google-geo-type
+    version: 0.3.13
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/geo/type
+    source_roots:
+      - packages/google-geo-type
+    preserve_regex:
+      - packages/google-geo-type/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/gapic/type/test_type.py
+    remove_regex:
+      - packages/google-geo-type
+    tag_format: '{id}-v{version}'
+  - id: google-maps-addressvalidation
+    version: 0.3.20
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/maps/addressvalidation/v1
+    source_roots:
+      - packages/google-maps-addressvalidation
+    preserve_regex:
+      - packages/google-maps-addressvalidation/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-addressvalidation
+    tag_format: '{id}-v{version}'
+  - id: google-maps-areainsights
+    version: 0.1.8
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/maps/areainsights/v1
+    source_roots:
+      - packages/google-maps-areainsights
+    preserve_regex:
+      - packages/google-maps-areainsights/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-areainsights
+    tag_format: '{id}-v{version}'
+  - id: google-maps-fleetengine
+    version: 0.2.11
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: maps/fleetengine/v1
+    source_roots:
+      - packages/google-maps-fleetengine
+    preserve_regex:
+      - packages/google-maps-fleetengine/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-fleetengine
+    tag_format: '{id}-v{version}'
+  - id: google-maps-fleetengine-delivery
+    version: 0.2.13
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: maps/fleetengine/delivery/v1
+    source_roots:
+      - packages/google-maps-fleetengine-delivery
+    preserve_regex:
+      - packages/google-maps-fleetengine-delivery/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-fleetengine-delivery
+    tag_format: '{id}-v{version}'
+  - id: google-maps-mapsplatformdatasets
+    version: 0.4.8
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/maps/mapsplatformdatasets/v1
+    source_roots:
+      - packages/google-maps-mapsplatformdatasets
+    preserve_regex:
+      - packages/google-maps-mapsplatformdatasets/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-mapsplatformdatasets
+    tag_format: '{id}-v{version}'
+  - id: google-maps-places
+    version: 0.2.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/maps/places/v1
+    source_roots:
+      - packages/google-maps-places
+    preserve_regex:
+      - packages/google-maps-places/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-places
+    tag_format: '{id}-v{version}'
+  - id: google-maps-routeoptimization
+    version: 0.1.11
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/maps/routeoptimization/v1
+    source_roots:
+      - packages/google-maps-routeoptimization
+    preserve_regex:
+      - packages/google-maps-routeoptimization/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - samples/README.rst
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-routeoptimization
+    tag_format: '{id}-v{version}'
+  - id: google-maps-routing
+    version: 0.6.16
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/maps/routing/v2
+    source_roots:
+      - packages/google-maps-routing
+    preserve_regex:
+      - packages/google-maps-routing/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-routing
+    tag_format: '{id}-v{version}'
+  - id: google-maps-solar
+    version: 0.1.9
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/maps/solar/v1
+    source_roots:
+      - packages/google-maps-solar
+    preserve_regex:
+      - packages/google-maps-solar/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-solar
+    tag_format: '{id}-v{version}'
