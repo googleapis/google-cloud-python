@@ -25,6 +25,11 @@
                 "create_reservation"
               ]
             },
+            "CreateReservationGroup": {
+              "methods": [
+                "create_reservation_group"
+              ]
+            },
             "DeleteAssignment": {
               "methods": [
                 "delete_assignment"
@@ -38,6 +43,11 @@
             "DeleteReservation": {
               "methods": [
                 "delete_reservation"
+              ]
+            },
+            "DeleteReservationGroup": {
+              "methods": [
+                "delete_reservation_group"
               ]
             },
             "FailoverReservation": {
@@ -55,9 +65,19 @@
                 "get_capacity_commitment"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "GetReservation": {
               "methods": [
                 "get_reservation"
+              ]
+            },
+            "GetReservationGroup": {
+              "methods": [
+                "get_reservation_group"
               ]
             },
             "ListAssignments": {
@@ -68,6 +88,11 @@
             "ListCapacityCommitments": {
               "methods": [
                 "list_capacity_commitments"
+              ]
+            },
+            "ListReservationGroups": {
+              "methods": [
+                "list_reservation_groups"
               ]
             },
             "ListReservations": {
@@ -95,9 +120,19 @@
                 "search_assignments"
               ]
             },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
             "SplitCapacityCommitment": {
               "methods": [
                 "split_capacity_commitment"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             },
             "UpdateAssignment": {
@@ -140,6 +175,11 @@
                 "create_reservation"
               ]
             },
+            "CreateReservationGroup": {
+              "methods": [
+                "create_reservation_group"
+              ]
+            },
             "DeleteAssignment": {
               "methods": [
                 "delete_assignment"
@@ -153,6 +193,11 @@
             "DeleteReservation": {
               "methods": [
                 "delete_reservation"
+              ]
+            },
+            "DeleteReservationGroup": {
+              "methods": [
+                "delete_reservation_group"
               ]
             },
             "FailoverReservation": {
@@ -170,9 +215,19 @@
                 "get_capacity_commitment"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "GetReservation": {
               "methods": [
                 "get_reservation"
+              ]
+            },
+            "GetReservationGroup": {
+              "methods": [
+                "get_reservation_group"
               ]
             },
             "ListAssignments": {
@@ -183,6 +238,11 @@
             "ListCapacityCommitments": {
               "methods": [
                 "list_capacity_commitments"
+              ]
+            },
+            "ListReservationGroups": {
+              "methods": [
+                "list_reservation_groups"
               ]
             },
             "ListReservations": {
@@ -210,9 +270,19 @@
                 "search_assignments"
               ]
             },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
             "SplitCapacityCommitment": {
               "methods": [
                 "split_capacity_commitment"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             },
             "UpdateAssignment": {
@@ -255,6 +325,11 @@
                 "create_reservation"
               ]
             },
+            "CreateReservationGroup": {
+              "methods": [
+                "create_reservation_group"
+              ]
+            },
             "DeleteAssignment": {
               "methods": [
                 "delete_assignment"
@@ -268,6 +343,11 @@
             "DeleteReservation": {
               "methods": [
                 "delete_reservation"
+              ]
+            },
+            "DeleteReservationGroup": {
+              "methods": [
+                "delete_reservation_group"
               ]
             },
             "FailoverReservation": {
@@ -285,9 +365,19 @@
                 "get_capacity_commitment"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "GetReservation": {
               "methods": [
                 "get_reservation"
+              ]
+            },
+            "GetReservationGroup": {
+              "methods": [
+                "get_reservation_group"
               ]
             },
             "ListAssignments": {
@@ -298,6 +388,11 @@
             "ListCapacityCommitments": {
               "methods": [
                 "list_capacity_commitments"
+              ]
+            },
+            "ListReservationGroups": {
+              "methods": [
+                "list_reservation_groups"
               ]
             },
             "ListReservations": {
@@ -325,9 +420,19 @@
                 "search_assignments"
               ]
             },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
             "SplitCapacityCommitment": {
               "methods": [
                 "split_capacity_commitment"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             },
             "UpdateAssignment": {
