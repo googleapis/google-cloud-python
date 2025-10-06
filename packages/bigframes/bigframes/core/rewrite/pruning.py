@@ -13,6 +13,7 @@
 # limitations under the License.
 import dataclasses
 import functools
+import itertools
 import typing
 
 from bigframes.core import identifiers, nodes
@@ -51,17 +52,9 @@ def prune_columns(node: nodes.BigFrameNode):
     if isinstance(node, nodes.SelectionNode):
         result = prune_selection_child(node)
     elif isinstance(node, nodes.ResultNode):
-        result = node.replace_child(
-            prune_node(
-                node.child, node.consumed_ids or frozenset(list(node.child.ids)[0:1])
-            )
-        )
+        result = node.replace_child(prune_node(node.child, node.consumed_ids))
     elif isinstance(node, nodes.AggregateNode):
-        result = node.replace_child(
-            prune_node(
-                node.child, node.consumed_ids or frozenset(list(node.child.ids)[0:1])
-            )
-        )
+        result = node.replace_child(prune_node(node.child, node.consumed_ids))
     elif isinstance(node, nodes.InNode):
         result = dataclasses.replace(
             node,
@@ -149,9 +142,13 @@ def prune_node(
     if not (set(node.ids) - ids):
         return node
     else:
+        # If no child ids are needed, probably a size op or numbering op above, keep a single column always
+        ids_to_keep = tuple(id for id in node.ids if id in ids) or tuple(
+            itertools.islice(node.ids, 0, 1)
+        )
         return nodes.SelectionNode(
             node,
-            tuple(nodes.AliasedRef.identity(id) for id in node.ids if id in ids),
+            tuple(nodes.AliasedRef.identity(id) for id in ids_to_keep),
         )
 
 

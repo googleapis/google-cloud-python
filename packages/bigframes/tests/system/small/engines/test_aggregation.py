@@ -49,6 +49,25 @@ def apply_agg_to_all_valid(
 
 
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+def test_engines_aggregate_post_filter_size(
+    scalars_array_value: array_value.ArrayValue,
+    engine,
+):
+    w_offsets, offsets_id = (
+        scalars_array_value.select_columns(("bool_col", "string_col"))
+        .filter(expression.deref("bool_col"))
+        .promote_offsets()
+    )
+    plan = (
+        w_offsets.select_columns((offsets_id, "bool_col", "string_col"))
+        .row_count()
+        .node
+    )
+
+    assert_equivalence_execution(plan, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_aggregate_size(
     scalars_array_value: array_value.ArrayValue,
     engine,
