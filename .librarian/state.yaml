@@ -3998,3 +3998,24 @@ libraries:
     remove_regex:
       - packages/google-maps-solar
     tag_format: '{id}-v{version}'
+  - id: grafeas
+    version: 1.15.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: grafeas/v1
+    source_roots:
+      - packages/grafeas
+    preserve_regex:
+      - packages/grafeas/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - grafeas/grafeas.py
+      - grafeas/grafeas/__init__.py
+      - grafeas/grafeas/grafeas_v1/types.py
+    remove_regex:
+      - packages/grafeas
+    tag_format: '{id}-v{version}'
