@@ -3998,3 +3998,14 @@ libraries:
     remove_regex:
       - packages/google-maps-solar
     tag_format: '{id}-v{version}'
+  - id: grpc-google-iam-v1
+    version: 0.14.2
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/iam/v1
+    source_roots:
+      - packages/grpc-google-iam-v1/
+    preserve_regex: []
+    remove_regex:
+      - ^packages/grpc-google-iam-v1/google/.*/.*_pb2\.(?:py|pyi)$/
+    tag_format: '{id}-v{version}'
