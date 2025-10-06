@@ -228,4 +228,5 @@ packages_to_onboard: [
   "google-shopping-merchant-reviews",
   "google-shopping-type",
   "googleapis-common-protos",
+  "grpc-google-iam-v1",
 ]
