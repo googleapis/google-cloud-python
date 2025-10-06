@@ -3514,3 +3514,305 @@ libraries:
     remove_regex:
       - packages/google-cloud-security-publicca/
     tag_format: '{id}-v{version}'
+  - id: google-shopping-css
+    version: 0.1.17
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/css/v1
+    source_roots:
+      - packages/google-shopping-css
+    preserve_regex:
+      - packages/google-shopping-css/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-css/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-accounts
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/accounts/v1
+      - path: google/shopping/merchant/accounts/v1beta
+    source_roots:
+      - packages/google-shopping-merchant-accounts
+    preserve_regex:
+      - packages/google-shopping-merchant-accounts/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-accounts/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-conversions
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/conversions/v1
+      - path: google/shopping/merchant/conversions/v1beta
+    source_roots:
+      - packages/google-shopping-merchant-conversions
+    preserve_regex:
+      - packages/google-shopping-merchant-conversions/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-conversions/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-datasources
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/datasources/v1
+      - path: google/shopping/merchant/datasources/v1beta
+    source_roots:
+      - packages/google-shopping-merchant-datasources
+    preserve_regex:
+      - packages/google-shopping-merchant-datasources/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-datasources/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-inventories
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/inventories/v1beta
+      - path: google/shopping/merchant/inventories/v1
+    source_roots:
+      - packages/google-shopping-merchant-inventories
+    preserve_regex:
+      - packages/google-shopping-merchant-inventories/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-inventories/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-issueresolution
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/issueresolution/v1
+      - path: google/shopping/merchant/issueresolution/v1beta
+    source_roots:
+      - packages/google-shopping-merchant-issueresolution
+    preserve_regex:
+      - packages/google-shopping-merchant-issueresolution/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-issueresolution/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-lfp
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/lfp/v1beta
+      - path: google/shopping/merchant/lfp/v1
+    source_roots:
+      - packages/google-shopping-merchant-lfp
+    preserve_regex:
+      - packages/google-shopping-merchant-lfp/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-lfp/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-notifications
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/notifications/v1
+      - path: google/shopping/merchant/notifications/v1beta
+    source_roots:
+      - packages/google-shopping-merchant-notifications
+    preserve_regex:
+      - packages/google-shopping-merchant-notifications/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-notifications/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-ordertracking
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/ordertracking/v1
+      - path: google/shopping/merchant/ordertracking/v1beta
+    source_roots:
+      - packages/google-shopping-merchant-ordertracking
+    preserve_regex:
+      - packages/google-shopping-merchant-ordertracking/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-ordertracking/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-products
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/products/v1
+      - path: google/shopping/merchant/products/v1beta
+    source_roots:
+      - packages/google-shopping-merchant-products
+    preserve_regex:
+      - packages/google-shopping-merchant-products/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-products/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-productstudio
+    version: 0.1.1
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/productstudio/v1alpha
+    source_roots:
+      - packages/google-shopping-merchant-productstudio
+    preserve_regex:
+      - packages/google-shopping-merchant-productstudio/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-productstudio/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-promotions
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/promotions/v1
+      - path: google/shopping/merchant/promotions/v1beta
+    source_roots:
+      - packages/google-shopping-merchant-promotions
+    preserve_regex:
+      - packages/google-shopping-merchant-promotions/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-promotions/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-quota
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/quota/v1beta
+      - path: google/shopping/merchant/quota/v1
+    source_roots:
+      - packages/google-shopping-merchant-quota
+    preserve_regex:
+      - packages/google-shopping-merchant-quota/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-quota/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-reports
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/reports/v1beta
+      - path: google/shopping/merchant/reports/v1
+      - path: google/shopping/merchant/reports/v1alpha
+    source_roots:
+      - packages/google-shopping-merchant-reports
+    preserve_regex:
+      - packages/google-shopping-merchant-reports/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-reports/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-merchant-reviews
+    version: 0.2.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/merchant/reviews/v1beta
+    source_roots:
+      - packages/google-shopping-merchant-reviews
+    preserve_regex:
+      - packages/google-shopping-merchant-reviews/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-shopping-merchant-reviews/
+    tag_format: '{id}-v{version}'
+  - id: google-shopping-type
+    version: 1.0.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/shopping/type
+    source_roots:
+      - packages/google-shopping-type
+    preserve_regex:
+      - packages/google-shopping-type/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/gapic/type/test_type.py
+    remove_regex:
+      - packages/google-shopping-type/
+    tag_format: '{id}-v{version}'
