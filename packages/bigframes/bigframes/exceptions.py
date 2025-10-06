@@ -111,6 +111,10 @@ class FunctionAxisOnePreviewWarning(PreviewWarning):
     """Remote Function and Managed UDF with axis=1 preview."""
 
 
+class JSONDtypeWarning(PreviewWarning):
+    """JSON dtype will be pd.ArrowDtype(pa.json_()) in the future."""
+
+
 class FunctionConflictTypeHintWarning(UserWarning):
     """Conflicting type hints in a BigFrames function."""
 

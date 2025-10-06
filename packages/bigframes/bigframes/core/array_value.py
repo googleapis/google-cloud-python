@@ -18,7 +18,6 @@ import datetime
 import functools
 import typing
 from typing import Iterable, List, Mapping, Optional, Sequence, Tuple
-import warnings
 
 import google.cloud.bigquery
 import pandas
@@ -37,7 +36,6 @@ import bigframes.core.schema as schemata
 import bigframes.core.tree_properties
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
-import bigframes.exceptions as bfe
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 
@@ -101,12 +99,6 @@ class ArrayValue:
     ):
         if offsets_col and primary_key:
             raise ValueError("must set at most one of 'offests', 'primary_key'")
-        if any(i.field_type == "JSON" for i in table.schema if i.name in schema.names):
-            msg = bfe.format_message(
-                "JSON column interpretation as a custom PyArrow extention in `db_dtypes` "
-                "is a preview feature and subject to change."
-            )
-            warnings.warn(msg, bfe.PreviewWarning)
         # define data source only for needed columns, this makes row-hashing cheaper
         table_def = nodes.GbqTable.from_table(table, columns=schema.names)
 

@@ -171,12 +171,16 @@ class Index(vendored_pandas_index.Index):
 
     @property
     def dtype(self):
-        return self._block.index.dtypes[0] if self.nlevels == 1 else np.dtype("O")
+        dtype = self._block.index.dtypes[0] if self.nlevels == 1 else np.dtype("O")
+        bigframes.dtypes.warn_on_db_dtypes_json_dtype([dtype])
+        return dtype
 
     @property
     def dtypes(self) -> pandas.Series:
+        dtypes = self._block.index.dtypes
+        bigframes.dtypes.warn_on_db_dtypes_json_dtype(dtypes)
         return pandas.Series(
-            data=self._block.index.dtypes,
+            data=dtypes,
             index=typing.cast(typing.Tuple, self._block.index.names),
         )
 

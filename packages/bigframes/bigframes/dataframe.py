@@ -321,7 +321,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     @property
     def dtypes(self) -> pandas.Series:
-        return pandas.Series(data=self._block.dtypes, index=self._block.column_labels)
+        dtypes = self._block.dtypes
+        bigframes.dtypes.warn_on_db_dtypes_json_dtype(dtypes)
+        return pandas.Series(data=dtypes, index=self._block.column_labels)
 
     @property
     def columns(self) -> pandas.Index:

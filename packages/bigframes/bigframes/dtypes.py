@@ -20,6 +20,7 @@ import decimal
 import textwrap
 import typing
 from typing import Any, Dict, List, Literal, Sequence, Union
+import warnings
 
 import bigframes_vendored.constants as constants
 import db_dtypes  # type: ignore
@@ -29,6 +30,9 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 import shapely.geometry  # type: ignore
+
+import bigframes.core.backports
+import bigframes.exceptions
 
 # Type hints for Pandas dtypes supported by BigQuery DataFrame
 Dtype = Union[
@@ -62,7 +66,8 @@ BIGNUMERIC_DTYPE = pd.ArrowDtype(pa.decimal256(76, 38))
 # No arrow equivalent
 GEO_DTYPE = gpd.array.GeometryDtype()
 # JSON
-# TODO: switch to pyarrow.json_(pyarrow.string()) when available.
+# TODO(https://github.com/pandas-dev/pandas/issues/60958): switch to
+# pyarrow.json_(pyarrow.string()) when pandas 3+ and pyarrow 18+ is installed.
 JSON_ARROW_TYPE = db_dtypes.JSONArrowType()
 JSON_DTYPE = pd.ArrowDtype(JSON_ARROW_TYPE)
 OBJ_REF_DTYPE = pd.ArrowDtype(
@@ -368,8 +373,7 @@ def get_struct_fields(type_: ExpressionType) -> dict[str, Dtype]:
     assert isinstance(type_.pyarrow_dtype, pa.StructType)
     struct_type = type_.pyarrow_dtype
     result: dict[str, Dtype] = {}
-    for field_no in range(struct_type.num_fields):
-        field = struct_type.field(field_no)
+    for field in bigframes.core.backports.pyarrow_struct_type_fields(struct_type):
         result[field.name] = arrow_dtype_to_bigframes_dtype(field.type)
     return result
 
@@ -547,7 +551,8 @@ def arrow_type_to_literal(
         return [arrow_type_to_literal(arrow_type.value_type)]
     if pa.types.is_struct(arrow_type):
         return {
-            field.name: arrow_type_to_literal(field.type) for field in arrow_type.fields
+            field.name: arrow_type_to_literal(field.type)
+            for field in bigframes.core.backports.pyarrow_struct_type_fields(arrow_type)
         }
     if pa.types.is_string(arrow_type):
         return "string"
@@ -915,3 +920,40 @@ def lcd_type_or_throw(dtype1: Dtype, dtype2: Dtype) -> Dtype:
 
 
 TIMEDELTA_DESCRIPTION_TAG = "#microseconds"
+
+
+def contains_db_dtypes_json_arrow_type(type_):
+    if isinstance(type_, db_dtypes.JSONArrowType):
+        return True
+
+    if isinstance(type_, pa.ListType):
+        return contains_db_dtypes_json_arrow_type(type_.value_type)
+
+    if isinstance(type_, pa.StructType):
+        return any(
+            contains_db_dtypes_json_arrow_type(field.type)
+            for field in bigframes.core.backports.pyarrow_struct_type_fields(type_)
+        )
+    return False
+
+
+def contains_db_dtypes_json_dtype(dtype):
+    if not isinstance(dtype, pd.ArrowDtype):
+        return False
+
+    return contains_db_dtypes_json_arrow_type(dtype.pyarrow_dtype)
+
+
+def warn_on_db_dtypes_json_dtype(dtypes):
+    """Warn that the JSON dtype is changing.
+
+    Note: only call this function if the user is explicitly checking the
+    dtypes.
+    """
+    if any(contains_db_dtypes_json_dtype(dtype) for dtype in dtypes):
+        msg = bigframes.exceptions.format_message(
+            "JSON columns will be represented as pandas.ArrowDtype(pyarrow.json_()) "
+            "instead of using `db_dtypes` in the future when available in pandas "
+            "(https://github.com/pandas-dev/pandas/issues/60958) and pyarrow."
+        )
+        warnings.warn(msg, bigframes.exceptions.JSONDtypeWarning)

@@ -113,10 +113,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     @property
     def dtype(self):
+        bigframes.dtypes.warn_on_db_dtypes_json_dtype([self._dtype])
         return self._dtype
 
     @property
     def dtypes(self):
+        bigframes.dtypes.warn_on_db_dtypes_json_dtype([self._dtype])
         return self._dtype
 
     @property
