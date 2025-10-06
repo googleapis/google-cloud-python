@@ -127,6 +127,7 @@ class ExecuteQueryIteratorAsync:
         self.has_received_token = False
         self._result_generator = self._next_impl()
         self._register_instance_task = None
+        self._fully_consumed = False
         self._is_closed = False
         self._request_body = request_body
         self._attempt_timeout_gen = _attempt_timeout_generator(
@@ -145,7 +146,8 @@ class ExecuteQueryIteratorAsync:
             self._register_instance_task = CrossSync.create_task(
                 self._client._register_instance,
                 self._instance_id,
-                self,
+                self.app_profile_id,
+                id(self),
                 sync_executor=self._client._executor,
             )
         except RuntimeError as e:
@@ -193,39 +195,42 @@ class ExecuteQueryIteratorAsync:
         Generator wrapping the response stream which parses the stream results
         and returns full `QueryResultRow`s.
         """
-        async for response in self._stream:
-            try:
-                # we've received a resume token, so we can finalize the metadata
-                if self._final_metadata is None and _has_resume_token(response):
-                    self._finalize_metadata()
+        try:
+            async for response in self._stream:
+                try:
+                    # we've received a resume token, so we can finalize the metadata
+                    if self._final_metadata is None and _has_resume_token(response):
+                        self._finalize_metadata()
 
-                batches_to_parse = self._byte_cursor.consume(response)
-                if not batches_to_parse:
-                    continue
-                # metadata must be set at this point since there must be a resume_token
-                # for byte_cursor to yield data
-                if not self.metadata:
-                    raise ValueError(
-                        "Error parsing response before finalizing metadata"
+                    batches_to_parse = self._byte_cursor.consume(response)
+                    if not batches_to_parse:
+                        continue
+                    # metadata must be set at this point since there must be a resume_token
+                    # for byte_cursor to yield data
+                    if not self.metadata:
+                        raise ValueError(
+                            "Error parsing response before finalizing metadata"
+                        )
+                    results = self._reader.consume(
+                        batches_to_parse, self.metadata, self._column_info
                     )
-                results = self._reader.consume(
-                    batches_to_parse, self.metadata, self._column_info
-                )
-                if results is None:
-                    continue
+                    if results is None:
+                        continue
 
-            except ValueError as e:
-                raise InvalidExecuteQueryResponse(
-                    "Invalid ExecuteQuery response received"
-                ) from e
+                except ValueError as e:
+                    raise InvalidExecuteQueryResponse(
+                        "Invalid ExecuteQuery response received"
+                    ) from e
 
-            for result in results:
-                yield result
-        # this means the stream has finished with no responses. In that case we know the
-        # latest_prepare_reponses was used successfully so we can finalize the metadata
-        if self._final_metadata is None:
-            self._finalize_metadata()
-        await self.close()
+                for result in results:
+                    yield result
+            # this means the stream has finished with no responses. In that case we know the
+            # latest_prepare_reponses was used successfully so we can finalize the metadata
+            if self._final_metadata is None:
+                self._finalize_metadata()
+            self._fully_consumed = True
+        finally:
+            self._close_internal()
 
     @CrossSync.convert(sync_name="__next__", replace_symbols={"__anext__": "__next__"})
     async def __anext__(self) -> QueryResultRow:
@@ -285,15 +290,26 @@ class ExecuteQueryIteratorAsync:
     @CrossSync.convert
     async def close(self) -> None:
         """
-        Cancel all background tasks. Should be called all rows were processed.
+        Cancel all background tasks. Should be called after all rows were processed.
+
+        Called automatically by iterator
 
         :raises: :class:`ValueError <exceptions.ValueError>` if called in an invalid state
         """
+        # this doesn't need to be async anymore but we wrap the sync api to avoid a breaking
+        # change
+        self._close_internal()
+
+    def _close_internal(self) -> None:
         if self._is_closed:
             return
-        if not self._byte_cursor.empty():
+        # Throw an error if the iterator has been successfully consumed but there is
+        # still buffered data
+        if self._fully_consumed and not self._byte_cursor.empty():
             raise ValueError("Unexpected buffered data at end of executeQuery reqest")
         self._is_closed = True
         if self._register_instance_task is not None:
             self._register_instance_task.cancel()
-        await self._client._remove_instance_registration(self._instance_id, self)
+        self._client._remove_instance_registration(
+            self._instance_id, self.app_profile_id, id(self)
+        )

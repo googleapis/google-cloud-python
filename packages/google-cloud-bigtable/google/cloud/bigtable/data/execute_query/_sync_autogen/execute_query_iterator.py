@@ -102,6 +102,7 @@ class ExecuteQueryIterator:
         self.has_received_token = False
         self._result_generator = self._next_impl()
         self._register_instance_task = None
+        self._fully_consumed = False
         self._is_closed = False
         self._request_body = request_body
         self._attempt_timeout_gen = _attempt_timeout_generator(
@@ -120,7 +121,8 @@ class ExecuteQueryIterator:
             self._register_instance_task = CrossSync._Sync_Impl.create_task(
                 self._client._register_instance,
                 self._instance_id,
-                self,
+                self.app_profile_id,
+                id(self),
                 sync_executor=self._client._executor,
             )
         except RuntimeError as e:
@@ -159,31 +161,34 @@ class ExecuteQueryIterator:
     def _next_impl(self) -> CrossSync._Sync_Impl.Iterator[QueryResultRow]:
         """Generator wrapping the response stream which parses the stream results
         and returns full `QueryResultRow`s."""
-        for response in self._stream:
-            try:
-                if self._final_metadata is None and _has_resume_token(response):
-                    self._finalize_metadata()
-                batches_to_parse = self._byte_cursor.consume(response)
-                if not batches_to_parse:
-                    continue
-                if not self.metadata:
-                    raise ValueError(
-                        "Error parsing response before finalizing metadata"
+        try:
+            for response in self._stream:
+                try:
+                    if self._final_metadata is None and _has_resume_token(response):
+                        self._finalize_metadata()
+                    batches_to_parse = self._byte_cursor.consume(response)
+                    if not batches_to_parse:
+                        continue
+                    if not self.metadata:
+                        raise ValueError(
+                            "Error parsing response before finalizing metadata"
+                        )
+                    results = self._reader.consume(
+                        batches_to_parse, self.metadata, self._column_info
                     )
-                results = self._reader.consume(
-                    batches_to_parse, self.metadata, self._column_info
-                )
-                if results is None:
-                    continue
-            except ValueError as e:
-                raise InvalidExecuteQueryResponse(
-                    "Invalid ExecuteQuery response received"
-                ) from e
-            for result in results:
-                yield result
-        if self._final_metadata is None:
-            self._finalize_metadata()
-        self.close()
+                    if results is None:
+                        continue
+                except ValueError as e:
+                    raise InvalidExecuteQueryResponse(
+                        "Invalid ExecuteQuery response received"
+                    ) from e
+                for result in results:
+                    yield result
+            if self._final_metadata is None:
+                self._finalize_metadata()
+            self._fully_consumed = True
+        finally:
+            self._close_internal()
 
     def __next__(self) -> QueryResultRow:
         """Yields QueryResultRows representing the results of the query.
@@ -233,15 +238,22 @@ class ExecuteQueryIterator:
         return self._final_metadata
 
     def close(self) -> None:
-        """Cancel all background tasks. Should be called all rows were processed.
+        """Cancel all background tasks. Should be called after all rows were processed.
+
+        Called automatically by iterator
 
         :raises: :class:`ValueError <exceptions.ValueError>` if called in an invalid state
         """
+        self._close_internal()
+
+    def _close_internal(self) -> None:
         if self._is_closed:
             return
-        if not self._byte_cursor.empty():
+        if self._fully_consumed and (not self._byte_cursor.empty()):
             raise ValueError("Unexpected buffered data at end of executeQuery reqest")
         self._is_closed = True
         if self._register_instance_task is not None:
             self._register_instance_task.cancel()
-        self._client._remove_instance_registration(self._instance_id, self)
+        self._client._remove_instance_registration(
+            self._instance_id, self.app_profile_id, id(self)
+        )

@@ -476,7 +476,8 @@ class BigtableDataClientAsync(ClientWithProject):
     async def _register_instance(
         self,
         instance_id: str,
-        owner: _DataApiTargetAsync | ExecuteQueryIteratorAsync,
+        app_profile_id: Optional[str],
+        owner_id: int,
     ) -> None:
         """
         Registers an instance with the client, and warms the channel for the instance
@@ -486,13 +487,15 @@ class BigtableDataClientAsync(ClientWithProject):
 
         Args:
           instance_id: id of the instance to register.
-          owner: table that owns the instance. Owners will be tracked in
+          app_profile_id: id of the app profile calling the instance.
+          owner_id: integer id of the object owning the instance. Owners will be tracked in
               _instance_owners, and instances will only be unregistered when all
-              owners call _remove_instance_registration
+              owners call _remove_instance_registration. Can be obtained by calling
+              `id` identity funcion, using `id(owner)`
         """
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
-        instance_key = _WarmedInstanceKey(instance_name, owner.app_profile_id)
-        self._instance_owners.setdefault(instance_key, set()).add(id(owner))
+        instance_key = _WarmedInstanceKey(instance_name, app_profile_id)
+        self._instance_owners.setdefault(instance_key, set()).add(owner_id)
         if instance_key not in self._active_instances:
             self._active_instances.add(instance_key)
             if self._channel_refresh_task:
@@ -510,10 +513,11 @@ class BigtableDataClientAsync(ClientWithProject):
             "_DataApiTargetAsync": "_DataApiTarget",
         }
     )
-    async def _remove_instance_registration(
+    def _remove_instance_registration(
         self,
         instance_id: str,
-        owner: _DataApiTargetAsync | ExecuteQueryIteratorAsync,
+        app_profile_id: Optional[str],
+        owner_id: int,
     ) -> bool:
         """
         Removes an instance from the client's registered instances, to prevent
@@ -523,17 +527,17 @@ class BigtableDataClientAsync(ClientWithProject):
 
         Args:
             instance_id: id of the instance to remove
-            owner: table that owns the instance. Owners will be tracked in
-              _instance_owners, and instances will only be unregistered when all
-              owners call _remove_instance_registration
+            app_profile_id: id of the app profile calling the instance.
+            owner_id: integer id of the object owning the instance. Can be
+                obtained by the `id` identity funcion, using `id(owner)`.
         Returns:
             bool: True if instance was removed, else False
         """
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
-        instance_key = _WarmedInstanceKey(instance_name, owner.app_profile_id)
+        instance_key = _WarmedInstanceKey(instance_name, app_profile_id)
         owner_list = self._instance_owners.get(instance_key, set())
         try:
-            owner_list.remove(id(owner))
+            owner_list.remove(owner_id)
             if len(owner_list) == 0:
                 self._active_instances.remove(instance_key)
             return True
@@ -1014,7 +1018,8 @@ class _DataApiTargetAsync(abc.ABC):
             self._register_instance_future = CrossSync.create_task(
                 self.client._register_instance,
                 self.instance_id,
-                self,
+                self.app_profile_id,
+                id(self),
                 sync_executor=self.client._executor,
             )
         except RuntimeError as e:
@@ -1725,7 +1730,9 @@ class _DataApiTargetAsync(abc.ABC):
         """
         if self._register_instance_future:
             self._register_instance_future.cancel()
-        await self.client._remove_instance_registration(self.instance_id, self)
+        self.client._remove_instance_registration(
+            self.instance_id, self.app_profile_id, id(self)
+        )
 
     @CrossSync.convert(sync_name="__enter__")
     async def __aenter__(self):

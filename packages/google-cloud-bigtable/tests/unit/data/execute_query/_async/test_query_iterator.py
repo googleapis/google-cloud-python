@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import gc
 from google.cloud.bigtable.data import exceptions
 from google.cloud.bigtable.data.execute_query.metadata import (
     _pb_metadata_to_metadata_types,
@@ -284,3 +285,123 @@ class TestQueryIteratorAsync:
 
         with pytest.raises(exceptions.EarlyMetadataCallError):
             iterator.metadata
+
+    @CrossSync.pytest
+    async def test_iterator_closes_on_full_consumption(self, proto_byte_stream):
+        """
+        Tests that the iterator's close() method is called after all results
+        have been successfully consumed.
+        """
+        client_mock = mock.Mock()
+        client_mock._register_instance = CrossSync.Mock()
+        client_mock._remove_instance_registration = CrossSync.Mock()
+        client_mock._executor = concurrent.futures.ThreadPoolExecutor()
+        mock_async_iterator = MockIterator(proto_byte_stream)
+
+        with mock.patch.object(
+            CrossSync, "retry_target_stream", return_value=mock_async_iterator
+        ):
+            iterator = self._make_one(
+                client=client_mock,
+                instance_id="test-instance",
+                app_profile_id="test_profile",
+                request_body={},
+                prepare_metadata=_pb_metadata_to_metadata_types(
+                    metadata(
+                        column("test1", int64_type()), column("test2", int64_type())
+                    )
+                ),
+                attempt_timeout=10,
+                operation_timeout=10,
+            )
+            # Consume the entire iterator
+            results = [row async for row in iterator]
+            assert len(results) == 3
+
+        # The close method should be called automatically by the finally block
+        client_mock._remove_instance_registration.assert_called_once()
+        assert iterator.is_closed
+
+    @CrossSync.pytest
+    async def test_iterator_closes_on_early_break(self, proto_byte_stream):
+        """
+        Tests that the iterator's close() method is called if the user breaks
+        out of the iteration loop early.
+        """
+        client_mock = mock.Mock()
+        client_mock._register_instance = CrossSync.Mock()
+        client_mock._remove_instance_registration = CrossSync.Mock()
+        mock_async_iterator = MockIterator(proto_byte_stream)
+        iterator = None
+        with mock.patch.object(
+            CrossSync, "retry_target_stream", return_value=mock_async_iterator
+        ):
+            iterator = CrossSync.ExecuteQueryIterator(
+                client=client_mock,
+                instance_id="test-instance",
+                app_profile_id="test_profile",
+                request_body={},
+                prepare_metadata=_pb_metadata_to_metadata_types(
+                    metadata(
+                        column("test1", int64_type()), column("test2", int64_type())
+                    )
+                ),
+                attempt_timeout=10,
+                operation_timeout=10,
+            )
+            async for _ in iterator:
+                break
+
+        del iterator
+        await CrossSync.sleep(1)
+        # GC outside the loop bc the mock ends up holding a reference to
+        # the iterator
+        gc.collect()
+        await CrossSync.sleep(1)
+
+        # The close method should be called by the finally block when the
+        # generator is closed
+        client_mock._remove_instance_registration.assert_called_once()
+
+    @CrossSync.pytest
+    async def test_iterator_closes_on_error(self, proto_byte_stream):
+        """
+        Tests that the iterator's close() method is called if an exception
+        is raised during iteration.
+        """
+        client_mock = mock.Mock()
+        client_mock._register_instance = CrossSync.Mock()
+        client_mock._remove_instance_registration = CrossSync.Mock()
+
+        class MockErrorIterator(MockIterator):
+            @CrossSync.convert(
+                sync_name="__next__", replace_symbols={"__anext__": "__next__"}
+            )
+            async def __anext__(self):
+                if self.idx >= 1:
+                    raise ValueError("Injected-test-error")
+                return await super().__anext__()
+
+        mock_async_iterator = MockErrorIterator(proto_byte_stream)
+        with mock.patch.object(
+            CrossSync, "retry_target_stream", return_value=mock_async_iterator
+        ):
+            iterator = self._make_one(
+                client=client_mock,
+                instance_id="test-instance",
+                app_profile_id="test_profile",
+                request_body={},
+                prepare_metadata=_pb_metadata_to_metadata_types(
+                    metadata(
+                        column("test1", int64_type()), column("test2", int64_type())
+                    )
+                ),
+                attempt_timeout=10,
+                operation_timeout=10,
+            )
+            with pytest.raises(ValueError, match="Injected-test-error"):
+                async for _ in iterator:
+                    pass
+
+        # The close method should be called by the finally block on error
+        client_mock._remove_instance_registration.assert_called_once()
