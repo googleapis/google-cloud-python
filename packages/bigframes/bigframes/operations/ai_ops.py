@@ -124,6 +124,18 @@ class AIIf(base_ops.NaryOp):
 
 
 @dataclasses.dataclass(frozen=True)
+class AIClassify(base_ops.NaryOp):
+    name: ClassVar[str] = "ai_classify"
+
+    prompt_context: Tuple[str | None, ...]
+    categories: tuple[str, ...]
+    connection_id: str
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.STRING_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
 class AIScore(base_ops.NaryOp):
     name: ClassVar[str] = "ai_score"
 

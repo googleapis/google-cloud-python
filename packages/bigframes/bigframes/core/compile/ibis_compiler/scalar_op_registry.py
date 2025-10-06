@@ -2039,6 +2039,18 @@ def ai_if(*values: ibis_types.Value, op: ops.AIIf) -> ibis_types.StructValue:
     ).to_expr()
 
 
+@scalar_op_compiler.register_nary_op(ops.AIClassify, pass_op=True)
+def ai_classify(
+    *values: ibis_types.Value, op: ops.AIClassify
+) -> ibis_types.StructValue:
+
+    return ai_ops.AIClassify(
+        _construct_prompt(values, op.prompt_context),  # type: ignore
+        op.categories,  # type: ignore
+        op.connection_id,  # type: ignore
+    ).to_expr()
+
+
 @scalar_op_compiler.register_nary_op(ops.AIScore, pass_op=True)
 def ai_score(*values: ibis_types.Value, op: ops.AIScore) -> ibis_types.StructValue:
 

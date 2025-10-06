@@ -61,6 +61,21 @@ def _(*exprs: TypedExpr, op: ops.AIIf) -> sge.Expression:
     return sge.func("AI.IF", *args)
 
 
+@register_nary_op(ops.AIClassify, pass_op=True)
+def _(*exprs: TypedExpr, op: ops.AIClassify) -> sge.Expression:
+    category_literals = [sge.Literal.string(cat) for cat in op.categories]
+    categories_arg = sge.Kwarg(
+        this="categories", expression=sge.array(*category_literals)
+    )
+
+    args = [
+        _construct_prompt(exprs, op.prompt_context, param_name="input"),
+        categories_arg,
+    ] + _construct_named_args(op)
+
+    return sge.func("AI.CLASSIFY", *args)
+
+
 @register_nary_op(ops.AIScore, pass_op=True)
 def _(*exprs: TypedExpr, op: ops.AIScore) -> sge.Expression:
     args = [_construct_prompt(exprs, op.prompt_context)] + _construct_named_args(op)
@@ -69,7 +84,9 @@ def _(*exprs: TypedExpr, op: ops.AIScore) -> sge.Expression:
 
 
 def _construct_prompt(
-    exprs: tuple[TypedExpr, ...], prompt_context: tuple[str | None, ...]
+    exprs: tuple[TypedExpr, ...],
+    prompt_context: tuple[str | None, ...],
+    param_name: str = "prompt",
 ) -> sge.Kwarg:
     prompt: list[str | sge.Expression] = []
     column_ref_idx = 0
@@ -80,7 +97,7 @@ def _construct_prompt(
         else:
             prompt.append(sge.Literal.string(elem))
 
-    return sge.Kwarg(this="prompt", expression=sge.Tuple(expressions=prompt))
+    return sge.Kwarg(this=param_name, expression=sge.Tuple(expressions=prompt))
 
 
 def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:

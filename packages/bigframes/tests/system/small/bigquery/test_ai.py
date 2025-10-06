@@ -225,6 +225,27 @@ def test_ai_if_multi_model(session):
     assert result.dtype == dtypes.BOOL_DTYPE
 
 
+def test_ai_classify(session):
+    s = bpd.Series(["cat", "orchid"], session=session)
+    bpd.options.display.repr_mode = "deferred"
+
+    result = bbq.ai.classify(s, ["animal", "plant"])
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.STRING_DTYPE
+
+
+def test_ai_classify_multi_model(session):
+    df = session.from_glob_path(
+        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+    )
+
+    result = bbq.ai.classify(df["image"], ["photo", "cartoon"])
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.STRING_DTYPE
+
+
 def test_ai_score(session):
     s = bpd.Series(["Tiger", "Rabbit"], session=session)
     prompt = ("Rank the relative weights of ", s, " on the scale from 1 to 3")

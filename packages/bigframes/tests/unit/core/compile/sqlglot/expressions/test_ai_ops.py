@@ -216,6 +216,20 @@ def test_ai_if(scalar_types_df: dataframe.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_ai_classify(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIClassify(
+        prompt_context=(None,),
+        categories=("greeting", "rejection"),
+        connection_id=CONNECTION_ID,
+    )
+
+    sql = utils._apply_unary_ops(scalar_types_df, [op.as_expr(col_name)], ["result"])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_ai_score(scalar_types_df: dataframe.DataFrame, snapshot):
     col_name = "string_col"
 

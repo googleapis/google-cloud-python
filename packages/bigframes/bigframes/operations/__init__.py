@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 from bigframes.operations.ai_ops import (
+    AIClassify,
     AIGenerate,
     AIGenerateBool,
     AIGenerateDouble,
@@ -419,6 +420,7 @@ __all__ = [
     "geo_y_op",
     "GeoStDistanceOp",
     # AI ops
+    "AIClassify",
     "AIGenerate",
     "AIGenerateBool",
     "AIGenerateDouble",

@@ -348,20 +348,20 @@ def if_(
     provides optimization such that not all rows are evaluated with the LLM.
 
     **Examples:**
-    >>> import bigframes.pandas as bpd
-    >>> import bigframes.bigquery as bbq
-    >>> bpd.options.display.progress_bar = None
-    >>> us_state = bpd.Series(["Massachusetts", "Illinois", "Hawaii"])
-    >>> bbq.ai.if_((us_state, " has a city called Springfield"))
-    0     True
-    1     True
-    2    False
-    dtype: boolean
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+        >>> us_state = bpd.Series(["Massachusetts", "Illinois", "Hawaii"])
+        >>> bbq.ai.if_((us_state, " has a city called Springfield"))
+        0     True
+        1     True
+        2    False
+        dtype: boolean
 
-    >>> us_state[bbq.ai.if_((us_state, " has a city called Springfield"))]
-    0    Massachusetts
-    1         Illinois
-    dtype: string
+        >>> us_state[bbq.ai.if_((us_state, " has a city called Springfield"))]
+        0    Massachusetts
+        1         Illinois
+        dtype: string
 
     Args:
         prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
@@ -387,6 +387,56 @@ def if_(
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
+def classify(
+    input: PROMPT_TYPE,
+    categories: tuple[str, ...] | list[str],
+    *,
+    connection_id: str | None = None,
+) -> series.Series:
+    """
+    Classifies a given input into one of the specified categories. It will always return one of the provided categories best fit the prompt input.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+        >>> df = bpd.DataFrame({'creature': ['Cat', 'Salmon']})
+        >>> df['type'] = bbq.ai.classify(df['creature'], ['Mammal', 'Fish'])
+        >>> df
+          creature    type
+        0      Cat  Mammal
+        1   Salmon    Fish
+        <BLANKLINE>
+        [2 rows x 2 columns]
+
+    Args:
+        input (Series | List[str|Series] | Tuple[str|Series, ...]):
+            A mixture of Series and string literals that specifies the input to send to the model. The Series can be BigFrames Series
+            or pandas Series.
+        categories (tuple[str, ...] | list[str]):
+            Categories to classify the input into.
+        connection_id (str, optional):
+            Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
+            If not provided, the connection from the current session will be used.
+
+    Returns:
+        bigframes.series.Series: A new series of strings.
+    """
+
+    prompt_context, series_list = _separate_context_and_series(input)
+    assert len(series_list) > 0
+
+    operator = ai_ops.AIClassify(
+        prompt_context=tuple(prompt_context),
+        categories=tuple(categories),
+        connection_id=_resolve_connection_id(series_list[0], connection_id),
+    )
+
+    return series_list[0]._apply_nary_op(operator, series_list[1:])
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
 def score(
     prompt: PROMPT_TYPE,
     *,
@@ -398,15 +448,16 @@ def score(
     rubric with examples in the prompt.
 
     **Examples:**
-    >>> import bigframes.pandas as bpd
-    >>> import bigframes.bigquery as bbq
-    >>> bpd.options.display.progress_bar = None
-    >>> animal = bpd.Series(["Tiger", "Rabbit", "Blue Whale"])
-    >>> bbq.ai.score(("Rank the relative weights of ", animal, " on the scale from 1 to 3")) # doctest: +SKIP
-    0    2.0
-    1    1.0
-    2    3.0
-    dtype: Float64
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+        >>> animal = bpd.Series(["Tiger", "Rabbit", "Blue Whale"])
+        >>> bbq.ai.score(("Rank the relative weights of ", animal, " on the scale from 1 to 3")) # doctest: +SKIP
+        0    2.0
+        1    1.0
+        2    3.0
+        dtype: Float64
 
     Args:
         prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
