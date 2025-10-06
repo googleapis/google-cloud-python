@@ -537,7 +537,7 @@ class TestBigtableDataClientAsync:
         client_mock._ping_and_warm_instances = CrossSync.Mock()
         table_mock = mock.Mock()
         await self._get_target_class()._register_instance(
-            client_mock, "instance-1", table_mock
+            client_mock, "instance-1", table_mock.app_profile_id, id(table_mock)
         )
         # first call should start background refresh
         assert client_mock._start_background_channel_refresh.call_count == 1
@@ -555,7 +555,7 @@ class TestBigtableDataClientAsync:
         # next call should not call _start_background_channel_refresh again
         table_mock2 = mock.Mock()
         await self._get_target_class()._register_instance(
-            client_mock, "instance-2", table_mock2
+            client_mock, "instance-2", table_mock2.app_profile_id, id(table_mock2)
         )
         assert client_mock._start_background_channel_refresh.call_count == 1
         assert (
@@ -607,7 +607,7 @@ class TestBigtableDataClientAsync:
         )
         # fake first registration
         await self._get_target_class()._register_instance(
-            client_mock, "instance-1", table_mock
+            client_mock, "instance-1", table_mock.app_profile_id, id(table_mock)
         )
         assert len(active_instances) == 1
         assert expected_key == tuple(list(active_instances)[0])
@@ -617,7 +617,7 @@ class TestBigtableDataClientAsync:
         assert client_mock._ping_and_warm_instances.call_count == 1
         # next call should do nothing
         await self._get_target_class()._register_instance(
-            client_mock, "instance-1", table_mock
+            client_mock, "instance-1", table_mock.app_profile_id, id(table_mock)
         )
         assert len(active_instances) == 1
         assert expected_key == tuple(list(active_instances)[0])
@@ -659,7 +659,7 @@ class TestBigtableDataClientAsync:
         for instance, profile in insert_instances:
             table_mock.app_profile_id = profile
             await self._get_target_class()._register_instance(
-                client_mock, instance, table_mock
+                client_mock, instance, profile, id(table_mock)
             )
         assert len(active_instances) == len(expected_active)
         assert len(instance_owners) == len(expected_owner_keys)
@@ -682,8 +682,8 @@ class TestBigtableDataClientAsync:
     async def test__remove_instance_registration(self):
         client = self._make_client(project="project-id")
         table = mock.Mock()
-        await client._register_instance("instance-1", table)
-        await client._register_instance("instance-2", table)
+        await client._register_instance("instance-1", table.app_profile_id, id(table))
+        await client._register_instance("instance-2", table.app_profile_id, id(table))
         assert len(client._active_instances) == 2
         assert len(client._instance_owners.keys()) == 2
         instance_1_path = client._gapic_client.instance_path(
@@ -698,13 +698,15 @@ class TestBigtableDataClientAsync:
         assert list(client._instance_owners[instance_1_key])[0] == id(table)
         assert len(client._instance_owners[instance_2_key]) == 1
         assert list(client._instance_owners[instance_2_key])[0] == id(table)
-        success = await client._remove_instance_registration("instance-1", table)
+        success = client._remove_instance_registration(
+            "instance-1", table.app_profile_id, id(table)
+        )
         assert success
         assert len(client._active_instances) == 1
         assert len(client._instance_owners[instance_1_key]) == 0
         assert len(client._instance_owners[instance_2_key]) == 1
         assert client._active_instances == {instance_2_key}
-        success = await client._remove_instance_registration("fake-key", table)
+        success = client._remove_instance_registration("fake-key", "profile", id(table))
         assert not success
         assert len(client._active_instances) == 1
         await client.close()
