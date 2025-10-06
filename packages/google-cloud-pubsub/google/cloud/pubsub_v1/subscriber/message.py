@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 import datetime as dt
 import json
+import logging
 import math
 import time
 import typing
@@ -42,6 +43,8 @@ Message {{
   ordering_key: {!r}
   attributes: {}
 }}"""
+
+_ACK_NACK_LOGGER = logging.getLogger("ack-nack")
 
 _SUCCESS_FUTURE = futures.Future()
 _SUCCESS_FUTURE.set_result(AcknowledgeStatus.SUCCESS)
@@ -274,6 +277,7 @@ class Message(object):
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
             requests.AckRequest(
+                message_id=self.message_id,
                 ack_id=self._ack_id,
                 byte_size=self.size,
                 time_to_ack=time_to_ack,
@@ -281,6 +285,12 @@ class Message(object):
                 future=None,
                 opentelemetry_data=self.opentelemetry_data,
             )
+        )
+        _ACK_NACK_LOGGER.debug(
+            "Called ack for message (id=%s, ack_id=%s, ordering_key=%s)",
+            self.message_id,
+            self.ack_id,
+            self.ordering_key,
         )
 
     def ack_with_response(self) -> "futures.Future":
@@ -322,6 +332,12 @@ class Message(object):
             pubsub_v1.subscriber.exceptions.AcknowledgeError exception
             will be thrown.
         """
+        _ACK_NACK_LOGGER.debug(
+            "Called ack for message (id=%s, ack_id=%s, ordering_key=%s, exactly_once=True)",
+            self.message_id,
+            self.ack_id,
+            self.ordering_key,
+        )
         if self.opentelemetry_data:
             self.opentelemetry_data.add_process_span_event("ack called")
             self.opentelemetry_data.end_process_span()
@@ -335,6 +351,7 @@ class Message(object):
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
             requests.AckRequest(
+                message_id=self.message_id,
                 ack_id=self._ack_id,
                 byte_size=self.size,
                 time_to_ack=time_to_ack,
@@ -382,6 +399,7 @@ class Message(object):
         """
         self._request_queue.put(
             requests.ModAckRequest(
+                message_id=self.message_id,
                 ack_id=self._ack_id,
                 seconds=seconds,
                 future=None,
@@ -445,6 +463,7 @@ class Message(object):
 
         self._request_queue.put(
             requests.ModAckRequest(
+                message_id=self.message_id,
                 ack_id=self._ack_id,
                 seconds=seconds,
                 future=req_future,
@@ -461,6 +480,13 @@ class Message(object):
         may take place immediately or after a delay, and may arrive at this subscriber
         or another.
         """
+        _ACK_NACK_LOGGER.debug(
+            "Called nack for message (id=%s, ack_id=%s, ordering_key=%s, exactly_once=%s)",
+            self.message_id,
+            self.ack_id,
+            self.ordering_key,
+            self._exactly_once_delivery_enabled_func(),
+        )
         if self.opentelemetry_data:
             self.opentelemetry_data.add_process_span_event("nack called")
             self.opentelemetry_data.end_process_span()
@@ -530,3 +556,7 @@ class Message(object):
         )
 
         return future
+
+    @property
+    def exactly_once_enabled(self):
+        return self._exactly_once_delivery_enabled_func()

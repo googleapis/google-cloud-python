@@ -21,7 +21,16 @@ import itertools
 import logging
 import threading
 import typing
-from typing import Any, Dict, Callable, Iterable, List, Optional, Set, Tuple
+from typing import (
+    Any,
+    Dict,
+    Callable,
+    Iterable,
+    List,
+    Optional,
+    Set,
+    Tuple,
+)
 import uuid
 
 from opentelemetry import trace
@@ -60,6 +69,12 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
 
 
 _LOGGER = logging.getLogger(__name__)
+_SLOW_ACK_LOGGER = logging.getLogger("slow-ack")
+_STREAMS_LOGGER = logging.getLogger("subscriber-streams")
+_FLOW_CONTROL_LOGGER = logging.getLogger("subscriber-flow-control")
+_CALLBACK_DELIVERY_LOGGER = logging.getLogger("callback-delivery")
+_CALLBACK_EXCEPTION_LOGGER = logging.getLogger("callback-exceptions")
+_EXPIRY_LOGGER = logging.getLogger("expiry")
 _REGULAR_SHUTDOWN_THREAD_NAME = "Thread-RegularStreamShutdown"
 _RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
 _RETRYABLE_STREAM_ERRORS = (
@@ -145,6 +160,14 @@ def _wrap_callback_errors(
         callback: The user callback.
         message: The Pub/Sub message.
     """
+    _CALLBACK_DELIVERY_LOGGER.debug(
+        "Message (id=%s, ack_id=%s, ordering_key=%s, exactly_once=%s) received by subscriber callback",
+        message.message_id,
+        message.ack_id,
+        message.ordering_key,
+        message.exactly_once_enabled,
+    )
+
     try:
         if message.opentelemetry_data:
             message.opentelemetry_data.end_subscribe_concurrency_control_span()
@@ -156,9 +179,15 @@ def _wrap_callback_errors(
         # Note: the likelihood of this failing is extremely low. This just adds
         # a message to a queue, so if this doesn't work the world is in an
         # unrecoverable state and this thread should just bail.
-        _LOGGER.exception(
-            "Top-level exception occurred in callback while processing a message"
+
+        _CALLBACK_EXCEPTION_LOGGER.exception(
+            "Message (id=%s, ack_id=%s, ordering_key=%s, exactly_once=%s)'s callback threw exception, nacking message.",
+            message.message_id,
+            message.ack_id,
+            message.ordering_key,
+            message.exactly_once_enabled,
         )
+
         message.nack()
         on_callback_error(exc)
 
@@ -199,6 +228,9 @@ def _process_requests(
     error_status: Optional["status_pb2.Status"],
     ack_reqs_dict: Dict[str, requests.AckRequest],
     errors_dict: Optional[Dict[str, str]],
+    ack_histogram: Optional[histogram.Histogram] = None,
+    # TODO - Change this param to a Union of Literals when we drop p3.7 support
+    req_type: str = "ack",
 ):
     """Process requests when exactly-once delivery is enabled by referring to
     error_status and errors_dict.
@@ -209,28 +241,40 @@ def _process_requests(
     """
     requests_completed = []
     requests_to_retry = []
-    for ack_id in ack_reqs_dict:
+    for ack_id, ack_request in ack_reqs_dict.items():
+        # Debug logging: slow acks
+        if (
+            req_type == "ack"
+            and ack_histogram
+            and ack_request.time_to_ack > ack_histogram.percentile(percent=99)
+        ):
+            _SLOW_ACK_LOGGER.debug(
+                "Message (id=%s, ack_id=%s) ack duration of %s s is higher than the p99 ack duration",
+                ack_request.message_id,
+                ack_request.ack_id,
+            )
+
         # Handle special errors returned for ack/modack RPCs via the ErrorInfo
         # sidecar metadata when exactly-once delivery is enabled.
         if errors_dict and ack_id in errors_dict:
             exactly_once_error = errors_dict[ack_id]
             if exactly_once_error.startswith("TRANSIENT_"):
-                requests_to_retry.append(ack_reqs_dict[ack_id])
+                requests_to_retry.append(ack_request)
             else:
                 if exactly_once_error == "PERMANENT_FAILURE_INVALID_ACK_ID":
                     exc = AcknowledgeError(AcknowledgeStatus.INVALID_ACK_ID, info=None)
                 else:
                     exc = AcknowledgeError(AcknowledgeStatus.OTHER, exactly_once_error)
-                future = ack_reqs_dict[ack_id].future
+                future = ack_request.future
                 if future is not None:
                     future.set_exception(exc)
-                requests_completed.append(ack_reqs_dict[ack_id])
+                requests_completed.append(ack_request)
         # Temporary GRPC errors are retried
         elif (
             error_status
             and error_status.code in _EXACTLY_ONCE_DELIVERY_TEMPORARY_RETRY_ERRORS
         ):
-            requests_to_retry.append(ack_reqs_dict[ack_id])
+            requests_to_retry.append(ack_request)
         # Other GRPC errors are NOT retried
         elif error_status:
             if error_status.code == code_pb2.PERMISSION_DENIED:
@@ -239,20 +283,20 @@ def _process_requests(
                 exc = AcknowledgeError(AcknowledgeStatus.FAILED_PRECONDITION, info=None)
             else:
                 exc = AcknowledgeError(AcknowledgeStatus.OTHER, str(error_status))
-            future = ack_reqs_dict[ack_id].future
+            future = ack_request.future
             if future is not None:
                 future.set_exception(exc)
-            requests_completed.append(ack_reqs_dict[ack_id])
+            requests_completed.append(ack_request)
         # Since no error occurred, requests with futures are completed successfully.
-        elif ack_reqs_dict[ack_id].future:
-            future = ack_reqs_dict[ack_id].future
+        elif ack_request.future:
+            future = ack_request.future
             # success
             assert future is not None
             future.set_result(AcknowledgeStatus.SUCCESS)
-            requests_completed.append(ack_reqs_dict[ack_id])
+            requests_completed.append(ack_request)
         # All other requests are considered completed.
         else:
-            requests_completed.append(ack_reqs_dict[ack_id])
+            requests_completed.append(ack_request)
 
     return requests_completed, requests_to_retry
 
@@ -560,8 +604,10 @@ class StreamingPullManager(object):
         with self._pause_resume_lock:
             if self.load >= _MAX_LOAD:
                 if self._consumer is not None and not self._consumer.is_paused:
-                    _LOGGER.debug(
-                        "Message backlog over load at %.2f, pausing.", self.load
+                    _FLOW_CONTROL_LOGGER.debug(
+                        "Message backlog over load at %.2f (threshold %.2f), initiating client-side flow control",
+                        self.load,
+                        _RESUME_THRESHOLD,
                     )
                     self._consumer.pause()
 
@@ -588,10 +634,18 @@ class StreamingPullManager(object):
             self._maybe_release_messages()
 
             if self.load < _RESUME_THRESHOLD:
-                _LOGGER.debug("Current load is %.2f, resuming consumer.", self.load)
+                _FLOW_CONTROL_LOGGER.debug(
+                    "Current load is %.2f (threshold %.2f), suspending client-side flow control.",
+                    self.load,
+                    _RESUME_THRESHOLD,
+                )
                 self._consumer.resume()
             else:
-                _LOGGER.debug("Did not resume, current load is %.2f.", self.load)
+                _FLOW_CONTROL_LOGGER.debug(
+                    "Current load is %.2f (threshold %.2f), retaining client-side flow control.",
+                    self.load,
+                    _RESUME_THRESHOLD,
+                )
 
     def _maybe_release_messages(self) -> None:
         """Release (some of) the held messages if the current load allows for it.
@@ -702,7 +756,7 @@ class StreamingPullManager(object):
 
         if self._exactly_once_delivery_enabled():
             requests_completed, requests_to_retry = _process_requests(
-                error_status, ack_reqs_dict, ack_errors_dict
+                error_status, ack_reqs_dict, ack_errors_dict, self.ack_histogram, "ack"
             )
         else:
             requests_completed = []
@@ -796,7 +850,11 @@ class StreamingPullManager(object):
 
         if self._exactly_once_delivery_enabled():
             requests_completed, requests_to_retry = _process_requests(
-                error_status, ack_reqs_dict, modack_errors_dict
+                error_status,
+                ack_reqs_dict,
+                modack_errors_dict,
+                self.ack_histogram,
+                "modack",
             )
         else:
             requests_completed = []
@@ -1239,6 +1297,11 @@ class StreamingPullManager(object):
             receipt_modack=True,
         )
 
+        if len(expired_ack_ids):
+            _EXPIRY_LOGGER.debug(
+                "ack ids %s were dropped as they have already expired.", expired_ack_ids
+            )
+
         with self._pause_resume_lock:
             if self._scheduler is None or self._leaser is None:
                 _LOGGER.debug(
@@ -1304,9 +1367,13 @@ class StreamingPullManager(object):
         # If this is in the list of idempotent exceptions, then we want to
         # recover.
         if isinstance(exception, _RETRYABLE_STREAM_ERRORS):
-            _LOGGER.debug("Observed recoverable stream error %s", exception)
+            _STREAMS_LOGGER.debug(
+                "Observed recoverable stream error %s, reopening stream", exception
+            )
             return True
-        _LOGGER.debug("Observed non-recoverable stream error %s", exception)
+        _STREAMS_LOGGER.debug(
+            "Observed non-recoverable stream error %s, shutting down stream", exception
+        )
         return False
 
     def _should_terminate(self, exception: BaseException) -> bool:
@@ -1326,9 +1393,13 @@ class StreamingPullManager(object):
         is_api_error = isinstance(exception, exceptions.GoogleAPICallError)
         # Terminate any non-API errors, or non-retryable errors (permission denied, unauthorized, etc.)
         if not is_api_error or isinstance(exception, _TERMINATING_STREAM_ERRORS):
-            _LOGGER.debug("Observed terminating stream error %s", exception)
+            _STREAMS_LOGGER.debug(
+                "Observed terminating stream error %s, shutting down stream", exception
+            )
             return True
-        _LOGGER.debug("Observed non-terminating stream error %s", exception)
+        _STREAMS_LOGGER.debug(
+            "Observed non-terminating stream error %s, attempting to reopen", exception
+        )
         return False
 
     def _on_rpc_done(self, future: Any) -> None:

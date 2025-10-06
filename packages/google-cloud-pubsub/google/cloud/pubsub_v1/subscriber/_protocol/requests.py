@@ -32,6 +32,7 @@ class AckRequest(NamedTuple):
     ordering_key: Optional[str]
     future: Optional["futures.Future"]
     opentelemetry_data: Optional[SubscribeOpenTelemetry] = None
+    message_id: Optional[str] = None
 
 
 class DropRequest(NamedTuple):
@@ -52,6 +53,7 @@ class ModAckRequest(NamedTuple):
     seconds: float
     future: Optional["futures.Future"]
     opentelemetry_data: Optional[SubscribeOpenTelemetry] = None
+    message_id: Optional[str] = None
 
 
 class NackRequest(NamedTuple):

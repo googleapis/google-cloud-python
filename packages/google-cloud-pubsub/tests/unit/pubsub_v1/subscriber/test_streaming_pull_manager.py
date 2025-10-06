@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import functools
 import logging
 import sys
 import threading
@@ -61,6 +60,15 @@ from google.rpc import code_pb2
 from google.rpc import error_details_pb2
 
 
+def create_mock_message(**kwargs):
+    _message_mock = mock.create_autospec(message.Message, instance=True)
+    msg = _message_mock.return_value
+    for k, v in kwargs.items():
+        setattr(msg, k, v)
+
+    return msg
+
+
 @pytest.mark.parametrize(
     "exception,expected_cls",
     [
@@ -80,7 +88,7 @@ def test__wrap_as_exception(exception, expected_cls):
 
 
 def test__wrap_callback_errors_no_error():
-    msg = mock.create_autospec(message.Message, instance=True)
+    msg = create_mock_message()
     callback = mock.Mock()
     on_callback_error = mock.Mock()
 
@@ -99,7 +107,7 @@ def test__wrap_callback_errors_no_error():
     ],
 )
 def test__wrap_callback_errors_error(callback_error):
-    msg = mock.create_autospec(message.Message, instance=True)
+    msg = create_mock_message()
     callback = mock.Mock(side_effect=callback_error)
     on_callback_error = mock.Mock()
 
@@ -511,8 +519,8 @@ def test__maybe_release_messages_on_overload():
     manager = make_manager(
         flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
     )
+    msg = create_mock_message(ack_id="ack", size=11)
 
-    msg = mock.create_autospec(message.Message, instance=True, ack_id="ack", size=11)
     manager._messages_on_hold.put(msg)
     manager._on_hold_bytes = msg.size
 
@@ -539,9 +547,8 @@ def test_opentelemetry__maybe_release_messages_subscribe_scheduler_span(span_exp
     # max load is hit.
     _leaser = manager._leaser = mock.create_autospec(leaser.Leaser)
     fake_leaser_add(_leaser, init_msg_count=8, assumed_msg_size=10)
-    msg = mock.create_autospec(
-        message.Message, instance=True, ack_id="ack_foo", size=10
-    )
+    msg = create_mock_message(ack_id="ack_foo", size=10)
+
     msg.message_id = 3
     opentelemetry_data = SubscribeOpenTelemetry(msg)
     msg.opentelemetry_data = opentelemetry_data
@@ -611,7 +618,7 @@ def test__maybe_release_messages_negative_on_hold_bytes_warning(
     )
     manager._callback = lambda msg: msg  # pragma: NO COVER
 
-    msg = mock.create_autospec(message.Message, instance=True, ack_id="ack", size=17)
+    msg = create_mock_message(ack_id="ack", size=17)
     manager._messages_on_hold.put(msg)
     manager._on_hold_bytes = 5  # too low for some reason
 
@@ -1633,8 +1640,11 @@ def test_close_nacks_internally_queued_messages():
     def fake_nack(self):
         nacked_messages.append(self.data)
 
-    MockMsg = functools.partial(mock.create_autospec, message.Message, instance=True)
-    messages = [MockMsg(data=b"msg1"), MockMsg(data=b"msg2"), MockMsg(data=b"msg3")]
+    messages = [
+        create_message(data=b"msg1"),
+        create_message(data=b"msg2"),
+        create_message(data=b"msg3"),
+    ]
     for msg in messages:
         msg.nack = stdlib_types.MethodType(fake_nack, msg)
 

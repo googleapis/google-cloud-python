@@ -289,6 +289,7 @@ def test_ack():
         msg.ack()
         put.assert_called_once_with(
             requests.AckRequest(
+                message_id=msg.message_id,
                 ack_id="bogus_ack_id",
                 byte_size=30,
                 time_to_ack=mock.ANY,
@@ -305,6 +306,7 @@ def test_ack_with_response_exactly_once_delivery_disabled():
         future = msg.ack_with_response()
         put.assert_called_once_with(
             requests.AckRequest(
+                message_id=msg.message_id,
                 ack_id="bogus_ack_id",
                 byte_size=30,
                 time_to_ack=mock.ANY,
@@ -325,6 +327,7 @@ def test_ack_with_response_exactly_once_delivery_enabled():
         future = msg.ack_with_response()
         put.assert_called_once_with(
             requests.AckRequest(
+                message_id=msg.message_id,
                 ack_id="bogus_ack_id",
                 byte_size=30,
                 time_to_ack=mock.ANY,
@@ -350,7 +353,12 @@ def test_modify_ack_deadline():
     with mock.patch.object(msg._request_queue, "put") as put:
         msg.modify_ack_deadline(60)
         put.assert_called_once_with(
-            requests.ModAckRequest(ack_id="bogus_ack_id", seconds=60, future=None)
+            requests.ModAckRequest(
+                message_id=msg.message_id,
+                ack_id="bogus_ack_id",
+                seconds=60,
+                future=None,
+            )
         )
         check_call_types(put, requests.ModAckRequest)
 
@@ -360,7 +368,12 @@ def test_modify_ack_deadline_with_response_exactly_once_delivery_disabled():
     with mock.patch.object(msg._request_queue, "put") as put:
         future = msg.modify_ack_deadline_with_response(60)
         put.assert_called_once_with(
-            requests.ModAckRequest(ack_id="bogus_ack_id", seconds=60, future=None)
+            requests.ModAckRequest(
+                message_id=msg.message_id,
+                ack_id="bogus_ack_id",
+                seconds=60,
+                future=None,
+            )
         )
         assert future.result() == AcknowledgeStatus.SUCCESS
         assert future == message._SUCCESS_FUTURE
@@ -374,7 +387,12 @@ def test_modify_ack_deadline_with_response_exactly_once_delivery_enabled():
     with mock.patch.object(msg._request_queue, "put") as put:
         future = msg.modify_ack_deadline_with_response(60)
         put.assert_called_once_with(
-            requests.ModAckRequest(ack_id="bogus_ack_id", seconds=60, future=future)
+            requests.ModAckRequest(
+                message_id=msg.message_id,
+                ack_id="bogus_ack_id",
+                seconds=60,
+                future=future,
+            )
         )
         check_call_types(put, requests.ModAckRequest)
 
