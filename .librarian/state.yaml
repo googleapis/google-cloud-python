@@ -1895,7 +1895,7 @@ libraries:
       - packages/google-cloud-video-stitcher/
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis-cluster
-    version: 0.2.0
+    version: 0.1.15
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/redis/cluster/v1
@@ -3108,7 +3108,7 @@ libraries:
       - packages/google-cloud-recommender/
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis
-    version: 2.19.0
+    version: 2.18.1
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/redis/v1
