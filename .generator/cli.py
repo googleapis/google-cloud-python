@@ -802,7 +802,7 @@ def _run_nox_sessions(library_id: str, repo: str):
             the config.yaml.
     """
     sessions = [
-        "unit-3.13(protobuf_implementation='upb')",
+        "unit-3.14(protobuf_implementation='upb')",
     ]
     current_session = None
     try:
