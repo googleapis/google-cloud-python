@@ -343,7 +343,7 @@ templated_files = gcp.CommonTemplates().py_library(
     system_test_python_versions=["3.12"],
     system_test_external_dependencies=["psutil","flaky"],
 )
-s.move(templated_files, excludes=[".coveragerc", ".github/blunderbuss.yml", ".github/release-please.yml", "README.rst", "docs/index.rst"])
+s.move(templated_files, excludes=[".coveragerc", ".github/**", "README.rst", "docs/**", ".kokoro/**"])
 
 python.py_samples(skip_readmes=True)
 
