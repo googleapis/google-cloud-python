@@ -15,10 +15,12 @@
 import datetime
 import http.client as http_client
 import json
+import os
 
 import mock
 import pytest  # type: ignore
 
+from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import external_account_authorized_user
 from google.auth import transport
@@ -27,15 +29,12 @@ from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 TOKEN_URL = "https://sts.googleapis.com/v1/token"
 TOKEN_INFO_URL = "https://sts.googleapis.com/v1/introspect"
 REVOKE_URL = "https://sts.googleapis.com/v1/revoke"
-PROJECT_NUMBER = "123456"
 QUOTA_PROJECT_ID = "654321"
 POOL_ID = "POOL_ID"
 PROVIDER_ID = "PROVIDER_ID"
-AUDIENCE = (
-    "//iam.googleapis.com/projects/{}"
-    "/locations/global/workloadIdentityPools/{}"
-    "/providers/{}"
-).format(PROJECT_NUMBER, POOL_ID, PROVIDER_ID)
+AUDIENCE = "//iam.googleapis.com/locations/global/workforcePools/{}/providers/{}".format(
+    POOL_ID, PROVIDER_ID
+)
 REFRESH_TOKEN = "REFRESH_TOKEN"
 NEW_REFRESH_TOKEN = "NEW_REFRESH_TOKEN"
 ACCESS_TOKEN = "ACCESS_TOKEN"
@@ -193,7 +192,7 @@ class TestCredentials(object):
         assert creds.valid
         assert not creds.requires_scopes
         assert creds.is_user
-        assert creds._refresh_token == REFRESH_TOKEN
+        assert creds._refresh_token_val == REFRESH_TOKEN
 
         request.assert_called_once_with(
             url=TOKEN_URL,
@@ -227,7 +226,7 @@ class TestCredentials(object):
         assert creds.valid
         assert not creds.requires_scopes
         assert creds.is_user
-        assert creds._refresh_token == NEW_REFRESH_TOKEN
+        assert creds._refresh_token_val == NEW_REFRESH_TOKEN
 
         request.assert_called_once_with(
             url=TOKEN_URL,
@@ -465,7 +464,7 @@ class TestCredentials(object):
         )
         new_creds = creds.with_quota_project(QUOTA_PROJECT_ID)
         assert new_creds._audience == creds._audience
-        assert new_creds._refresh_token == creds._refresh_token
+        assert new_creds._refresh_token_val == creds.refresh_token
         assert new_creds._token_url == creds._token_url
         assert new_creds._token_info_url == creds._token_info_url
         assert new_creds._client_id == creds._client_id
@@ -484,7 +483,7 @@ class TestCredentials(object):
         )
         new_creds = creds.with_token_uri("https://google.com")
         assert new_creds._audience == creds._audience
-        assert new_creds._refresh_token == creds._refresh_token
+        assert new_creds._refresh_token_val == creds.refresh_token
         assert new_creds._token_url == "https://google.com"
         assert new_creds._token_info_url == creds._token_info_url
         assert new_creds._client_id == creds._client_id
@@ -503,7 +502,7 @@ class TestCredentials(object):
         )
         new_creds = creds.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
         assert new_creds._audience == creds._audience
-        assert new_creds._refresh_token == creds._refresh_token
+        assert new_creds._refresh_token_val == creds.refresh_token
         assert new_creds._token_url == creds._token_url
         assert new_creds._token_info_url == creds._token_info_url
         assert new_creds._client_id == creds._client_id
@@ -513,6 +512,26 @@ class TestCredentials(object):
         assert new_creds._revoke_url == creds._revoke_url
         assert new_creds._quota_project_id == QUOTA_PROJECT_ID
         assert new_creds.universe_domain == FAKE_UNIVERSE_DOMAIN
+
+    def test_with_trust_boundary(self):
+        creds = self.make_credentials(
+            token=ACCESS_TOKEN,
+            expiry=NOW,
+            revoke_url=REVOKE_URL,
+            quota_project_id=QUOTA_PROJECT_ID,
+        )
+        new_creds = creds.with_trust_boundary({"encodedLocations": "new_boundary"})
+        assert new_creds._audience == creds._audience
+        assert new_creds._refresh_token_val == creds.refresh_token
+        assert new_creds._token_url == creds._token_url
+        assert new_creds._token_info_url == creds._token_info_url
+        assert new_creds._client_id == creds._client_id
+        assert new_creds._client_secret == creds._client_secret
+        assert new_creds.token == creds.token
+        assert new_creds.expiry == creds.expiry
+        assert new_creds._revoke_url == creds._revoke_url
+        assert new_creds._quota_project_id == QUOTA_PROJECT_ID
+        assert new_creds._trust_boundary == {"encodedLocations": "new_boundary"}
 
     def test_from_file_required_options_only(self, tmpdir):
         from_creds = self.make_credentials()
@@ -557,3 +576,65 @@ class TestCredentials(object):
         assert creds.scopes == SCOPES
         assert creds._revoke_url == REVOKE_URL
         assert creds._quota_project_id == QUOTA_PROJECT_ID
+
+    def test_refresh_fetches_trust_boundary(self):
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data={"access_token": ACCESS_TOKEN, "expires_in": 3600},
+        )
+        credentials = self.make_credentials()
+
+        with mock.patch.object(
+            credentials,
+            "_lookup_trust_boundary",
+            return_value={"encodedLocations": "0x123"},
+        ) as mock_lookup, mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"}
+        ):
+            credentials.refresh(request)
+
+        mock_lookup.assert_called_once()
+        headers = {}
+        credentials.apply(headers)
+        assert headers["x-allowed-locations"] == "0x123"
+
+    def test_refresh_skips_trust_boundary_lookup_when_disabled(self):
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data={"access_token": ACCESS_TOKEN, "expires_in": 3600},
+        )
+        credentials = self.make_credentials()
+
+        with mock.patch.object(
+            credentials, "_lookup_trust_boundary"
+        ) as mock_lookup, mock.patch.dict(os.environ, {}, clear=True):
+            credentials.refresh(request)
+
+        mock_lookup.assert_not_called()
+        headers = {}
+        credentials.apply(headers)
+        assert "x-allowed-locations" not in headers
+
+    def test_build_trust_boundary_lookup_url(self):
+        credentials = self.make_credentials()
+        expected_url = "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+        assert credentials._build_trust_boundary_lookup_url() == expected_url
+
+    @pytest.mark.parametrize(
+        "audience",
+        [
+            "invalid",
+            "//iam.googleapis.com/locations/global/workforcePools/",
+            "//iam.googleapis.com/locations/global/providers/",
+            "//iam.googleapis.com/workforcePools/POOL_ID/providers/PROVIDER_ID",
+        ],
+    )
+    def test_build_trust_boundary_lookup_url_invalid_audience(self, audience):
+        credentials = self.make_credentials(audience=audience)
+        with pytest.raises(exceptions.InvalidValue):
+            credentials._build_trust_boundary_lookup_url()
+
+    def test_build_trust_boundary_lookup_url_different_universe(self):
+        credentials = self.make_credentials(universe_domain=FAKE_UNIVERSE_DOMAIN)
+        expected_url = "https://iamcredentials.fake-universe-domain/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+        assert credentials._build_trust_boundary_lookup_url() == expected_url

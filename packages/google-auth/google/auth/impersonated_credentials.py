@@ -286,7 +286,7 @@ class Credentials(
             self._source_credentials.token_state == credentials.TokenState.STALE
             or self._source_credentials.token_state == credentials.TokenState.INVALID
         ):
-            self._source_credentials.refresh(request)
+            self._source_credentials._refresh_token(request)
 
         body = {
             "delegates": self._delegates,
@@ -526,6 +526,7 @@ class Credentials(
         target_principal = impersonation_url[start_index + 1 : end_index]
         delegates = info.get("delegates")
         quota_project_id = info.get("quota_project_id")
+        trust_boundary = info.get("trust_boundary")
 
         return cls(
             source_credentials,
@@ -533,6 +534,7 @@ class Credentials(
             scopes,
             delegates,
             quota_project_id=quota_project_id,
+            trust_boundary=trust_boundary,
         )
 
 

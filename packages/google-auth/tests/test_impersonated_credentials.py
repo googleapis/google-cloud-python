@@ -178,6 +178,15 @@ class TestImpersonatedCredentials(object):
         )
         assert isinstance(credentials, impersonated_credentials.Credentials)
 
+    def test_from_impersonated_service_account_info_with_trust_boundary(self):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["trust_boundary"] = self.VALID_TRUST_BOUNDARY
+        credentials = impersonated_credentials.Credentials.from_impersonated_service_account_info(
+            info
+        )
+        assert isinstance(credentials, impersonated_credentials.Credentials)
+        assert credentials._trust_boundary == self.VALID_TRUST_BOUNDARY
+
     def test_from_impersonated_service_account_info_with_invalid_source_credentials_type(
         self,
     ):
@@ -646,8 +655,8 @@ class TestImpersonatedCredentials(object):
         credentials._source_credentials.token = "Token"
 
         with mock.patch(
-            "google.oauth2.service_account.Credentials.refresh", autospec=True
-        ) as source_cred_refresh:
+            "google.oauth2.service_account.Credentials._refresh_token", autospec=True
+        ) as source_cred_refresh_token:
             expire_time = (
                 _helpers.utcnow().replace(microsecond=0)
                 + datetime.timedelta(seconds=500)
@@ -659,15 +668,10 @@ class TestImpersonatedCredentials(object):
 
             credentials.refresh(request)
 
-            assert credentials.valid
-            assert not credentials.expired
-
-            # Source credentials is refreshed only if it is expired within
-            # _helpers.REFRESH_THRESHOLD
-            if time_skew > 0:
-                source_cred_refresh.assert_not_called()
+            if time_skew <= 0:
+                source_cred_refresh_token.assert_called_once()
             else:
-                source_cred_refresh.assert_called_once()
+                source_cred_refresh_token.assert_not_called()
 
     def test_refresh_failure_malformed_expire_time(self, mock_donor_credentials):
         credentials = self.make_credentials(lifetime=None)
