@@ -4,6 +4,53 @@
 
 [1]: https://pypi.org/project/google-shopping-css/#history
 
+## [0.1.18](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.17...google-shopping-css-v0.1.18) (2025-10-07)
+
+
+### Features
+
+* [google-cloud-alloydb] add additional fields to Database object to specify the collation type, character type, if it is a template database, and the template to use for the database ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add additional fields to Database object to specify the collation type, character type, if it is a template database, and the template to use for the database ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add additional fields to Database object to specify the collation type, character type, if it is a template database, and the template to use for the database ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add configuration for Managed Connection Pool ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add configuration for Managed Connection Pool ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add configuration for Managed Connection Pool ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add CRUD APIs on Databases ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add CRUD APIs on Databases ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add CRUD APIs on Databases ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add field to ExecuteSQL request to just validate the sql statement ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add field to ExecuteSQL request to just validate the sql statement ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add field to ExecuteSQL request to just validate the sql statement ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add fields on the estimated/actual start/end times for an Upgrade Cluster operation ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add fields on the estimated/actual start/end times for an Upgrade Cluster operation ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add fields on the estimated/actual start/end times for an Upgrade Cluster operation ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add PG 17 as a Database version ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add PG 17 as a Database version ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] add PG 17 as a Database version ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] update `Database.charset` to be immutable ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] update `Database.charset` to be immutable ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] update `Database.charset` to be immutable ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-bigquery-reservation] Add new `BACKGROUND_CHANGE_DATA_CAPTURE`, `BACKGROUND_COLUMN_METADATA_INDEX`, and `BACKGROUND_SEARCH_INDEX_REFRESH` reservation assignment types ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-compute-v1beta] Update Compute Engine v1beta API to revision 20250902 ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-compute-v1beta] Update Compute Engine v1beta API to revision 20250909 ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-compute] Update Compute Engine v1 API to revision 20250902 ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-compute] Update Compute Engine v1 API to revision 20250909 ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-shopping-merchant-products] Include CarrierShipping field inside the Products attribute ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+
+
+### Bug Fixes
+
+* [google-cloud-alloydb] An existing enum `PoolMode` is removed from the `ConnectionPoolConfig` ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] An existing enum `PoolMode` is removed from the `ConnectionPoolConfig` ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+
+
+### Documentation
+
+* [google-cloud-alloydb] specify that the STOPPED state is not used for clusters anymore ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] specify that the STOPPED state is not used for clusters anymore ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-alloydb] specify that the STOPPED state is not used for clusters anymore ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+* [google-cloud-eventarc-publishing] Update comment in Eventarc Publishing API ([4e5a0b5](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+
 ## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.16...google-shopping-css-v0.1.17) (2025-06-11)
 
 
