@@ -1092,8 +1092,8 @@ def _update_version_for_library(
     """
 
     # Find and update gapic_version.py files
-    version_files = Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py")
-    if not version_files:
+    version_files = list(Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py"))
+    if len(version_files) == 0:
         # Fallback to `pyproject.toml`` or `setup.py``. Proto-only libraries have
         # version information in `setup.py` or `pyproject.toml` instead of `gapic_version.py`.
         pyproject_toml = Path(f"{repo}/{path_to_library}/pyproject.toml")
