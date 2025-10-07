@@ -20,34 +20,34 @@ import bigframes.dtypes as dtypes
 
 
 def test_from_bigframes_simple_dtypes():
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.INT_DTYPE) == "INT64"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.FLOAT_DTYPE) == "FLOAT64"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.STRING_DTYPE) == "STRING"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.BOOL_DTYPE) == "BOOLEAN"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.DATE_DTYPE) == "DATE"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.TIME_DTYPE) == "TIME"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.DATETIME_DTYPE) == "DATETIME"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.TIMESTAMP_DTYPE) == "TIMESTAMP"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.BYTES_DTYPE) == "BYTES"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.NUMERIC_DTYPE) == "NUMERIC"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.BIGNUMERIC_DTYPE) == "BIGNUMERIC"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.JSON_DTYPE) == "JSON"
-    assert sgt.SQLGlotType.from_bigframes_dtype(dtypes.GEO_DTYPE) == "GEOGRAPHY"
+    assert sgt.from_bigframes_dtype(dtypes.INT_DTYPE) == "INT64"
+    assert sgt.from_bigframes_dtype(dtypes.FLOAT_DTYPE) == "FLOAT64"
+    assert sgt.from_bigframes_dtype(dtypes.STRING_DTYPE) == "STRING"
+    assert sgt.from_bigframes_dtype(dtypes.BOOL_DTYPE) == "BOOLEAN"
+    assert sgt.from_bigframes_dtype(dtypes.DATE_DTYPE) == "DATE"
+    assert sgt.from_bigframes_dtype(dtypes.TIME_DTYPE) == "TIME"
+    assert sgt.from_bigframes_dtype(dtypes.DATETIME_DTYPE) == "DATETIME"
+    assert sgt.from_bigframes_dtype(dtypes.TIMESTAMP_DTYPE) == "TIMESTAMP"
+    assert sgt.from_bigframes_dtype(dtypes.BYTES_DTYPE) == "BYTES"
+    assert sgt.from_bigframes_dtype(dtypes.NUMERIC_DTYPE) == "NUMERIC"
+    assert sgt.from_bigframes_dtype(dtypes.BIGNUMERIC_DTYPE) == "BIGNUMERIC"
+    assert sgt.from_bigframes_dtype(dtypes.JSON_DTYPE) == "JSON"
+    assert sgt.from_bigframes_dtype(dtypes.GEO_DTYPE) == "GEOGRAPHY"
 
 
 def test_from_bigframes_struct_dtypes():
     fields = [pa.field("int_col", pa.int64()), pa.field("bool_col", pa.bool_())]
     struct_type = pd.ArrowDtype(pa.struct(fields))
     expected = "STRUCT<int_col INT64, bool_col BOOLEAN>"
-    assert sgt.SQLGlotType.from_bigframes_dtype(struct_type) == expected
+    assert sgt.from_bigframes_dtype(struct_type) == expected
 
 
 def test_from_bigframes_array_dtypes():
     int_array_type = pd.ArrowDtype(pa.list_(pa.int64()))
-    assert sgt.SQLGlotType.from_bigframes_dtype(int_array_type) == "ARRAY<INT64>"
+    assert sgt.from_bigframes_dtype(int_array_type) == "ARRAY<INT64>"
 
     string_array_type = pd.ArrowDtype(pa.list_(pa.string()))
-    assert sgt.SQLGlotType.from_bigframes_dtype(string_array_type) == "ARRAY<STRING>"
+    assert sgt.from_bigframes_dtype(string_array_type) == "ARRAY<STRING>"
 
 
 def test_from_bigframes_multi_nested_dtypes():
@@ -61,4 +61,4 @@ def test_from_bigframes_multi_nested_dtypes():
     expected = (
         "ARRAY<STRUCT<string_col STRING, date_col DATE, array_col ARRAY<DATETIME>>>"
     )
-    assert sgt.SQLGlotType.from_bigframes_dtype(array_type) == expected
+    assert sgt.from_bigframes_dtype(array_type) == expected

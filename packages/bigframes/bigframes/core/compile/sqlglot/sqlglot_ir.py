@@ -79,7 +79,7 @@ class SQLGlotIR:
             expressions=[
                 sge.ColumnDef(
                     this=sge.to_identifier(field.column, quoted=True),
-                    kind=sgt.SQLGlotType.from_bigframes_dtype(field.dtype),
+                    kind=sgt.from_bigframes_dtype(field.dtype),
                 )
                 for field in schema.items
             ],
@@ -620,7 +620,7 @@ def _select_to_cte(expr: sge.Select, cte_name: sge.Identifier) -> sge.Select:
 
 
 def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
-    sqlglot_type = sgt.SQLGlotType.from_bigframes_dtype(dtype)
+    sqlglot_type = sgt.from_bigframes_dtype(dtype)
     if value is None:
         return _cast(sge.Null(), sqlglot_type)
     elif dtype == dtypes.BYTES_DTYPE:

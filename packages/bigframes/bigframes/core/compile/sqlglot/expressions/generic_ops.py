@@ -18,9 +18,9 @@ import sqlglot.expressions as sge
 
 from bigframes import dtypes
 from bigframes import operations as ops
+from bigframes.core.compile.sqlglot import sqlglot_types
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
-from bigframes.core.compile.sqlglot.sqlglot_types import SQLGlotType
 
 register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
 
@@ -29,7 +29,7 @@ register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
 def _(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression:
     from_type = expr.dtype
     to_type = op.to_type
-    sg_to_type = SQLGlotType.from_bigframes_dtype(to_type)
+    sg_to_type = sqlglot_types.from_bigframes_dtype(to_type)
     sg_expr = expr.expr
 
     if to_type == dtypes.JSON_DTYPE:
