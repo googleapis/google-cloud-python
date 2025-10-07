@@ -1,8 +1,6 @@
 {
     "packages/google-cloud-biglake": "0.1.0",
     "packages/google-cloud-bigquery-storage": "2.33.1",
-    "packages/google-cloud-compute": "1.38.0",
-    "packages/google-cloud-compute-v1beta": "0.1.8",
     "packages/google-cloud-dialogflow-cx": "1.42.0",
     "packages/google-cloud-gke-hub": "1.18.0",
     "packages/google-cloud-gke-multicloud": "0.6.21",
@@ -14,7 +12,6 @@
     "packages/google-cloud-org-policy": "1.14.0",
     "packages/google-cloud-os-login": "2.17.2",
     "packages/google-cloud-secret-manager": "2.24.0",
-    "packages/google-shopping-css": "0.1.17",
     "packages/googleapis-common-protos": "1.70.0",
     "packages/grafeas": "1.15.0",
     "packages/grpc-google-iam-v1": "0.14.2"

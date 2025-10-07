@@ -58,35 +58,6 @@
             ],
             "release-type": "python"
         },
-        "packages/google-cloud-compute": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-compute",
-            "extra-files": [
-                "google/cloud/compute/gapic_version.py",
-                "google/cloud/compute_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.compute.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-cloud-compute-v1beta": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-compute-v1beta",
-            "extra-files": [
-                "google/cloud/compute_v1beta/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.compute.v1beta.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
         "packages/google-cloud-dialogflow-cx": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -318,21 +289,6 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.secrets.v1beta1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-shopping-css": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-shopping-css",
-            "extra-files": [
-                "google/shopping/css/gapic_version.py",
-                "google/shopping/css_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.shopping.css.v1.json",
                     "type": "json"
                 }
             ],
