@@ -241,13 +241,13 @@ class IngestionDataSourceSettings(proto.Message):
                     Permission denied encountered while consuming data from
                     Kinesis. This can happen if:
 
-                    -  The provided ``aws_role_arn`` does not exist or does not
-                       have the appropriate permissions attached.
-                    -  The provided ``aws_role_arn`` is not set up properly for
-                       Identity Federation using ``gcp_service_account``.
-                    -  The Pub/Sub SA is not granted the
-                       ``iam.serviceAccounts.getOpenIdToken`` permission on
-                       ``gcp_service_account``.
+                    - The provided ``aws_role_arn`` does not exist or does not
+                      have the appropriate permissions attached.
+                    - The provided ``aws_role_arn`` is not set up properly for
+                      Identity Federation using ``gcp_service_account``.
+                    - The Pub/Sub SA is not granted the
+                      ``iam.serviceAccounts.getOpenIdToken`` permission on
+                      ``gcp_service_account``.
                 PUBLISH_PERMISSION_DENIED (3):
                     Permission denied encountered while publishing to the topic.
                     This can happen if the Pub/Sub SA has not been granted the
@@ -347,9 +347,9 @@ class IngestionDataSourceSettings(proto.Message):
                     granted the `appropriate
                     permissions <https://cloud.google.com/storage/docs/access-control/iam-permissions>`__:
 
-                    -  storage.objects.list: to list the objects in a bucket.
-                    -  storage.objects.get: to read the objects in a bucket.
-                    -  storage.buckets.get: to verify the bucket exists.
+                    - storage.objects.list: to list the objects in a bucket.
+                    - storage.objects.get: to read the objects in a bucket.
+                    - storage.buckets.get: to verify the bucket exists.
                 PUBLISH_PERMISSION_DENIED (3):
                     Permission denied encountered while publishing to the topic.
                     This can happen if the Pub/Sub SA has not been granted the
@@ -1991,11 +1991,11 @@ class Subscription(proto.Message):
             for the delivery of a message with a given value of
             ``message_id`` on this subscription:
 
-            -  The message sent to a subscriber is guaranteed not to be
-               resent before the message's acknowledgment deadline
-               expires.
-            -  An acknowledged message will not be resent to a
-               subscriber.
+            - The message sent to a subscriber is guaranteed not to be
+              resent before the message's acknowledgment deadline
+              expires.
+            - An acknowledged message will not be resent to a
+              subscriber.
 
             Note that subscribers may still receive multiple copies of a
             message when ``enable_exactly_once_delivery`` is true if the
@@ -2309,10 +2309,10 @@ class PushConfig(proto.Message):
             The only supported values for the ``x-goog-version``
             attribute are:
 
-            -  ``v1beta1``: uses the push format defined in the v1beta1
-               Pub/Sub API.
-            -  ``v1`` or ``v1beta2``: uses the push format defined in
-               the v1 Pub/Sub API.
+            - ``v1beta1``: uses the push format defined in the v1beta1
+              Pub/Sub API.
+            - ``v1`` or ``v1beta2``: uses the push format defined in the
+              v1 Pub/Sub API.
 
             For example: ``attributes { "x-goog-version": "v1" }``
         oidc_token (google.pubsub_v1.types.PushConfig.OidcToken):
@@ -2478,12 +2478,11 @@ class BigQueryConfig(proto.Message):
                 Cannot write to the BigQuery table because of permission
                 denied errors. This can happen if
 
-                -  Pub/Sub SA has not been granted the `appropriate BigQuery
-                   IAM
-                   permissions <https://cloud.google.com/pubsub/docs/create-subscription#assign_bigquery_service_account>`__
-                -  bigquery.googleapis.com API is not enabled for the
-                   project
-                   (`instructions <https://cloud.google.com/service-usage/docs/enable-disable>`__)
+                - Pub/Sub SA has not been granted the `appropriate BigQuery
+                  IAM
+                  permissions <https://cloud.google.com/pubsub/docs/create-subscription#assign_bigquery_service_account>`__
+                - bigquery.googleapis.com API is not enabled for the project
+                  (`instructions <https://cloud.google.com/service-usage/docs/enable-disable>`__)
             NOT_FOUND (3):
                 Cannot write to the BigQuery table because it
                 does not exist.
@@ -3111,6 +3110,11 @@ class StreamingPullRequest(proto.Message):
             only be set on the initial StreamingPullRequest. If it is
             set on a subsequent request, the stream will be aborted with
             status ``INVALID_ARGUMENT``.
+        protocol_version (int):
+            Optional. The protocol version used by the client. This
+            property can only be set on the initial
+            StreamingPullRequest. If it is set on a subsequent request,
+            the stream will be aborted with status ``INVALID_ARGUMENT``.
     """
 
     subscription: str = proto.Field(
@@ -3144,6 +3148,10 @@ class StreamingPullRequest(proto.Message):
     max_outstanding_bytes: int = proto.Field(
         proto.INT64,
         number=8,
+    )
+    protocol_version: int = proto.Field(
+        proto.INT64,
+        number=10,
     )
 
 

@@ -1897,7 +1897,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         # Wrappers in api-core should not automatically pre-fetch the first
         # stream result, as this breaks the stream when re-opening it.
         # https://github.com/googleapis/python-pubsub/issues/93#issuecomment-630762257
-        self._transport.streaming_pull._prefetch_first_result_ = False  # type: ignore
+        self._transport.streaming_pull._prefetch_first_result_ = False
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

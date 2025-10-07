@@ -68,7 +68,7 @@ class pubsubCallTransformer(cst.CSTTransformer):
         'pull': ('subscription', 'max_messages', 'return_immediately', ),
         'rollback_schema': ('name', 'revision_id', ),
         'seek': ('subscription', 'time', 'snapshot', ),
-        'streaming_pull': ('subscription', 'stream_ack_deadline_seconds', 'ack_ids', 'modify_deadline_seconds', 'modify_deadline_ack_ids', 'client_id', 'max_outstanding_messages', 'max_outstanding_bytes', ),
+        'streaming_pull': ('subscription', 'stream_ack_deadline_seconds', 'ack_ids', 'modify_deadline_seconds', 'modify_deadline_ack_ids', 'client_id', 'max_outstanding_messages', 'max_outstanding_bytes', 'protocol_version', ),
         'update_snapshot': ('snapshot', 'update_mask', ),
         'update_subscription': ('subscription', 'update_mask', ),
         'update_topic': ('topic', 'update_mask', ),
