@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-video-stitcher/#history
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.18...google-cloud-video-stitcher-v0.8.0) (2025-10-07)
+
+
+### Features
+
+* [google-cloud-video-stitcher] Enable `rest` for `google-cloud-video-stitcher` (#14595) - [ ] Regenerate this pull request now. ([24f11c9e2b6cd9487021757a0c7cfd7b46d92340](https://github.com/googleapis/google-cloud-python/commit/24f11c9e2b6cd9487021757a0c7cfd7b46d92340))
+
 ## [0.7.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.17...google-cloud-video-stitcher-v0.7.18) (2025-06-11)
 
 

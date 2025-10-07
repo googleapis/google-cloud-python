@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [4.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.30.1...google-cloud-asset-v4.0.0) (2025-10-07)
+
+
+### Bug Fixes
+
+* remove google.cloud.asset_v1p4beta1 (#14571) Remove `google.cloud.asset_v1p4beta1` which doesn't exist in
+https://github.com/googleapis/googleapis/tree/master/google/cloud/asset ([521e7d7dd1d9978f0db19f0125a05e50050d077b](https://github.com/googleapis/google-cloud-python/commit/521e7d7dd1d9978f0db19f0125a05e50050d077b))
+
 ## [3.30.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.30.0...google-cloud-asset-v3.30.1) (2025-05-08)
 
 

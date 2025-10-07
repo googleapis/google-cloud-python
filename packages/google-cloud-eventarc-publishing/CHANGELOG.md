@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-eventarc-publishing/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.19...google-cloud-eventarc-publishing-v0.7.0) (2025-10-07)
+
+
+### Documentation
+
+* [google-cloud-eventarc-publishing] Update comment in Eventarc Publishing API  ([4e5a0b50d1919fdc592478184e349d8e3ef0b658](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+
 ## [0.6.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.18...google-cloud-eventarc-publishing-v0.6.19) (2025-06-11)
 
 
