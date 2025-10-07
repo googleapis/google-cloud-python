@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.28.0](https://github.com/googleapis/gapic-generator-python/compare/v1.27.2...v1.28.0) (2025-10-07)
+
+
+### Features
+
+* Add support for Python 3.14 ([#2451](https://github.com/googleapis/gapic-generator-python/issues/2451)) ([3a854db](https://github.com/googleapis/gapic-generator-python/commit/3a854dbd2448a384dd67d683332a4c438805f5a6))
+
+
+### Bug Fixes
+
+* Require grpcio &gt;=  1.33.2 ([ccf132f](https://github.com/googleapis/gapic-generator-python/commit/ccf132f7a8510ce7ef3728fa569806ac03ccea6e))
+* Require grpcio &gt;= 1.75.1 for Python 3.14 ([ccf132f](https://github.com/googleapis/gapic-generator-python/commit/ccf132f7a8510ce7ef3728fa569806ac03ccea6e))
+
 ## [1.27.2](https://github.com/googleapis/gapic-generator-python/compare/v1.27.1...v1.27.2) (2025-10-01)
 
 
