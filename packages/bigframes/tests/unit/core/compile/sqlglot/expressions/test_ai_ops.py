@@ -36,6 +36,26 @@ def test_ai_generate(scalar_types_df: dataframe.DataFrame, snapshot):
         endpoint="gemini-2.5-flash",
         request_type="shared",
         model_params=None,
+        output_schema=None,
+    )
+
+    sql = utils._apply_unary_ops(
+        scalar_types_df, [op.as_expr(col_name, col_name)], ["result"]
+    )
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ai_generate_with_output_schema(scalar_types_df: dataframe.DataFrame, snapshot):
+    col_name = "string_col"
+
+    op = ops.AIGenerate(
+        prompt_context=(None, " is the same as ", None),
+        connection_id=CONNECTION_ID,
+        endpoint="gemini-2.5-flash",
+        request_type="shared",
+        model_params=None,
+        output_schema="x INT64, y FLOAT64",
     )
 
     sql = utils._apply_unary_ops(
@@ -59,6 +79,7 @@ def test_ai_generate_with_model_param(scalar_types_df: dataframe.DataFrame, snap
         endpoint=None,
         request_type="shared",
         model_params=json.dumps(dict()),
+        output_schema=None,
     )
 
     sql = utils._apply_unary_ops(

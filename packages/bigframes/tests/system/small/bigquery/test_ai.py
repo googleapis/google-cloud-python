@@ -87,6 +87,41 @@ def test_ai_generate(session):
     )
 
 
+def test_ai_generate_with_output_schema(session):
+    country = bpd.Series(["Japan", "Canada"], session=session)
+    prompt = ("Describe ", country)
+
+    result = bbq.ai.generate(
+        prompt,
+        endpoint="gemini-2.5-flash",
+        output_schema={"population": "INT64", "is_in_north_america": "bool"},
+    )
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == pd.ArrowDtype(
+        pa.struct(
+            (
+                pa.field("is_in_north_america", pa.bool_()),
+                pa.field("population", pa.int64()),
+                pa.field("full_response", dtypes.JSON_ARROW_TYPE),
+                pa.field("status", pa.string()),
+            )
+        )
+    )
+
+
+def test_ai_generate_with_invalid_output_schema_raise_error(session):
+    country = bpd.Series(["Japan", "Canada"], session=session)
+    prompt = ("Describe ", country)
+
+    with pytest.raises(ValueError):
+        bbq.ai.generate(
+            prompt,
+            endpoint="gemini-2.5-flash",
+            output_schema={"population": "INT64", "is_in_north_america": "JSON"},
+        )
+
+
 def test_ai_generate_bool(session):
     s1 = bpd.Series(["apple", "bear"], session=session)
     s2 = bpd.Series(["fruit", "tree"], session=session)

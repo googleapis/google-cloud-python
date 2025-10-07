@@ -21,7 +21,7 @@ import pandas as pd
 import pyarrow as pa
 
 from bigframes import dtypes
-from bigframes.operations import base_ops
+from bigframes.operations import base_ops, output_schemas
 
 
 @dataclasses.dataclass(frozen=True)
@@ -33,12 +33,18 @@ class AIGenerate(base_ops.NaryOp):
     endpoint: str | None
     request_type: Literal["dedicated", "shared", "unspecified"]
     model_params: str | None
+    output_schema: str | None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if self.output_schema is None:
+            output_fields = (pa.field("result", pa.string()),)
+        else:
+            output_fields = output_schemas.parse_sql_fields(self.output_schema)
+
         return pd.ArrowDtype(
             pa.struct(
                 (
-                    pa.field("result", pa.string()),
+                    *output_fields,
                     pa.field("full_response", dtypes.JSON_ARROW_TYPE),
                     pa.field("status", pa.string()),
                 )

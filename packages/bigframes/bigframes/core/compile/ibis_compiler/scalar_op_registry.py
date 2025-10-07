@@ -1985,6 +1985,7 @@ def ai_generate(
         op.endpoint,  # type: ignore
         op.request_type.upper(),  # type: ignore
         op.model_params,  # type: ignore
+        op.output_schema,  # type: ignore
     ).to_expr()
 
 

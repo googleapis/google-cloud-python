@@ -15,7 +15,6 @@
 from __future__ import annotations
 
 from dataclasses import asdict
-import typing
 
 import sqlglot.expressions as sge
 
@@ -105,16 +104,16 @@ def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
 
     op_args = asdict(op)
 
-    connection_id = typing.cast(str, op_args["connection_id"])
+    connection_id = op_args["connection_id"]
     args.append(
         sge.Kwarg(this="connection_id", expression=sge.Literal.string(connection_id))
     )
 
-    endpoit = typing.cast(str, op_args.get("endpoint", None))
+    endpoit = op_args.get("endpoint", None)
     if endpoit is not None:
         args.append(sge.Kwarg(this="endpoint", expression=sge.Literal.string(endpoit)))
 
-    request_type = typing.cast(str, op_args.get("request_type", None))
+    request_type = op_args.get("request_type", None)
     if request_type is not None:
         args.append(
             sge.Kwarg(
@@ -122,7 +121,7 @@ def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
             )
         )
 
-    model_params = typing.cast(str, op_args.get("model_params", None))
+    model_params = op_args.get("model_params", None)
     if model_params is not None:
         args.append(
             sge.Kwarg(
@@ -130,6 +129,15 @@ def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
                 # sge.JSON requires the SQLGlot version to be at least 25.18.0
                 # PARSE_JSON won't work as the function requires a JSON literal.
                 expression=sge.JSON(this=sge.Literal.string(model_params)),
+            )
+        )
+
+    output_schema = op_args.get("output_schema", None)
+    if output_schema is not None:
+        args.append(
+            sge.Kwarg(
+                this="output_schema",
+                expression=sge.Literal.string(output_schema),
             )
         )
 
