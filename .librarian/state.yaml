@@ -303,7 +303,7 @@ libraries:
       - packages/google-cloud-advisorynotifications/
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
-    version: 0.4.9
+    version: 0.5.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/alloydb/v1beta
@@ -796,7 +796,7 @@ libraries:
       - packages/google-cloud-workstations/
     tag_format: '{id}-v{version}'
   - id: google-cloud-apihub
-    version: 0.2.7
+    version: 0.3.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/apihub/v1
@@ -815,7 +815,7 @@ libraries:
       - packages/google-cloud-apihub/
     tag_format: '{id}-v{version}'
   - id: google-cloud-asset
-    version: 3.30.1
+    version: 4.0.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/asset/v1p5beta1
@@ -840,7 +840,7 @@ libraries:
       - packages/google-cloud-asset/
     tag_format: '{id}-v{version}'
   - id: google-cloud-assured-workloads
-    version: 1.15.2
+    version: 2.0.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/assuredworkloads/v1
@@ -1201,7 +1201,7 @@ libraries:
       - packages/google-cloud-webrisk/
     tag_format: '{id}-v{version}'
   - id: google-cloud-access-context-manager
-    version: 0.2.2
+    version: 0.2.3
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/identity/accesscontextmanager/v1
@@ -1215,7 +1215,7 @@ libraries:
       - ^packages/google-cloud-access-context-manager/google/.*/.*_pb2\.(?:py|pyi)$/
     tag_format: '{id}-v{version}'
   - id: google-cloud-audit-log
-    version: 0.3.2
+    version: 0.3.3
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/audit
@@ -1371,7 +1371,7 @@ libraries:
       - packages/google-cloud-bigquery-migration/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-reservation
-    version: 1.19.0
+    version: 1.20.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/reservation/v1
@@ -1654,7 +1654,7 @@ libraries:
       - packages/google-cloud-common/
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute
-    version: 1.38.0
+    version: 1.39.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/compute/v1
@@ -1673,7 +1673,7 @@ libraries:
       - packages/google-cloud-compute/
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute-v1beta
-    version: 0.1.8
+    version: 0.2.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/compute/v1beta
@@ -1876,7 +1876,7 @@ libraries:
       - packages/google-cloud-workflows/
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-stitcher
-    version: 0.7.18
+    version: 0.8.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/video/stitcher/v1
@@ -1895,7 +1895,7 @@ libraries:
       - packages/google-cloud-video-stitcher/
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis-cluster
-    version: 0.1.15
+    version: 0.2.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/redis/cluster/v1
@@ -3108,7 +3108,7 @@ libraries:
       - packages/google-cloud-recommender/
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis
-    version: 2.18.1
+    version: 2.19.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/redis/v1
@@ -3586,7 +3586,7 @@ libraries:
       - packages/google-cloud-essential-contacts/
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc-publishing
-    version: 0.6.19
+    version: 0.7.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/eventarc/publishing/v1
@@ -3952,7 +3952,7 @@ libraries:
       - packages/google-shopping-merchant-ordertracking/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-products
-    version: 1.0.0
+    version: 1.1.0
     last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/products/v1
