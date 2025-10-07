@@ -965,7 +965,7 @@ def test_update_global_changelog(mocker, mock_release_init_request_file):
         handle.write.assert_called_once_with("[google-cloud-language==1.2.3]")
 
 
-def test_update_version_for_library_success(mocker):
+def test_update_version_for_library_success_gapic(mocker):
     m = mock_open()
 
     mock_rglob = mocker.patch(
@@ -984,7 +984,67 @@ def test_update_version_for_library_success(mocker):
 
         handle = m()
         assert handle.write.call_args_list[0].args[0] == '__version__ = "1.2.3"'
+        # Get all the arguments passed to the mock's write method
+        # and join them into a single string.
+        written_content = "".join(
+            [call.args[0] for call in handle.write.call_args_list[1:]]
+        )
+        # Create the expected output string with the correct formatting.
+        assert (
+            written_content
+            == '{\n  "clientLibrary": {\n    "version": "1.2.3"\n  }\n}\n'
+        )
 
+
+def test_update_version_for_library_success_proto_only_setup_py(mocker):
+    m = mock_open()
+
+    mock_rglob = mocker.patch("pathlib.Path.rglob")
+    mock_rglob.side_effect = [[], [pathlib.Path("repo/setup.py")]]
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_content = 'version = "1.2.2"'
+    mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
+
+    with unittest.mock.patch("cli.open", m):
+        mocker.patch("cli._read_text_file", return_value=mock_content)
+        mocker.patch("cli._read_json_file", return_value=mock_json_metadata)
+        _update_version_for_library(
+            "repo", "output", "packages/google-cloud-language", "1.2.3"
+        )
+
+        handle = m()
+        assert handle.write.call_args_list[0].args[0] == 'version = "1.2.3"'
+        # Get all the arguments passed to the mock's write method
+        # and join them into a single string.
+        written_content = "".join(
+            [call.args[0] for call in handle.write.call_args_list[1:]]
+        )
+        # Create the expected output string with the correct formatting.
+        assert (
+            written_content
+            == '{\n  "clientLibrary": {\n    "version": "1.2.3"\n  }\n}\n'
+        )
+
+
+def test_update_version_for_library_success_proto_only_py_project_toml(mocker):
+    m = mock_open()
+
+    mock_path_exists = mocker.patch("pathlib.Path.exists")
+    mock_rglob = mocker.patch("pathlib.Path.rglob")
+    mock_rglob.side_effect = [[], [pathlib.Path("repo/pyproject.toml")]]
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_content = 'version = "1.2.2"'
+    mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
+
+    with unittest.mock.patch("cli.open", m):
+        mocker.patch("cli._read_text_file", return_value=mock_content)
+        mocker.patch("cli._read_json_file", return_value=mock_json_metadata)
+        _update_version_for_library(
+            "repo", "output", "packages/google-cloud-language", "1.2.3"
+        )
+
+        handle = m()
+        assert handle.write.call_args_list[0].args[0] == 'version = "1.2.3"'
         # Get all the arguments passed to the mock's write method
         # and join them into a single string.
         written_content = "".join(
@@ -1099,18 +1159,18 @@ def test_update_changelog_for_library_failure(mocker):
 
 
 def test_process_version_file_success():
-    version_file_contents = '__version__ = "1.2.2"'
+    version_file_contents = 'version = "1.2.2"'
     new_version = "1.2.3"
     modified_content = _process_version_file(
-        version_file_contents, new_version, "file.txt"
+        version_file_contents, new_version, Path("file.txt")
     )
-    assert modified_content == f'__version__ = "{new_version}"'
+    assert modified_content == f'version = "{new_version}"'
 
 
 def test_process_version_file_failure():
     """Tests that value error is raised if the version string cannot be found"""
     with pytest.raises(ValueError):
-        _process_version_file("", "", "")
+        _process_version_file("", "", Path(""))
 
 
 def test_create_main_version_header():
@@ -1366,6 +1426,7 @@ def test_get_staging_child_directory_gapic_versioned():
     api_path = "google/cloud/language/v1"
     expected = "v1"
     assert _get_staging_child_directory(api_path, False) == expected
+
 
 def test_get_staging_child_directory_gapic_non_versioned():
     """
