@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.24.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.23.0...v2.24.0) (2025-10-07)
+
+
+### Features
+
+* Add ai.classify() to bigframes.bigquery package ([#2137](https://github.com/googleapis/python-bigquery-dataframes/issues/2137)) ([56e5033](https://github.com/googleapis/python-bigquery-dataframes/commit/56e50331d198b7f517f85695c208f893ab9389d2))
+* Add ai.generate() to bigframes.bigquery module ([#2128](https://github.com/googleapis/python-bigquery-dataframes/issues/2128)) ([3810452](https://github.com/googleapis/python-bigquery-dataframes/commit/3810452f16d8d6c9d3eb9075f1537177d98b4725))
+* Add ai.if_() and ai.score() to bigframes.bigquery package ([#2132](https://github.com/googleapis/python-bigquery-dataframes/issues/2132)) ([32502f4](https://github.com/googleapis/python-bigquery-dataframes/commit/32502f4195306d262788f39d1ab4206fc84ae50e))
+
+
+### Bug Fixes
+
+* Fix internal type errors with temporal accessors ([#2125](https://github.com/googleapis/python-bigquery-dataframes/issues/2125)) ([c390da1](https://github.com/googleapis/python-bigquery-dataframes/commit/c390da11b7c2aa710bc2fbc692efb9f06059e4c4))
+* Fix row count local execution bug ([#2133](https://github.com/googleapis/python-bigquery-dataframes/issues/2133)) ([ece0762](https://github.com/googleapis/python-bigquery-dataframes/commit/ece07623e354a1dde2bd37020349e13f682e863f))
+* Join on, how args are now positional ([#2140](https://github.com/googleapis/python-bigquery-dataframes/issues/2140)) ([b711815](https://github.com/googleapis/python-bigquery-dataframes/commit/b7118152bfecc6ecf67aa4df23ec3f0a2b08aa30))
+* Only show JSON dtype warning when accessing dtypes directly ([#2136](https://github.com/googleapis/python-bigquery-dataframes/issues/2136)) ([eca22ee](https://github.com/googleapis/python-bigquery-dataframes/commit/eca22ee3104104cea96189391e527cad09bd7509))
+* Remove noisy AmbiguousWindowWarning from partial ordering mode ([#2129](https://github.com/googleapis/python-bigquery-dataframes/issues/2129)) ([4607f86](https://github.com/googleapis/python-bigquery-dataframes/commit/4607f86ebd77b916aafc37f69725b676e203b332))
+
+
+### Performance Improvements
+
+* Scale read stream workers to cpu count ([#2135](https://github.com/googleapis/python-bigquery-dataframes/issues/2135)) ([67e46cd](https://github.com/googleapis/python-bigquery-dataframes/commit/67e46cd47933b84b55808003ed344b559e47c498))
+
 ## [2.23.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.22.0...v2.23.0) (2025-09-29)
 
 

@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__version__ = "2.23.0"
+__version__ = "2.24.0"
 
 # {x-release-please-start-date}
-__release_date__ = "2025-09-29"
+__release_date__ = "2025-10-07"
 # {x-release-please-end}
