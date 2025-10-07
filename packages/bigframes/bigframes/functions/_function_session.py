@@ -983,7 +983,17 @@ def _convert_row_processor_sig(
     if len(signature.parameters) >= 1:
         first_param = next(iter(signature.parameters.values()))
         param_type = first_param.annotation
-        if (param_type == bf_series.Series) or (param_type == pandas.Series):
+        # Type hints for Series inputs should use pandas.Series because the
+        # underlying serialization process converts the input to a string
+        # representation of a pandas Series (not bigframes Series). Using
+        # bigframes Series will lead to TypeError when creating the function
+        # remotely. See more from b/445182819.
+        if param_type == bf_series.Series:
+            raise bf_formatting.create_exception_with_feedback_link(
+                TypeError,
+                "Argument type hint must be Pandas Series, not BigFrames Series.",
+            )
+        if param_type == pandas.Series:
             msg = bfe.format_message("input_types=Series is in preview.")
             warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
             return signature.replace(

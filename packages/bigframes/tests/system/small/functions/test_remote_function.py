@@ -20,6 +20,7 @@ from typing import Sequence
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions
 from google.cloud import bigquery
+import pandas
 import pandas as pd
 import pyarrow
 import pytest
@@ -1166,7 +1167,7 @@ def test_df_apply_axis_1(session, scalars_dfs, dataset_id_permanent):
     ]
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    def add_ints(row):
+    def add_ints(row: pandas.Series) -> int:
         return row["int64_col"] + row["int64_too"]
 
     with pytest.warns(
@@ -1174,8 +1175,6 @@ def test_df_apply_axis_1(session, scalars_dfs, dataset_id_permanent):
         match="input_types=Series is in preview.",
     ):
         add_ints_remote = session.remote_function(
-            input_types=bigframes.series.Series,
-            output_type=int,
             dataset=dataset_id_permanent,
             name=get_function_name(add_ints, is_row_processor=True),
             cloud_function_service_account="default",
@@ -1223,11 +1222,11 @@ def test_df_apply_axis_1_ordering(session, scalars_dfs, dataset_id_permanent):
     ordering_columns = ["bool_col", "int64_col"]
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    def add_ints(row):
+    def add_ints(row: pandas.Series) -> int:
         return row["int64_col"] + row["int64_too"]
 
     add_ints_remote = session.remote_function(
-        input_types=bigframes.series.Series,
+        input_types=pandas.Series,
         output_type=int,
         dataset=dataset_id_permanent,
         name=get_function_name(add_ints, is_row_processor=True),
@@ -1267,7 +1266,7 @@ def test_df_apply_axis_1_multiindex(session, dataset_id_permanent):
         return row["x"] + row["y"]
 
     add_numbers_remote = session.remote_function(
-        input_types=bigframes.series.Series,
+        input_types=pandas.Series,
         output_type=float,
         dataset=dataset_id_permanent,
         name=get_function_name(add_numbers, is_row_processor=True),
@@ -1321,7 +1320,7 @@ def test_df_apply_axis_1_unsupported_dtype(session, scalars_dfs, dataset_id_perm
         return len(row)
 
     echo_len_remote = session.remote_function(
-        input_types=bigframes.series.Series,
+        input_types=pandas.Series,
         output_type=float,
         dataset=dataset_id_permanent,
         name=get_function_name(echo_len, is_row_processor=True),

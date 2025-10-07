@@ -17,25 +17,12 @@ import re
 import pandas
 import pytest
 
+import bigframes.exceptions
 import bigframes.functions.function as bff
-import bigframes.series
 from bigframes.testing import mocks
 
 
-@pytest.mark.parametrize(
-    "series_type",
-    (
-        pytest.param(
-            pandas.Series,
-            id="pandas.Series",
-        ),
-        pytest.param(
-            bigframes.series.Series,
-            id="bigframes.series.Series",
-        ),
-    ),
-)
-def test_series_input_types_to_str(series_type):
+def test_series_input_types_to_str():
     """Check that is_row_processor=True uses str as the input type to serialize a row."""
     session = mocks.create_bigquery_session()
     remote_function_decorator = bff.remote_function(
@@ -48,7 +35,7 @@ def test_series_input_types_to_str(series_type):
     ):
 
         @remote_function_decorator
-        def axis_1_function(myparam: series_type) -> str:  # type: ignore
+        def axis_1_function(myparam: pandas.Series) -> str:  # type: ignore
             return "Hello, " + myparam["str_col"] + "!"  # type: ignore
 
     # Still works as a normal function.

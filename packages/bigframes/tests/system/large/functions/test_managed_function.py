@@ -701,8 +701,19 @@ def test_managed_function_df_apply_axis_1(session, dataset_id, scalars_dfs):
                 }
             )
 
+        with pytest.raises(
+            TypeError,
+            match="Argument type hint must be Pandas Series, not BigFrames Series.",
+        ):
+            serialize_row_mf = session.udf(
+                input_types=bigframes.series.Series,
+                output_type=str,
+                dataset=dataset_id,
+                name=prefixer.create_prefix(),
+            )(serialize_row)
+
         serialize_row_mf = session.udf(
-            input_types=bigframes.series.Series,
+            input_types=pandas.Series,
             output_type=str,
             dataset=dataset_id,
             name=prefixer.create_prefix(),
@@ -762,7 +773,7 @@ def test_managed_function_df_apply_axis_1_aggregates(session, dataset_id, scalar
         ):
 
             analyze_mf = session.udf(
-                input_types=bigframes.series.Series,
+                input_types=pandas.Series,
                 output_type=str,
                 dataset=dataset_id,
                 name=prefixer.create_prefix(),
@@ -876,7 +887,7 @@ def test_managed_function_df_apply_axis_1_complex(session, dataset_id, pd_df):
             )
 
         serialize_row_mf = session.udf(
-            input_types=bigframes.series.Series,
+            input_types=pandas.Series,
             output_type=str,
             dataset=dataset_id,
             name=prefixer.create_prefix(),
@@ -926,7 +937,7 @@ SELECT "pandas na" AS text, NULL AS num
 
     try:
 
-        def float_parser(row):
+        def float_parser(row: pandas.Series):
             import numpy as mynp
             import pandas as mypd
 
@@ -937,7 +948,7 @@ SELECT "pandas na" AS text, NULL AS num
             return float(row["text"])
 
         float_parser_mf = session.udf(
-            input_types=bigframes.series.Series,
+            input_types=pandas.Series,
             output_type=float,
             dataset=dataset_id,
             name=prefixer.create_prefix(),
@@ -1027,7 +1038,7 @@ def test_managed_function_df_apply_axis_1_series_args(session, dataset_id, scala
 
     try:
 
-        def analyze(s, x, y):
+        def analyze(s: pandas.Series, x: bool, y: float) -> str:
             value = f"value is {s['int64_col']} and {s['float64_col']}"
             if x:
                 return f"{value}, x is True!"
@@ -1036,8 +1047,6 @@ def test_managed_function_df_apply_axis_1_series_args(session, dataset_id, scala
             return f"{value}, x is False, y is non-positive!"
 
         analyze_mf = session.udf(
-            input_types=[bigframes.series.Series, bool, float],
-            output_type=str,
             dataset=dataset_id,
             name=prefixer.create_prefix(),
         )(analyze)
@@ -1151,7 +1160,7 @@ def test_managed_function_df_where_mask_series(session, dataset_id, scalars_dfs)
             return s["int64_col"] + s["int64_too"] > 0
 
         is_sum_positive_series_mf = session.udf(
-            input_types=bigframes.series.Series,
+            input_types=pandas.Series,
             output_type=bool,
             dataset=dataset_id,
             name=prefixer.create_prefix(),
@@ -1217,12 +1226,10 @@ def test_managed_function_df_where_mask_series(session, dataset_id, scalars_dfs)
 def test_managed_function_df_where_other_issue(session, dataset_id, scalars_df_index):
     try:
 
-        def the_sum(s):
+        def the_sum(s: pandas.Series) -> int:
             return s["int64_col"] + s["int64_too"]
 
         the_sum_mf = session.udf(
-            input_types=bigframes.series.Series,
-            output_type=int,
             dataset=dataset_id,
             name=prefixer.create_prefix(),
         )(the_sum)

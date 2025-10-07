@@ -1722,7 +1722,7 @@ def test_df_apply_axis_1(session, scalars_dfs):
             )
 
         serialize_row_remote = session.remote_function(
-            input_types=bigframes.series.Series,
+            input_types=pandas.Series,
             output_type=str,
             reuse=False,
             cloud_function_service_account="default",
@@ -1771,7 +1771,7 @@ def test_df_apply_axis_1_aggregates(session, scalars_dfs):
             )
 
         analyze_remote = session.remote_function(
-            input_types=bigframes.series.Series,
+            input_types=pandas.Series,
             output_type=str,
             reuse=False,
             cloud_function_service_account="default",
@@ -1895,7 +1895,7 @@ def test_df_apply_axis_1_complex(session, pd_df):
             )
 
         serialize_row_remote = session.remote_function(
-            input_types=bigframes.series.Series,
+            input_types=pandas.Series,
             output_type=str,
             reuse=False,
             cloud_function_service_account="default",
@@ -1944,7 +1944,7 @@ SELECT "pandas na" AS text, NULL AS num
 
     try:
 
-        def float_parser(row):
+        def float_parser(row: pandas.Series):
             import numpy as mynp
             import pandas as mypd
 
@@ -1955,7 +1955,6 @@ SELECT "pandas na" AS text, NULL AS num
             return float(row["text"])
 
         float_parser_remote = session.remote_function(
-            input_types=bigframes.series.Series,
             output_type=float,
             reuse=False,
             cloud_function_service_account="default",
@@ -2055,12 +2054,12 @@ def test_df_apply_axis_1_series_args(session, scalars_dfs):
     try:
 
         @session.remote_function(
-            input_types=[bigframes.series.Series, float, str, bool],
+            input_types=[pandas.Series, float, str, bool],
             output_type=list[str],
             reuse=False,
             cloud_function_service_account="default",
         )
-        def foo_list(x, y0: float, y1, y2) -> list[str]:
+        def foo_list(x: pandas.Series, y0: float, y1, y2) -> list[str]:
             return (
                 [str(x["int64_col"]), str(y0), str(y1), str(y2)]
                 if y2
@@ -3087,12 +3086,21 @@ def test_remote_function_df_where_mask_series(session, dataset_id, scalars_dfs):
     try:
 
         # The return type has to be bool type for callable where condition.
-        def is_sum_positive_series(s):
+        def is_sum_positive_series(s: pandas.Series) -> bool:
             return s["int64_col"] + s["int64_too"] > 0
 
+        with pytest.raises(
+            TypeError,
+            match="Argument type hint must be Pandas Series, not BigFrames Series.",
+        ):
+            session.remote_function(
+                input_types=bigframes.series.Series,
+                dataset=dataset_id,
+                reuse=False,
+                cloud_function_service_account="default",
+            )(is_sum_positive_series)
+
         is_sum_positive_series_mf = session.remote_function(
-            input_types=bigframes.series.Series,
-            output_type=bool,
             dataset=dataset_id,
             reuse=False,
             cloud_function_service_account="default",

@@ -363,8 +363,16 @@ def generate_managed_function_code(
                 return {udf_name}(*args)"""
         )
 
-    udf_code_block = textwrap.dedent(
-        f"{udf_code}\n{func_code}\n{bigframes_handler_code}"
-    )
+    udf_code_block = []
+    if not capture_references and is_row_processor:
+        # Enable postponed evaluation of type annotations. This converts all
+        # type hints to strings at runtime, which is necessary for correctly
+        # handling the type annotation of pandas.Series after the UDF code is
+        # serialized for remote execution. See more from b/445182819.
+        udf_code_block.append("from __future__ import annotations")
 
-    return udf_code_block
+    udf_code_block.append(udf_code)
+    udf_code_block.append(func_code)
+    udf_code_block.append(bigframes_handler_code)
+
+    return textwrap.dedent("\n".join(udf_code_block))
