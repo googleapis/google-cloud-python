@@ -1,51 +1,51 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
 libraries:
-- id: google-cloud-vision
-  version: 3.10.2
-  last_generated_commit: 1b141494162fee2993345d056cf709ebf1d0402c
-  apis:
-  - path: google/cloud/vision/v1p3beta1
-    service_config: vision_v1p3beta1.yaml
-  - path: google/cloud/vision/v1
-    service_config: vision_v1.yaml
-  - path: google/cloud/vision/v1p1beta1
-    service_config: vision_v1p1beta1.yaml
-  - path: google/cloud/vision/v1p2beta1
-    service_config: vision_v1p2beta1.yaml
-  - path: google/cloud/vision/v1p4beta1
-    service_config: vision_v1p4beta1.yaml
-  source_roots:
-  - packages/google-cloud-vision
-  preserve_regex:
-  - packages/google-cloud-vision/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - google/cloud/vision_helpers
-  - samples/README.txt
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  - tests/unit/test_decorators.py
-  - tests/unit/test_helpers.py
-  remove_regex:
-  - packages/google-cloud-vision/
-  tag_format: '{id}-v{version}'
-- id: google-cloud-dataflow-client
-  version: 0.9.0
-  last_generated_commit: 1b141494162fee2993345d056cf709ebf1d0402c
-  apis:
-  - path: google/dataflow/v1beta3
-    service_config: dataflow_v1beta3.yaml
-  source_roots:
-  - packages/google-cloud-dataflow-client
-  preserve_regex:
-  - packages/google-cloud-dataflow-client/CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - scripts/client-post-processing
-  - samples/snippets/README.rst
-  - tests/system
-  remove_regex:
-  - packages/google-cloud-dataflow-client/
-  tag_format: '{id}-v{version}'
+  - id: google-cloud-vision
+    version: 3.10.2
+    last_generated_commit: e09f19ac81db6c064f1d20d02d47752cb340104a
+    apis:
+      - path: google/cloud/vision/v1p3beta1
+        service_config: vision_v1p3beta1.yaml
+      - path: google/cloud/vision/v1
+        service_config: vision_v1.yaml
+      - path: google/cloud/vision/v1p1beta1
+        service_config: vision_v1p1beta1.yaml
+      - path: google/cloud/vision/v1p2beta1
+        service_config: vision_v1p2beta1.yaml
+      - path: google/cloud/vision/v1p4beta1
+        service_config: vision_v1p4beta1.yaml
+    source_roots:
+      - packages/google-cloud-vision
+    preserve_regex:
+      - packages/google-cloud-vision/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - google/cloud/vision_helpers
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/test_decorators.py
+      - tests/unit/test_helpers.py
+    remove_regex:
+      - packages/google-cloud-vision/
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-dataflow-client
+    version: 0.9.0
+    last_generated_commit: e09f19ac81db6c064f1d20d02d47752cb340104a
+    apis:
+      - path: google/dataflow/v1beta3
+        service_config: dataflow_v1beta3.yaml
+    source_roots:
+      - packages/google-cloud-dataflow-client
+    preserve_regex:
+      - packages/google-cloud-dataflow-client/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-dataflow-client/
+    tag_format: '{id}-v{version}'
