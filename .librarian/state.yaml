@@ -2,7 +2,7 @@ image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-li
 libraries:
   - id: google-cloud-dlp
     version: 3.32.0
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/privacy/dlp/v2
         service_config: dlp_v2.yaml
@@ -21,7 +21,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc
     version: 1.16.0
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/eventarc/v1
         service_config: eventarc_v1.yaml
@@ -40,7 +40,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-live-stream
     version: 1.13.0
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/video/livestream/v1
         service_config: livestream_v1.yaml
@@ -59,7 +59,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-marketingplatform-admin
     version: 0.1.6
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/marketingplatform/admin/v1alpha
         service_config: marketingplatformadmin_v1alpha.yaml
@@ -78,7 +78,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ai-generativelanguage
     version: 0.7.0
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/ai/generativelanguage/v1
         service_config: generativelanguage_v1.yaml
@@ -105,7 +105,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-analytics-admin
     version: 0.25.0
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/analytics/admin/v1beta
         service_config: analyticsadmin_v1beta.yaml
@@ -126,7 +126,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-analytics-data
     version: 0.18.19
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/analytics/data/v1alpha
         service_config: analyticsdata_v1alpha.yaml
@@ -147,7 +147,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-admanager
     version: 0.4.0
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/ads/admanager/v1
         service_config: admanager_v1.yaml
@@ -166,10 +166,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-card
     version: 0.1.8
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/apps/card/v1
-        service_config: ''
+        service_config: ""
     source_roots:
       - packages/google-apps-card
     preserve_regex:
@@ -186,7 +186,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
     version: 0.2.9
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/chat/v1
         service_config: chat_v1.yaml
@@ -205,7 +205,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-events-subscriptions
     version: 0.2.2
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/apps/events/subscriptions/v1
         service_config: workspaceevents_v1.yaml
@@ -226,7 +226,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-meet
     version: 0.1.16
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/apps/meet/v2beta
         service_config: meet_v2beta.yaml
@@ -247,7 +247,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-area120-tables
     version: 0.11.17
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/area120/tables/v1alpha1
         service_config: area120tables_v1alpha1.yaml
@@ -266,7 +266,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-access-approval
     version: 1.16.2
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/accessapproval/v1
         service_config: accessapproval_v1.yaml
@@ -285,7 +285,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-advisorynotifications
     version: 0.3.16
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/advisorynotifications/v1
         service_config: advisorynotifications_v1.yaml
@@ -304,7 +304,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
     version: 0.4.9
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/alloydb/v1beta
         service_config: alloydb_v1beta.yaml
@@ -327,7 +327,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb-connectors
     version: 0.1.11
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/alloydb/connectors/v1
         service_config: connectors_v1.yaml
@@ -351,7 +351,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-api-gateway
     version: 1.12.2
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/apigateway/v1
         service_config: apigateway_v1.yaml
@@ -370,7 +370,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-api-keys
     version: 0.5.17
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/api/apikeys/v2
         service_config: apikeys_v2.yaml
@@ -389,9 +389,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-apigee-connect
     version: 1.12.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/apigeeconnect/v1
+        service_config: apigeeconnect_v1.yaml
     source_roots:
       - packages/google-cloud-apigee-connect
     preserve_regex:
@@ -407,9 +408,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-apigee-registry
     version: 0.6.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/apigeeregistry/v1
+        service_config: apigeeregistry_v1.yaml
     source_roots:
       - packages/google-cloud-apigee-registry
     preserve_regex:
@@ -425,9 +427,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-appengine-admin
     version: 1.14.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/appengine/v1
+        service_config: appengine_v1.yaml
     source_roots:
       - packages/google-cloud-appengine-admin
     preserve_regex:
@@ -443,9 +446,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-appengine-logging
     version: 1.6.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/appengine/logging/v1
+        service_config: ""
     source_roots:
       - packages/google-cloud-appengine-logging
     preserve_regex:
@@ -462,9 +466,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-apphub
     version: 0.1.10
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/apphub/v1
+        service_config: apphub_v1.yaml
     source_roots:
       - packages/google-cloud-apphub
     preserve_regex:
@@ -480,10 +485,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-artifact-registry
     version: 1.16.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/devtools/artifactregistry/v1
+        service_config: artifactregistry_v1.yaml
       - path: google/devtools/artifactregistry/v1beta2
+        service_config: artifactregistry_v1beta2.yaml
     source_roots:
       - packages/google-cloud-artifact-registry
     preserve_regex:
@@ -499,10 +506,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-automl
     version: 2.16.4
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/automl/v1beta1
+        service_config: automl_v1beta1.yaml
       - path: google/cloud/automl/v1
+        service_config: automl_v1.yaml
     source_roots:
       - packages/google-cloud-automl
     preserve_regex:
@@ -523,9 +532,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-backupdr
     version: 0.2.5
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/backupdr/v1
+        service_config: backupdr_v1.yaml
     source_roots:
       - packages/google-cloud-backupdr
     preserve_regex:
@@ -541,9 +551,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bare-metal-solution
     version: 1.10.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/baremetalsolution/v2
+        service_config: baremetalsolution_v2.yaml
     source_roots:
       - packages/google-cloud-bare-metal-solution
     preserve_regex:
@@ -559,10 +570,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-batch
     version: 0.17.37
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/batch/v1alpha
+        service_config: batch_v1alpha.yaml
       - path: google/cloud/batch/v1
+        service_config: batch_v1.yaml
     source_roots:
       - packages/google-cloud-batch
     preserve_regex:
@@ -578,10 +591,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-support
     version: 0.1.19
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/support/v2beta
+        service_config: cloudsupport_v2beta.yaml
       - path: google/cloud/support/v2
+        service_config: cloudsupport_v2.yaml
     source_roots:
       - packages/google-cloud-support
     preserve_regex:
@@ -597,10 +612,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-talent
     version: 2.17.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/talent/v4beta1
+        service_config: jobs_v4beta1.yaml
       - path: google/cloud/talent/v4
+        service_config: jobs_v4.yaml
     source_roots:
       - packages/google-cloud-talent
     preserve_regex:
@@ -616,11 +633,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-tpu
     version: 1.23.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/tpu/v2alpha1
+        service_config: tpu_v2alpha1.yaml
       - path: google/cloud/tpu/v2
+        service_config: tpu_v2.yaml
       - path: google/cloud/tpu/v1
+        service_config: tpu_v1.yaml
     source_roots:
       - packages/google-cloud-tpu
     preserve_regex:
@@ -636,9 +656,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-transcoder
     version: 1.17.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/video/transcoder/v1
+        service_config: transcoder_v1.yaml
     source_roots:
       - packages/google-cloud-video-transcoder
     preserve_regex:
@@ -654,10 +675,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-visionai
     version: 0.1.10
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/visionai/v1alpha1
+        service_config: visionai_v1alpha1.yaml
       - path: google/cloud/visionai/v1
+        service_config: visionai_v1.yaml
     source_roots:
       - packages/google-cloud-visionai
     preserve_regex:
@@ -673,9 +696,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-vm-migration
     version: 1.12.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/vmmigration/v1
+        service_config: vmmigration_v1.yaml
     source_roots:
       - packages/google-cloud-vm-migration
     preserve_regex:
@@ -691,9 +715,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-vmwareengine
     version: 1.8.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/vmwareengine/v1
+        service_config: vmwareengine_v1.yaml
     source_roots:
       - packages/google-cloud-vmwareengine
     preserve_regex:
@@ -709,9 +734,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-vpc-access
     version: 1.13.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/vpcaccess/v1
+        service_config: vpcaccess_v1.yaml
     source_roots:
       - packages/google-cloud-vpc-access
     preserve_regex:
@@ -727,11 +753,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-websecurityscanner
     version: 1.17.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/websecurityscanner/v1alpha
+        service_config: websecurityscanner_v1alpha.yaml
       - path: google/cloud/websecurityscanner/v1beta
+        service_config: websecurityscanner_v1beta.yaml
       - path: google/cloud/websecurityscanner/v1
+        service_config: websecurityscanner_v1.yaml
     source_roots:
       - packages/google-cloud-websecurityscanner
     preserve_regex:
@@ -747,10 +776,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-workstations
     version: 0.5.15
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/workstations/v1beta
+        service_config: workstations_v1beta.yaml
       - path: google/cloud/workstations/v1
+        service_config: workstations_v1.yaml
     source_roots:
       - packages/google-cloud-workstations
     preserve_regex:
@@ -766,9 +797,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-apihub
     version: 0.2.7
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/apihub/v1
+        service_config: apihub_v1.yaml
     source_roots:
       - packages/google-cloud-apihub
     preserve_regex:
@@ -784,12 +816,16 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-asset
     version: 3.30.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/asset/v1p5beta1
+        service_config: cloudasset_v1p5beta1.yaml
       - path: google/cloud/asset/v1
+        service_config: cloudasset_v1.yaml
       - path: google/cloud/asset/v1p1beta1
+        service_config: cloudasset_v1p1beta1.yaml
       - path: google/cloud/asset/v1p2beta1
+        service_config: cloudasset_v1p2beta1.yaml
     source_roots:
       - packages/google-cloud-asset
     preserve_regex:
@@ -805,10 +841,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-assured-workloads
     version: 1.15.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/assuredworkloads/v1
+        service_config: assuredworkloads_v1.yaml
       - path: google/cloud/assuredworkloads/v1beta1
+        service_config: assuredworkloads_v1beta1.yaml
     source_roots:
       - packages/google-cloud-assured-workloads
     preserve_regex:
@@ -824,9 +862,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-appconnections
     version: 0.4.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/beyondcorp/appconnections/v1
+        service_config: beyondcorp_v1.yaml
     source_roots:
       - packages/google-cloud-beyondcorp-appconnections
     preserve_regex:
@@ -842,9 +881,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-appconnectors
     version: 0.4.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/beyondcorp/appconnectors/v1
+        service_config: beyondcorp_v1.yaml
     source_roots:
       - packages/google-cloud-beyondcorp-appconnectors
     preserve_regex:
@@ -860,9 +900,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-appgateways
     version: 0.4.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/beyondcorp/appgateways/v1
+        service_config: beyondcorp_v1.yaml
     source_roots:
       - packages/google-cloud-beyondcorp-appgateways
     preserve_regex:
@@ -878,9 +919,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-clientconnectorservices
     version: 0.4.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/beyondcorp/clientconnectorservices/v1
+        service_config: beyondcorp_v1.yaml
     source_roots:
       - packages/google-cloud-beyondcorp-clientconnectorservices
     preserve_regex:
@@ -896,9 +938,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-beyondcorp-clientgateways
     version: 0.4.17
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/beyondcorp/clientgateways/v1
+        service_config: beyondcorp_v1.yaml
     source_roots:
       - packages/google-cloud-beyondcorp-clientgateways
     preserve_regex:
@@ -914,9 +957,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-analyticshub
     version: 0.4.20
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/analyticshub/v1
+        service_config: analyticshub_v1.yaml
     source_roots:
       - packages/google-cloud-bigquery-analyticshub
     preserve_regex:
@@ -932,18 +976,18 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.70.0
-    last_generated_commit: 31b413bc4feb03f6849c718048c2b9998561b5fa
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
       - path: google/cloud/location
         service_config: cloud.yaml
       - path: google/logging/type
-        service_config: ''
+        service_config: ""
       - path: google/rpc
         service_config: rpc_publish.yaml
       - path: google/rpc/context
-        service_config: ''
+        service_config: ""
       - path: google/type
         service_config: type.yaml
     source_roots:
@@ -954,9 +998,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storagebatchoperations
     version: 0.1.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/storagebatchoperations/v1
+        service_config: storagebatchoperations_v1.yaml
     source_roots:
       - packages/google-cloud-storagebatchoperations
     preserve_regex:
@@ -972,9 +1017,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storageinsights
     version: 0.1.16
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/storageinsights/v1
+        service_config: storageinsights_v1.yaml
     source_roots:
       - packages/google-cloud-storageinsights
     preserve_regex:
@@ -990,11 +1036,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-tasks
     version: 2.19.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/tasks/v2beta2
+        service_config: cloudtasks_v2beta2.yaml
       - path: google/cloud/tasks/v2beta3
+        service_config: cloudtasks_v2beta3.yaml
       - path: google/cloud/tasks/v2
+        service_config: cloudtasks_v2.yaml
     source_roots:
       - packages/google-cloud-tasks
     preserve_regex:
@@ -1011,10 +1060,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-telcoautomation
     version: 0.2.11
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/telcoautomation/v1
+        service_config: telcoautomation_v1.yaml
       - path: google/cloud/telcoautomation/v1alpha1
+        service_config: telcoautomation_v1alpha1.yaml
     source_roots:
       - packages/google-cloud-telcoautomation
     preserve_regex:
@@ -1031,10 +1082,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-texttospeech
     version: 2.31.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/texttospeech/v1
+        service_config: texttospeech_v1.yaml
       - path: google/cloud/texttospeech/v1beta1
+        service_config: texttospeech_v1beta1.yaml
     source_roots:
       - packages/google-cloud-texttospeech
     preserve_regex:
@@ -1050,10 +1103,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-trace
     version: 1.16.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/devtools/cloudtrace/v2
+        service_config: cloudtrace_v2.yaml
       - path: google/devtools/cloudtrace/v1
+        service_config: cloudtrace_v1.yaml
     source_roots:
       - packages/google-cloud-trace
     preserve_regex:
@@ -1069,13 +1124,18 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-videointelligence
     version: 2.16.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/videointelligence/v1p3beta1
+        service_config: videointelligence_v1p3beta1.yaml
       - path: google/cloud/videointelligence/v1
+        service_config: videointelligence_v1.yaml
       - path: google/cloud/videointelligence/v1p2beta1
+        service_config: videointelligence_v1p2beta1.yaml
       - path: google/cloud/videointelligence/v1p1beta1
+        service_config: videointelligence_v1p1beta1.yaml
       - path: google/cloud/videointelligence/v1beta2
+        service_config: videointelligence_v1beta2.yaml
     source_roots:
       - packages/google-cloud-videointelligence
     preserve_regex:
@@ -1091,13 +1151,18 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-vision
     version: 3.10.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/vision/v1p3beta1
+        service_config: vision_v1p3beta1.yaml
       - path: google/cloud/vision/v1
+        service_config: vision_v1.yaml
       - path: google/cloud/vision/v1p1beta1
+        service_config: vision_v1p1beta1.yaml
       - path: google/cloud/vision/v1p2beta1
+        service_config: vision_v1p2beta1.yaml
       - path: google/cloud/vision/v1p4beta1
+        service_config: vision_v1p4beta1.yaml
     source_roots:
       - packages/google-cloud-vision
     preserve_regex:
@@ -1116,10 +1181,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-webrisk
     version: 1.18.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/webrisk/v1beta1
+        service_config: webrisk_v1beta1.yaml
       - path: google/cloud/webrisk/v1
+        service_config: webrisk_v1.yaml
     source_roots:
       - packages/google-cloud-webrisk
     preserve_regex:
@@ -1135,12 +1202,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-access-context-manager
     version: 0.2.2
-    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/identity/accesscontextmanager/v1
         service_config: accesscontextmanager_v1.yaml
       - path: google/identity/accesscontextmanager/type
-        service_config: ''
+        service_config: ""
     source_roots:
       - packages/google-cloud-access-context-manager
     preserve_regex: []
@@ -1149,9 +1216,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-audit-log
     version: 0.3.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/audit
+        service_config: cloudaudit.yaml
     source_roots:
       - packages/google-cloud-audit-log
     preserve_regex: []
@@ -1160,10 +1228,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-biglake
     version: 0.4.15
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/biglake/v1alpha1
+        service_config: biglake_v1alpha1.yaml
       - path: google/cloud/bigquery/biglake/v1
+        service_config: biglake_v1.yaml
     source_roots:
       - packages/google-cloud-bigquery-biglake
     preserve_regex:
@@ -1179,9 +1249,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-connection
     version: 1.18.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/connection/v1
+        service_config: bigqueryconnection_v1.yaml
     source_roots:
       - packages/google-cloud-bigquery-connection
     preserve_regex:
@@ -1197,9 +1268,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-data-exchange
     version: 0.5.20
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/dataexchange/v1beta1
+        service_config: analyticshub_v1beta1.yaml
     source_roots:
       - packages/google-cloud-bigquery-data-exchange
     preserve_regex:
@@ -1215,12 +1287,16 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-datapolicies
     version: 0.6.16
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/datapolicies/v2beta1
+        service_config: bigquerydatapolicy_v2beta1.yaml
       - path: google/cloud/bigquery/datapolicies/v2
+        service_config: bigquerydatapolicy_v2.yaml
       - path: google/cloud/bigquery/datapolicies/v1beta1
+        service_config: bigquerydatapolicy_v1beta1.yaml
       - path: google/cloud/bigquery/datapolicies/v1
+        service_config: bigquerydatapolicy_v1.yaml
     source_roots:
       - packages/google-cloud-bigquery-datapolicies
     preserve_regex:
@@ -1236,9 +1312,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-datatransfer
     version: 3.19.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/datatransfer/v1
+        service_config: bigquerydatatransfer_v1.yaml
     source_roots:
       - packages/google-cloud-bigquery-datatransfer
     preserve_regex:
@@ -1254,9 +1331,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-logging
     version: 1.6.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/logging/v1
+        service_config: ""
     source_roots:
       - packages/google-cloud-bigquery-logging
     preserve_regex:
@@ -1273,10 +1351,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-migration
     version: 0.11.15
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/migration/v2alpha
+        service_config: bigquerymigration_v2alpha.yaml
       - path: google/cloud/bigquery/migration/v2
+        service_config: bigquerymigration_v2.yaml
     source_roots:
       - packages/google-cloud-bigquery-migration
     preserve_regex:
@@ -1292,9 +1372,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-reservation
     version: 1.19.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/bigquery/reservation/v1
+        service_config: bigqueryreservation_v1.yaml
     source_roots:
       - packages/google-cloud-bigquery-reservation
     preserve_regex:
@@ -1310,9 +1391,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-billing
     version: 1.16.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/billing/v1
+        service_config: cloudbilling_v1.yaml
     source_roots:
       - packages/google-cloud-billing
     preserve_regex:
@@ -1328,10 +1410,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-billing-budgets
     version: 1.17.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/billing/budgets/v1
+        service_config: billingbudgets.yaml
       - path: google/cloud/billing/budgets/v1beta1
+        service_config: billingbudgets.yaml
     source_roots:
       - packages/google-cloud-billing-budgets
     preserve_regex:
@@ -1347,7 +1431,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-translate
     version: 3.21.1
-    last_generated_commit: eab82ec804dfd76372ca369910ccd0766ee02e5c
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/translate/v3beta1
         service_config: translate_v3beta1.yaml
@@ -1372,10 +1456,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-binary-authorization
     version: 1.13.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/binaryauthorization/v1
+        service_config: binaryauthorization_v1.yaml
       - path: google/cloud/binaryauthorization/v1beta1
+        service_config: binaryauthorization_v1beta1.yaml
     source_roots:
       - packages/google-cloud-binary-authorization
     preserve_regex:
@@ -1391,10 +1477,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-build
     version: 3.32.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/devtools/cloudbuild/v1
+        service_config: cloudbuild_v1.yaml
       - path: google/devtools/cloudbuild/v2
+        service_config: cloudbuild_v2.yaml
     source_roots:
       - packages/google-cloud-build
     preserve_regex:
@@ -1410,9 +1498,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-capacityplanner
     version: 0.1.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/capacityplanner/v1beta
+        service_config: capacityplanner_v1beta.yaml
     source_roots:
       - packages/google-cloud-capacityplanner
     preserve_regex:
@@ -1428,9 +1517,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-certificate-manager
     version: 1.10.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/certificatemanager/v1
+        service_config: certificatemanager_v1.yaml
     source_roots:
       - packages/google-cloud-certificate-manager
     preserve_regex:
@@ -1446,9 +1536,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-channel
     version: 1.23.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/channel/v1
+        service_config: cloudchannel_v1.yaml
     source_roots:
       - packages/google-cloud-channel
     preserve_regex:
@@ -1464,9 +1555,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-chronicle
     version: 0.1.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/chronicle/v1
+        service_config: chronicle_v1.yaml
     source_roots:
       - packages/google-cloud-chronicle
     preserve_regex:
@@ -1482,10 +1574,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-cloudcontrolspartner
     version: 0.2.7
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/cloudcontrolspartner/v1beta
+        service_config: cloudcontrolspartner_v1beta.yaml
       - path: google/cloud/cloudcontrolspartner/v1
+        service_config: cloudcontrolspartner_v1.yaml
     source_roots:
       - packages/google-cloud-cloudcontrolspartner
     preserve_regex:
@@ -1501,9 +1595,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-cloudsecuritycompliance
     version: 0.2.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/cloudsecuritycompliance/v1
+        service_config: cloudsecuritycompliance_v1.yaml
     source_roots:
       - packages/google-cloud-cloudsecuritycompliance
     preserve_regex:
@@ -1519,10 +1614,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-commerce-consumer-procurement
     version: 0.2.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/commerce/consumer/procurement/v1
+        service_config: cloudcommerceconsumerprocurement_v1.yaml
       - path: google/cloud/commerce/consumer/procurement/v1alpha1
+        service_config: cloudcommerceconsumerprocurement_v1alpha1.yaml
     source_roots:
       - packages/google-cloud-commerce-consumer-procurement
     preserve_regex:
@@ -1538,9 +1635,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-common
     version: 1.5.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/common
+        service_config: common.yaml
     source_roots:
       - packages/google-cloud-common
     preserve_regex:
@@ -1557,9 +1655,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute
     version: 1.38.0
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/compute/v1
+        service_config: compute_v1.yaml
     source_roots:
       - packages/google-cloud-compute
     preserve_regex:
@@ -1575,9 +1674,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute-v1beta
     version: 0.1.8
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/compute/v1beta
+        service_config: compute_v1beta.yaml
     source_roots:
       - packages/google-cloud-compute-v1beta
     preserve_regex:
@@ -1593,9 +1693,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-confidentialcomputing
     version: 0.5.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/confidentialcomputing/v1
+        service_config: confidentialcomputing_v1.yaml
     source_roots:
       - packages/google-cloud-confidentialcomputing
     preserve_regex:
@@ -1611,9 +1712,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-config
     version: 0.1.21
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/config/v1
+        service_config: config_v1.yaml
     source_roots:
       - packages/google-cloud-config
     preserve_regex:
@@ -1629,11 +1731,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-configdelivery
     version: 0.1.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/configdelivery/v1beta
+        service_config: configdelivery_v1beta.yaml
       - path: google/cloud/configdelivery/v1alpha
+        service_config: configdelivery_v1alpha.yaml
       - path: google/cloud/configdelivery/v1
+        service_config: configdelivery_v1.yaml
     source_roots:
       - packages/google-cloud-configdelivery
     preserve_regex:
@@ -1649,9 +1754,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-contact-center-insights
     version: 1.23.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/contactcenterinsights/v1
+        service_config: contactcenterinsights_v1.yaml
     source_roots:
       - packages/google-cloud-contact-center-insights
     preserve_regex:
@@ -1667,10 +1773,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-container
     version: 2.59.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/container/v1
+        service_config: container_v1.yaml
       - path: google/container/v1beta1
+        service_config: container_v1beta1.yaml
     source_roots:
       - packages/google-cloud-container
     preserve_regex:
@@ -1686,9 +1794,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-containeranalysis
     version: 2.18.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/devtools/containeranalysis/v1
+        service_config: containeranalysis_v1.yaml
     source_roots:
       - packages/google-cloud-containeranalysis
     preserve_regex:
@@ -1705,9 +1814,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-contentwarehouse
     version: 0.7.16
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/contentwarehouse/v1
+        service_config: contentwarehouse_v1.yaml
     source_roots:
       - packages/google-cloud-contentwarehouse
     preserve_regex:
@@ -1723,9 +1833,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-data-fusion
     version: 1.13.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/datafusion/v1
+        service_config: datafusion_v1.yaml
     source_roots:
       - packages/google-cloud-data-fusion
     preserve_regex:
@@ -1741,12 +1852,16 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-workflows
     version: 1.18.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/workflows/executions/v1
+        service_config: workflowexecutions_v1.yaml
       - path: google/cloud/workflows/executions/v1beta
+        service_config: workflowexecutions_v1beta.yaml
       - path: google/cloud/workflows/v1
+        service_config: workflows_v1.yaml
       - path: google/cloud/workflows/v1beta
+        service_config: workflows_v1beta.yaml
     source_roots:
       - packages/google-cloud-workflows
     preserve_regex:
@@ -1762,9 +1877,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-video-stitcher
     version: 0.7.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/video/stitcher/v1
+        service_config: videostitcher_v1.yaml
     source_roots:
       - packages/google-cloud-video-stitcher
     preserve_regex:
@@ -1780,10 +1896,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis-cluster
     version: 0.1.15
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/redis/cluster/v1
+        service_config: redis_v1.yaml
       - path: google/cloud/redis/cluster/v1beta1
+        service_config: redis_v1beta1.yaml
     source_roots:
       - packages/google-cloud-redis-cluster
     preserve_regex:
@@ -1799,9 +1917,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-resource-manager
     version: 1.14.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/resourcemanager/v3
+        service_config: cloudresourcemanager_v3.yaml
     source_roots:
       - packages/google-cloud-resource-manager
     preserve_regex:
@@ -1817,11 +1936,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-retail
     version: 2.6.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/retail/v2
+        service_config: retail_v2.yaml
       - path: google/cloud/retail/v2alpha
+        service_config: retail_v2alpha.yaml
       - path: google/cloud/retail/v2beta
+        service_config: retail_v2beta.yaml
     source_roots:
       - packages/google-cloud-retail
     preserve_regex:
@@ -1837,9 +1959,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-run
     version: 0.11.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/run/v2
+        service_config: run_v2.yaml
     source_roots:
       - packages/google-cloud-run
     preserve_regex:
@@ -1855,9 +1978,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-saasplatform-saasservicemgmt
     version: 0.1.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
+        service_config: saasservicemgmt_v1beta1.yaml
     source_roots:
       - packages/google-cloud-saasplatform-saasservicemgmt
     preserve_regex:
@@ -1873,10 +1997,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-scheduler
     version: 2.16.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/scheduler/v1
+        service_config: cloudscheduler_v1.yaml
       - path: google/cloud/scheduler/v1beta1
+        service_config: cloudscheduler_v1beta1.yaml
     source_roots:
       - packages/google-cloud-scheduler
     preserve_regex:
@@ -1892,9 +2018,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-securesourcemanager
     version: 0.1.17
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/securesourcemanager/v1
+        service_config: securesourcemanager_v1.yaml
     source_roots:
       - packages/google-cloud-securesourcemanager
     preserve_regex:
@@ -1910,12 +2037,16 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-securitycenter
     version: 1.40.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/securitycenter/v2
+        service_config: securitycenter_v2.yaml
       - path: google/cloud/securitycenter/v1p1beta1
+        service_config: securitycenter_v1p1beta1.yaml
       - path: google/cloud/securitycenter/v1beta1
+        service_config: securitycenter_v1beta1.yaml
       - path: google/cloud/securitycenter/v1
+        service_config: securitycenter_v1.yaml
     source_roots:
       - packages/google-cloud-securitycenter
     preserve_regex:
@@ -1931,9 +2062,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-securitycentermanagement
     version: 0.1.22
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/securitycentermanagement/v1
+        service_config: securitycentermanagement_v1.yaml
     source_roots:
       - packages/google-cloud-securitycentermanagement
     preserve_regex:
@@ -1949,10 +2081,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-control
     version: 1.16.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/api/servicecontrol/v2
+        service_config: servicecontrol.yaml
       - path: google/api/servicecontrol/v1
+        service_config: servicecontrol.yaml
     source_roots:
       - packages/google-cloud-service-control
     preserve_regex:
@@ -1968,10 +2102,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-directory
     version: 1.14.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/servicedirectory/v1
+        service_config: servicedirectory_v1.yaml
       - path: google/cloud/servicedirectory/v1beta1
+        service_config: servicedirectory_v1beta1.yaml
     source_roots:
       - packages/google-cloud-service-directory
     preserve_regex:
@@ -1987,9 +2123,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-management
     version: 1.13.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/api/servicemanagement/v1
+        service_config: servicemanagement_v1.yaml
     source_roots:
       - packages/google-cloud-service-management
     preserve_regex:
@@ -2005,9 +2142,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-usage
     version: 1.13.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/api/serviceusage/v1
+        service_config: serviceusage_v1.yaml
     source_roots:
       - packages/google-cloud-service-usage
     preserve_regex:
@@ -2023,9 +2161,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-servicehealth
     version: 0.1.12
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/servicehealth/v1
+        service_config: servicehealth_v1.yaml
     source_roots:
       - packages/google-cloud-servicehealth
     preserve_regex:
@@ -2041,9 +2180,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-shell
     version: 1.12.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/shell/v1
+        service_config: cloudshell_v1.yaml
     source_roots:
       - packages/google-cloud-shell
     preserve_regex:
@@ -2059,9 +2199,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-source-context
     version: 1.7.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/devtools/source/v1
+        service_config: ""
     source_roots:
       - packages/google-cloud-source-context
     preserve_regex:
@@ -2078,11 +2219,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
     version: 2.33.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/speech/v1
+        service_config: speech_v1.yaml
       - path: google/cloud/speech/v2
+        service_config: speech_v2.yaml
       - path: google/cloud/speech/v1p1beta1
+        service_config: speech_v1p1beta1.yaml
     source_roots:
       - packages/google-cloud-speech
     preserve_regex:
@@ -2100,9 +2244,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-control
     version: 1.7.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/storage/control/v2
+        service_config: storage_v2.yaml
     source_roots:
       - packages/google-cloud-storage-control
     preserve_regex:
@@ -2118,9 +2263,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-transfer
     version: 1.17.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/storagetransfer/v1
+        service_config: storagetransfer_v1.yaml
     source_roots:
       - packages/google-cloud-storage-transfer
     preserve_regex:
@@ -2136,9 +2282,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-iam-logging
     version: 1.4.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/iam/v1/logging
+        service_config: ""
     source_roots:
       - packages/google-cloud-iam-logging
     preserve_regex:
@@ -2155,9 +2302,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-iap
     version: 1.17.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/iap/v1
+        service_config: iap_v1.yaml
     source_roots:
       - packages/google-cloud-iap
     preserve_regex:
@@ -2173,9 +2321,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-ids
     version: 1.10.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/ids/v1
+        service_config: ids_v1.yaml
     source_roots:
       - packages/google-cloud-ids
     preserve_regex:
@@ -2191,9 +2340,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms
     version: 3.6.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/kms/v1
+        service_config: cloudkms_v1.yaml
     source_roots:
       - packages/google-cloud-kms
     preserve_regex:
@@ -2209,9 +2359,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms-inventory
     version: 0.2.15
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/kms/inventory/v1
+        service_config: kmsinventory_v1.yaml
     source_roots:
       - packages/google-cloud-kms-inventory
     preserve_regex:
@@ -2227,11 +2378,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-language
     version: 2.17.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/language/v1
+        service_config: language_v1.yaml
       - path: google/cloud/language/v1beta2
+        service_config: language_v1beta2.yaml
       - path: google/cloud/language/v2
+        service_config: language_v2.yaml
     source_roots:
       - packages/google-cloud-language
     preserve_regex:
@@ -2247,9 +2401,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-licensemanager
     version: 0.1.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/licensemanager/v1
+        service_config: licensemanager_v1.yaml
     source_roots:
       - packages/google-cloud-licensemanager
     preserve_regex:
@@ -2265,9 +2420,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-life-sciences
     version: 0.9.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/lifesciences/v2beta
+        service_config: lifesciences_v2beta.yaml
     source_roots:
       - packages/google-cloud-life-sciences
     preserve_regex:
@@ -2283,9 +2439,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-lustre
     version: 0.1.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/lustre/v1
+        service_config: lustre_v1.yaml
     source_roots:
       - packages/google-cloud-lustre
     preserve_regex:
@@ -2301,9 +2458,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-maintenance-api
     version: 0.1.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/maintenance/api/v1beta
+        service_config: maintenance_v1beta.yaml
     source_roots:
       - packages/google-cloud-maintenance-api
     preserve_regex:
@@ -2319,9 +2477,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-managed-identities
     version: 1.12.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/managedidentities/v1
+        service_config: managedidentities_v1.yaml
     source_roots:
       - packages/google-cloud-managed-identities
     preserve_regex:
@@ -2337,9 +2496,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-managedkafka
     version: 0.1.12
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/managedkafka/v1
+        service_config: managedkafka_v1.yaml
     source_roots:
       - packages/google-cloud-managedkafka
     preserve_regex:
@@ -2355,9 +2515,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-managedkafka-schemaregistry
     version: 0.1.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/managedkafka/schemaregistry/v1
+        service_config: managedkafka_v1.yaml
     source_roots:
       - packages/google-cloud-managedkafka-schemaregistry
     preserve_regex:
@@ -2373,9 +2534,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-media-translation
     version: 0.11.17
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/mediatranslation/v1beta1
+        service_config: mediatranslation_v1beta1.yaml
     source_roots:
       - packages/google-cloud-media-translation
     preserve_regex:
@@ -2391,10 +2553,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-memcache
     version: 1.12.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/memcache/v1
+        service_config: memcache_v1.yaml
       - path: google/cloud/memcache/v1beta2
+        service_config: memcache_v1beta2.yaml
     source_roots:
       - packages/google-cloud-memcache
     preserve_regex:
@@ -2410,10 +2574,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-memorystore
     version: 0.1.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/memorystore/v1beta
+        service_config: memorystore_v1beta.yaml
       - path: google/cloud/memorystore/v1
+        service_config: memorystore_v1.yaml
     source_roots:
       - packages/google-cloud-memorystore
     preserve_regex:
@@ -2429,9 +2595,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-migrationcenter
     version: 0.1.15
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/migrationcenter/v1
+        service_config: migrationcenter_v1.yaml
     source_roots:
       - packages/google-cloud-migrationcenter
     preserve_regex:
@@ -2447,10 +2614,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-modelarmor
     version: 0.2.8
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/modelarmor/v1beta
+        service_config: modelarmor_v1beta.yaml
       - path: google/cloud/modelarmor/v1
+        service_config: modelarmor_v1.yaml
     source_roots:
       - packages/google-cloud-modelarmor
     preserve_regex:
@@ -2466,9 +2635,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring-metrics-scopes
     version: 1.9.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/monitoring/metricsscope/v1
+        service_config: monitoring.yaml
     source_roots:
       - packages/google-cloud-monitoring-metrics-scopes
     preserve_regex:
@@ -2484,9 +2654,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
     version: 0.3.24
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/netapp/v1
+        service_config: netapp_v1.yaml
     source_roots:
       - packages/google-cloud-netapp
     preserve_regex:
@@ -2502,10 +2673,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-connectivity
     version: 2.10.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/networkconnectivity/v1
+        service_config: networkconnectivity_v1.yaml
       - path: google/cloud/networkconnectivity/v1alpha1
+        service_config: networkconnectivity_v1alpha1.yaml
     source_roots:
       - packages/google-cloud-network-connectivity
     preserve_regex:
@@ -2521,9 +2694,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-management
     version: 1.28.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/networkmanagement/v1
+        service_config: networkmanagement_v1.yaml
     source_roots:
       - packages/google-cloud-network-management
     preserve_regex:
@@ -2539,9 +2713,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-services
     version: 0.5.24
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/networkservices/v1
+        service_config: networkservices_v1.yaml
     source_roots:
       - packages/google-cloud-network-services
     preserve_regex:
@@ -2557,11 +2732,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-notebooks
     version: 1.13.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/notebooks/v1beta1
+        service_config: notebooks_v1beta1.yaml
       - path: google/cloud/notebooks/v1
+        service_config: notebooks_v1.yaml
       - path: google/cloud/notebooks/v2
+        service_config: notebooks_v2.yaml
     source_roots:
       - packages/google-cloud-notebooks
     preserve_regex:
@@ -2577,9 +2755,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-optimization
     version: 1.11.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/optimization/v1
+        service_config: cloudoptimization_v1.yaml
     source_roots:
       - packages/google-cloud-optimization
     preserve_regex:
@@ -2595,9 +2774,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-oracledatabase
     version: 0.1.10
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/oracledatabase/v1
+        service_config: oracledatabase_v1.yaml
     source_roots:
       - packages/google-cloud-oracledatabase
     preserve_regex:
@@ -2613,10 +2793,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-orchestration-airflow
     version: 1.17.5
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/orchestration/airflow/service/v1
+        service_config: composer_v1.yaml
       - path: google/cloud/orchestration/airflow/service/v1beta1
+        service_config: composer_v1beta1.yaml
     source_roots:
       - packages/google-cloud-orchestration-airflow
     preserve_regex:
@@ -2632,10 +2814,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-os-config
     version: 1.21.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/osconfig/v1alpha
+        service_config: osconfig_v1alpha.yaml
       - path: google/cloud/osconfig/v1
+        service_config: osconfig_v1.yaml
     source_roots:
       - packages/google-cloud-os-config
     preserve_regex:
@@ -2651,10 +2835,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-parallelstore
     version: 0.2.15
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/parallelstore/v1
+        service_config: parallelstore_v1.yaml
       - path: google/cloud/parallelstore/v1beta
+        service_config: parallelstore_v1beta.yaml
     source_roots:
       - packages/google-cloud-parallelstore
     preserve_regex:
@@ -2670,9 +2856,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-parametermanager
     version: 0.1.5
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/parametermanager/v1
+        service_config: parametermanager_v1.yaml
     source_roots:
       - packages/google-cloud-parametermanager
     preserve_regex:
@@ -2688,9 +2875,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-phishing-protection
     version: 1.14.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/phishingprotection/v1beta1
+        service_config: phishingprotection_v1beta1.yaml
     source_roots:
       - packages/google-cloud-phishing-protection
     preserve_regex:
@@ -2706,9 +2894,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-policy-troubleshooter
     version: 1.13.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/policytroubleshooter/v1
+        service_config: policytroubleshooter_v1.yaml
     source_roots:
       - packages/google-cloud-policy-troubleshooter
     preserve_regex:
@@ -2724,9 +2913,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-policysimulator
     version: 0.1.15
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/policysimulator/v1
+        service_config: policysimulator_v1.yaml
     source_roots:
       - packages/google-cloud-policysimulator
     preserve_regex:
@@ -2742,9 +2932,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-policytroubleshooter-iam
     version: 0.1.13
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/policytroubleshooter/iam/v3
+        service_config: policytroubleshooter_v3.yaml
     source_roots:
       - packages/google-cloud-policytroubleshooter-iam
     preserve_regex:
@@ -2760,10 +2951,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-private-ca
     version: 1.15.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/security/privateca/v1
+        service_config: privateca_v1.yaml
       - path: google/cloud/security/privateca/v1beta1
+        service_config: privateca_v1beta1.yaml
     source_roots:
       - packages/google-cloud-private-ca
     preserve_regex:
@@ -2779,9 +2972,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-private-catalog
     version: 0.9.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/privatecatalog/v1beta1
+        service_config: cloudprivatecatalog_v1beta1.yaml
     source_roots:
       - packages/google-cloud-private-catalog
     preserve_regex:
@@ -2797,9 +2991,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-privilegedaccessmanager
     version: 0.1.9
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/privilegedaccessmanager/v1
+        service_config: privilegedaccessmanager_v1.yaml
     source_roots:
       - packages/google-cloud-privilegedaccessmanager
     preserve_regex:
@@ -2815,10 +3010,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
     version: 0.1.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/api/cloudquotas/v1
+        service_config: cloudquotas_v1.yaml
       - path: google/api/cloudquotas/v1beta
+        service_config: cloudquotas_v1beta.yaml
     source_roots:
       - packages/google-cloud-quotas
     preserve_regex:
@@ -2834,9 +3031,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-rapidmigrationassessment
     version: 0.1.16
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/rapidmigrationassessment/v1
+        service_config: rapidmigrationassessment_v1.yaml
     source_roots:
       - packages/google-cloud-rapidmigrationassessment
     preserve_regex:
@@ -2852,9 +3050,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-recaptcha-enterprise
     version: 1.28.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/recaptchaenterprise/v1
+        service_config: recaptchaenterprise_v1.yaml
     source_roots:
       - packages/google-cloud-recaptcha-enterprise
     preserve_regex:
@@ -2870,9 +3069,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-recommendations-ai
     version: 0.10.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/recommendationengine/v1beta1
+        service_config: recommendationengine_v1beta1.yaml
     source_roots:
       - packages/google-cloud-recommendations-ai
     preserve_regex:
@@ -2888,10 +3088,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-recommender
     version: 2.18.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/recommender/v1beta1
+        service_config: recommender_v1beta1.yaml
       - path: google/cloud/recommender/v1
+        service_config: recommender_v1.yaml
     source_roots:
       - packages/google-cloud-recommender
     preserve_regex:
@@ -2907,10 +3109,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-redis
     version: 2.18.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/redis/v1
+        service_config: redis_v1.yaml
       - path: google/cloud/redis/v1beta1
+        service_config: redis_v1beta1.yaml
     source_roots:
       - packages/google-cloud-redis
     preserve_regex:
@@ -2926,9 +3130,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-locationfinder
     version: 0.1.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/locationfinder/v1
+        service_config: cloudlocationfinder_v1.yaml
     source_roots:
       - packages/google-cloud-locationfinder
     preserve_regex:
@@ -2944,9 +3149,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-data-qna
     version: 0.10.17
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/dataqna/v1alpha
+        service_config: dataqna_v1alpha.yaml
     source_roots:
       - packages/google-cloud-data-qna
     preserve_regex:
@@ -2962,10 +3168,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-datacatalog
     version: 3.27.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/datacatalog/v1
+        service_config: datacatalog_v1.yaml
       - path: google/cloud/datacatalog/v1beta1
+        service_config: datacatalog_v1beta1.yaml
     source_roots:
       - packages/google-cloud-datacatalog
     preserve_regex:
@@ -2981,9 +3189,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-datacatalog-lineage
     version: 0.3.14
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/datacatalog/lineage/v1
+        service_config: datalineage_v1.yaml
     source_roots:
       - packages/google-cloud-datacatalog-lineage
     preserve_regex:
@@ -2999,9 +3208,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataflow-client
     version: 0.9.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/dataflow/v1beta3
+        service_config: dataflow_v1beta3.yaml
     source_roots:
       - packages/google-cloud-dataflow-client
     preserve_regex:
@@ -3017,10 +3227,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataform
     version: 0.6.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/dataform/v1beta1
+        service_config: dataform_v1beta1.yaml
       - path: google/cloud/dataform/v1
+        service_config: dataform_v1.yaml
     source_roots:
       - packages/google-cloud-dataform
     preserve_regex:
@@ -3036,9 +3248,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-datalabeling
     version: 1.13.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/datalabeling/v1beta1
+        service_config: datalabeling_v1beta1.yaml
     source_roots:
       - packages/google-cloud-datalabeling
     preserve_regex:
@@ -3054,9 +3267,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataplex
     version: 2.12.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/dataplex/v1
+        service_config: dataplex_v1.yaml
     source_roots:
       - packages/google-cloud-dataplex
     preserve_regex:
@@ -3072,9 +3286,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataproc
     version: 5.22.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/dataproc/v1
+        service_config: dataproc_v1.yaml
     source_roots:
       - packages/google-cloud-dataproc
     preserve_regex:
@@ -3090,11 +3305,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataproc-metastore
     version: 1.19.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/metastore/v1alpha
+        service_config: metastore_v1alpha.yaml
       - path: google/cloud/metastore/v1beta
+        service_config: metastore_v1beta.yaml
       - path: google/cloud/metastore/v1
+        service_config: metastore_v1.yaml
     source_roots:
       - packages/google-cloud-dataproc-metastore
     preserve_regex:
@@ -3110,10 +3328,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-datastream
     version: 1.15.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/datastream/v1
+        service_config: datastream_v1.yaml
       - path: google/cloud/datastream/v1alpha1
+        service_config: datastream_v1alpha1.yaml
     source_roots:
       - packages/google-cloud-datastream
     preserve_regex:
@@ -3129,9 +3349,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-deploy
     version: 2.7.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/deploy/v1
+        service_config: clouddeploy_v1.yaml
     source_roots:
       - packages/google-cloud-deploy
     preserve_regex:
@@ -3147,9 +3368,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-developerconnect
     version: 0.1.10
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/developerconnect/v1
+        service_config: developerconnect_v1.yaml
     source_roots:
       - packages/google-cloud-developerconnect
     preserve_regex:
@@ -3165,9 +3387,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-devicestreaming
     version: 0.1.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/devicestreaming/v1
+        service_config: devicestreaming_v1.yaml
     source_roots:
       - packages/google-cloud-devicestreaming
     preserve_regex:
@@ -3183,10 +3406,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow
     version: 2.41.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/dialogflow/v2beta1
+        service_config: dialogflow_v2beta1.yaml
       - path: google/cloud/dialogflow/v2
+        service_config: dialogflow_v2.yaml
     source_roots:
       - packages/google-cloud-dialogflow
     preserve_regex:
@@ -3202,11 +3427,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
     version: 0.13.12
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/discoveryengine/v1
+        service_config: discoveryengine_v1.yaml
       - path: google/cloud/discoveryengine/v1beta
+        service_config: discoveryengine_v1beta.yaml
       - path: google/cloud/discoveryengine/v1alpha
+        service_config: discoveryengine_v1alpha.yaml
     source_roots:
       - packages/google-cloud-discoveryengine
     preserve_regex:
@@ -3222,9 +3450,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dms
     version: 1.12.4
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/clouddms/v1
+        service_config: datamigration_v1.yaml
     source_roots:
       - packages/google-cloud-dms
     preserve_regex:
@@ -3240,10 +3469,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai
     version: 3.6.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/documentai/v1beta3
+        service_config: documentai_v1beta3.yaml
       - path: google/cloud/documentai/v1
+        service_config: documentai_v1.yaml
     source_roots:
       - packages/google-cloud-documentai
     preserve_regex:
@@ -3259,10 +3490,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-domains
     version: 1.10.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/domains/v1beta1
+        service_config: domains_v1beta1.yaml
       - path: google/cloud/domains/v1
+        service_config: domains_v1.yaml
     source_roots:
       - packages/google-cloud-domains
     preserve_regex:
@@ -3278,9 +3511,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-edgecontainer
     version: 0.5.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/edgecontainer/v1
+        service_config: edgecontainer_v1.yaml
     source_roots:
       - packages/google-cloud-edgecontainer
     preserve_regex:
@@ -3296,9 +3530,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-edgenetwork
     version: 0.1.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/edgenetwork/v1
+        service_config: edgenetwork_v1.yaml
     source_roots:
       - packages/google-cloud-edgenetwork
     preserve_regex:
@@ -3314,9 +3549,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-enterpriseknowledgegraph
     version: 0.3.17
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/enterpriseknowledgegraph/v1
+        service_config: enterpriseknowledgegraph_v1.yaml
     source_roots:
       - packages/google-cloud-enterpriseknowledgegraph
     preserve_regex:
@@ -3332,9 +3568,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-essential-contacts
     version: 1.10.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/essentialcontacts/v1
+        service_config: essentialcontacts_v1.yaml
     source_roots:
       - packages/google-cloud-essential-contacts
     preserve_regex:
@@ -3350,9 +3587,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-eventarc-publishing
     version: 0.6.19
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/eventarc/publishing/v1
+        service_config: eventarcpublishing_v1.yaml
     source_roots:
       - packages/google-cloud-eventarc-publishing
     preserve_regex:
@@ -3368,9 +3606,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-filestore
     version: 1.13.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/filestore/v1
+        service_config: file_v1.yaml
     source_roots:
       - packages/google-cloud-filestore
     preserve_regex:
@@ -3386,9 +3625,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-financialservices
     version: 0.1.3
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/financialservices/v1
+        service_config: financialservices_v1.yaml
     source_roots:
       - packages/google-cloud-financialservices
     preserve_regex:
@@ -3404,10 +3644,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-functions
     version: 1.20.4
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/functions/v2
+        service_config: cloudfunctions_v2.yaml
       - path: google/cloud/functions/v1
+        service_config: cloudfunctions_v1.yaml
     source_roots:
       - packages/google-cloud-functions
     preserve_regex:
@@ -3423,9 +3665,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-gdchardwaremanagement
     version: 0.1.13
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/gdchardwaremanagement/v1alpha
+        service_config: gdchardwaremanagement_v1alpha.yaml
     source_roots:
       - packages/google-cloud-gdchardwaremanagement
     preserve_regex:
@@ -3441,10 +3684,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-geminidataanalytics
     version: 0.4.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/geminidataanalytics/v1beta
+        service_config: geminidataanalytics_v1beta.yaml
       - path: google/cloud/geminidataanalytics/v1alpha
+        service_config: geminidataanalytics_v1alpha.yaml
     source_roots:
       - packages/google-cloud-geminidataanalytics
     preserve_regex:
@@ -3460,9 +3705,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-backup
     version: 0.5.19
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/gkebackup/v1
+        service_config: gkebackup_v1.yaml
     source_roots:
       - packages/google-cloud-gke-backup
     preserve_regex:
@@ -3478,10 +3724,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-connect-gateway
     version: 0.10.4
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/gkeconnect/gateway/v1beta1
+        service_config: connectgateway_v1beta1.yaml
       - path: google/cloud/gkeconnect/gateway/v1
+        service_config: connectgateway_v1.yaml
     source_roots:
       - packages/google-cloud-gke-connect-gateway
     preserve_regex:
@@ -3497,10 +3745,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-security-publicca
     version: 0.3.18
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/cloud/security/publicca/v1
+        service_config: publicca_v1.yaml
       - path: google/cloud/security/publicca/v1beta1
+        service_config: publicca_v1beta1.yaml
     source_roots:
       - packages/google-cloud-security-publicca
     preserve_regex:
@@ -3516,9 +3766,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-css
     version: 0.1.17
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/css/v1
+        service_config: css_v1.yaml
     source_roots:
       - packages/google-shopping-css
     preserve_regex:
@@ -3534,10 +3785,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/accounts/v1
+        service_config: merchantapi_v1.yaml
       - path: google/shopping/merchant/accounts/v1beta
+        service_config: merchantapi_v1beta.yaml
     source_roots:
       - packages/google-shopping-merchant-accounts
     preserve_regex:
@@ -3553,10 +3806,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-conversions
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/conversions/v1
+        service_config: merchantapi_v1.yaml
       - path: google/shopping/merchant/conversions/v1beta
+        service_config: merchantapi_v1beta.yaml
     source_roots:
       - packages/google-shopping-merchant-conversions
     preserve_regex:
@@ -3572,10 +3827,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-datasources
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/datasources/v1
+        service_config: merchantapi_v1.yaml
       - path: google/shopping/merchant/datasources/v1beta
+        service_config: merchantapi_v1beta.yaml
     source_roots:
       - packages/google-shopping-merchant-datasources
     preserve_regex:
@@ -3591,10 +3848,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-inventories
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/inventories/v1beta
+        service_config: merchantapi_v1beta.yaml
       - path: google/shopping/merchant/inventories/v1
+        service_config: merchantapi_v1.yaml
     source_roots:
       - packages/google-shopping-merchant-inventories
     preserve_regex:
@@ -3610,10 +3869,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-issueresolution
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/issueresolution/v1
+        service_config: merchantapi_v1.yaml
       - path: google/shopping/merchant/issueresolution/v1beta
+        service_config: merchantapi_v1beta.yaml
     source_roots:
       - packages/google-shopping-merchant-issueresolution
     preserve_regex:
@@ -3629,10 +3890,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-lfp
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/lfp/v1beta
+        service_config: merchantapi_v1beta.yaml
       - path: google/shopping/merchant/lfp/v1
+        service_config: merchantapi_v1.yaml
     source_roots:
       - packages/google-shopping-merchant-lfp
     preserve_regex:
@@ -3648,10 +3911,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-notifications
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/notifications/v1
+        service_config: merchantapi_v1.yaml
       - path: google/shopping/merchant/notifications/v1beta
+        service_config: merchantapi_v1beta.yaml
     source_roots:
       - packages/google-shopping-merchant-notifications
     preserve_regex:
@@ -3667,10 +3932,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-ordertracking
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/ordertracking/v1
+        service_config: merchantapi_v1.yaml
       - path: google/shopping/merchant/ordertracking/v1beta
+        service_config: merchantapi_v1beta.yaml
     source_roots:
       - packages/google-shopping-merchant-ordertracking
     preserve_regex:
@@ -3686,10 +3953,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-products
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/products/v1
+        service_config: merchantapi_v1.yaml
       - path: google/shopping/merchant/products/v1beta
+        service_config: merchantapi_v1beta.yaml
     source_roots:
       - packages/google-shopping-merchant-products
     preserve_regex:
@@ -3705,9 +3974,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-productstudio
     version: 0.1.1
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/productstudio/v1alpha
+        service_config: merchantapi_v1alpha.yaml
     source_roots:
       - packages/google-shopping-merchant-productstudio
     preserve_regex:
@@ -3723,10 +3993,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-promotions
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/promotions/v1
+        service_config: merchantapi_v1.yaml
       - path: google/shopping/merchant/promotions/v1beta
+        service_config: merchantapi_v1beta.yaml
     source_roots:
       - packages/google-shopping-merchant-promotions
     preserve_regex:
@@ -3742,10 +4014,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-quota
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/quota/v1beta
+        service_config: merchantapi_v1beta.yaml
       - path: google/shopping/merchant/quota/v1
+        service_config: merchantapi_v1.yaml
     source_roots:
       - packages/google-shopping-merchant-quota
     preserve_regex:
@@ -3761,11 +4035,14 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-reports
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/reports/v1beta
+        service_config: merchantapi_v1beta.yaml
       - path: google/shopping/merchant/reports/v1
+        service_config: merchantapi_v1.yaml
       - path: google/shopping/merchant/reports/v1alpha
+        service_config: merchantapi_v1alpha.yaml
     source_roots:
       - packages/google-shopping-merchant-reports
     preserve_regex:
@@ -3781,9 +4058,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-reviews
     version: 0.2.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/merchant/reviews/v1beta
+        service_config: merchantapi_v1beta.yaml
     source_roots:
       - packages/google-shopping-merchant-reviews
     preserve_regex:
@@ -3799,9 +4077,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-type
     version: 1.0.0
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/shopping/type
+        service_config: ""
     source_roots:
       - packages/google-shopping-type
     preserve_regex:
@@ -3818,9 +4097,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-geo-type
     version: 0.3.13
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/geo/type
+        service_config: type_geo.yaml
     source_roots:
       - packages/google-geo-type
     preserve_regex:
@@ -3837,9 +4117,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-addressvalidation
     version: 0.3.20
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/maps/addressvalidation/v1
+        service_config: addressvalidation_v1.yaml
     source_roots:
       - packages/google-maps-addressvalidation
     preserve_regex:
@@ -3855,9 +4136,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-areainsights
     version: 0.1.8
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/maps/areainsights/v1
+        service_config: areainsights_v1.yaml
     source_roots:
       - packages/google-maps-areainsights
     preserve_regex:
@@ -3873,9 +4155,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-fleetengine
     version: 0.2.11
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/maps/fleetengine/v1
+        service_config: fleetengine_v1.yaml
     source_roots:
       - packages/google-maps-fleetengine
     preserve_regex:
@@ -3891,9 +4174,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-fleetengine-delivery
     version: 0.2.13
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/maps/fleetengine/delivery/v1
+        service_config: fleetengine_v1.yaml
     source_roots:
       - packages/google-maps-fleetengine-delivery
     preserve_regex:
@@ -3909,9 +4193,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-mapsplatformdatasets
     version: 0.4.8
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/maps/mapsplatformdatasets/v1
+        service_config: mapsplatformdatasets_v1.yaml
     source_roots:
       - packages/google-maps-mapsplatformdatasets
     preserve_regex:
@@ -3927,9 +4212,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-places
     version: 0.2.2
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/maps/places/v1
+        service_config: places_v1.yaml
     source_roots:
       - packages/google-maps-places
     preserve_regex:
@@ -3945,9 +4231,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-routeoptimization
     version: 0.1.11
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/maps/routeoptimization/v1
+        service_config: routeoptimization_v1.yaml
     source_roots:
       - packages/google-maps-routeoptimization
     preserve_regex:
@@ -3964,9 +4251,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-routing
     version: 0.6.16
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/maps/routing/v2
+        service_config: routes_v2.yaml
     source_roots:
       - packages/google-maps-routing
     preserve_regex:
@@ -3982,9 +4270,10 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-solar
     version: 0.1.9
-    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
+    last_generated_commit: 6e79e73204aed17b11e724beebb9cf11f36ea57d
     apis:
       - path: google/maps/solar/v1
+        service_config: solar_v1.yaml
     source_roots:
       - packages/google-maps-solar
     preserve_regex:

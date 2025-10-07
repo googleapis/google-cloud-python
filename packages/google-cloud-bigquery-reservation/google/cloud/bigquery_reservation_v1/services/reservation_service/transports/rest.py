@@ -24,6 +24,8 @@ from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
@@ -98,6 +100,14 @@ class ReservationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_reservation_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_reservation_group(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_assignment(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -107,6 +117,10 @@ class ReservationServiceRestInterceptor:
                 return request, metadata
 
             def pre_delete_reservation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_reservation_group(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -134,11 +148,27 @@ class ReservationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_iam_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_iam_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_reservation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_reservation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_reservation_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_reservation_group(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -155,6 +185,14 @@ class ReservationServiceRestInterceptor:
                 return request, metadata
 
             def post_list_capacity_commitments(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_reservation_groups(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_reservation_groups(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -198,11 +236,27 @@ class ReservationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_set_iam_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_iam_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_split_capacity_commitment(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_split_capacity_commitment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_test_iam_permissions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_test_iam_permissions(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -390,6 +444,55 @@ class ReservationServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_reservation_group(
+        self,
+        request: reservation.CreateReservationGroupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.CreateReservationGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_reservation_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReservationService server.
+        """
+        return request, metadata
+
+    def post_create_reservation_group(
+        self, response: reservation.ReservationGroup
+    ) -> reservation.ReservationGroup:
+        """Post-rpc interceptor for create_reservation_group
+
+        DEPRECATED. Please use the `post_create_reservation_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ReservationService server but before
+        it is returned to user code. This `post_create_reservation_group` interceptor runs
+        before the `post_create_reservation_group_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_reservation_group_with_metadata(
+        self,
+        response: reservation.ReservationGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.ReservationGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_reservation_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_create_reservation_group_with_metadata`
+        interceptor in new development instead of the `post_create_reservation_group` interceptor.
+        When both interceptors are used, this `post_create_reservation_group_with_metadata` interceptor runs after the
+        `post_create_reservation_group` interceptor. The (possibly modified) response returned by
+        `post_create_reservation_group` will be passed to
+        `post_create_reservation_group_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_assignment(
         self,
         request: reservation.DeleteAssignmentRequest,
@@ -427,6 +530,21 @@ class ReservationServiceRestInterceptor:
         reservation.DeleteReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for delete_reservation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReservationService server.
+        """
+        return request, metadata
+
+    def pre_delete_reservation_group(
+        self,
+        request: reservation.DeleteReservationGroupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.DeleteReservationGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_reservation_group
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the ReservationService server.
@@ -578,6 +696,52 @@ class ReservationServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_iam_policy(
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReservationService server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ReservationService server but before
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_reservation(
         self,
         request: reservation.GetReservationRequest,
@@ -623,6 +787,54 @@ class ReservationServiceRestInterceptor:
         `post_get_reservation` interceptor. The (possibly modified) response returned by
         `post_get_reservation` will be passed to
         `post_get_reservation_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_reservation_group(
+        self,
+        request: reservation.GetReservationGroupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.GetReservationGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_reservation_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReservationService server.
+        """
+        return request, metadata
+
+    def post_get_reservation_group(
+        self, response: reservation.ReservationGroup
+    ) -> reservation.ReservationGroup:
+        """Post-rpc interceptor for get_reservation_group
+
+        DEPRECATED. Please use the `post_get_reservation_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ReservationService server but before
+        it is returned to user code. This `post_get_reservation_group` interceptor runs
+        before the `post_get_reservation_group_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_reservation_group_with_metadata(
+        self,
+        response: reservation.ReservationGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.ReservationGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_reservation_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_get_reservation_group_with_metadata`
+        interceptor in new development instead of the `post_get_reservation_group` interceptor.
+        When both interceptors are used, this `post_get_reservation_group_with_metadata` interceptor runs after the
+        `post_get_reservation_group` interceptor. The (possibly modified) response returned by
+        `post_get_reservation_group` will be passed to
+        `post_get_reservation_group_with_metadata`.
         """
         return response, metadata
 
@@ -725,6 +937,58 @@ class ReservationServiceRestInterceptor:
         `post_list_capacity_commitments` interceptor. The (possibly modified) response returned by
         `post_list_capacity_commitments` will be passed to
         `post_list_capacity_commitments_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_reservation_groups(
+        self,
+        request: reservation.ListReservationGroupsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.ListReservationGroupsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_reservation_groups
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReservationService server.
+        """
+        return request, metadata
+
+    def post_list_reservation_groups(
+        self, response: reservation.ListReservationGroupsResponse
+    ) -> reservation.ListReservationGroupsResponse:
+        """Post-rpc interceptor for list_reservation_groups
+
+        DEPRECATED. Please use the `post_list_reservation_groups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ReservationService server but before
+        it is returned to user code. This `post_list_reservation_groups` interceptor runs
+        before the `post_list_reservation_groups_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_reservation_groups_with_metadata(
+        self,
+        response: reservation.ListReservationGroupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.ListReservationGroupsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_reservation_groups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_list_reservation_groups_with_metadata`
+        interceptor in new development instead of the `post_list_reservation_groups` interceptor.
+        When both interceptors are used, this `post_list_reservation_groups_with_metadata` interceptor runs after the
+        `post_list_reservation_groups` interceptor. The (possibly modified) response returned by
+        `post_list_reservation_groups` will be passed to
+        `post_list_reservation_groups_with_metadata`.
         """
         return response, metadata
 
@@ -976,6 +1240,52 @@ class ReservationServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_set_iam_policy(
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReservationService server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ReservationService server but before
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
+
     def pre_split_capacity_commitment(
         self,
         request: reservation.SplitCapacityCommitmentRequest,
@@ -1025,6 +1335,58 @@ class ReservationServiceRestInterceptor:
         `post_split_capacity_commitment` interceptor. The (possibly modified) response returned by
         `post_split_capacity_commitment` will be passed to
         `post_split_capacity_commitment_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_test_iam_permissions(
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReservationService server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
+
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ReservationService server but before
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
+        """
+        return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: iam_policy_pb2.TestIamPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
         """
         return response, metadata
 
@@ -1810,6 +2172,164 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
+    class _CreateReservationGroup(
+        _BaseReservationServiceRestTransport._BaseCreateReservationGroup,
+        ReservationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ReservationServiceRestTransport.CreateReservationGroup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: reservation.CreateReservationGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> reservation.ReservationGroup:
+            r"""Call the create reservation group method over HTTP.
+
+            Args:
+                request (~.reservation.CreateReservationGroupRequest):
+                    The request object. The request for
+                [ReservationService.CreateReservationGroup][google.cloud.bigquery.reservation.v1.ReservationService.CreateReservationGroup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.reservation.ReservationGroup:
+                    A reservation group is a container
+                for reservations.
+
+            """
+
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_reservation_group(
+                request, metadata
+            )
+            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.reservation_v1.ReservationServiceClient.CreateReservationGroup",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "CreateReservationGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ReservationServiceRestTransport._CreateReservationGroup._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = reservation.ReservationGroup()
+            pb_resp = reservation.ReservationGroup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_reservation_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_reservation_group_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = reservation.ReservationGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.reservation_v1.ReservationServiceClient.create_reservation_group",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "CreateReservationGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteAssignment(
         _BaseReservationServiceRestTransport._BaseDeleteAssignment,
         ReservationServiceRestStub,
@@ -2138,6 +2658,118 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteReservationGroup(
+        _BaseReservationServiceRestTransport._BaseDeleteReservationGroup,
+        ReservationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ReservationServiceRestTransport.DeleteReservationGroup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: reservation.DeleteReservationGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete reservation group method over HTTP.
+
+            Args:
+                request (~.reservation.DeleteReservationGroupRequest):
+                    The request object. The request for
+                [ReservationService.DeleteReservationGroup][google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservationGroup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseDeleteReservationGroup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_reservation_group(
+                request, metadata
+            )
+            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteReservationGroup._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseReservationServiceRestTransport._BaseDeleteReservationGroup._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.reservation_v1.ReservationServiceClient.DeleteReservationGroup",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "DeleteReservationGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ReservationServiceRestTransport._DeleteReservationGroup._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2615,6 +3247,226 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
+    class _GetIamPolicy(
+        _BaseReservationServiceRestTransport._BaseGetIamPolicy,
+        ReservationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ReservationServiceRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the get iam policy method over HTTP.
+
+            Args:
+                request (~.iam_policy_pb2.GetIamPolicyRequest):
+                    The request object. Request message for ``GetIamPolicy`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.policy_pb2.Policy:
+                    An Identity and Access Management (IAM) policy, which
+                specifies access controls for Google Cloud resources.
+
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role.
+
+                For some types of Google Cloud resources, a ``binding``
+                can also specify a ``condition``, which is a logical
+                expression that allows access to a resource only if the
+                expression evaluates to ``true``. A condition can add
+                constraints based on attributes of the request, the
+                resource, or both. To learn which resources support
+                conditions in their IAM policies, see the `IAM
+                documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
+
+                **JSON example:**
+
+                ::
+
+                       {
+                         "bindings": [
+                           {
+                             "role": "roles/resourcemanager.organizationAdmin",
+                             "members": [
+                               "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                             ]
+                           },
+                           {
+                             "role": "roles/resourcemanager.organizationViewer",
+                             "members": [
+                               "user:eve@example.com"
+                             ],
+                             "condition": {
+                               "title": "expirable access",
+                               "description": "Does not grant access after Sep 2020",
+                               "expression": "request.time <
+                               timestamp('2020-10-01T00:00:00.000Z')",
+                             }
+                           }
+                         ],
+                         "etag": "BwWWja0YfJA=",
+                         "version": 3
+                       }
+
+                **YAML example:**
+
+                ::
+
+                       bindings:
+                       - members:
+                         - user:mike@example.com
+                         - group:admins@example.com
+                         - domain:google.com
+                         - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                         role: roles/resourcemanager.organizationAdmin
+                       - members:
+                         - user:eve@example.com
+                         role: roles/resourcemanager.organizationViewer
+                         condition:
+                           title: expirable access
+                           description: Does not grant access after Sep 2020
+                           expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                       etag: BwWWja0YfJA=
+                       version: 3
+
+                For a description of IAM and its features, see the `IAM
+                documentation <https://cloud.google.com/iam/docs/>`__.
+
+            """
+
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseGetIamPolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseReservationServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.reservation_v1.ReservationServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ReservationServiceRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = policy_pb2.Policy()
+            pb_resp = resp
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.reservation_v1.ReservationServiceClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetReservation(
         _BaseReservationServiceRestTransport._BaseGetReservation,
         ReservationServiceRestStub,
@@ -2757,6 +3609,158 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
                         "rpcName": "GetReservation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetReservationGroup(
+        _BaseReservationServiceRestTransport._BaseGetReservationGroup,
+        ReservationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ReservationServiceRestTransport.GetReservationGroup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: reservation.GetReservationGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> reservation.ReservationGroup:
+            r"""Call the get reservation group method over HTTP.
+
+            Args:
+                request (~.reservation.GetReservationGroupRequest):
+                    The request object. The request for
+                [ReservationService.GetReservationGroup][google.cloud.bigquery.reservation.v1.ReservationService.GetReservationGroup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.reservation.ReservationGroup:
+                    A reservation group is a container
+                for reservations.
+
+            """
+
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseGetReservationGroup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_reservation_group(
+                request, metadata
+            )
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetReservationGroup._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseReservationServiceRestTransport._BaseGetReservationGroup._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.reservation_v1.ReservationServiceClient.GetReservationGroup",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "GetReservationGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ReservationServiceRestTransport._GetReservationGroup._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = reservation.ReservationGroup()
+            pb_resp = reservation.ReservationGroup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_reservation_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_reservation_group_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = reservation.ReservationGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.reservation_v1.ReservationServiceClient.get_reservation_group",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "GetReservationGroup",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3063,6 +4067,160 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
                         "rpcName": "ListCapacityCommitments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListReservationGroups(
+        _BaseReservationServiceRestTransport._BaseListReservationGroups,
+        ReservationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ReservationServiceRestTransport.ListReservationGroups")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: reservation.ListReservationGroupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> reservation.ListReservationGroupsResponse:
+            r"""Call the list reservation groups method over HTTP.
+
+            Args:
+                request (~.reservation.ListReservationGroupsRequest):
+                    The request object. The request for
+                [ReservationService.ListReservationGroups][google.cloud.bigquery.reservation.v1.ReservationService.ListReservationGroups].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.reservation.ListReservationGroupsResponse:
+                    The response for
+                [ReservationService.ListReservationGroups][google.cloud.bigquery.reservation.v1.ReservationService.ListReservationGroups].
+
+            """
+
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseListReservationGroups._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_reservation_groups(
+                request, metadata
+            )
+            transcoded_request = _BaseReservationServiceRestTransport._BaseListReservationGroups._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseReservationServiceRestTransport._BaseListReservationGroups._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.reservation_v1.ReservationServiceClient.ListReservationGroups",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "ListReservationGroups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ReservationServiceRestTransport._ListReservationGroups._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = reservation.ListReservationGroupsResponse()
+            pb_resp = reservation.ListReservationGroupsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_reservation_groups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_reservation_groups_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        reservation.ListReservationGroupsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.reservation_v1.ReservationServiceClient.list_reservation_groups",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "ListReservationGroups",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3864,6 +5022,232 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
+    class _SetIamPolicy(
+        _BaseReservationServiceRestTransport._BaseSetIamPolicy,
+        ReservationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ReservationServiceRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the set iam policy method over HTTP.
+
+            Args:
+                request (~.iam_policy_pb2.SetIamPolicyRequest):
+                    The request object. Request message for ``SetIamPolicy`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.policy_pb2.Policy:
+                    An Identity and Access Management (IAM) policy, which
+                specifies access controls for Google Cloud resources.
+
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role.
+
+                For some types of Google Cloud resources, a ``binding``
+                can also specify a ``condition``, which is a logical
+                expression that allows access to a resource only if the
+                expression evaluates to ``true``. A condition can add
+                constraints based on attributes of the request, the
+                resource, or both. To learn which resources support
+                conditions in their IAM policies, see the `IAM
+                documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
+
+                **JSON example:**
+
+                ::
+
+                       {
+                         "bindings": [
+                           {
+                             "role": "roles/resourcemanager.organizationAdmin",
+                             "members": [
+                               "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                             ]
+                           },
+                           {
+                             "role": "roles/resourcemanager.organizationViewer",
+                             "members": [
+                               "user:eve@example.com"
+                             ],
+                             "condition": {
+                               "title": "expirable access",
+                               "description": "Does not grant access after Sep 2020",
+                               "expression": "request.time <
+                               timestamp('2020-10-01T00:00:00.000Z')",
+                             }
+                           }
+                         ],
+                         "etag": "BwWWja0YfJA=",
+                         "version": 3
+                       }
+
+                **YAML example:**
+
+                ::
+
+                       bindings:
+                       - members:
+                         - user:mike@example.com
+                         - group:admins@example.com
+                         - domain:google.com
+                         - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                         role: roles/resourcemanager.organizationAdmin
+                       - members:
+                         - user:eve@example.com
+                         role: roles/resourcemanager.organizationViewer
+                         condition:
+                           title: expirable access
+                           description: Does not grant access after Sep 2020
+                           expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                       etag: BwWWja0YfJA=
+                       version: 3
+
+                For a description of IAM and its features, see the `IAM
+                documentation <https://cloud.google.com/iam/docs/>`__.
+
+            """
+
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.reservation_v1.ReservationServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ReservationServiceRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = policy_pb2.Policy()
+            pb_resp = resp
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.reservation_v1.ReservationServiceClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _SplitCapacityCommitment(
         _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment,
         ReservationServiceRestStub,
@@ -4018,6 +5402,161 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
                         "rpcName": "SplitCapacityCommitment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _TestIamPermissions(
+        _BaseReservationServiceRestTransport._BaseTestIamPermissions,
+        ReservationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ReservationServiceRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
+            r"""Call the test iam permissions method over HTTP.
+
+            Args:
+                request (~.iam_policy_pb2.TestIamPermissionsRequest):
+                    The request object. Request message for ``TestIamPermissions`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.iam_policy_pb2.TestIamPermissionsResponse:
+                    Response message for ``TestIamPermissions`` method.
+            """
+
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
+            transcoded_request = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.reservation_v1.ReservationServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ReservationServiceRestTransport._TestIamPermissions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = iam_policy_pb2.TestIamPermissionsResponse()
+            pb_resp = resp
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.reservation_v1.ReservationServiceClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                        "rpcName": "TestIamPermissions",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -4692,6 +6231,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
         return self._CreateReservation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_reservation_group(
+        self,
+    ) -> Callable[
+        [reservation.CreateReservationGroupRequest], reservation.ReservationGroup
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateReservationGroup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_assignment(
         self,
     ) -> Callable[[reservation.DeleteAssignmentRequest], empty_pb2.Empty]:
@@ -4714,6 +6263,14 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReservation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_reservation_group(
+        self,
+    ) -> Callable[[reservation.DeleteReservationGroupRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteReservationGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def failover_reservation(
@@ -4742,12 +6299,30 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
         return self._GetCapacityCommitment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_reservation(
         self,
     ) -> Callable[[reservation.GetReservationRequest], reservation.Reservation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReservation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_reservation_group(
+        self,
+    ) -> Callable[
+        [reservation.GetReservationGroupRequest], reservation.ReservationGroup
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetReservationGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_assignments(
@@ -4769,6 +6344,17 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCapacityCommitments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_reservation_groups(
+        self,
+    ) -> Callable[
+        [reservation.ListReservationGroupsRequest],
+        reservation.ListReservationGroupsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListReservationGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_reservations(
@@ -4820,6 +6406,14 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
         return self._SearchAssignments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def split_capacity_commitment(
         self,
     ) -> Callable[
@@ -4829,6 +6423,17 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SplitCapacityCommitment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_assignment(

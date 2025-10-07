@@ -1342,6 +1342,33 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
             )
         return self._stubs["list_databases"]
 
+    @property
+    def create_database(
+        self,
+    ) -> Callable[[service.CreateDatabaseRequest], resources.Database]:
+        r"""Return a callable for the create database method over gRPC.
+
+        Creates a new Database in a given project, location,
+        and cluster.
+
+        Returns:
+            Callable[[~.CreateDatabaseRequest],
+                    ~.Database]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_database" not in self._stubs:
+            self._stubs["create_database"] = self._logged_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/CreateDatabase",
+                request_serializer=service.CreateDatabaseRequest.serialize,
+                response_deserializer=resources.Database.deserialize,
+            )
+        return self._stubs["create_database"]
+
     def close(self):
         self._logged_channel.close()
 
