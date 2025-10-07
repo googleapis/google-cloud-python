@@ -4601,9 +4601,8 @@ class DataFrame(generic.NDFrame):
     def join(
         self,
         other,
-        *,
         on: Optional[str] = None,
-        how: str,
+        how: str = "left",
         lsuffix: str = "",
         rsuffix: str = "",
     ) -> DataFrame:

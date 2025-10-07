@@ -3721,7 +3721,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def join(
         self,
         other: Union[DataFrame, bigframes.series.Series],
-        *,
         on: Optional[str] = None,
         how: str = "left",
         lsuffix: str = "",
