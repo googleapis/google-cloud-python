@@ -1,4 +1,4 @@
-attrs==25.3.0
+attrs==25.4.0
 click===8.1.8; python_version <= '3.9'
 click==8.3.0; python_version >= '3.10'
 google-auth==2.41.1
