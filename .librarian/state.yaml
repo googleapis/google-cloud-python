@@ -2,10 +2,12 @@ image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-li
 libraries:
   - id: google-cloud-bigquery-biglake
     version: 0.4.15
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 9070e63a1f574261c153ef6e94afc55677200337
     apis:
       - path: google/cloud/bigquery/biglake/v1alpha1
+        service_config: biglake_v1alpha1.yaml
       - path: google/cloud/bigquery/biglake/v1
+        service_config: biglake_v1.yaml
     source_roots:
       - packages/google-cloud-bigquery-biglake
     preserve_regex:
@@ -24,6 +26,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/cloud/capacityplanner/v1beta
+        service_config: capacityplanner_v1beta.yaml
     source_roots:
       - packages/google-cloud-capacityplanner
     preserve_regex:
