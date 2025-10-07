@@ -668,3 +668,20 @@ def test_custom_index_setitem_error():
 
     with pytest.raises(TypeError, match="Index does not support mutable operations"):
         custom_index[2] = 999
+
+
+def test_index_eq_const(scalars_df_index, scalars_pandas_df_index):
+    bf_result = (scalars_df_index.index == 3).to_pandas()
+    pd_result = scalars_pandas_df_index.index == 3
+    assert bf_result == pd.Index(pd_result)
+
+
+def test_index_eq_aligned_index(scalars_df_index, scalars_pandas_df_index):
+    bf_result = (
+        bpd.Index(scalars_df_index.int64_col)
+        == bpd.Index(scalars_df_index.int64_col.abs())
+    ).to_pandas()
+    pd_result = pd.Index(scalars_pandas_df_index.int64_col) == pd.Index(
+        scalars_pandas_df_index.int64_col.abs()
+    )
+    assert bf_result == pd.Index(pd_result)

@@ -19,6 +19,8 @@ from typing import cast, Hashable, Iterable, Sequence
 import bigframes_vendored.pandas.core.indexes.multi as vendored_pandas_multindex
 import pandas
 
+from bigframes.core import blocks
+from bigframes.core import expression as ex
 from bigframes.core.indexes.base import Index
 
 
@@ -46,3 +48,26 @@ class MultiIndex(Index, vendored_pandas_multindex.MultiIndex):
         pd_index = pandas.MultiIndex.from_arrays(arrays, sortorder, names)
         # Index.__new__ should detect multiple levels and properly create a multiindex
         return cast(MultiIndex, Index(pd_index))
+
+    def __eq__(self, other) -> Index:  # type: ignore
+        import bigframes.operations as ops
+        import bigframes.operations.aggregations as agg_ops
+
+        eq_result = self._apply_binop(other, ops.eq_op)._block.expr
+
+        as_array = ops.ToArrayOp().as_expr(
+            *(
+                ops.fillna_op.as_expr(col, ex.const(False))
+                for col in eq_result.column_ids
+            )
+        )
+        reduced = ops.ArrayReduceOp(agg_ops.all_op).as_expr(as_array)
+        result_expr, result_ids = eq_result.compute_values([reduced])
+        return Index(
+            blocks.Block(
+                result_expr.select_columns(result_ids),
+                index_columns=result_ids,
+                column_labels=(),
+                index_labels=[None],
+            )
+        )

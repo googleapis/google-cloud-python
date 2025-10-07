@@ -1474,3 +1474,13 @@ def test_multi_index_contains(scalars_df_index, scalars_pandas_df_index, key):
     pd_result = key in scalars_pandas_df_index.set_index(col_name).index
 
     assert bf_result == pd_result
+
+
+def test_multiindex_eq_const(scalars_df_index, scalars_pandas_df_index):
+    col_name = ["int64_col", "bool_col"]
+    bf_result = scalars_df_index.set_index(col_name).index == (2, False)
+    pd_result = scalars_pandas_df_index.set_index(col_name).index == (2, False)
+
+    pandas.testing.assert_index_equal(
+        pandas.Index(pd_result, dtype="boolean"), bf_result.to_pandas()
+    )

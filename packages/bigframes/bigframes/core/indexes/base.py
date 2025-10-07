@@ -754,6 +754,58 @@ class Index(vendored_pandas_index.Index):
         # Docstring is in third_party/bigframes_vendored/pandas/core/indexes/base.py
         return self.to_series().peek(2).item()
 
+    def __eq__(self, other) -> Index:  # type: ignore
+        return self._apply_binop(other, ops.eq_op)
+
+    def _apply_binop(self, other, op: ops.BinaryOp) -> Index:
+        # TODO: Handle local objects, or objects not implicitly alignable? Gets ambiguous with partial ordering though
+        if isinstance(other, (bigframes.series.Series, Index)):
+            other = Index(other)
+            if other.nlevels != self.nlevels:
+                raise ValueError("Dimensions do not match")
+
+            lexpr = self._block.expr
+            rexpr = other._block.expr
+            join_result = lexpr.try_row_join(rexpr)
+            if join_result is None:
+                raise ValueError("Cannot align objects")
+
+            expr, (lmap, rmap) = join_result
+
+            expr, res_ids = expr.compute_values(
+                [
+                    op.as_expr(lmap[lid], rmap[rid])
+                    for lid, rid in zip(lexpr.column_ids, rexpr.column_ids)
+                ]
+            )
+            return Index(
+                blocks.Block(
+                    expr.select_columns(res_ids),
+                    index_columns=res_ids,
+                    column_labels=[],
+                    index_labels=[None] * len(res_ids),
+                )
+            )
+        elif (
+            isinstance(other, bigframes.dtypes.LOCAL_SCALAR_TYPES) and self.nlevels == 1
+        ):
+            block, id = self._block.project_expr(
+                op.as_expr(self._block.index_columns[0], ex.const(other))
+            )
+            return Index(block.select_column(id))
+        elif isinstance(other, tuple) and len(other) == self.nlevels:
+            block = self._block.project_exprs(
+                [
+                    op.as_expr(self._block.index_columns[i], ex.const(other[i]))
+                    for i in range(self.nlevels)
+                ],
+                labels=[None] * self.nlevels,
+                drop=True,
+            )
+            return Index(block.set_index(block.value_columns))
+        else:
+            return NotImplemented
+
 
 def _should_create_datetime_index(block: blocks.Block) -> bool:
     if len(block.index.dtypes) != 1:
