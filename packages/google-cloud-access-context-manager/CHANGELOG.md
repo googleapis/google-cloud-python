@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-access-context-manager/#history
 
+## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.2.2...google-cloud-access-context-manager-v0.2.3) (2025-10-07)
+
+
+### Bug Fixes
+
+* regenerate pb2 files with protoc v25.3 (#14569) This PR
+- adds *.proto files to `packages/google-cloud-access-context-manager`
+for consistency with what we have in `googleapis-common-protos`:
+https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/google/api
+- uses `protoc v25.3` for consistency with what we have in
+`googleapis-common-protos`:
+https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/google/api
+- Adds `*.pyi` files for consistency with what we have in
+`googleapis-common-protos`:
+https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/google/api
+Towards https://github.com/googleapis/librarian/issues/1061 ([001097bc95a964d063eca7605a0c3acdd2f59727](https://github.com/googleapis/google-cloud-python/commit/001097bc95a964d063eca7605a0c3acdd2f59727))
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.2.1...google-cloud-access-context-manager-v0.2.2) (2025-03-15)
 
 
