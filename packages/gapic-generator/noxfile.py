@@ -47,7 +47,7 @@ ALL_PYTHON = (
     "3.14",
 )
 
-NEWEST_PYTHON = ALL_PYTHON[-2]
+NEWEST_PYTHON = ALL_PYTHON[-1]
 
 
 @nox.session(python=ALL_PYTHON)

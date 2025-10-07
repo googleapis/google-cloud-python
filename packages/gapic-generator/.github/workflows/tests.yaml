@@ -17,8 +17,14 @@ env:
   SHOWCASE_VERSION: 0.35.0
   PROTOC_VERSION: 3.20.2
   OLDEST_PYTHON: 3.7
-  LATEST_STABLE_PYTHON: 3.13
-  PRE_RELEASE_PYTHON: 3.14
+  LATEST_STABLE_PYTHON: 3.14
+  # TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
+  # Switch this to Python 3.15 alpha1 pre-release
+  # https://peps.python.org/pep-0790/
+  PREVIEW_PYTHON_VERSION: 3.14
+  # TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
+  # Add Python 3.15 alpha1 pre-release
+  # https://peps.python.org/pep-0790/
   ALL_PYTHON: "['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
 
 permissions:
@@ -431,10 +437,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python ${{ env.PRE_RELEASE_PYTHON }}
+      - name: Set up Python ${{ env.PREVIEW_PYTHON_VERSION }}
         uses: actions/setup-python@v6
         with:
-          python-version: "${{ env.PRE_RELEASE_PYTHON }}"
+          python-version: "${{ env.PREVIEW_PYTHON_VERSION }}"
           cache: 'pip'
           allow-prereleases: true
       - name: Install nox.
