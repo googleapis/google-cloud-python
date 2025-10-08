@@ -42,12 +42,9 @@ class capacityplannerCallTransformer(cst.CSTTransformer):
         'export_forecasts': ('parent', 'resource_type', 'output_config', 'machine_family', 'machine_shape', 'disk_type', 'gpu_type', 'tpu_type', 'prediction_interval', 'aggregation_method', 'start_date', 'end_date', ),
         'export_reservations_usage': ('parent', 'cloud_resource_type', 'usage_aggregation_method', 'output_config', 'machine_family', 'machine_shape', 'gpu_type', 'location_level', 'share_type', 'start_date', 'end_date', ),
         'export_usage_histories': ('parent', 'resource_type', 'output_config', 'is_spot', 'machine_family', 'machine_shape', 'disk_type', 'gpu_type', 'tpu_type', 'usage_aggregation_method', 'start_date', 'end_date', ),
-        'get_capacity_plan': ('name', ),
-        'query_capacity_plan_insights': ('parent', 'capacity_plan_filters', ),
-        'query_capacity_plans': ('parent', 'page_size', 'page_token', 'location', ),
-        'query_forecasts': ('parent', 'machine_family', 'machine_shape', 'disk_type', 'confidential_mode', 'gpu_type', 'tpu_type', 'cloud_resource_type', 'forecast_type', 'prediction_interval', 'aggregation_method', ),
-        'query_reservations': ('parent', 'location_level', 'machine_family', 'machine_shape', 'gpu_type', 'cloud_resource_type', 'reservation_type', 'share_type', 'ownership_type', 'reservation_data_level', 'include_unapproved_reservations', 'aggregation_method', 'start_date', 'end_date', ),
-        'query_usage_histories': ('parent', 'location_level', 'is_spot', 'machine_family', 'machine_shape', 'disk_type', 'confidential_mode', 'gpu_type', 'tpu_type', 'cloud_resource_type', 'usage_aggregation_method', 'start_date', 'end_date', ),
+        'query_forecasts': ('parent', 'cloud_resource_type', 'machine_family', 'machine_shape', 'disk_type', 'confidential_mode', 'gpu_type', 'tpu_type', 'forecast_type', 'prediction_interval', 'aggregation_method', ),
+        'query_reservations': ('parent', 'cloud_resource_type', 'reservation_type', 'reservation_data_level', 'location_level', 'machine_family', 'machine_shape', 'gpu_type', 'share_type', 'ownership_type', 'include_unapproved_reservations', 'aggregation_method', 'start_date', 'end_date', ),
+        'query_usage_histories': ('parent', 'cloud_resource_type', 'location_level', 'is_spot', 'machine_family', 'machine_shape', 'disk_type', 'confidential_mode', 'gpu_type', 'tpu_type', 'usage_aggregation_method', 'start_date', 'end_date', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
