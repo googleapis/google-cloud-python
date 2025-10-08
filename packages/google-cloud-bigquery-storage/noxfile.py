@@ -487,7 +487,9 @@ def prerelease_deps(session, protobuf_implementation):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
     # Run tests with 3.14 once this bug is fixed
     if session.python == "3.14":
-        session.skip("3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686")
+        session.skip(
+            "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
+        )
 
     # Install all dependencies
     session.install("-e", ".")
@@ -585,7 +587,9 @@ def core_deps_from_source(session, protobuf_implementation):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
     # Run tests with 3.14 once this bug is fixed
     if session.python == "3.14":
-        session.skip("3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686")
+        session.skip(
+            "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
+        )
 
     # Install all dependencies
     session.install("-e", ".")
