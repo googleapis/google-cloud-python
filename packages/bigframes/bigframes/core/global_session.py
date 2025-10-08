@@ -14,16 +14,19 @@
 
 """Utilities for managing a default, globally available Session object."""
 
+from __future__ import annotations
+
 import threading
 import traceback
-from typing import Callable, Optional, TypeVar
+from typing import Callable, Optional, TYPE_CHECKING, TypeVar
 import warnings
 
 import google.auth.exceptions
 
-import bigframes._config
 import bigframes.exceptions as bfe
-import bigframes.session
+
+if TYPE_CHECKING:
+    import bigframes.session
 
 _global_session: Optional[bigframes.session.Session] = None
 _global_session_lock = threading.Lock()
@@ -56,6 +59,9 @@ def close_session() -> None:
     Returns:
         None
     """
+    # Avoid troubles with circular imports.
+    import bigframes._config
+
     global _global_session, _global_session_lock, _global_session_state
 
     if bigframes._config.options.is_bigquery_thread_local:
@@ -88,6 +94,10 @@ def get_global_session():
 
     Creates the global session if it does not exist.
     """
+    # Avoid troubles with circular imports.
+    import bigframes._config
+    import bigframes.session
+
     global _global_session, _global_session_lock, _global_session_state
 
     if bigframes._config.options.is_bigquery_thread_local:

@@ -2,8 +2,6 @@
 import contextlib
 import operator
 
-import bigframes
-
 
 class option_context(contextlib.ContextDecorator):
     """
@@ -35,8 +33,11 @@ class option_context(contextlib.ContextDecorator):
         self.ops = list(zip(args[::2], args[1::2]))
 
     def __enter__(self) -> None:
+        # Avoid problems with circular imports.
+        import bigframes._config
+
         self.undo = [
-            (pat, operator.attrgetter(pat)(bigframes.options))
+            (pat, operator.attrgetter(pat)(bigframes._config.options))
             for pat, _ in self.ops
             # Don't try to undo changes to bigquery options. We're starting and
             # closing a new thread-local session if those are set.
@@ -47,6 +48,10 @@ class option_context(contextlib.ContextDecorator):
             self._set_option(pat, val)
 
     def __exit__(self, *args) -> None:
+        # Avoid problems with circular imports.
+        import bigframes._config
+        import bigframes.core.global_session
+
         if self.undo:
             for pat, val in self.undo:
                 self._set_option(pat, val)
@@ -54,18 +59,21 @@ class option_context(contextlib.ContextDecorator):
         # TODO(tswast): What to do if someone nests several context managers
         # with separate "bigquery" options? We might need a "stack" of
         # sessions if we allow that.
-        if bigframes.options.is_bigquery_thread_local:
-            bigframes.close_session()
+        if bigframes._config.options.is_bigquery_thread_local:
+            bigframes.core.global_session.close_session()
 
             # Reset bigquery_options so that we're no longer thread-local.
-            bigframes.options._local.bigquery_options = None
+            bigframes._config.options._local.bigquery_options = None
 
     def _set_option(self, pat, val):
+        # Avoid problems with circular imports.
+        import bigframes._config
+
         root, attr = pat.rsplit(".", 1)
 
         # We are now using a thread-specific session.
         if root == "bigquery":
-            bigframes.options._init_bigquery_thread_local()
+            bigframes._config.options._init_bigquery_thread_local()
 
-        parent = operator.attrgetter(root)(bigframes.options)
+        parent = operator.attrgetter(root)(bigframes._config.options)
         setattr(parent, attr, val)
