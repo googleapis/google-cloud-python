@@ -77,7 +77,7 @@ UPGRADE_CODE = """def upgrade():
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["google", "test", "noxfile.py", "setup.py", "samples"]
-DEFAULT_PYTHON_VERSION = "3.8"
+DEFAULT_PYTHON_VERSION = "3.12"
 DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20 = "3.12"
 
 
@@ -124,50 +124,6 @@ def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments", "setuptools")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def compliance_test_13(session):
-    """Run SQLAlchemy dialect compliance test suite."""
-
-    # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
-    if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
-        session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
-    # Sanity check: Only run tests if the environment variable is set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
-        "SPANNER_EMULATOR_HOST", ""
-    ):
-        session.skip(
-            "Credentials or emulator host must be set via environment variable"
-        )
-
-    session.install(
-        "pytest-cov",
-    )
-
-    session.install("mock")
-    session.install(".[tracing]")
-    session.run("pip", "install", "sqlalchemy>=1.1.13,<=1.3.24", "--force-reinstall")
-    session.run("pip", "install", "opentelemetry-api<=1.10", "--force-reinstall")
-    session.run("pip", "install", "opentelemetry-sdk<=1.10", "--force-reinstall")
-    session.run("python", "create_test_database.py")
-    session.run("pip", "install", "pytest==6.2.2", "--force-reinstall")
-    session.run(
-        "pip", "install", "pytest-asyncio<0.21.0", "--force-reinstall", "--no-deps"
-    )
-
-    session.run(
-        "py.test",
-        "--cov=google.cloud.sqlalchemy_spanner",
-        "--cov=test",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        "--asyncio-mode=auto",
-        "test/test_suite_13.py",
-        *session.posargs,
-    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -333,15 +289,8 @@ def mockserver(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def migration_test(session):
-    """Test migrations with SQLAlchemy v1.3.11+ and Alembic"""
-    session.run("pip", "install", "sqlalchemy>=1.3.11,<2.0", "--force-reinstall")
-    _migration_test(session)
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def migration_test_1310(session):
-    """Test migrations with SQLAlchemy 1.3.10 or lower and Alembic"""
-    session.run("pip", "install", "sqlalchemy>=1.1.13,<=1.3.10", "--force-reinstall")
+    """Test migrations with SQLAlchemy v1.4 and Alembic"""
+    session.run("pip", "install", "sqlalchemy>=1.4,<2.0", "--force-reinstall")
     _migration_test(session)
 
 
@@ -351,11 +300,6 @@ def _migration_test(session):
     import glob
     import os
     import shutil
-
-    try:
-        import sqlalchemy
-    except:
-        session.run("pip", "install", "sqlalchemy>=1.3.11,<2.0", "--force-reinstall")
 
     session.install("pytest")
     session.install(".")

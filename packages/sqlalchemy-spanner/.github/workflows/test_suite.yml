@@ -29,7 +29,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.8
+          python-version: 3.12
       - name: Install nox
         run: python -m pip install nox
       - name: Run Unit Tests
@@ -69,30 +69,6 @@ jobs:
         run: nox -s _all_samples
         working-directory: samples
 
-  compliance_tests_13:
-    runs-on: ubuntu-latest
-
-    services:
-      emulator-0:
-        image: gcr.io/cloud-spanner-emulator/emulator
-        ports:
-          - 9010:9010
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.8
-      - name: Install nox
-        run: python -m pip install nox
-      - name: Run Compliance Tests
-        run: nox -s compliance_test_13
-        env:
-          SPANNER_EMULATOR_HOST: localhost:9010
-          GOOGLE_CLOUD_PROJECT: appdev-soda-spanner-staging
-
   compliance_tests_14:
     runs-on: ubuntu-latest
 
@@ -108,7 +84,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.8
+          python-version: 3.12
       - name: Install nox
         run: python -m pip install nox
       - name: Run Compliance Tests
@@ -181,35 +157,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.8
+          python-version: 3.12
       - name: Install nox
         run: python -m pip install nox
       - name: Run Migration Tests
         run: nox -s migration_test
-        env:
-          SPANNER_EMULATOR_HOST: localhost:9010
-          GOOGLE_CLOUD_PROJECT: appdev-soda-spanner-staging
-
-  migration1310_tests:
-    runs-on: ubuntu-latest
-
-    services:
-      emulator-0:
-        image: gcr.io/cloud-spanner-emulator/emulator:latest
-        ports:
-          - 9010:9010
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.8
-      - name: Install nox
-        run: python -m pip install nox
-      - name: Run Migration Tests
-        run: nox -s migration_test_1310
         env:
           SPANNER_EMULATOR_HOST: localhost:9010
           GOOGLE_CLOUD_PROJECT: appdev-soda-spanner-staging

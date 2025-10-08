@@ -31,7 +31,7 @@ def main(argv):
   instance = client.instance(instance_id="".join(instance_id).replace("/", ""))
   database = instance.database("".join(database_id).replace("/", ""))
 
-  database.update_ddl(["DROP TABLE account", "DROP TABLE alembic_version"]).result(120)
+  database.update_ddl(["DROP TABLE IF EXISTS account", "DROP TABLE IF EXISTS alembic_version"]).result(120)
 
 
 if __name__ == "__main__":
