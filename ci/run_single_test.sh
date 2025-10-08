@@ -61,7 +61,7 @@ case ${TEST_TYPE} in
         rm -rf docs/_build
         ;;
     prerelease)
-        nox -s prerelease_deps
+        nox -s prerelease_deps-3.14
         retval=$?
         ;;
     unit)

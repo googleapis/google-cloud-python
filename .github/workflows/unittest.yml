@@ -87,7 +87,7 @@ jobs:
     strategy:
       matrix:
         python: ["3.14"]
-        option: ["core_deps_from_source"]
+        option: ["core_deps_from_source-3.14"]
     steps:
     - name: Checkout
       uses: actions/checkout@v4
