@@ -2762,21 +2762,13 @@ class Test_Blob(unittest.TestCase):
         metadata=None,
         mtls=False,
         retry=None,
-        crc32c_checksum=None,
+        crc32c_checksum_value=None,
     ):
         from google.cloud.storage._media.requests import ResumableUpload
         from google.cloud.storage.blob import _DEFAULT_CHUNKSIZE
 
         bucket = _Bucket(name="whammy", user_project=user_project)
-        if crc32c_checksum is None:
-            blob = self._make_one("blob-name", bucket=bucket, kms_key_name=kms_key_name)
-        else:
-            blob = self._make_one(
-                "blob-name",
-                bucket=bucket,
-                kms_key_name=kms_key_name,
-                crc32c_checksum=crc32c_checksum,
-            )
+        blob = self._make_one("blob-name", bucket=bucket, kms_key_name=kms_key_name)
         if metadata:
             self.assertIsNone(blob.metadata)
             blob._properties["metadata"] = metadata
@@ -2841,6 +2833,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_match=if_metageneration_match,
                 if_metageneration_not_match=if_metageneration_not_match,
                 retry=retry,
+                crc32c_checksum_value=crc32c_checksum_value,
                 **timeout_kwarg,
             )
 
@@ -2929,8 +2922,8 @@ class Test_Blob(unittest.TestCase):
             # Check the mocks.
             blob._get_writable_metadata.assert_called_once_with()
 
-        if "crc32c" in blob._properties:
-            object_metadata["crc32c"] = blob._properties["crc32c"]
+        if crc32c_checksum_value is not None:
+            object_metadata["crc32c"] = crc32c_checksum_value
 
         payload = json.dumps(object_metadata).encode("utf-8")
 
@@ -2960,12 +2953,12 @@ class Test_Blob(unittest.TestCase):
 
     def test__initiate_resumable_upload_with_user_provided_checksum(self):
         self._initiate_resumable_helper(
-            crc32c_checksum="this-is-a-fake-checksum-for-unit-tests",
+            crc32c_checksum_value="this-is-a-fake-checksum-for-unit-tests",
         )
 
     def test__initiate_resumable_upload_w_metadata_and_user_provided_checksum(self):
         self._initiate_resumable_helper(
-            crc32c_checksum="test-checksum",
+            crc32c_checksum_value="test-checksum",
             metadata={"my-fav-key": "my-fav-value"},
         )
 
@@ -3425,6 +3418,7 @@ class Test_Blob(unittest.TestCase):
                 checksum=None,
                 retry=retry,
                 command=None,
+                crc32c_checksum_value=None,
             )
 
     def test__do_upload_uses_multipart(self):
@@ -3513,6 +3507,7 @@ class Test_Blob(unittest.TestCase):
             checksum=None,
             retry=retry,
             command=None,
+            crc32c_checksum_value=None,
         )
         return stream
 
@@ -3577,6 +3572,7 @@ class Test_Blob(unittest.TestCase):
             kwargs,
             {
                 "timeout": expected_timeout,
+                'crc32c_checksum_value': None,
                 "checksum": None,
                 "retry": retry,
                 "command": None,

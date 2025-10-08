@@ -849,7 +849,6 @@ class Bucket(_PropertyMixin):
         encryption_key=None,
         kms_key_name=None,
         generation=None,
-        crc32c_checksum=None,
     ):
         """Factory constructor for blob object.
 
@@ -895,7 +894,6 @@ class Bucket(_PropertyMixin):
             encryption_key=encryption_key,
             kms_key_name=kms_key_name,
             generation=generation,
-            crc32c_checksum=crc32c_checksum,
         )
 
     def notification(

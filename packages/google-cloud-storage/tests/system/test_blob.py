@@ -43,15 +43,12 @@ def test_large_file_write_from_stream_w_user_provided_checksum(
     shared_bucket,
     blobs_to_delete,
     file_data,
-    service_account,
 ):
-    blob = shared_bucket.blob(
-        f"LargeFile{uuid.uuid4().hex}", crc32c_checksum="20tD7w=="
-    )
+    blob = shared_bucket.blob(f"LargeFile{uuid.uuid4().hex}")
 
     info = file_data["big_9MiB"]
     with open(info["path"], "rb") as file_obj:
-        blob.upload_from_file(file_obj)
+        blob.upload_from_file(file_obj, crc32c_checksum_value="20tD7w==")
         blobs_to_delete.append(blob)
 
 
@@ -59,18 +56,29 @@ def test_large_file_write_from_stream_w_user_provided_wrong_checksum(
     shared_bucket,
     blobs_to_delete,
     file_data,
-    service_account,
 ):
-    blob = shared_bucket.blob(
-        f"LargeFile{uuid.uuid4().hex}", crc32c_checksum="A0tD7w=="
-    )
+    blob = shared_bucket.blob(f"LargeFile{uuid.uuid4().hex}")
 
     info = file_data["big_9MiB"]
     with pytest.raises(exceptions.BadRequest) as excep_info:
         with open(info["path"], "rb") as file_obj:
-            blob.upload_from_file(file_obj)
+            blob.upload_from_file(file_obj,crc32c_checksum_value="A0tD7w==")
             blobs_to_delete.append(blob)
     assert excep_info.value.code == 400
+
+def test_touch_and_write_large_file_w_user_provided_checksum(
+    shared_bucket,
+    blobs_to_delete,
+    file_data,
+):
+    blob = shared_bucket.blob(f"LargeFile{uuid.uuid4().hex}")
+    blob.upload_from_string(b"")
+    blob.reload()
+
+    info = file_data["big_9MiB"]
+    with open(info["path"], "rb") as file_obj:
+        blob.upload_from_file(file_obj, crc32c_checksum_value="20tD7w==")
+        blobs_to_delete.append(blob)
 
 
 def test_large_file_write_from_stream(
