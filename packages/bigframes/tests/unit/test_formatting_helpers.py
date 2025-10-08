@@ -19,6 +19,7 @@ import google.api_core.exceptions as api_core_exceptions
 import google.cloud.bigquery as bigquery
 import pytest
 
+import bigframes.core.events as bfevents
 import bigframes.formatting_helpers as formatting_helpers
 import bigframes.version
 
@@ -30,7 +31,7 @@ def test_wait_for_query_job_error_includes_feedback_link():
     )
 
     with pytest.raises(api_core_exceptions.BadRequest) as cap_exc:
-        formatting_helpers.wait_for_query_job(mock_query_job)
+        formatting_helpers.wait_for_job(mock_query_job)
 
     cap_exc.match("Test message 123.")
     cap_exc.match(constants.FEEDBACK_LINK)
@@ -70,3 +71,129 @@ def test_get_formatted_bytes(test_input, expected):
 )
 def test_get_formatted_time(test_input, expected):
     assert formatting_helpers.get_formatted_time(test_input) == expected
+
+
+def test_render_bqquery_sent_event_html():
+    event = bfevents.BigQuerySentEvent(
+        query="SELECT * FROM my_table",
+        job_id="my-job-id",
+        location="us-central1",
+        billing_project="my-project",
+    )
+    html = formatting_helpers.render_bqquery_sent_event_html(event)
+    assert "SELECT * FROM my_table" in html
+    assert "my-job-id" in html
+    assert "us-central1" in html
+    assert "my-project" in html
+    assert "<details>" in html
+
+
+def test_render_bqquery_sent_event_plaintext():
+    event = bfevents.BigQuerySentEvent(
+        query="SELECT * FROM my_table",
+        job_id="my-job-id",
+        location="us-central1",
+        billing_project="my-project",
+    )
+    text = formatting_helpers.render_bqquery_sent_event_plaintext(event)
+    assert "my-job-id" in text
+    assert "us-central1" in text
+    assert "my-project" in text
+    assert "SELECT * FROM my_table" not in text
+
+
+def test_render_bqquery_retry_event_html():
+    event = bfevents.BigQueryRetryEvent(
+        query="SELECT * FROM my_table",
+        job_id="my-job-id",
+        location="us-central1",
+        billing_project="my-project",
+    )
+    html = formatting_helpers.render_bqquery_retry_event_html(event)
+    assert "Retrying query" in html
+    assert "SELECT * FROM my_table" in html
+    assert "my-job-id" in html
+    assert "us-central1" in html
+    assert "my-project" in html
+    assert "<details>" in html
+
+
+def test_render_bqquery_retry_event_plaintext():
+    event = bfevents.BigQueryRetryEvent(
+        query="SELECT * FROM my_table",
+        job_id="my-job-id",
+        location="us-central1",
+        billing_project="my-project",
+    )
+    text = formatting_helpers.render_bqquery_retry_event_plaintext(event)
+    assert "Retrying query" in text
+    assert "my-job-id" in text
+    assert "us-central1" in text
+    assert "my-project" in text
+    assert "SELECT * FROM my_table" not in text
+
+
+def test_render_bqquery_received_event_html():
+    mock_plan_entry = mock.create_autospec(
+        bigquery.job.query.QueryPlanEntry, instance=True
+    )
+    mock_plan_entry.__str__.return_value = "mocked plan"
+    event = bfevents.BigQueryReceivedEvent(
+        job_id="my-job-id",
+        location="us-central1",
+        billing_project="my-project",
+        state="RUNNING",
+        query_plan=[mock_plan_entry],
+    )
+    html = formatting_helpers.render_bqquery_received_event_html(event)
+    assert "Query" in html
+    assert "my-job-id" in html
+    assert "is RUNNING" in html
+    assert "<details>" in html
+    assert "mocked plan" in html
+
+
+def test_render_bqquery_received_event_plaintext():
+    event = bfevents.BigQueryReceivedEvent(
+        job_id="my-job-id",
+        location="us-central1",
+        billing_project="my-project",
+        state="RUNNING",
+        query_plan=[],
+    )
+    text = formatting_helpers.render_bqquery_received_event_plaintext(event)
+    assert "Query" in text
+    assert "my-job-id" in text
+    assert "is RUNNING" in text
+    assert "Query Plan" not in text
+
+
+def test_render_bqquery_finished_event_html():
+    event = bfevents.BigQueryFinishedEvent(
+        job_id="my-job-id",
+        location="us-central1",
+        billing_project="my-project",
+        total_bytes_processed=1000,
+        slot_millis=2000,
+    )
+    html = formatting_helpers.render_bqquery_finished_event_html(event)
+    assert "Query" in html
+    assert "my-job-id" in html
+    assert "processed 1.0 kB" in html
+    assert "2 seconds of slot time" in html
+
+
+def test_render_bqquery_finished_event_plaintext():
+    event = bfevents.BigQueryFinishedEvent(
+        job_id="my-job-id",
+        location="us-central1",
+        billing_project="my-project",
+        total_bytes_processed=1000,
+        slot_millis=2000,
+    )
+    text = formatting_helpers.render_bqquery_finished_event_plaintext(event)
+    assert "Query" in text
+    assert "my-job-id" in text
+    assert "finished" in text
+    assert "1.0 kB processed" in text
+    assert "Slot time: 2 seconds" in text

@@ -247,7 +247,7 @@ def test_read_gbq_cached_table():
         table,
     )
 
-    session.bqclient.query_and_wait = mock.MagicMock(
+    session.bqclient._query_and_wait_bigframes = mock.MagicMock(
         return_value=({"total_count": 3, "distinct_count": 2},)
     )
     session.bqclient.get_table.return_value = table
@@ -278,7 +278,7 @@ def test_read_gbq_cached_table_doesnt_warn_for_anonymous_tables_and_doesnt_inclu
         table,
     )
 
-    session.bqclient.query_and_wait = mock.MagicMock(
+    session.bqclient._query_and_wait_bigframes = mock.MagicMock(
         return_value=({"total_count": 3, "distinct_count": 2},)
     )
     session.bqclient.get_table.return_value = table
@@ -306,7 +306,9 @@ def test_default_index_warning_raised_by_read_gbq(table):
     bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
     bqclient.project = "test-project"
     bqclient.get_table.return_value = table
-    bqclient.query_and_wait.return_value = ({"total_count": 3, "distinct_count": 2},)
+    bqclient._query_and_wait_bigframes.return_value = (
+        {"total_count": 3, "distinct_count": 2},
+    )
     session = mocks.create_bigquery_session(
         bqclient=bqclient,
         # DefaultIndexWarning is only relevant for strict mode.
@@ -333,7 +335,9 @@ def test_default_index_warning_not_raised_by_read_gbq_index_col_sequential_int64
     bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
     bqclient.project = "test-project"
     bqclient.get_table.return_value = table
-    bqclient.query_and_wait.return_value = ({"total_count": 4, "distinct_count": 3},)
+    bqclient._query_and_wait_bigframes.return_value = (
+        {"total_count": 4, "distinct_count": 3},
+    )
     session = mocks.create_bigquery_session(
         bqclient=bqclient,
         # DefaultIndexWarning is only relevant for strict mode.
@@ -382,7 +386,7 @@ def test_default_index_warning_not_raised_by_read_gbq_index_col_columns(
     bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
     bqclient.project = "test-project"
     bqclient.get_table.return_value = table
-    bqclient.query_and_wait.return_value = (
+    bqclient._query_and_wait_bigframes.return_value = (
         {"total_count": total_count, "distinct_count": distinct_count},
     )
     session = mocks.create_bigquery_session(
@@ -492,6 +496,7 @@ def test_read_gbq_external_table_no_drive_access(api_name, query_or_table):
         return session_query_mock(query, *args, **kwargs)
 
     session.bqclient.query_and_wait = query_mock
+    session.bqclient._query_and_wait_bigframes = query_mock
 
     def get_table_mock(table_ref):
         table = google.cloud.bigquery.Table(

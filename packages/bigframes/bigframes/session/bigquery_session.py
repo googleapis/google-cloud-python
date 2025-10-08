@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
 import datetime
 import logging
 import threading
@@ -23,7 +25,9 @@ import bigframes_vendored.ibis.backends.bigquery.datatypes as ibis_bq
 import google.cloud.bigquery as bigquery
 
 from bigframes.core.compile import googlesql
+import bigframes.core.events
 from bigframes.session import temporary_storage
+import bigframes.session._io.bigquery as bfbqio
 
 KEEPALIVE_QUERY_TIMEOUT_SECONDS = 5.0
 
@@ -38,12 +42,19 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
     Responsible for allocating and cleaning up temporary gbq tables used by a BigFrames session.
     """
 
-    def __init__(self, bqclient: bigquery.Client, location: str):
+    def __init__(
+        self,
+        bqclient: bigquery.Client,
+        location: str,
+        *,
+        publisher: bigframes.core.events.Publisher,
+    ):
         self.bqclient = bqclient
         self._location = location
         self._session_id: Optional[str] = None
         self._sessiondaemon: Optional[RecurringTaskDaemon] = None
         self._session_lock = threading.RLock()
+        self._publisher = publisher
 
     @property
     def location(self):
@@ -84,21 +95,38 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
 
             ddl = f"CREATE TEMP TABLE `_SESSION`.{googlesql.identifier(table_ref.table_id)} ({fields_string}){cluster_string}"
 
-            job = self.bqclient.query(
-                ddl, job_config=job_config, location=self.location
+            _, job = bfbqio.start_query_with_client(
+                self.bqclient,
+                ddl,
+                job_config=job_config,
+                location=self.location,
+                project=None,
+                timeout=None,
+                metrics=None,
+                query_with_job=True,
+                publisher=self._publisher,
             )
             job.result()
             # return the fully qualified table, so it can be used outside of the session
-            return job.destination
+            destination = job.destination
+            assert destination is not None, "Failure to create temp table."
+            return destination
 
     def close(self):
         if self._sessiondaemon is not None:
             self._sessiondaemon.stop()
 
         if self._session_id is not None and self.bqclient is not None:
-            self.bqclient.query_and_wait(
+            bfbqio.start_query_with_client(
+                self.bqclient,
                 f"CALL BQ.ABORT_SESSION('{self._session_id}')",
+                job_config=bigquery.QueryJobConfig(),
                 location=self.location,
+                project=None,
+                timeout=None,
+                metrics=None,
+                query_with_job=False,
+                publisher=self._publisher,
             )
 
     def _get_session_id(self) -> str:
@@ -109,8 +137,16 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
                 job_config = bigquery.QueryJobConfig(create_session=True)
                 # Make sure the session is a new one, not one associated with another query.
                 job_config.use_query_cache = False
-                query_job = self.bqclient.query(
-                    "SELECT 1", job_config=job_config, location=self.location
+                _, query_job = bfbqio.start_query_with_client(
+                    self.bqclient,
+                    "SELECT 1",
+                    job_config=job_config,
+                    location=self.location,
+                    project=None,
+                    timeout=None,
+                    metrics=None,
+                    query_with_job=True,
+                    publisher=self._publisher,
                 )
                 query_job.result()  # blocks until finished
                 assert query_job.session_info is not None
@@ -133,11 +169,16 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
                 ]
             )
             try:
-                self.bqclient.query_and_wait(
+                bfbqio.start_query_with_client(
+                    self.bqclient,
                     "SELECT 1",
-                    location=self.location,
                     job_config=job_config,
-                    wait_timeout=KEEPALIVE_QUERY_TIMEOUT_SECONDS,
+                    location=self.location,
+                    project=None,
+                    timeout=KEEPALIVE_QUERY_TIMEOUT_SECONDS,
+                    metrics=None,
+                    query_with_job=False,
+                    publisher=self._publisher,
                 )
             except Exception as e:
                 logging.warning("BigQuery session keep-alive query errored : %s", e)

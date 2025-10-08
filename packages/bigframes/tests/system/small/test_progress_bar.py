@@ -23,7 +23,7 @@ import bigframes as bf
 import bigframes.formatting_helpers as formatting_helpers
 from bigframes.session import MAX_INLINE_DF_BYTES
 
-job_load_message_regex = r"\w+ job [\w-]+ is \w+\."
+job_load_message_regex = r"Query"
 EXPECTED_DRY_RUN_MESSAGE = "Computation deferred. Computation will process"
 
 
@@ -56,7 +56,7 @@ def test_progress_bar_scalar(penguins_df_default_index: bf.dataframe.DataFrame, 
     with bf.option_context("display.progress_bar", "terminal"):
         penguins_df_default_index["body_mass_g"].head(10).mean()
 
-    assert capsys.readouterr().out == ""
+    assert_loading_msg_exist(capsys.readouterr().out)
 
 
 def test_progress_bar_scalar_allow_large_results(
@@ -100,37 +100,19 @@ def test_progress_bar_load_jobs(
         capsys.readouterr()  # clear output
         session.read_csv(path)
 
-    assert_loading_msg_exist(capsys.readouterr().out)
+    assert_loading_msg_exist(capsys.readouterr().out, pattern="Load")
 
 
-def assert_loading_msg_exist(capystOut: str, pattern=job_load_message_regex):
-    numLoadingMsg = 0
-    lines = capystOut.split("\n")
+def assert_loading_msg_exist(capstdout: str, pattern=job_load_message_regex):
+    num_loading_msg = 0
+    lines = capstdout.split("\n")
     lines = [line for line in lines if len(line) > 0]
 
     assert len(lines) > 0
     for line in lines:
-        if re.match(pattern, line) is not None:
-            numLoadingMsg += 1
-    assert numLoadingMsg > 0
-
-
-def test_query_job_repr_html(penguins_df_default_index: bf.dataframe.DataFrame):
-    with bf.option_context("display.progress_bar", "terminal"):
-        penguins_df_default_index.to_pandas(allow_large_results=True)
-        query_job_repr = formatting_helpers.repr_query_job_html(
-            penguins_df_default_index.query_job
-        ).value
-
-    string_checks = [
-        "Job Id",
-        "Destination Table",
-        "Slot Time",
-        "Bytes Processed",
-        "Cache hit",
-    ]
-    for string in string_checks:
-        assert string in query_job_repr
+        if re.search(pattern, line) is not None:
+            num_loading_msg += 1
+    assert num_loading_msg > 0
 
 
 def test_query_job_repr(penguins_df_default_index: bf.dataframe.DataFrame):

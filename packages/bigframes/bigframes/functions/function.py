@@ -219,7 +219,13 @@ class BigqueryCallableRoutine:
 
         args_string = ", ".join(map(bf_sql.simple_literal, args))
         sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"
-        iter, job = bf_io_bigquery.start_query_with_client(self._session.bqclient, sql=sql, query_with_job=True, job_config=bigquery.QueryJobConfig())  # type: ignore
+        iter, job = bf_io_bigquery.start_query_with_client(
+            self._session.bqclient,
+            sql=sql,
+            query_with_job=True,
+            job_config=bigquery.QueryJobConfig(),
+            publisher=self._session._publisher,
+        )  # type: ignore
         return list(iter.to_arrow().to_pydict().values())[0][0]
 
     @property
@@ -297,7 +303,13 @@ class BigqueryCallableRowRoutine:
 
         args_string = ", ".join(map(bf_sql.simple_literal, args))
         sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"
-        iter, job = bf_io_bigquery.start_query_with_client(self._session.bqclient, sql=sql, query_with_job=True, job_config=bigquery.QueryJobConfig())  # type: ignore
+        iter, job = bf_io_bigquery.start_query_with_client(
+            self._session.bqclient,
+            sql=sql,
+            query_with_job=True,
+            job_config=bigquery.QueryJobConfig(),
+            publisher=self._session._publisher,
+        )  # type: ignore
         return list(iter.to_arrow().to_pydict().values())[0][0]
 
     @property

@@ -6,7 +6,7 @@ geopandas==0.12.2
 google-auth==2.15.0
 google-cloud-bigtable==2.24.0
 google-cloud-pubsub==2.21.4
-google-cloud-bigquery==3.31.0
+google-cloud-bigquery==3.36.0
 google-cloud-functions==1.12.0
 google-cloud-bigquery-connection==1.12.0
 google-cloud-iam==2.12.1

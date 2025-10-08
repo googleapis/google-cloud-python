@@ -291,6 +291,7 @@ def clean_up_by_session_id(
             session.bqclient,
             location=location,
             project=project,
+            publisher=session._publisher,
         )
 
     bigframes.session._io.bigquery.delete_tables_matching_session_id(

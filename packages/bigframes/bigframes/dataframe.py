@@ -4670,24 +4670,24 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> str | None:
         return self.to_pandas(allow_large_results=allow_large_results).to_string(
             buf,
-            columns,  # type: ignore
-            col_space,
-            header,  # type: ignore
-            index,
-            na_rep,
-            formatters,
-            float_format,
-            sparsify,
-            index_names,
-            justify,
-            max_rows,
-            max_cols,
-            show_dimensions,
-            decimal,
-            line_width,
-            min_rows,
-            max_colwidth,
-            encoding,
+            columns=columns,  # type: ignore
+            col_space=col_space,
+            header=header,  # type: ignore
+            index=index,
+            na_rep=na_rep,
+            formatters=formatters,
+            float_format=float_format,
+            sparsify=sparsify,
+            index_names=index_names,
+            justify=justify,
+            max_rows=max_rows,
+            max_cols=max_cols,
+            show_dimensions=show_dimensions,
+            decimal=decimal,
+            line_width=line_width,
+            min_rows=min_rows,
+            max_colwidth=max_colwidth,
+            encoding=encoding,
         )
 
     def to_html(
@@ -4720,28 +4720,28 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> str:
         return self.to_pandas(allow_large_results=allow_large_results).to_html(
             buf,
-            columns,  # type: ignore
-            col_space,
-            header,
-            index,
-            na_rep,
-            formatters,
-            float_format,
-            sparsify,
-            index_names,
-            justify,  # type: ignore
-            max_rows,
-            max_cols,
-            show_dimensions,
-            decimal,
-            bold_rows,
-            classes,
-            escape,
-            notebook,
-            border,
-            table_id,
-            render_links,
-            encoding,
+            columns=columns,  # type: ignore
+            col_space=col_space,
+            header=header,
+            index=index,
+            na_rep=na_rep,
+            formatters=formatters,
+            float_format=float_format,
+            sparsify=sparsify,
+            index_names=index_names,
+            justify=justify,  # type: ignore
+            max_rows=max_rows,
+            max_cols=max_cols,
+            show_dimensions=show_dimensions,
+            decimal=decimal,
+            bold_rows=bold_rows,
+            classes=classes,
+            escape=escape,
+            notebook=notebook,
+            border=border,
+            table_id=table_id,
+            render_links=render_links,
+            encoding=encoding,
         )
 
     def to_markdown(
@@ -4753,7 +4753,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> str | None:
-        return self.to_pandas(allow_large_results=allow_large_results).to_markdown(buf, mode, index, **kwargs)  # type: ignore
+        return self.to_pandas(allow_large_results=allow_large_results).to_markdown(buf, mode=mode, index=index, **kwargs)  # type: ignore
 
     def to_pickle(self, path, *, allow_large_results=None, **kwargs) -> None:
         return self.to_pandas(allow_large_results=allow_large_results).to_pickle(

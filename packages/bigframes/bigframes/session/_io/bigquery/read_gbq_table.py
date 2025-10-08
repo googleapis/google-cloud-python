@@ -26,8 +26,9 @@ import warnings
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
+import google.cloud.bigquery.table
 
-import bigframes.core.sql
+import bigframes.core.events
 import bigframes.exceptions as bfe
 import bigframes.session._io.bigquery
 
@@ -43,6 +44,7 @@ def get_table_metadata(
     *,
     cache: Dict[bigquery.TableReference, Tuple[datetime.datetime, bigquery.Table]],
     use_cache: bool = True,
+    publisher: bigframes.core.events.Publisher,
 ) -> Tuple[datetime.datetime, google.cloud.bigquery.table.Table]:
     """Get the table metadata, either from cache or via REST API."""
 
@@ -59,6 +61,7 @@ def get_table_metadata(
             # Don't warn, because that will already have been taken care of.
             should_warn=False,
             should_dry_run=False,
+            publisher=publisher,
         ):
             # This warning should only happen if the cached snapshot_time will
             # have any effect on bigframes (b/437090788). For example, with
@@ -101,13 +104,14 @@ def get_table_metadata(
 
 def is_time_travel_eligible(
     bqclient: bigquery.Client,
-    table: bigquery.table.Table,
+    table: google.cloud.bigquery.table.Table,
     columns: Optional[Sequence[str]],
     snapshot_time: datetime.datetime,
     filter_str: Optional[str] = None,
     *,
     should_warn: bool,
     should_dry_run: bool,
+    publisher: bigframes.core.events.Publisher,
 ):
     """Check if a table is eligible to use time-travel.
 
@@ -184,6 +188,7 @@ def is_time_travel_eligible(
                 timeout=None,
                 metrics=None,
                 query_with_job=False,
+                publisher=publisher,
             )
             return True
 
@@ -210,10 +215,8 @@ def is_time_travel_eligible(
 
 
 def infer_unique_columns(
-    bqclient: bigquery.Client,
-    table: bigquery.table.Table,
+    table: google.cloud.bigquery.table.Table,
     index_cols: List[str],
-    metadata_only: bool = False,
 ) -> Tuple[str, ...]:
     """Return a set of columns that can provide a unique row key or empty if none can be inferred.
 
@@ -227,14 +230,37 @@ def infer_unique_columns(
         # Essentially, just reordering the primary key to match the index col order
         return tuple(index_col for index_col in index_cols if index_col in primary_keys)
 
-    if primary_keys or metadata_only or (not index_cols):
-        # Sometimes not worth scanning data to check uniqueness
+    if primary_keys:
         return primary_keys
+
+    return ()
+
+
+def check_if_index_columns_are_unique(
+    bqclient: bigquery.Client,
+    table: google.cloud.bigquery.table.Table,
+    index_cols: List[str],
+    *,
+    publisher: bigframes.core.events.Publisher,
+) -> Tuple[str, ...]:
+    import bigframes.core.sql
+    import bigframes.session._io.bigquery
+
     # TODO(b/337925142): Avoid a "SELECT *" subquery here by ensuring
     # table_expression only selects just index_cols.
     is_unique_sql = bigframes.core.sql.is_distinct_sql(index_cols, table.reference)
     job_config = bigquery.QueryJobConfig()
-    results = bqclient.query_and_wait(is_unique_sql, job_config=job_config)
+    results, _ = bigframes.session._io.bigquery.start_query_with_client(
+        bq_client=bqclient,
+        sql=is_unique_sql,
+        job_config=job_config,
+        timeout=None,
+        location=None,
+        project=None,
+        metrics=None,
+        query_with_job=False,
+        publisher=publisher,
+    )
     row = next(iter(results))
 
     if row["total_count"] == row["distinct_count"]:
@@ -243,7 +269,7 @@ def infer_unique_columns(
 
 
 def _get_primary_keys(
-    table: bigquery.table.Table,
+    table: google.cloud.bigquery.table.Table,
 ) -> List[str]:
     """Get primary keys from table if they are set."""
 
@@ -261,7 +287,7 @@ def _get_primary_keys(
 
 
 def _is_table_clustered_or_partitioned(
-    table: bigquery.table.Table,
+    table: google.cloud.bigquery.table.Table,
 ) -> bool:
     """Returns True if the table is clustered or partitioned."""
 
@@ -284,7 +310,7 @@ def _is_table_clustered_or_partitioned(
 
 
 def get_index_cols(
-    table: bigquery.table.Table,
+    table: google.cloud.bigquery.table.Table,
     index_col: Iterable[str]
     | str
     | Iterable[int]

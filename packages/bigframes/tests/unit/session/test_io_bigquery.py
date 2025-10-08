@@ -22,6 +22,7 @@ import pytest
 
 import bigframes
 from bigframes.core import log_adapter
+import bigframes.core.events
 import bigframes.pandas as bpd
 import bigframes.session._io.bigquery as io_bq
 from bigframes.testing import mocks
@@ -236,6 +237,7 @@ def test_start_query_with_client_labels_length_limit_met(
         timeout=timeout,
         metrics=None,
         query_with_job=True,
+        publisher=bigframes.core.events.Publisher(),
     )
 
     assert job_config.labels is not None

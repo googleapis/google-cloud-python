@@ -17,10 +17,10 @@ import time
 
 import google
 import google.api_core.exceptions
-import google.cloud
 from google.cloud import bigquery
 import pytest
 
+import bigframes.core.events
 from bigframes.session import bigquery_session
 
 TEST_SCHEMA = [
@@ -39,12 +39,14 @@ TEST_SCHEMA = [
 def session_resource_manager(
     bigquery_client,
 ) -> bigquery_session.SessionResourceManager:
-    return bigquery_session.SessionResourceManager(bigquery_client, "US")
+    return bigquery_session.SessionResourceManager(
+        bigquery_client, "US", publisher=bigframes.core.events.Publisher()
+    )
 
 
 def test_bq_session_create_temp_table_clustered(bigquery_client: bigquery.Client):
     session_resource_manager = bigquery_session.SessionResourceManager(
-        bigquery_client, "US"
+        bigquery_client, "US", publisher=bigframes.core.events.Publisher()
     )
     cluster_cols = ["string field", "bool field"]
 
@@ -68,7 +70,7 @@ def test_bq_session_create_temp_table_clustered(bigquery_client: bigquery.Client
 
 def test_bq_session_create_multi_temp_tables(bigquery_client: bigquery.Client):
     session_resource_manager = bigquery_session.SessionResourceManager(
-        bigquery_client, "US"
+        bigquery_client, "US", publisher=bigframes.core.events.Publisher()
     )
 
     def create_table():

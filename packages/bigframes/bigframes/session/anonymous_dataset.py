@@ -20,6 +20,7 @@ import uuid
 import google.cloud.bigquery as bigquery
 
 from bigframes import constants
+import bigframes.core.events
 from bigframes.session import temporary_storage
 import bigframes.session._io.bigquery as bf_io_bigquery
 
@@ -37,10 +38,12 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
         location: str,
         session_id: str,
         *,
-        kms_key: Optional[str] = None
+        kms_key: Optional[str] = None,
+        publisher: bigframes.core.events.Publisher,
     ):
         self.bqclient = bqclient
         self._location = location
+        self._publisher = publisher
 
         self.session_id = session_id
         self._table_ids: List[bigquery.TableReference] = []
@@ -62,6 +65,7 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
                 self._datset_ref = bf_io_bigquery.create_bq_dataset_reference(
                     self.bqclient,
                     location=self._location,
+                    publisher=self._publisher,
                 )
         return self._datset_ref
 

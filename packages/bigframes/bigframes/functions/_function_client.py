@@ -145,6 +145,7 @@ class FunctionClient:
             timeout=None,
             metrics=None,
             query_with_job=True,
+            publisher=self._session._publisher,
         )
         logger.info(f"Created bigframes function {query_job.ddl_target_routine}")
 

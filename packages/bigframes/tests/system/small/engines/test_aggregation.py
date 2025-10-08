@@ -15,7 +15,14 @@
 from google.cloud import bigquery
 import pytest
 
-from bigframes.core import agg_expressions, array_value, expression, identifiers, nodes
+from bigframes.core import (
+    agg_expressions,
+    array_value,
+    events,
+    expression,
+    identifiers,
+    nodes,
+)
 import bigframes.operations.aggregations as agg_ops
 from bigframes.session import direct_gbq_execution, polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
@@ -112,9 +119,12 @@ def test_sql_engines_median_op_aggregates(
         scalars_array_value,
         agg_ops.MedianOp(),
     ).node
-    left_engine = direct_gbq_execution.DirectGbqExecutor(bigquery_client)
+    publisher = events.Publisher()
+    left_engine = direct_gbq_execution.DirectGbqExecutor(
+        bigquery_client, publisher=publisher
+    )
     right_engine = direct_gbq_execution.DirectGbqExecutor(
-        bigquery_client, compiler="sqlglot"
+        bigquery_client, compiler="sqlglot", publisher=publisher
     )
     assert_equivalence_execution(node, left_engine, right_engine)
 

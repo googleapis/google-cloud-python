@@ -18,6 +18,7 @@ import pytest
 from bigframes.core import (
     agg_expressions,
     array_value,
+    events,
     expression,
     identifiers,
     nodes,
@@ -64,8 +65,11 @@ def test_engines_with_rows_window(
         skip_reproject_unsafe=False,
     )
 
-    bq_executor = direct_gbq_execution.DirectGbqExecutor(bigquery_client)
+    publisher = events.Publisher()
+    bq_executor = direct_gbq_execution.DirectGbqExecutor(
+        bigquery_client, publisher=publisher
+    )
     bq_sqlgot_executor = direct_gbq_execution.DirectGbqExecutor(
-        bigquery_client, compiler="sqlglot"
+        bigquery_client, compiler="sqlglot", publisher=publisher
     )
     assert_equivalence_execution(window_node, bq_executor, bq_sqlgot_executor)

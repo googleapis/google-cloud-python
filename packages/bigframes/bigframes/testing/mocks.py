@@ -143,6 +143,7 @@ def create_bigquery_session(
 
     bqclient.query.side_effect = query_mock
     bqclient.query_and_wait.side_effect = query_and_wait_mock
+    bqclient._query_and_wait_bigframes.side_effect = query_and_wait_mock
 
     clients_provider = mock.create_autospec(bigframes.session.clients.ClientsProvider)
     type(clients_provider).bqclient = mock.PropertyMock(return_value=bqclient)

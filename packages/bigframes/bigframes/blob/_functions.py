@@ -99,6 +99,7 @@ AS r\"\"\"
             project=None,
             timeout=None,
             query_with_job=True,
+            publisher=self._session._publisher,
         )
 
         return udf_name

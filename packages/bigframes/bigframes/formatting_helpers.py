@@ -13,11 +13,13 @@
 # limitations under the License.
 
 """Shared helper functions for formatting jobs related info."""
-# TODO(orrbradford): cleanup up typings and documenttion in this file
+
+from __future__ import annotations
 
 import datetime
+import html
 import random
-from typing import Any, Optional, Type, Union
+from typing import Any, Optional, Type, TYPE_CHECKING, Union
 
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions as api_core_exceptions
@@ -25,7 +27,9 @@ import google.cloud.bigquery as bigquery
 import humanize
 import IPython
 import IPython.display as display
-import ipywidgets as widgets
+
+if TYPE_CHECKING:
+    import bigframes.core.events
 
 GenericJob = Union[
     bigquery.LoadJob, bigquery.ExtractJob, bigquery.QueryJob, bigquery.CopyJob
@@ -58,39 +62,6 @@ def create_exception_with_feedback_link(
     return exception(constants.FEEDBACK_LINK)
 
 
-def repr_query_job_html(query_job: Optional[bigquery.QueryJob]):
-    """Return query job in html format.
-    Args:
-        query_job (bigquery.QueryJob, Optional):
-            The job representing the execution of the query on the server.
-    Returns:
-        Pywidget html table.
-    """
-    if query_job is None:
-        return display.HTML("No job information available")
-    if query_job.dry_run:
-        return display.HTML(
-            f"Computation deferred. Computation will process {get_formatted_bytes(query_job.total_bytes_processed)}"
-        )
-    table_html = "<style> td {text-align: left;}</style>"
-    table_html += "<table>"
-    for key, value in query_job_prop_pairs.items():
-        job_val = getattr(query_job, value)
-        if job_val is not None:
-            if key == "Job Id":  # add link to job
-                table_html += f"""<tr><td>{key}</td><td><a target="_blank" href="{get_job_url(query_job)}">{job_val}</a></td></tr>"""
-            elif key == "Slot Time":
-                table_html += (
-                    f"""<tr><td>{key}</td><td>{get_formatted_time(job_val)}</td></tr>"""
-                )
-            elif key == "Bytes Processed":
-                table_html += f"""<tr><td>{key}</td><td>{get_formatted_bytes(job_val)}</td></tr>"""
-            else:
-                table_html += f"""<tr><td>{key}</td><td>{job_val}</td></tr>"""
-    table_html += "</table>"
-    return widgets.HTML(table_html)
-
-
 def repr_query_job(query_job: Optional[bigquery.QueryJob]):
     """Return query job as a formatted string.
     Args:
@@ -109,7 +80,11 @@ def repr_query_job(query_job: Optional[bigquery.QueryJob]):
         if job_val is not None:
             res += "\n"
             if key == "Job Id":  # add link to job
-                res += f"""Job url: {get_job_url(query_job)}"""
+                res += f"""Job url: {get_job_url(
+                    project_id=query_job.project,
+                    location=query_job.location,
+                    job_id=query_job.job_id,
+                )}"""
             elif key == "Slot Time":
                 res += f"""{key}: {get_formatted_time(job_val)}"""
             elif key == "Bytes Processed":
@@ -119,71 +94,90 @@ def repr_query_job(query_job: Optional[bigquery.QueryJob]):
     return res
 
 
-def wait_for_query_job(
-    query_job: bigquery.QueryJob,
-    max_results: Optional[int] = None,
-    page_size: Optional[int] = None,
-    progress_bar: Optional[str] = None,
-) -> bigquery.table.RowIterator:
-    """Return query results. Displays a progress bar while the query is running
-    Args:
-        query_job (bigquery.QueryJob, Optional):
-            The job representing the execution of the query on the server.
-        max_results (int, Optional):
-            The maximum number of rows the row iterator should return.
-        page_size (int, Optional):
-            The number of results to return on each results page.
-        progress_bar (str, Optional):
-            Which progress bar to show.
-    Returns:
-        A row iterator over the query results.
-    """
+current_display: Optional[display.HTML] = None
+current_display_id: Optional[str] = None
+previous_display_html: str = ""
+
+
+def progress_callback(
+    event: bigframes.core.events.Event,
+):
+    """Displays a progress bar while the query is running"""
+    global current_display, current_display_id, previous_display_html
+
+    import bigframes._config
+    import bigframes.core.events
+
+    progress_bar = bigframes._config.options.display.progress_bar
+
     if progress_bar == "auto":
         progress_bar = "notebook" if in_ipython() else "terminal"
 
-    try:
-        if progress_bar == "notebook":
-            display_id = str(random.random())
-            loading_bar = display.HTML(get_query_job_loading_html(query_job))
-            display.display(loading_bar, display_id=display_id)
-            query_result = query_job.result(
-                max_results=max_results, page_size=page_size
+    if progress_bar == "notebook":
+        if (
+            isinstance(event, bigframes.core.events.ExecutionStarted)
+            or current_display is None
+            or current_display_id is None
+        ):
+            previous_display_html = ""
+            current_display_id = str(random.random())
+            current_display = display.HTML("Starting.")
+            display.display(
+                current_display,
+                display_id=current_display_id,
             )
-            query_job.reload()
+
+        if isinstance(event, bigframes.core.events.BigQuerySentEvent):
+            previous_display_html = render_bqquery_sent_event_html(event)
             display.update_display(
-                display.HTML(get_query_job_loading_html(query_job)),
-                display_id=display_id,
+                display.HTML(previous_display_html),
+                display_id=current_display_id,
             )
-        elif progress_bar == "terminal":
-            initial_loading_bar = get_query_job_loading_string(query_job)
-            print(initial_loading_bar)
-            query_result = query_job.result(
-                max_results=max_results, page_size=page_size
+        elif isinstance(event, bigframes.core.events.BigQueryRetryEvent):
+            previous_display_html = render_bqquery_retry_event_html(event)
+            display.update_display(
+                display.HTML(previous_display_html),
+                display_id=current_display_id,
             )
-            query_job.reload()
-            if initial_loading_bar != get_query_job_loading_string(query_job):
-                print(get_query_job_loading_string(query_job))
-        else:
-            # No progress bar.
-            query_result = query_job.result(
-                max_results=max_results, page_size=page_size
+        elif isinstance(event, bigframes.core.events.BigQueryReceivedEvent):
+            previous_display_html = render_bqquery_received_event_html(event)
+            display.update_display(
+                display.HTML(previous_display_html),
+                display_id=current_display_id,
             )
-            query_job.reload()
-        return query_result
-    except api_core_exceptions.RetryError as exc:
-        add_feedback_link(exc)
-        raise
-    except api_core_exceptions.GoogleAPICallError as exc:
-        add_feedback_link(exc)
-        raise
-    except KeyboardInterrupt:
-        query_job.cancel()
-        print(
-            f"Requested cancellation for {query_job.job_type.capitalize()}"
-            f" job {query_job.job_id} in location {query_job.location}..."
-        )
-        # begin the cancel request before immediately rethrowing
-        raise
+        elif isinstance(event, bigframes.core.events.BigQueryFinishedEvent):
+            previous_display_html = render_bqquery_finished_event_html(event)
+            display.update_display(
+                display.HTML(previous_display_html),
+                display_id=current_display_id,
+            )
+        elif isinstance(event, bigframes.core.events.ExecutionFinished):
+            display.update_display(
+                display.HTML(f"✅ Completed. {previous_display_html}"),
+                display_id=current_display_id,
+            )
+        elif isinstance(event, bigframes.core.events.SessionClosed):
+            display.update_display(
+                display.HTML(f"Session {event.session_id} closed."),
+                display_id=current_display_id,
+            )
+    elif progress_bar == "terminal":
+        if isinstance(event, bigframes.core.events.ExecutionStarted):
+            print("Starting execution.")
+        elif isinstance(event, bigframes.core.events.BigQuerySentEvent):
+            message = render_bqquery_sent_event_plaintext(event)
+            print(message)
+        elif isinstance(event, bigframes.core.events.BigQueryRetryEvent):
+            message = render_bqquery_retry_event_plaintext(event)
+            print(message)
+        elif isinstance(event, bigframes.core.events.BigQueryReceivedEvent):
+            message = render_bqquery_received_event_plaintext(event)
+            print(message)
+        elif isinstance(event, bigframes.core.events.BigQueryFinishedEvent):
+            message = render_bqquery_finished_event_plaintext(event)
+            print(message)
+        elif isinstance(event, bigframes.core.events.ExecutionFinished):
+            print("Execution done.")
 
 
 def wait_for_job(job: GenericJob, progress_bar: Optional[str] = None):
@@ -234,24 +228,74 @@ def wait_for_job(job: GenericJob, progress_bar: Optional[str] = None):
         raise
 
 
-def get_job_url(query_job: GenericJob):
+def render_query_references(
+    *,
+    project_id: Optional[str],
+    location: Optional[str],
+    job_id: Optional[str],
+    request_id: Optional[str],
+) -> str:
+    query_id = ""
+    if request_id and not job_id:
+        query_id = f" with request ID {project_id}:{location}.{request_id}"
+    return query_id
+
+
+def render_job_link_html(
+    *,
+    project_id: Optional[str],
+    location: Optional[str],
+    job_id: Optional[str],
+) -> str:
+    job_url = get_job_url(
+        project_id=project_id,
+        location=location,
+        job_id=job_id,
+    )
+    if job_url:
+        job_link = f' [<a target="_blank" href="{job_url}">Job {project_id}:{location}.{job_id} details</a>]'
+    else:
+        job_link = ""
+    return job_link
+
+
+def render_job_link_plaintext(
+    *,
+    project_id: Optional[str],
+    location: Optional[str],
+    job_id: Optional[str],
+) -> str:
+    job_url = get_job_url(
+        project_id=project_id,
+        location=location,
+        job_id=job_id,
+    )
+    if job_url:
+        job_link = f" Job {project_id}:{location}.{job_id} details: {job_url}"
+    else:
+        job_link = ""
+    return job_link
+
+
+def get_job_url(
+    *,
+    project_id: Optional[str],
+    location: Optional[str],
+    job_id: Optional[str],
+):
     """Return url to the query job in cloud console.
-    Args:
-        query_job (GenericJob):
-            The job representing the execution of the query on the server.
+
     Returns:
         String url.
     """
-    if (
-        query_job.project is None
-        or query_job.location is None
-        or query_job.job_id is None
-    ):
+    if project_id is None or location is None or job_id is None:
         return None
-    return f"""https://console.cloud.google.com/bigquery?project={query_job.project}&j=bq:{query_job.location}:{query_job.job_id}&page=queryresults"""
+    return f"""https://console.cloud.google.com/bigquery?project={project_id}&j=bq:{location}:{job_id}&page=queryresults"""
 
 
-def get_query_job_loading_html(query_job: bigquery.QueryJob):
+def render_bqquery_sent_event_html(
+    event: bigframes.core.events.BigQuerySentEvent,
+) -> str:
     """Return progress bar html string
     Args:
         query_job (bigquery.QueryJob):
@@ -259,18 +303,195 @@ def get_query_job_loading_html(query_job: bigquery.QueryJob):
     Returns:
         Html string.
     """
-    return f"""Query job {query_job.job_id} is {query_job.state}. {get_bytes_processed_string(query_job.total_bytes_processed)}<a target="_blank" href="{get_job_url(query_job)}">Open Job</a>"""
+
+    job_link = render_job_link_html(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+    )
+    query_id = render_query_references(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+        request_id=event.request_id,
+    )
+    query_text_details = f"<details><summary>SQL</summary><pre>{html.escape(event.query)}</pre></details>"
+
+    return f"""
+    Query started{query_id}.{job_link}{query_text_details}
+    """
 
 
-def get_query_job_loading_string(query_job: bigquery.QueryJob):
-    """Return progress bar string
+def render_bqquery_sent_event_plaintext(
+    event: bigframes.core.events.BigQuerySentEvent,
+) -> str:
+    """Return progress bar html string
     Args:
         query_job (bigquery.QueryJob):
             The job representing the execution of the query on the server.
     Returns:
-        String
+        Html string.
     """
-    return f"""Query job {query_job.job_id} is {query_job.state}.{get_bytes_processed_string(query_job.total_bytes_processed)} \n{get_job_url(query_job)}"""
+
+    job_link = render_job_link_plaintext(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+    )
+    query_id = render_query_references(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+        request_id=event.request_id,
+    )
+
+    return f"Query started{query_id}.{job_link}"
+
+
+def render_bqquery_retry_event_html(
+    event: bigframes.core.events.BigQueryRetryEvent,
+) -> str:
+    """Return progress bar html string for retry event."""
+
+    job_link = render_job_link_html(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+    )
+    query_id = render_query_references(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+        request_id=event.request_id,
+    )
+    query_text_details = f"<details><summary>SQL</summary><pre>{html.escape(event.query)}</pre></details>"
+
+    return f"""
+    Retrying query{query_id}.{job_link}{query_text_details}
+    """
+
+
+def render_bqquery_retry_event_plaintext(
+    event: bigframes.core.events.BigQueryRetryEvent,
+) -> str:
+    """Return progress bar plaintext string for retry event."""
+
+    job_link = render_job_link_plaintext(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+    )
+    query_id = render_query_references(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+        request_id=event.request_id,
+    )
+    return f"Retrying query{query_id}.{job_link}"
+
+
+def render_bqquery_received_event_html(
+    event: bigframes.core.events.BigQueryReceivedEvent,
+) -> str:
+    """Return progress bar html string for received event."""
+
+    job_link = render_job_link_html(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+    )
+    query_id = render_query_references(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+        request_id=None,
+    )
+
+    query_plan_details = ""
+    if event.query_plan:
+        plan_str = "\n".join([str(entry) for entry in event.query_plan])
+        query_plan_details = f"<details><summary>Query Plan</summary><pre>{html.escape(plan_str)}</pre></details>"
+
+    return f"""
+    Query{query_id} is {event.state}.{job_link}{query_plan_details}
+    """
+
+
+def render_bqquery_received_event_plaintext(
+    event: bigframes.core.events.BigQueryReceivedEvent,
+) -> str:
+    """Return progress bar plaintext string for received event."""
+
+    job_link = render_job_link_plaintext(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+    )
+    query_id = render_query_references(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+        request_id=None,
+    )
+    return f"Query{query_id} is {event.state}.{job_link}"
+
+
+def render_bqquery_finished_event_html(
+    event: bigframes.core.events.BigQueryFinishedEvent,
+) -> str:
+    """Return progress bar html string for finished event."""
+
+    bytes_str = ""
+    if event.total_bytes_processed is not None:
+        bytes_str = f" {humanize.naturalsize(event.total_bytes_processed)}"
+
+    slot_time_str = ""
+    if event.slot_millis is not None:
+        slot_time = datetime.timedelta(milliseconds=event.slot_millis)
+        slot_time_str = f" in {humanize.naturaldelta(slot_time)} of slot time"
+
+    job_link = render_job_link_html(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+    )
+    query_id = render_query_references(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+        request_id=None,
+    )
+    return f"""
+    Query processed{bytes_str}{slot_time_str}{query_id}.{job_link}
+    """
+
+
+def render_bqquery_finished_event_plaintext(
+    event: bigframes.core.events.BigQueryFinishedEvent,
+) -> str:
+    """Return progress bar plaintext string for finished event."""
+
+    bytes_str = ""
+    if event.total_bytes_processed is not None:
+        bytes_str = f" {humanize.naturalsize(event.total_bytes_processed)} processed."
+
+    slot_time_str = ""
+    if event.slot_millis is not None:
+        slot_time = datetime.timedelta(milliseconds=event.slot_millis)
+        slot_time_str = f" Slot time: {humanize.naturaldelta(slot_time)}."
+
+    job_link = render_job_link_plaintext(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+    )
+    query_id = render_query_references(
+        project_id=event.billing_project,
+        location=event.location,
+        job_id=event.job_id,
+        request_id=None,
+    )
+    return f"Query{query_id} finished.{bytes_str}{slot_time_str}{job_link}"
 
 
 def get_base_job_loading_html(job: GenericJob):
@@ -281,7 +502,11 @@ def get_base_job_loading_html(job: GenericJob):
     Returns:
         Html string.
     """
-    return f"""{job.job_type.capitalize()} job {job.job_id} is {job.state}. <a target="_blank" href="{get_job_url(job)}">Open Job</a>"""
+    return f"""{job.job_type.capitalize()} job {job.job_id} is {job.state}. <a target="_blank" href="{get_job_url(
+        project_id=job.job_id,
+        location=job.location,
+        job_id=job.job_id,
+    )}">Open Job</a>"""
 
 
 def get_base_job_loading_string(job: GenericJob):
@@ -292,7 +517,11 @@ def get_base_job_loading_string(job: GenericJob):
     Returns:
         String
     """
-    return f"""{job.job_type.capitalize()} job {job.job_id} is {job.state}. \n{get_job_url(job)}"""
+    return f"""{job.job_type.capitalize()} job {job.job_id} is {job.state}. \n{get_job_url(
+        project_id=job.job_id,
+        location=job.location,
+        job_id=job.job_id,
+    )}"""
 
 
 def get_formatted_time(val):
