@@ -468,7 +468,9 @@ def docfx(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+# TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
+# Run tests with 3.14 once this bug is fixed
+@nox.session(python="3.13")
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -566,8 +568,9 @@ def prerelease_deps(session, protobuf_implementation):
         },
     )
 
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+# TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
+# Run tests with 3.14 once this bug is fixed
+@nox.session(python="3.13")
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
