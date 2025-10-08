@@ -245,6 +245,13 @@ def unit(session, protobuf_implementation):
     if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
+    # Run tests with 3.14 once this bug is fixed
+    if session.python == "3.14":
+        session.skip(
+            "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
+        )
+
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
