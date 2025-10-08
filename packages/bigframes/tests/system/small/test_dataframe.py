@@ -993,6 +993,12 @@ def test_filter_df(scalars_dfs):
     assert_pandas_df_equal(bf_result, pd_result)
 
 
+def test_read_gbq_direct_to_batches_row_count(unordered_session):
+    df = unordered_session.read_gbq("bigquery-public-data.usa_names.usa_1910_2013")
+    iter = df.to_pandas_batches()
+    assert iter.total_rows == 5552452
+
+
 def test_df_to_pandas_batches(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 

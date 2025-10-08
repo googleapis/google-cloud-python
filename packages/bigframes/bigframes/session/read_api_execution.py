@@ -102,7 +102,7 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
         if peek:
             batches = pyarrow_utils.truncate_pyarrow_iterable(batches, max_results=peek)
 
-        rows = node.source.n_rows
+        rows = node.source.n_rows or session.estimated_row_count
         if peek and rows:
             rows = min(peek, rows)
 
