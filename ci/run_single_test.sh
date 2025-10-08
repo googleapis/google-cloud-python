@@ -94,6 +94,10 @@ case ${TEST_TYPE} in
             nox -s unit-3.13
             retval=$?
             ;;
+        "3.14")
+            nox -s unit-3.14
+            retval=$?
+            ;;
         *)
             echo "unsupported PY_VERSION"
             exit 1
