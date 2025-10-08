@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.26.0](https://github.com/googleapis/python-api-core/compare/v2.25.2...v2.26.0) (2025-10-08)
+
+
+### Features
+
+* Add trove classifier for Python 3.14 ([#842](https://github.com/googleapis/python-api-core/issues/842)) ([43690de](https://github.com/googleapis/python-api-core/commit/43690de33a23321d52ab856e2bf253590e1a9357))
+
 ## [2.25.2](https://github.com/googleapis/python-api-core/compare/v2.25.1...v2.25.2) (2025-10-01)
 
 
