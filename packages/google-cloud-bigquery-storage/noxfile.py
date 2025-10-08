@@ -568,6 +568,7 @@ def prerelease_deps(session, protobuf_implementation):
         },
     )
 
+
 # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
 # Run tests with 3.14 once this bug is fixed
 @nox.session(python="3.13")
