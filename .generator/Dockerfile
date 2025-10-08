@@ -39,7 +39,7 @@ RUN apt-get update && \
 # Install multiple Python versions from source. `make altinstall` is used to
 # prevent replacing the system's default python binary.
 # TODO(http://github.com/googleapis/gapic-generator-python/issues/2435): Remove `3.10.18` when the linked issue is resolved.
-RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.13.7; do \
+RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.13.7 3.14.0; do \
     wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
     tar -xvf Python-${PYTHON_VERSION}.tgz && \
     cd Python-${PYTHON_VERSION} && \
@@ -53,7 +53,7 @@ RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.13.7; do \
 # Install pip for each python version
 # TODO(http://github.com/googleapis/gapic-generator-python/issues/2435): Remove `3.10` when the linked issue is resolved.
 RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' && \
-    for PYTHON_VERSION in 3.9 3.10 3.13; do \
+    for PYTHON_VERSION in 3.9 3.10 3.13 3.14; do \
         python${PYTHON_VERSION} /tmp/get-pip.py; \
     done && \
     rm /tmp/get-pip.py
@@ -86,9 +86,6 @@ ENV SYNTHTOOL_TEMPLATES="/synthtool/synthtool/gcp/templates"
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    # Temporarily include git and ca-certificates to download gapic-generator from Github
-    ca-certificates \
-    git \
     # This is needed to avoid the following error:
     # `ImportError: libsqlite3.so.0: cannot open shared object file: No such file or directory`.
     # `libsqlite3-0` is used by the `coverage` PyPI package which is used when testing libraries
@@ -114,6 +111,9 @@ COPY --from=builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
 
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
+
+COPY --from=builder /usr/local/bin/python3.14 /usr/local/bin/
+COPY --from=builder /usr/local/lib/python3.14 /usr/local/lib/python3.14
 
 # Set the working directory in the container.
 WORKDIR /app
