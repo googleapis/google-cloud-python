@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
 from packaging import version
 import pandas as pd
 import pyarrow as pa
@@ -40,6 +42,27 @@ def test_ai_function_pandas_input(session):
             )
         )
     )
+
+
+def test_ai_function_string_input(session):
+    with mock.patch(
+        "bigframes.core.global_session.get_global_session"
+    ) as mock_get_session:
+        mock_get_session.return_value = session
+        prompt = "Is apple a fruit?"
+
+        result = bbq.ai.generate_bool(prompt, endpoint="gemini-2.5-flash")
+
+        assert _contains_no_nulls(result)
+        assert result.dtype == pd.ArrowDtype(
+            pa.struct(
+                (
+                    pa.field("result", pa.bool_()),
+                    pa.field("full_response", dtypes.JSON_ARROW_TYPE),
+                    pa.field("status", pa.string()),
+                )
+            )
+        )
 
 
 def test_ai_function_compile_model_params(session):

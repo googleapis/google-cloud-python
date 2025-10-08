@@ -28,6 +28,7 @@ from bigframes.core import convert, log_adapter
 from bigframes.operations import ai_ops, output_schemas
 
 PROMPT_TYPE = Union[
+    str,
     series.Series,
     pd.Series,
     List[Union[str, series.Series, pd.Series]],
@@ -73,7 +74,7 @@ def generate(
         dtype: struct<is_herbivore: bool, number_of_legs: int64, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
 
     Args:
-        prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
+        prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
@@ -165,7 +166,7 @@ def generate_bool(
         Name: result, dtype: boolean
 
     Args:
-        prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
+        prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
@@ -240,7 +241,7 @@ def generate_int(
         Name: result, dtype: Int64
 
     Args:
-        prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
+        prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
@@ -315,7 +316,7 @@ def generate_double(
         Name: result, dtype: Float64
 
     Args:
-        prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
+        prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
@@ -386,7 +387,7 @@ def if_(
         dtype: string
 
     Args:
-        prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
+        prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
@@ -433,7 +434,7 @@ def classify(
         [2 rows x 2 columns]
 
     Args:
-        input (Series | List[str|Series] | Tuple[str|Series, ...]):
+        input (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the input to send to the model. The Series can be BigFrames Series
             or pandas Series.
         categories (tuple[str, ...] | list[str]):
@@ -482,7 +483,7 @@ def score(
         dtype: Float64
 
     Args:
-        prompt (Series | List[str|Series] | Tuple[str|Series, ...]):
+        prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
             or pandas Series.
         connection_id (str, optional):
@@ -514,8 +515,11 @@ def _separate_context_and_series(
     Input: ("str1", series1, "str2", "str3", series2)
     Output: ["str1", None, "str2", "str3", None], [series1, series2]
     """
-    if not isinstance(prompt, (list, tuple, series.Series)):
+    if not isinstance(prompt, (str, list, tuple, series.Series)):
         raise ValueError(f"Unsupported prompt type: {type(prompt)}")
+
+    if isinstance(prompt, str):
+        return [None], [series.Series([prompt])]
 
     if isinstance(prompt, series.Series):
         if prompt.dtype == dtypes.OBJ_REF_DTYPE:
