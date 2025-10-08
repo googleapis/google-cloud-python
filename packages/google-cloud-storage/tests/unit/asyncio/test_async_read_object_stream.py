@@ -275,10 +275,17 @@ async def test_recv_without_open_should_raise_error(
     # assert
     assert str(exc.value) == "Stream is not open"
 
-@mock.patch("google.cloud.storage._experimental.asyncio.async_read_object_stream.AsyncBidiRpc")
-@mock.patch("google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client")
+
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_read_object_stream.AsyncBidiRpc"
+)
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
 @pytest.mark.asyncio
-async def test_recv_updates_read_handle_on_refresh(mock_client, mock_cls_async_bidi_rpc):
+async def test_recv_updates_read_handle_on_refresh(
+    mock_client, mock_cls_async_bidi_rpc
+):
     """
     Verify that the `recv` method correctly updates the stream's handle
     when a new one is provided in a server response.
@@ -289,11 +296,15 @@ async def test_recv_updates_read_handle_on_refresh(mock_client, mock_cls_async_b
     socket_like_rpc.open = AsyncMock()
 
     initial_handle = _storage_v2.BidiReadHandle(handle=b"initial-handle-token")
-    response_with_initial_handle = _storage_v2.BidiReadObjectResponse(read_handle=initial_handle)
+    response_with_initial_handle = _storage_v2.BidiReadObjectResponse(
+        read_handle=initial_handle
+    )
     response_without_handle = _storage_v2.BidiReadObjectResponse(read_handle=None)
 
     refreshed_handle = _storage_v2.BidiReadHandle(handle=b"new-refreshed-handle-token")
-    response_with_refreshed_handle = _storage_v2.BidiReadObjectResponse(read_handle=refreshed_handle)
+    response_with_refreshed_handle = _storage_v2.BidiReadObjectResponse(
+        read_handle=refreshed_handle
+    )
 
     socket_like_rpc.recv.side_effect = [
         response_with_initial_handle,

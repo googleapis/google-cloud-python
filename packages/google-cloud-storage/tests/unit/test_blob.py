@@ -3572,7 +3572,7 @@ class Test_Blob(unittest.TestCase):
             kwargs,
             {
                 "timeout": expected_timeout,
-                'crc32c_checksum_value': None,
+                "crc32c_checksum_value": None,
                 "checksum": None,
                 "retry": retry,
                 "command": None,

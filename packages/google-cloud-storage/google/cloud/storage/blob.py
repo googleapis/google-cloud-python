@@ -235,6 +235,7 @@ class Blob(_PropertyMixin):
 
         if generation is not None:
             self._properties["generation"] = generation
+
     @property
     def bucket(self):
         """Bucket which contains the object.
@@ -2178,12 +2179,12 @@ class Blob(_PropertyMixin):
             unless otherwise directed.
 
         :type crc32c_checksum_value: str
-        :param crc32c_checksum_value: (Optional) This should be the checksum of 
+        :param crc32c_checksum_value: (Optional) This should be the checksum of
             the entire contents of `file`. Applicable while uploading object
             greater than `_MAX_MULTIPART_SIZE` bytes.
 
             It can be obtained by running
-            
+
             `gcloud storage hash /path/to/your/file`
 
             or
@@ -2204,7 +2205,7 @@ class Blob(_PropertyMixin):
 
             Above code block prints 8 char string of base64 encoded big-endian
             bytes of 32 bit CRC32c integer.
-            
+
             More details on CRC32c can be found in Appendix B:
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
@@ -2396,12 +2397,12 @@ class Blob(_PropertyMixin):
             unless otherwise directed.
 
         :type crc32c_checksum_value: str
-        :param crc32c_checksum_value: (Optional) This should be the checksum of 
+        :param crc32c_checksum_value: (Optional) This should be the checksum of
             the entire contents of `stream`. Applicable while uploading object
             greater than `_MAX_MULTIPART_SIZE` bytes.
 
             It can be obtained by running
-            
+
             `gcloud storage hash /path/to/your/file`
 
             or
@@ -2422,7 +2423,7 @@ class Blob(_PropertyMixin):
 
             Above code block prints 8 char string of base64 encoded big-endian
             bytes of 32 bit CRC32c integer.
-            
+
             More details on CRC32c can be found in Appendix B:
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
@@ -2578,12 +2579,12 @@ class Blob(_PropertyMixin):
             unless otherwise directed.
 
         :type crc32c_checksum_value: str
-        :param crc32c_checksum_value: (Optional) This should be the checksum of 
+        :param crc32c_checksum_value: (Optional) This should be the checksum of
             the entire contents of `file_obj`. Applicable while uploading object
             greater than `_MAX_MULTIPART_SIZE` bytes.
 
             It can be obtained by running
-            
+
             `gcloud storage hash /path/to/your/file`
 
             or
@@ -2604,7 +2605,7 @@ class Blob(_PropertyMixin):
 
             Above code block prints 8 char string of base64 encoded big-endian
             bytes of 32 bit CRC32c integer.
-            
+
             More details on CRC32c can be found in Appendix B:
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
@@ -2795,12 +2796,12 @@ class Blob(_PropertyMixin):
             unless otherwise directed.
 
         :type crc32c_checksum_value: str
-        :param crc32c_checksum_value: (Optional) This should be the checksum of 
+        :param crc32c_checksum_value: (Optional) This should be the checksum of
             the entire contents of `file_obj`. Applicable while uploading object
             greater than `_MAX_MULTIPART_SIZE` bytes.
 
             It can be obtained by running
-            
+
             `gcloud storage hash /path/to/your/file`
 
             or
@@ -2821,7 +2822,7 @@ class Blob(_PropertyMixin):
 
             Above code block prints 8 char string of base64 encoded big-endian
             bytes of 32 bit CRC32c integer.
-            
+
             More details on CRC32c can be found in Appendix B:
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
@@ -2978,12 +2979,12 @@ class Blob(_PropertyMixin):
             to configure them.
 
         :type crc32c_checksum_value: str
-        :param crc32c_checksum_value: (Optional) This should be the checksum of 
+        :param crc32c_checksum_value: (Optional) This should be the checksum of
             the entire contents of `file_obj`. Applicable while uploading object
             greater than `_MAX_MULTIPART_SIZE` bytes.
 
             It can be obtained by running
-            
+
             `gcloud storage hash /path/to/your/file`
 
             or
@@ -3004,7 +3005,7 @@ class Blob(_PropertyMixin):
 
             Above code block prints 8 char string of base64 encoded big-endian
             bytes of 32 bit CRC32c integer.
-            
+
             More details on CRC32c can be found in Appendix B:
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
@@ -3068,7 +3069,6 @@ class Blob(_PropertyMixin):
         checksum="auto",
         retry=DEFAULT_RETRY,
         crc32c_checksum_value=None,
-
     ):
         """Upload this blob's contents from the content of a named file.
 
@@ -3163,14 +3163,14 @@ class Blob(_PropertyMixin):
             See the retry.py source code and docstrings in this package
             (google.cloud.storage.retry) for information on retry types and how
             to configure them.
-        
+
         :type crc32c_checksum_value: str
-        :param crc32c_checksum_value: (Optional) This should be the checksum of 
+        :param crc32c_checksum_value: (Optional) This should be the checksum of
             the entire contents of `filename`. Applicable while uploading object
             greater than `_MAX_MULTIPART_SIZE` bytes.
 
             It can be obtained by running
-            
+
             `gcloud storage hash /path/to/your/file`
 
             or
@@ -3191,7 +3191,7 @@ class Blob(_PropertyMixin):
 
             Above code block prints 8 char string of base64 encoded big-endian
             bytes of 32 bit CRC32c integer.
-            
+
             More details on CRC32c can be found in Appendix B:
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
@@ -3314,12 +3314,12 @@ class Blob(_PropertyMixin):
             to configure them.
 
         :type crc32c_checksum_value: str
-        :param crc32c_checksum_value: (Optional) This should be the checksum of 
+        :param crc32c_checksum_value: (Optional) This should be the checksum of
             the entire contents of `file_obj`. Applicable while uploading object
             greater than `_MAX_MULTIPART_SIZE` bytes.
 
             It can be obtained by running
-            
+
             `gcloud storage hash /path/to/your/file`
 
             or
@@ -3340,7 +3340,7 @@ class Blob(_PropertyMixin):
 
             Above code block prints 8 char string of base64 encoded big-endian
             bytes of 32 bit CRC32c integer.
-            
+
             More details on CRC32c can be found in Appendix B:
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4

@@ -62,9 +62,10 @@ def test_large_file_write_from_stream_w_user_provided_wrong_checksum(
     info = file_data["big_9MiB"]
     with pytest.raises(exceptions.BadRequest) as excep_info:
         with open(info["path"], "rb") as file_obj:
-            blob.upload_from_file(file_obj,crc32c_checksum_value="A0tD7w==")
+            blob.upload_from_file(file_obj, crc32c_checksum_value="A0tD7w==")
             blobs_to_delete.append(blob)
     assert excep_info.value.code == 400
+
 
 def test_touch_and_write_large_file_w_user_provided_checksum(
     shared_bucket,

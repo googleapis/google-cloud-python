@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.4.1](https://github.com/googleapis/python-storage/compare/v3.4.0...v3.5.0) (2025-10-08)
+
+### Bug Fixes
+
+* Fixes [#1561](https://github.com/googleapis/python-storage/issues/1561) by adding an option to specify the entire object checksum for resumable uploads via the `upload_from_string`, `upload_from_file`, and `upload_from_filename` methods ([acb918e](https://github.com/googleapis/python-storage/commit/acb918e20f7092e13d72fc63fe4ae2560bfecd40))
+
 ## [3.4.0](https://github.com/googleapis/python-storage/compare/v3.3.1...v3.4.0) (2025-09-15)
 
 
