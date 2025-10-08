@@ -18,35 +18,8 @@ from google.cloud.capacityplanner_v1beta import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.capacity_planning_service import (
-    CapacityPlanningServiceAsyncClient,
-    CapacityPlanningServiceClient,
-)
 from .services.usage_service import UsageServiceAsyncClient, UsageServiceClient
 from .types.allocation import Allocation
-from .types.capacity_planning_service import (
-    CapacityPlan,
-    CapacityPlanFilters,
-    CapacityPlanKey,
-    CapacityPlanView,
-    CapacityType,
-    ChildResourceDemand,
-    DemandMetadata,
-    DemandPreference,
-    DemandValue,
-    DemandValues,
-    GetCapacityPlanRequest,
-    QueryCapacityPlanInsightsRequest,
-    QueryCapacityPlanInsightsResponse,
-    QueryCapacityPlansRequest,
-    QueryCapacityPlansResponse,
-    ResourceDemand,
-    ServiceDemand,
-    State,
-    TimeSeriesView,
-    TimeValue,
-    User,
-)
 from .types.future_reservation import FutureReservation
 from .types.location import LocationIdentifier, LocationLevel
 from .types.resource import (
@@ -84,21 +57,9 @@ from .types.usage_service import (
 )
 
 __all__ = (
-    "CapacityPlanningServiceAsyncClient",
     "UsageServiceAsyncClient",
     "Allocation",
     "BigQueryDestination",
-    "CapacityPlan",
-    "CapacityPlanFilters",
-    "CapacityPlanKey",
-    "CapacityPlanView",
-    "CapacityPlanningServiceClient",
-    "CapacityType",
-    "ChildResourceDemand",
-    "DemandMetadata",
-    "DemandPreference",
-    "DemandValue",
-    "DemandValues",
     "ExportForecastsRequest",
     "ExportForecastsResponse",
     "ExportReservationsUsageRequest",
@@ -108,17 +69,12 @@ __all__ = (
     "Forecast",
     "FutureReservation",
     "GcsDestination",
-    "GetCapacityPlanRequest",
     "LocationIdentifier",
     "LocationLevel",
     "MachineShape",
     "OperationMetadata",
     "OutputConfig",
     "Point",
-    "QueryCapacityPlanInsightsRequest",
-    "QueryCapacityPlanInsightsResponse",
-    "QueryCapacityPlansRequest",
-    "QueryCapacityPlansResponse",
     "QueryForecastsRequest",
     "QueryForecastsResponse",
     "QueryReservationsRequest",
@@ -128,18 +84,12 @@ __all__ = (
     "ReservationData",
     "ResourceAttribute",
     "ResourceContainer",
-    "ResourceDemand",
     "ResourceIdKey",
     "ResourceIdentifier",
     "ResourceValue",
-    "ServiceDemand",
-    "State",
     "TimeSeries",
-    "TimeSeriesView",
-    "TimeValue",
     "Unit",
     "UsageHistory",
     "UsageServiceClient",
-    "User",
     "Value",
 )

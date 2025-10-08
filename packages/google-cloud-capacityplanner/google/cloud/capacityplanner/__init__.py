@@ -18,12 +18,6 @@ from google.cloud.capacityplanner import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.capacityplanner_v1beta.services.capacity_planning_service.async_client import (
-    CapacityPlanningServiceAsyncClient,
-)
-from google.cloud.capacityplanner_v1beta.services.capacity_planning_service.client import (
-    CapacityPlanningServiceClient,
-)
 from google.cloud.capacityplanner_v1beta.services.usage_service.async_client import (
     UsageServiceAsyncClient,
 )
@@ -31,29 +25,6 @@ from google.cloud.capacityplanner_v1beta.services.usage_service.client import (
     UsageServiceClient,
 )
 from google.cloud.capacityplanner_v1beta.types.allocation import Allocation
-from google.cloud.capacityplanner_v1beta.types.capacity_planning_service import (
-    CapacityPlan,
-    CapacityPlanFilters,
-    CapacityPlanKey,
-    CapacityPlanView,
-    CapacityType,
-    ChildResourceDemand,
-    DemandMetadata,
-    DemandPreference,
-    DemandValue,
-    DemandValues,
-    GetCapacityPlanRequest,
-    QueryCapacityPlanInsightsRequest,
-    QueryCapacityPlanInsightsResponse,
-    QueryCapacityPlansRequest,
-    QueryCapacityPlansResponse,
-    ResourceDemand,
-    ServiceDemand,
-    State,
-    TimeSeriesView,
-    TimeValue,
-    User,
-)
 from google.cloud.capacityplanner_v1beta.types.future_reservation import (
     FutureReservation,
 )
@@ -96,32 +67,9 @@ from google.cloud.capacityplanner_v1beta.types.usage_service import (
 )
 
 __all__ = (
-    "CapacityPlanningServiceClient",
-    "CapacityPlanningServiceAsyncClient",
     "UsageServiceClient",
     "UsageServiceAsyncClient",
     "Allocation",
-    "CapacityPlan",
-    "CapacityPlanFilters",
-    "CapacityPlanKey",
-    "CapacityPlanView",
-    "ChildResourceDemand",
-    "DemandMetadata",
-    "DemandPreference",
-    "DemandValue",
-    "DemandValues",
-    "GetCapacityPlanRequest",
-    "QueryCapacityPlanInsightsRequest",
-    "QueryCapacityPlanInsightsResponse",
-    "QueryCapacityPlansRequest",
-    "QueryCapacityPlansResponse",
-    "ResourceDemand",
-    "ServiceDemand",
-    "TimeSeriesView",
-    "TimeValue",
-    "User",
-    "CapacityType",
-    "State",
     "FutureReservation",
     "LocationIdentifier",
     "LocationLevel",
