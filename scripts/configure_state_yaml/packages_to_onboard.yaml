@@ -143,6 +143,7 @@ packages_to_onboard: [
   "google-cloud-oracledatabase",
   "google-cloud-orchestration-airflow",
   "google-cloud-os-config",
+  "google-cloud-os-login",
   "google-cloud-parallelstore",
   "google-cloud-parametermanager",
   "google-cloud-phishing-protection",
