@@ -23,7 +23,7 @@ from typing import Literal
 import bigframes_vendored.version
 
 FEEDBACK_LINK = (
-    "Share your usecase with the BigQuery DataFrames team at the "
+    "Share your use case with the BigQuery DataFrames team at the "
     "https://bit.ly/bigframes-feedback survey. "
     f"You are currently running BigFrames version {bigframes_vendored.version.__version__}."
 )
