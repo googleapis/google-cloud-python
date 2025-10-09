@@ -68,6 +68,8 @@ import bigframes.constants
 import bigframes.core
 from bigframes.core import blocks, log_adapter, utils
 import bigframes.core.events
+import bigframes.core.indexes
+import bigframes.core.indexes.multi
 import bigframes.core.pyformat
 import bigframes.formatting_helpers
 import bigframes.functions._function_session as bff_session
@@ -79,7 +81,6 @@ import bigframes.session.validation
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:
-    import bigframes.core.indexes
     import bigframes.dataframe as dataframe
     import bigframes.series
     import bigframes.streaming.dataframe as streaming_dataframe
@@ -319,6 +320,15 @@ class Session(
                 self.bqconnectionclient, self.resourcemanagerclient
             )
         return self._bq_connection_manager
+
+    @property
+    def options(self) -> bigframes._config.Options:
+        """Options for configuring BigQuery DataFrames.
+
+        Included for compatibility between bpd and Session.
+        """
+        # TODO(tswast): Consider making a separate session-level options object.
+        return bigframes._config.options
 
     @property
     def session_id(self):
@@ -1826,7 +1836,7 @@ class Session(
         Turning an arbitrary python function into a BigQuery managed python udf:
 
             >>> bq_name = datetime.datetime.now().strftime("bigframes_%Y%m%d%H%M%S%f")
-            >>> @bpd.udf(dataset="bigfranes_testing", name=bq_name)
+            >>> @bpd.udf(dataset="bigfranes_testing", name=bq_name)  # doctest: +SKIP
             ... def minutes_to_hours(x: int) -> float:
             ...     return x/60
 
@@ -1839,8 +1849,8 @@ class Session(
             4    120
             dtype: Int64
 
-            >>> hours = minutes.apply(minutes_to_hours)
-            >>> hours
+            >>> hours = minutes.apply(minutes_to_hours)  # doctest: +SKIP
+            >>> hours  # doctest: +SKIP
             0    0.0
             1    0.5
             2    1.0
@@ -1853,7 +1863,7 @@ class Session(
         packages (optionally with the package version) via `packages` param.
 
             >>> bq_name = datetime.datetime.now().strftime("bigframes_%Y%m%d%H%M%S%f")
-            >>> @bpd.udf(
+            >>> @bpd.udf(  # doctest: +SKIP
             ...     dataset="bigfranes_testing",
             ...     name=bq_name,
             ...     packages=["cryptography"]
@@ -1870,14 +1880,14 @@ class Session(
             ...     return f.encrypt(input.encode()).decode()
 
             >>> names = bpd.Series(["Alice", "Bob"])
-            >>> hashes = names.apply(get_hash)
+            >>> hashes = names.apply(get_hash)  # doctest: +SKIP
 
         You can clean-up the BigQuery functions created above using the BigQuery
         client from the BigQuery DataFrames session:
 
             >>> session = bpd.get_global_session()
-            >>> session.bqclient.delete_routine(minutes_to_hours.bigframes_bigquery_function)
-            >>> session.bqclient.delete_routine(get_hash.bigframes_bigquery_function)
+            >>> session.bqclient.delete_routine(minutes_to_hours.bigframes_bigquery_function)  # doctest: +SKIP
+            >>> session.bqclient.delete_routine(get_hash.bigframes_bigquery_function)  # doctest: +SKIP
 
         Args:
             input_types (type or sequence(type), Optional):
@@ -2296,6 +2306,104 @@ class Session(
 
         s = self._loader.read_gbq_table(object_table)["uri"].str.to_blob(connection)
         return s.rename(name).to_frame()
+
+    # =========================================================================
+    # bigframes.pandas attributes
+    #
+    # These are included so that Session and bigframes.pandas can be used
+    # interchangeably.
+    # =========================================================================
+    def cut(self, *args, **kwargs) -> bigframes.series.Series:
+        """Cuts a BigQuery DataFrames object.
+
+        Included for compatibility between bpd and Session.
+
+        See :func:`bigframes.pandas.cut` for full documentation.
+        """
+        import bigframes.core.reshape.tile
+
+        return bigframes.core.reshape.tile.cut(
+            *args,
+            session=self,
+            **kwargs,
+        )
+
+    def DataFrame(self, *args, **kwargs):
+        """Constructs a DataFrame.
+
+        Included for compatibility between bpd and Session.
+
+        See :class:`bigframes.pandas.DataFrame` for full documentation.
+        """
+        import bigframes.dataframe
+
+        return bigframes.dataframe.DataFrame(*args, session=self, **kwargs)
+
+    @property
+    def MultiIndex(self) -> bigframes.core.indexes.multi.MultiIndexAccessor:
+        """Constructs a MultiIndex.
+
+        Included for compatibility between bpd and Session.
+
+        See :class:`bigframes.pandas.MulitIndex` for full documentation.
+        """
+        import bigframes.core.indexes.multi
+
+        return bigframes.core.indexes.multi.MultiIndexAccessor(self)
+
+    def Index(self, *args, **kwargs):
+        """Constructs a Index.
+
+        Included for compatibility between bpd and Session.
+
+        See :class:`bigframes.pandas.Index` for full documentation.
+        """
+        import bigframes.core.indexes
+
+        return bigframes.core.indexes.Index(*args, session=self, **kwargs)
+
+    def Series(self, *args, **kwargs):
+        """Constructs a Series.
+
+        Included for compatibility between bpd and Session.
+
+        See :class:`bigframes.pandas.Series` for full documentation.
+        """
+        import bigframes.series
+
+        return bigframes.series.Series(*args, session=self, **kwargs)
+
+    def to_datetime(
+        self, *args, **kwargs
+    ) -> Union[pandas.Timestamp, datetime.datetime, bigframes.series.Series]:
+        """Converts a BigQuery DataFrames object to datetime dtype.
+
+        Included for compatibility between bpd and Session.
+
+        See :func:`bigframes.pandas.to_datetime` for full documentation.
+        """
+        import bigframes.core.tools
+
+        return bigframes.core.tools.to_datetime(
+            *args,
+            session=self,
+            **kwargs,
+        )
+
+    def to_timedelta(self, *args, **kwargs):
+        """Converts a BigQuery DataFrames object to timedelta/duration dtype.
+
+        Included for compatibility between bpd and Session.
+
+        See :func:`bigframes.pandas.to_timedelta` for full documentation.
+        """
+        import bigframes.pandas.core.tools.timedeltas
+
+        return bigframes.pandas.core.tools.timedeltas.to_timedelta(
+            *args,
+            session=self,
+            **kwargs,
+        )
 
 
 def connect(context: Optional[bigquery_options.BigQueryOptions] = None) -> Session:

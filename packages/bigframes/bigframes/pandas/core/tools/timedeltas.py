@@ -35,7 +35,7 @@ def to_timedelta(
         return arg._apply_unary_op(ops.ToTimedeltaOp(canonical_unit))
 
     if pdtypes.is_list_like(arg):
-        return to_timedelta(series.Series(arg), unit, session=session)
+        return to_timedelta(series.Series(arg, session=session), unit, session=session)
 
     return pd.to_timedelta(arg, unit)
 

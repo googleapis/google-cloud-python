@@ -16,8 +16,8 @@
 
 from __future__ import annotations
 
-from collections import namedtuple
-from datetime import date, datetime
+import collections
+import datetime
 import inspect
 import sys
 import typing
@@ -198,18 +198,18 @@ def to_datetime(
 
 @typing.overload
 def to_datetime(
-    arg: Union[int, float, str, datetime, date],
+    arg: Union[int, float, str, datetime.datetime, datetime.date],
     *,
     utc: bool = False,
     format: Optional[str] = None,
     unit: Optional[str] = None,
-) -> Union[pandas.Timestamp, datetime]:
+) -> Union[pandas.Timestamp, datetime.datetime]:
     ...
 
 
 def to_datetime(
     arg: Union[
-        Union[int, float, str, datetime, date],
+        Union[int, float, str, datetime.datetime, datetime.date],
         vendored_pandas_datetimes.local_iterables,
         bigframes.series.Series,
         bigframes.dataframe.DataFrame,
@@ -218,8 +218,9 @@ def to_datetime(
     utc: bool = False,
     format: Optional[str] = None,
     unit: Optional[str] = None,
-) -> Union[pandas.Timestamp, datetime, bigframes.series.Series]:
-    return bigframes.core.tools.to_datetime(
+) -> Union[pandas.Timestamp, datetime.datetime, bigframes.series.Series]:
+    return global_session.with_default_session(
+        bigframes.session.Session.to_datetime,
         arg,
         utc=utc,
         format=format,
@@ -322,7 +323,7 @@ Series = bigframes.series.Series
 __version__ = bigframes.version.__version__
 
 # Other public pandas attributes
-NamedAgg = namedtuple("NamedAgg", ["column", "aggfunc"])
+NamedAgg = collections.namedtuple("NamedAgg", ["column", "aggfunc"])
 
 options = config.options
 """Global :class:`~bigframes._config.Options` to configure BigQuery DataFrames."""

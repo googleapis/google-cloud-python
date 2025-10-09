@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
 from collections.abc import Mapping
 from datetime import date, datetime
-from typing import Optional, Union
+from typing import Optional, TYPE_CHECKING, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes
@@ -24,6 +26,9 @@ import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.series
+
+if TYPE_CHECKING:
+    import bigframes.session
 
 
 def to_datetime(
@@ -37,6 +42,7 @@ def to_datetime(
     utc: bool = False,
     format: Optional[str] = None,
     unit: Optional[str] = None,
+    session: Optional[bigframes.session.Session] = None,
 ) -> Union[pd.Timestamp, datetime, bigframes.series.Series]:
     if isinstance(arg, (int, float, str, datetime, date)):
         return pd.to_datetime(
@@ -52,7 +58,7 @@ def to_datetime(
             f"to datetime is not implemented. {constants.FEEDBACK_LINK}"
         )
 
-    arg = bigframes.series.Series(arg)
+    arg = bigframes.series.Series(arg, session=session)
 
     if format and unit and arg.dtype in (bigframes.dtypes.INT_DTYPE, bigframes.dtypes.FLOAT_DTYPE):  # type: ignore
         raise ValueError("cannot specify both format and unit")

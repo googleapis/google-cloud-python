@@ -105,8 +105,14 @@ def progress_callback(
     """Displays a progress bar while the query is running"""
     global current_display, current_display_id, previous_display_html
 
-    import bigframes._config
-    import bigframes.core.events
+    try:
+        import bigframes._config
+        import bigframes.core.events
+    except ImportError:
+        # Since this gets called from __del__, skip if the import fails to avoid
+        # ImportError: sys.meta_path is None, Python is likely shutting down.
+        # This will allow cleanup to continue.
+        return
 
     progress_bar = bigframes._config.options.display.progress_bar
 

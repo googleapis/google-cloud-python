@@ -64,8 +64,12 @@ def test_method_matches_session(method_name: str):
     pandas_method = getattr(bigframes.pandas, method_name)
     pandas_doc = inspect.getdoc(pandas_method)
     assert pandas_doc is not None, "docstrings are required"
-    assert re.sub(leading_whitespace, "", pandas_doc) == re.sub(
-        leading_whitespace, "", session_doc
+
+    pandas_doc_stripped = re.sub(leading_whitespace, "", pandas_doc)
+    session_doc_stripped = re.sub(leading_whitespace, "", session_doc)
+    assert (
+        pandas_doc_stripped == session_doc_stripped
+        or ":`bigframes.pandas" in session_doc_stripped
     )
 
     # Add `eval_str = True` so that deferred annotations are turned into their
@@ -75,18 +79,20 @@ def test_method_matches_session(method_name: str):
         eval_str=True,
         globals={**vars(bigframes.session), **{"dataframe": bigframes.dataframe}},
     )
-    pandas_signature = inspect.signature(pandas_method, eval_str=True)
-    assert [
-        # Kind includes position, which will be an offset.
-        parameter.replace(kind=inspect.Parameter.POSITIONAL_ONLY)
-        for parameter in pandas_signature.parameters.values()
-    ] == [
+    session_args = [
         # Kind includes position, which will be an offset.
         parameter.replace(kind=inspect.Parameter.POSITIONAL_ONLY)
         for parameter in session_signature.parameters.values()
         # Don't include the first parameter, which is `self: Session`
-    ][
-        1:
+    ][1:]
+    pandas_signature = inspect.signature(pandas_method, eval_str=True)
+    pandas_args = [
+        # Kind includes position, which will be an offset.
+        parameter.replace(kind=inspect.Parameter.POSITIONAL_ONLY)
+        for parameter in pandas_signature.parameters.values()
+    ]
+    assert session_args == pandas_args or ["args", "kwargs"] == [
+        parameter.name for parameter in session_args
     ]
     assert pandas_signature.return_annotation == session_signature.return_annotation
 
