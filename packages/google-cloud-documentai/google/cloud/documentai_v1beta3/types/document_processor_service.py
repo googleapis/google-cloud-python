@@ -1427,7 +1427,8 @@ class TrainProcessorVersionRequest(proto.Message):
 
         Attributes:
             training_method (google.cloud.documentai_v1beta3.types.TrainProcessorVersionRequest.CustomDocumentExtractionOptions.TrainingMethod):
-                Training method to use for CDE training.
+                Optional. Training method to use for CDE
+                training.
         """
 
         class TrainingMethod(proto.Enum):
@@ -1966,10 +1967,10 @@ class ImportProcessorVersionRequest(proto.Message):
 
     Attributes:
         processor_version_source (str):
-            The source processor version to import from. The source
-            processor version and destination processor need to be in
-            the same environment and region. Note that ProcessorVersions
-            with ``model_type`` ``MODEL_TYPE_LLM`` are not supported.
+            The source processor version to import from.
+            The source processor version and destination
+            processor need to be in the same environment and
+            region.
 
             This field is a member of `oneof`_ ``source``.
         external_processor_version_source (google.cloud.documentai_v1beta3.types.ImportProcessorVersionRequest.ExternalProcessorVersionSource):
