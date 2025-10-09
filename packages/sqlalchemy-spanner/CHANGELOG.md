@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.16.0...v1.17.0) (2025-10-09)
+
+
+### Features
+
+* Add Support for Interleaved Indexes ([#762](https://github.com/googleapis/python-spanner-sqlalchemy/issues/762)) ([77b86f1](https://github.com/googleapis/python-spanner-sqlalchemy/commit/77b86f1ad9d31932c960497eb1fb29635b74cb92)), closes [#761](https://github.com/googleapis/python-spanner-sqlalchemy/issues/761)
+
 ## [1.16.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.15.0...v1.16.0) (2025-09-02)
 
 
