@@ -6554,6 +6554,7 @@ def test_update_dataset_schema_rest_call_success(request_type):
                             "display_name": "display_name_value",
                             "value_type": "value_type_value",
                             "occurrence_type": 1,
+                            "method": 1,
                             "property_metadata": {
                                 "inactive": True,
                                 "field_extraction_metadata": {
