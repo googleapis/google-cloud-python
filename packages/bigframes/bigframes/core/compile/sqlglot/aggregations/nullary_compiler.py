@@ -50,4 +50,4 @@ def _(
     if window is None:
         # ROW_NUMBER always needs an OVER clause.
         return sge.Window(this=result)
-    return apply_window_if_present(result, window)
+    return apply_window_if_present(result, window, include_framing_clauses=False)
