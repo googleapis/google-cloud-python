@@ -26,7 +26,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-public-ca`` releases:
+For a list of all ``google-cloud-security-publicca`` releases:
 
 .. toctree::
     :maxdepth: 2
