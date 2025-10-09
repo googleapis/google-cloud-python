@@ -719,6 +719,10 @@ class SpannerDDLCompiler(DDLCompiler):
                     [self.preparer.quote(c.name) for c in storing_columns]
                 )
 
+            interleave_in = options.get("interleave_in")
+            if interleave_in is not None:
+                text += f", INTERLEAVE IN {self.preparer.quote(interleave_in)}"
+
             if options.get("null_filtered", False):
                 text = re.sub(
                     r"(^\s*CREATE\s+(?:UNIQUE\s+)?)INDEX",

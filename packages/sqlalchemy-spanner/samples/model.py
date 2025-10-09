@@ -95,11 +95,22 @@ class Album(Base):
 
 class Track(Base):
     __tablename__ = "tracks"
-    # This interleaves the table `tracks` in its parent `albums`.
-    __table_args__ = {
-        "spanner_interleave_in": "albums",
-        "spanner_interleave_on_delete_cascade": True,
-    }
+    __table_args__ = (
+        # Use the spanner_interleave_in argument to add an INTERLEAVED IN clause to the index.
+        # You can read additional details at:
+        # https://cloud.google.com/spanner/docs/secondary-indexes#indexes_and_interleaving
+        Index(
+            "idx_tracks_id_title",
+            "id",
+            "title",
+            spanner_interleave_in="albums",
+        ),
+        # This interleaves the table `tracks` in its parent `albums`.
+        {
+            "spanner_interleave_in": "albums",
+            "spanner_interleave_on_delete_cascade": True,
+        },
+    )
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     track_number: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(200), nullable=False)
