@@ -804,7 +804,6 @@ class BlobAccessor(base.SeriesMethods):
             raise ValueError("Must specify the engine, supported value is 'bigquery'.")
 
         import bigframes.bigquery as bbq
-        import bigframes.ml.llm as llm
         import bigframes.pandas as bpd
 
         # col name doesn't matter here. Rename to avoid column name conflicts
@@ -812,27 +811,22 @@ class BlobAccessor(base.SeriesMethods):
 
         prompt_text = "**Task:** Transcribe the provided audio. **Instructions:** - Your response must contain only the verbatim transcription of the audio. - Do not include any introductory text, summaries, or conversational filler in your response. The output should begin directly with the first word of the audio."
 
-        llm_model = llm.GeminiTextGenerator(
-            model_name=model_name,
-            session=self._block.session,
-            connection_name=connection,
+        # Convert the audio series to the runtime representation required by the model.
+        audio_runtime = audio_series.blob._get_runtime("R", with_metadata=True)
+
+        transcribed_results = bbq.ai.generate(
+            prompt=(prompt_text, audio_runtime),
+            connection_id=connection,
+            endpoint=model_name,
+            model_params={"generationConfig": {"temperature": 0.0}},
         )
 
-        # transcribe audio using ML.GENERATE_TEXT
-        transcribed_results = llm_model.predict(
-            X=audio_series,
-            prompt=[prompt_text, audio_series],
-            temperature=0.0,
+        transcribed_content_series = transcribed_results.struct.field("result").rename(
+            "transcribed_content"
         )
-
-        transcribed_content_series = cast(
-            bpd.Series, transcribed_results["ml_generate_text_llm_result"]
-        ).rename("transcribed_content")
 
         if verbose:
-            transcribed_status_series = cast(
-                bpd.Series, transcribed_results["ml_generate_text_status"]
-            )
+            transcribed_status_series = transcribed_results.struct.field("status")
             results_df = bpd.DataFrame(
                 {
                     "status": transcribed_status_series,
