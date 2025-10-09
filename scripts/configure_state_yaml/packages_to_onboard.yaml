@@ -133,6 +133,7 @@ packages_to_onboard: [
   "google-cloud-memorystore",
   "google-cloud-migrationcenter",
   "google-cloud-modelarmor",
+  "google-cloud-monitoring",
   "google-cloud-monitoring-metrics-scopes",
   "google-cloud-netapp",
   "google-cloud-network-connectivity",
