@@ -25,8 +25,8 @@ import bigframes.operations._matplotlib as bfplt
 class PlotAccessor(vendordt.PlotAccessor):
     __doc__ = vendordt.PlotAccessor.__doc__
 
-    _common_kinds = ("line", "area", "hist", "bar")
-    _dataframe_kinds = ("scatter",)
+    _common_kinds = ("line", "area", "hist", "bar", "barh", "pie")
+    _dataframe_kinds = ("scatter", "hexbin,")
     _all_kinds = _common_kinds + _dataframe_kinds
 
     def __call__(self, **kwargs):
@@ -81,6 +81,21 @@ class PlotAccessor(vendordt.PlotAccessor):
         **kwargs,
     ):
         return self(kind="bar", x=x, y=y, **kwargs)
+
+    def barh(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        **kwargs,
+    ):
+        return self(kind="barh", x=x, y=y, **kwargs)
+
+    def pie(
+        self,
+        y: typing.Optional[typing.Hashable] = None,
+        **kwargs,
+    ):
+        return self(kind="pie", y=y, **kwargs)
 
     def scatter(
         self,

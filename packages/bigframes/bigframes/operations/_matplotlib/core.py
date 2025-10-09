@@ -55,7 +55,12 @@ class SamplingPlot(MPLPlot):
 
     @property
     def _sampling_warning_msg(self) -> typing.Optional[str]:
-        return None
+        return (
+            "To optimize plotting performance, your data has been downsampled to {sampling_n} "
+            "rows from the original {total_n} rows. This may result in some data points "
+            "not being displayed. For a more comprehensive view, consider pre-processing "
+            "your data by aggregating it or selecting the top categories."
+        )
 
     def __init__(self, data, **kwargs) -> None:
         self.kwargs = kwargs
@@ -93,6 +98,10 @@ class SamplingPlot(MPLPlot):
 
 class AreaPlot(SamplingPlot):
     @property
+    def _sampling_warning_msg(self) -> typing.Optional[str]:
+        return None
+
+    @property
     def _kind(self) -> typing.Literal["area"]:
         return "area"
 
@@ -102,14 +111,17 @@ class BarPlot(SamplingPlot):
     def _kind(self) -> typing.Literal["bar"]:
         return "bar"
 
+
+class BarhPlot(SamplingPlot):
     @property
-    def _sampling_warning_msg(self) -> typing.Optional[str]:
-        return (
-            "To optimize plotting performance, your data has been downsampled to {sampling_n} "
-            "rows from the original {total_n} rows. This may result in some data points "
-            "not being displayed. For a more comprehensive view, consider pre-processing "
-            "your data by aggregating it or selecting the top categories."
-        )
+    def _kind(self) -> typing.Literal["barh"]:
+        return "barh"
+
+
+class PiePlot(SamplingPlot):
+    @property
+    def _kind(self) -> typing.Literal["pie"]:
+        return "pie"
 
 
 class LinePlot(SamplingPlot):
@@ -122,6 +134,10 @@ class ScatterPlot(SamplingPlot):
     @property
     def _kind(self) -> typing.Literal["scatter"]:
         return "scatter"
+
+    @property
+    def _sampling_warning_msg(self) -> typing.Optional[str]:
+        return None
 
     def __init__(self, data, **kwargs) -> None:
         super().__init__(data, **kwargs)

@@ -265,6 +265,42 @@ def test_bar(scalars_dfs, col_names, alias):
 
 
 @pytest.mark.parametrize(
+    ("col_names",),
+    [
+        pytest.param(["int64_col", "float64_col", "int64_too"], id="df"),
+        pytest.param(["int64_col"], id="series"),
+    ],
+)
+def test_barh(scalars_dfs, col_names):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    ax = scalars_df[col_names].plot.barh()
+    pd_ax = scalars_pandas_df[col_names].plot.barh()
+    tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
+    tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
+    for line, pd_line in zip(ax.lines, pd_ax.lines):
+        # Compare y coordinates between the lines
+        tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
+
+
+@pytest.mark.parametrize(
+    ("col_names",),
+    [
+        pytest.param(["int64_col", "float64_col", "int64_too"], id="df"),
+        pytest.param(["int64_col"], id="series"),
+    ],
+)
+def test_pie(scalars_dfs, col_names):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    ax = scalars_df[col_names].abs().plot.pie(y="int64_col")
+    pd_ax = scalars_pandas_df[col_names].abs().plot.pie(y="int64_col")
+    tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
+    tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
+    for line, pd_line in zip(ax.lines, pd_ax.lines):
+        # Compare y coordinates between the lines
+        tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
+
+
+@pytest.mark.parametrize(
     ("col_names", "alias"),
     [
         pytest.param(

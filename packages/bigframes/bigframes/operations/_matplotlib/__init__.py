@@ -22,6 +22,8 @@ PLOT_TYPES = typing.Union[type[core.SamplingPlot], type[hist.HistPlot]]
 PLOT_CLASSES: dict[str, PLOT_TYPES] = {
     "area": core.AreaPlot,
     "bar": core.BarPlot,
+    "barh": core.BarhPlot,
+    "pie": core.PiePlot,
     "line": core.LinePlot,
     "scatter": core.ScatterPlot,
     "hist": hist.HistPlot,
