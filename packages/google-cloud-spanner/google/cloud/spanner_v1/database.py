@@ -1532,6 +1532,14 @@ class BatchSnapshot(object):
             "transaction_id": snapshot._transaction_id,
         }
 
+    def __enter__(self):
+        """Begin ``with`` block."""
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """End ``with`` block."""
+        self.close()
+
     @property
     def observability_options(self):
         return getattr(self._database, "observability_options", {})
@@ -1703,6 +1711,7 @@ class BatchSnapshot(object):
         *,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
+        lazy_decode=False,
     ):
         """Process a single, partitioned read.
 
@@ -1716,6 +1725,14 @@ class BatchSnapshot(object):
 
         :type timeout: float
         :param timeout: (Optional) The timeout for this request.
+
+        :type lazy_decode: bool
+        :param lazy_decode:
+            (Optional) If this argument is set to ``true``, the iterator
+            returns the underlying protobuf values instead of decoded Python
+            objects. This reduces the time that is needed to iterate through
+            large result sets. The application is responsible for decoding
+            the data that is needed.
 
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
@@ -1844,6 +1861,7 @@ class BatchSnapshot(object):
         self,
         batch,
         *,
+        lazy_decode: bool = False,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
     ):
@@ -1853,6 +1871,13 @@ class BatchSnapshot(object):
         :param batch:
             one of the mappings returned from an earlier call to
             :meth:`generate_query_batches`.
+
+        :type lazy_decode: bool
+        :param lazy_decode:
+            (Optional) If this argument is set to ``true``, the iterator
+            returns the underlying protobuf values instead of decoded Python
+            objects. This reduces the time that is needed to iterate through
+            large result sets.
 
         :type retry: :class:`~google.api_core.retry.Retry`
         :param retry: (Optional) The retry settings for this request.
@@ -1870,6 +1895,7 @@ class BatchSnapshot(object):
             return self._get_snapshot().execute_sql(
                 partition=batch["partition"],
                 **batch["query"],
+                lazy_decode=lazy_decode,
                 retry=retry,
                 timeout=timeout,
             )
@@ -1883,6 +1909,7 @@ class BatchSnapshot(object):
         max_partitions=None,
         query_options=None,
         data_boost_enabled=False,
+        lazy_decode=False,
     ):
         """Start a partitioned query operation to get list of partitions and
         then executes each partition on a separate thread
@@ -1943,7 +1970,7 @@ class BatchSnapshot(object):
                     data_boost_enabled,
                 )
             )
-            return MergedResultSet(self, partitions, 0)
+            return MergedResultSet(self, partitions, 0, lazy_decode=lazy_decode)
 
     def process(self, batch):
         """Process a single, partitioned query or read.
