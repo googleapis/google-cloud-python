@@ -5537,6 +5537,23 @@ def test_df_cached(scalars_df_index):
     pandas.testing.assert_frame_equal(df.to_pandas(), df_cached_copy.to_pandas())
 
 
+def test_df_cached_many_index_cols(scalars_df_index):
+    index_cols = [
+        "int64_too",
+        "time_col",
+        "int64_col",
+        "bool_col",
+        "date_col",
+        "timestamp_col",
+        "string_col",
+    ]
+    df = scalars_df_index.set_index(index_cols)
+    df = df[df["rowindex_2"] % 2 == 0]
+
+    df_cached_copy = df.cache()
+    pandas.testing.assert_frame_equal(df.to_pandas(), df_cached_copy.to_pandas())
+
+
 def test_assign_after_binop_row_joins():
     pd_df = pd.DataFrame(
         {

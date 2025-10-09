@@ -637,14 +637,18 @@ class BigQueryCachingExecutor(executor.Executor):
 
             create_table = True
             if not cache_spec.cluster_cols:
-                assert len(cache_spec.cluster_cols) <= _MAX_CLUSTER_COLUMNS
                 offsets_id = bigframes.core.identifiers.ColumnId(
                     bigframes.core.guid.generate_guid()
                 )
                 plan = nodes.PromoteOffsetsNode(plan, offsets_id)
                 cluster_cols = [offsets_id.sql]
             else:
-                cluster_cols = cache_spec.cluster_cols
+                cluster_cols = [
+                    col
+                    for col in cache_spec.cluster_cols
+                    if bigframes.dtypes.is_clusterable(plan.schema.get_type(col))
+                ]
+                cluster_cols = cluster_cols[:_MAX_CLUSTER_COLUMNS]
 
         compiled = compile.compile_sql(
             compile.CompileRequest(
