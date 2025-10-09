@@ -117,6 +117,22 @@ class Document(proto.Message):
             blobs in this document, e.g. image bytes, such
             that it can be referenced by other fields in the
             document via asset id.
+        entity_validation_output (google.cloud.documentai_v1beta3.types.Document.EntityValidationOutput):
+            The entity validation output for the document. This is the
+            validation output for ``document.entities`` field.
+        entities_revisions (MutableSequence[google.cloud.documentai_v1beta3.types.Document.EntitiesRevision]):
+            A list of entity revisions. The entity
+            revisions are appended to the document in the
+            processing order. This field can be used for
+            comparing the entity extraction results at
+            different stages of the processing.
+        entities_revision_id (str):
+            The entity revision id that ``document.entities`` field is
+            based on. If this field is set and ``entities_revisions`` is
+            not empty, the entities in ``document.entities`` field are
+            the entities in the entity revision with this id and
+            ``document.entity_validation_output`` field is the
+            ``entity_validation_output`` field in this entity revision.
     """
 
     class ShardInfo(proto.Message):
@@ -1235,7 +1251,29 @@ class Document(proto.Message):
             redacted (bool):
                 Optional. Whether the entity will be redacted
                 for de-identification purposes.
+            method (google.cloud.documentai_v1beta3.types.Document.Entity.Method):
+                Optional. Specifies how the entity's value is
+                obtained.
         """
+
+        class Method(proto.Enum):
+            r"""Specifies how the entity's value is obtained.
+
+            Values:
+                METHOD_UNSPECIFIED (0):
+                    When the method is not specified, it should be treated as
+                    ``EXTRACT``.
+                EXTRACT (1):
+                    The entity's value is directly extracted
+                    as-is from the document text.
+                DERIVE (2):
+                    The entity's value is derived through
+                    inference and is not necessarily an exact text
+                    extraction from the document.
+            """
+            METHOD_UNSPECIFIED = 0
+            EXTRACT = 1
+            DERIVE = 2
 
         class NormalizedValue(proto.Message):
             r"""Parsed and normalized entity value.
@@ -1282,6 +1320,11 @@ class Document(proto.Message):
                     This field is a member of `oneof`_ ``structured_value``.
                 float_value (float):
                     Float value.
+
+                    This field is a member of `oneof`_ ``structured_value``.
+                signature_value (bool):
+                    A signature - a graphical representation of a
+                    person's name, often used to sign a document.
 
                     This field is a member of `oneof`_ ``structured_value``.
                 text (str):
@@ -1340,6 +1383,11 @@ class Document(proto.Message):
                 number=8,
                 oneof="structured_value",
             )
+            signature_value: bool = proto.Field(
+                proto.BOOL,
+                number=10,
+                oneof="structured_value",
+            )
             text: str = proto.Field(
                 proto.STRING,
                 number=1,
@@ -1393,6 +1441,11 @@ class Document(proto.Message):
         redacted: bool = proto.Field(
             proto.BOOL,
             number=12,
+        )
+        method: "Document.Entity.Method" = proto.Field(
+            proto.ENUM,
+            number=15,
+            enum="Document.Entity.Method",
         )
 
     class EntityRelation(proto.Message):
@@ -1920,6 +1973,8 @@ class Document(proto.Message):
                         A text block could further have child blocks.
                         Repeated blocks support further hierarchies and
                         nested blocks.
+                    annotations (google.cloud.documentai_v1beta3.types.Document.Annotations):
+                        Annotation of the text block.
                 """
 
                 text: str = proto.Field(
@@ -1937,6 +1992,11 @@ class Document(proto.Message):
                     number=3,
                     message="Document.DocumentLayout.DocumentLayoutBlock",
                 )
+                annotations: "Document.Annotations" = proto.Field(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Document.Annotations",
+                )
 
             class LayoutTableBlock(proto.Message):
                 r"""Represents a table type block.
@@ -1948,6 +2008,8 @@ class Document(proto.Message):
                         Body rows containing main table content.
                     caption (str):
                         Table caption/title.
+                    annotations (google.cloud.documentai_v1beta3.types.Document.Annotations):
+                        Annotation of the table block.
                 """
 
                 header_rows: MutableSequence[
@@ -1967,6 +2029,11 @@ class Document(proto.Message):
                 caption: str = proto.Field(
                     proto.STRING,
                     number=3,
+                )
+                annotations: "Document.Annotations" = proto.Field(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Document.Annotations",
                 )
 
             class LayoutTableRow(proto.Message):
@@ -2439,6 +2506,113 @@ class Document(proto.Message):
             number=3,
         )
 
+    class EntityValidationOutput(proto.Message):
+        r"""The output of the validation given the document and the
+        validation rules.
+
+        Attributes:
+            validation_results (MutableSequence[google.cloud.documentai_v1beta3.types.Document.EntityValidationOutput.ValidationResult]):
+                The result of each validation rule.
+            pass_all_rules (bool):
+                The overall result of the validation, true if
+                all applicable rules are valid.
+        """
+
+        class ValidationResult(proto.Message):
+            r"""Validation result for a single validation rule.
+
+            Attributes:
+                rule_name (str):
+                    The name of the validation rule.
+                rule_description (str):
+                    The description of the validation rule.
+                validation_result_type (google.cloud.documentai_v1beta3.types.Document.EntityValidationOutput.ValidationResult.ValidationResultType):
+                    The result of the validation rule.
+                validation_details (str):
+                    The detailed information of the running the
+                    validation process using the entity from the
+                    document based on the validation rule.
+            """
+
+            class ValidationResultType(proto.Enum):
+                r"""The result of the validation rule.
+
+                Values:
+                    VALIDATION_RESULT_TYPE_UNSPECIFIED (0):
+                        The validation result type is unspecified.
+                    VALIDATION_RESULT_TYPE_VALID (1):
+                        The validation is valid.
+                    VALIDATION_RESULT_TYPE_INVALID (2):
+                        The validation is invalid.
+                    VALIDATION_RESULT_TYPE_SKIPPED (3):
+                        The validation is skipped.
+                    VALIDATION_RESULT_TYPE_NOT_APPLICABLE (4):
+                        The validation is not applicable.
+                """
+                VALIDATION_RESULT_TYPE_UNSPECIFIED = 0
+                VALIDATION_RESULT_TYPE_VALID = 1
+                VALIDATION_RESULT_TYPE_INVALID = 2
+                VALIDATION_RESULT_TYPE_SKIPPED = 3
+                VALIDATION_RESULT_TYPE_NOT_APPLICABLE = 4
+
+            rule_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            rule_description: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            validation_result_type: "Document.EntityValidationOutput.ValidationResult.ValidationResultType" = proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="Document.EntityValidationOutput.ValidationResult.ValidationResultType",
+            )
+            validation_details: str = proto.Field(
+                proto.STRING,
+                number=4,
+            )
+
+        validation_results: MutableSequence[
+            "Document.EntityValidationOutput.ValidationResult"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Document.EntityValidationOutput.ValidationResult",
+        )
+        pass_all_rules: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+
+    class EntitiesRevision(proto.Message):
+        r"""Entity revision.
+
+        Attributes:
+            revision_id (str):
+                The revision id.
+            entities (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Entity]):
+                The entities in this revision.
+            entity_validation_output (google.cloud.documentai_v1beta3.types.Document.EntityValidationOutput):
+                The entity validation output for this
+                revision.
+        """
+
+        revision_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        entities: MutableSequence["Document.Entity"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Document.Entity",
+        )
+        entity_validation_output: "Document.EntityValidationOutput" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Document.EntityValidationOutput",
+        )
+
     uri: str = proto.Field(
         proto.STRING,
         number=1,
@@ -2515,6 +2689,20 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=19,
         message=BlobAsset,
+    )
+    entity_validation_output: EntityValidationOutput = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=EntityValidationOutput,
+    )
+    entities_revisions: MutableSequence[EntitiesRevision] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=22,
+        message=EntitiesRevision,
+    )
+    entities_revision_id: str = proto.Field(
+        proto.STRING,
+        number=23,
     )
 
 
