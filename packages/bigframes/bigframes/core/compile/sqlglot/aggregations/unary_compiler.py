@@ -151,6 +151,23 @@ def _(
     )
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.DiffOp)
+def _(
+    op: agg_ops.DiffOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    shift_op_impl = UNARY_OP_REGISTRATION[agg_ops.ShiftOp(0)]
+    shifted = shift_op_impl(agg_ops.ShiftOp(op.periods), column, window)
+    if column.dtype in (dtypes.BOOL_DTYPE, dtypes.INT_DTYPE, dtypes.FLOAT_DTYPE):
+        if column.dtype == dtypes.BOOL_DTYPE:
+            return sge.NEQ(this=column.expr, expression=shifted)
+        else:
+            return sge.Sub(this=column.expr, expression=shifted)
+    else:
+        raise TypeError(f"Cannot perform diff on type {column.dtype}")
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.MaxOp)
 def _(
     op: agg_ops.MaxOp,
@@ -238,6 +255,27 @@ def _(
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
     return apply_window_if_present(sge.func("COUNT", sge.convert(1)), window)
+
+
+@UNARY_OP_REGISTRATION.register(agg_ops.ShiftOp)
+def _(
+    op: agg_ops.ShiftOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    if op.periods == 0:  # No-op
+        return column.expr
+    if op.periods > 0:
+        return apply_window_if_present(
+            sge.func("LAG", column.expr, sge.convert(op.periods)),
+            window,
+            include_framing_clauses=False,
+        )
+    return apply_window_if_present(
+        sge.func("LEAD", column.expr, sge.convert(-op.periods)),
+        window,
+        include_framing_clauses=False,
+    )
 
 
 @UNARY_OP_REGISTRATION.register(agg_ops.SumOp)
