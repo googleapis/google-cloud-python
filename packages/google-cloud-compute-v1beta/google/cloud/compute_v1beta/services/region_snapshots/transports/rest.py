@@ -831,7 +831,7 @@ class RegionSnapshotsRestTransport(_BaseRegionSnapshotsRestTransport):
                 resource. You can use snapshots to back
                 up data on a regular interval. For more
                 information, read Creating persistent
-                disk snapshots. LINT.IfChange
+                disk snapshots.
 
             """
 
