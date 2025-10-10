@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.4.0...google-cloud-geminidataanalytics-v0.5.0) (2025-10-10)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.3.0...google-cloud-geminidataanalytics-v0.4.0) (2025-09-24)
 
 

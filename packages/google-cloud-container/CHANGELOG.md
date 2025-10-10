@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.60.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.59.0...google-cloud-container-v2.60.0) (2025-10-10)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [2.59.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.58.0...google-cloud-container-v2.59.0) (2025-07-23)
 
 
