@@ -35,3 +35,4 @@ def test_read_gbq_query_sets_destination_table():
 
     assert query == "SELECT 'my-test-query';"
     assert config.destination is not None
+    session.close()
