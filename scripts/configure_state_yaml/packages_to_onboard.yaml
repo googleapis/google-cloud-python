@@ -137,6 +137,7 @@ packages_to_onboard: [
   "google-cloud-netapp",
   "google-cloud-network-connectivity",
   "google-cloud-network-management",
+  "google-cloud-network-security",
   "google-cloud-network-services",
   "google-cloud-notebooks",
   "google-cloud-optimization",

@@ -4287,3 +4287,26 @@ libraries:
     remove_regex:
       - ^packages/googleapis-common-protos/google/(?:api|cloud|rpc|type)/.*/.*_pb2\.(?:py|pyi)$/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-network-security
+    version: 0.9.19
+    last_generated_commit: 102d9f92ac6ed649a61efd9b208e4d1de278e9bb
+    apis:
+      - path: google/cloud/networksecurity/v1alpha1
+        service_config: networksecurity_v1alpha1.yaml
+      - path: google/cloud/networksecurity/v1
+        service_config: networksecurity_v1.yaml
+      - path: google/cloud/networksecurity/v1beta1
+        service_config: networksecurity_v1beta1.yaml
+    source_roots:
+      - packages/google-cloud-network-security
+    preserve_regex:
+      - packages/google-cloud-network-security/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-network-security
+    tag_format: '{id}-v{version}'
