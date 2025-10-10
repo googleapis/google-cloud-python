@@ -1328,6 +1328,369 @@ class ReservationSubBlocksClient(metaclass=ReservationSubBlocksClientMeta):
         # Done; return the response.
         return response
 
+    def report_faulty_unary(
+        self,
+        request: Optional[
+            Union[compute.ReportFaultyReservationSubBlockRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        parent_name: Optional[str] = None,
+        reservation_sub_block: Optional[str] = None,
+        reservation_sub_blocks_report_faulty_request_resource: Optional[
+            compute.ReservationSubBlocksReportFaultyRequest
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> compute.Operation:
+        r"""Allows customers to report a faulty subBlock.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_report_faulty():
+                # Create a client
+                client = compute_v1.ReservationSubBlocksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ReportFaultyReservationSubBlockRequest(
+                    parent_name="parent_name_value",
+                    project="project_value",
+                    reservation_sub_block="reservation_sub_block_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.report_faulty(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.ReportFaultyReservationSubBlockRequest, dict]):
+                The request object. A request message for
+                ReservationSubBlocks.ReportFaulty. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                Name of the zone for this request.
+                Zone name should conform to RFC1035.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            parent_name (str):
+                The name of the parent reservation and parent block. In
+                the format of
+                reservations/{reservation_name}/reservationBlocks/{reservation_block_name}
+
+                This corresponds to the ``parent_name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            reservation_sub_block (str):
+                The name of the reservation subBlock.
+                Name should conform to RFC1035 or be a
+                resource ID.
+
+                This corresponds to the ``reservation_sub_block`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            reservation_sub_blocks_report_faulty_request_resource (google.cloud.compute_v1.types.ReservationSubBlocksReportFaultyRequest):
+                The body resource for this request
+                This corresponds to the ``reservation_sub_blocks_report_faulty_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [
+            project,
+            zone,
+            parent_name,
+            reservation_sub_block,
+            reservation_sub_blocks_report_faulty_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, compute.ReportFaultyReservationSubBlockRequest):
+            request = compute.ReportFaultyReservationSubBlockRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if parent_name is not None:
+                request.parent_name = parent_name
+            if reservation_sub_block is not None:
+                request.reservation_sub_block = reservation_sub_block
+            if reservation_sub_blocks_report_faulty_request_resource is not None:
+                request.reservation_sub_blocks_report_faulty_request_resource = (
+                    reservation_sub_blocks_report_faulty_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.report_faulty]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("parent_name", request.parent_name),
+                    ("reservation_sub_block", request.reservation_sub_block),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def report_faulty(
+        self,
+        request: Optional[
+            Union[compute.ReportFaultyReservationSubBlockRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        zone: Optional[str] = None,
+        parent_name: Optional[str] = None,
+        reservation_sub_block: Optional[str] = None,
+        reservation_sub_blocks_report_faulty_request_resource: Optional[
+            compute.ReservationSubBlocksReportFaultyRequest
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Allows customers to report a faulty subBlock.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_report_faulty():
+                # Create a client
+                client = compute_v1.ReservationSubBlocksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ReportFaultyReservationSubBlockRequest(
+                    parent_name="parent_name_value",
+                    project="project_value",
+                    reservation_sub_block="reservation_sub_block_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.report_faulty(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.ReportFaultyReservationSubBlockRequest, dict]):
+                The request object. A request message for
+                ReservationSubBlocks.ReportFaulty. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                Name of the zone for this request.
+                Zone name should conform to RFC1035.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            parent_name (str):
+                The name of the parent reservation and parent block. In
+                the format of
+                reservations/{reservation_name}/reservationBlocks/{reservation_block_name}
+
+                This corresponds to the ``parent_name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            reservation_sub_block (str):
+                The name of the reservation subBlock.
+                Name should conform to RFC1035 or be a
+                resource ID.
+
+                This corresponds to the ``reservation_sub_block`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            reservation_sub_blocks_report_faulty_request_resource (google.cloud.compute_v1.types.ReservationSubBlocksReportFaultyRequest):
+                The body resource for this request
+                This corresponds to the ``reservation_sub_blocks_report_faulty_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [
+            project,
+            zone,
+            parent_name,
+            reservation_sub_block,
+            reservation_sub_blocks_report_faulty_request_resource,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, compute.ReportFaultyReservationSubBlockRequest):
+            request = compute.ReportFaultyReservationSubBlockRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if parent_name is not None:
+                request.parent_name = parent_name
+            if reservation_sub_block is not None:
+                request.reservation_sub_block = reservation_sub_block
+            if reservation_sub_blocks_report_faulty_request_resource is not None:
+                request.reservation_sub_blocks_report_faulty_request_resource = (
+                    reservation_sub_blocks_report_faulty_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.report_faulty]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("zone", request.zone),
+                    ("parent_name", request.parent_name),
+                    ("reservation_sub_block", request.reservation_sub_block),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "ReservationSubBlocksClient":
         return self
 

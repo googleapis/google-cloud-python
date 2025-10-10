@@ -153,6 +153,11 @@ class ReservationSubBlocksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.report_faulty: gapic_v1.method.wrap_method(
+                self.report_faulty,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -193,6 +198,15 @@ class ReservationSubBlocksTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.PerformMaintenanceReservationSubBlockRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def report_faulty(
+        self,
+    ) -> Callable[
+        [compute.ReportFaultyReservationSubBlockRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

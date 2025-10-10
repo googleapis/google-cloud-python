@@ -163,6 +163,11 @@ class BackendServicesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_effective_security_policies: gapic_v1.method.wrap_method(
+                self.get_effective_security_policies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_health: gapic_v1.method.wrap_method(
                 self.get_health,
                 default_timeout=None,
@@ -274,6 +279,18 @@ class BackendServicesTransport(abc.ABC):
     ) -> Callable[
         [compute.GetBackendServiceRequest],
         Union[compute.BackendService, Awaitable[compute.BackendService]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_effective_security_policies(
+        self,
+    ) -> Callable[
+        [compute.GetEffectiveSecurityPoliciesBackendServiceRequest],
+        Union[
+            compute.GetEffectiveSecurityPoliciesBackendServiceResponse,
+            Awaitable[compute.GetEffectiveSecurityPoliciesBackendServiceResponse],
+        ],
     ]:
         raise NotImplementedError()
 
