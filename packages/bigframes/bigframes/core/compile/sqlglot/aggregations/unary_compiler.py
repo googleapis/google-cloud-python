@@ -98,6 +98,27 @@ def _(
     return apply_window_if_present(sge.func("COUNT", column.expr), window)
 
 
+@UNARY_OP_REGISTRATION.register(agg_ops.DateSeriesDiffOp)
+def _(
+    op: agg_ops.DateSeriesDiffOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    if column.dtype != dtypes.DATE_DTYPE:
+        raise TypeError(f"Cannot perform date series diff on type {column.dtype}")
+    shift_op_impl = UNARY_OP_REGISTRATION[agg_ops.ShiftOp(0)]
+    shifted = shift_op_impl(agg_ops.ShiftOp(op.periods), column, window)
+    # Conversion factor from days to microseconds
+    conversion_factor = 24 * 60 * 60 * 1_000_000
+    return sge.Cast(
+        this=sge.DateDiff(
+            this=column.expr, expression=shifted, unit=sge.Identifier(this="DAY")
+        )
+        * sge.convert(conversion_factor),
+        to="INT64",
+    )
+
+
 @UNARY_OP_REGISTRATION.register(agg_ops.DenseRankOp)
 def _(
     op: agg_ops.DenseRankOp,
@@ -293,3 +314,20 @@ def _(
     # Will be null if all inputs are null. Pandas defaults to zero sum though.
     zero = pd.to_timedelta(0) if column.dtype == dtypes.TIMEDELTA_DTYPE else 0
     return sge.func("IFNULL", expr, ir._literal(zero, column.dtype))
+
+
+@UNARY_OP_REGISTRATION.register(agg_ops.TimeSeriesDiffOp)
+def _(
+    op: agg_ops.TimeSeriesDiffOp,
+    column: typed_expr.TypedExpr,
+    window: typing.Optional[window_spec.WindowSpec] = None,
+) -> sge.Expression:
+    if column.dtype != dtypes.TIMESTAMP_DTYPE:
+        raise TypeError(f"Cannot perform time series diff on type {column.dtype}")
+    shift_op_impl = UNARY_OP_REGISTRATION[agg_ops.ShiftOp(0)]
+    shifted = shift_op_impl(agg_ops.ShiftOp(op.periods), column, window)
+    return sge.TimestampDiff(
+        this=column.expr,
+        expression=shifted,
+        unit=sge.Identifier(this="MICROSECOND"),
+    )

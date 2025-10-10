@@ -127,6 +127,17 @@ def test_dense_rank(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_date_series_diff(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "date_col"
+    bf_df = scalar_types_df[[col_name]]
+    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    op = agg_exprs.UnaryAggregation(
+        agg_ops.DateSeriesDiffOp(periods=1), expression.deref(col_name)
+    )
+    sql = _apply_unary_window_op(bf_df, op, window, "diff_date")
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_diff(scalar_types_df: bpd.DataFrame, snapshot):
     # Test integer
     int_col = "int64_col"
@@ -330,4 +341,15 @@ def test_sum(scalar_types_df: bpd.DataFrame, snapshot):
         bf_df, list(agg_ops_map.values()), list(agg_ops_map.keys())
     )
 
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_time_series_diff(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "timestamp_col"
+    bf_df = scalar_types_df[[col_name]]
+    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    op = agg_exprs.UnaryAggregation(
+        agg_ops.TimeSeriesDiffOp(periods=1), expression.deref(col_name)
+    )
+    sql = _apply_unary_window_op(bf_df, op, window, "diff_time")
     snapshot.assert_match(sql, "out.sql")
