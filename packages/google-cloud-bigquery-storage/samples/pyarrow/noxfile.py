@@ -28,7 +28,7 @@ import nox
 # WARNING - WARNING - WARNING - WARNING - WARNING
 # WARNING - WARNING - WARNING - WARNING - WARNING
 
-BLACK_VERSION = "black==23.7.0"
+BLACK_VERSION = "black==22.3.0"
 ISORT_VERSION = "isort==5.10.1"
 
 # Copy `noxfile_config.py` to your directory and modify it instead.
