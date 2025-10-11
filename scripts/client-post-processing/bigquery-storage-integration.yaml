@@ -115,6 +115,59 @@ replacements:
       @nox.session(python=DEFAULT_PYTHON_VERSION)
     count: 1
   - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
+      session.skip\("cpp implementation is not supported in python 3.11\+"\)\n
+    after: |
+      session.skip("cpp implementation is not supported in python 3.11+")
+          # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
+          # Run tests with 3.14 once this bug is fixed
+          if session.python == "3.14":
+              session.skip(
+                  "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
+              )\n
+    count: 2
+  - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
+      \@nox.session\(python=PREVIEW_PYTHON_VERSION\)
+    after: |
+      @nox.session(python=["3.13", "3.14"])
+    count: 1
+  - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
+      \@nox.session\(python=DEFAULT_PYTHON_VERSION\)
+      \@nox.parametrize\(
+          "protobuf_implementation",
+          \["python", "upb"\],
+      \)
+      def core_deps_from_source\(session, protobuf_implementation\):
+          \"\"\"Run all tests with core dependencies installed from source
+          rather than pulling the dependencies from PyPI.
+          \"\"\"
+    after: |
+      @nox.session(python=["3.13", "3.14"])
+      @nox.parametrize(
+          "protobuf_implementation",
+          ["python", "upb"],
+      )
+      def core_deps_from_source(session, protobuf_implementation):
+          """Run all tests with core dependencies installed from source
+          rather than pulling the dependencies from PyPI.
+          """
+
+          # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
+          # Run tests with 3.14 once this bug is fixed
+          if session.python == "3.14":
+              session.skip(
+                  "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
+              )
+    count: 1
+  - paths: [
       packages/google-cloud-bigquery-storage/setup.py,
     ]
     before: |
