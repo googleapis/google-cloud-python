@@ -14,11 +14,8 @@
 
 from __future__ import annotations
 
-import typing
-
 import sqlglot.expressions as sge
 
-from bigframes.core import window_spec
 import bigframes.core.compile.sqlglot.aggregations.op_registration as reg
 import bigframes.core.compile.sqlglot.expressions.typed_expr as typed_expr
 from bigframes.operations import aggregations as agg_ops
@@ -29,9 +26,35 @@ ORDERED_UNARY_OP_REGISTRATION = reg.OpRegistration()
 def compile(
     op: agg_ops.WindowOp,
     column: typed_expr.TypedExpr,
-    window: typing.Optional[window_spec.WindowSpec] = None,
-    order_by: typing.Sequence[sge.Expression] = [],
+    *,
+    order_by: tuple[sge.Expression, ...],
 ) -> sge.Expression:
-    return ORDERED_UNARY_OP_REGISTRATION[op](
-        op, column, window=window, order_by=order_by
-    )
+    return ORDERED_UNARY_OP_REGISTRATION[op](op, column, order_by=order_by)
+
+
+@ORDERED_UNARY_OP_REGISTRATION.register(agg_ops.ArrayAggOp)
+def _(
+    op: agg_ops.ArrayAggOp,
+    column: typed_expr.TypedExpr,
+    *,
+    order_by: tuple[sge.Expression, ...],
+) -> sge.Expression:
+    expr = column.expr
+    if len(order_by) > 0:
+        expr = sge.Order(this=column.expr, expressions=list(order_by))
+    return sge.IgnoreNulls(this=sge.ArrayAgg(this=expr))
+
+
+@ORDERED_UNARY_OP_REGISTRATION.register(agg_ops.StringAggOp)
+def _(
+    op: agg_ops.StringAggOp,
+    column: typed_expr.TypedExpr,
+    *,
+    order_by: tuple[sge.Expression, ...],
+) -> sge.Expression:
+    expr = column.expr
+    if len(order_by) > 0:
+        expr = sge.Order(this=expr, expressions=list(order_by))
+
+    expr = sge.GroupConcat(this=expr, separator=sge.convert(op.sep))
+    return sge.func("COALESCE", expr, sge.convert(""))
