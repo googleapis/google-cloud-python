@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.25.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.24.0...v2.25.0) (2025-10-13)
+
+
+### Features
+
+* Add barh, pie plot types ([#2146](https://github.com/googleapis/python-bigquery-dataframes/issues/2146)) ([5cc3c5b](https://github.com/googleapis/python-bigquery-dataframes/commit/5cc3c5b1391a7dfa062b1d77f001726b013f6337))
+* Add Index.__eq__ for consts, aligned objects ([#2141](https://github.com/googleapis/python-bigquery-dataframes/issues/2141)) ([8514200](https://github.com/googleapis/python-bigquery-dataframes/commit/85142008ec895fa078d192bbab942d0257f70df3))
+* Add output_schema parameter to ai.generate() ([#2139](https://github.com/googleapis/python-bigquery-dataframes/issues/2139)) ([ef0b0b7](https://github.com/googleapis/python-bigquery-dataframes/commit/ef0b0b73843da2a93baf08e4cd5457fbb590b89c))
+* Create session-scoped `cut`, `DataFrame`, `MultiIndex`, `Index`, `Series`, `to_datetime`, and `to_timedelta` methods ([#2157](https://github.com/googleapis/python-bigquery-dataframes/issues/2157)) ([5e1e809](https://github.com/googleapis/python-bigquery-dataframes/commit/5e1e8098ecf212c91d73fa80d722d1cb3e46668b))
+* Replace ML.GENERATE_TEXT with AI.GENERATE for audio transcription ([#2151](https://github.com/googleapis/python-bigquery-dataframes/issues/2151)) ([a410d0a](https://github.com/googleapis/python-bigquery-dataframes/commit/a410d0ae43ef3b053b650804156eda0b1f569da9))
+* Support string literal inputs for AI functions ([#2152](https://github.com/googleapis/python-bigquery-dataframes/issues/2152)) ([7600001](https://github.com/googleapis/python-bigquery-dataframes/commit/760000122dc190ac8a3303234cf4cbee1bbb9493))
+
+
+### Bug Fixes
+
+* Address typo in error message ([#2142](https://github.com/googleapis/python-bigquery-dataframes/issues/2142)) ([cdf2dd5](https://github.com/googleapis/python-bigquery-dataframes/commit/cdf2dd55a0c03da50ab92de09788cafac0abf6f6))
+* Avoid possible circular imports in global session ([#2115](https://github.com/googleapis/python-bigquery-dataframes/issues/2115)) ([095c0b8](https://github.com/googleapis/python-bigquery-dataframes/commit/095c0b85a25a2e51087880909597cc62a0341c93))
+* Fix too many cluster columns requested by caching ([#2155](https://github.com/googleapis/python-bigquery-dataframes/issues/2155)) ([35c1c33](https://github.com/googleapis/python-bigquery-dataframes/commit/35c1c33b85d1b92e402aab73677df3ffe43a51b4))
+* Show progress even in job optional queries ([#2119](https://github.com/googleapis/python-bigquery-dataframes/issues/2119)) ([1f48d3a](https://github.com/googleapis/python-bigquery-dataframes/commit/1f48d3a62e7e6dac4acb39e911daf766b8e2fe62))
+* Yield row count from read session if otherwise unknown ([#2148](https://github.com/googleapis/python-bigquery-dataframes/issues/2148)) ([8997d4d](https://github.com/googleapis/python-bigquery-dataframes/commit/8997d4d7d9965e473195f98c550c80657035b7e1))
+
+
+### Documentation
+
+* Add a brief intro notebook for bbq AI functions ([#2150](https://github.com/googleapis/python-bigquery-dataframes/issues/2150)) ([1f434fb](https://github.com/googleapis/python-bigquery-dataframes/commit/1f434fb5c7c00601654b3ab19c6ad7fceb258bd6))
+* Fix ai function related docs ([#2149](https://github.com/googleapis/python-bigquery-dataframes/issues/2149)) ([93a0749](https://github.com/googleapis/python-bigquery-dataframes/commit/93a0749392b84f27162654fe5ea5baa329a23f99))
+* Remove progress bar from getting started template ([#2143](https://github.com/googleapis/python-bigquery-dataframes/issues/2143)) ([d13abad](https://github.com/googleapis/python-bigquery-dataframes/commit/d13abadbcd68d03997e8dc11bb7a2b14bbd57fcc))
+
 ## [2.24.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.23.0...v2.24.0) (2025-10-07)
 
 
