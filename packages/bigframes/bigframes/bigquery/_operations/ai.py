@@ -65,13 +65,20 @@ def generate(
         1    Ottawa\\n
         Name: result, dtype: string
 
-        You get structured output when the `output_schema` parameter is set:
+    You get structured output when the `output_schema` parameter is set:
 
         >>> animals = bpd.Series(["Rabbit", "Spider"])
         >>> bbq.ai.generate(animals, output_schema={"number_of_legs": "INT64", "is_herbivore": "BOOL"})
         0    {'is_herbivore': True, 'number_of_legs': 4, 'f...
         1    {'is_herbivore': False, 'number_of_legs': 8, '...
         dtype: struct<is_herbivore: bool, number_of_legs: int64, full_response: extension<dbjson<JSONArrowType>>, status: string>[pyarrow]
+
+    .. note::
+
+        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+        and might have limited support. For more information, see the launch stage descriptions
+        (https://cloud.google.com/products#product-launch-stages).
 
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
@@ -165,6 +172,13 @@ def generate_bool(
         2    False
         Name: result, dtype: boolean
 
+    .. note::
+
+        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+        and might have limited support. For more information, see the launch stage descriptions
+        (https://cloud.google.com/products#product-launch-stages).
+
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
@@ -239,6 +253,13 @@ def generate_int(
         1    4
         2    8
         Name: result, dtype: Int64
+
+    .. note::
+
+        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+        and might have limited support. For more information, see the launch stage descriptions
+        (https://cloud.google.com/products#product-launch-stages).
 
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
@@ -315,6 +336,13 @@ def generate_double(
         2    8.0
         Name: result, dtype: Float64
 
+    .. note::
+
+        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+        and might have limited support. For more information, see the launch stage descriptions
+        (https://cloud.google.com/products#product-launch-stages).
+
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
             A mixture of Series and string literals that specifies the prompt to send to the model. The Series can be BigFrames Series
@@ -371,6 +399,7 @@ def if_(
     provides optimization such that not all rows are evaluated with the LLM.
 
     **Examples:**
+
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
         >>> bpd.options.display.progress_bar = None
@@ -385,6 +414,13 @@ def if_(
         0    Massachusetts
         1         Illinois
         dtype: string
+
+    .. note::
+
+        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+        and might have limited support. For more information, see the launch stage descriptions
+        (https://cloud.google.com/products#product-launch-stages).
 
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
@@ -432,6 +468,13 @@ def classify(
         1   Salmon    Fish
         <BLANKLINE>
         [2 rows x 2 columns]
+
+    .. note::
+
+        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+        and might have limited support. For more information, see the launch stage descriptions
+        (https://cloud.google.com/products#product-launch-stages).
 
     Args:
         input (str | Series | List[str|Series] | Tuple[str|Series, ...]):
@@ -481,6 +524,13 @@ def score(
         1    1.0
         2    3.0
         dtype: Float64
+
+    .. note::
+
+        This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+        Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+        and might have limited support. For more information, see the launch stage descriptions
+        (https://cloud.google.com/products#product-launch-stages).
 
     Args:
         prompt (str | Series | List[str|Series] | Tuple[str|Series, ...]):
