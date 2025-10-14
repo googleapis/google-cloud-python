@@ -559,6 +559,7 @@ class API:
                     naming=naming,
                     all_protos=new_all_protos,
                     service_yaml_config=service_yaml_config,
+                    gapic_version=gapic_version,
                 )
 
         return api
