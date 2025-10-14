@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-network-security/#history
 
+## [0.9.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.20...google-cloud-network-security-v0.9.21) (2025-10-14)
+
+
+### Features
+
+* [google-cloud-network-security] Update `networksecurity/v1beta1` Python GAPIC to support REST transport ([#14702](https://github.com/googleapis/google-cloud-python/issues/14702)) ([accb1e5](https://github.com/googleapis/google-cloud-python/commit/accb1e57103f15c4111b62ab6102db43c54cbec3))
+
 ## [0.9.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.19...google-cloud-network-security-v0.9.20) (2025-10-14)
 
 
