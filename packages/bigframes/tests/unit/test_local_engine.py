@@ -42,6 +42,14 @@ def small_inline_frame() -> pd.DataFrame:
     return df
 
 
+def test_polars_local_engine_series(polars_session: bigframes.Session):
+    bf_series = bpd.Series([1, 2, 3], session=polars_session)
+    pd_series = pd.Series([1, 2, 3], dtype=bf_series.dtype)
+    bf_result = bf_series.to_pandas()
+    pd_result = pd_series
+    pandas.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
+
+
 def test_polars_local_engine_add(
     small_inline_frame: pd.DataFrame, polars_session: bigframes.Session
 ):

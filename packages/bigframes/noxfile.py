@@ -46,9 +46,7 @@ COLAB_AND_BQ_STUDIO_PYTHON_VERSIONS = [
     "3.11",
 ]
 
-# pytest-retry is not yet compatible with pytest 8.x.
-# https://github.com/str0zzapreti/pytest-retry/issues/32
-PYTEST_VERSION = "pytest<8.0.0dev"
+PYTEST_VERSION = "pytest==8.4.2"
 SPHINX_VERSION = "sphinx==4.5.0"
 LINT_PATHS = [
     "docs",
@@ -91,7 +89,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
 # 3.10 is needed for Windows tests as it is the only version installed in the
 # bigframes-windows container image. For more information, search
 # bigframes/windows-docker, internally.
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.13"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "jinja2",
     "mock",
@@ -115,7 +113,7 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     # Make sure we leave some versions without "extras" so we know those
     # dependencies are actually optional.
     "3.10": ["tests", "scikit-learn", "anywidget"],
-    "3.11": ["tests", "scikit-learn", "polars", "anywidget"],
+    LATEST_FULLY_SUPPORTED_PYTHON: ["tests", "scikit-learn", "polars", "anywidget"],
     "3.13": ["tests", "polars", "anywidget"],
 }
 
@@ -132,7 +130,7 @@ nox.options.sessions = [
     # from GitHub actions.
     "unit_noextras",
     "system-3.9",  # No extras.
-    "system-3.11",
+    f"system-{LATEST_FULLY_SUPPORTED_PYTHON}",  # All extras.
     "cover",
     # TODO(b/401609005): remove
     "cleanup",

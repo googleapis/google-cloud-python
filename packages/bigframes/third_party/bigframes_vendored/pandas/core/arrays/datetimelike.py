@@ -53,6 +53,7 @@ class DatelikeOps:
 
             >>> import pandas as pd
             >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
             >>> s = bpd.Series(pd.date_range(
             ...     start='2014-08-01 10:00',
             ...     freq='h',
@@ -87,6 +88,7 @@ class DatelikeOps:
 
             >>> import pandas as pd
             >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
             >>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
             >>> bpd.Series(rng).dt.floor("h")
             0    2018-01-01 11:00:00
