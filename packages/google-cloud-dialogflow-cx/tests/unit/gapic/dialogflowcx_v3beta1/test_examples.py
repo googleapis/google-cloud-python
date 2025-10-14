@@ -63,8 +63,10 @@ from google.cloud.dialogflowcx_v3beta1.services.examples import (
     pagers,
     transports,
 )
+from google.cloud.dialogflowcx_v3beta1.types import data_store_connection
 from google.cloud.dialogflowcx_v3beta1.types import example
 from google.cloud.dialogflowcx_v3beta1.types import example as gcdc_example
+from google.cloud.dialogflowcx_v3beta1.types import trace
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1088,7 +1090,7 @@ def test_create_example(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             token_count=1193,
-            conversation_state=gcdc_example.OutputState.OUTPUT_STATE_OK,
+            conversation_state=trace.OutputState.OUTPUT_STATE_OK,
             language_code="language_code_value",
         )
         response = client.create_example(request)
@@ -1105,7 +1107,7 @@ def test_create_example(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.token_count == 1193
-    assert response.conversation_state == gcdc_example.OutputState.OUTPUT_STATE_OK
+    assert response.conversation_state == trace.OutputState.OUTPUT_STATE_OK
     assert response.language_code == "language_code_value"
 
 
@@ -1236,7 +1238,7 @@ async def test_create_example_async(
                 display_name="display_name_value",
                 description="description_value",
                 token_count=1193,
-                conversation_state=gcdc_example.OutputState.OUTPUT_STATE_OK,
+                conversation_state=trace.OutputState.OUTPUT_STATE_OK,
                 language_code="language_code_value",
             )
         )
@@ -1254,7 +1256,7 @@ async def test_create_example_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.token_count == 1193
-    assert response.conversation_state == gcdc_example.OutputState.OUTPUT_STATE_OK
+    assert response.conversation_state == trace.OutputState.OUTPUT_STATE_OK
     assert response.language_code == "language_code_value"
 
 
@@ -2273,7 +2275,7 @@ def test_get_example(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             token_count=1193,
-            conversation_state=example.OutputState.OUTPUT_STATE_OK,
+            conversation_state=trace.OutputState.OUTPUT_STATE_OK,
             language_code="language_code_value",
         )
         response = client.get_example(request)
@@ -2290,7 +2292,7 @@ def test_get_example(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.token_count == 1193
-    assert response.conversation_state == example.OutputState.OUTPUT_STATE_OK
+    assert response.conversation_state == trace.OutputState.OUTPUT_STATE_OK
     assert response.language_code == "language_code_value"
 
 
@@ -2421,7 +2423,7 @@ async def test_get_example_async(
                 display_name="display_name_value",
                 description="description_value",
                 token_count=1193,
-                conversation_state=example.OutputState.OUTPUT_STATE_OK,
+                conversation_state=trace.OutputState.OUTPUT_STATE_OK,
                 language_code="language_code_value",
             )
         )
@@ -2439,7 +2441,7 @@ async def test_get_example_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.token_count == 1193
-    assert response.conversation_state == example.OutputState.OUTPUT_STATE_OK
+    assert response.conversation_state == trace.OutputState.OUTPUT_STATE_OK
     assert response.language_code == "language_code_value"
 
 
@@ -2612,7 +2614,7 @@ def test_update_example(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             token_count=1193,
-            conversation_state=gcdc_example.OutputState.OUTPUT_STATE_OK,
+            conversation_state=trace.OutputState.OUTPUT_STATE_OK,
             language_code="language_code_value",
         )
         response = client.update_example(request)
@@ -2629,7 +2631,7 @@ def test_update_example(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.token_count == 1193
-    assert response.conversation_state == gcdc_example.OutputState.OUTPUT_STATE_OK
+    assert response.conversation_state == trace.OutputState.OUTPUT_STATE_OK
     assert response.language_code == "language_code_value"
 
 
@@ -2756,7 +2758,7 @@ async def test_update_example_async(
                 display_name="display_name_value",
                 description="description_value",
                 token_count=1193,
-                conversation_state=gcdc_example.OutputState.OUTPUT_STATE_OK,
+                conversation_state=trace.OutputState.OUTPUT_STATE_OK,
                 language_code="language_code_value",
             )
         )
@@ -2774,7 +2776,7 @@ async def test_update_example_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.token_count == 1193
-    assert response.conversation_state == gcdc_example.OutputState.OUTPUT_STATE_OK
+    assert response.conversation_state == trace.OutputState.OUTPUT_STATE_OK
     assert response.language_code == "language_code_value"
 
 
@@ -4161,7 +4163,7 @@ async def test_create_example_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 description="description_value",
                 token_count=1193,
-                conversation_state=gcdc_example.OutputState.OUTPUT_STATE_OK,
+                conversation_state=trace.OutputState.OUTPUT_STATE_OK,
                 language_code="language_code_value",
             )
         )
@@ -4243,7 +4245,7 @@ async def test_get_example_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 description="description_value",
                 token_count=1193,
-                conversation_state=example.OutputState.OUTPUT_STATE_OK,
+                conversation_state=trace.OutputState.OUTPUT_STATE_OK,
                 language_code="language_code_value",
             )
         )
@@ -4275,7 +4277,7 @@ async def test_update_example_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 description="description_value",
                 token_count=1193,
-                conversation_state=gcdc_example.OutputState.OUTPUT_STATE_OK,
+                conversation_state=trace.OutputState.OUTPUT_STATE_OK,
                 language_code="language_code_value",
             )
         )
@@ -4347,18 +4349,106 @@ def test_create_example_rest_call_success(request_type):
         },
         "playbook_output": {
             "execution_summary": "execution_summary_value",
+            "state": 1,
             "action_parameters": {},
         },
         "actions": [
             {
-                "user_utterance": {"text": "text_value"},
-                "agent_utterance": {"text": "text_value"},
+                "user_utterance": {
+                    "text": "text_value",
+                    "audio_tokens": [1286, 1287],
+                    "audio": b"audio_blob",
+                },
+                "event": {"event": "event_value", "text": "text_value"},
+                "agent_utterance": {"text": "text_value", "require_generation": True},
                 "tool_use": {
                     "tool": "tool_value",
                     "display_name": "display_name_value",
                     "action": "action_value",
                     "input_action_parameters": {},
                     "output_action_parameters": {},
+                    "data_store_tool_trace": {
+                        "data_store_connection_signals": {
+                            "rewriter_model_call_signals": {
+                                "rendered_prompt": "rendered_prompt_value",
+                                "model_output": "model_output_value",
+                                "model": "model_value",
+                            },
+                            "rewritten_query": "rewritten_query_value",
+                            "search_snippets": [
+                                {
+                                    "document_title": "document_title_value",
+                                    "document_uri": "document_uri_value",
+                                    "text": "text_value",
+                                    "metadata": {},
+                                }
+                            ],
+                            "answer_generation_model_call_signals": {
+                                "rendered_prompt": "rendered_prompt_value",
+                                "model_output": "model_output_value",
+                                "model": "model_value",
+                            },
+                            "answer": "answer_value",
+                            "answer_parts": [
+                                {
+                                    "text": "text_value",
+                                    "supporting_indices": [1946, 1947],
+                                }
+                            ],
+                            "cited_snippets": [
+                                {"search_snippet": {}, "snippet_index": 1402}
+                            ],
+                            "grounding_signals": {"decision": 1, "score": 1},
+                            "safety_signals": {
+                                "decision": 1,
+                                "banned_phrase_match": 1,
+                                "matched_banned_phrase": "matched_banned_phrase_value",
+                            },
+                        }
+                    },
+                    "webhook_tool_trace": {
+                        "webhook_tag": "webhook_tag_value",
+                        "webhook_uri": "webhook_uri_value",
+                    },
+                },
+                "llm_call": {
+                    "retrieved_examples": [
+                        {
+                            "example_id": "example_id_value",
+                            "example_display_name": "example_display_name_value",
+                            "retrieval_strategy": 1,
+                            "matched_retrieval_label": "matched_retrieval_label_value",
+                        }
+                    ],
+                    "token_count": {
+                        "total_input_token_count": 2491,
+                        "conversation_context_token_count": 3463,
+                        "example_token_count": 2036,
+                        "total_output_token_count": 2620,
+                    },
+                    "model": "model_value",
+                    "temperature": 0.1198,
+                },
+                "intent_match": {
+                    "matched_intents": [
+                        {
+                            "intent_id": "intent_id_value",
+                            "display_name": "display_name_value",
+                            "score": 0.54,
+                            "generative_fallback": {},
+                        }
+                    ]
+                },
+                "flow_state_update": {
+                    "event_type": "event_type_value",
+                    "page_state": {
+                        "page": "page_value",
+                        "display_name": "display_name_value",
+                        "status": "status_value",
+                    },
+                    "updated_parameters": {},
+                    "destination": "destination_value",
+                    "function_call": {"name": "name_value"},
                 },
                 "playbook_invocation": {
                     "playbook": "playbook_value",
@@ -4374,12 +4464,50 @@ def test_create_example_rest_call_success(request_type):
                     "output_action_parameters": {},
                     "flow_state": 1,
                 },
+                "playbook_transition": {
+                    "playbook": "playbook_value",
+                    "display_name": "display_name_value",
+                    "input_action_parameters": {},
+                },
+                "flow_transition": {
+                    "flow": "flow_value",
+                    "display_name": "display_name_value",
+                    "input_action_parameters": {},
+                },
+                "tts": {},
+                "stt": {},
+                "display_name": "display_name_value",
+                "start_time": {"seconds": 751, "nanos": 543},
+                "complete_time": {},
+                "sub_execution_steps": [
+                    {
+                        "name": "name_value",
+                        "tags": ["tags_value1", "tags_value2"],
+                        "metrics": [
+                            {
+                                "name": "name_value",
+                                "value": {
+                                    "null_value": 0,
+                                    "number_value": 0.1285,
+                                    "string_value": "string_value_value",
+                                    "bool_value": True,
+                                    "struct_value": {},
+                                    "list_value": {"values": {}},
+                                },
+                                "unit": "unit_value",
+                            }
+                        ],
+                        "start_time": {},
+                        "complete_time": {},
+                    }
+                ],
+                "status": {"exception": {"error_message": "error_message_value"}},
             }
         ],
         "display_name": "display_name_value",
         "description": "description_value",
         "token_count": 1193,
-        "create_time": {"seconds": 751, "nanos": 543},
+        "create_time": {},
         "update_time": {},
         "conversation_state": 1,
         "language_code": "language_code_value",
@@ -4461,7 +4589,7 @@ def test_create_example_rest_call_success(request_type):
             display_name="display_name_value",
             description="description_value",
             token_count=1193,
-            conversation_state=gcdc_example.OutputState.OUTPUT_STATE_OK,
+            conversation_state=trace.OutputState.OUTPUT_STATE_OK,
             language_code="language_code_value",
         )
 
@@ -4483,7 +4611,7 @@ def test_create_example_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.token_count == 1193
-    assert response.conversation_state == gcdc_example.OutputState.OUTPUT_STATE_OK
+    assert response.conversation_state == trace.OutputState.OUTPUT_STATE_OK
     assert response.language_code == "language_code_value"
 
 
@@ -4832,7 +4960,7 @@ def test_get_example_rest_call_success(request_type):
             display_name="display_name_value",
             description="description_value",
             token_count=1193,
-            conversation_state=example.OutputState.OUTPUT_STATE_OK,
+            conversation_state=trace.OutputState.OUTPUT_STATE_OK,
             language_code="language_code_value",
         )
 
@@ -4854,7 +4982,7 @@ def test_get_example_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.token_count == 1193
-    assert response.conversation_state == example.OutputState.OUTPUT_STATE_OK
+    assert response.conversation_state == trace.OutputState.OUTPUT_STATE_OK
     assert response.language_code == "language_code_value"
 
 
@@ -4971,18 +5099,106 @@ def test_update_example_rest_call_success(request_type):
         },
         "playbook_output": {
             "execution_summary": "execution_summary_value",
+            "state": 1,
             "action_parameters": {},
         },
         "actions": [
             {
-                "user_utterance": {"text": "text_value"},
-                "agent_utterance": {"text": "text_value"},
+                "user_utterance": {
+                    "text": "text_value",
+                    "audio_tokens": [1286, 1287],
+                    "audio": b"audio_blob",
+                },
+                "event": {"event": "event_value", "text": "text_value"},
+                "agent_utterance": {"text": "text_value", "require_generation": True},
                 "tool_use": {
                     "tool": "tool_value",
                     "display_name": "display_name_value",
                     "action": "action_value",
                     "input_action_parameters": {},
                     "output_action_parameters": {},
+                    "data_store_tool_trace": {
+                        "data_store_connection_signals": {
+                            "rewriter_model_call_signals": {
+                                "rendered_prompt": "rendered_prompt_value",
+                                "model_output": "model_output_value",
+                                "model": "model_value",
+                            },
+                            "rewritten_query": "rewritten_query_value",
+                            "search_snippets": [
+                                {
+                                    "document_title": "document_title_value",
+                                    "document_uri": "document_uri_value",
+                                    "text": "text_value",
+                                    "metadata": {},
+                                }
+                            ],
+                            "answer_generation_model_call_signals": {
+                                "rendered_prompt": "rendered_prompt_value",
+                                "model_output": "model_output_value",
+                                "model": "model_value",
+                            },
+                            "answer": "answer_value",
+                            "answer_parts": [
+                                {
+                                    "text": "text_value",
+                                    "supporting_indices": [1946, 1947],
+                                }
+                            ],
+                            "cited_snippets": [
+                                {"search_snippet": {}, "snippet_index": 1402}
+                            ],
+                            "grounding_signals": {"decision": 1, "score": 1},
+                            "safety_signals": {
+                                "decision": 1,
+                                "banned_phrase_match": 1,
+                                "matched_banned_phrase": "matched_banned_phrase_value",
+                            },
+                        }
+                    },
+                    "webhook_tool_trace": {
+                        "webhook_tag": "webhook_tag_value",
+                        "webhook_uri": "webhook_uri_value",
+                    },
+                },
+                "llm_call": {
+                    "retrieved_examples": [
+                        {
+                            "example_id": "example_id_value",
+                            "example_display_name": "example_display_name_value",
+                            "retrieval_strategy": 1,
+                            "matched_retrieval_label": "matched_retrieval_label_value",
+                        }
+                    ],
+                    "token_count": {
+                        "total_input_token_count": 2491,
+                        "conversation_context_token_count": 3463,
+                        "example_token_count": 2036,
+                        "total_output_token_count": 2620,
+                    },
+                    "model": "model_value",
+                    "temperature": 0.1198,
+                },
+                "intent_match": {
+                    "matched_intents": [
+                        {
+                            "intent_id": "intent_id_value",
+                            "display_name": "display_name_value",
+                            "score": 0.54,
+                            "generative_fallback": {},
+                        }
+                    ]
+                },
+                "flow_state_update": {
+                    "event_type": "event_type_value",
+                    "page_state": {
+                        "page": "page_value",
+                        "display_name": "display_name_value",
+                        "status": "status_value",
+                    },
+                    "updated_parameters": {},
+                    "destination": "destination_value",
+                    "function_call": {"name": "name_value"},
                 },
                 "playbook_invocation": {
                     "playbook": "playbook_value",
@@ -4998,12 +5214,50 @@ def test_update_example_rest_call_success(request_type):
                     "output_action_parameters": {},
                     "flow_state": 1,
                 },
+                "playbook_transition": {
+                    "playbook": "playbook_value",
+                    "display_name": "display_name_value",
+                    "input_action_parameters": {},
+                },
+                "flow_transition": {
+                    "flow": "flow_value",
+                    "display_name": "display_name_value",
+                    "input_action_parameters": {},
+                },
+                "tts": {},
+                "stt": {},
+                "display_name": "display_name_value",
+                "start_time": {"seconds": 751, "nanos": 543},
+                "complete_time": {},
+                "sub_execution_steps": [
+                    {
+                        "name": "name_value",
+                        "tags": ["tags_value1", "tags_value2"],
+                        "metrics": [
+                            {
+                                "name": "name_value",
+                                "value": {
+                                    "null_value": 0,
+                                    "number_value": 0.1285,
+                                    "string_value": "string_value_value",
+                                    "bool_value": True,
+                                    "struct_value": {},
+                                    "list_value": {"values": {}},
+                                },
+                                "unit": "unit_value",
+                            }
+                        ],
+                        "start_time": {},
+                        "complete_time": {},
+                    }
+                ],
+                "status": {"exception": {"error_message": "error_message_value"}},
             }
         ],
         "display_name": "display_name_value",
         "description": "description_value",
         "token_count": 1193,
-        "create_time": {"seconds": 751, "nanos": 543},
+        "create_time": {},
         "update_time": {},
         "conversation_state": 1,
         "language_code": "language_code_value",
@@ -5085,7 +5339,7 @@ def test_update_example_rest_call_success(request_type):
             display_name="display_name_value",
             description="description_value",
             token_count=1193,
-            conversation_state=gcdc_example.OutputState.OUTPUT_STATE_OK,
+            conversation_state=trace.OutputState.OUTPUT_STATE_OK,
             language_code="language_code_value",
         )
 
@@ -5107,7 +5361,7 @@ def test_update_example_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.token_count == 1193
-    assert response.conversation_state == gcdc_example.OutputState.OUTPUT_STATE_OK
+    assert response.conversation_state == trace.OutputState.OUTPUT_STATE_OK
     assert response.language_code == "language_code_value"
 
 

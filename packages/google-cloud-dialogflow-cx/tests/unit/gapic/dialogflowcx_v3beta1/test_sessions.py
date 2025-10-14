@@ -5102,11 +5102,40 @@ def test_parse_flow_path():
     assert expected == actual
 
 
-def test_intent_path():
+def test_generator_path():
     project = "winkle"
     location = "nautilus"
     agent = "scallop"
-    intent = "abalone"
+    generator = "abalone"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/generators/{generator}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        generator=generator,
+    )
+    actual = SessionsClient.generator_path(project, location, agent, generator)
+    assert expected == actual
+
+
+def test_parse_generator_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "generator": "octopus",
+    }
+    path = SessionsClient.generator_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionsClient.parse_generator_path(path)
+    assert expected == actual
+
+
+def test_intent_path():
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    intent = "mussel"
     expected = "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
         project=project,
         location=location,
@@ -5119,10 +5148,10 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "agent": "whelk",
-        "intent": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "agent": "scallop",
+        "intent": "abalone",
     }
     path = SessionsClient.intent_path(**expected)
 
@@ -5132,11 +5161,11 @@ def test_parse_intent_path():
 
 
 def test_page_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    flow = "mussel"
-    page = "winkle"
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    flow = "octopus"
+    page = "oyster"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
         project=project,
         location=location,
@@ -5150,11 +5179,11 @@ def test_page_path():
 
 def test_parse_page_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "agent": "abalone",
-        "flow": "squid",
-        "page": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "agent": "mussel",
+        "flow": "winkle",
+        "page": "nautilus",
     }
     path = SessionsClient.page_path(**expected)
 
@@ -5164,10 +5193,10 @@ def test_parse_page_path():
 
 
 def test_playbook_path():
-    project = "whelk"
-    location = "octopus"
-    agent = "oyster"
-    playbook = "nudibranch"
+    project = "scallop"
+    location = "abalone"
+    agent = "squid"
+    playbook = "clam"
     expected = "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
         project=project,
         location=location,
@@ -5180,10 +5209,10 @@ def test_playbook_path():
 
 def test_parse_playbook_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "agent": "winkle",
-        "playbook": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
+        "agent": "oyster",
+        "playbook": "nudibranch",
     }
     path = SessionsClient.playbook_path(**expected)
 
@@ -5193,10 +5222,10 @@ def test_parse_playbook_path():
 
 
 def test_session_path():
-    project = "scallop"
-    location = "abalone"
-    agent = "squid"
-    session = "clam"
+    project = "cuttlefish"
+    location = "mussel"
+    agent = "winkle"
+    session = "nautilus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}".format(
         project=project,
         location=location,
@@ -5209,10 +5238,10 @@ def test_session_path():
 
 def test_parse_session_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "agent": "oyster",
-        "session": "nudibranch",
+        "project": "scallop",
+        "location": "abalone",
+        "agent": "squid",
+        "session": "clam",
     }
     path = SessionsClient.session_path(**expected)
 
@@ -5222,11 +5251,11 @@ def test_parse_session_path():
 
 
 def test_session_entity_type_path():
-    project = "cuttlefish"
-    location = "mussel"
-    agent = "winkle"
-    session = "nautilus"
-    entity_type = "scallop"
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    session = "nudibranch"
+    entity_type = "cuttlefish"
     expected = "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}/entityTypes/{entity_type}".format(
         project=project,
         location=location,
@@ -5242,11 +5271,11 @@ def test_session_entity_type_path():
 
 def test_parse_session_entity_type_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "agent": "clam",
-        "session": "whelk",
-        "entity_type": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "agent": "nautilus",
+        "session": "scallop",
+        "entity_type": "abalone",
     }
     path = SessionsClient.session_entity_type_path(**expected)
 
@@ -5256,10 +5285,10 @@ def test_parse_session_entity_type_path():
 
 
 def test_tool_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    tool = "mussel"
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    tool = "octopus"
     expected = (
         "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
             project=project,
@@ -5274,10 +5303,10 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "agent": "scallop",
-        "tool": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "tool": "mussel",
     }
     path = SessionsClient.tool_path(**expected)
 
@@ -5287,11 +5316,11 @@ def test_parse_tool_path():
 
 
 def test_transition_route_group_path():
-    project = "squid"
-    location = "clam"
-    agent = "whelk"
-    flow = "octopus"
-    transition_route_group = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    flow = "abalone"
+    transition_route_group = "squid"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
         location=location,
@@ -5307,11 +5336,11 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "agent": "mussel",
-        "flow": "winkle",
-        "transition_route_group": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "agent": "octopus",
+        "flow": "oyster",
+        "transition_route_group": "nudibranch",
     }
     path = SessionsClient.transition_route_group_path(**expected)
 
@@ -5321,11 +5350,11 @@ def test_parse_transition_route_group_path():
 
 
 def test_version_path():
-    project = "scallop"
-    location = "abalone"
-    agent = "squid"
-    flow = "clam"
-    version = "whelk"
+    project = "cuttlefish"
+    location = "mussel"
+    agent = "winkle"
+    flow = "nautilus"
+    version = "scallop"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
         project=project,
         location=location,
@@ -5339,11 +5368,11 @@ def test_version_path():
 
 def test_parse_version_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "agent": "nudibranch",
-        "flow": "cuttlefish",
-        "version": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "agent": "clam",
+        "flow": "whelk",
+        "version": "octopus",
     }
     path = SessionsClient.version_path(**expected)
 
@@ -5353,10 +5382,10 @@ def test_parse_version_path():
 
 
 def test_webhook_path():
-    project = "winkle"
-    location = "nautilus"
-    agent = "scallop"
-    webhook = "abalone"
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    webhook = "mussel"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -5369,10 +5398,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "agent": "whelk",
-        "webhook": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "agent": "scallop",
+        "webhook": "abalone",
     }
     path = SessionsClient.webhook_path(**expected)
 
@@ -5382,7 +5411,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5392,7 +5421,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = SessionsClient.common_billing_account_path(**expected)
 
@@ -5402,7 +5431,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5412,7 +5441,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = SessionsClient.common_folder_path(**expected)
 
@@ -5422,7 +5451,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5432,7 +5461,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = SessionsClient.common_organization_path(**expected)
 
@@ -5442,7 +5471,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5452,7 +5481,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = SessionsClient.common_project_path(**expected)
 
@@ -5462,8 +5491,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5474,8 +5503,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = SessionsClient.common_location_path(**expected)
 

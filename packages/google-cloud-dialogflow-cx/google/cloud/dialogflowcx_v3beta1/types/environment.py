@@ -92,13 +92,16 @@ class Environment(proto.Message):
 
         Attributes:
             version (str):
-                Required. Both flow and playbook versions are
-                supported. Format for flow version:
+                Required. Flow, playbook and tool versions
+                are supported. Format for flow version:
 
                 projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>.
                 Format for playbook version:
 
                 projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>.
+                Format for tool version:
+
+                projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>.
         """
 
         version: str = proto.Field(

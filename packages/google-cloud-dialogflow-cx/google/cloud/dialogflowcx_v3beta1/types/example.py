@@ -18,14 +18,14 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.dialogflowcx_v3beta1.types import trace
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
     manifest={
-        "OutputState",
         "CreateExampleRequest",
         "DeleteExampleRequest",
         "ListExamplesRequest",
@@ -33,41 +33,8 @@ __protobuf__ = proto.module(
         "GetExampleRequest",
         "UpdateExampleRequest",
         "Example",
-        "PlaybookInput",
-        "PlaybookOutput",
-        "Action",
-        "UserUtterance",
-        "AgentUtterance",
-        "ToolUse",
-        "PlaybookInvocation",
-        "FlowInvocation",
     },
 )
-
-
-class OutputState(proto.Enum):
-    r"""Output state.
-
-    Values:
-        OUTPUT_STATE_UNSPECIFIED (0):
-            Unspecified output.
-        OUTPUT_STATE_OK (1):
-            Succeeded.
-        OUTPUT_STATE_CANCELLED (2):
-            Cancelled.
-        OUTPUT_STATE_FAILED (3):
-            Failed.
-        OUTPUT_STATE_ESCALATED (4):
-            Escalated.
-        OUTPUT_STATE_PENDING (5):
-            Pending.
-    """
-    OUTPUT_STATE_UNSPECIFIED = 0
-    OUTPUT_STATE_OK = 1
-    OUTPUT_STATE_CANCELLED = 2
-    OUTPUT_STATE_FAILED = 3
-    OUTPUT_STATE_ESCALATED = 4
-    OUTPUT_STATE_PENDING = 5
 
 
 class CreateExampleRequest(proto.Message):
@@ -273,20 +240,20 @@ class Example(proto.Message):
         proto.STRING,
         number=1,
     )
-    playbook_input: "PlaybookInput" = proto.Field(
+    playbook_input: trace.PlaybookInput = proto.Field(
         proto.MESSAGE,
         number=3,
-        message="PlaybookInput",
+        message=trace.PlaybookInput,
     )
-    playbook_output: "PlaybookOutput" = proto.Field(
+    playbook_output: trace.PlaybookOutput = proto.Field(
         proto.MESSAGE,
         number=4,
-        message="PlaybookOutput",
+        message=trace.PlaybookOutput,
     )
-    actions: MutableSequence["Action"] = proto.RepeatedField(
+    actions: MutableSequence[trace.Action] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message="Action",
+        message=trace.Action,
     )
     display_name: str = proto.Field(
         proto.STRING,
@@ -310,295 +277,14 @@ class Example(proto.Message):
         number=11,
         message=timestamp_pb2.Timestamp,
     )
-    conversation_state: "OutputState" = proto.Field(
+    conversation_state: trace.OutputState = proto.Field(
         proto.ENUM,
         number=12,
-        enum="OutputState",
+        enum=trace.OutputState,
     )
     language_code: str = proto.Field(
         proto.STRING,
         number=13,
-    )
-
-
-class PlaybookInput(proto.Message):
-    r"""Input of the playbook.
-
-    Attributes:
-        preceding_conversation_summary (str):
-            Optional. Summary string of the preceding
-            conversation for the child playbook invocation.
-        action_parameters (google.protobuf.struct_pb2.Struct):
-            Optional. A list of input parameters for the
-            action.
-    """
-
-    preceding_conversation_summary: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    action_parameters: struct_pb2.Struct = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=struct_pb2.Struct,
-    )
-
-
-class PlaybookOutput(proto.Message):
-    r"""Output of the playbook.
-
-    Attributes:
-        execution_summary (str):
-            Optional. Summary string of the execution
-            result of the child playbook.
-        action_parameters (google.protobuf.struct_pb2.Struct):
-            Optional. A Struct object of output
-            parameters for the action.
-    """
-
-    execution_summary: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    action_parameters: struct_pb2.Struct = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        message=struct_pb2.Struct,
-    )
-
-
-class Action(proto.Message):
-    r"""Action performed by end user or Dialogflow agent in the
-    conversation.
-
-    This message has `oneof`_ fields (mutually exclusive fields).
-    For each oneof, at most one member field can be set at the same time.
-    Setting any member of the oneof automatically clears all other
-    members.
-
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
-    Attributes:
-        user_utterance (google.cloud.dialogflowcx_v3beta1.types.UserUtterance):
-            Optional. Agent obtained a message from the
-            customer.
-
-            This field is a member of `oneof`_ ``action``.
-        agent_utterance (google.cloud.dialogflowcx_v3beta1.types.AgentUtterance):
-            Optional. Action performed by the agent as a
-            message.
-
-            This field is a member of `oneof`_ ``action``.
-        tool_use (google.cloud.dialogflowcx_v3beta1.types.ToolUse):
-            Optional. Action performed on behalf of the
-            agent by calling a plugin tool.
-
-            This field is a member of `oneof`_ ``action``.
-        playbook_invocation (google.cloud.dialogflowcx_v3beta1.types.PlaybookInvocation):
-            Optional. Action performed on behalf of the
-            agent by invoking a child playbook.
-
-            This field is a member of `oneof`_ ``action``.
-        flow_invocation (google.cloud.dialogflowcx_v3beta1.types.FlowInvocation):
-            Optional. Action performed on behalf of the
-            agent by invoking a CX flow.
-
-            This field is a member of `oneof`_ ``action``.
-    """
-
-    user_utterance: "UserUtterance" = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        oneof="action",
-        message="UserUtterance",
-    )
-    agent_utterance: "AgentUtterance" = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        oneof="action",
-        message="AgentUtterance",
-    )
-    tool_use: "ToolUse" = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        oneof="action",
-        message="ToolUse",
-    )
-    playbook_invocation: "PlaybookInvocation" = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        oneof="action",
-        message="PlaybookInvocation",
-    )
-    flow_invocation: "FlowInvocation" = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        oneof="action",
-        message="FlowInvocation",
-    )
-
-
-class UserUtterance(proto.Message):
-    r"""UserUtterance represents one message sent by the customer.
-
-    Attributes:
-        text (str):
-            Required. Message content in text.
-    """
-
-    text: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class AgentUtterance(proto.Message):
-    r"""AgentUtterance represents one message sent by the agent.
-
-    Attributes:
-        text (str):
-            Required. Message content in text.
-    """
-
-    text: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class ToolUse(proto.Message):
-    r"""Stores metadata of the invocation of an action supported by a
-    tool.
-
-    Attributes:
-        tool (str):
-            Required. The
-            [tool][google.cloud.dialogflow.cx.v3beta1.Tool] that should
-            be used. Format:
-            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
-        display_name (str):
-            Output only. The display name of the tool.
-        action (str):
-            Optional. Name of the action to be called
-            during the tool use.
-        input_action_parameters (google.protobuf.struct_pb2.Struct):
-            Optional. A list of input parameters for the
-            action.
-        output_action_parameters (google.protobuf.struct_pb2.Struct):
-            Optional. A list of output parameters
-            generated by the action.
-    """
-
-    tool: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    display_name: str = proto.Field(
-        proto.STRING,
-        number=8,
-    )
-    action: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    input_action_parameters: struct_pb2.Struct = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        message=struct_pb2.Struct,
-    )
-    output_action_parameters: struct_pb2.Struct = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        message=struct_pb2.Struct,
-    )
-
-
-class PlaybookInvocation(proto.Message):
-    r"""Stores metadata of the invocation of a child playbook.
-
-    Attributes:
-        playbook (str):
-            Required. The unique identifier of the playbook. Format:
-            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
-        display_name (str):
-            Output only. The display name of the
-            playbook.
-        playbook_input (google.cloud.dialogflowcx_v3beta1.types.PlaybookInput):
-            Optional. Input of the child playbook
-            invocation.
-        playbook_output (google.cloud.dialogflowcx_v3beta1.types.PlaybookOutput):
-            Optional. Output of the child playbook
-            invocation.
-        playbook_state (google.cloud.dialogflowcx_v3beta1.types.OutputState):
-            Required. Playbook invocation's output state.
-    """
-
-    playbook: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    display_name: str = proto.Field(
-        proto.STRING,
-        number=5,
-    )
-    playbook_input: "PlaybookInput" = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message="PlaybookInput",
-    )
-    playbook_output: "PlaybookOutput" = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message="PlaybookOutput",
-    )
-    playbook_state: "OutputState" = proto.Field(
-        proto.ENUM,
-        number=4,
-        enum="OutputState",
-    )
-
-
-class FlowInvocation(proto.Message):
-    r"""Stores metadata of the invocation of a CX flow.
-
-    Attributes:
-        flow (str):
-            Required. The unique identifier of the flow. Format:
-            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
-        display_name (str):
-            Output only. The display name of the flow.
-        input_action_parameters (google.protobuf.struct_pb2.Struct):
-            Optional. A list of input parameters for the
-            flow.
-        output_action_parameters (google.protobuf.struct_pb2.Struct):
-            Optional. A list of output parameters
-            generated by the flow invocation.
-        flow_state (google.cloud.dialogflowcx_v3beta1.types.OutputState):
-            Required. Flow invocation's output state.
-    """
-
-    flow: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    display_name: str = proto.Field(
-        proto.STRING,
-        number=7,
-    )
-    input_action_parameters: struct_pb2.Struct = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        message=struct_pb2.Struct,
-    )
-    output_action_parameters: struct_pb2.Struct = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        message=struct_pb2.Struct,
-    )
-    flow_state: "OutputState" = proto.Field(
-        proto.ENUM,
-        number=4,
-        enum="OutputState",
     )
 
 

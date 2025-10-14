@@ -104,12 +104,18 @@ class ConversationHistoryAsyncClient:
     parse_example_path = staticmethod(ConversationHistoryClient.parse_example_path)
     flow_path = staticmethod(ConversationHistoryClient.flow_path)
     parse_flow_path = staticmethod(ConversationHistoryClient.parse_flow_path)
+    generator_path = staticmethod(ConversationHistoryClient.generator_path)
+    parse_generator_path = staticmethod(ConversationHistoryClient.parse_generator_path)
     intent_path = staticmethod(ConversationHistoryClient.intent_path)
     parse_intent_path = staticmethod(ConversationHistoryClient.parse_intent_path)
     page_path = staticmethod(ConversationHistoryClient.page_path)
     parse_page_path = staticmethod(ConversationHistoryClient.parse_page_path)
     playbook_path = staticmethod(ConversationHistoryClient.playbook_path)
     parse_playbook_path = staticmethod(ConversationHistoryClient.parse_playbook_path)
+    secret_version_path = staticmethod(ConversationHistoryClient.secret_version_path)
+    parse_secret_version_path = staticmethod(
+        ConversationHistoryClient.parse_secret_version_path
+    )
     service_path = staticmethod(ConversationHistoryClient.service_path)
     parse_service_path = staticmethod(ConversationHistoryClient.parse_service_path)
     session_path = staticmethod(ConversationHistoryClient.session_path)

@@ -196,12 +196,9 @@ class ExportToolsRequest(proto.Message):
                 Unspecified format. Treated as ``BLOB``.
             BLOB (1):
                 Tools will be exported as raw bytes.
-            JSON (2):
-                Tools will be exported in JSON format.
         """
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
-        JSON = 2
 
     parent: str = proto.Field(
         proto.STRING,
@@ -698,6 +695,11 @@ class Tool(proto.Message):
                 api_key (str):
                     Optional. The API key. If the ``secret_version_for_api_key``
                     field is set, this field will be ignored.
+                secret_version_for_api_key (str):
+                    Optional. The name of the SecretManager secret version
+                    resource storing the API key. If this field is set, the
+                    ``api_key`` field will be ignored. Format:
+                    ``projects/{project}/secrets/{secret}/versions/{version}``
                 request_location (google.cloud.dialogflowcx_v3beta1.types.Tool.Authentication.RequestLocation):
                     Required. Key location in the request.
             """
@@ -709,6 +711,10 @@ class Tool(proto.Message):
             api_key: str = proto.Field(
                 proto.STRING,
                 number=2,
+            )
+            secret_version_for_api_key: str = proto.Field(
+                proto.STRING,
+                number=4,
             )
             request_location: "Tool.Authentication.RequestLocation" = proto.Field(
                 proto.ENUM,
@@ -729,6 +735,11 @@ class Tool(proto.Message):
                     Optional. The client secret from the OAuth provider. If the
                     ``secret_version_for_client_secret`` field is set, this
                     field will be ignored.
+                secret_version_for_client_secret (str):
+                    Optional. The name of the SecretManager secret version
+                    resource storing the client secret. If this field is set,
+                    the ``client_secret`` field will be ignored. Format:
+                    ``projects/{project}/secrets/{secret}/versions/{version}``
                 token_endpoint (str):
                     Required. The token endpoint in the OAuth
                     provider to exchange for an access token.
@@ -765,6 +776,10 @@ class Tool(proto.Message):
             client_secret: str = proto.Field(
                 proto.STRING,
                 number=3,
+            )
+            secret_version_for_client_secret: str = proto.Field(
+                proto.STRING,
+                number=6,
             )
             token_endpoint: str = proto.Field(
                 proto.STRING,
@@ -827,11 +842,20 @@ class Tool(proto.Message):
                     reference <https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref>`__
                     can be used to pass the token dynamically, e.g.
                     ``$session.params.parameter-id``.
+                secret_version_for_token (str):
+                    Optional. The name of the SecretManager secret version
+                    resource storing the Bearer token. If this field is set, the
+                    ``token`` field will be ignored. Format:
+                    ``projects/{project}/secrets/{secret}/versions/{version}``
             """
 
             token: str = proto.Field(
                 proto.STRING,
                 number=1,
+            )
+            secret_version_for_token: str = proto.Field(
+                proto.STRING,
+                number=2,
             )
 
         api_key_config: "Tool.Authentication.ApiKeyConfig" = proto.Field(

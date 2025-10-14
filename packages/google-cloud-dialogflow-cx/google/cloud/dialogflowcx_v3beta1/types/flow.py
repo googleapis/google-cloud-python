@@ -24,6 +24,7 @@ import proto  # type: ignore
 from google.cloud.dialogflowcx_v3beta1.types import (
     import_strategy,
     page,
+    parameter_definition,
     validation_message,
 )
 from google.cloud.dialogflowcx_v3beta1.types import (
@@ -214,6 +215,12 @@ class Flow(proto.Message):
             level.
         knowledge_connector_settings (google.cloud.dialogflowcx_v3beta1.types.KnowledgeConnectorSettings):
             Optional. Knowledge connector configuration.
+        input_parameter_definitions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ParameterDefinition]):
+            Optional. Defined structured input parameters
+            for this flow.
+        output_parameter_definitions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ParameterDefinition]):
+            Optional. Defined structured output
+            parameters for this flow.
         multi_language_settings (google.cloud.dialogflowcx_v3beta1.types.Flow.MultiLanguageSettings):
             Optional. Multi-lingual agent settings for
             this flow.
@@ -292,6 +299,20 @@ class Flow(proto.Message):
         proto.MESSAGE,
         number=18,
         message=page.KnowledgeConnectorSettings,
+    )
+    input_parameter_definitions: MutableSequence[
+        parameter_definition.ParameterDefinition
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=26,
+        message=parameter_definition.ParameterDefinition,
+    )
+    output_parameter_definitions: MutableSequence[
+        parameter_definition.ParameterDefinition
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=27,
+        message=parameter_definition.ParameterDefinition,
     )
     multi_language_settings: MultiLanguageSettings = proto.Field(
         proto.MESSAGE,
