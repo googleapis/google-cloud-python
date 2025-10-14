@@ -1435,9 +1435,9 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Public Certificate Authority <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-public-ca>`_
+   * - `Public Certificate Authority <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-security-publicca>`_
      - preview
-     - |PyPI-google-cloud-public-ca|
+     - |PyPI-google-cloud-security-publicca|
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
@@ -2034,8 +2034,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-private-catalog
 .. |PyPI-google-cloud-privilegedaccessmanager| image:: https://img.shields.io/pypi/v/google-cloud-privilegedaccessmanager.svg
      :target: https://pypi.org/project/google-cloud-privilegedaccessmanager
-.. |PyPI-google-cloud-public-ca| image:: https://img.shields.io/pypi/v/google-cloud-public-ca.svg
-     :target: https://pypi.org/project/google-cloud-public-ca
+.. |PyPI-google-cloud-security-publicca| image:: https://img.shields.io/pypi/v/google-cloud-security-publicca.svg
+     :target: https://pypi.org/project/google-cloud-security-publicca
 .. |PyPI-google-cloud-quotas| image:: https://img.shields.io/pypi/v/google-cloud-quotas.svg
      :target: https://pypi.org/project/google-cloud-quotas
 .. |PyPI-google-cloud-rapidmigrationassessment| image:: https://img.shields.io/pypi/v/google-cloud-rapidmigrationassessment.svg
