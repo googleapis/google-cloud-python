@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.28.1](https://github.com/googleapis/gapic-generator-python/compare/v1.28.0...v1.28.1) (2025-10-14)
+
+
+### Bug Fixes
+
+* Fix gapic-version generator option for selective gapic generation ([#2460](https://github.com/googleapis/gapic-generator-python/issues/2460)) ([d7c6072](https://github.com/googleapis/gapic-generator-python/commit/d7c6072cc65e8f166d4b5a78bef250068dca43bf))
+
 ## [1.28.0](https://github.com/googleapis/gapic-generator-python/compare/v1.27.2...v1.28.0) (2025-10-07)
 
 
