@@ -4287,3 +4287,22 @@ libraries:
     remove_regex:
       - ^packages/googleapis-common-protos/google/(?:api|cloud|rpc|type)/.*/.*_pb2\.(?:py|pyi)$/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-gkerecommender
+    version: 0.0.0
+    last_generated_commit: 7e90a532b8fc4a127ffda6932dc0af894c2ac3c8
+    apis:
+      - path: google/cloud/gkerecommender/v1
+        service_config: gkerecommender_v1.yaml
+    source_roots:
+      - packages/google-cloud-gkerecommender
+    preserve_regex:
+      - packages/google-cloud-gkerecommender/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-gkerecommender
+    tag_format: '{id}-v{version}'
