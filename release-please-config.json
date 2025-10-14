@@ -179,21 +179,6 @@
             ],
             "release-type": "python"
         },
-        "packages/google-cloud-monitoring": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-monitoring",
-            "extra-files": [
-                "google/cloud/monitoring/gapic_version.py",
-                "google/cloud/monitoring_v3/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.monitoring.v3.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
         "packages/google-cloud-monitoring-dashboards": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -205,33 +190,6 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.monitoring.dashboard.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-cloud-network-security": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-network-security",
-            "extra-files": [
-                "google/cloud/network_security/gapic_version.py",
-                "google/cloud/network_security_v1/gapic_version.py",
-                "google/cloud/network_security_v1alpha1/gapic_version.py",
-                "google/cloud/network_security_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networksecurity.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networksecurity.v1alpha1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networksecurity.v1beta1.json",
                     "type": "json"
                 }
             ],
