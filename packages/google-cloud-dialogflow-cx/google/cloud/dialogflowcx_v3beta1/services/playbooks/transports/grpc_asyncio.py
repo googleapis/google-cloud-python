@@ -21,7 +21,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -250,6 +250,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -333,6 +334,22 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         """
         # Return the channel from cache.
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self._logged_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def create_playbook(
@@ -443,6 +460,66 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["get_playbook"]
 
     @property
+    def export_playbook(
+        self,
+    ) -> Callable[
+        [playbook.ExportPlaybookRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the export playbook method over gRPC.
+
+        Exports the specified playbook to a binary file.
+
+        Note that resources (e.g. examples, tools) that the
+        playbook references will also be exported.
+
+        Returns:
+            Callable[[~.ExportPlaybookRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_playbook" not in self._stubs:
+            self._stubs["export_playbook"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Playbooks/ExportPlaybook",
+                request_serializer=playbook.ExportPlaybookRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_playbook"]
+
+    @property
+    def import_playbook(
+        self,
+    ) -> Callable[
+        [playbook.ImportPlaybookRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the import playbook method over gRPC.
+
+        Imports the specified playbook to the specified agent
+        from a binary file.
+
+        Returns:
+            Callable[[~.ImportPlaybookRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_playbook" not in self._stubs:
+            self._stubs["import_playbook"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Playbooks/ImportPlaybook",
+                request_serializer=playbook.ImportPlaybookRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_playbook"]
+
+    @property
     def update_playbook(
         self,
     ) -> Callable[
@@ -527,6 +604,37 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["get_playbook_version"]
 
     @property
+    def restore_playbook_version(
+        self,
+    ) -> Callable[
+        [playbook.RestorePlaybookVersionRequest],
+        Awaitable[playbook.RestorePlaybookVersionResponse],
+    ]:
+        r"""Return a callable for the restore playbook version method over gRPC.
+
+        Retrieves the specified version of the Playbook and
+        stores it as the current playbook draft, returning the
+        playbook with resources updated.
+
+        Returns:
+            Callable[[~.RestorePlaybookVersionRequest],
+                    Awaitable[~.RestorePlaybookVersionResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "restore_playbook_version" not in self._stubs:
+            self._stubs["restore_playbook_version"] = self._logged_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Playbooks/RestorePlaybookVersion",
+                request_serializer=playbook.RestorePlaybookVersionRequest.serialize,
+                response_deserializer=playbook.RestorePlaybookVersionResponse.deserialize,
+            )
+        return self._stubs["restore_playbook_version"]
+
+    @property
     def list_playbook_versions(
         self,
     ) -> Callable[
@@ -604,6 +712,16 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.export_playbook: self._wrap_method(
+                self.export_playbook,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.import_playbook: self._wrap_method(
+                self.import_playbook,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_playbook: self._wrap_method(
                 self.update_playbook,
                 default_timeout=None,
@@ -616,6 +734,11 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
             ),
             self.get_playbook_version: self._wrap_method(
                 self.get_playbook_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restore_playbook_version: self._wrap_method(
+                self.restore_playbook_version,
                 default_timeout=None,
                 client_info=client_info,
             ),

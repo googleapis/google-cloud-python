@@ -19,8 +19,8 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
@@ -100,6 +100,14 @@ class PlaybooksRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_export_playbook(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_playbook(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_playbook(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -116,6 +124,14 @@ class PlaybooksRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_import_playbook(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_import_playbook(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_playbooks(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -129,6 +145,14 @@ class PlaybooksRestInterceptor:
                 return request, metadata
 
             def post_list_playbook_versions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_restore_playbook_version(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_restore_playbook_version(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -268,6 +292,52 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
+    def pre_export_playbook(
+        self,
+        request: playbook.ExportPlaybookRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[playbook.ExportPlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for export_playbook
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Playbooks server.
+        """
+        return request, metadata
+
+    def post_export_playbook(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_playbook
+
+        DEPRECATED. Please use the `post_export_playbook_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Playbooks server but before
+        it is returned to user code. This `post_export_playbook` interceptor runs
+        before the `post_export_playbook_with_metadata` interceptor.
+        """
+        return response
+
+    def post_export_playbook_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_playbook
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Playbooks server but before it is returned to user code.
+
+        We recommend only using this `post_export_playbook_with_metadata`
+        interceptor in new development instead of the `post_export_playbook` interceptor.
+        When both interceptors are used, this `post_export_playbook_with_metadata` interceptor runs after the
+        `post_export_playbook` interceptor. The (possibly modified) response returned by
+        `post_export_playbook` will be passed to
+        `post_export_playbook_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_playbook(
         self,
         request: playbook.GetPlaybookRequest,
@@ -357,6 +427,52 @@ class PlaybooksRestInterceptor:
         `post_get_playbook_version` interceptor. The (possibly modified) response returned by
         `post_get_playbook_version` will be passed to
         `post_get_playbook_version_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_import_playbook(
+        self,
+        request: playbook.ImportPlaybookRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[playbook.ImportPlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for import_playbook
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Playbooks server.
+        """
+        return request, metadata
+
+    def post_import_playbook(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for import_playbook
+
+        DEPRECATED. Please use the `post_import_playbook_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Playbooks server but before
+        it is returned to user code. This `post_import_playbook` interceptor runs
+        before the `post_import_playbook_with_metadata` interceptor.
+        """
+        return response
+
+    def post_import_playbook_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_playbook
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Playbooks server but before it is returned to user code.
+
+        We recommend only using this `post_import_playbook_with_metadata`
+        interceptor in new development instead of the `post_import_playbook` interceptor.
+        When both interceptors are used, this `post_import_playbook_with_metadata` interceptor runs after the
+        `post_import_playbook` interceptor. The (possibly modified) response returned by
+        `post_import_playbook` will be passed to
+        `post_import_playbook_with_metadata`.
         """
         return response, metadata
 
@@ -453,6 +569,56 @@ class PlaybooksRestInterceptor:
         `post_list_playbook_versions` interceptor. The (possibly modified) response returned by
         `post_list_playbook_versions` will be passed to
         `post_list_playbook_versions_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_restore_playbook_version(
+        self,
+        request: playbook.RestorePlaybookVersionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        playbook.RestorePlaybookVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for restore_playbook_version
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Playbooks server.
+        """
+        return request, metadata
+
+    def post_restore_playbook_version(
+        self, response: playbook.RestorePlaybookVersionResponse
+    ) -> playbook.RestorePlaybookVersionResponse:
+        """Post-rpc interceptor for restore_playbook_version
+
+        DEPRECATED. Please use the `post_restore_playbook_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Playbooks server but before
+        it is returned to user code. This `post_restore_playbook_version` interceptor runs
+        before the `post_restore_playbook_version_with_metadata` interceptor.
+        """
+        return response
+
+    def post_restore_playbook_version_with_metadata(
+        self,
+        response: playbook.RestorePlaybookVersionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        playbook.RestorePlaybookVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for restore_playbook_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Playbooks server but before it is returned to user code.
+
+        We recommend only using this `post_restore_playbook_version_with_metadata`
+        interceptor in new development instead of the `post_restore_playbook_version` interceptor.
+        When both interceptors are used, this `post_restore_playbook_version_with_metadata` interceptor runs after the
+        `post_restore_playbook_version` interceptor. The (possibly modified) response returned by
+        `post_restore_playbook_version` will be passed to
+        `post_restore_playbook_version_with_metadata`.
         """
         return response, metadata
 
@@ -711,10 +877,69 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
+        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PlaybooksRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    @property
+    def operations_client(self) -> operations_v1.AbstractOperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.CancelOperation": [
+                    {
+                        "method": "post",
+                        "uri": "/v3beta1/{name=projects/*/operations/*}:cancel",
+                    },
+                    {
+                        "method": "post",
+                        "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}:cancel",
+                    },
+                ],
+                "google.longrunning.Operations.GetOperation": [
+                    {
+                        "method": "get",
+                        "uri": "/v3beta1/{name=projects/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v3beta1/{name=projects/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v3beta1/{name=projects/*/locations/*}/operations",
+                    },
+                ],
+            }
+
+            rest_transport = operations_v1.OperationsRestTransport(
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,
+                scopes=self._scopes,
+                http_options=http_options,
+                path_prefix="v3beta1",
+            )
+
+            self._operations_client = operations_v1.AbstractOperationsClient(
+                transport=rest_transport
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     class _CreatePlaybook(
         _BasePlaybooksRestTransport._BaseCreatePlaybook, PlaybooksRestStub
@@ -1261,6 +1486,164 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _ExportPlaybook(
+        _BasePlaybooksRestTransport._BaseExportPlaybook, PlaybooksRestStub
+    ):
+        def __hash__(self):
+            return hash("PlaybooksRestTransport.ExportPlaybook")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: playbook.ExportPlaybookRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export playbook method over HTTP.
+
+            Args:
+                request (~.playbook.ExportPlaybookRequest):
+                    The request object. The request message for
+                [Playbooks.ExportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ExportPlaybook].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BasePlaybooksRestTransport._BaseExportPlaybook._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_export_playbook(request, metadata)
+            transcoded_request = (
+                _BasePlaybooksRestTransport._BaseExportPlaybook._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BasePlaybooksRestTransport._BaseExportPlaybook._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BasePlaybooksRestTransport._BaseExportPlaybook._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3beta1.PlaybooksClient.ExportPlaybook",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+                        "rpcName": "ExportPlaybook",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = PlaybooksRestTransport._ExportPlaybook._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_export_playbook(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_playbook_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3beta1.PlaybooksClient.export_playbook",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+                        "rpcName": "ExportPlaybook",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetPlaybook(_BasePlaybooksRestTransport._BaseGetPlaybook, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.GetPlaybook")
@@ -1570,6 +1953,164 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
+    class _ImportPlaybook(
+        _BasePlaybooksRestTransport._BaseImportPlaybook, PlaybooksRestStub
+    ):
+        def __hash__(self):
+            return hash("PlaybooksRestTransport.ImportPlaybook")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: playbook.ImportPlaybookRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the import playbook method over HTTP.
+
+            Args:
+                request (~.playbook.ImportPlaybookRequest):
+                    The request object. The request message for
+                [Playbooks.ImportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ImportPlaybook].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BasePlaybooksRestTransport._BaseImportPlaybook._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_import_playbook(request, metadata)
+            transcoded_request = (
+                _BasePlaybooksRestTransport._BaseImportPlaybook._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BasePlaybooksRestTransport._BaseImportPlaybook._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BasePlaybooksRestTransport._BaseImportPlaybook._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3beta1.PlaybooksClient.ImportPlaybook",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+                        "rpcName": "ImportPlaybook",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = PlaybooksRestTransport._ImportPlaybook._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_import_playbook(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_playbook_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3beta1.PlaybooksClient.import_playbook",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+                        "rpcName": "ImportPlaybook",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListPlaybooks(
         _BasePlaybooksRestTransport._BaseListPlaybooks, PlaybooksRestStub
     ):
@@ -1872,6 +2413,163 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
+    class _RestorePlaybookVersion(
+        _BasePlaybooksRestTransport._BaseRestorePlaybookVersion, PlaybooksRestStub
+    ):
+        def __hash__(self):
+            return hash("PlaybooksRestTransport.RestorePlaybookVersion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: playbook.RestorePlaybookVersionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> playbook.RestorePlaybookVersionResponse:
+            r"""Call the restore playbook version method over HTTP.
+
+            Args:
+                request (~.playbook.RestorePlaybookVersionRequest):
+                    The request object. The request message for
+                [Playbooks.RestorePlaybookVersion][google.cloud.dialogflow.cx.v3beta1.Playbooks.RestorePlaybookVersion].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.playbook.RestorePlaybookVersionResponse:
+                    The response message for
+                [Playbooks.RestorePlaybookVersion][google.cloud.dialogflow.cx.v3beta1.Playbooks.RestorePlaybookVersion].
+
+            """
+
+            http_options = (
+                _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_restore_playbook_version(
+                request, metadata
+            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3beta1.PlaybooksClient.RestorePlaybookVersion",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+                        "rpcName": "RestorePlaybookVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = PlaybooksRestTransport._RestorePlaybookVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = playbook.RestorePlaybookVersionResponse()
+            pb_resp = playbook.RestorePlaybookVersionResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_restore_playbook_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restore_playbook_version_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = playbook.RestorePlaybookVersionResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3beta1.PlaybooksClient.restore_playbook_version",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+                        "rpcName": "RestorePlaybookVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdatePlaybook(
         _BasePlaybooksRestTransport._BaseUpdatePlaybook, PlaybooksRestStub
     ):
@@ -2075,6 +2773,14 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
         return self._DeletePlaybookVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def export_playbook(
+        self,
+    ) -> Callable[[playbook.ExportPlaybookRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportPlaybook(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_playbook(
         self,
     ) -> Callable[[playbook.GetPlaybookRequest], playbook.Playbook]:
@@ -2089,6 +2795,14 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPlaybookVersion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def import_playbook(
+        self,
+    ) -> Callable[[playbook.ImportPlaybookRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ImportPlaybook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_playbooks(
@@ -2107,6 +2821,17 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPlaybookVersions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def restore_playbook_version(
+        self,
+    ) -> Callable[
+        [playbook.RestorePlaybookVersionRequest],
+        playbook.RestorePlaybookVersionResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RestorePlaybookVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_playbook(

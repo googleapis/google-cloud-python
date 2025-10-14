@@ -18,7 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -160,6 +160,16 @@ class PlaybooksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.export_playbook: gapic_v1.method.wrap_method(
+                self.export_playbook,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.import_playbook: gapic_v1.method.wrap_method(
+                self.import_playbook,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_playbook: gapic_v1.method.wrap_method(
                 self.update_playbook,
                 default_timeout=None,
@@ -172,6 +182,11 @@ class PlaybooksTransport(abc.ABC):
             ),
             self.get_playbook_version: gapic_v1.method.wrap_method(
                 self.get_playbook_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restore_playbook_version: gapic_v1.method.wrap_method(
+                self.restore_playbook_version,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -222,6 +237,11 @@ class PlaybooksTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
+
+    @property
     def create_playbook(
         self,
     ) -> Callable[
@@ -260,6 +280,24 @@ class PlaybooksTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def export_playbook(
+        self,
+    ) -> Callable[
+        [playbook.ExportPlaybookRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_playbook(
+        self,
+    ) -> Callable[
+        [playbook.ImportPlaybookRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def update_playbook(
         self,
     ) -> Callable[
@@ -283,6 +321,18 @@ class PlaybooksTransport(abc.ABC):
     ) -> Callable[
         [playbook.GetPlaybookVersionRequest],
         Union[playbook.PlaybookVersion, Awaitable[playbook.PlaybookVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def restore_playbook_version(
+        self,
+    ) -> Callable[
+        [playbook.RestorePlaybookVersionRequest],
+        Union[
+            playbook.RestorePlaybookVersionResponse,
+            Awaitable[playbook.RestorePlaybookVersionResponse],
+        ],
     ]:
         raise NotImplementedError()
 

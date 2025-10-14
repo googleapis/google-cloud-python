@@ -21,12 +21,13 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3beta1.types import (
-    generative_settings,
-    parameter_definition,
-)
 from google.cloud.dialogflowcx_v3beta1.types import fulfillment as gcdc_fulfillment
+from google.cloud.dialogflowcx_v3beta1.types import (
+    import_strategy as gcdc_import_strategy,
+)
 from google.cloud.dialogflowcx_v3beta1.types import advanced_settings, example
+from google.cloud.dialogflowcx_v3beta1.types import generative_settings
+from google.cloud.dialogflowcx_v3beta1.types import parameter_definition
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
@@ -41,9 +42,16 @@ __protobuf__ = proto.module(
         "CreatePlaybookVersionRequest",
         "PlaybookVersion",
         "GetPlaybookVersionRequest",
+        "RestorePlaybookVersionRequest",
+        "RestorePlaybookVersionResponse",
         "ListPlaybookVersionsRequest",
         "ListPlaybookVersionsResponse",
         "DeletePlaybookVersionRequest",
+        "ExportPlaybookRequest",
+        "ImportPlaybookRequest",
+        "PlaybookImportStrategy",
+        "ImportPlaybookResponse",
+        "ExportPlaybookResponse",
         "Handler",
     },
 )
@@ -252,7 +260,24 @@ class Playbook(proto.Message):
         handlers (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Handler]):
             Optional. A list of registered handlers to
             execute based on the specified triggers.
+        playbook_type (google.cloud.dialogflowcx_v3beta1.types.Playbook.PlaybookType):
+            Optional. Type of the playbook.
     """
+
+    class PlaybookType(proto.Enum):
+        r"""Type of the playbook.
+
+        Values:
+            PLAYBOOK_TYPE_UNSPECIFIED (0):
+                Unspecified type. Default to TASK.
+            TASK (1):
+                Task playbook.
+            ROUTINE (3):
+                Routine playbook.
+        """
+        PLAYBOOK_TYPE_UNSPECIFIED = 0
+        TASK = 1
+        ROUTINE = 3
 
     class Step(proto.Message):
         r"""Message of single step execution.
@@ -377,6 +402,11 @@ class Playbook(proto.Message):
         number=16,
         message="Handler",
     )
+    playbook_type: PlaybookType = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=PlaybookType,
+    )
 
 
 class CreatePlaybookVersionRequest(proto.Message):
@@ -466,6 +496,38 @@ class GetPlaybookVersionRequest(proto.Message):
     )
 
 
+class RestorePlaybookVersionRequest(proto.Message):
+    r"""The request message for
+    [Playbooks.RestorePlaybookVersion][google.cloud.dialogflow.cx.v3beta1.Playbooks.RestorePlaybookVersion].
+
+    Attributes:
+        name (str):
+            Required. The name of the playbook version. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RestorePlaybookVersionResponse(proto.Message):
+    r"""The response message for
+    [Playbooks.RestorePlaybookVersion][google.cloud.dialogflow.cx.v3beta1.Playbooks.RestorePlaybookVersion].
+
+    Attributes:
+        playbook (google.cloud.dialogflowcx_v3beta1.types.Playbook):
+            The updated playbook.
+    """
+
+    playbook: "Playbook" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Playbook",
+    )
+
+
 class ListPlaybookVersionsRequest(proto.Message):
     r"""The request message for
     [Playbooks.ListPlaybookVersions][google.cloud.dialogflow.cx.v3beta1.Playbooks.ListPlaybookVersions].
@@ -541,6 +603,242 @@ class DeletePlaybookVersionRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class ExportPlaybookRequest(proto.Message):
+    r"""The request message for
+    [Playbooks.ExportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ExportPlaybook].
+
+    Attributes:
+        name (str):
+            Required. The name of the playbook to export. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
+        playbook_uri (str):
+            Optional. The `Google Cloud
+            Storage <https://cloud.google.com/storage/docs/>`__ URI to
+            export the playbook to. The format of this URI must be
+            ``gs://<bucket-name>/<object-name>``. If left unspecified,
+            the serialized playbook is returned inline.
+
+            Dialogflow performs a write operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have write permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+        data_format (google.cloud.dialogflowcx_v3beta1.types.ExportPlaybookRequest.DataFormat):
+            Optional. The data format of the exported agent. If not
+            specified, ``BLOB`` is assumed.
+    """
+
+    class DataFormat(proto.Enum):
+        r"""Data format of the exported playbook.
+
+        Values:
+            DATA_FORMAT_UNSPECIFIED (0):
+                Unspecified format.
+            BLOB (1):
+                Flow content will be exported as raw bytes.
+            JSON (2):
+                Flow content will be exported in JSON format.
+        """
+        DATA_FORMAT_UNSPECIFIED = 0
+        BLOB = 1
+        JSON = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    playbook_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    data_format: DataFormat = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=DataFormat,
+    )
+
+
+class ImportPlaybookRequest(proto.Message):
+    r"""The request message for
+    [Playbooks.ImportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ImportPlaybook].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The agent to import the playbook into. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
+        playbook_uri (str):
+            [Dialogflow access control]
+            (https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage).
+
+            This field is a member of `oneof`_ ``playbook``.
+        playbook_content (bytes):
+            Uncompressed raw byte content for playbook.
+
+            This field is a member of `oneof`_ ``playbook``.
+        import_strategy (google.cloud.dialogflowcx_v3beta1.types.PlaybookImportStrategy):
+            Optional. Specifies the import strategy used
+            when resolving resource conflicts.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    playbook_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="playbook",
+    )
+    playbook_content: bytes = proto.Field(
+        proto.BYTES,
+        number=3,
+        oneof="playbook",
+    )
+    import_strategy: "PlaybookImportStrategy" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="PlaybookImportStrategy",
+    )
+
+
+class PlaybookImportStrategy(proto.Message):
+    r"""The playbook import strategy used for resource conflict resolution
+    associated with an
+    [ImportPlaybookRequest][google.cloud.dialogflow.cx.v3beta1.ImportPlaybookRequest].
+
+    Attributes:
+        main_playbook_import_strategy (google.cloud.dialogflowcx_v3beta1.types.ImportStrategy):
+            Optional. Specifies the import strategy used when resolving
+            conflicts with the main playbook. If not specified,
+            'CREATE_NEW' is assumed.
+        nested_resource_import_strategy (google.cloud.dialogflowcx_v3beta1.types.ImportStrategy):
+            Optional. Specifies the import strategy used when resolving
+            referenced playbook/flow conflicts. If not specified,
+            'CREATE_NEW' is assumed.
+        tool_import_strategy (google.cloud.dialogflowcx_v3beta1.types.ImportStrategy):
+            Optional. Specifies the import strategy used when resolving
+            tool conflicts. If not specified, 'CREATE_NEW' is assumed.
+            This will be applied after the main playbook and nested
+            resource import strategies, meaning if the playbook that
+            references the tool is skipped, the tool will also be
+            skipped.
+    """
+
+    main_playbook_import_strategy: gcdc_import_strategy.ImportStrategy = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=gcdc_import_strategy.ImportStrategy,
+    )
+    nested_resource_import_strategy: gcdc_import_strategy.ImportStrategy = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=gcdc_import_strategy.ImportStrategy,
+    )
+    tool_import_strategy: gcdc_import_strategy.ImportStrategy = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=gcdc_import_strategy.ImportStrategy,
+    )
+
+
+class ImportPlaybookResponse(proto.Message):
+    r"""The response message for
+    [Playbooks.ImportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ImportPlaybook].
+
+    Attributes:
+        playbook (str):
+            The unique identifier of the new playbook. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
+        conflicting_resources (google.cloud.dialogflowcx_v3beta1.types.ImportPlaybookResponse.ConflictingResources):
+            Info which resources have conflicts when
+            [REPORT_CONFLICTS][ImportPlaybookResponse.REPORT_CONFLICTS]
+            import strategy is set for all resources in
+            ImportPlaybookRequest.
+    """
+
+    class ConflictingResources(proto.Message):
+        r"""Conflicting resources detected during the import process. Only
+        filled when
+        [REPORT_CONFLICTS][ImportPlaybookResponse.REPORT_CONFLICTS] is set
+        in the request and there are conflicts in the display names.
+
+        Attributes:
+            main_playbook_display_name (str):
+                Display name of conflicting main playbook.
+            nested_playbook_display_names (MutableSequence[str]):
+                Display names of conflicting nested
+                playbooks.
+            tool_display_names (MutableSequence[str]):
+                Display names of conflicting tools.
+        """
+
+        main_playbook_display_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        nested_playbook_display_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        tool_display_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+
+    playbook: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    conflicting_resources: ConflictingResources = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ConflictingResources,
+    )
+
+
+class ExportPlaybookResponse(proto.Message):
+    r"""The response message for
+    [Playbooks.ExportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ExportPlaybook].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        playbook_uri (str):
+            The URI to a file containing the exported playbook. This
+            field is populated only if ``playbook_uri`` is specified in
+            [ExportPlaybookRequest][google.cloud.dialogflow.cx.v3beta1.ExportPlaybookRequest].
+
+            This field is a member of `oneof`_ ``playbook``.
+        playbook_content (bytes):
+            Uncompressed raw byte content for playbook.
+
+            This field is a member of `oneof`_ ``playbook``.
+    """
+
+    playbook_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="playbook",
+    )
+    playbook_content: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+        oneof="playbook",
     )
 
 
