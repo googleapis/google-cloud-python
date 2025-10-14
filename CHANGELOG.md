@@ -2,7 +2,7 @@ Please refer to each API's `CHANGELOG.md` file under the `packages/` directory
 
 Changelogs
 -----
-- [google-ads-admanager==0.4.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-admanager/CHANGELOG.md)
+- [google-ads-admanager==0.5.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-admanager/CHANGELOG.md)
 - [google-ads-marketingplatform-admin==0.1.6](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ads-marketingplatform-admin/CHANGELOG.md)
 - [google-ai-generativelanguage==0.6.18](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage/CHANGELOG.md)
 - [google-analytics-admin==0.24.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-analytics-admin/CHANGELOG.md)
