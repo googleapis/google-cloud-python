@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
+import IPython.display
 import pandas as pd
 
 import bigframes
@@ -92,3 +95,33 @@ def test_blob_create_read_gbq_object_table(
     pd.testing.assert_frame_equal(
         pd_blob_df, expected_df, check_dtype=False, check_index_type=False
     )
+
+
+def test_display_images(monkeypatch, images_mm_df: bpd.DataFrame):
+    mock_display = mock.Mock()
+    monkeypatch.setattr(IPython.display, "display", mock_display)
+
+    images_mm_df["blob_col"].blob.display()
+
+    for call in mock_display.call_args_list:
+        args, _ = call
+        arg = args[0]
+        assert isinstance(arg, IPython.display.Image)
+
+
+def test_display_nulls(
+    monkeypatch,
+    bq_connection: str,
+    session: bigframes.Session,
+):
+    uri_series = bpd.Series([None, None, None], dtype="string", session=session)
+    blob_series = uri_series.str.to_blob(connection=bq_connection)
+    mock_display = mock.Mock()
+    monkeypatch.setattr(IPython.display, "display", mock_display)
+
+    blob_series.blob.display()
+
+    for call in mock_display.call_args_list:
+        args, _ = call
+        arg = args[0]
+        assert arg == "<NA>"

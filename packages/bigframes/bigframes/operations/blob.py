@@ -228,9 +228,14 @@ class BlobAccessor(base.SeriesMethods):
         df._set_internal_query_job(query_job)
 
         def display_single_url(
-            read_url: str, content_type: Union[str, pd._libs.missing.NAType]
+            read_url: Union[str, pd._libs.missing.NAType],
+            content_type: Union[str, pd._libs.missing.NAType],
         ):
-            if content_type is pd.NA:  # display as raw data or error
+            if pd.isna(read_url):
+                ipy_display.display("<NA>")
+                return
+
+            if pd.isna(content_type):  # display as raw data or error
                 response = requests.get(read_url)
                 ipy_display.display(response.content)
                 return
