@@ -71,10 +71,14 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.flows import pagers
+from google.cloud.dialogflowcx_v3beta1.types import (
+    page,
+    parameter_definition,
+    validation_message,
+)
 from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
-from google.cloud.dialogflowcx_v3beta1.types import page, validation_message
 
 from .transports.base import DEFAULT_CLIENT_INFO, FlowsTransport
 from .transports.grpc import FlowsGrpcTransport
@@ -252,6 +256,30 @@ class FlowsClient(metaclass=FlowsClientMeta):
         """Parses a flow_validation_result path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)/validationResult$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def generator_path(
+        project: str,
+        location: str,
+        agent: str,
+        generator: str,
+    ) -> str:
+        """Returns a fully-qualified generator string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/generators/{generator}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            generator=generator,
+        )
+
+    @staticmethod
+    def parse_generator_path(path: str) -> Dict[str, str]:
+        """Parses a generator path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/generators/(?P<generator>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

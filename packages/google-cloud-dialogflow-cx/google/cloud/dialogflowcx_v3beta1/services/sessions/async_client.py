@@ -90,6 +90,8 @@ class SessionsAsyncClient:
     parse_example_path = staticmethod(SessionsClient.parse_example_path)
     flow_path = staticmethod(SessionsClient.flow_path)
     parse_flow_path = staticmethod(SessionsClient.parse_flow_path)
+    generator_path = staticmethod(SessionsClient.generator_path)
+    parse_generator_path = staticmethod(SessionsClient.parse_generator_path)
     intent_path = staticmethod(SessionsClient.intent_path)
     parse_intent_path = staticmethod(SessionsClient.parse_intent_path)
     page_path = staticmethod(SessionsClient.page_path)

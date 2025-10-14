@@ -40,6 +40,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.11",
     "3.12",
     "3.13",
+    "3.14",
 ]
 
 DEFAULT_PYTHON_VERSION = UNIT_TEST_PYTHON_VERSIONS[-1]
@@ -57,7 +58,15 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = [
+    "3.8",
+    "3.9",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
@@ -176,7 +185,12 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
@@ -389,7 +403,12 @@ def prerelease_deps(session, protobuf_implementation):
     `pip install --pre <package>`.
     """
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies

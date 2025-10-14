@@ -7848,17 +7848,22 @@ def test_create_tool_rest_call_success(request_type):
                 "api_key_config": {
                     "key_name": "key_name_value",
                     "api_key": "api_key_value",
+                    "secret_version_for_api_key": "secret_version_for_api_key_value",
                     "request_location": 1,
                 },
                 "oauth_config": {
                     "oauth_grant_type": 1,
                     "client_id": "client_id_value",
                     "client_secret": "client_secret_value",
+                    "secret_version_for_client_secret": "secret_version_for_client_secret_value",
                     "token_endpoint": "token_endpoint_value",
                     "scopes": ["scopes_value1", "scopes_value2"],
                 },
                 "service_agent_auth_config": {"service_agent_auth": 1},
-                "bearer_token_config": {"token": "token_value"},
+                "bearer_token_config": {
+                    "token": "token_value",
+                    "secret_version_for_token": "secret_version_for_token_value",
+                },
             },
             "tls_config": {
                 "ca_certs": [
@@ -8484,17 +8489,22 @@ def test_update_tool_rest_call_success(request_type):
                 "api_key_config": {
                     "key_name": "key_name_value",
                     "api_key": "api_key_value",
+                    "secret_version_for_api_key": "secret_version_for_api_key_value",
                     "request_location": 1,
                 },
                 "oauth_config": {
                     "oauth_grant_type": 1,
                     "client_id": "client_id_value",
                     "client_secret": "client_secret_value",
+                    "secret_version_for_client_secret": "secret_version_for_client_secret_value",
                     "token_endpoint": "token_endpoint_value",
                     "scopes": ["scopes_value1", "scopes_value2"],
                 },
                 "service_agent_auth_config": {"service_agent_auth": 1},
-                "bearer_token_config": {"token": "token_value"},
+                "bearer_token_config": {
+                    "token": "token_value",
+                    "secret_version_for_token": "secret_version_for_token_value",
+                },
             },
             "tls_config": {
                 "ca_certs": [
@@ -8986,17 +8996,22 @@ def test_create_tool_version_rest_call_success(request_type):
                     "api_key_config": {
                         "key_name": "key_name_value",
                         "api_key": "api_key_value",
+                        "secret_version_for_api_key": "secret_version_for_api_key_value",
                         "request_location": 1,
                     },
                     "oauth_config": {
                         "oauth_grant_type": 1,
                         "client_id": "client_id_value",
                         "client_secret": "client_secret_value",
+                        "secret_version_for_client_secret": "secret_version_for_client_secret_value",
                         "token_endpoint": "token_endpoint_value",
                         "scopes": ["scopes_value1", "scopes_value2"],
                     },
                     "service_agent_auth_config": {"service_agent_auth": 1},
-                    "bearer_token_config": {"token": "token_value"},
+                    "bearer_token_config": {
+                        "token": "token_value",
+                        "secret_version_for_token": "secret_version_for_token_value",
+                    },
                 },
                 "tls_config": {
                     "ca_certs": [
@@ -10626,11 +10641,37 @@ def test_tools_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_service_path():
+def test_secret_version_path():
     project = "squid"
-    location = "clam"
-    namespace = "whelk"
-    service = "octopus"
+    secret = "clam"
+    version = "whelk"
+    expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
+        project=project,
+        secret=secret,
+        version=version,
+    )
+    actual = ToolsClient.secret_version_path(project, secret, version)
+    assert expected == actual
+
+
+def test_parse_secret_version_path():
+    expected = {
+        "project": "octopus",
+        "secret": "oyster",
+        "version": "nudibranch",
+    }
+    path = ToolsClient.secret_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ToolsClient.parse_secret_version_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "cuttlefish"
+    location = "mussel"
+    namespace = "winkle"
+    service = "nautilus"
     expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
         project=project,
         location=location,
@@ -10643,10 +10684,10 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "namespace": "cuttlefish",
-        "service": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "namespace": "squid",
+        "service": "clam",
     }
     path = ToolsClient.service_path(**expected)
 
@@ -10656,10 +10697,10 @@ def test_parse_service_path():
 
 
 def test_tool_path():
-    project = "winkle"
-    location = "nautilus"
-    agent = "scallop"
-    tool = "abalone"
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    tool = "nudibranch"
     expected = (
         "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
             project=project,
@@ -10674,10 +10715,10 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "agent": "whelk",
-        "tool": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "agent": "winkle",
+        "tool": "nautilus",
     }
     path = ToolsClient.tool_path(**expected)
 
@@ -10687,11 +10728,11 @@ def test_parse_tool_path():
 
 
 def test_tool_version_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    tool = "mussel"
-    version = "winkle"
+    project = "scallop"
+    location = "abalone"
+    agent = "squid"
+    tool = "clam"
+    version = "whelk"
     expected = "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}/versions/{version}".format(
         project=project,
         location=location,
@@ -10705,11 +10746,11 @@ def test_tool_version_path():
 
 def test_parse_tool_version_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "agent": "abalone",
-        "tool": "squid",
-        "version": "clam",
+        "project": "octopus",
+        "location": "oyster",
+        "agent": "nudibranch",
+        "tool": "cuttlefish",
+        "version": "mussel",
     }
     path = ToolsClient.tool_version_path(**expected)
 
@@ -10719,7 +10760,7 @@ def test_parse_tool_version_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -10729,7 +10770,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = ToolsClient.common_billing_account_path(**expected)
 
@@ -10739,7 +10780,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -10749,7 +10790,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = ToolsClient.common_folder_path(**expected)
 
@@ -10759,7 +10800,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -10769,7 +10810,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = ToolsClient.common_organization_path(**expected)
 
@@ -10779,7 +10820,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -10789,7 +10830,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = ToolsClient.common_project_path(**expected)
 
@@ -10799,8 +10840,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -10811,8 +10852,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ToolsClient.common_location_path(**expected)
 

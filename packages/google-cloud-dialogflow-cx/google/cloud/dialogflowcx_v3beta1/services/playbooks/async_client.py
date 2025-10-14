@@ -44,9 +44,12 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.playbooks import pagers
@@ -91,6 +94,8 @@ class PlaybooksAsyncClient:
     parse_example_path = staticmethod(PlaybooksClient.parse_example_path)
     flow_path = staticmethod(PlaybooksClient.flow_path)
     parse_flow_path = staticmethod(PlaybooksClient.parse_flow_path)
+    generator_path = staticmethod(PlaybooksClient.generator_path)
+    parse_generator_path = staticmethod(PlaybooksClient.parse_generator_path)
     playbook_path = staticmethod(PlaybooksClient.playbook_path)
     parse_playbook_path = staticmethod(PlaybooksClient.parse_playbook_path)
     playbook_version_path = staticmethod(PlaybooksClient.playbook_version_path)
@@ -789,6 +794,211 @@ class PlaybooksAsyncClient:
         # Done; return the response.
         return response
 
+    async def export_playbook(
+        self,
+        request: Optional[Union[playbook.ExportPlaybookRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Exports the specified playbook to a binary file.
+
+        Note that resources (e.g. examples, tools) that the
+        playbook references will also be exported.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_export_playbook():
+                # Create a client
+                client = dialogflowcx_v3beta1.PlaybooksAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ExportPlaybookRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.export_playbook(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.ExportPlaybookRequest, dict]]):
+                The request object. The request message for
+                [Playbooks.ExportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ExportPlaybook].
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.ExportPlaybookResponse` The response message for
+                   [Playbooks.ExportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ExportPlaybook].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.ExportPlaybookRequest):
+            request = playbook.ExportPlaybookRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_playbook
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            playbook.ExportPlaybookResponse,
+            metadata_type=struct_pb2.Struct,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def import_playbook(
+        self,
+        request: Optional[Union[playbook.ImportPlaybookRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Imports the specified playbook to the specified agent
+        from a binary file.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_import_playbook():
+                # Create a client
+                client = dialogflowcx_v3beta1.PlaybooksAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ImportPlaybookRequest(
+                    playbook_uri="playbook_uri_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_playbook(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.ImportPlaybookRequest, dict]]):
+                The request object. The request message for
+                [Playbooks.ImportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ImportPlaybook].
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.ImportPlaybookResponse` The response message for
+                   [Playbooks.ImportPlaybook][google.cloud.dialogflow.cx.v3beta1.Playbooks.ImportPlaybook].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.ImportPlaybookRequest):
+            request = playbook.ImportPlaybookRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_playbook
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            playbook.ImportPlaybookResponse,
+            metadata_type=struct_pb2.Struct,
+        )
+
+        # Done; return the response.
+        return response
+
     async def update_playbook(
         self,
         request: Optional[Union[gcdc_playbook.UpdatePlaybookRequest, dict]] = None,
@@ -1136,6 +1346,119 @@ class PlaybooksAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.get_playbook_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def restore_playbook_version(
+        self,
+        request: Optional[Union[playbook.RestorePlaybookVersionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> playbook.RestorePlaybookVersionResponse:
+        r"""Retrieves the specified version of the Playbook and
+        stores it as the current playbook draft, returning the
+        playbook with resources updated.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_restore_playbook_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.PlaybooksAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.RestorePlaybookVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.restore_playbook_version(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.RestorePlaybookVersionRequest, dict]]):
+                The request object. The request message for
+                [Playbooks.RestorePlaybookVersion][google.cloud.dialogflow.cx.v3beta1.Playbooks.RestorePlaybookVersion].
+            name (:class:`str`):
+                Required. The name of the playbook version. Format:
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.types.RestorePlaybookVersionResponse:
+                The response message for
+                   [Playbooks.RestorePlaybookVersion][google.cloud.dialogflow.cx.v3beta1.Playbooks.RestorePlaybookVersion].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, playbook.RestorePlaybookVersionRequest):
+            request = playbook.RestorePlaybookVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.restore_playbook_version
         ]
 
         # Certain fields should be provided within the metadata header;

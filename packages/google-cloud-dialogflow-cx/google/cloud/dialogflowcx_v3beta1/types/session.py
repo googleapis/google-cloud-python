@@ -854,6 +854,15 @@ class QueryParameters(proto.Message):
             - MapValue value: If parameter's entity type is a composite
               entity then use map from composite entity property names
               to property values, otherwise, use parameter value.
+        parameter_scope (str):
+            Scope for the parameters. If not specified, parameters will
+            be treated as session parameters. Parameters with custom
+            scope will not be put into [session
+            parameters][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
+
+            You can reference the parameters with custom scope in the
+            agent with the following format:
+            $parameter-scope.params.parameter-id.
         current_page (str):
             The unique identifier of the
             [page][google.cloud.dialogflow.cx.v3beta1.Page] to override
@@ -986,6 +995,10 @@ class QueryParameters(proto.Message):
         proto.MESSAGE,
         number=5,
         message=struct_pb2.Struct,
+    )
+    parameter_scope: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
     current_page: str = proto.Field(
         proto.STRING,

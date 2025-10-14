@@ -294,13 +294,6 @@
             ],
             "release-type": "python"
         },
-        "packages/googleapis-common-protos": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "googleapis-common-protos",
-            "extra-files": [],
-            "release-type": "python"
-        },
         "packages/grafeas": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

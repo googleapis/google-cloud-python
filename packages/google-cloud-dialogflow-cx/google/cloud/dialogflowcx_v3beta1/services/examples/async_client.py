@@ -52,6 +52,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.cloud.dialogflowcx_v3beta1.services.examples import pagers
 from google.cloud.dialogflowcx_v3beta1.types import example
 from google.cloud.dialogflowcx_v3beta1.types import example as gcdc_example
+from google.cloud.dialogflowcx_v3beta1.types import trace
 
 from .client import ExamplesClient
 from .transports.base import DEFAULT_CLIENT_INFO, ExamplesTransport

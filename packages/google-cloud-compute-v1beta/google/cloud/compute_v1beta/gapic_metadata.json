@@ -3406,6 +3406,50 @@
         }
       }
     },
+    "RegionHealthSources": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionHealthSourcesClient",
+          "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            }
+          }
+        }
+      }
+    },
     "RegionInstanceGroupManagerResizeRequests": {
       "clients": {
         "rest": {
@@ -3876,6 +3920,80 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RegionNetworkPolicies": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionNetworkPoliciesClient",
+          "rpcs": {
+            "AddAssociation": {
+              "methods": [
+                "add_association"
+              ]
+            },
+            "AddTrafficClassificationRule": {
+              "methods": [
+                "add_traffic_classification_rule"
+              ]
+            },
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "GetAssociation": {
+              "methods": [
+                "get_association"
+              ]
+            },
+            "GetTrafficClassificationRule": {
+              "methods": [
+                "get_traffic_classification_rule"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "PatchTrafficClassificationRule": {
+              "methods": [
+                "patch_traffic_classification_rule"
+              ]
+            },
+            "RemoveAssociation": {
+              "methods": [
+                "remove_association"
+              ]
+            },
+            "RemoveTrafficClassificationRule": {
+              "methods": [
+                "remove_traffic_classification_rule"
               ]
             }
           }
@@ -4401,6 +4519,11 @@
             "PerformMaintenance": {
               "methods": [
                 "perform_maintenance"
+              ]
+            },
+            "ReportFaulty": {
+              "methods": [
+                "report_faulty"
               ]
             }
           }

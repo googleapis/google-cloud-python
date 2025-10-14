@@ -5179,6 +5179,7 @@ def test_insert_rest_call_success(request_type):
         "license_codes": [1361, 1362],
         "licenses": ["licenses_value1", "licenses_value2"],
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "raw_disk": {
             "container_type": "container_type_value",
             "sha1_checksum": "sha1_checksum_value",
@@ -5593,6 +5594,7 @@ def test_patch_rest_call_success(request_type):
         "license_codes": [1361, 1362],
         "licenses": ["licenses_value1", "licenses_value2"],
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "raw_disk": {
             "container_type": "container_type_value",
             "sha1_checksum": "sha1_checksum_value",

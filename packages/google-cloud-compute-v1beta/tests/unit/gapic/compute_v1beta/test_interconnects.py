@@ -3898,6 +3898,7 @@ def test_get_rest_call_success(request_type):
             satisfies_pzs=True,
             self_link="self_link_value",
             state="state_value",
+            subzone="subzone_value",
             wire_groups=["wire_groups_value"],
         )
 
@@ -3943,6 +3944,7 @@ def test_get_rest_call_success(request_type):
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.state == "state_value"
+    assert response.subzone == "subzone_value"
     assert response.wire_groups == ["wire_groups_value"]
 
 
@@ -4384,6 +4386,7 @@ def test_insert_rest_call_success(request_type):
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "state": "state_value",
+        "subzone": "subzone_value",
         "wire_groups": ["wire_groups_value1", "wire_groups_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -4833,6 +4836,7 @@ def test_patch_rest_call_success(request_type):
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "state": "state_value",
+        "subzone": "subzone_value",
         "wire_groups": ["wire_groups_value1", "wire_groups_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

@@ -1,4 +1,5 @@
-# Copyright 2021 Google LLC
+# -*- coding: utf-8 -*-
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,8 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+from .client import RegionNetworkPoliciesClient
 
-deep-remove-regex:
-  - /owl-bot-staging
-
-begin-after-commit-hash: 6acf4a0a797f1082027985c55c4b14b60f673dd7
+__all__ = ("RegionNetworkPoliciesClient",)

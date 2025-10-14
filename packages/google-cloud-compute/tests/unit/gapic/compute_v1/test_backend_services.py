@@ -2696,6 +2696,211 @@ def test_get_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_get_effective_security_policies_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = BackendServicesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_effective_security_policies
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_effective_security_policies
+        ] = mock_rpc
+
+        request = {}
+        client.get_effective_security_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_effective_security_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_effective_security_policies_rest_required_fields(
+    request_type=compute.GetEffectiveSecurityPoliciesBackendServiceRequest,
+):
+    transport_class = transports.BackendServicesRestTransport
+
+    request_init = {}
+    request_init["backend_service"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_effective_security_policies._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["backendService"] = "backend_service_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_effective_security_policies._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "backendService" in jsonified_request
+    assert jsonified_request["backendService"] == "backend_service_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.GetEffectiveSecurityPoliciesBackendServiceResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                compute.GetEffectiveSecurityPoliciesBackendServiceResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_effective_security_policies(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_effective_security_policies_rest_unset_required_fields():
+    transport = transports.BackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_effective_security_policies._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "backendService",
+                "project",
+            )
+        )
+    )
+
+
+def test_get_effective_security_policies_rest_flattened():
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.GetEffectiveSecurityPoliciesBackendServiceResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "backend_service": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            backend_service="backend_service_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.GetEffectiveSecurityPoliciesBackendServiceResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_effective_security_policies(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/backendServices/{backend_service}/getEffectiveSecurityPolicies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_effective_security_policies_rest_flattened_error(transport: str = "rest"):
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_effective_security_policies(
+            compute.GetEffectiveSecurityPoliciesBackendServiceRequest(),
+            project="project_value",
+            backend_service="backend_service_value",
+        )
+
+
 def test_get_health_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7062,6 +7267,143 @@ def test_get_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_get_effective_security_policies_rest_bad_request(
+    request_type=compute.GetEffectiveSecurityPoliciesBackendServiceRequest,
+):
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "backend_service": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_effective_security_policies(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetEffectiveSecurityPoliciesBackendServiceRequest,
+        dict,
+    ],
+)
+def test_get_effective_security_policies_rest_call_success(request_type):
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "backend_service": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.GetEffectiveSecurityPoliciesBackendServiceResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.GetEffectiveSecurityPoliciesBackendServiceResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_effective_security_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, compute.GetEffectiveSecurityPoliciesBackendServiceResponse
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_effective_security_policies_rest_interceptors(null_interceptor):
+    transport = transports.BackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BackendServicesRestInterceptor(),
+    )
+    client = BackendServicesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BackendServicesRestInterceptor,
+        "post_get_effective_security_policies",
+    ) as post, mock.patch.object(
+        transports.BackendServicesRestInterceptor,
+        "post_get_effective_security_policies_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.BackendServicesRestInterceptor, "pre_get_effective_security_policies"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = compute.GetEffectiveSecurityPoliciesBackendServiceRequest.pb(
+            compute.GetEffectiveSecurityPoliciesBackendServiceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = (
+            compute.GetEffectiveSecurityPoliciesBackendServiceResponse.to_json(
+                compute.GetEffectiveSecurityPoliciesBackendServiceResponse()
+            )
+        )
+        req.return_value.content = return_value
+
+        request = compute.GetEffectiveSecurityPoliciesBackendServiceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.GetEffectiveSecurityPoliciesBackendServiceResponse()
+        post_with_metadata.return_value = (
+            compute.GetEffectiveSecurityPoliciesBackendServiceResponse(),
+            metadata,
+        )
+
+        client.get_effective_security_policies(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_health_rest_bad_request(
     request_type=compute.GetHealthBackendServiceRequest,
 ):
@@ -10024,6 +10366,28 @@ def test_get_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_get_effective_security_policies_empty_call_rest():
+    client = BackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_policies), "__call__"
+    ) as call:
+        client.get_effective_security_policies(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.GetEffectiveSecurityPoliciesBackendServiceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_health_empty_call_rest():
     client = BackendServicesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10275,6 +10639,7 @@ def test_backend_services_base_transport():
         "delete",
         "delete_signed_url_key",
         "get",
+        "get_effective_security_policies",
         "get_health",
         "get_iam_policy",
         "insert",
@@ -10437,6 +10802,9 @@ def test_backend_services_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.get._session
     session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.get_effective_security_policies._session
+    session2 = client2.transport.get_effective_security_policies._session
     assert session1 != session2
     session1 = client1.transport.get_health._session
     session2 = client2.transport.get_health._session

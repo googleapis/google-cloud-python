@@ -1036,7 +1036,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 resource. You can use snapshots to back
                 up data on a regular interval. For more
                 information, read Creating persistent
-                disk snapshots. LINT.IfChange
+                disk snapshots.
 
         """
         # Create or coerce a protobuf request object.
