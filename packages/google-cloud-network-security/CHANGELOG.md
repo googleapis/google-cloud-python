@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-network-security/#history
 
+## [0.9.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.19...google-cloud-network-security-v0.9.20) (2025-10-14)
+
+
+### Features
+
+* Add support for Python 3.14 ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
 ## [0.9.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.18...google-cloud-network-security-v0.9.19) (2025-09-04)
 
 

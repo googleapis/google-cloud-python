@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow-cx/#history
 
+## [1.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.42.0...google-cloud-dialogflow-cx-v1.43.0) (2025-10-14)
+
+
+### Features
+
+* Add support for Python 3.14 ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
 ## [1.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.41.1...google-cloud-dialogflow-cx-v1.42.0) (2025-07-04)
 
 

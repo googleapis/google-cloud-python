@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.27.2...google-cloud-monitoring-v2.28.0) (2025-10-14)
+
+
+### Features
+
+* Add support for Python 3.14 ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
 ## [2.27.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.27.1...google-cloud-monitoring-v2.27.2) (2025-06-11)
 
 
