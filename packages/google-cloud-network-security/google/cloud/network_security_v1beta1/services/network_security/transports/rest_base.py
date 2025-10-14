@@ -14,26 +14,30 @@
 # limitations under the License.
 #
 import json  # type: ignore
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.cloud.location import locations_pb2 # type: ignore
-from .base import NetworkSecurityTransport, DEFAULT_CLIENT_INFO
-
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-
-from google.cloud.network_security_v1.types import authorization_policy
-from google.cloud.network_security_v1.types import authorization_policy as gcn_authorization_policy
-from google.cloud.network_security_v1.types import client_tls_policy
-from google.cloud.network_security_v1.types import client_tls_policy as gcn_client_tls_policy
-from google.cloud.network_security_v1.types import server_tls_policy
-from google.cloud.network_security_v1.types import server_tls_policy as gcn_server_tls_policy
+from google.api_core import gapic_v1, path_template
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+
+from google.cloud.network_security_v1beta1.types import (
+    authorization_policy as gcn_authorization_policy,
+)
+from google.cloud.network_security_v1beta1.types import (
+    client_tls_policy as gcn_client_tls_policy,
+)
+from google.cloud.network_security_v1beta1.types import (
+    server_tls_policy as gcn_server_tls_policy,
+)
+from google.cloud.network_security_v1beta1.types import authorization_policy
+from google.cloud.network_security_v1beta1.types import client_tls_policy
+from google.cloud.network_security_v1beta1.types import server_tls_policy
+
+from .base import DEFAULT_CLIENT_INFO, NetworkSecurityTransport
 
 
 class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
@@ -49,14 +53,16 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(self, *,
-            host: str = 'networksecurity.googleapis.com',
-            credentials: Optional[Any] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            url_scheme: str = 'https',
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "networksecurity.googleapis.com",
+        credentials: Optional[Any] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
@@ -80,7 +86,9 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -91,33 +99,41 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience
+            api_audience=api_audience,
         )
 
     class _BaseCreateAuthorizationPolicy:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "authorizationPolicyId" : "",        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "authorizationPolicyId": "",
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=projects/*/locations/*}/authorizationPolicies',
-                'body': 'authorization_policy',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*}/authorizationPolicies",
+                    "body": "authorization_policy",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcn_authorization_policy.CreateAuthorizationPolicyRequest.pb(request)
+            pb_request = gcn_authorization_policy.CreateAuthorizationPolicyRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -126,17 +142,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=True
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -145,20 +167,26 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "clientTlsPolicyId" : "",        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "clientTlsPolicyId": "",
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=projects/*/locations/*}/clientTlsPolicies',
-                'body': 'client_tls_policy',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*}/clientTlsPolicies",
+                    "body": "client_tls_policy",
+                },
             ]
             return http_options
 
@@ -173,17 +201,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=True
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -192,20 +226,26 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "serverTlsPolicyId" : "",        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "serverTlsPolicyId": "",
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=projects/*/locations/*}/serverTlsPolicies',
-                'body': 'server_tls_policy',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*}/serverTlsPolicies",
+                    "body": "server_tls_policy",
+                },
             ]
             return http_options
 
@@ -220,17 +260,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=True
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -239,35 +285,47 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/authorizationPolicies/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/authorizationPolicies/*}",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = authorization_policy.DeleteAuthorizationPolicyRequest.pb(request)
+            pb_request = authorization_policy.DeleteAuthorizationPolicyRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -276,19 +334,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/clientTlsPolicies/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/clientTlsPolicies/*}",
+                },
             ]
             return http_options
 
@@ -300,11 +362,17 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -313,19 +381,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/serverTlsPolicies/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/serverTlsPolicies/*}",
+                },
             ]
             return http_options
 
@@ -337,11 +409,17 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -350,19 +428,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/authorizationPolicies/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/authorizationPolicies/*}",
+                },
             ]
             return http_options
 
@@ -374,11 +456,17 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -387,19 +475,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/clientTlsPolicies/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/clientTlsPolicies/*}",
+                },
             ]
             return http_options
 
@@ -411,11 +503,17 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -424,19 +522,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/serverTlsPolicies/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/serverTlsPolicies/*}",
+                },
             ]
             return http_options
 
@@ -448,11 +550,17 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -461,35 +569,47 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=projects/*/locations/*}/authorizationPolicies',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*}/authorizationPolicies",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = authorization_policy.ListAuthorizationPoliciesRequest.pb(request)
+            pb_request = authorization_policy.ListAuthorizationPoliciesRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -498,19 +618,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=projects/*/locations/*}/clientTlsPolicies',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*}/clientTlsPolicies",
+                },
             ]
             return http_options
 
@@ -522,11 +646,17 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -535,19 +665,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=projects/*/locations/*}/serverTlsPolicies',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*}/serverTlsPolicies",
+                },
             ]
             return http_options
 
@@ -559,11 +693,17 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -572,26 +712,32 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{authorization_policy.name=projects/*/locations/*/authorizationPolicies/*}',
-                'body': 'authorization_policy',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1beta1/{authorization_policy.name=projects/*/locations/*/authorizationPolicies/*}",
+                    "body": "authorization_policy",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcn_authorization_policy.UpdateAuthorizationPolicyRequest.pb(request)
+            pb_request = gcn_authorization_policy.UpdateAuthorizationPolicyRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -600,17 +746,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=True
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -619,20 +771,24 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{client_tls_policy.name=projects/*/locations/*/clientTlsPolicies/*}',
-                'body': 'client_tls_policy',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1beta1/{client_tls_policy.name=projects/*/locations/*/clientTlsPolicies/*}",
+                    "body": "client_tls_policy",
+                },
             ]
             return http_options
 
@@ -647,17 +803,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=True
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -666,20 +828,24 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{server_tls_policy.name=projects/*/locations/*/serverTlsPolicies/*}',
-                'body': 'server_tls_policy',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1beta1/{server_tls_policy.name=projects/*/locations/*/serverTlsPolicies/*}",
+                    "body": "server_tls_policy",
+                },
             ]
             return http_options
 
@@ -694,17 +860,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=True
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=True,
-            ))
-            query_params.update(_BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_unset_required_fields(query_params))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -715,27 +887,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*}',
-            },
-        {
-                'method': 'get',
-                'uri': '/v1/{name=organizations/*/locations/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*}",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
     class _BaseListLocations:
@@ -744,27 +912,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*}/locations',
-            },
-        {
-                'method': 'get',
-                'uri': '/v1/{name=organizations/*/locations/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*}/locations",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
     class _BaseGetIamPolicy:
@@ -773,39 +937,31 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:getIamPolicy',
-            },
-        {
-                'method': 'get',
-                'uri': '/v1/{resource=projects/*/locations/*/addressGroups/*}:getIamPolicy',
-            },
-        {
-                'method': 'get',
-                'uri': '/v1/{resource=organizations/*/locations/*/addressGroups/*}:getIamPolicy',
-            },
-        {
-                'method': 'get',
-                'uri': '/v1/{resource=projects/*/locations/*/serverTlsPolicies/*}:getIamPolicy',
-            },
-        {
-                'method': 'get',
-                'uri': '/v1/{resource=projects/*/locations/*/clientTlsPolicies/*}:getIamPolicy',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/authorizationPolicies/*}:getIamPolicy",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/serverTlsPolicies/*}:getIamPolicy",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/clientTlsPolicies/*}:getIamPolicy",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
     class _BaseSetIamPolicy:
@@ -814,48 +970,39 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:setIamPolicy',
-                'body': '*',
-            },
-        {
-                'method': 'post',
-                'uri': '/v1/{resource=projects/*/locations/*/addressGroups/*}:setIamPolicy',
-                'body': '*',
-            },
-        {
-                'method': 'post',
-                'uri': '/v1/{resource=organizations/*/locations/*/addressGroups/*}:setIamPolicy',
-                'body': '*',
-            },
-        {
-                'method': 'post',
-                'uri': '/v1/{resource=projects/*/locations/*/serverTlsPolicies/*}:setIamPolicy',
-                'body': '*',
-            },
-        {
-                'method': 'post',
-                'uri': '/v1/{resource=projects/*/locations/*/clientTlsPolicies/*}:setIamPolicy',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/authorizationPolicies/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/serverTlsPolicies/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/clientTlsPolicies/*}:setIamPolicy",
+                    "body": "*",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
+            body = json.dumps(transcoded_request["body"])
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
     class _BaseTestIamPermissions:
@@ -864,48 +1011,39 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:testIamPermissions',
-                'body': '*',
-            },
-        {
-                'method': 'post',
-                'uri': '/v1/{resource=projects/*/locations/*/addressGroups/*}:testIamPermissions',
-                'body': '*',
-            },
-        {
-                'method': 'post',
-                'uri': '/v1/{resource=organizations/*/locations/*/addressGroups/*}:testIamPermissions',
-                'body': '*',
-            },
-        {
-                'method': 'post',
-                'uri': '/v1/{resource=projects/*/locations/*/serverTlsPolicies/*}:testIamPermissions',
-                'body': '*',
-            },
-        {
-                'method': 'post',
-                'uri': '/v1/{resource=projects/*/locations/*/clientTlsPolicies/*}:testIamPermissions',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/authorizationPolicies/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/serverTlsPolicies/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/clientTlsPolicies/*}:testIamPermissions",
+                    "body": "*",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
+            body = json.dumps(transcoded_request["body"])
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
     class _BaseCancelOperation:
@@ -914,33 +1052,29 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
-                'body': '*',
-            },
-        {
-                'method': 'post',
-                'uri': '/v1/{name=organizations/*/locations/*/operations/*}:cancel',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/operations/*}:cancel",
+                    "body": "*",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
+            body = json.dumps(transcoded_request["body"])
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
     class _BaseDeleteOperation:
@@ -949,27 +1083,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
-            },
-        {
-                'method': 'delete',
-                'uri': '/v1/{name=organizations/*/locations/*/operations/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
     class _BaseGetOperation:
@@ -978,27 +1108,23 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
-            },
-        {
-                'method': 'get',
-                'uri': '/v1/{name=organizations/*/locations/*/operations/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
     class _BaseListOperations:
@@ -1007,30 +1133,24 @@ class _BaseNetworkSecurityRestTransport(NetworkSecurityTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*}/operations',
-            },
-        {
-                'method': 'get',
-                'uri': '/v1/{name=organizations/*/locations/*}/operations',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*}/operations",
+                },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
 
-__all__=(
-    '_BaseNetworkSecurityRestTransport',
-)
+__all__ = ("_BaseNetworkSecurityRestTransport",)
