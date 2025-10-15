@@ -11,5 +11,5 @@
     "packages/google-cloud-os-login": "2.18.0",
     "packages/google-cloud-secret-manager": "2.25.0",
     "packages/grafeas": "1.16.0",
-    "packages/grpc-google-iam-v1": "0.14.2"
+    "packages/grpc-google-iam-v1": "0.14.3"
 }

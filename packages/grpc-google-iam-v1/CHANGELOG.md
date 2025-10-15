@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/grpc-google-iam-v1/#history
 
+## [0.14.3](https://github.com/googleapis/google-cloud-python/compare/grpc-google-iam-v1-v0.14.2...grpc-google-iam-v1-v0.14.3) (2025-10-15)
+
+
+### Features
+
+* add support for Python 3.14 ([0f94b9e](https://github.com/googleapis/google-cloud-python/commit/0f94b9ea258b461e9c68e7702ba6386c10f6d02c))
+
+
+### Bug Fixes
+
+* regenerate pb2 files with protoc v25.3 ([0f94b9e](https://github.com/googleapis/google-cloud-python/commit/0f94b9ea258b461e9c68e7702ba6386c10f6d02c))
+
 ## [0.14.2](https://github.com/googleapis/google-cloud-python/compare/grpc-google-iam-v1-v0.14.1...grpc-google-iam-v1-v0.14.2) (2025-03-15)
 
 

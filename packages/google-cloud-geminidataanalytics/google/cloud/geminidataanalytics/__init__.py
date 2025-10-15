@@ -36,14 +36,15 @@ from google.cloud.geminidataanalytics_v1alpha.types.context import (
     Context,
     ConversationOptions,
     ExampleQuery,
+    GlossaryTerm,
 )
 from google.cloud.geminidataanalytics_v1alpha.types.conversation import (
     Conversation,
     CreateConversationRequest,
+    DeleteConversationRequest,
     GetConversationRequest,
     ListConversationsRequest,
     ListConversationsResponse,
-    UpdateConversationRequest,
 )
 from google.cloud.geminidataanalytics_v1alpha.types.credentials import (
     Credentials,
@@ -119,12 +120,13 @@ __all__ = (
     "Context",
     "ConversationOptions",
     "ExampleQuery",
+    "GlossaryTerm",
     "Conversation",
     "CreateConversationRequest",
+    "DeleteConversationRequest",
     "GetConversationRequest",
     "ListConversationsRequest",
     "ListConversationsResponse",
-    "UpdateConversationRequest",
     "Credentials",
     "OAuthCredentials",
     "DataAgent",
