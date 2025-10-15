@@ -67,8 +67,10 @@ RUN unzip protoc-25.3-linux-x86_64.zip -d protoc
 
 # Download/extract pandoc
 # Pandoc is required by gapic-generator-python for parsing documentation
-RUN wget https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-linux-amd64.tar.gz
-RUN tar -xvf pandoc-3.7.0.2-linux-amd64.tar.gz
+ENV PANDOC_VERSION=3.8.2
+RUN mkdir pandoc-binary
+RUN wget https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz
+RUN tar -xvf pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz -C pandoc-binary --strip-components=1
 
 # Download synthtool
 RUN git clone --depth 1 https://github.com/googleapis/synthtool.git synthtool
@@ -98,7 +100,7 @@ RUN apt-get update && \
 COPY --from=builder protoc/bin /usr/local/bin
 COPY --from=builder protoc/include /usr/local/include
 
-COPY --from=builder pandoc-3.7.0.2/bin /usr/local/bin
+COPY --from=builder pandoc-binary/bin /usr/local/bin
 COPY --from=builder synthtool /synthtool
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.

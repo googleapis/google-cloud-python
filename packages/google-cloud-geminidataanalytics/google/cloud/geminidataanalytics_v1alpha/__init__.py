@@ -32,14 +32,15 @@ from .types.context import (
     Context,
     ConversationOptions,
     ExampleQuery,
+    GlossaryTerm,
 )
 from .types.conversation import (
     Conversation,
     CreateConversationRequest,
+    DeleteConversationRequest,
     GetConversationRequest,
     ListConversationsRequest,
     ListConversationsResponse,
-    UpdateConversationRequest,
 )
 from .types.credentials import Credentials, OAuthCredentials
 from .types.data_agent import DataAgent
@@ -135,6 +136,7 @@ __all__ = (
     "DataResult",
     "Datasource",
     "DatasourceReferences",
+    "DeleteConversationRequest",
     "DeleteDataAgentRequest",
     "ErrorMessage",
     "ExampleQueries",
@@ -142,6 +144,7 @@ __all__ = (
     "Field",
     "GetConversationRequest",
     "GetDataAgentRequest",
+    "GlossaryTerm",
     "ListAccessibleDataAgentsRequest",
     "ListAccessibleDataAgentsResponse",
     "ListConversationsRequest",
@@ -166,7 +169,6 @@ __all__ = (
     "StudioDatasourceReferences",
     "SystemMessage",
     "TextMessage",
-    "UpdateConversationRequest",
     "UpdateDataAgentRequest",
     "UserMessage",
 )

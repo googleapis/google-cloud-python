@@ -19,14 +19,15 @@ from .context import (
     Context,
     ConversationOptions,
     ExampleQuery,
+    GlossaryTerm,
 )
 from .conversation import (
     Conversation,
     CreateConversationRequest,
+    DeleteConversationRequest,
     GetConversationRequest,
     ListConversationsRequest,
     ListConversationsResponse,
-    UpdateConversationRequest,
 )
 from .credentials import Credentials, OAuthCredentials
 from .data_agent import DataAgent
@@ -93,12 +94,13 @@ __all__ = (
     "Context",
     "ConversationOptions",
     "ExampleQuery",
+    "GlossaryTerm",
     "Conversation",
     "CreateConversationRequest",
+    "DeleteConversationRequest",
     "GetConversationRequest",
     "ListConversationsRequest",
     "ListConversationsResponse",
-    "UpdateConversationRequest",
     "Credentials",
     "OAuthCredentials",
     "DataAgent",
