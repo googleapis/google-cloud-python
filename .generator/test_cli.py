@@ -856,6 +856,24 @@ def test_handle_release_init_success(mocker, mock_release_init_request_file):
     handle_release_init()
 
 
+def test_handle_release_init_is_generated_success(
+    mocker, mock_release_init_request_file
+):
+    """
+    Tests that `handle_release_init` calls `_update_global_changelog` when the
+    `packages` directory exists.
+    """
+    mocker.patch("pathlib.Path.exists", return_value=True)
+    mock_update_global_changelog = mocker.patch("cli._update_global_changelog")
+    mocker.patch("cli._update_version_for_library")
+    mocker.patch("cli._get_previous_version", return_value="1.2.2")
+    mocker.patch("cli._update_changelog_for_library")
+
+    handle_release_init()
+
+    mock_update_global_changelog.assert_called_once()
+
+
 def test_handle_release_init_fail_value_error_file():
     """
     Tests that handle_release_init fails to read `librarian/release-init-request.json`.
