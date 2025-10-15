@@ -7133,6 +7133,24 @@ def test_create_data_agent_rest_call_success(request_type):
                         "natural_language_question": "natural_language_question_value",
                     }
                 ],
+                "glossary_terms": [
+                    {
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "labels": ["labels_value1", "labels_value2"],
+                    }
+                ],
+                "schema_relationships": [
+                    {
+                        "left_schema_paths": {
+                            "table_fqn": "table_fqn_value",
+                            "paths": ["paths_value1", "paths_value2"],
+                        },
+                        "right_schema_paths": {},
+                        "sources": [1],
+                        "confidence_score": 0.1673,
+                    }
+                ],
             },
             "published_context": {},
             "last_published_context": {},
@@ -7420,6 +7438,24 @@ def test_update_data_agent_rest_call_success(request_type):
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                    }
+                ],
+                "glossary_terms": [
+                    {
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "labels": ["labels_value1", "labels_value2"],
+                    }
+                ],
+                "schema_relationships": [
+                    {
+                        "left_schema_paths": {
+                            "table_fqn": "table_fqn_value",
+                            "paths": ["paths_value1", "paths_value2"],
+                        },
+                        "right_schema_paths": {},
+                        "sources": [1],
+                        "confidence_score": 0.1673,
                     }
                 ],
             },
