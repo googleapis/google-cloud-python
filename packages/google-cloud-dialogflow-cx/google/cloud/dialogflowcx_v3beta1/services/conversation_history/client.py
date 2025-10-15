@@ -352,6 +352,30 @@ class ConversationHistoryClient(metaclass=ConversationHistoryClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def generator_path(
+        project: str,
+        location: str,
+        agent: str,
+        generator: str,
+    ) -> str:
+        """Returns a fully-qualified generator string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/generators/{generator}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            generator=generator,
+        )
+
+    @staticmethod
+    def parse_generator_path(path: str) -> Dict[str, str]:
+        """Parses a generator path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/generators/(?P<generator>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def intent_path(
         project: str,
         location: str,
@@ -421,6 +445,28 @@ class ConversationHistoryClient(metaclass=ConversationHistoryClientMeta):
         """Parses a playbook path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/playbooks/(?P<playbook>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def secret_version_path(
+        project: str,
+        secret: str,
+        version: str,
+    ) -> str:
+        """Returns a fully-qualified secret_version string."""
+        return "projects/{project}/secrets/{secret}/versions/{version}".format(
+            project=project,
+            secret=secret,
+            version=version,
+        )
+
+    @staticmethod
+    def parse_secret_version_path(path: str) -> Dict[str, str]:
+        """Parses a secret_version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)/versions/(?P<version>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

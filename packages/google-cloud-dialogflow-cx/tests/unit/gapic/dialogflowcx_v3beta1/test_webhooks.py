@@ -4540,11 +4540,14 @@ def test_create_webhook_rest_call_success(request_type):
             "uri": "uri_value",
             "username": "username_value",
             "password": "password_value",
+            "secret_version_for_username_password": "secret_version_for_username_password_value",
             "request_headers": {},
+            "secret_versions_for_request_headers": {},
             "allowed_ca_certs": [b"allowed_ca_certs_blob1", b"allowed_ca_certs_blob2"],
             "oauth_config": {
                 "client_id": "client_id_value",
                 "client_secret": "client_secret_value",
+                "secret_version_for_client_secret": "secret_version_for_client_secret_value",
                 "token_endpoint": "token_endpoint_value",
                 "scopes": ["scopes_value1", "scopes_value2"],
             },
@@ -4769,11 +4772,14 @@ def test_update_webhook_rest_call_success(request_type):
             "uri": "uri_value",
             "username": "username_value",
             "password": "password_value",
+            "secret_version_for_username_password": "secret_version_for_username_password_value",
             "request_headers": {},
+            "secret_versions_for_request_headers": {},
             "allowed_ca_certs": [b"allowed_ca_certs_blob1", b"allowed_ca_certs_blob2"],
             "oauth_config": {
                 "client_id": "client_id_value",
                 "client_secret": "client_secret_value",
+                "secret_version_for_client_secret": "secret_version_for_client_secret_value",
                 "token_endpoint": "token_endpoint_value",
                 "scopes": ["scopes_value1", "scopes_value2"],
             },
@@ -5907,11 +5913,37 @@ def test_webhooks_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_service_path():
+def test_secret_version_path():
     project = "squid"
-    location = "clam"
-    namespace = "whelk"
-    service = "octopus"
+    secret = "clam"
+    version = "whelk"
+    expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
+        project=project,
+        secret=secret,
+        version=version,
+    )
+    actual = WebhooksClient.secret_version_path(project, secret, version)
+    assert expected == actual
+
+
+def test_parse_secret_version_path():
+    expected = {
+        "project": "octopus",
+        "secret": "oyster",
+        "version": "nudibranch",
+    }
+    path = WebhooksClient.secret_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = WebhooksClient.parse_secret_version_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "cuttlefish"
+    location = "mussel"
+    namespace = "winkle"
+    service = "nautilus"
     expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
         project=project,
         location=location,
@@ -5924,10 +5956,10 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "namespace": "cuttlefish",
-        "service": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "namespace": "squid",
+        "service": "clam",
     }
     path = WebhooksClient.service_path(**expected)
 
@@ -5937,10 +5969,10 @@ def test_parse_service_path():
 
 
 def test_webhook_path():
-    project = "winkle"
-    location = "nautilus"
-    agent = "scallop"
-    webhook = "abalone"
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    webhook = "nudibranch"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -5953,10 +5985,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "agent": "whelk",
-        "webhook": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "agent": "winkle",
+        "webhook": "nautilus",
     }
     path = WebhooksClient.webhook_path(**expected)
 
@@ -5966,7 +5998,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5976,7 +6008,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = WebhooksClient.common_billing_account_path(**expected)
 
@@ -5986,7 +6018,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5996,7 +6028,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = WebhooksClient.common_folder_path(**expected)
 
@@ -6006,7 +6038,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6016,7 +6048,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = WebhooksClient.common_organization_path(**expected)
 
@@ -6026,7 +6058,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6036,7 +6068,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = WebhooksClient.common_project_path(**expected)
 
@@ -6046,8 +6078,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6058,8 +6090,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = WebhooksClient.common_location_path(**expected)
 

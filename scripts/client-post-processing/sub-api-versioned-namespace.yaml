@@ -91,58 +91,6 @@ replacements:
           gkehub_v1/multiclusteringress_v1/types_\n
     count: 1
   - paths: [
-      packages/google-cloud-workflows/docs/index.rst
-    ]
-    before: |
-      API Reference
-      -------------
-      .. toctree::
-          :maxdepth: 2
-
-          workflows_v1/services_
-          workflows_v1/types_
-
-      API Reference
-      -------------
-      .. toctree::
-          :maxdepth: 2
-
-          workflows_v1beta/services_
-          workflows_v1beta/types_\n\n
-    after: |
-      API Reference
-      -------------
-      .. toctree::
-          :maxdepth: 2
-
-          workflows_v1/services_
-          workflows_v1/types_
-
-      API Reference
-      -------------
-      .. toctree::
-          :maxdepth: 2
-
-          workflows_v1beta/services_
-          workflows_v1beta/types_
-
-      API Reference
-      -------------
-      .. toctree::
-          :maxdepth: 2
-
-          executions_v1/services_
-          executions_v1/types_
-
-      API Reference
-      -------------
-      .. toctree::
-          :maxdepth: 2
-
-          executions_v1beta/services_
-          executions_v1beta/types_\n
-    count: 1
-  - paths: [
       packages/google-cloud-os-login/google/cloud/oslogin_v1/services/os_login_service/async_client.py,
       packages/google-cloud-os-login/google/cloud/oslogin_v1/services/os_login_service/client.py,
       packages/google-cloud-os-login/google/cloud/oslogin_v1/services/os_login_service/transports/base.py,

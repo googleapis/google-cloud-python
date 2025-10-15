@@ -280,6 +280,8 @@ __protobuf__ = proto.module(
         "ColumnDataProfile",
         "FileStoreDataProfile",
         "Tag",
+        "TagFilters",
+        "TagFilter",
         "RelatedResource",
         "FileStoreInfoTypeSummary",
         "FileExtensionInfo",
@@ -2006,6 +2008,26 @@ class RedactImageRequest(proto.Message):
             along with the redacted image.
         byte_item (google.cloud.dlp_v2.types.ByteContentItem):
             The content must be PNG, JPEG, SVG or BMP.
+        inspect_template (str):
+            The full resource name of the inspection template to use.
+            Settings in the main ``inspect_config`` field override the
+            corresponding settings in this inspection template.
+
+            The merge behavior is as follows:
+
+            - Singular field: The main field's value replaces the value
+              of the corresponding field in the template.
+            - Repeated fields: The field values are appended to the list
+              defined in the template.
+            - Sub-messages and groups: The fields are recursively
+              merged.
+        deidentify_template (str):
+            The full resource name of the de-identification template to
+            use. Settings in the main ``image_redaction_configs`` field
+            override the corresponding settings in this
+            de-identification template. The request fails if the type of
+            the template's deidentify_config is not
+            image_transformations.
     """
 
     class ImageRedactionConfig(proto.Message):
@@ -2085,6 +2107,14 @@ class RedactImageRequest(proto.Message):
         proto.MESSAGE,
         number=7,
         message="ByteContentItem",
+    )
+    inspect_template: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    deidentify_template: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 
@@ -2461,6 +2491,11 @@ class InspectContentResponse(proto.Message):
 class OutputStorageConfig(proto.Message):
     r"""Cloud repository for storing output.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -2481,6 +2516,22 @@ class OutputStorageConfig(proto.Message):
             jobs that analyze the same table but compute a different
             privacy metric, or use different sets of quasi-identifiers,
             cannot store their results in the same table.
+
+            This field is a member of `oneof`_ ``type``.
+        storage_path (google.cloud.dlp_v2.types.CloudStoragePath):
+            Store findings in an existing Cloud Storage bucket. Files
+            will be generated with the job ID and file part number as
+            the filename and will contain findings in textproto format
+            as
+            [SaveToGcsFindingsOutput][google.privacy.dlp.v2.SaveToGcsFindingsOutput].
+            The filename will follow the naming convention
+            ``<job_id>-<shard_number>``. Example: ``my-job-id-2``.
+
+            Supported for [Inspect
+            jobs][google.privacy.dlp.v2.InspectJobConfig]. The bucket
+            must not be the same as the bucket being inspected. If
+            storing findings to Cloud Storage, the output schema field
+            should not be set. If set, it will be ignored.
 
             This field is a member of `oneof`_ ``type``.
         output_schema (google.cloud.dlp_v2.types.OutputStorageConfig.OutputSchema):
@@ -2531,6 +2582,12 @@ class OutputStorageConfig(proto.Message):
         number=1,
         oneof="type",
         message=storage.BigQueryTable,
+    )
+    storage_path: storage.CloudStoragePath = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="type",
+        message=storage.CloudStoragePath,
     )
     output_schema: OutputSchema = proto.Field(
         proto.ENUM,
@@ -6818,6 +6875,11 @@ class Action(proto.Message):
             Publish findings to Cloud Datahub.
 
             This field is a member of `oneof`_ ``action``.
+        publish_findings_to_dataplex_catalog (google.cloud.dlp_v2.types.Action.PublishFindingsToDataplexCatalog):
+            Publish findings as an aspect to Dataplex
+            Universal Catalog.
+
+            This field is a member of `oneof`_ ``action``.
         deidentify (google.cloud.dlp_v2.types.Action.Deidentify):
             Create a de-identified copy of the input
             data.
@@ -6903,6 +6965,24 @@ class Action(proto.Message):
         Findings are persisted in Data Catalog storage and are governed by
         service-specific policies for Data Catalog. For more information,
         see `Service Specific
+        Terms <https://cloud.google.com/terms/service-terms>`__.
+
+        Only a single instance of this action can be specified. This action
+        is allowed only if all resources being scanned are BigQuery tables.
+        Compatible with: Inspect
+
+        """
+
+    class PublishFindingsToDataplexCatalog(proto.Message):
+        r"""Publish findings of a DlpJob to Dataplex Universal Catalog as a
+        ``sensitive-data-protection-job-result`` aspect. For more
+        information, see `Send inspection results to Dataplex Universal
+        Catalog as
+        aspects <https://cloud.google.com/sensitive-data-protection/docs/add-aspects-inspection-job>`__.
+
+        Aspects are stored in Dataplex Universal Catalog storage and are
+        governed by service-specific policies for Dataplex Universal
+        Catalog. For more information, see `Service Specific
         Terms <https://cloud.google.com/terms/service-terms>`__.
 
         Only a single instance of this action can be specified. This action
@@ -7085,6 +7165,14 @@ class Action(proto.Message):
             number=5,
             oneof="action",
             message=PublishFindingsToCloudDataCatalog,
+        )
+    )
+    publish_findings_to_dataplex_catalog: PublishFindingsToDataplexCatalog = (
+        proto.Field(
+            proto.MESSAGE,
+            number=10,
+            oneof="action",
+            message=PublishFindingsToDataplexCatalog,
         )
     )
     deidentify: Deidentify = proto.Field(
@@ -7846,6 +7934,8 @@ class ListJobTriggersRequest(proto.Message):
             - The operator must be ``=`` or ``!=`` for status and
               inspected_storage.
 
+            The syntax is based on https://google.aip.dev/160.
+
             Examples:
 
             - inspected_storage = cloud_storage AND status = HEALTHY
@@ -8016,8 +8106,8 @@ class DataProfileAction(proto.Message):
             This field is a member of `oneof`_ ``action``.
         publish_to_dataplex_catalog (google.cloud.dlp_v2.types.DataProfileAction.PublishToDataplexCatalog):
             Publishes a portion of each profile to
-            Dataplex Catalog with the aspect type Sensitive
-            Data Protection Profile.
+            Dataplex Universal Catalog with the aspect type
+            Sensitive Data Protection Profile.
 
             This field is a member of `oneof`_ ``action``.
     """
@@ -8180,21 +8270,21 @@ class DataProfileAction(proto.Message):
         """
 
     class PublishToDataplexCatalog(proto.Message):
-        r"""Create Dataplex Catalog aspects for profiled resources with
-        the aspect type Sensitive Data Protection Profile. To learn more
-        about aspects, see
+        r"""Create Dataplex Universal Catalog aspects for profiled
+        resources with the aspect type Sensitive Data Protection
+        Profile. To learn more about aspects, see
         https://cloud.google.com/sensitive-data-protection/docs/add-aspects.
 
         Attributes:
             lower_data_risk_to_low (bool):
-                Whether creating a Dataplex Catalog aspect
-                for a profiled resource should lower the risk of
-                the profile for that resource. This also lowers
-                the data risk of resources at the lower levels
-                of the resource hierarchy. For example, reducing
-                the data risk of a table data profile also
-                reduces the data risk of the constituent column
-                data profiles.
+                Whether creating a Dataplex Universal Catalog
+                aspect for a profiled resource should lower the
+                risk of the profile for that resource. This also
+                lowers the data risk of resources at the lower
+                levels of the resource hierarchy. For example,
+                reducing the data risk of a table data profile
+                also reduces the data risk of the constituent
+                column data profiles.
         """
 
         lower_data_risk_to_low: bool = proto.Field(
@@ -8275,7 +8365,9 @@ class DataProfileAction(proto.Message):
                     The namespaced name for the tag value to attach to
                     resources. Must be in the format
                     ``{parent_id}/{tag_key_short_name}/{short_name}``, for
-                    example, "123456/environment/prod".
+                    example, "123456/environment/prod" for an organization
+                    parent, or "my-project/environment/prod" for a project
+                    parent.
 
                     This field is a member of `oneof`_ ``format``.
             """
@@ -9789,6 +9881,20 @@ class FileStoreCollection(proto.Message):
             to match a file store against.
 
             This field is a member of `oneof`_ ``pattern``.
+        include_tags (google.cloud.dlp_v2.types.TagFilters):
+            Optional. To be included in the collection, a resource must
+            meet all of the following requirements:
+
+            - If tag filters are provided, match all provided tag
+              filters.
+            - If one or more patterns are specified, match at least one
+              pattern.
+
+            For a resource to match the tag filters, the resource must
+            have all of the provided tags attached. Tags refer to
+            Resource Manager tags bound to the resource or its
+            ancestors. For more information, see `Manage
+            schedules <https://cloud.google.com/sensitive-data-protection/docs/profile-project-cloud-storage#manage-schedules>`__.
     """
 
     include_regexes: "FileStoreRegexes" = proto.Field(
@@ -9796,6 +9902,11 @@ class FileStoreCollection(proto.Message):
         number=1,
         oneof="pattern",
         message="FileStoreRegexes",
+    )
+    include_tags: "TagFilters" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TagFilters",
     )
 
 
@@ -11010,6 +11121,8 @@ class ListDlpJobsRequest(proto.Message):
 
             - The operator must be ``=`` or ``!=``.
 
+            The syntax is based on https://google.aip.dev/160.
+
             Examples:
 
             - inspected_storage = cloud_storage AND state = done
@@ -12028,15 +12141,15 @@ class ListProjectDataProfilesRequest(proto.Message):
             - ``project_id``
             - ``sensitivity_level desc``
 
-            Supported fields are:
+            Supported fields:
 
             - ``project_id``: Google Cloud project ID
             - ``sensitivity_level``: How sensitive the data in a project
-              is, at most.
+              is, at most
             - ``data_risk_level``: How much risk is associated with this
-              data.
-            - ``profile_last_generated``: When the profile was last
-              updated in epoch seconds.
+              data
+            - ``profile_last_generated``: Date and time (in epoch
+              seconds) the profile was last generated
         filter (str):
             Allows filtering.
 
@@ -12049,19 +12162,27 @@ class ListProjectDataProfilesRequest(proto.Message):
               ``AND``.
             - A restriction has the form of
               ``{field} {operator} {value}``.
-            - Supported fields/values:
+            - Supported fields:
 
-              - ``sensitivity_level`` - HIGH|MODERATE|LOW
-              - ``data_risk_level`` - HIGH|MODERATE|LOW
-              - ``status_code`` - an RPC status code as defined in
+              - ``project_id``: the Google Cloud project ID
+              - ``sensitivity_level``: HIGH|MODERATE|LOW
+              - ``data_risk_level``: HIGH|MODERATE|LOW
+              - ``status_code``: an RPC status code as defined in
                 https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
+              - ``profile_last_generated``: Date and time the profile
+                was last generated
 
-            - The operator must be ``=`` or ``!=``.
+            - The operator must be ``=`` or ``!=``. The
+              ``profile_last_generated`` filter also supports ``<`` and
+              ``>``.
+
+            The syntax is based on https://google.aip.dev/160.
 
             Examples:
 
             - ``project_id = 12345 AND status_code = 1``
             - ``project_id = 12345 AND sensitivity_level = HIGH``
+            - ``profile_last_generated < "2025-01-01T00:00:00.000Z"``
 
             The length of this field should be no more than 500
             characters.
@@ -12174,24 +12295,31 @@ class ListTableDataProfilesRequest(proto.Message):
             - A restriction has the form of
               ``{field} {operator} {value}``.
 
-            - Supported fields/values:
+            - Supported fields:
 
-              - ``project_id`` - The Google Cloud project ID.
-              - ``dataset_id`` - The BigQuery dataset ID.
-              - ``table_id`` - The ID of the BigQuery table.
-              - ``sensitivity_level`` - HIGH|MODERATE|LOW
-              - ``data_risk_level`` - HIGH|MODERATE|LOW
+              - ``project_id``: The Google Cloud project ID
+              - ``dataset_id``: The BigQuery dataset ID
+              - ``table_id``: The ID of the BigQuery table
+              - ``sensitivity_level``: HIGH|MODERATE|LOW
+              - ``data_risk_level``: HIGH|MODERATE|LOW
               - ``resource_visibility``: PUBLIC|RESTRICTED
-              - ``status_code`` - an RPC status code as defined in
+              - ``status_code``: an RPC status code as defined in
                 https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
+              - ``profile_last_generated``: Date and time the profile
+                was last generated
 
-            - The operator must be ``=`` or ``!=``.
+            - The operator must be ``=`` or ``!=``. The
+              ``profile_last_generated`` filter also supports ``<`` and
+              ``>``.
+
+            The syntax is based on https://google.aip.dev/160.
 
             Examples:
 
             - ``project_id = 12345 AND status_code = 1``
             - ``project_id = 12345 AND sensitivity_level = HIGH``
             - ``project_id = 12345 AND resource_visibility = PUBLIC``
+            - ``profile_last_generated < "2025-01-01T00:00:00.000Z"``
 
             The length of this field should be no more than 500
             characters.
@@ -12296,29 +12424,36 @@ class ListColumnDataProfilesRequest(proto.Message):
               ``AND``.
             - A restriction has the form of
               ``{field} {operator} {value}``.
-            - Supported fields/values:
+            - Supported fields:
 
-              - ``table_data_profile_name`` - The name of the related
-                table data profile.
-              - ``project_id`` - The Google Cloud project ID. (REQUIRED)
-              - ``dataset_id`` - The BigQuery dataset ID. (REQUIRED)
-              - ``table_id`` - The BigQuery table ID. (REQUIRED)
-              - ``field_id`` - The ID of the BigQuery field.
-              - ``info_type`` - The infotype detected in the resource.
-              - ``sensitivity_level`` - HIGH|MEDIUM|LOW
+              - ``table_data_profile_name``: The name of the related
+                table data profile
+              - ``project_id``: The Google Cloud project ID (REQUIRED)
+              - ``dataset_id``: The BigQuery dataset ID (REQUIRED)
+              - ``table_id``: The BigQuery table ID (REQUIRED)
+              - ``field_id``: The ID of the BigQuery field
+              - ``info_type``: The infotype detected in the resource
+              - ``sensitivity_level``: HIGH|MEDIUM|LOW
               - ``data_risk_level``: How much risk is associated with
-                this data.
-              - ``status_code`` - an RPC status code as defined in
+                this data
+              - ``status_code``: An RPC status code as defined in
                 https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
+              - ``profile_last_generated``: Date and time the profile
+                was last generated
 
             - The operator must be ``=`` for project_id, dataset_id, and
-              table_id. Other filters also support ``!=``.
+              table_id. Other filters also support ``!=``. The
+              ``profile_last_generated`` filter also supports ``<`` and
+              ``>``.
+
+            The syntax is based on https://google.aip.dev/160.
 
             Examples:
 
             - project_id = 12345 AND status_code = 1
             - project_id = 12345 AND sensitivity_level = HIGH
             - project_id = 12345 AND info_type = STREET_ADDRESS
+            - profile_last_generated < "2025-01-01T00:00:00.000Z"
 
             The length of this field should be no more than 500
             characters.
@@ -13378,8 +13513,9 @@ class Tag(proto.Message):
             The namespaced name for the tag value to attach to Google
             Cloud resources. Must be in the format
             ``{parent_id}/{tag_key_short_name}/{short_name}``, for
-            example, "123456/environment/prod". This is only set for
-            Google Cloud resources.
+            example, "123456/environment/prod" for an organization
+            parent, or "my-project/environment/prod" for a project
+            parent. This is only set for Google Cloud resources.
         key (str):
             The key of a tag key-value pair. For Google
             Cloud resources, this is the resource name of
@@ -13401,6 +13537,63 @@ class Tag(proto.Message):
     value: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class TagFilters(proto.Message):
+    r"""Tags to match against for filtering.
+
+    Attributes:
+        tag_filters (MutableSequence[google.cloud.dlp_v2.types.TagFilter]):
+            Required. A resource must match ALL of the
+            specified tag filters to be included in the
+            collection.
+    """
+
+    tag_filters: MutableSequence["TagFilter"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TagFilter",
+    )
+
+
+class TagFilter(proto.Message):
+    r"""A single tag to filter against.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        namespaced_tag_value (str):
+            The namespaced name for the tag value. Must be in the format
+            ``{parent_id}/{tag_key_short_name}/{short_name}``, for
+            example, "123456/environment/prod" for an organization
+            parent, or "my-project/environment/prod" for a project
+            parent.
+
+            This field is a member of `oneof`_ ``format``.
+        namespaced_tag_key (str):
+            The namespaced name for the tag key. Must be in the format
+            ``{parent_id}/{tag_key_short_name}``, for example,
+            "123456/sensitive" for an organization parent, or
+            "my-project/sensitive" for a project parent.
+
+            This field is a member of `oneof`_ ``format``.
+    """
+
+    namespaced_tag_value: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="format",
+    )
+    namespaced_tag_key: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="format",
     )
 
 
@@ -13619,22 +13812,28 @@ class ListFileStoreDataProfilesRequest(proto.Message):
             - A restriction has the form of
               ``{field} {operator} {value}``.
 
-            - Supported fields/values:
+            - Supported fields:
 
-              - ``project_id`` - The Google Cloud project ID.
-              - ``account_id`` - The AWS account ID.
-              - ``file_store_path`` - The path like "gs://bucket".
-              - ``data_source_type`` - The profile's data source type,
-                like "google/storage/bucket".
-              - ``data_storage_location`` - The location where the file
-                store's data is stored, like "us-central1".
-              - ``sensitivity_level`` - HIGH|MODERATE|LOW
-              - ``data_risk_level`` - HIGH|MODERATE|LOW
+              - ``project_id``: The Google Cloud project ID
+              - ``account_id``: The AWS account ID
+              - ``file_store_path``: The path like "gs://bucket"
+              - ``data_source_type``: The profile's data source type,
+                like "google/storage/bucket"
+              - ``data_storage_location``: The location where the file
+                store's data is stored, like "us-central1"
+              - ``sensitivity_level``: HIGH|MODERATE|LOW
+              - ``data_risk_level``: HIGH|MODERATE|LOW
               - ``resource_visibility``: PUBLIC|RESTRICTED
-              - ``status_code`` - an RPC status code as defined in
+              - ``status_code``: an RPC status code as defined in
                 https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
+              - ``profile_last_generated``: Date and time the profile
+                was last generated
 
-            - The operator must be ``=`` or ``!=``.
+            - The operator must be ``=`` or ``!=``. The
+              ``profile_last_generated`` filter also supports ``<`` and
+              ``>``.
+
+            The syntax is based on https://google.aip.dev/160.
 
             Examples:
 
@@ -13642,6 +13841,7 @@ class ListFileStoreDataProfilesRequest(proto.Message):
             - ``project_id = 12345 AND sensitivity_level = HIGH``
             - ``project_id = 12345 AND resource_visibility = PUBLIC``
             - ``file_store_path = "gs://mybucket"``
+            - ``profile_last_generated < "2025-01-01T00:00:00.000Z"``
 
             The length of this field should be no more than 500
             characters.
@@ -13954,6 +14154,8 @@ class ListConnectionsRequest(proto.Message):
         filter (str):
             Optional. Supported field/value: ``state`` -
             MISSING|AVAILABLE|ERROR
+
+            The syntax is based on https://google.aip.dev/160.
     """
 
     parent: str = proto.Field(
@@ -13994,6 +14196,8 @@ class SearchConnectionsRequest(proto.Message):
         filter (str):
             Optional. Supported field/value: - ``state`` -
             MISSING|AVAILABLE|ERROR
+
+            The syntax is based on https://google.aip.dev/160.
     """
 
     parent: str = proto.Field(

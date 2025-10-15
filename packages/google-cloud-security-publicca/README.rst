@@ -10,10 +10,10 @@ Python Client for Public Certificate Authority
 
 .. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-public-ca.svg
-   :target: https://pypi.org/project/google-cloud-public-ca/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-public-ca.svg
-   :target: https://pypi.org/project/google-cloud-public-ca/
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-security-publicca.svg
+   :target: https://pypi.org/project/google-cloud-security-publicca/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-security-publicca.svg
+   :target: https://pypi.org/project/google-cloud-security-publicca/
 .. _Public Certificate Authority: https://cloud.google.com/certificate-manager/docs/public-ca
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/publicca/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/certificate-manager/docs/public-ca
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-public-ca/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-security-publicca/samples
 
 
 Supported Python Versions
@@ -82,7 +82,7 @@ Mac/Linux
 
     python3 -m venv <your-env>
     source <your-env>/bin/activate
-    pip install google-cloud-public-ca
+    pip install google-cloud-security-publicca
 
 
 Windows
@@ -92,7 +92,7 @@ Windows
 
     py -m venv <your-env>
     .\<your-env>\Scripts\activate
-    pip install google-cloud-public-ca
+    pip install google-cloud-security-publicca
 
 Next Steps
 ~~~~~~~~~~

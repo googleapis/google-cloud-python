@@ -110,6 +110,22 @@ class Document(proto.Message):
             Parsed layout of the document.
         chunked_document (google.cloud.documentai_v1.types.Document.ChunkedDocument):
             Document chunked based on chunking config.
+        entity_validation_output (google.cloud.documentai_v1.types.Document.EntityValidationOutput):
+            The entity validation output for the document. This is the
+            validation output for ``document.entities`` field.
+        entities_revisions (MutableSequence[google.cloud.documentai_v1.types.Document.EntitiesRevision]):
+            A list of entity revisions. The entity
+            revisions are appended to the document in the
+            processing order. This field can be used for
+            comparing the entity extraction results at
+            different stages of the processing.
+        entities_revision_id (str):
+            The entity revision id that ``document.entities`` field is
+            based on. If this field is set and ``entities_revisions`` is
+            not empty, the entities in ``document.entities`` field are
+            the entities in the entity revision with this id and
+            ``document.entity_validation_output`` field is the
+            ``entity_validation_output`` field in this entity revision.
     """
 
     class ShardInfo(proto.Message):
@@ -2226,6 +2242,113 @@ class Document(proto.Message):
             message="Document.ChunkedDocument.Chunk",
         )
 
+    class EntityValidationOutput(proto.Message):
+        r"""The output of the validation given the document and the
+        validation rules.
+
+        Attributes:
+            validation_results (MutableSequence[google.cloud.documentai_v1.types.Document.EntityValidationOutput.ValidationResult]):
+                The result of each validation rule.
+            pass_all_rules (bool):
+                The overall result of the validation, true if
+                all applicable rules are valid.
+        """
+
+        class ValidationResult(proto.Message):
+            r"""Validation result for a single validation rule.
+
+            Attributes:
+                rule_name (str):
+                    The name of the validation rule.
+                rule_description (str):
+                    The description of the validation rule.
+                validation_result_type (google.cloud.documentai_v1.types.Document.EntityValidationOutput.ValidationResult.ValidationResultType):
+                    The result of the validation rule.
+                validation_details (str):
+                    The detailed information of the running the
+                    validation process using the entity from the
+                    document based on the validation rule.
+            """
+
+            class ValidationResultType(proto.Enum):
+                r"""The result of the validation rule.
+
+                Values:
+                    VALIDATION_RESULT_TYPE_UNSPECIFIED (0):
+                        The validation result type is unspecified.
+                    VALIDATION_RESULT_TYPE_VALID (1):
+                        The validation is valid.
+                    VALIDATION_RESULT_TYPE_INVALID (2):
+                        The validation is invalid.
+                    VALIDATION_RESULT_TYPE_SKIPPED (3):
+                        The validation is skipped.
+                    VALIDATION_RESULT_TYPE_NOT_APPLICABLE (4):
+                        The validation is not applicable.
+                """
+                VALIDATION_RESULT_TYPE_UNSPECIFIED = 0
+                VALIDATION_RESULT_TYPE_VALID = 1
+                VALIDATION_RESULT_TYPE_INVALID = 2
+                VALIDATION_RESULT_TYPE_SKIPPED = 3
+                VALIDATION_RESULT_TYPE_NOT_APPLICABLE = 4
+
+            rule_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            rule_description: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            validation_result_type: "Document.EntityValidationOutput.ValidationResult.ValidationResultType" = proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="Document.EntityValidationOutput.ValidationResult.ValidationResultType",
+            )
+            validation_details: str = proto.Field(
+                proto.STRING,
+                number=4,
+            )
+
+        validation_results: MutableSequence[
+            "Document.EntityValidationOutput.ValidationResult"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Document.EntityValidationOutput.ValidationResult",
+        )
+        pass_all_rules: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+
+    class EntitiesRevision(proto.Message):
+        r"""Entity revision.
+
+        Attributes:
+            revision_id (str):
+                The revision id.
+            entities (MutableSequence[google.cloud.documentai_v1.types.Document.Entity]):
+                The entities in this revision.
+            entity_validation_output (google.cloud.documentai_v1.types.Document.EntityValidationOutput):
+                The entity validation output for this
+                revision.
+        """
+
+        revision_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        entities: MutableSequence["Document.Entity"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Document.Entity",
+        )
+        entity_validation_output: "Document.EntityValidationOutput" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Document.EntityValidationOutput",
+        )
+
     uri: str = proto.Field(
         proto.STRING,
         number=1,
@@ -2297,6 +2420,20 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=18,
         message=ChunkedDocument,
+    )
+    entity_validation_output: EntityValidationOutput = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=EntityValidationOutput,
+    )
+    entities_revisions: MutableSequence[EntitiesRevision] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=22,
+        message=EntitiesRevision,
+    )
+    entities_revision_id: str = proto.Field(
+        proto.STRING,
+        number=23,
     )
 
 

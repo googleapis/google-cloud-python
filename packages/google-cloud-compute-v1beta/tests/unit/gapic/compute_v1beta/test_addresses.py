@@ -3985,6 +3985,7 @@ def test_get_rest_call_success(request_type):
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             id=205,
+            ip_collection="ip_collection_value",
             ip_version="ip_version_value",
             ipv6_endpoint_type="ipv6_endpoint_type_value",
             kind="kind_value",
@@ -4020,6 +4021,7 @@ def test_get_rest_call_success(request_type):
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.id == 205
+    assert response.ip_collection == "ip_collection_value"
     assert response.ip_version == "ip_version_value"
     assert response.ipv6_endpoint_type == "ipv6_endpoint_type_value"
     assert response.kind == "kind_value"
@@ -4137,6 +4139,7 @@ def test_insert_rest_call_success(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "id": 205,
+        "ip_collection": "ip_collection_value",
         "ip_version": "ip_version_value",
         "ipv6_endpoint_type": "ipv6_endpoint_type_value",
         "kind": "kind_value",

@@ -3142,6 +3142,23 @@ def test_insert_product_input_rest_call_success(request_type):
                     "max_transit_time": 1720,
                 }
             ],
+            "carrier_shipping": [
+                {
+                    "country": "country_value",
+                    "region": "region_value",
+                    "postal_code": "postal_code_value",
+                    "origin_postal_code": "origin_postal_code_value",
+                    "flat_price": {},
+                    "carrier_price": 1,
+                    "carrier_price_flat_adjustment": {},
+                    "carrier_price_percentage_adjustment": 0.37010000000000004,
+                    "min_handling_time": 1782,
+                    "max_handling_time": 1784,
+                    "fixed_min_transit_time": 2341,
+                    "fixed_max_transit_time": 2343,
+                    "carrier_transit_time": 1,
+                }
+            ],
             "free_shipping_threshold": [
                 {"country": "country_value", "price_threshold": {}}
             ],
@@ -3532,6 +3549,23 @@ def test_update_product_input_rest_call_success(request_type):
                     "max_handling_time": 1784,
                     "min_transit_time": 1718,
                     "max_transit_time": 1720,
+                }
+            ],
+            "carrier_shipping": [
+                {
+                    "country": "country_value",
+                    "region": "region_value",
+                    "postal_code": "postal_code_value",
+                    "origin_postal_code": "origin_postal_code_value",
+                    "flat_price": {},
+                    "carrier_price": 1,
+                    "carrier_price_flat_adjustment": {},
+                    "carrier_price_percentage_adjustment": 0.37010000000000004,
+                    "min_handling_time": 1782,
+                    "max_handling_time": 1784,
+                    "fixed_min_transit_time": 2341,
+                    "fixed_max_transit_time": 2343,
+                    "carrier_transit_time": 1,
                 }
             ],
             "free_shipping_threshold": [

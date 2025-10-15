@@ -8,7 +8,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-public-ca",
+    "distribution_name": "google-cloud-security-publicca",
     "api_id": "publicca.googleapis.com",
     "default_version": "v1",
     "api_shortname": "publicca",

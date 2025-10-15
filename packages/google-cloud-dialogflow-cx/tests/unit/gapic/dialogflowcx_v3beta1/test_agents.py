@@ -9084,6 +9084,7 @@ def test_update_generative_settings_rest_call_success(request_type):
             "banned_phrases": [
                 {"text": "text_value", "language_code": "language_code_value"}
             ],
+            "prompt_security_settings": {"enable_prompt_security": True},
         },
         "knowledge_connector_settings": {
             "business": "business_value",
@@ -9097,6 +9098,11 @@ def test_update_generative_settings_rest_call_success(request_type):
         "llm_model_settings": {
             "model": "model_value",
             "prompt_text": "prompt_text_value",
+            "parameters": {
+                "temperature": 0.1198,
+                "input_token_limit": 1,
+                "output_token_limit": 1,
+            },
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

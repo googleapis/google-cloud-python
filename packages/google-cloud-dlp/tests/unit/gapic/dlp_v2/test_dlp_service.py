@@ -1370,6 +1370,8 @@ def test_redact_image_non_empty_request_with_auto_populated_field():
     request = dlp.RedactImageRequest(
         parent="parent_value",
         location_id="location_id_value",
+        inspect_template="inspect_template_value",
+        deidentify_template="deidentify_template_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1383,6 +1385,8 @@ def test_redact_image_non_empty_request_with_auto_populated_field():
         assert args[0] == dlp.RedactImageRequest(
             parent="parent_value",
             location_id="location_id_value",
+            inspect_template="inspect_template_value",
+            deidentify_template="deidentify_template_value",
         )
 
 

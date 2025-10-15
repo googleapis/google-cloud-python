@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,40 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
-import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+import logging
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
-
-
 from google.longrunning import operations_pb2  # type: ignore
+import google.protobuf
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.network_security_v1beta1.types import (
     authorization_policy as gcn_authorization_policy,
@@ -62,13 +46,30 @@ from google.cloud.network_security_v1beta1.types import client_tls_policy
 from google.cloud.network_security_v1beta1.types import server_tls_policy
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import NetworkSecurityTransport
+from .rest_base import _BaseNetworkSecurityRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=requests_version,
+    rest_version=f"requests@{requests_version}",
 )
+
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class NetworkSecurityRestInterceptor:
@@ -215,10 +216,10 @@ class NetworkSecurityRestInterceptor:
     def pre_create_authorization_policy(
         self,
         request: gcn_authorization_policy.CreateAuthorizationPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         gcn_authorization_policy.CreateAuthorizationPolicyRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_authorization_policy
 
@@ -232,18 +233,42 @@ class NetworkSecurityRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_authorization_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_authorization_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_authorization_policy` interceptor runs
+        before the `post_create_authorization_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_create_authorization_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_authorization_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_create_authorization_policy_with_metadata`
+        interceptor in new development instead of the `post_create_authorization_policy` interceptor.
+        When both interceptors are used, this `post_create_authorization_policy_with_metadata` interceptor runs after the
+        `post_create_authorization_policy` interceptor. The (possibly modified) response returned by
+        `post_create_authorization_policy` will be passed to
+        `post_create_authorization_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_client_tls_policy(
         self,
         request: gcn_client_tls_policy.CreateClientTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcn_client_tls_policy.CreateClientTlsPolicyRequest, Sequence[Tuple[str, str]]
+        gcn_client_tls_policy.CreateClientTlsPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_client_tls_policy
 
@@ -257,18 +282,42 @@ class NetworkSecurityRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_client_tls_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_client_tls_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_client_tls_policy` interceptor runs
+        before the `post_create_client_tls_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_create_client_tls_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_client_tls_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_create_client_tls_policy_with_metadata`
+        interceptor in new development instead of the `post_create_client_tls_policy` interceptor.
+        When both interceptors are used, this `post_create_client_tls_policy_with_metadata` interceptor runs after the
+        `post_create_client_tls_policy` interceptor. The (possibly modified) response returned by
+        `post_create_client_tls_policy` will be passed to
+        `post_create_client_tls_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_server_tls_policy(
         self,
         request: gcn_server_tls_policy.CreateServerTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcn_server_tls_policy.CreateServerTlsPolicyRequest, Sequence[Tuple[str, str]]
+        gcn_server_tls_policy.CreateServerTlsPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_server_tls_policy
 
@@ -282,18 +331,42 @@ class NetworkSecurityRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_server_tls_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_server_tls_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_server_tls_policy` interceptor runs
+        before the `post_create_server_tls_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_create_server_tls_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_server_tls_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_create_server_tls_policy_with_metadata`
+        interceptor in new development instead of the `post_create_server_tls_policy` interceptor.
+        When both interceptors are used, this `post_create_server_tls_policy_with_metadata` interceptor runs after the
+        `post_create_server_tls_policy` interceptor. The (possibly modified) response returned by
+        `post_create_server_tls_policy` will be passed to
+        `post_create_server_tls_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_authorization_policy(
         self,
         request: authorization_policy.DeleteAuthorizationPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        authorization_policy.DeleteAuthorizationPolicyRequest, Sequence[Tuple[str, str]]
+        authorization_policy.DeleteAuthorizationPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_authorization_policy
 
@@ -307,18 +380,42 @@ class NetworkSecurityRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_authorization_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_authorization_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_authorization_policy` interceptor runs
+        before the `post_delete_authorization_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_authorization_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_authorization_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_delete_authorization_policy_with_metadata`
+        interceptor in new development instead of the `post_delete_authorization_policy` interceptor.
+        When both interceptors are used, this `post_delete_authorization_policy_with_metadata` interceptor runs after the
+        `post_delete_authorization_policy` interceptor. The (possibly modified) response returned by
+        `post_delete_authorization_policy` will be passed to
+        `post_delete_authorization_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_client_tls_policy(
         self,
         request: client_tls_policy.DeleteClientTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        client_tls_policy.DeleteClientTlsPolicyRequest, Sequence[Tuple[str, str]]
+        client_tls_policy.DeleteClientTlsPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_client_tls_policy
 
@@ -332,18 +429,42 @@ class NetworkSecurityRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_client_tls_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_client_tls_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_client_tls_policy` interceptor runs
+        before the `post_delete_client_tls_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_client_tls_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_client_tls_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_delete_client_tls_policy_with_metadata`
+        interceptor in new development instead of the `post_delete_client_tls_policy` interceptor.
+        When both interceptors are used, this `post_delete_client_tls_policy_with_metadata` interceptor runs after the
+        `post_delete_client_tls_policy` interceptor. The (possibly modified) response returned by
+        `post_delete_client_tls_policy` will be passed to
+        `post_delete_client_tls_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_server_tls_policy(
         self,
         request: server_tls_policy.DeleteServerTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        server_tls_policy.DeleteServerTlsPolicyRequest, Sequence[Tuple[str, str]]
+        server_tls_policy.DeleteServerTlsPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_server_tls_policy
 
@@ -357,18 +478,42 @@ class NetworkSecurityRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_server_tls_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_server_tls_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_server_tls_policy` interceptor runs
+        before the `post_delete_server_tls_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_server_tls_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_server_tls_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_delete_server_tls_policy_with_metadata`
+        interceptor in new development instead of the `post_delete_server_tls_policy` interceptor.
+        When both interceptors are used, this `post_delete_server_tls_policy_with_metadata` interceptor runs after the
+        `post_delete_server_tls_policy` interceptor. The (possibly modified) response returned by
+        `post_delete_server_tls_policy` will be passed to
+        `post_delete_server_tls_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_authorization_policy(
         self,
         request: authorization_policy.GetAuthorizationPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        authorization_policy.GetAuthorizationPolicyRequest, Sequence[Tuple[str, str]]
+        authorization_policy.GetAuthorizationPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_authorization_policy
 
@@ -382,17 +527,46 @@ class NetworkSecurityRestInterceptor:
     ) -> authorization_policy.AuthorizationPolicy:
         """Post-rpc interceptor for get_authorization_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_authorization_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_authorization_policy` interceptor runs
+        before the `post_get_authorization_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_authorization_policy_with_metadata(
+        self,
+        response: authorization_policy.AuthorizationPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        authorization_policy.AuthorizationPolicy,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_authorization_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_get_authorization_policy_with_metadata`
+        interceptor in new development instead of the `post_get_authorization_policy` interceptor.
+        When both interceptors are used, this `post_get_authorization_policy_with_metadata` interceptor runs after the
+        `post_get_authorization_policy` interceptor. The (possibly modified) response returned by
+        `post_get_authorization_policy` will be passed to
+        `post_get_authorization_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_client_tls_policy(
         self,
         request: client_tls_policy.GetClientTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[client_tls_policy.GetClientTlsPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        client_tls_policy.GetClientTlsPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_client_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -405,17 +579,45 @@ class NetworkSecurityRestInterceptor:
     ) -> client_tls_policy.ClientTlsPolicy:
         """Post-rpc interceptor for get_client_tls_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_client_tls_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_client_tls_policy` interceptor runs
+        before the `post_get_client_tls_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_client_tls_policy_with_metadata(
+        self,
+        response: client_tls_policy.ClientTlsPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        client_tls_policy.ClientTlsPolicy, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_client_tls_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_get_client_tls_policy_with_metadata`
+        interceptor in new development instead of the `post_get_client_tls_policy` interceptor.
+        When both interceptors are used, this `post_get_client_tls_policy_with_metadata` interceptor runs after the
+        `post_get_client_tls_policy` interceptor. The (possibly modified) response returned by
+        `post_get_client_tls_policy` will be passed to
+        `post_get_client_tls_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_server_tls_policy(
         self,
         request: server_tls_policy.GetServerTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[server_tls_policy.GetServerTlsPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        server_tls_policy.GetServerTlsPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_server_tls_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -428,18 +630,44 @@ class NetworkSecurityRestInterceptor:
     ) -> server_tls_policy.ServerTlsPolicy:
         """Post-rpc interceptor for get_server_tls_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_server_tls_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_server_tls_policy` interceptor runs
+        before the `post_get_server_tls_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_server_tls_policy_with_metadata(
+        self,
+        response: server_tls_policy.ServerTlsPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        server_tls_policy.ServerTlsPolicy, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_server_tls_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_get_server_tls_policy_with_metadata`
+        interceptor in new development instead of the `post_get_server_tls_policy` interceptor.
+        When both interceptors are used, this `post_get_server_tls_policy_with_metadata` interceptor runs after the
+        `post_get_server_tls_policy` interceptor. The (possibly modified) response returned by
+        `post_get_server_tls_policy` will be passed to
+        `post_get_server_tls_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_authorization_policies(
         self,
         request: authorization_policy.ListAuthorizationPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        authorization_policy.ListAuthorizationPoliciesRequest, Sequence[Tuple[str, str]]
+        authorization_policy.ListAuthorizationPoliciesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_authorization_policies
 
@@ -453,18 +681,45 @@ class NetworkSecurityRestInterceptor:
     ) -> authorization_policy.ListAuthorizationPoliciesResponse:
         """Post-rpc interceptor for list_authorization_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_authorization_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_authorization_policies` interceptor runs
+        before the `post_list_authorization_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_list_authorization_policies_with_metadata(
+        self,
+        response: authorization_policy.ListAuthorizationPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        authorization_policy.ListAuthorizationPoliciesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_authorization_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_list_authorization_policies_with_metadata`
+        interceptor in new development instead of the `post_list_authorization_policies` interceptor.
+        When both interceptors are used, this `post_list_authorization_policies_with_metadata` interceptor runs after the
+        `post_list_authorization_policies` interceptor. The (possibly modified) response returned by
+        `post_list_authorization_policies` will be passed to
+        `post_list_authorization_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_client_tls_policies(
         self,
         request: client_tls_policy.ListClientTlsPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        client_tls_policy.ListClientTlsPoliciesRequest, Sequence[Tuple[str, str]]
+        client_tls_policy.ListClientTlsPoliciesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_client_tls_policies
 
@@ -478,18 +733,45 @@ class NetworkSecurityRestInterceptor:
     ) -> client_tls_policy.ListClientTlsPoliciesResponse:
         """Post-rpc interceptor for list_client_tls_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_client_tls_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_client_tls_policies` interceptor runs
+        before the `post_list_client_tls_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_list_client_tls_policies_with_metadata(
+        self,
+        response: client_tls_policy.ListClientTlsPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        client_tls_policy.ListClientTlsPoliciesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_client_tls_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_list_client_tls_policies_with_metadata`
+        interceptor in new development instead of the `post_list_client_tls_policies` interceptor.
+        When both interceptors are used, this `post_list_client_tls_policies_with_metadata` interceptor runs after the
+        `post_list_client_tls_policies` interceptor. The (possibly modified) response returned by
+        `post_list_client_tls_policies` will be passed to
+        `post_list_client_tls_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_server_tls_policies(
         self,
         request: server_tls_policy.ListServerTlsPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        server_tls_policy.ListServerTlsPoliciesRequest, Sequence[Tuple[str, str]]
+        server_tls_policy.ListServerTlsPoliciesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_server_tls_policies
 
@@ -503,19 +785,45 @@ class NetworkSecurityRestInterceptor:
     ) -> server_tls_policy.ListServerTlsPoliciesResponse:
         """Post-rpc interceptor for list_server_tls_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_server_tls_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_server_tls_policies` interceptor runs
+        before the `post_list_server_tls_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_list_server_tls_policies_with_metadata(
+        self,
+        response: server_tls_policy.ListServerTlsPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        server_tls_policy.ListServerTlsPoliciesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_server_tls_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_list_server_tls_policies_with_metadata`
+        interceptor in new development instead of the `post_list_server_tls_policies` interceptor.
+        When both interceptors are used, this `post_list_server_tls_policies_with_metadata` interceptor runs after the
+        `post_list_server_tls_policies` interceptor. The (possibly modified) response returned by
+        `post_list_server_tls_policies` will be passed to
+        `post_list_server_tls_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_authorization_policy(
         self,
         request: gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_authorization_policy
 
@@ -529,18 +837,42 @@ class NetworkSecurityRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_authorization_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_authorization_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_authorization_policy` interceptor runs
+        before the `post_update_authorization_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_update_authorization_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_authorization_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_update_authorization_policy_with_metadata`
+        interceptor in new development instead of the `post_update_authorization_policy` interceptor.
+        When both interceptors are used, this `post_update_authorization_policy_with_metadata` interceptor runs after the
+        `post_update_authorization_policy` interceptor. The (possibly modified) response returned by
+        `post_update_authorization_policy` will be passed to
+        `post_update_authorization_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_client_tls_policy(
         self,
         request: gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcn_client_tls_policy.UpdateClientTlsPolicyRequest, Sequence[Tuple[str, str]]
+        gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_client_tls_policy
 
@@ -554,18 +886,42 @@ class NetworkSecurityRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_client_tls_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_client_tls_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_client_tls_policy` interceptor runs
+        before the `post_update_client_tls_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_update_client_tls_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_client_tls_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_update_client_tls_policy_with_metadata`
+        interceptor in new development instead of the `post_update_client_tls_policy` interceptor.
+        When both interceptors are used, this `post_update_client_tls_policy_with_metadata` interceptor runs after the
+        `post_update_client_tls_policy` interceptor. The (possibly modified) response returned by
+        `post_update_client_tls_policy` will be passed to
+        `post_update_client_tls_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_server_tls_policy(
         self,
         request: gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcn_server_tls_policy.UpdateServerTlsPolicyRequest, Sequence[Tuple[str, str]]
+        gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_server_tls_policy
 
@@ -579,17 +935,42 @@ class NetworkSecurityRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_server_tls_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_server_tls_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkSecurity server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_server_tls_policy` interceptor runs
+        before the `post_update_server_tls_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_update_server_tls_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_server_tls_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkSecurity server but before it is returned to user code.
+
+        We recommend only using this `post_update_server_tls_policy_with_metadata`
+        interceptor in new development instead of the `post_update_server_tls_policy` interceptor.
+        When both interceptors are used, this `post_update_server_tls_policy_with_metadata` interceptor runs after the
+        `post_update_server_tls_policy` interceptor. The (possibly modified) response returned by
+        `post_update_server_tls_policy` will be passed to
+        `post_update_server_tls_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.Location:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -598,7 +979,7 @@ class NetworkSecurityRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.GetLocationRequest
+        self, response: locations_pb2.Location
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -611,8 +992,10 @@ class NetworkSecurityRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.ListLocationsResponse:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -621,7 +1004,7 @@ class NetworkSecurityRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsRequest
+        self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -634,8 +1017,10 @@ class NetworkSecurityRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -643,9 +1028,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_get_iam_policy(
-        self, response: iam_policy_pb2.GetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the response
@@ -657,8 +1040,10 @@ class NetworkSecurityRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -666,9 +1051,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_set_iam_policy(
-        self, response: iam_policy_pb2.SetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the response
@@ -680,8 +1063,11 @@ class NetworkSecurityRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -690,7 +1076,7 @@ class NetworkSecurityRestInterceptor:
         return request, metadata
 
     def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsRequest
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
@@ -703,8 +1089,10 @@ class NetworkSecurityRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -712,9 +1100,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(
-        self, response: operations_pb2.CancelOperationRequest
-    ) -> None:
+    def post_cancel_operation(self, response: None) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -726,8 +1112,10 @@ class NetworkSecurityRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -735,9 +1123,7 @@ class NetworkSecurityRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_operation(
-        self, response: operations_pb2.DeleteOperationRequest
-    ) -> None:
+    def post_delete_operation(self, response: None) -> None:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
@@ -749,8 +1135,10 @@ class NetworkSecurityRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -759,7 +1147,7 @@ class NetworkSecurityRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -772,8 +1160,10 @@ class NetworkSecurityRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.ListOperationsResponse:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -782,7 +1172,7 @@ class NetworkSecurityRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsRequest
+        self, response: operations_pb2.ListOperationsResponse
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -800,8 +1190,8 @@ class NetworkSecurityRestStub:
     _interceptor: NetworkSecurityRestInterceptor
 
 
-class NetworkSecurityRestTransport(NetworkSecurityTransport):
-    """REST backend transport for NetworkSecurity.
+class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
+    """REST backend synchronous transport for NetworkSecurity.
 
     Network Security API provides resources to configure
     authentication and authorization policies. Refer to per API
@@ -812,7 +1202,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -834,16 +1223,17 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'networksecurity.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
 
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
+                This argument is ignored if ``channel`` is provided. This argument will be
+                removed in the next major version of this library.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
                 ignored if ``channel`` is provided.
             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
@@ -866,21 +1256,12 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -945,21 +1326,35 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAuthorizationPolicy(NetworkSecurityRestStub):
+    class _CreateAuthorizationPolicy(
+        _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAuthorizationPolicy")
+            return hash("NetworkSecurityRestTransport.CreateAuthorizationPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
-            "authorizationPolicyId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -967,7 +1362,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create authorization
             policy method over HTTP.
@@ -976,12 +1371,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                     request (~.gcn_authorization_policy.CreateAuthorizationPolicyRequest):
                         The request object. Request used by the
                     CreateAuthorizationPolicy method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -991,52 +1387,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/authorizationPolicies",
-                    "body": "authorization_policy",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_create_authorization_policy(
                 request, metadata
             )
-            pb_request = gcn_authorization_policy.CreateAuthorizationPolicyRequest.pb(
-                request
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+            body = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.CreateAuthorizationPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "CreateAuthorizationPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                NetworkSecurityRestTransport._CreateAuthorizationPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1047,24 +1455,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_authorization_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_authorization_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.create_authorization_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "CreateAuthorizationPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _CreateClientTlsPolicy(NetworkSecurityRestStub):
+    class _CreateClientTlsPolicy(
+        _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateClientTlsPolicy")
+            return hash("NetworkSecurityRestTransport.CreateClientTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
-            "clientTlsPolicyId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1072,7 +1520,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create client tls policy method over HTTP.
 
@@ -1080,12 +1528,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.gcn_client_tls_policy.CreateClientTlsPolicyRequest):
                     The request object. Request used by the
                 CreateClientTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1095,50 +1544,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/clientTlsPolicies",
-                    "body": "client_tls_policy",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_create_client_tls_policy(
                 request, metadata
             )
-            pb_request = gcn_client_tls_policy.CreateClientTlsPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.CreateClientTlsPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "CreateClientTlsPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                NetworkSecurityRestTransport._CreateClientTlsPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1149,24 +1612,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_client_tls_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_client_tls_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.create_client_tls_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "CreateClientTlsPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _CreateServerTlsPolicy(NetworkSecurityRestStub):
+    class _CreateServerTlsPolicy(
+        _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateServerTlsPolicy")
+            return hash("NetworkSecurityRestTransport.CreateServerTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
-            "serverTlsPolicyId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1174,7 +1677,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create server tls policy method over HTTP.
 
@@ -1182,12 +1685,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.gcn_server_tls_policy.CreateServerTlsPolicyRequest):
                     The request object. Request used by the
                 CreateServerTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1197,50 +1701,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/serverTlsPolicies",
-                    "body": "server_tls_policy",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_create_server_tls_policy(
                 request, metadata
             )
-            pb_request = gcn_server_tls_policy.CreateServerTlsPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.CreateServerTlsPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "CreateServerTlsPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                NetworkSecurityRestTransport._CreateServerTlsPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1251,22 +1769,63 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_server_tls_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_server_tls_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.create_server_tls_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "CreateServerTlsPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _DeleteAuthorizationPolicy(NetworkSecurityRestStub):
+    class _DeleteAuthorizationPolicy(
+        _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAuthorizationPolicy")
+            return hash("NetworkSecurityRestTransport.DeleteAuthorizationPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1274,7 +1833,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete authorization
             policy method over HTTP.
@@ -1283,12 +1842,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                     request (~.authorization_policy.DeleteAuthorizationPolicyRequest):
                         The request object. Request used by the
                     DeleteAuthorizationPolicy method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1298,43 +1858,59 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/authorizationPolicies/*}",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_delete_authorization_policy(
                 request, metadata
             )
-            pb_request = authorization_policy.DeleteAuthorizationPolicyRequest.pb(
-                request
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.DeleteAuthorizationPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "DeleteAuthorizationPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                NetworkSecurityRestTransport._DeleteAuthorizationPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1345,22 +1921,63 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_authorization_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_authorization_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.delete_authorization_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "DeleteAuthorizationPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _DeleteClientTlsPolicy(NetworkSecurityRestStub):
+    class _DeleteClientTlsPolicy(
+        _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteClientTlsPolicy")
+            return hash("NetworkSecurityRestTransport.DeleteClientTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1368,7 +1985,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete client tls policy method over HTTP.
 
@@ -1376,12 +1993,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.client_tls_policy.DeleteClientTlsPolicyRequest):
                     The request object. Request used by the
                 DeleteClientTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1391,41 +2009,59 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/clientTlsPolicies/*}",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_delete_client_tls_policy(
                 request, metadata
             )
-            pb_request = client_tls_policy.DeleteClientTlsPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.DeleteClientTlsPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "DeleteClientTlsPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                NetworkSecurityRestTransport._DeleteClientTlsPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1436,22 +2072,63 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_client_tls_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_client_tls_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.delete_client_tls_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "DeleteClientTlsPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _DeleteServerTlsPolicy(NetworkSecurityRestStub):
+    class _DeleteServerTlsPolicy(
+        _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteServerTlsPolicy")
+            return hash("NetworkSecurityRestTransport.DeleteServerTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1459,7 +2136,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete server tls policy method over HTTP.
 
@@ -1467,12 +2144,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.server_tls_policy.DeleteServerTlsPolicyRequest):
                     The request object. Request used by the
                 DeleteServerTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1482,41 +2160,59 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/serverTlsPolicies/*}",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_delete_server_tls_policy(
                 request, metadata
             )
-            pb_request = server_tls_policy.DeleteServerTlsPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.DeleteServerTlsPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "DeleteServerTlsPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                NetworkSecurityRestTransport._DeleteServerTlsPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1527,22 +2223,63 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_server_tls_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_server_tls_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.delete_server_tls_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "DeleteServerTlsPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _GetAuthorizationPolicy(NetworkSecurityRestStub):
+    class _GetAuthorizationPolicy(
+        _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAuthorizationPolicy")
+            return hash("NetworkSecurityRestTransport.GetAuthorizationPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1550,7 +2287,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> authorization_policy.AuthorizationPolicy:
             r"""Call the get authorization policy method over HTTP.
 
@@ -1558,12 +2295,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.authorization_policy.GetAuthorizationPolicyRequest):
                     The request object. Request used by the
                 GetAuthorizationPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.authorization_policy.AuthorizationPolicy:
@@ -1577,41 +2315,59 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/authorizationPolicies/*}",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_get_authorization_policy(
                 request, metadata
             )
-            pb_request = authorization_policy.GetAuthorizationPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.GetAuthorizationPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetAuthorizationPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                NetworkSecurityRestTransport._GetAuthorizationPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1624,22 +2380,65 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             pb_resp = authorization_policy.AuthorizationPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_authorization_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_authorization_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = authorization_policy.AuthorizationPolicy.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.get_authorization_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetAuthorizationPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _GetClientTlsPolicy(NetworkSecurityRestStub):
+    class _GetClientTlsPolicy(
+        _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("GetClientTlsPolicy")
+            return hash("NetworkSecurityRestTransport.GetClientTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1647,7 +2446,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> client_tls_policy.ClientTlsPolicy:
             r"""Call the get client tls policy method over HTTP.
 
@@ -1655,12 +2454,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.client_tls_policy.GetClientTlsPolicyRequest):
                     The request object. Request used by the
                 GetClientTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.client_tls_policy.ClientTlsPolicy:
@@ -1673,41 +2473,57 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/clientTlsPolicies/*}",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_get_client_tls_policy(
                 request, metadata
             )
-            pb_request = client_tls_policy.GetClientTlsPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.GetClientTlsPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetClientTlsPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = NetworkSecurityRestTransport._GetClientTlsPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1720,22 +2536,65 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             pb_resp = client_tls_policy.ClientTlsPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_client_tls_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_client_tls_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = client_tls_policy.ClientTlsPolicy.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.get_client_tls_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetClientTlsPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _GetServerTlsPolicy(NetworkSecurityRestStub):
+    class _GetServerTlsPolicy(
+        _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("GetServerTlsPolicy")
+            return hash("NetworkSecurityRestTransport.GetServerTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1743,7 +2602,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> server_tls_policy.ServerTlsPolicy:
             r"""Call the get server tls policy method over HTTP.
 
@@ -1751,12 +2610,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.server_tls_policy.GetServerTlsPolicyRequest):
                     The request object. Request used by the
                 GetServerTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.server_tls_policy.ServerTlsPolicy:
@@ -1770,41 +2630,57 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/serverTlsPolicies/*}",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_get_server_tls_policy(
                 request, metadata
             )
-            pb_request = server_tls_policy.GetServerTlsPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.GetServerTlsPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetServerTlsPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = NetworkSecurityRestTransport._GetServerTlsPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1817,22 +2693,65 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             pb_resp = server_tls_policy.ServerTlsPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_server_tls_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_server_tls_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = server_tls_policy.ServerTlsPolicy.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.get_server_tls_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetServerTlsPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _ListAuthorizationPolicies(NetworkSecurityRestStub):
+    class _ListAuthorizationPolicies(
+        _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAuthorizationPolicies")
+            return hash("NetworkSecurityRestTransport.ListAuthorizationPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1840,7 +2759,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> authorization_policy.ListAuthorizationPoliciesResponse:
             r"""Call the list authorization
             policies method over HTTP.
@@ -1849,12 +2768,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                     request (~.authorization_policy.ListAuthorizationPoliciesRequest):
                         The request object. Request used with the
                     ListAuthorizationPolicies method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.authorization_policy.ListAuthorizationPoliciesResponse:
@@ -1863,43 +2783,59 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/authorizationPolicies",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_list_authorization_policies(
                 request, metadata
             )
-            pb_request = authorization_policy.ListAuthorizationPoliciesRequest.pb(
-                request
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.ListAuthorizationPolicies",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListAuthorizationPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                NetworkSecurityRestTransport._ListAuthorizationPolicies._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1912,22 +2848,67 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             pb_resp = authorization_policy.ListAuthorizationPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_authorization_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_authorization_policies_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        authorization_policy.ListAuthorizationPoliciesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.list_authorization_policies",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListAuthorizationPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _ListClientTlsPolicies(NetworkSecurityRestStub):
+    class _ListClientTlsPolicies(
+        _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("ListClientTlsPolicies")
+            return hash("NetworkSecurityRestTransport.ListClientTlsPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1935,7 +2916,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> client_tls_policy.ListClientTlsPoliciesResponse:
             r"""Call the list client tls policies method over HTTP.
 
@@ -1943,12 +2924,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.client_tls_policy.ListClientTlsPoliciesRequest):
                     The request object. Request used by the
                 ListClientTlsPolicies method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.client_tls_policy.ListClientTlsPoliciesResponse:
@@ -1957,41 +2939,59 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/clientTlsPolicies",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_list_client_tls_policies(
                 request, metadata
             )
-            pb_request = client_tls_policy.ListClientTlsPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.ListClientTlsPolicies",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListClientTlsPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                NetworkSecurityRestTransport._ListClientTlsPolicies._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2004,22 +3004,67 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             pb_resp = client_tls_policy.ListClientTlsPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_client_tls_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_client_tls_policies_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        client_tls_policy.ListClientTlsPoliciesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.list_client_tls_policies",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListClientTlsPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _ListServerTlsPolicies(NetworkSecurityRestStub):
+    class _ListServerTlsPolicies(
+        _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("ListServerTlsPolicies")
+            return hash("NetworkSecurityRestTransport.ListServerTlsPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2027,7 +3072,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> server_tls_policy.ListServerTlsPoliciesResponse:
             r"""Call the list server tls policies method over HTTP.
 
@@ -2035,12 +3080,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.server_tls_policy.ListServerTlsPoliciesRequest):
                     The request object. Request used by the
                 ListServerTlsPolicies method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.server_tls_policy.ListServerTlsPoliciesResponse:
@@ -2049,41 +3095,59 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/serverTlsPolicies",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_list_server_tls_policies(
                 request, metadata
             )
-            pb_request = server_tls_policy.ListServerTlsPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.ListServerTlsPolicies",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListServerTlsPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                NetworkSecurityRestTransport._ListServerTlsPolicies._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2096,22 +3160,68 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             pb_resp = server_tls_policy.ListServerTlsPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_server_tls_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_server_tls_policies_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        server_tls_policy.ListServerTlsPoliciesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.list_server_tls_policies",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListServerTlsPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _UpdateAuthorizationPolicy(NetworkSecurityRestStub):
+    class _UpdateAuthorizationPolicy(
+        _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAuthorizationPolicy")
+            return hash("NetworkSecurityRestTransport.UpdateAuthorizationPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2119,7 +3229,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update authorization
             policy method over HTTP.
@@ -2128,12 +3238,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                     request (~.gcn_authorization_policy.UpdateAuthorizationPolicyRequest):
                         The request object. Request used by the
                     UpdateAuthorizationPolicy method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2143,52 +3254,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta1/{authorization_policy.name=projects/*/locations/*/authorizationPolicies/*}",
-                    "body": "authorization_policy",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_update_authorization_policy(
                 request, metadata
             )
-            pb_request = gcn_authorization_policy.UpdateAuthorizationPolicyRequest.pb(
-                request
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+            body = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.UpdateAuthorizationPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "UpdateAuthorizationPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                NetworkSecurityRestTransport._UpdateAuthorizationPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2199,22 +3322,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_authorization_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_authorization_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.update_authorization_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "UpdateAuthorizationPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _UpdateClientTlsPolicy(NetworkSecurityRestStub):
+    class _UpdateClientTlsPolicy(
+        _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateClientTlsPolicy")
+            return hash("NetworkSecurityRestTransport.UpdateClientTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2222,7 +3387,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update client tls policy method over HTTP.
 
@@ -2230,12 +3395,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.gcn_client_tls_policy.UpdateClientTlsPolicyRequest):
                     The request object. Request used by UpdateClientTlsPolicy
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2245,50 +3411,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta1/{client_tls_policy.name=projects/*/locations/*/clientTlsPolicies/*}",
-                    "body": "client_tls_policy",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_update_client_tls_policy(
                 request, metadata
             )
-            pb_request = gcn_client_tls_policy.UpdateClientTlsPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.UpdateClientTlsPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "UpdateClientTlsPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                NetworkSecurityRestTransport._UpdateClientTlsPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2299,22 +3479,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_client_tls_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_client_tls_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.update_client_tls_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "UpdateClientTlsPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _UpdateServerTlsPolicy(NetworkSecurityRestStub):
+    class _UpdateServerTlsPolicy(
+        _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy,
+        NetworkSecurityRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateServerTlsPolicy")
+            return hash("NetworkSecurityRestTransport.UpdateServerTlsPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2322,7 +3544,7 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update server tls policy method over HTTP.
 
@@ -2330,12 +3552,13 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.gcn_server_tls_policy.UpdateServerTlsPolicyRequest):
                     The request object. Request used by UpdateServerTlsPolicy
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2345,50 +3568,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta1/{server_tls_policy.name=projects/*/locations/*/serverTlsPolicies/*}",
-                    "body": "server_tls_policy",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_http_options()
+            )
+
             request, metadata = self._interceptor.pre_update_server_tls_policy(
                 request, metadata
             )
-            pb_request = gcn_server_tls_policy.UpdateServerTlsPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.UpdateServerTlsPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "UpdateServerTlsPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                NetworkSecurityRestTransport._UpdateServerTlsPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2399,7 +3636,33 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_server_tls_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_server_tls_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.update_server_tls_policy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "UpdateServerTlsPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2563,14 +3826,41 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(NetworkSecurityRestStub):
+    class _GetLocation(
+        _BaseNetworkSecurityRestTransport._BaseGetLocation, NetworkSecurityRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkSecurityRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -2580,39 +3870,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*}",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseGetLocation._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = NetworkSecurityRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2620,23 +3935,72 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(NetworkSecurityRestStub):
+    class _ListLocations(
+        _BaseNetworkSecurityRestTransport._BaseListLocations, NetworkSecurityRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkSecurityRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -2646,39 +4010,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*}/locations",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseListLocations._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseNetworkSecurityRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = NetworkSecurityRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2686,23 +4075,72 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(NetworkSecurityRestStub):
+    class _GetIamPolicy(
+        _BaseNetworkSecurityRestTransport._BaseGetIamPolicy, NetworkSecurityRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkSecurityRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.GetIamPolicyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -2712,47 +4150,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/authorizationPolicies/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/serverTlsPolicies/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/clientTlsPolicies/*}:getIamPolicy",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseGetIamPolicy._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = NetworkSecurityRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2760,23 +4215,73 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(NetworkSecurityRestStub):
+    class _SetIamPolicy(
+        _BaseNetworkSecurityRestTransport._BaseSetIamPolicy, NetworkSecurityRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkSecurityRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.SetIamPolicyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -2786,52 +4291,69 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/authorizationPolicies/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/serverTlsPolicies/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/clientTlsPolicies/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.loads(json.dumps(transcoded_request["body"]))
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseNetworkSecurityRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = NetworkSecurityRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2839,23 +4361,74 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(NetworkSecurityRestStub):
+    class _TestIamPermissions(
+        _BaseNetworkSecurityRestTransport._BaseTestIamPermissions,
+        NetworkSecurityRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkSecurityRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.TestIamPermissionsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2865,54 +4438,71 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/authorizationPolicies/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/serverTlsPolicies/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/clientTlsPolicies/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.loads(json.dumps(transcoded_request["body"]))
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = NetworkSecurityRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2920,23 +4510,73 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = iam_policy_pb2.TestIamPermissionsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(NetworkSecurityRestStub):
+    class _CancelOperation(
+        _BaseNetworkSecurityRestTransport._BaseCancelOperation, NetworkSecurityRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkSecurityRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2946,41 +4586,68 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.loads(json.dumps(transcoded_request["body"]))
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = NetworkSecurityRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2994,14 +4661,41 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(NetworkSecurityRestStub):
+    class _DeleteOperation(
+        _BaseNetworkSecurityRestTransport._BaseDeleteOperation, NetworkSecurityRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkSecurityRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3011,38 +4705,63 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = NetworkSecurityRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3056,14 +4775,41 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(NetworkSecurityRestStub):
+    class _GetOperation(
+        _BaseNetworkSecurityRestTransport._BaseGetOperation, NetworkSecurityRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkSecurityRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3073,39 +4819,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseGetOperation._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseNetworkSecurityRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = NetworkSecurityRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3113,23 +4884,72 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(NetworkSecurityRestStub):
+    class _ListOperations(
+        _BaseNetworkSecurityRestTransport._BaseListOperations, NetworkSecurityRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkSecurityRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3139,39 +4959,64 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*}/operations",
-                },
-            ]
+            http_options = (
+                _BaseNetworkSecurityRestTransport._BaseListOperations._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseNetworkSecurityRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseNetworkSecurityRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networksecurity_v1beta1.NetworkSecurityClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = NetworkSecurityRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3179,9 +5024,31 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networksecurity_v1beta1.NetworkSecurityAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

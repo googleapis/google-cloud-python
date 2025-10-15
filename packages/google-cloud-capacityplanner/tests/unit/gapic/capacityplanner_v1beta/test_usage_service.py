@@ -2790,6 +2790,7 @@ def test_query_usage_histories_rest_required_fields(
 
     request_init = {}
     request_init["parent"] = ""
+    request_init["cloud_resource_type"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -2806,6 +2807,7 @@ def test_query_usage_histories_rest_required_fields(
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
+    jsonified_request["cloudResourceType"] = "cloud_resource_type_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -2815,6 +2817,8 @@ def test_query_usage_histories_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
+    assert "cloudResourceType" in jsonified_request
+    assert jsonified_request["cloudResourceType"] == "cloud_resource_type_value"
 
     client = UsageServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2865,7 +2869,15 @@ def test_query_usage_histories_rest_unset_required_fields():
     )
 
     unset_fields = transport.query_usage_histories._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "cloudResourceType",
+            )
+        )
+    )
 
 
 def test_query_forecasts_rest_use_cached_wrapped_rpc():
@@ -2911,6 +2923,7 @@ def test_query_forecasts_rest_required_fields(
 
     request_init = {}
     request_init["parent"] = ""
+    request_init["cloud_resource_type"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -2927,6 +2940,7 @@ def test_query_forecasts_rest_required_fields(
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
+    jsonified_request["cloudResourceType"] = "cloud_resource_type_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -2936,6 +2950,8 @@ def test_query_forecasts_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
+    assert "cloudResourceType" in jsonified_request
+    assert jsonified_request["cloudResourceType"] == "cloud_resource_type_value"
 
     client = UsageServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2986,7 +3002,15 @@ def test_query_forecasts_rest_unset_required_fields():
     )
 
     unset_fields = transport.query_forecasts._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "cloudResourceType",
+            )
+        )
+    )
 
 
 def test_query_reservations_rest_use_cached_wrapped_rpc():
@@ -3036,6 +3060,7 @@ def test_query_reservations_rest_required_fields(
 
     request_init = {}
     request_init["parent"] = ""
+    request_init["cloud_resource_type"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3043,6 +3068,7 @@ def test_query_reservations_rest_required_fields(
     )
 
     # verify fields with default values are dropped
+    assert "cloudResourceType" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -3050,8 +3076,11 @@ def test_query_reservations_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
+    assert "cloudResourceType" in jsonified_request
+    assert jsonified_request["cloudResourceType"] == request_init["cloud_resource_type"]
 
     jsonified_request["parent"] = "parent_value"
+    jsonified_request["cloudResourceType"] = "cloud_resource_type_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -3079,6 +3108,8 @@ def test_query_reservations_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
+    assert "cloudResourceType" in jsonified_request
+    assert jsonified_request["cloudResourceType"] == "cloud_resource_type_value"
 
     client = UsageServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3117,7 +3148,13 @@ def test_query_reservations_rest_required_fields(
 
             response = client.query_reservations(request)
 
-            expected_params = [("$alt", "json;enum-encoding=int")]
+            expected_params = [
+                (
+                    "cloudResourceType",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3146,7 +3183,14 @@ def test_query_reservations_rest_unset_required_fields():
                 "startDate",
             )
         )
-        & set(("parent",))
+        & set(
+            (
+                "parent",
+                "cloudResourceType",
+                "reservationType",
+                "reservationDataLevel",
+            )
+        )
     )
 
 

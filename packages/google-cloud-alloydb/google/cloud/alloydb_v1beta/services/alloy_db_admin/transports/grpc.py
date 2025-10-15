@@ -155,9 +155,10 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if a ``channel`` instance is provided.
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
+                This argument will be removed in the next major version of this library.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
                 ignored if a ``channel`` instance is provided.
             channel (Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]]):
@@ -291,9 +292,10 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
+                This argument is mutually exclusive with credentials.  This argument will be
+                removed in the next major version of this library.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -1341,6 +1343,33 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 response_deserializer=service.ListDatabasesResponse.deserialize,
             )
         return self._stubs["list_databases"]
+
+    @property
+    def create_database(
+        self,
+    ) -> Callable[[service.CreateDatabaseRequest], resources.Database]:
+        r"""Return a callable for the create database method over gRPC.
+
+        Creates a new Database in a given project, location,
+        and cluster.
+
+        Returns:
+            Callable[[~.CreateDatabaseRequest],
+                    ~.Database]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_database" not in self._stubs:
+            self._stubs["create_database"] = self._logged_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/CreateDatabase",
+                request_serializer=service.CreateDatabaseRequest.serialize,
+                response_deserializer=resources.Database.deserialize,
+            )
+        return self._stubs["create_database"]
 
     def close(self):
         self._logged_channel.close()

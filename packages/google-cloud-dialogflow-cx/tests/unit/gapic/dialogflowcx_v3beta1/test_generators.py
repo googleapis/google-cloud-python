@@ -4590,6 +4590,11 @@ def test_create_generator_rest_call_success(request_type):
         "llm_model_settings": {
             "model": "model_value",
             "prompt_text": "prompt_text_value",
+            "parameters": {
+                "temperature": 0.1198,
+                "input_token_limit": 1,
+                "output_token_limit": 1,
+            },
         },
         "model_parameter": {
             "temperature": 0.1198,
@@ -4810,6 +4815,11 @@ def test_update_generator_rest_call_success(request_type):
         "llm_model_settings": {
             "model": "model_value",
             "prompt_text": "prompt_text_value",
+            "parameters": {
+                "temperature": 0.1198,
+                "input_token_limit": 1,
+                "output_token_limit": 1,
+            },
         },
         "model_parameter": {
             "temperature": 0.1198,

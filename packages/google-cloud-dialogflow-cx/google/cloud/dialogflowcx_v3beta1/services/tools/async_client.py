@@ -83,6 +83,8 @@ class ToolsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ToolsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ToolsClient._DEFAULT_UNIVERSE
 
+    secret_version_path = staticmethod(ToolsClient.secret_version_path)
+    parse_secret_version_path = staticmethod(ToolsClient.parse_secret_version_path)
     service_path = staticmethod(ToolsClient.service_path)
     parse_service_path = staticmethod(ToolsClient.parse_service_path)
     tool_path = staticmethod(ToolsClient.tool_path)
