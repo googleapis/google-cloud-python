@@ -114,6 +114,7 @@ packages_to_onboard: [
   "google-cloud-geminidataanalytics",
   "google-cloud-gke-backup",
   "google-cloud-gke-connect-gateway",
+  "google-cloud-gke-hub",
   "google-cloud-iam-logging",
   "google-cloud-iap",
   "google-cloud-ids",
