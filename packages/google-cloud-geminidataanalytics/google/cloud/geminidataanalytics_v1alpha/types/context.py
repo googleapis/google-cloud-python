@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
     manifest={
         "Context",
         "ExampleQuery",
+        "GlossaryTerm",
         "ConversationOptions",
         "ChartOptions",
         "AnalysisOptions",
@@ -58,7 +59,105 @@ class Context(proto.Message):
             SQL queries and their corresponding natural
             language queries optionally present. Currently
             only used for BigQuery data sources.
+        glossary_terms (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.GlossaryTerm]):
+            Optional. Term definitions (currently, only
+            user authored)
+        schema_relationships (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Context.SchemaRelationship]):
+            Optional. Relationships between table schema,
+            including referencing and referenced columns.
     """
+
+    class SchemaRelationship(proto.Message):
+        r"""The relationship between two tables, including referencing
+        and referenced columns. This is a derived context retrieved from
+        Dataplex Dataset Insights.
+
+        Attributes:
+            left_schema_paths (google.cloud.geminidataanalytics_v1alpha.types.Context.SchemaRelationship.SchemaPaths):
+                An ordered list of fields for the join from the first table.
+                The size of this list must be the same as
+                ``right_schema_paths``. Each field at index i in this list
+                must correspond to a field at the same index in the
+                ``right_schema_paths`` list.
+            right_schema_paths (google.cloud.geminidataanalytics_v1alpha.types.Context.SchemaRelationship.SchemaPaths):
+                An ordered list of fields for the join from the second
+                table. The size of this list must be the same as
+                ``left_schema_paths``. Each field at index i in this list
+                must correspond to a field at the same index in the
+                ``left_schema_paths`` list.
+            sources (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Context.SchemaRelationship.Source]):
+                Sources which generated the schema relation
+                edge.
+            confidence_score (float):
+                A confidence score for the suggested
+                relationship. Manually added edges have the
+                highest confidence score.
+        """
+
+        class Source(proto.Enum):
+            r"""Source which generated the schema relation edge.
+
+            Values:
+                SOURCE_UNSPECIFIED (0):
+                    The source of the schema relationship is
+                    unspecified.
+                BIGQUERY_JOB_HISTORY (1):
+                    The source of the schema relationship is
+                    BigQuery job history.
+                LLM_SUGGESTED (2):
+                    The source of the schema relationship is LLM
+                    suggested.
+                BIGQUERY_TABLE_CONSTRAINTS (3):
+                    The source of the schema relationship is
+                    BigQuery table constraints.
+            """
+            SOURCE_UNSPECIFIED = 0
+            BIGQUERY_JOB_HISTORY = 1
+            LLM_SUGGESTED = 2
+            BIGQUERY_TABLE_CONSTRAINTS = 3
+
+        class SchemaPaths(proto.Message):
+            r"""Represents an ordered set of paths within the table schema.
+
+            Attributes:
+                table_fqn (str):
+                    The service-qualified full resource name of the table Ex:
+                    bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+                paths (MutableSequence[str]):
+                    The ordered list of paths within the table
+                    schema.
+            """
+
+            table_fqn: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            paths: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+
+        left_schema_paths: "Context.SchemaRelationship.SchemaPaths" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Context.SchemaRelationship.SchemaPaths",
+        )
+        right_schema_paths: "Context.SchemaRelationship.SchemaPaths" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Context.SchemaRelationship.SchemaPaths",
+        )
+        sources: MutableSequence[
+            "Context.SchemaRelationship.Source"
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=3,
+            enum="Context.SchemaRelationship.Source",
+        )
+        confidence_score: float = proto.Field(
+            proto.FLOAT,
+            number=4,
+        )
 
     system_instruction: str = proto.Field(
         proto.STRING,
@@ -78,6 +177,16 @@ class Context(proto.Message):
         proto.MESSAGE,
         number=5,
         message="ExampleQuery",
+    )
+    glossary_terms: MutableSequence["GlossaryTerm"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="GlossaryTerm",
+    )
+    schema_relationships: MutableSequence[SchemaRelationship] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message=SchemaRelationship,
     )
 
 
@@ -111,6 +220,40 @@ class ExampleQuery(proto.Message):
     natural_language_question: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class GlossaryTerm(proto.Message):
+    r"""Definition of a term within a specific domain.
+
+    Attributes:
+        display_name (str):
+            Required. User friendly display name of the
+            glossary term being defined. For example: "CTR",
+            "conversion rate", "pending".
+        description (str):
+            Required. The description or meaning of the
+            term. For example: "Click-through rate", "The
+            percentage of users who complete a desired
+            action", "An order that is waiting to be
+            processed.".
+        labels (MutableSequence[str]):
+            Optional. A list of general purpose labels associated to
+            this term. For example: ["click rate", "clickthrough",
+            "waiting"]
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    labels: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

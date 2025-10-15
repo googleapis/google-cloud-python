@@ -27,6 +27,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -94,6 +95,10 @@ class DataChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_conversation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_get_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -115,14 +120,6 @@ class DataChatServiceRestInterceptor:
                 return request, metadata
 
             def post_list_messages(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_update_conversation(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_conversation(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -228,6 +225,20 @@ class DataChatServiceRestInterceptor:
         `post_create_conversation_with_metadata`.
         """
         return response, metadata
+
+    def pre_delete_conversation(
+        self,
+        request: conversation.DeleteConversationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation.DeleteConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_conversation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataChatService server.
+        """
+        return request, metadata
 
     def pre_get_conversation(
         self,
@@ -374,55 +385,6 @@ class DataChatServiceRestInterceptor:
         `post_list_messages` interceptor. The (possibly modified) response returned by
         `post_list_messages` will be passed to
         `post_list_messages_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_update_conversation(
-        self,
-        request: gcg_conversation.UpdateConversationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcg_conversation.UpdateConversationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for update_conversation
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataChatService server.
-        """
-        return request, metadata
-
-    def post_update_conversation(
-        self, response: gcg_conversation.Conversation
-    ) -> gcg_conversation.Conversation:
-        """Post-rpc interceptor for update_conversation
-
-        DEPRECATED. Please use the `post_update_conversation_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataChatService server but before
-        it is returned to user code. This `post_update_conversation` interceptor runs
-        before the `post_update_conversation_with_metadata` interceptor.
-        """
-        return response
-
-    def post_update_conversation_with_metadata(
-        self,
-        response: gcg_conversation.Conversation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[gcg_conversation.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for update_conversation
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataChatService server but before it is returned to user code.
-
-        We recommend only using this `post_update_conversation_with_metadata`
-        interceptor in new development instead of the `post_update_conversation` interceptor.
-        When both interceptors are used, this `post_update_conversation_with_metadata` interceptor runs after the
-        `post_update_conversation` interceptor. The (possibly modified) response returned by
-        `post_update_conversation` will be passed to
-        `post_update_conversation_with_metadata`.
         """
         return response, metadata
 
@@ -960,6 +922,116 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 )
             return resp
 
+    class _DeleteConversation(
+        _BaseDataChatServiceRestTransport._BaseDeleteConversation,
+        DataChatServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataChatServiceRestTransport.DeleteConversation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: conversation.DeleteConversationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete conversation method over HTTP.
+
+            Args:
+                request (~.conversation.DeleteConversationRequest):
+                    The request object. Request for deleting a conversation
+                based on parent and conversation id.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseDataChatServiceRestTransport._BaseDeleteConversation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_conversation(
+                request, metadata
+            )
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseDeleteConversation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataChatServiceRestTransport._BaseDeleteConversation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.geminidataanalytics_v1alpha.DataChatServiceClient.DeleteConversation",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1alpha.DataChatService",
+                        "rpcName": "DeleteConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataChatServiceRestTransport._DeleteConversation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _GetConversation(
         _BaseDataChatServiceRestTransport._BaseGetConversation, DataChatServiceRestStub
     ):
@@ -1406,159 +1478,6 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 )
             return resp
 
-    class _UpdateConversation(
-        _BaseDataChatServiceRestTransport._BaseUpdateConversation,
-        DataChatServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash("DataChatServiceRestTransport.UpdateConversation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: gcg_conversation.UpdateConversationRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcg_conversation.Conversation:
-            r"""Call the update conversation method over HTTP.
-
-            Args:
-                request (~.gcg_conversation.UpdateConversationRequest):
-                    The request object. Request for updating a conversation.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.gcg_conversation.Conversation:
-                    Message for a conversation.
-            """
-
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseUpdateConversation._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_update_conversation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseUpdateConversation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataChatServiceRestTransport._BaseUpdateConversation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseUpdateConversation._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.geminidataanalytics_v1alpha.DataChatServiceClient.UpdateConversation",
-                    extra={
-                        "serviceName": "google.cloud.geminidataanalytics.v1alpha.DataChatService",
-                        "rpcName": "UpdateConversation",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = DataChatServiceRestTransport._UpdateConversation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = gcg_conversation.Conversation()
-            pb_resp = gcg_conversation.Conversation.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_update_conversation(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_conversation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = gcg_conversation.Conversation.to_json(response)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.geminidataanalytics_v1alpha.DataChatServiceClient.update_conversation",
-                    extra={
-                        "serviceName": "google.cloud.geminidataanalytics.v1alpha.DataChatService",
-                        "rpcName": "UpdateConversation",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     @property
     def chat(
         self,
@@ -1576,6 +1495,14 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConversation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_conversation(
+        self,
+    ) -> Callable[[conversation.DeleteConversationRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_conversation(
@@ -1604,16 +1531,6 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMessages(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def update_conversation(
-        self,
-    ) -> Callable[
-        [gcg_conversation.UpdateConversationRequest], gcg_conversation.Conversation
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._UpdateConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):
