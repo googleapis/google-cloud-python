@@ -7317,7 +7317,9 @@ def test_create_environment_rest_call_success(request_type):
                         "uri": "uri_value",
                         "username": "username_value",
                         "password": "password_value",
+                        "secret_version_for_username_password": "secret_version_for_username_password_value",
                         "request_headers": {},
+                        "secret_versions_for_request_headers": {},
                         "allowed_ca_certs": [
                             b"allowed_ca_certs_blob1",
                             b"allowed_ca_certs_blob2",
@@ -7325,6 +7327,7 @@ def test_create_environment_rest_call_success(request_type):
                         "oauth_config": {
                             "client_id": "client_id_value",
                             "client_secret": "client_secret_value",
+                            "secret_version_for_client_secret": "secret_version_for_client_secret_value",
                             "token_endpoint": "token_endpoint_value",
                             "scopes": ["scopes_value1", "scopes_value2"],
                         },
@@ -7562,7 +7565,9 @@ def test_update_environment_rest_call_success(request_type):
                         "uri": "uri_value",
                         "username": "username_value",
                         "password": "password_value",
+                        "secret_version_for_username_password": "secret_version_for_username_password_value",
                         "request_headers": {},
+                        "secret_versions_for_request_headers": {},
                         "allowed_ca_certs": [
                             b"allowed_ca_certs_blob1",
                             b"allowed_ca_certs_blob2",
@@ -7570,6 +7575,7 @@ def test_update_environment_rest_call_success(request_type):
                         "oauth_config": {
                             "client_id": "client_id_value",
                             "client_secret": "client_secret_value",
+                            "secret_version_for_client_secret": "secret_version_for_client_secret_value",
                             "token_endpoint": "token_endpoint_value",
                             "scopes": ["scopes_value1", "scopes_value2"],
                         },
@@ -9462,11 +9468,37 @@ def test_parse_environment_path():
     assert expected == actual
 
 
-def test_service_path():
+def test_secret_version_path():
     project = "cuttlefish"
-    location = "mussel"
-    namespace = "winkle"
-    service = "nautilus"
+    secret = "mussel"
+    version = "winkle"
+    expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
+        project=project,
+        secret=secret,
+        version=version,
+    )
+    actual = EnvironmentsClient.secret_version_path(project, secret, version)
+    assert expected == actual
+
+
+def test_parse_secret_version_path():
+    expected = {
+        "project": "nautilus",
+        "secret": "scallop",
+        "version": "abalone",
+    }
+    path = EnvironmentsClient.secret_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EnvironmentsClient.parse_secret_version_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "squid"
+    location = "clam"
+    namespace = "whelk"
+    service = "octopus"
     expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
         project=project,
         location=location,
@@ -9479,10 +9511,10 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "namespace": "squid",
-        "service": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "namespace": "cuttlefish",
+        "service": "mussel",
     }
     path = EnvironmentsClient.service_path(**expected)
 
@@ -9492,10 +9524,10 @@ def test_parse_service_path():
 
 
 def test_test_case_path():
-    project = "whelk"
-    location = "octopus"
-    agent = "oyster"
-    test_case = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    test_case = "abalone"
     expected = "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}".format(
         project=project,
         location=location,
@@ -9508,10 +9540,10 @@ def test_test_case_path():
 
 def test_parse_test_case_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "agent": "winkle",
-        "test_case": "nautilus",
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "test_case": "octopus",
     }
     path = EnvironmentsClient.test_case_path(**expected)
 
@@ -9521,11 +9553,11 @@ def test_parse_test_case_path():
 
 
 def test_test_case_result_path():
-    project = "scallop"
-    location = "abalone"
-    agent = "squid"
-    test_case = "clam"
-    result = "whelk"
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    test_case = "mussel"
+    result = "winkle"
     expected = "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}/results/{result}".format(
         project=project,
         location=location,
@@ -9541,11 +9573,11 @@ def test_test_case_result_path():
 
 def test_parse_test_case_result_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "agent": "nudibranch",
-        "test_case": "cuttlefish",
-        "result": "mussel",
+        "project": "nautilus",
+        "location": "scallop",
+        "agent": "abalone",
+        "test_case": "squid",
+        "result": "clam",
     }
     path = EnvironmentsClient.test_case_result_path(**expected)
 
@@ -9555,11 +9587,11 @@ def test_parse_test_case_result_path():
 
 
 def test_version_path():
-    project = "winkle"
-    location = "nautilus"
-    agent = "scallop"
-    flow = "abalone"
-    version = "squid"
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    flow = "nudibranch"
+    version = "cuttlefish"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
         project=project,
         location=location,
@@ -9573,11 +9605,11 @@ def test_version_path():
 
 def test_parse_version_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "agent": "octopus",
-        "flow": "oyster",
-        "version": "nudibranch",
+        "project": "mussel",
+        "location": "winkle",
+        "agent": "nautilus",
+        "flow": "scallop",
+        "version": "abalone",
     }
     path = EnvironmentsClient.version_path(**expected)
 
@@ -9587,10 +9619,10 @@ def test_parse_version_path():
 
 
 def test_webhook_path():
-    project = "cuttlefish"
-    location = "mussel"
-    agent = "winkle"
-    webhook = "nautilus"
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    webhook = "octopus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -9603,10 +9635,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "agent": "squid",
-        "webhook": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "webhook": "mussel",
     }
     path = EnvironmentsClient.webhook_path(**expected)
 
@@ -9616,7 +9648,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9626,7 +9658,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = EnvironmentsClient.common_billing_account_path(**expected)
 
@@ -9636,7 +9668,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -9646,7 +9678,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = EnvironmentsClient.common_folder_path(**expected)
 
@@ -9656,7 +9688,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -9666,7 +9698,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = EnvironmentsClient.common_organization_path(**expected)
 
@@ -9676,7 +9708,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -9686,7 +9718,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = EnvironmentsClient.common_project_path(**expected)
 
@@ -9696,8 +9728,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -9708,8 +9740,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = EnvironmentsClient.common_location_path(**expected)
 

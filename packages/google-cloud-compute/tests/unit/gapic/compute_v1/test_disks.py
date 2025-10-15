@@ -8844,6 +8844,7 @@ def test_create_snapshot_rest_call_success(request_type):
         "licenses": ["licenses_value1", "licenses_value2"],
         "location_hint": "location_hint_value",
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",

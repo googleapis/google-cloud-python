@@ -41,6 +41,7 @@ async def sample_query_usage_histories():
     # Initialize request argument(s)
     request = capacityplanner_v1beta.QueryUsageHistoriesRequest(
         parent="parent_value",
+        cloud_resource_type="cloud_resource_type_value",
     )
 
     # Make the request

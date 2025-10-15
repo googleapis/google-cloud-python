@@ -97,8 +97,8 @@ class QueryUsageHistoriesRequest(proto.Message):
             return. Empty tpu_type will return results matching all
             TPUs.
         cloud_resource_type (str):
-            The resource for the ``UsageHistory`` values to return.
-            Possible values include "gce-vcpus", "gce-ram",
+            Required. The resource for the ``UsageHistory`` values to
+            return. Possible values include "gce-vcpus", "gce-ram",
             "gce-local-ssd", "gce-persistent-disk", "gce-gpu" and
             "gce-tpu". Empty cloud_resource_type will return results
             matching all resources.
@@ -225,11 +225,11 @@ class QueryForecastsRequest(proto.Message):
             return. Empty tpu_type will return results matching all
             TPUs.
         cloud_resource_type (str):
-            The resource for the ``Forecast`` values to return. Possible
-            values include "gce-vcpus", "gce-ram", "gce-local-ssd",
-            "gce-persistent-disk", "gce-gpu" and "gce-tpu". Empty
-            cloud_resource_type will return results matching all
-            resources.
+            Required. The resource for the ``Forecast`` values to
+            return. Possible values include "gce-vcpus", "gce-ram",
+            "gce-local-ssd", "gce-persistent-disk", "gce-gpu" and
+            "gce-tpu". Empty cloud_resource_type will return results
+            matching all resources.
         forecast_type (google.cloud.capacityplanner_v1beta.types.Forecast.ForecastType):
             The type of forecast to use to select the ``Forecast``
             values to return. FORECAST_TYPE_UNSPECIFIED will return
@@ -338,12 +338,12 @@ class QueryReservationsRequest(proto.Message):
             https://cloud.google.com/compute/docs/gpus for a list. Empty
             gpu_type will return results matching all GPUs.
         cloud_resource_type (str):
-            Optional. The resource for the reserved
+            Required. The resource for the reserved
             values to return. Possible values include
             "gce-vcpus", "gce-ram", "gce-local-ssd",
             "gce-gpu" and "gce-vm".
         reservation_type (google.cloud.capacityplanner_v1beta.types.QueryReservationsRequest.ReservationType):
-            Optional. The Reservation type for example,
+            Required. The Reservation type for example,
             future reservation request and allocation. If
             unspecified, all types are included.
         share_type (google.cloud.capacityplanner_v1beta.types.QueryReservationsRequest.ShareType):
@@ -357,7 +357,7 @@ class QueryReservationsRequest(proto.Message):
             parent project/folder/organization. If
             unspecified, all types are included.
         reservation_data_level (google.cloud.capacityplanner_v1beta.types.QueryReservationsRequest.ReservationDataLevel):
-            Optional. Reservations output data format.
+            Required. Reservations output data format.
         include_unapproved_reservations (bool):
             Optional. Whether to include pending for
             approval reservations in the response. This

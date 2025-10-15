@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-gke-hub/#history
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.18.0...google-cloud-gke-hub-v1.19.0) (2025-10-14)
+
+
+### Features
+
+* Add support for Python 3.14 ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.17.3...google-cloud-gke-hub-v1.18.0) (2025-09-22)
 
 

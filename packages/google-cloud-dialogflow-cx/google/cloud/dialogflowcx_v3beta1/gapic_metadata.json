@@ -1353,6 +1353,11 @@
                 "delete_playbook_version"
               ]
             },
+            "ExportPlaybook": {
+              "methods": [
+                "export_playbook"
+              ]
+            },
             "GetPlaybook": {
               "methods": [
                 "get_playbook"
@@ -1363,6 +1368,11 @@
                 "get_playbook_version"
               ]
             },
+            "ImportPlaybook": {
+              "methods": [
+                "import_playbook"
+              ]
+            },
             "ListPlaybookVersions": {
               "methods": [
                 "list_playbook_versions"
@@ -1371,6 +1381,11 @@
             "ListPlaybooks": {
               "methods": [
                 "list_playbooks"
+              ]
+            },
+            "RestorePlaybookVersion": {
+              "methods": [
+                "restore_playbook_version"
               ]
             },
             "UpdatePlaybook": {
@@ -1403,6 +1418,11 @@
                 "delete_playbook_version"
               ]
             },
+            "ExportPlaybook": {
+              "methods": [
+                "export_playbook"
+              ]
+            },
             "GetPlaybook": {
               "methods": [
                 "get_playbook"
@@ -1413,6 +1433,11 @@
                 "get_playbook_version"
               ]
             },
+            "ImportPlaybook": {
+              "methods": [
+                "import_playbook"
+              ]
+            },
             "ListPlaybookVersions": {
               "methods": [
                 "list_playbook_versions"
@@ -1421,6 +1446,11 @@
             "ListPlaybooks": {
               "methods": [
                 "list_playbooks"
+              ]
+            },
+            "RestorePlaybookVersion": {
+              "methods": [
+                "restore_playbook_version"
               ]
             },
             "UpdatePlaybook": {
@@ -1453,6 +1483,11 @@
                 "delete_playbook_version"
               ]
             },
+            "ExportPlaybook": {
+              "methods": [
+                "export_playbook"
+              ]
+            },
             "GetPlaybook": {
               "methods": [
                 "get_playbook"
@@ -1463,6 +1498,11 @@
                 "get_playbook_version"
               ]
             },
+            "ImportPlaybook": {
+              "methods": [
+                "import_playbook"
+              ]
+            },
             "ListPlaybookVersions": {
               "methods": [
                 "list_playbook_versions"
@@ -1471,6 +1511,11 @@
             "ListPlaybooks": {
               "methods": [
                 "list_playbooks"
+              ]
+            },
+            "RestorePlaybookVersion": {
+              "methods": [
+                "restore_playbook_version"
               ]
             },
             "UpdatePlaybook": {

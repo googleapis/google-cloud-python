@@ -15,26 +15,6 @@ description: Unable to generate client if it has a proto-plus dependency with a 
 url: https://github.com/googleapis/gapic-generator-python/issues/1796
 replacements:
   - paths: [
-      packages/google-cloud-binary-authorization/google/cloud/binaryauthorization_v1/types/service.py,
-    ]
-    before: |
-      from grafeas.v1 import attestation_pb2  # type: ignore
-    after: |
-      import grafeas.grafeas_v1.types  # type: ignore
-    count: 1
-  - paths: [
-      packages/google-cloud-binary-authorization/google/cloud/binaryauthorization_v1/types/service.py,
-    ]
-    before: attestation_pb2
-    after: grafeas.grafeas_v1.types
-    count: 3
-  - paths: [
-      packages/google-cloud-binary-authorization/google/cloud/binaryauthorization_v1/types/service.py,
-    ]
-    before: grafeas.v1.grafeas.grafeas_v1.types.AttestationOccurrence
-    after: grafeas.grafeas_v1.types.AttestationOccurrence
-    count: 1
-  - paths: [
       packages/google-cloud-policytroubleshooter-iam/google/cloud/policytroubleshooter_iam_v3/types/troubleshooter.py,
     ]
     before: from google.iam.v2 import policy_pb2  # type: ignore

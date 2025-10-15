@@ -36,6 +36,9 @@ class SafetySettings(proto.Message):
             banned phrases.
         banned_phrases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.SafetySettings.Phrase]):
             Banned phrases for generated text.
+        prompt_security_settings (google.cloud.dialogflowcx_v3beta1.types.SafetySettings.PromptSecuritySettings):
+            Optional. Settings for prompt security
+            checks.
     """
 
     class PhraseMatchStrategy(proto.Enum):
@@ -77,6 +80,19 @@ class SafetySettings(proto.Message):
             number=2,
         )
 
+    class PromptSecuritySettings(proto.Message):
+        r"""Settings for prompt security checks.
+
+        Attributes:
+            enable_prompt_security (bool):
+                Optional. Enable prompt security checks.
+        """
+
+        enable_prompt_security: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     default_banned_phrase_match_strategy: PhraseMatchStrategy = proto.Field(
         proto.ENUM,
         number=4,
@@ -86,6 +102,11 @@ class SafetySettings(proto.Message):
         proto.MESSAGE,
         number=1,
         message=Phrase,
+    )
+    prompt_security_settings: PromptSecuritySettings = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=PromptSecuritySettings,
     )
 
 

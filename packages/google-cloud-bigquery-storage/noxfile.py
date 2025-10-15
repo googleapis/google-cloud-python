@@ -35,6 +35,7 @@ ALL_PYTHON = [
     "3.11",
     "3.12",
     "3.13",
+    "3.14",
 ]
 
 DEFAULT_PYTHON_VERSION = ALL_PYTHON[-1]
@@ -62,7 +63,15 @@ UNIT_TEST_EXTRAS: List[str] = [
 ]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = [
+    "3.8",
+    "3.9",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
@@ -235,6 +244,13 @@ def unit(session, protobuf_implementation):
 
     if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
+    # Run tests with 3.14 once this bug is fixed
+    if session.python == "3.14":
+        session.skip(
+            "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
+        )
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -459,7 +475,7 @@ def docfx(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=["3.13", "3.14"])
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -474,6 +490,13 @@ def prerelease_deps(session, protobuf_implementation):
 
     if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
+    # Run tests with 3.14 once this bug is fixed
+    if session.python == "3.14":
+        session.skip(
+            "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
+        )
 
     # Install all dependencies
     session.install("-e", ".")
@@ -558,7 +581,7 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=["3.13", "3.14"])
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
@@ -567,6 +590,13 @@ def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/14686):
+    # Run tests with 3.14 once this bug is fixed
+    if session.python == "3.14":
+        session.skip(
+            "3.14 is not yet supported. See https://github.com/googleapis/google-cloud-python/issues/14686"
+        )
 
     # Install all dependencies
     session.install("-e", ".")

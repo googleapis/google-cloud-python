@@ -3694,6 +3694,7 @@ def test_get_rest_call_success(request_type):
             satisfies_pzs=True,
             self_link="self_link_value",
             state="state_value",
+            subzone="subzone_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3738,6 +3739,7 @@ def test_get_rest_call_success(request_type):
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.state == "state_value"
+    assert response.subzone == "subzone_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4178,6 +4180,7 @@ def test_insert_rest_call_success(request_type):
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "state": "state_value",
+        "subzone": "subzone_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4626,6 +4629,7 @@ def test_patch_rest_call_success(request_type):
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "state": "state_value",
+        "subzone": "subzone_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -316,6 +316,7 @@ class UsageServiceAsyncClient:
                 # Initialize request argument(s)
                 request = capacityplanner_v1beta.QueryUsageHistoriesRequest(
                     parent="parent_value",
+                    cloud_resource_type="cloud_resource_type_value",
                 )
 
                 # Make the request
@@ -400,6 +401,7 @@ class UsageServiceAsyncClient:
                 # Initialize request argument(s)
                 request = capacityplanner_v1beta.QueryForecastsRequest(
                     parent="parent_value",
+                    cloud_resource_type="cloud_resource_type_value",
                 )
 
                 # Make the request
@@ -485,6 +487,9 @@ class UsageServiceAsyncClient:
                 # Initialize request argument(s)
                 request = capacityplanner_v1beta.QueryReservationsRequest(
                     parent="parent_value",
+                    cloud_resource_type="cloud_resource_type_value",
+                    reservation_type="RESERVATION_TYPE_ALL",
+                    reservation_data_level="RESERVATION_DATA_LEVEL_PER_RESERVATION",
                 )
 
                 # Make the request

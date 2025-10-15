@@ -1,7 +1,5 @@
 click
-# Temporarily use a patched version of the generator to avoid getting
-# new features/fixes for GAPIC libraries for the purposes of onboarding to librarian
-gapic-generator @ git+https://github.com/googleapis/gapic-generator-python@librarian-patch-v1.27.0
+gapic-generator>=1.28.0 # Python 3.14 support
 nox
 starlark-pyo3>=2025.1
 build

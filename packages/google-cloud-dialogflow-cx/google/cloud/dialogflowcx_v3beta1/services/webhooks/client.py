@@ -203,6 +203,28 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         return self._transport
 
     @staticmethod
+    def secret_version_path(
+        project: str,
+        secret: str,
+        version: str,
+    ) -> str:
+        """Returns a fully-qualified secret_version string."""
+        return "projects/{project}/secrets/{secret}/versions/{version}".format(
+            project=project,
+            secret=secret,
+            version=version,
+        )
+
+    @staticmethod
+    def parse_secret_version_path(path: str) -> Dict[str, str]:
+        """Parses a secret_version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)/versions/(?P<version>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def service_path(
         project: str,
         location: str,

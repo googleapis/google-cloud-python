@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-products/#history
 
+## [1.1.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v1.0.0...google-shopping-merchant-products-v1.1.0) (2025-10-07)
+
+
+### Features
+
+* [google-shopping-merchant-products] Include CarrierShipping field inside the Products attribute A new feature inside the `ProductAttributes`, `carrier_shipping` field allows for configuring a carrier shipping policy by indicating the carrier service of use for cost, speed or both.  ([4e5a0b50d1919fdc592478184e349d8e3ef0b658](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+
 ## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.7...google-shopping-merchant-products-v1.0.0) (2025-08-29)
 
 

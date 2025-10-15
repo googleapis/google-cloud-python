@@ -119,12 +119,15 @@ class DatabaseVersion(proto.Enum):
             The database version is Postgres 15.
         POSTGRES_16 (4):
             The database version is Postgres 16.
+        POSTGRES_17 (5):
+            The database version is Postgres 17.
     """
     DATABASE_VERSION_UNSPECIFIED = 0
     POSTGRES_13 = 1
     POSTGRES_14 = 2
     POSTGRES_15 = 3
     POSTGRES_16 = 4
+    POSTGRES_17 = 5
 
 
 class SubscriptionType(proto.Enum):
@@ -939,14 +942,9 @@ class Cluster(proto.Message):
             READY (1):
                 The cluster is active and running.
             STOPPED (2):
-                The cluster is stopped. All instances in the
-                cluster are stopped. Customers can start a
-                stopped cluster at any point and all their
-                instances will come back to life with same names
-                and IP resources. In this state, customer pays
-                for storage.
-                Associated backups could also be present in a
-                stopped cluster.
+                This is unused. Even when all instances in
+                the cluster are stopped, the cluster remains in
+                READY state.
             EMPTY (3):
                 The cluster is empty and has no associated
                 resources. All instances, associated storage and
@@ -1427,6 +1425,9 @@ class Instance(proto.Message):
             can/cannot be activated (for example, a read pool instance
             should be stopped before stopping primary etc.). Please
             refer to the API documentation for more details.
+        connection_pool_config (google.cloud.alloydb_v1.types.Instance.ConnectionPoolConfig):
+            Optional. The configuration for Managed
+            Connection Pool (MCP).
     """
 
     class State(proto.Enum):
@@ -1994,6 +1995,35 @@ class Instance(proto.Message):
             number=5,
         )
 
+    class ConnectionPoolConfig(proto.Message):
+        r"""Configuration for Managed Connection Pool (MCP).
+
+        Attributes:
+            enabled (bool):
+                Optional. Whether to enable Managed
+                Connection Pool (MCP).
+            flags (MutableMapping[str, str]):
+                Optional. Connection Pool flags, as a list of
+                "key": "value" pairs.
+            pooler_count (int):
+                Output only. The number of running poolers
+                per instance.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=12,
+        )
+        flags: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=13,
+        )
+        pooler_count: int = proto.Field(
+            proto.INT32,
+            number=14,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -2128,6 +2158,11 @@ class Instance(proto.Message):
         proto.ENUM,
         number=35,
         enum=ActivationPolicy,
+    )
+    connection_pool_config: ConnectionPoolConfig = proto.Field(
+        proto.MESSAGE,
+        number=37,
+        message=ConnectionPoolConfig,
     )
 
 
@@ -2729,19 +2764,31 @@ class User(proto.Message):
 class Database(proto.Message):
     r"""Message describing Database object.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. Name of the resource in the form of
             ``projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}``.
         charset (str):
-            Optional. Charset for the database. This field can contain
-            any PostgreSQL supported charset name. Example values
-            include "UTF8", "SQL_ASCII", etc.
+            Optional. Immutable. Charset for the database. This field
+            can contain any PostgreSQL supported charset name. Example
+            values include "UTF8", "SQL_ASCII", etc.
         collation (str):
-            Optional. Collation for the database.
-            Name of the custom or native collation for
-            postgres. Example values include "C", "POSIX",
-            etc
+            Optional. Immutable. lc_collate for the database. String
+            sort order. Example values include "C", "POSIX", etc.
+        character_type (str):
+            Optional. Immutable. lc_ctype for the database. Character
+            classification (What is a letter? The upper-case
+            equivalent?). Example values include "C", "POSIX", etc.
+        database_template (str):
+            Input only. Immutable. Template of the
+            database to be used for creating a new database.
+        is_template_database (bool):
+            Optional. Whether the database is a template
+            database.
+
+            This field is a member of `oneof`_ ``_is_template_database``.
     """
 
     name: str = proto.Field(
@@ -2755,6 +2802,19 @@ class Database(proto.Message):
     collation: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    character_type: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    database_template: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    is_template_database: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+        optional=True,
     )
 
 
