@@ -168,6 +168,22 @@ def test_astype_json_invalid(
         )
 
 
+def test_clip(scalar_types_df: bpd.DataFrame, snapshot):
+    op_expr = ops.clip_op.as_expr("rowindex", "int64_col", "int64_too")
+
+    array_value = scalar_types_df._block.expr
+    result, col_ids = array_value.compute_values([op_expr])
+
+    # Rename columns for deterministic golden SQL results.
+    assert len(col_ids) == 1
+    result = result.rename_columns({col_ids[0]: "result_col"}).select_columns(
+        ["result_col"]
+    )
+
+    sql = result.session._executor.to_sql(result, enable_cache=False)
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_hash(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "string_col"
     bf_df = scalar_types_df[[col_name]]
@@ -201,4 +217,20 @@ def test_map(scalar_types_df: bpd.DataFrame, snapshot):
         [col_name],
     )
 
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_where(scalar_types_df: bpd.DataFrame, snapshot):
+    op_expr = ops.where_op.as_expr("int64_col", "bool_col", "float64_col")
+
+    array_value = scalar_types_df._block.expr
+    result, col_ids = array_value.compute_values([op_expr])
+
+    # Rename columns for deterministic golden SQL results.
+    assert len(col_ids) == 1
+    result = result.rename_columns({col_ids[0]: "result_col"}).select_columns(
+        ["result_col"]
+    )
+
+    sql = result.session._executor.to_sql(result, enable_cache=False)
     snapshot.assert_match(sql, "out.sql")

@@ -23,6 +23,7 @@ from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
 register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
+register_ternary_op = scalar_compiler.scalar_op_compiler.register_ternary_op
 
 
 @register_unary_op(ops.AsTypeOp, pass_op=True)
@@ -66,6 +67,18 @@ def _(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression:
     return _cast(sg_expr, sg_to_type, op.safe)
 
 
+@register_ternary_op(ops.clip_op)
+def _(
+    original: TypedExpr,
+    lower: TypedExpr,
+    upper: TypedExpr,
+) -> sge.Expression:
+    return sge.Greatest(
+        this=sge.Least(this=original.expr, expressions=[upper.expr]),
+        expressions=[lower.expr],
+    )
+
+
 @register_unary_op(ops.hash_op)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.func("FARM_FINGERPRINT", expr.expr)
@@ -92,6 +105,13 @@ def _(expr: TypedExpr, op: ops.MapOp) -> sge.Expression:
 @register_unary_op(ops.notnull_op)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.Not(this=sge.Is(this=expr.expr, expression=sge.Null()))
+
+
+@register_ternary_op(ops.where_op)
+def _(
+    original: TypedExpr, condition: TypedExpr, replacement: TypedExpr
+) -> sge.Expression:
+    return sge.If(this=condition.expr, true=original.expr, false=replacement.expr)
 
 
 # Helper functions
