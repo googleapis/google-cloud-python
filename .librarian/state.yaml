@@ -188,6 +188,44 @@ libraries:
     remove_regex:
       - packages/google-apps-meet/
     tag_format: '{id}-v{version}'
+  - id: google-apps-script-type
+    version: 0.3.15
+    last_generated_commit: 329ace5e3712a2e37d6159d4dcd998d8c73f261e
+    apis:
+      - path: google/apps/script/type
+        service_config: ''
+      - path: google/apps/script/type/gmail
+        service_config: ''
+      - path: google/apps/script/type/docs
+        service_config: ''
+      - path: google/apps/script/type/drive
+        service_config: ''
+      - path: google/apps/script/type/sheets
+        service_config: ''
+      - path: google/apps/script/type/calendar
+        service_config: ''
+      - path: google/apps/script/type/slides
+        service_config: ''
+    source_roots:
+      - packages/google-apps-script-type
+    preserve_regex:
+      - packages/google-apps-script-type/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/gapic/calendar/test_calendar.py
+      - tests/unit/gapic/docs/test_docs.py
+      - tests/unit/gapic/drive/test_drive.py
+      - tests/unit/gapic/gmail/test_gmail.py
+      - tests/unit/gapic/sheets/test_sheets.py
+      - tests/unit/gapic/slides/test_slides.py
+      - tests/unit/gapic/type/test_type.py
+    remove_regex:
+      - packages/google-apps-script-type
+    tag_format: '{id}-v{version}'
   - id: google-area120-tables
     version: 0.11.17
     last_generated_commit: db61975fe3b3edabed32fda8056d08e79a93a59e
