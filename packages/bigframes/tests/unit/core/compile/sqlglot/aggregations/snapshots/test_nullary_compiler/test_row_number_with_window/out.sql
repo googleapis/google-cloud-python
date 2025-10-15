@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    ROW_NUMBER() OVER (ORDER BY `bfcol_0` IS NULL ASC NULLS LAST, `bfcol_0` ASC NULLS LAST) AS `bfcol_1`
+    ROW_NUMBER() OVER (ORDER BY `bfcol_0` ASC NULLS LAST) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

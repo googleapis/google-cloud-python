@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    DENSE_RANK() OVER (ORDER BY `bfcol_0` DESC) AS `bfcol_1`
+    COUNT(`bfcol_0`) OVER () AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

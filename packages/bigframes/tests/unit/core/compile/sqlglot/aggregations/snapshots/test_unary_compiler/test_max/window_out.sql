@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    DENSE_RANK() OVER (ORDER BY `bfcol_0` DESC) AS `bfcol_1`
+    CASE WHEN `bfcol_0` IS NULL THEN NULL ELSE MAX(`bfcol_0`) OVER () END AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

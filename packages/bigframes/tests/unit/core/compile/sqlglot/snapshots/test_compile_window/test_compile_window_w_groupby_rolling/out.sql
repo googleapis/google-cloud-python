@@ -24,14 +24,14 @@ WITH `bfcte_0` AS (
     CASE
       WHEN SUM(CAST(NOT `bfcol_7` IS NULL AS INT64)) OVER (
         PARTITION BY `bfcol_9`
-        ORDER BY `bfcol_9` IS NULL ASC NULLS LAST, `bfcol_9` ASC NULLS LAST, `bfcol_2` IS NULL ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
+        ORDER BY `bfcol_9` ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
         ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
       ) < 3
       THEN NULL
       ELSE COALESCE(
         SUM(CAST(`bfcol_7` AS INT64)) OVER (
           PARTITION BY `bfcol_9`
-          ORDER BY `bfcol_9` IS NULL ASC NULLS LAST, `bfcol_9` ASC NULLS LAST, `bfcol_2` IS NULL ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
+          ORDER BY `bfcol_9` ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
           ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
         ),
         0
@@ -50,14 +50,14 @@ WITH `bfcte_0` AS (
     CASE
       WHEN SUM(CAST(NOT `bfcol_8` IS NULL AS INT64)) OVER (
         PARTITION BY `bfcol_9`
-        ORDER BY `bfcol_9` IS NULL ASC NULLS LAST, `bfcol_9` ASC NULLS LAST, `bfcol_2` IS NULL ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
+        ORDER BY `bfcol_9` ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
         ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
       ) < 3
       THEN NULL
       ELSE COALESCE(
         SUM(`bfcol_8`) OVER (
           PARTITION BY `bfcol_9`
-          ORDER BY `bfcol_9` IS NULL ASC NULLS LAST, `bfcol_9` ASC NULLS LAST, `bfcol_2` IS NULL ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
+          ORDER BY `bfcol_9` ASC NULLS LAST, `bfcol_2` ASC NULLS LAST
           ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
         ),
         0

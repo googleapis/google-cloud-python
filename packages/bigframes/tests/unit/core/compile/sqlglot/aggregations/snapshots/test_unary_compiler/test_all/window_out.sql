@@ -1,6 +1,6 @@
 WITH `bfcte_0` AS (
   SELECT
-    `int64_col` AS `bfcol_0`
+    `bool_col` AS `bfcol_0`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_1` AS (
   SELECT
@@ -8,10 +8,10 @@ WITH `bfcte_0` AS (
     CASE
       WHEN `bfcol_0` IS NULL
       THEN NULL
-      ELSE LAST_VALUE(`bfcol_0`) OVER (ORDER BY `bfcol_0` DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+      ELSE COALESCE(LOGICAL_AND(`bfcol_0`) OVER (), TRUE)
     END AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT
-  `bfcol_1` AS `agg_int64`
+  `bfcol_1` AS `agg_bool`
 FROM `bfcte_1`

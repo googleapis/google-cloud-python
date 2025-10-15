@@ -40,14 +40,9 @@ def apply_window_if_present(
         # Unbound grouping window.
         order_by = None
     elif window.is_range_bounded:
-        # Note that, when the window is range-bounded, we only need one ordering key.
-        # There are two reasons:
-        # 1. Manipulating null positions requires more than one ordering key, which
-        #  is forbidden by SQL window syntax for range rolling.
-        # 2. Pandas does not allow range rolling on timeseries with nulls.
-        order_by = get_window_order_by((window.ordering[0],), override_null_order=False)
+        order_by = get_window_order_by((window.ordering[0],))
     else:
-        order_by = get_window_order_by(window.ordering, override_null_order=True)
+        order_by = get_window_order_by(window.ordering)
 
     order = sge.Order(expressions=order_by) if order_by else None
 
@@ -102,7 +97,15 @@ def get_window_order_by(
     ordering: typing.Tuple[ordering_spec.OrderingExpression, ...],
     override_null_order: bool = False,
 ) -> typing.Optional[tuple[sge.Ordered, ...]]:
-    """Returns the SQL order by clause for a window specification."""
+    """Returns the SQL order by clause for a window specification.
+    Args:
+        ordering (Tuple[ordering_spec.OrderingExpression, ...]):
+            A tuple of ordering specification objects.
+        override_null_order (bool):
+            If True, overrides BigQuery's default null ordering behavior, which
+            is sometimes incompatible with ordered aggregations. The generated SQL
+            will include extra expressions to correctly enforce NULL FIRST/LAST.
+    """
     if not ordering:
         return None
 
@@ -115,8 +118,6 @@ def get_window_order_by(
         nulls_first = not ordering_spec_item.na_last
 
         if override_null_order:
-            # Bigquery SQL considers NULLS to be "smallest" values, but we need
-            # to override in these cases.
             is_null_expr = sge.Is(this=expr, expression=sge.Null())
             if nulls_first and desc:
                 order_by.append(

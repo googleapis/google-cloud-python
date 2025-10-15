@@ -6,7 +6,7 @@ WITH `bfcte_3` AS (
 ), `bfcte_7` AS (
   SELECT
     *,
-    ROW_NUMBER() OVER (ORDER BY `bfcol_0` IS NULL ASC NULLS LAST, `bfcol_0` ASC NULLS LAST) AS `bfcol_4`
+    ROW_NUMBER() OVER (ORDER BY `bfcol_0` ASC NULLS LAST) AS `bfcol_4`
   FROM `bfcte_3`
 ), `bfcte_11` AS (
   SELECT
@@ -57,7 +57,7 @@ WITH `bfcte_3` AS (
 ), `bfcte_5` AS (
   SELECT
     *,
-    ROW_NUMBER() OVER (ORDER BY `bfcol_21` IS NULL ASC NULLS LAST, `bfcol_21` ASC NULLS LAST) AS `bfcol_25`
+    ROW_NUMBER() OVER (ORDER BY `bfcol_21` ASC NULLS LAST) AS `bfcol_25`
   FROM `bfcte_1`
 ), `bfcte_9` AS (
   SELECT

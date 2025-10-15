@@ -133,7 +133,7 @@ class WindowsTest(unittest.TestCase):
         )
         self.assertEqual(
             result.sql(dialect="bigquery"),
-            "value OVER (PARTITION BY `col1` ORDER BY `col2` IS NULL ASC NULLS LAST, `col2` ASC NULLS LAST ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)",
+            "value OVER (PARTITION BY `col1` ORDER BY `col2` ASC NULLS LAST ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)",
         )
 
 

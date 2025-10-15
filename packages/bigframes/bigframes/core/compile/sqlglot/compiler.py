@@ -299,6 +299,8 @@ class SQLGlotCompiler:
     def compile_aggregate(
         self, node: nodes.AggregateNode, child: ir.SQLGlotIR
     ) -> ir.SQLGlotIR:
+        # The BigQuery ordered aggregation cannot support for NULL FIRST/LAST,
+        # so we need to add extra expressions to enforce the null ordering.
         ordering_cols = windows.get_window_order_by(
             node.order_by, override_null_order=True
         )

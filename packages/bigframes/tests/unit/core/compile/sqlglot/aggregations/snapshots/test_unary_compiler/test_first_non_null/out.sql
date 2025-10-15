@@ -6,7 +6,7 @@ WITH `bfcte_0` AS (
   SELECT
     *,
     FIRST_VALUE(`bfcol_0` IGNORE NULLS) OVER (
-      ORDER BY `bfcol_0` IS NULL ASC NULLS LAST, `bfcol_0` ASC NULLS LAST
+      ORDER BY `bfcol_0` ASC NULLS LAST
       ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
     ) AS `bfcol_1`
   FROM `bfcte_0`

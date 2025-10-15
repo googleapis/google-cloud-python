@@ -72,6 +72,21 @@ def test_all(scalar_types_df: bpd.DataFrame, snapshot):
 
     snapshot.assert_match(sql, "out.sql")
 
+    # Window tests
+    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df, agg_expr, window, "agg_bool")
+    snapshot.assert_match(sql_window, "window_out.sql")
+
+    bf_df_str = scalar_types_df[[col_name, "string_col"]]
+    window_partition = window_spec.WindowSpec(
+        grouping_keys=(expression.deref("string_col"),),
+        ordering=(ordering.descending_over(col_name),),
+    )
+    sql_window_partition = _apply_unary_window_op(
+        bf_df_str, agg_expr, window_partition, "agg_bool"
+    )
+    snapshot.assert_match(sql_window_partition, "window_partition_out.sql")
+
 
 def test_approx_quartiles(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
@@ -105,6 +120,21 @@ def test_any_value(scalar_types_df: bpd.DataFrame, snapshot):
 
     snapshot.assert_match(sql, "out.sql")
 
+    # Window tests
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
+    snapshot.assert_match(sql_window, "window_out.sql")
+
+    bf_df_str = scalar_types_df[[col_name, "string_col"]]
+    window_partition = window_spec.WindowSpec(
+        grouping_keys=(expression.deref("string_col"),),
+        ordering=(ordering.ascending_over(col_name),),
+    )
+    sql_window_partition = _apply_unary_window_op(
+        bf_df_str, agg_expr, window_partition, "agg_int64"
+    )
+    snapshot.assert_match(sql_window_partition, "window_partition_out.sql")
+
 
 def test_count(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
@@ -114,6 +144,21 @@ def test_count(scalar_types_df: bpd.DataFrame, snapshot):
 
     snapshot.assert_match(sql, "out.sql")
 
+    # Window tests
+    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
+    snapshot.assert_match(sql_window, "window_out.sql")
+
+    bf_df_str = scalar_types_df[[col_name, "string_col"]]
+    window_partition = window_spec.WindowSpec(
+        grouping_keys=(expression.deref("string_col"),),
+        ordering=(ordering.descending_over(col_name),),
+    )
+    sql_window_partition = _apply_unary_window_op(
+        bf_df_str, agg_expr, window_partition, "agg_int64"
+    )
+    snapshot.assert_match(sql_window_partition, "window_partition_out.sql")
+
 
 def test_dense_rank(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
@@ -121,7 +166,7 @@ def test_dense_rank(scalar_types_df: bpd.DataFrame, snapshot):
     agg_expr = agg_exprs.UnaryAggregation(
         agg_ops.DenseRankOp(), expression.deref(col_name)
     )
-    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(col_name),))
     sql = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
 
     snapshot.assert_match(sql, "out.sql")
@@ -152,7 +197,7 @@ def test_diff(scalar_types_df: bpd.DataFrame, snapshot):
     # Test boolean
     bool_col = "bool_col"
     bf_df_bool = scalar_types_df[[bool_col]]
-    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(bool_col),))
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(bool_col),))
     bool_op = agg_exprs.UnaryAggregation(
         agg_ops.DiffOp(periods=1), expression.deref(bool_col)
     )
@@ -168,7 +213,7 @@ def test_first(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]
     agg_expr = agg_exprs.UnaryAggregation(agg_ops.FirstOp(), expression.deref(col_name))
-    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(col_name),))
     sql = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
 
     snapshot.assert_match(sql, "out.sql")
@@ -198,7 +243,7 @@ def test_last(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]
     agg_expr = agg_exprs.UnaryAggregation(agg_ops.LastOp(), expression.deref(col_name))
-    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(col_name),))
     sql = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
 
     snapshot.assert_match(sql, "out.sql")
@@ -228,6 +273,21 @@ def test_max(scalar_types_df: bpd.DataFrame, snapshot):
 
     snapshot.assert_match(sql, "out.sql")
 
+    # Window tests
+    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
+    snapshot.assert_match(sql_window, "window_out.sql")
+
+    bf_df_str = scalar_types_df[[col_name, "string_col"]]
+    window_partition = window_spec.WindowSpec(
+        grouping_keys=(expression.deref("string_col"),),
+        ordering=(ordering.descending_over(col_name),),
+    )
+    sql_window_partition = _apply_unary_window_op(
+        bf_df_str, agg_expr, window_partition, "agg_int64"
+    )
+    snapshot.assert_match(sql_window_partition, "window_partition_out.sql")
+
 
 def test_mean(scalar_types_df: bpd.DataFrame, snapshot):
     col_names = ["int64_col", "bool_col", "duration_col"]
@@ -255,6 +315,24 @@ def test_mean(scalar_types_df: bpd.DataFrame, snapshot):
 
     snapshot.assert_match(sql, "out.sql")
 
+    # Window tests
+    col_name = "int64_col"
+    bf_df_int = scalar_types_df[[col_name]]
+    agg_expr = agg_ops.MeanOp().as_expr(col_name)
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df_int, agg_expr, window, "agg_int64")
+    snapshot.assert_match(sql_window, "window_out.sql")
+
+    bf_df_str = scalar_types_df[[col_name, "string_col"]]
+    window_partition = window_spec.WindowSpec(
+        grouping_keys=(expression.deref("string_col"),),
+        ordering=(ordering.ascending_over(col_name),),
+    )
+    sql_window_partition = _apply_unary_window_op(
+        bf_df_str, agg_expr, window_partition, "agg_int64"
+    )
+    snapshot.assert_match(sql_window_partition, "window_partition_out.sql")
+
 
 def test_median(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df
@@ -275,6 +353,21 @@ def test_min(scalar_types_df: bpd.DataFrame, snapshot):
     sql = _apply_unary_agg_ops(bf_df, [agg_expr], [col_name])
 
     snapshot.assert_match(sql, "out.sql")
+
+    # Window tests
+    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
+    snapshot.assert_match(sql_window, "window_out.sql")
+
+    bf_df_str = scalar_types_df[[col_name, "string_col"]]
+    window_partition = window_spec.WindowSpec(
+        grouping_keys=(expression.deref("string_col"),),
+        ordering=(ordering.descending_over(col_name),),
+    )
+    sql_window_partition = _apply_unary_window_op(
+        bf_df_str, agg_expr, window_partition, "agg_int64"
+    )
+    snapshot.assert_match(sql_window_partition, "window_partition_out.sql")
 
 
 def test_quantile(scalar_types_df: bpd.DataFrame, snapshot):
@@ -298,7 +391,9 @@ def test_rank(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[[col_name]]
     agg_expr = agg_exprs.UnaryAggregation(agg_ops.RankOp(), expression.deref(col_name))
 
-    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    window = window_spec.WindowSpec(
+        ordering=(ordering.descending_over(col_name, nulls_last=False),)
+    )
     sql = _apply_unary_window_op(bf_df, agg_expr, window, "agg_int64")
 
     snapshot.assert_match(sql, "out.sql")
@@ -307,7 +402,9 @@ def test_rank(scalar_types_df: bpd.DataFrame, snapshot):
 def test_shift(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]
-    window = window_spec.WindowSpec(ordering=(ordering.ascending_over(col_name),))
+    window = window_spec.WindowSpec(
+        ordering=(ordering.ascending_over(col_name, nulls_last=False),)
+    )
 
     # Test lag
     lag_op = agg_exprs.UnaryAggregation(
@@ -342,6 +439,24 @@ def test_sum(scalar_types_df: bpd.DataFrame, snapshot):
     )
 
     snapshot.assert_match(sql, "out.sql")
+
+    # Window tests
+    col_name = "int64_col"
+    bf_df_int = scalar_types_df[[col_name]]
+    agg_expr = agg_ops.SumOp().as_expr(col_name)
+    window = window_spec.WindowSpec(ordering=(ordering.descending_over(col_name),))
+    sql_window = _apply_unary_window_op(bf_df_int, agg_expr, window, "agg_int64")
+    snapshot.assert_match(sql_window, "window_out.sql")
+
+    bf_df_str = scalar_types_df[[col_name, "string_col"]]
+    window_partition = window_spec.WindowSpec(
+        grouping_keys=(expression.deref("string_col"),),
+        ordering=(ordering.ascending_over(col_name),),
+    )
+    sql_window_partition = _apply_unary_window_op(
+        bf_df_str, agg_expr, window_partition, "agg_int64"
+    )
+    snapshot.assert_match(sql_window_partition, "window_partition_out.sql")
 
 
 def test_time_series_diff(scalar_types_df: bpd.DataFrame, snapshot):
