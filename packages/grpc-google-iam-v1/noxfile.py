@@ -40,6 +40,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.11",
     "3.12",
     "3.13",
+    "3.14",
 ]
 
 DEFAULT_PYTHON_VERSION = UNIT_TEST_PYTHON_VERSIONS[-1]
