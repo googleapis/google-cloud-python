@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-reservation/#history
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.19.0...google-cloud-bigquery-reservation-v1.20.0) (2025-10-07)
+
+
+### Features
+
+* [google-cloud-bigquery-reservation] Add new `BACKGROUND_CHANGE_DATA_CAPTURE`, `BACKGROUND_COLUMN_METADATA_INDEX`, and `BACKGROUND_SEARCH_INDEX_REFRESH` reservation assignment types  ([4e5a0b50d1919fdc592478184e349d8e3ef0b658](https://github.com/googleapis/google-cloud-python/commit/4e5a0b50d1919fdc592478184e349d8e3ef0b658))
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.18.0...google-cloud-bigquery-reservation-v1.19.0) (2025-09-04)
 
 

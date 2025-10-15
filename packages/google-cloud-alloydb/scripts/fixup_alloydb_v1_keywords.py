@@ -50,7 +50,7 @@ class alloydbCallTransformer(cst.CSTTransformer):
         'delete_cluster': ('name', 'request_id', 'etag', 'validate_only', 'force', ),
         'delete_instance': ('name', 'request_id', 'etag', 'validate_only', ),
         'delete_user': ('name', 'request_id', 'validate_only', ),
-        'execute_sql': ('instance', 'database', 'sql_statement', 'password', 'user', ),
+        'execute_sql': ('instance', 'database', 'sql_statement', 'password', 'user', 'validate_only', ),
         'export_cluster': ('gcs_destination', 'name', 'database', 'csv_export_options', 'sql_export_options', ),
         'failover_instance': ('name', 'request_id', 'validate_only', ),
         'generate_client_certificate': ('parent', 'request_id', 'cert_duration', 'public_key', 'use_metadata_exchange', ),

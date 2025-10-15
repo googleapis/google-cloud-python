@@ -67,6 +67,7 @@ Services for Google Cloud Compute v1beta API
     region_disk_types
     region_health_checks
     region_health_check_services
+    region_health_sources
     region_instance_group_manager_resize_requests
     region_instance_group_managers
     region_instance_groups
@@ -76,6 +77,7 @@ Services for Google Cloud Compute v1beta API
     region_multi_migs
     region_network_endpoint_groups
     region_network_firewall_policies
+    region_network_policies
     region_notification_endpoints
     region_operations
     regions

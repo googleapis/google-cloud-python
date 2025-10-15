@@ -5805,6 +5805,7 @@ def test_get_rest_call_success(request_type):
             name="name_value",
             region="region_value",
             self_link="self_link_value",
+            short_name="short_name_value",
             type_="type__value",
         )
 
@@ -5831,6 +5832,7 @@ def test_get_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
+    assert response.short_name == "short_name_value"
     assert response.type_ == "type__value"
 
 
@@ -6103,6 +6105,23 @@ def test_insert_rest_call_success(request_type):
                 "user_ip_request_headers_value2",
             ],
         },
+        "associations": [
+            {
+                "attachment_id": "attachment_id_value",
+                "display_name": "display_name_value",
+                "excluded_folders": [
+                    "excluded_folders_value1",
+                    "excluded_folders_value2",
+                ],
+                "excluded_projects": [
+                    "excluded_projects_value1",
+                    "excluded_projects_value2",
+                ],
+                "name": "name_value",
+                "security_policy_id": "security_policy_id_value",
+                "short_name": "short_name_value",
+            }
+        ],
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
@@ -6217,6 +6236,7 @@ def test_insert_rest_call_success(request_type):
             }
         ],
         "self_link": "self_link_value",
+        "short_name": "short_name_value",
         "type_": "type__value",
         "user_defined_fields": [
             {
@@ -6774,6 +6794,23 @@ def test_patch_rest_call_success(request_type):
                 "user_ip_request_headers_value2",
             ],
         },
+        "associations": [
+            {
+                "attachment_id": "attachment_id_value",
+                "display_name": "display_name_value",
+                "excluded_folders": [
+                    "excluded_folders_value1",
+                    "excluded_folders_value2",
+                ],
+                "excluded_projects": [
+                    "excluded_projects_value1",
+                    "excluded_projects_value2",
+                ],
+                "name": "name_value",
+                "security_policy_id": "security_policy_id_value",
+                "short_name": "short_name_value",
+            }
+        ],
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
@@ -6888,6 +6925,7 @@ def test_patch_rest_call_success(request_type):
             }
         ],
         "self_link": "self_link_value",
+        "short_name": "short_name_value",
         "type_": "type__value",
         "user_defined_fields": [
             {

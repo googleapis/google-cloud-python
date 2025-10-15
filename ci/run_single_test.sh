@@ -61,7 +61,7 @@ case ${TEST_TYPE} in
         rm -rf docs/_build
         ;;
     prerelease)
-        nox -s prerelease_deps
+        nox -s prerelease_deps-3.14
         retval=$?
         ;;
     unit)
@@ -92,6 +92,10 @@ case ${TEST_TYPE} in
             ;;
         "3.13")
             nox -s unit-3.13
+            retval=$?
+            ;;
+        "3.14")
+            nox -s unit-3.14
             retval=$?
             ;;
         *)

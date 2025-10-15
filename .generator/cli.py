@@ -1058,7 +1058,10 @@ def _process_version_file(content, version, version_path) -> str:
 
     Returns: A string with the modified content.
     """
-    pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+    if version_path.name.endswith("gapic_version.py"):
+        pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
+    else:
+        pattern = r"(version\s*=\s*[\"'])([^\"']+)([\"'].*)"
     replacement_string = f"\\g<1>{version}\\g<3>"
     new_content, num_replacements = re.subn(pattern, replacement_string, content)
     if num_replacements == 0:
@@ -1071,8 +1074,9 @@ def _process_version_file(content, version, version_path) -> str:
 def _update_version_for_library(
     repo: str, output: str, path_to_library: str, version: str
 ):
-    """Updates the version string in `**/gapic_version.py` and `samples/**/snippet_metadata.json`
-        for a given library.
+    """Updates the version string in `**/gapic_version.py`, `setup.py`,
+        `pyproject.toml` and `samples/**/snippet_metadata.json` for a
+        given library, if applicable.
 
     Args:
         repo(str): This directory will contain all directories that make up a
@@ -1088,8 +1092,15 @@ def _update_version_for_library(
     """
 
     # Find and update gapic_version.py files
-    gapic_version_files = Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py")
-    for version_file in gapic_version_files:
+    version_files = list(Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py"))
+    if len(version_files) == 0:
+        # Fallback to `pyproject.toml`` or `setup.py``. Proto-only libraries have
+        # version information in `setup.py` or `pyproject.toml` instead of `gapic_version.py`.
+        pyproject_toml = Path(f"{repo}/{path_to_library}/pyproject.toml")
+        setup_py = Path(f"{repo}/{path_to_library}/setup.py")
+        version_files = [pyproject_toml if pyproject_toml.exists() else setup_py]
+
+    for version_file in version_files:
         updated_content = _process_version_file(
             _read_text_file(version_file), version, version_file
         )

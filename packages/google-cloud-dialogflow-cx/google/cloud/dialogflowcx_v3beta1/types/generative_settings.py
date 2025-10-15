@@ -198,7 +198,99 @@ class LlmModelSettings(proto.Message):
             The selected LLM model.
         prompt_text (str):
             The custom prompt to use.
+        parameters (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings.Parameters):
+            Generative model parameters.
     """
+
+    class Parameters(proto.Message):
+        r"""Generative model parameters to control the model behavior.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            temperature (float):
+                The temperature used for sampling during response
+                generation. Value ranges from 0 to 1. Temperature controls
+                the degree of randomness in token selection. Lower
+                temperature means less randomness, while higher temperature
+                means more randomness. Valid range: [0.0, 1.0]
+
+                This field is a member of `oneof`_ ``_temperature``.
+            input_token_limit (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings.Parameters.InputTokenLimit):
+                The input token limit.
+                This setting is currently only supported by
+                playbooks.
+
+                This field is a member of `oneof`_ ``_input_token_limit``.
+            output_token_limit (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings.Parameters.OutputTokenLimit):
+                The output token limit. This setting is currently only
+                supported by playbooks. Only one of output_token_limit and
+                max_output_tokens is allowed to be set.
+
+                This field is a member of `oneof`_ ``_output_token_limit``.
+        """
+
+        class InputTokenLimit(proto.Enum):
+            r"""The input token limits for 1 LLM call. For the limit of each
+            model, see
+            https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models
+            for more information.
+
+            Values:
+                INPUT_TOKEN_LIMIT_UNSPECIFIED (0):
+                    Limit not specified. Treated as 'INPUT_TOKEN_LIMIT_SHORT'.
+                INPUT_TOKEN_LIMIT_SHORT (1):
+                    Input token limit up to 8k.
+                INPUT_TOKEN_LIMIT_MEDIUM (2):
+                    Input token limit up to 32k.
+                INPUT_TOKEN_LIMIT_LONG (3):
+                    Input token limit up to 100k.
+            """
+            INPUT_TOKEN_LIMIT_UNSPECIFIED = 0
+            INPUT_TOKEN_LIMIT_SHORT = 1
+            INPUT_TOKEN_LIMIT_MEDIUM = 2
+            INPUT_TOKEN_LIMIT_LONG = 3
+
+        class OutputTokenLimit(proto.Enum):
+            r"""The output token limits for 1 LLM call. The limits are
+            subject to change. For the limit of each model, see
+            https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models
+            for more information.
+
+            Values:
+                OUTPUT_TOKEN_LIMIT_UNSPECIFIED (0):
+                    Limit not specified.
+                OUTPUT_TOKEN_LIMIT_SHORT (1):
+                    Input token limit up to 512 tokens.
+                OUTPUT_TOKEN_LIMIT_MEDIUM (2):
+                    Input token limit up to 1k.
+                OUTPUT_TOKEN_LIMIT_LONG (3):
+                    Input token limit up to 2k.
+            """
+            OUTPUT_TOKEN_LIMIT_UNSPECIFIED = 0
+            OUTPUT_TOKEN_LIMIT_SHORT = 1
+            OUTPUT_TOKEN_LIMIT_MEDIUM = 2
+            OUTPUT_TOKEN_LIMIT_LONG = 3
+
+        temperature: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+            optional=True,
+        )
+        input_token_limit: "LlmModelSettings.Parameters.InputTokenLimit" = proto.Field(
+            proto.ENUM,
+            number=2,
+            optional=True,
+            enum="LlmModelSettings.Parameters.InputTokenLimit",
+        )
+        output_token_limit: "LlmModelSettings.Parameters.OutputTokenLimit" = (
+            proto.Field(
+                proto.ENUM,
+                number=3,
+                optional=True,
+                enum="LlmModelSettings.Parameters.OutputTokenLimit",
+            )
+        )
 
     model: str = proto.Field(
         proto.STRING,
@@ -207,6 +299,11 @@ class LlmModelSettings(proto.Message):
     prompt_text: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    parameters: Parameters = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=Parameters,
     )
 
 

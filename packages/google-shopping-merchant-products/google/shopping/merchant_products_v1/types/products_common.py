@@ -40,6 +40,7 @@ __protobuf__ = proto.module(
         "CertificationAuthority",
         "CertificationName",
         "DigitalSourceType",
+        "CarrierTransitTimeOption",
         "ProductAttributes",
         "ShippingWeight",
         "ShippingDimension",
@@ -483,6 +484,135 @@ class DigitalSourceType(proto.Enum):
     DEFAULT = 2
 
 
+class CarrierTransitTimeOption(proto.Enum):
+    r"""Possible carrier where transit time is coming from.
+
+    Values:
+        CARRIER_TRANSIT_TIME_OPTION_UNSPECIFIED (0):
+            Carrier transit time option is unspecified.
+        DHL_PAKET (1):
+            DHL Paket shipping service.
+        DHL_PACKCHEN (2):
+            DHL Packchen shipping service.
+        DHL_EXPRESSEASY (3):
+            DHL Express Easy shipping service.
+        DPD_EXPRESS (4):
+            DPD Express shipping service.
+        DPD_CLASSIC_PARCEL (5):
+            DPD Classic Parcel shipping service.
+        HERMES_HAUSTUR (6):
+            Hermes Haustur shipping service.
+        HERMES_PAKETSHOP (7):
+            Hermes Paketshop shipping service.
+        GLS_BUSINESS (8):
+            GLS Business shipping service.
+        GLS_EXPRESS (9):
+            GLS Express shipping service.
+        GLS_PRIVATE (10):
+            GLS Private shipping service.
+        COLISSIMO_DOMICILE (11):
+            Colissimo Domicile shipping service.
+        DHL_EXPRESS_12AM (12):
+            DHL Express 12 AM shipping service.
+        DHL_EXPRESS_9AM (13):
+            DHL Express 9 AM shipping service.
+        GEODIS_EXPRESS (14):
+            GEODIS Express shipping service.
+        GEODIS_PACK_30 (15):
+            GEODIS Pack 30 shipping service.
+        GEODIS_SAME_DAY (16):
+            GEODIS Same Day shipping service.
+        GEODIS_TOP_24 (17):
+            GEODIS Top 24 shipping service.
+        TNT_ESSENTIEL_24H (18):
+            TNT Essentiel 24H shipping service.
+        TNT_ESSENTIEL_FLEXIBILITE (19):
+            TNT Essentiel Flexibilite shipping service.
+        FEDEX_GROUND (20):
+            FedEx Ground shipping service.
+        FEDEX_HOME_DELIVERY (21):
+            FedEx Home Delivery shipping service.
+        FEDEX_EXPRESS_SAVER (22):
+            FedEx Express Saver shipping service.
+        FEDEX_FIRST_OVERNIGHT (23):
+            FedEx First Overnight shipping service.
+        FEDEX_PRIORITY_OVERNIGHT (24):
+            FedEx Priority Overnight shipping service.
+        FEDEX_STANDARD_OVERNIGHT (25):
+            FedEx Standard Overnight shipping service.
+        FEDEX_2DAY (26):
+            FedEx 2Day shipping service.
+        UPS_2ND_DAY_AIR (27):
+            UPS 2nd Day Air shipping service.
+        UPS_2ND_DAY_AM (28):
+            UPS 2nd Day AM shipping service.
+        UPS_3_DAY_SELECT (29):
+            UPS 3 Day Select shipping service.
+        UPS_GROUND (30):
+            UPS Ground shipping service.
+        UPS_NEXT_DAY_AIR (31):
+            UPS Next Day Air shipping service.
+        UPS_NEXT_DAY_AIR_EARLY_AM (32):
+            UPS Next Day Air Early AM shipping service.
+        UPS_NEXT_DAY_AIR_SAVER (33):
+            UPS Next Day Air Saver shipping service.
+        USPS_PRIORITY_MAIL_EXPRESS (34):
+            USPS Priority Mail Express shipping service.
+        USPS_MEDIA_MAIL (35):
+            USPS Media Mail shipping service.
+        USPS_GROUND_ADVANTAGE_RETAIL (36):
+            USPS Ground Advantage Retail shipping
+            service.
+        USPS_PRIORITY_MAIL (37):
+            USPS Priority Mail shipping service.
+        USPS_GROUND_ADVANTAGE_COMMERCIAL (38):
+            USPS Ground Advantage Commercial shipping
+            service.
+        USPS_FIRST_CLASS_MAIL (39):
+            USPS First Class Mail shipping service.
+    """
+    CARRIER_TRANSIT_TIME_OPTION_UNSPECIFIED = 0
+    DHL_PAKET = 1
+    DHL_PACKCHEN = 2
+    DHL_EXPRESSEASY = 3
+    DPD_EXPRESS = 4
+    DPD_CLASSIC_PARCEL = 5
+    HERMES_HAUSTUR = 6
+    HERMES_PAKETSHOP = 7
+    GLS_BUSINESS = 8
+    GLS_EXPRESS = 9
+    GLS_PRIVATE = 10
+    COLISSIMO_DOMICILE = 11
+    DHL_EXPRESS_12AM = 12
+    DHL_EXPRESS_9AM = 13
+    GEODIS_EXPRESS = 14
+    GEODIS_PACK_30 = 15
+    GEODIS_SAME_DAY = 16
+    GEODIS_TOP_24 = 17
+    TNT_ESSENTIEL_24H = 18
+    TNT_ESSENTIEL_FLEXIBILITE = 19
+    FEDEX_GROUND = 20
+    FEDEX_HOME_DELIVERY = 21
+    FEDEX_EXPRESS_SAVER = 22
+    FEDEX_FIRST_OVERNIGHT = 23
+    FEDEX_PRIORITY_OVERNIGHT = 24
+    FEDEX_STANDARD_OVERNIGHT = 25
+    FEDEX_2DAY = 26
+    UPS_2ND_DAY_AIR = 27
+    UPS_2ND_DAY_AM = 28
+    UPS_3_DAY_SELECT = 29
+    UPS_GROUND = 30
+    UPS_NEXT_DAY_AIR = 31
+    UPS_NEXT_DAY_AIR_EARLY_AM = 32
+    UPS_NEXT_DAY_AIR_SAVER = 33
+    USPS_PRIORITY_MAIL_EXPRESS = 34
+    USPS_MEDIA_MAIL = 35
+    USPS_GROUND_ADVANTAGE_RETAIL = 36
+    USPS_PRIORITY_MAIL = 37
+    USPS_GROUND_ADVANTAGE_COMMERCIAL = 38
+    USPS_FIRST_CLASS_MAIL = 39
+
+
 class ProductAttributes(proto.Message):
     r"""Product attributes.
 
@@ -677,6 +807,8 @@ class ProductAttributes(proto.Message):
             (exclusive) and 2000 (inclusive).
         shipping (MutableSequence[google.shopping.merchant_products_v1.types.Shipping]):
             Shipping rules.
+        carrier_shipping (MutableSequence[google.shopping.merchant_products_v1.types.ProductAttributes.CarrierShipping]):
+            Rules for carrier-based shipping.
         free_shipping_threshold (MutableSequence[google.shopping.merchant_products_v1.types.FreeShippingThreshold]):
             Conditions to be met for a product to have
             free shipping.
@@ -946,6 +1078,417 @@ class ProductAttributes(proto.Message):
             programs.
     """
 
+    class CarrierPriceOption(proto.Enum):
+        r"""Possible carrier where price is coming from.
+
+        Values:
+            CARRIER_PRICE_OPTION_UNSPECIFIED (0):
+                Carrier price option is unspecified.
+            AUSTRALIA_POST_REGULAR (1):
+                Australia Post Regular shipping service.
+            AUSTRALIA_POST_EXPRESS (2):
+                Australia Post Express shipping service.
+            AUSTRALIA_POST_REGULAR_S (3):
+                Australia Post Regular Small shipping
+                service.
+            AUSTRALIA_POST_REGULAR_M (4):
+                Australia Post Regular Medium shipping
+                service.
+            AUSTRALIA_POST_REGULAR_L (5):
+                Australia Post Regular Large shipping
+                service.
+            AUSTRALIA_POST_REGULAR_XL (6):
+                Australia Post Regular XL shipping service.
+            AUSTRALIA_POST_EXPRESS_S (7):
+                Australia Post Express Small shipping
+                service.
+            AUSTRALIA_POST_EXPRESS_M (8):
+                Australia Post Express Medium shipping
+                service.
+            AUSTRALIA_POST_EXPRESS_L (9):
+                Australia Post Express Large shipping
+                service.
+            AUSTRALIA_POST_EXPRESS_XL (10):
+                Australia Post Express XL shipping service.
+            TNT_ROAD_EXPRESS (11):
+                TNT Road Express shipping service.
+            TNT_OVERNIGHT_EXPRESS (12):
+                TNT Overnight Express shipping service.
+            TOLL_ROAD_DELIVERY (13):
+                Toll Road Delivery shipping service.
+            TOLL_OVERNIGHT_PRIORITY (14):
+                Toll Overnight Priority shipping service.
+            DHL_PAKET (15):
+                DHL Paket shipping service.
+            DHL_PACKCHEN (16):
+                DHL Packchen shipping service.
+            DPD_EXPRESS_12 (17):
+                DPD Express 12 shipping service.
+            DPD_EXPRESS (18):
+                DPD Express shipping service.
+            DPD_CLASSIC_PARCEL (19):
+                DPD Classic Parcel shipping service.
+            HERMES_PACKCHEN (20):
+                Hermes Packchen shipping service.
+            HERMES_PAKETKLASSE_S (21):
+                Hermes Paketklasse S shipping service.
+            HERMES_PAKETKLASSE_M (22):
+                Hermes Paketklasse M shipping service.
+            HERMES_PAKETKLASSE_L (23):
+                Hermes Paketklasse L shipping service.
+            UPS_EXPRESS (24):
+                UPS Express shipping service.
+            UPS_EXPRESS_SAVER (25):
+                UPS Express Saver shipping service.
+            UPS_EXPRESS_STANDARD (26):
+                UPS Express Standard shipping service.
+            DHL_EXPRESS (27):
+                DHL Express shipping service.
+            DHL_EXPRESS_12 (28):
+                DHL Express 12 shipping service.
+            DPD_NEXT_DAY (29):
+                DPD Next Day shipping service.
+            DPD_STANDARD_NEXT_DAY (30):
+                DPD Standard Next Day shipping service.
+            DPD_STANDARD_TWO_DAY (31):
+                DPD Standard Two Day shipping service.
+            RMG_1ST_CLASS_SMALL (32):
+                RMG 1st Class Small shipping service.
+            RMG_1ST_CLASS_MEDIUM (33):
+                RMG 1st Class Medium shipping service.
+            RMG_2ND_CLASS_SMALL (34):
+                RMG 2nd Class Small shipping service.
+            RMG_2ND_CLASS_MEDIUM (35):
+                RMG 2nd Class Medium shipping service.
+            TNT_EXPRESS (36):
+                TNT Express shipping service.
+            TNT_EXPRESS_10 (37):
+                TNT Express 10 shipping service.
+            TNT_EXPRESS_12 (38):
+                TNT Express 12 shipping service.
+            YODEL_B2C_48HR (39):
+                Yodel B2C 48HR shipping service.
+            YODEL_B2C_72HR (40):
+                Yodel B2C 72HR shipping service.
+            YODEL_B2C_PACKET (41):
+                Yodel B2C Packet shipping service.
+            FEDEX_GROUND (42):
+                FedEx Ground shipping service.
+            FEDEX_HOME_DELIVERY (43):
+                FedEx Home Delivery shipping service.
+            FEDEX_EXPRESS_SAVER (44):
+                FedEx Express Saver shipping service.
+            FEDEX_FIRST_OVERNIGHT (45):
+                FedEx First Overnight shipping service.
+            FEDEX_PRIORITY_OVERNIGHT (46):
+                FedEx Priority Overnight shipping service.
+            FEDEX_STANDARD_OVERNIGHT (47):
+                FedEx Standard Overnight shipping service.
+            FEDEX_2DAY (48):
+                FedEx 2Day shipping service.
+            UPS_STANDARD (49):
+                UPS Standard shipping service.
+            UPS_2ND_DAY_AIR (50):
+                UPS 2nd Day Air shipping service.
+            UPS_2ND_DAY_AM (51):
+                UPS 2nd Day AM shipping service.
+            UPS_3_DAY_SELECT (52):
+                UPS 3 Day Select shipping service.
+            UPS_GROUND (53):
+                UPS Ground shipping service.
+            UPS_NEXT_DAY_AIR (54):
+                UPS Next Day Air shipping service.
+            UPS_NEXT_DAY_AIR_EARLY_AM (55):
+                UPS Next Day Air Early AM shipping service.
+            UPS_NEXT_DAY_AIR_SAVER (56):
+                UPS Next Day Air Saver shipping service.
+            USPS_PRIORITY_MAIL_EXPRESS (57):
+                USPS Priority Mail Express shipping service.
+            USPS_MEDIA_MAIL (58):
+                USPS Media Mail shipping service.
+            USPS_GROUND_ADVANTAGE_RETAIL (59):
+                USPS Ground Advantage Retail shipping
+                service.
+            USPS_PRIORITY_MAIL (60):
+                USPS Priority Mail shipping service.
+            USPS_GROUND_ADVANTAGE_COMMERCIAL (61):
+                USPS Ground Advantage Commercial shipping
+                service.
+        """
+        CARRIER_PRICE_OPTION_UNSPECIFIED = 0
+        AUSTRALIA_POST_REGULAR = 1
+        AUSTRALIA_POST_EXPRESS = 2
+        AUSTRALIA_POST_REGULAR_S = 3
+        AUSTRALIA_POST_REGULAR_M = 4
+        AUSTRALIA_POST_REGULAR_L = 5
+        AUSTRALIA_POST_REGULAR_XL = 6
+        AUSTRALIA_POST_EXPRESS_S = 7
+        AUSTRALIA_POST_EXPRESS_M = 8
+        AUSTRALIA_POST_EXPRESS_L = 9
+        AUSTRALIA_POST_EXPRESS_XL = 10
+        TNT_ROAD_EXPRESS = 11
+        TNT_OVERNIGHT_EXPRESS = 12
+        TOLL_ROAD_DELIVERY = 13
+        TOLL_OVERNIGHT_PRIORITY = 14
+        DHL_PAKET = 15
+        DHL_PACKCHEN = 16
+        DPD_EXPRESS_12 = 17
+        DPD_EXPRESS = 18
+        DPD_CLASSIC_PARCEL = 19
+        HERMES_PACKCHEN = 20
+        HERMES_PAKETKLASSE_S = 21
+        HERMES_PAKETKLASSE_M = 22
+        HERMES_PAKETKLASSE_L = 23
+        UPS_EXPRESS = 24
+        UPS_EXPRESS_SAVER = 25
+        UPS_EXPRESS_STANDARD = 26
+        DHL_EXPRESS = 27
+        DHL_EXPRESS_12 = 28
+        DPD_NEXT_DAY = 29
+        DPD_STANDARD_NEXT_DAY = 30
+        DPD_STANDARD_TWO_DAY = 31
+        RMG_1ST_CLASS_SMALL = 32
+        RMG_1ST_CLASS_MEDIUM = 33
+        RMG_2ND_CLASS_SMALL = 34
+        RMG_2ND_CLASS_MEDIUM = 35
+        TNT_EXPRESS = 36
+        TNT_EXPRESS_10 = 37
+        TNT_EXPRESS_12 = 38
+        YODEL_B2C_48HR = 39
+        YODEL_B2C_72HR = 40
+        YODEL_B2C_PACKET = 41
+        FEDEX_GROUND = 42
+        FEDEX_HOME_DELIVERY = 43
+        FEDEX_EXPRESS_SAVER = 44
+        FEDEX_FIRST_OVERNIGHT = 45
+        FEDEX_PRIORITY_OVERNIGHT = 46
+        FEDEX_STANDARD_OVERNIGHT = 47
+        FEDEX_2DAY = 48
+        UPS_STANDARD = 49
+        UPS_2ND_DAY_AIR = 50
+        UPS_2ND_DAY_AM = 51
+        UPS_3_DAY_SELECT = 52
+        UPS_GROUND = 53
+        UPS_NEXT_DAY_AIR = 54
+        UPS_NEXT_DAY_AIR_EARLY_AM = 55
+        UPS_NEXT_DAY_AIR_SAVER = 56
+        USPS_PRIORITY_MAIL_EXPRESS = 57
+        USPS_MEDIA_MAIL = 58
+        USPS_GROUND_ADVANTAGE_RETAIL = 59
+        USPS_PRIORITY_MAIL = 60
+        USPS_GROUND_ADVANTAGE_COMMERCIAL = 61
+
+    class CarrierShipping(proto.Message):
+        r"""Carrier-based shipping configuration. Allows for setting
+        shipping speed or shipping cost based on a carrier's provided
+        info.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            country (str):
+                The `CLDR territory
+                code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__
+                of the country to which an item will ship.
+
+                This field is a member of `oneof`_ ``_country``.
+            region (str):
+                The geographic region to which a shipping rate applies. See
+                `region <https://support.google.com/merchants/answer/6324484>`__
+                for more information.
+
+                This field is a member of `oneof`_ ``_region``.
+            postal_code (str):
+                The postal code range that the shipping rate applies to,
+                represented by a postal code (eg. ``94043``), a postal code
+                prefix followed by a \* wildcard (eg. ``94*``), a range
+                between two postal codes (eg. ``94043-98033``) or two postal
+                code prefixes of equal length (eg. ``94*-98*``).
+
+                This field is a member of `oneof`_ ``_postal_code``.
+            origin_postal_code (str):
+                The source location postal code from which
+                this offer ships. Represented only by a
+                full-length postal code.
+
+                This field is a member of `oneof`_ ``_origin_postal_code``.
+            flat_price (google.shopping.type.types.Price):
+                Fixed shipping price, represented as a number with currency.
+                Cannot be set together with
+                [carrierPrice][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price]
+                or its adjustments
+                ([carrierPriceFlatAdjustment][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price_flat_adjustment],
+                [carrierPricePercentageAdjustment][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price_percentage_adjustment]).
+
+                This field is a member of `oneof`_ ``_flat_price``.
+            carrier_price (google.shopping.merchant_products_v1.types.ProductAttributes.CarrierPriceOption):
+                Selected carrier to calculate the shipping price from.
+                Select a carrier from the `available carriers
+                list <https://support.google.com/merchants/answer/15449142#Supported>`__,
+                for example ``AUSTRALIA_POST_REGULAR``. Price will be
+                calculated by this selected carrier, the location expressed
+                in
+                [originPostalCode][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.origin_postal_code],
+                along with the user location to determine the accurate
+                shipping price. Carrier is represented by a carrier service
+                name or a carrier service ID. Cannot be set together with
+                [flatPrice][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.flat_price].
+
+                This field is a member of `oneof`_ ``_carrier_price``.
+            carrier_price_flat_adjustment (google.shopping.type.types.Price):
+                A flat adjustment on the carrier price. Can be either
+                positive or negative. Cannot be zero. Requires
+                ``carrier_price`` to be present. Cannot be set together with
+                [flatPrice][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.flat_price]
+                and
+                [carrierPricePercentageAdjustment][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price_percentage_adjustment].
+
+                This field is a member of `oneof`_ ``_carrier_price_flat_adjustment``.
+            carrier_price_percentage_adjustment (float):
+                A percentual adjustment on the carrier price. Can be either
+                positive or negative. Cannot be zero. Requires
+                ``carrier_price`` to be present. Cannot be set together with
+                [flatPrice][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.flat_price]
+                and
+                [carrierPriceFlatAdjustment][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_price_flat_adjustment].
+
+                This field is a member of `oneof`_ ``_carrier_price_percentage_adjustment``.
+            min_handling_time (int):
+                Minimum handling time (inclusive) between when the order is
+                received and shipped in business days. 0 means that the
+                order is shipped on the same day as it is received if it
+                happens before the cut-off time.
+                [minHandlingTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.min_handling_time]
+                can only be set if
+                [maxHandlingTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.max_handling_time]
+                is also set.
+
+                This field is a member of `oneof`_ ``_min_handling_time``.
+            max_handling_time (int):
+                Maximum handling time (inclusive) between when the order is
+                received and shipped in business days. 0 means that the
+                order is shipped on the same day as it is received if it
+                happens before the cut-off time. Both
+                [maxHandlingTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.max_handling_time]
+                and
+                [fixedMaxTransitTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_max_transit_time]
+                or
+                [carrierTransitTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_transit_time]
+                are required if providing shipping speeds.
+
+                This field is a member of `oneof`_ ``_max_handling_time``.
+            fixed_min_transit_time (int):
+                Minimum transit time (inclusive) between when the order has
+                shipped and when it is delivered in business days. 0 means
+                that the order is delivered on the same day as it ships.
+                [fixedMinTransitTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_min_transit_time]
+                can only be set if
+                [fixedMaxTransitTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_max_transit_time]
+                is set. Cannot be set if
+                [carrierTransitTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_transit_time]
+                is present.
+
+                This field is a member of `oneof`_ ``_fixed_min_transit_time``.
+            fixed_max_transit_time (int):
+                Maximum transit time (inclusive) between when the order has
+                shipped and when it is delivered in business days. 0 means
+                that the order is delivered on the same day as it ships.
+                Needs to be provided together with
+                [maxHandlingTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.max_handling_time].
+                Cannot be set if
+                [carrierTransitTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.carrier_transit_time]
+                is present.
+
+                This field is a member of `oneof`_ ``_fixed_max_transit_time``.
+            carrier_transit_time (google.shopping.merchant_products_v1.types.CarrierTransitTimeOption):
+                Selected carrier to calculate the shipping speed from.
+                Select a carrier from the `available carriers
+                list <https://support.google.com/merchants/answer/15449142#Supported>`__,
+                for example ``AUSTRALIA_POST_REGULAR``. Speed will be
+                calculated by this selected carrier, the location expressed
+                in
+                [originPostalCode][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.origin_postal_code],
+                along with the user location to determine the accurate
+                delivery speed. Carrier is represented by a carrier service
+                name or a carrier service ID. Cannot be set together with
+                [fixedMaxTransitTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_max_transit_time]
+                or
+                [fixedMinTransitTime][google.shopping.merchant.products.v1.ProductAttributes.CarrierShipping.fixed_min_transit_time].
+
+                This field is a member of `oneof`_ ``_carrier_transit_time``.
+        """
+
+        country: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
+        region: str = proto.Field(
+            proto.STRING,
+            number=2,
+            optional=True,
+        )
+        postal_code: str = proto.Field(
+            proto.STRING,
+            number=3,
+            optional=True,
+        )
+        origin_postal_code: str = proto.Field(
+            proto.STRING,
+            number=4,
+            optional=True,
+        )
+        flat_price: types.Price = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            optional=True,
+            message=types.Price,
+        )
+        carrier_price: "ProductAttributes.CarrierPriceOption" = proto.Field(
+            proto.ENUM,
+            number=6,
+            optional=True,
+            enum="ProductAttributes.CarrierPriceOption",
+        )
+        carrier_price_flat_adjustment: types.Price = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            optional=True,
+            message=types.Price,
+        )
+        carrier_price_percentage_adjustment: float = proto.Field(
+            proto.DOUBLE,
+            number=8,
+            optional=True,
+        )
+        min_handling_time: int = proto.Field(
+            proto.INT64,
+            number=9,
+            optional=True,
+        )
+        max_handling_time: int = proto.Field(
+            proto.INT64,
+            number=10,
+            optional=True,
+        )
+        fixed_min_transit_time: int = proto.Field(
+            proto.INT64,
+            number=11,
+            optional=True,
+        )
+        fixed_max_transit_time: int = proto.Field(
+            proto.INT64,
+            number=12,
+            optional=True,
+        )
+        carrier_transit_time: "CarrierTransitTimeOption" = proto.Field(
+            proto.ENUM,
+            number=13,
+            optional=True,
+            enum="CarrierTransitTimeOption",
+        )
+
     identifier_exists: bool = proto.Field(
         proto.BOOL,
         number=4,
@@ -1146,6 +1689,11 @@ class ProductAttributes(proto.Message):
         proto.MESSAGE,
         number=39,
         message="Shipping",
+    )
+    carrier_shipping: MutableSequence[CarrierShipping] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=142,
+        message=CarrierShipping,
     )
     free_shipping_threshold: MutableSequence[
         "FreeShippingThreshold"

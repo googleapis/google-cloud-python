@@ -49,7 +49,9 @@ Services for Google Cloud Compute v1 API
     node_groups
     node_templates
     node_types
+    organization_security_policies
     packet_mirrorings
+    preview_features
     projects
     public_advertised_prefixes
     public_delegated_prefixes

@@ -14,29 +14,6 @@
 # limitations under the License.
 #
 from .allocation import Allocation
-from .capacity_planning_service import (
-    CapacityPlan,
-    CapacityPlanFilters,
-    CapacityPlanKey,
-    CapacityPlanView,
-    CapacityType,
-    ChildResourceDemand,
-    DemandMetadata,
-    DemandPreference,
-    DemandValue,
-    DemandValues,
-    GetCapacityPlanRequest,
-    QueryCapacityPlanInsightsRequest,
-    QueryCapacityPlanInsightsResponse,
-    QueryCapacityPlansRequest,
-    QueryCapacityPlansResponse,
-    ResourceDemand,
-    ServiceDemand,
-    State,
-    TimeSeriesView,
-    TimeValue,
-    User,
-)
 from .future_reservation import FutureReservation
 from .location import LocationIdentifier, LocationLevel
 from .resource import (
@@ -75,27 +52,6 @@ from .usage_service import (
 
 __all__ = (
     "Allocation",
-    "CapacityPlan",
-    "CapacityPlanFilters",
-    "CapacityPlanKey",
-    "CapacityPlanView",
-    "ChildResourceDemand",
-    "DemandMetadata",
-    "DemandPreference",
-    "DemandValue",
-    "DemandValues",
-    "GetCapacityPlanRequest",
-    "QueryCapacityPlanInsightsRequest",
-    "QueryCapacityPlanInsightsResponse",
-    "QueryCapacityPlansRequest",
-    "QueryCapacityPlansResponse",
-    "ResourceDemand",
-    "ServiceDemand",
-    "TimeSeriesView",
-    "TimeValue",
-    "User",
-    "CapacityType",
-    "State",
     "FutureReservation",
     "LocationIdentifier",
     "LocationLevel",

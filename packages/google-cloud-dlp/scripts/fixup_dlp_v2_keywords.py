@@ -85,7 +85,7 @@ class dlpCallTransformer(cst.CSTTransformer):
         'list_project_data_profiles': ('parent', 'page_token', 'page_size', 'order_by', 'filter', ),
         'list_stored_info_types': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
         'list_table_data_profiles': ('parent', 'page_token', 'page_size', 'order_by', 'filter', ),
-        'redact_image': ('parent', 'location_id', 'inspect_config', 'image_redaction_configs', 'include_findings', 'byte_item', ),
+        'redact_image': ('parent', 'location_id', 'inspect_config', 'image_redaction_configs', 'include_findings', 'byte_item', 'inspect_template', 'deidentify_template', ),
         'reidentify_content': ('parent', 'reidentify_config', 'inspect_config', 'item', 'inspect_template_name', 'reidentify_template_name', 'location_id', ),
         'search_connections': ('parent', 'page_size', 'page_token', 'filter', ),
         'update_connection': ('name', 'connection', 'update_mask', ),

@@ -372,7 +372,10 @@ class SecuritySettings(proto.Message):
                 should have the permission of
                 storage.buckets.setIamPolicy.
             audio_export_pattern (str):
-                Filename pattern for exported audio.
+                Filename pattern for exported audio. {conversation} and
+                {timestamp} are placeholders that will be replaced with the
+                conversation ID and epoch micros of the conversation. For
+                example, "{conversation}/recording\_{timestamp}.mulaw".
             enable_audio_redaction (bool):
                 Enable audio redaction if it is true.
                 Note that this only redacts end-user audio data;

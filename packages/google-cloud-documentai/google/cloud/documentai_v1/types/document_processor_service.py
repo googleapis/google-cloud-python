@@ -1288,7 +1288,8 @@ class TrainProcessorVersionRequest(proto.Message):
 
         Attributes:
             training_method (google.cloud.documentai_v1.types.TrainProcessorVersionRequest.CustomDocumentExtractionOptions.TrainingMethod):
-                Training method to use for CDE training.
+                Optional. Training method to use for CDE
+                training.
         """
 
         class TrainingMethod(proto.Enum):

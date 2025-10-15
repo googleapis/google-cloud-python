@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -26,10 +25,10 @@ __protobuf__ = proto.module(
     manifest={
         "Conversation",
         "CreateConversationRequest",
-        "UpdateConversationRequest",
         "GetConversationRequest",
         "ListConversationsRequest",
         "ListConversationsResponse",
+        "DeleteConversationRequest",
     },
 )
 
@@ -137,46 +136,6 @@ class CreateConversationRequest(proto.Message):
     )
 
 
-class UpdateConversationRequest(proto.Message):
-    r"""Request for updating a conversation.
-
-    Attributes:
-        conversation (google.cloud.geminidataanalytics_v1alpha.types.Conversation):
-            Required. The resource being updated.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the Conversation resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields with non-default values present in the
-            request will be overwritten. If a wildcard mask is provided,
-            all fields will be overwritten.
-        request_id (str):
-            Optional. An optional request ID to identify
-            requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
-    """
-
-    conversation: "Conversation" = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message="Conversation",
-    )
-    update_mask: field_mask_pb2.FieldMask = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message=field_mask_pb2.FieldMask,
-    )
-    request_id: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-
-
 class GetConversationRequest(proto.Message):
     r"""Request for getting a conversation based on parent and
     conversation id.
@@ -259,6 +218,22 @@ class ListConversationsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class DeleteConversationRequest(proto.Message):
+    r"""Request for deleting a conversation based on parent and
+    conversation id.
+
+    Attributes:
+        name (str):
+            Required. Name of the resource. Format:
+            ``projects/{project}/locations/{location}/conversations/{conversation}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

@@ -48,7 +48,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
-          python-version: 3.13
+          python-version: 3.14
       - name: Run configure_release_please.py
         run: python3 configure_release_please.py
         working-directory: ./scripts/configure_release_please

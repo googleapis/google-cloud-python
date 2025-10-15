@@ -4190,6 +4190,7 @@ def test_insert_rest_call_success(request_type):
         "licenses": ["licenses_value1", "licenses_value2"],
         "location_hint": "location_hint_value",
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "region": "region_value",
         "satisfies_pzi": True,
         "satisfies_pzs": True,
