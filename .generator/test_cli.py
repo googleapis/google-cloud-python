@@ -1106,6 +1106,7 @@ def test_update_changelog_for_library_success(mocker):
             "1.2.3",
             "1.2.2",
             "google-cloud-language",
+            "CHANGELOG.md",
         )
 
 
@@ -1155,6 +1156,7 @@ def test_update_changelog_for_library_failure(mocker):
                 "1.2.3",
                 "1.2.2",
                 "google-cloud-language",
+                "CHANGELOG.md",
             )
 
 
