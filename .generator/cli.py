@@ -1230,7 +1230,9 @@ def _process_changelog(
         if adjusted_change_type in change_type_map:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
-                commit_hash = change.get(source_commit_hash_key) or change.get(commit_hash_key)
+                commit_hash = change.get(source_commit_hash_key) or change.get(
+                    commit_hash_key
+                )
                 commit_link = f"([{commit_hash}]({_REPO_URL}/commit/{commit_hash}))"
                 entry_parts.append(
                     f"* {change[subject_key]} {change[body_key]} {commit_link}"
