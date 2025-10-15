@@ -1,20 +1,5 @@
 {
     "packages": {
-        "packages/google-cloud-biglake": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-biglake",
-            "extra-files": [
-                "google/cloud/biglake/gapic_version.py",
-                "google/cloud/biglake_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.biglake.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
         "packages/google-cloud-bigquery-storage": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -102,36 +87,6 @@
             ],
             "release-type": "python"
         },
-        "packages/google-cloud-gke-multicloud": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-gke-multicloud",
-            "extra-files": [
-                "google/cloud/gke_multicloud/gapic_version.py",
-                "google/cloud/gke_multicloud_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkemulticloud.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-cloud-gsuiteaddons": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-gsuiteaddons",
-            "extra-files": [
-                "google/cloud/gsuiteaddons/gapic_version.py",
-                "google/cloud/gsuiteaddons_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gsuiteaddons.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
         "packages/google-cloud-iam": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -205,63 +160,6 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.orgpolicy.v2.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-cloud-os-login": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-os-login",
-            "extra-files": [
-                "google/cloud/oslogin/gapic_version.py",
-                "google/cloud/oslogin_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.oslogin.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/google-cloud-secret-manager": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-secret-manager",
-            "extra-files": [
-                "google/cloud/secretmanager/gapic_version.py",
-                "google/cloud/secretmanager_v1/gapic_version.py",
-                "google/cloud/secretmanager_v1beta1/gapic_version.py",
-                "google/cloud/secretmanager_v1beta2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.secretmanager.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.secretmanager.v1beta2.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.secrets.v1beta1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
-        "packages/grafeas": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "grafeas",
-            "extra-files": [
-                "grafeas/grafeas/gapic_version.py",
-                "grafeas/grafeas_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_grafeas.v1.json",
                     "type": "json"
                 }
             ],
