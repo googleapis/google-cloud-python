@@ -1147,7 +1147,23 @@ def _update_version_for_library(
     # Find and update version.py or gapic_version.py files
     search_base = Path(f"{repo}/{path_to_library}")
     version_files = list(search_base.rglob("**/gapic_version.py"))
-    version_files.extend(list(search_base.glob("google/**/version.py")))
+    excluded_dirs = {
+        ".nox",
+        ".venv",
+        "venv",
+        "site-packages",
+        ".git",
+        "build",
+        "dist",
+        "__pycache__",
+    }
+    version_files.extend(
+        [
+            p
+            for p in search_base.rglob("**/version.py")
+            if not any(part in excluded_dirs for part in p.parts)
+        ]
+    )
 
     if not version_files:
         # Fallback to `pyproject.toml`` or `setup.py``. Proto-only libraries have

@@ -988,9 +988,12 @@ def test_update_global_changelog(mocker, mock_release_init_request_file):
 def test_update_version_for_library_success_gapic(mocker):
     m = mock_open()
 
-    mock_rglob = mocker.patch(
-        "pathlib.Path.rglob", return_value=[pathlib.Path("repo/gapic_version.py")]
-    )
+    mock_rglob = mocker.patch("pathlib.Path.rglob")
+    mock_rglob.side_effect = [
+        [pathlib.Path("repo/gapic_version.py")],                  # 1st call (gapic_version.py)
+        [],                                                       # 2nd call (version.py)
+        [pathlib.Path("repo/samples/snippet_metadata.json")]      # 3rd call (snippets)
+    ]
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_content = '__version__ = "1.2.2"'
     mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
@@ -1020,7 +1023,11 @@ def test_update_version_for_library_success_proto_only_setup_py(mocker):
     m = mock_open()
 
     mock_rglob = mocker.patch("pathlib.Path.rglob")
-    mock_rglob.side_effect = [[], [pathlib.Path("repo/setup.py")]]
+    mock_rglob.side_effect = [
+        [],
+        [pathlib.Path("repo/setup.py")],
+        [pathlib.Path("repo/samples/snippet_metadata.json")]
+    ]
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_content = 'version = "1.2.2"'
     mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
@@ -1051,7 +1058,11 @@ def test_update_version_for_library_success_proto_only_py_project_toml(mocker):
 
     mock_path_exists = mocker.patch("pathlib.Path.exists")
     mock_rglob = mocker.patch("pathlib.Path.rglob")
-    mock_rglob.side_effect = [[], [pathlib.Path("repo/pyproject.toml")]]
+    mock_rglob.side_effect = [
+        [],
+        [pathlib.Path("repo/pyproject.toml")],
+        [pathlib.Path("repo/samples/snippet_metadata.json")]
+    ]
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_content = 'version = "1.2.2"'
     mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
