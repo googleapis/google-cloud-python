@@ -85,6 +85,8 @@ class PagesAsyncClient:
     parse_entity_type_path = staticmethod(PagesClient.parse_entity_type_path)
     flow_path = staticmethod(PagesClient.flow_path)
     parse_flow_path = staticmethod(PagesClient.parse_flow_path)
+    generator_path = staticmethod(PagesClient.generator_path)
+    parse_generator_path = staticmethod(PagesClient.parse_generator_path)
     intent_path = staticmethod(PagesClient.intent_path)
     parse_intent_path = staticmethod(PagesClient.parse_intent_path)
     page_path = staticmethod(PagesClient.page_path)

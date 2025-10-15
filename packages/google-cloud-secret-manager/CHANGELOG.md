@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-secret-manager/#history
 
+## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.24.0...google-cloud-secret-manager-v2.25.0) (2025-10-14)
+
+
+### Features
+
+* Add support for Python 3.14 ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument ([4763aa7](https://github.com/googleapis/google-cloud-python/commit/4763aa7938438d66677f73c0775babf2ccdfe3af))
+
 ## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.23.3...google-cloud-secret-manager-v2.24.0) (2025-06-05)
 
 

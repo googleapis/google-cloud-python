@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -182,6 +183,8 @@ class DataStoreConnectionSignals(proto.Message):
                 for the document.
             text (str):
                 Text included in the prompt.
+            metadata (google.protobuf.struct_pb2.Struct):
+                Metadata associated with the document.
         """
 
         document_title: str = proto.Field(
@@ -195,6 +198,11 @@ class DataStoreConnectionSignals(proto.Message):
         text: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        metadata: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message=struct_pb2.Struct,
         )
 
     class AnswerGenerationModelCallSignals(proto.Message):

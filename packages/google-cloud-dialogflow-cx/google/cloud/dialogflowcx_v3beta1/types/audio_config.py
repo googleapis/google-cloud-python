@@ -48,8 +48,8 @@ class AudioEncoding(proto.Enum):
         AUDIO_ENCODING_UNSPECIFIED (0):
             Not specified.
         AUDIO_ENCODING_LINEAR_16 (1):
-            Uncompressed 16-bit signed little-endian
-            samples (Linear PCM).
+            Uncompressed 16-bit signed little-endian samples (Linear
+            PCM). LINT: LEGACY_NAMES
         AUDIO_ENCODING_FLAC (2):
             ```FLAC`` <https://xiph.org/flac/documentation.html>`__
             (Free Lossless Audio Codec) is the recommended encoding
@@ -174,13 +174,13 @@ class OutputAudioEncoding(proto.Enum):
         OUTPUT_AUDIO_ENCODING_UNSPECIFIED (0):
             Not specified.
         OUTPUT_AUDIO_ENCODING_LINEAR_16 (1):
-            Uncompressed 16-bit signed little-endian
-            samples (Linear PCM). Audio content returned as
-            LINEAR16 also contains a WAV header.
+            Uncompressed 16-bit signed little-endian samples (Linear
+            PCM). Audio content returned as LINEAR16 also contains a WAV
+            header. LINT: LEGACY_NAMES
         OUTPUT_AUDIO_ENCODING_MP3 (2):
             MP3 audio at 32kbps.
         OUTPUT_AUDIO_ENCODING_MP3_64_KBPS (4):
-            MP3 audio at 64kbps.
+            MP3 audio at 64kbps. LINT: LEGACY_NAMES
         OUTPUT_AUDIO_ENCODING_OGG_OPUS (3):
             Opus encoded audio wrapped in an ogg
             container. The result will be a file which can
