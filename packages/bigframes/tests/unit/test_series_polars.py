@@ -4622,20 +4622,15 @@ def test_apply_lambda(scalars_dfs, col, lambda_):
     )
 
 
-@pytest.mark.skip(
-    reason="NotImplementedError: Polars compiler hasn't implemented log()"
-)
 @pytest.mark.parametrize(
     ("ufunc",),
     [
-        pytest.param(numpy.log),
-        pytest.param(numpy.sqrt),
-        pytest.param(numpy.sin),
-    ],
-    ids=[
-        "log",
-        "sqrt",
-        "sin",
+        pytest.param(numpy.cos, id="cos"),
+        pytest.param(numpy.log, id="log"),
+        pytest.param(numpy.log10, id="log10"),
+        pytest.param(numpy.log1p, id="log1p"),
+        pytest.param(numpy.sqrt, id="sqrt"),
+        pytest.param(numpy.sin, id="sin"),
     ],
 )
 def test_apply_numpy_ufunc(scalars_dfs, ufunc):

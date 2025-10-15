@@ -158,7 +158,7 @@ def _(expr: TypedExpr) -> sge.Expression:
     return sge.Case(
         ifs=[
             sge.If(
-                this=expr.expr < sge.convert(0),
+                this=expr.expr <= sge.convert(0),
                 true=constants._NAN,
             )
         ],
@@ -171,7 +171,7 @@ def _(expr: TypedExpr) -> sge.Expression:
     return sge.Case(
         ifs=[
             sge.If(
-                this=expr.expr < sge.convert(0),
+                this=expr.expr <= sge.convert(0),
                 true=constants._NAN,
             )
         ],
@@ -184,7 +184,7 @@ def _(expr: TypedExpr) -> sge.Expression:
     return sge.Case(
         ifs=[
             sge.If(
-                this=expr.expr < sge.convert(-1),
+                this=expr.expr <= sge.convert(-1),
                 true=constants._NAN,
             )
         ],

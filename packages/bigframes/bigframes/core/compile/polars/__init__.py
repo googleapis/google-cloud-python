@@ -24,6 +24,7 @@ import warnings
 # polars shouldn't be needed at import time, as register is a no-op if polars
 # isn't installed.
 import bigframes.core.compile.polars.operations.generic_ops  # noqa: F401
+import bigframes.core.compile.polars.operations.numeric_ops  # noqa: F401
 import bigframes.core.compile.polars.operations.struct_ops  # noqa: F401
 
 try:
