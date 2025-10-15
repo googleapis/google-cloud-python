@@ -158,6 +158,7 @@ class StructAccessor:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    @property
     def dtypes(self):
         """
         Return the dtype object of each child field of the struct.
@@ -177,8 +178,8 @@ class StructAccessor:
             ...         [("version", pa.int64()), ("project", pa.string())]
             ...     ))
             ... )
-            >>> s.struct.dtypes()
-            version              Int64
+            >>> s.struct.dtypes
+            version     int64[pyarrow]
             project    string[pyarrow]
             dtype: object
 

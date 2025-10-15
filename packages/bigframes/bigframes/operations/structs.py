@@ -17,9 +17,8 @@ from __future__ import annotations
 import bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
 import pandas as pd
 
-from bigframes.core import log_adapter
+from bigframes.core import backports, log_adapter
 import bigframes.dataframe
-import bigframes.dtypes
 import bigframes.operations
 import bigframes.operations.base
 import bigframes.series
@@ -45,17 +44,24 @@ class StructAccessor(
 
         pa_type = self._dtype.pyarrow_dtype
         return bigframes.pandas.concat(
-            [self.field(i) for i in range(pa_type.num_fields)], axis="columns"
+            [
+                self.field(field.name)
+                for field in backports.pyarrow_struct_type_fields(pa_type)
+            ],
+            axis="columns",
         )
 
+    @property
     def dtypes(self) -> pd.Series:
         pa_type = self._dtype.pyarrow_dtype
         return pd.Series(
             data=[
-                bigframes.dtypes.arrow_dtype_to_bigframes_dtype(pa_type.field(i).type)
-                for i in range(pa_type.num_fields)
+                pd.ArrowDtype(field.type)
+                for field in backports.pyarrow_struct_type_fields(pa_type)
             ],
-            index=[pa_type.field(i).name for i in range(pa_type.num_fields)],
+            index=[
+                field.name for field in backports.pyarrow_struct_type_fields(pa_type)
+            ],
         )
 
 
