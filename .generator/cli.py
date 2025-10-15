@@ -1334,6 +1334,19 @@ def _update_changelog_for_library(
     _write_text_file(changelog_dest, updated_content)
 
 
+def _is_generated_library(repo: str) -> bool:
+    """Determines if a library is generated or handwritten.
+
+    Args:
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+
+    Returns: True if the library is generated, False otherwise.
+    """
+    return Path(f"{repo}/packages").exists()
+
+
 def handle_release_init(
     librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR, output: str = OUTPUT_DIR
 ):
@@ -1362,7 +1375,7 @@ def handle_release_init(
             librarian directory cannot be read.
     """
     try:
-        is_generated = Path(f"{repo}/packages").exists()
+        is_generated = _is_generated_library(repo)
 
         # Read a release-init-request.json file
         request_data = _read_json_file(f"{librarian}/{RELEASE_INIT_REQUEST_FILE}")
