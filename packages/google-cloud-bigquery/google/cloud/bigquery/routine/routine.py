@@ -15,7 +15,7 @@
 # limitations under the License.
 
 """Define resources for the BigQuery Routines API."""
-
+import typing
 from typing import Any, Dict, Optional, Union
 
 import google.cloud._helpers  # type: ignore
@@ -69,6 +69,7 @@ class Routine(object):
         "determinism_level": "determinismLevel",
         "remote_function_options": "remoteFunctionOptions",
         "data_governance_type": "dataGovernanceType",
+        "external_runtime_options": "externalRuntimeOptions",
     }
 
     def __init__(self, routine_ref, **kwargs) -> None:
@@ -348,6 +349,37 @@ class Routine(object):
                 "invalid data_governance_type, must be a string or `None`."
             )
         self._properties[self._PROPERTY_TO_API_FIELD["data_governance_type"]] = value
+
+    @property
+    def external_runtime_options(self):
+        """Optional[google.cloud.bigquery.routine.ExternalRuntimeOptions]:
+        Configures the external runtime options for a routine.
+
+        Raises:
+            ValueError:
+                If the value is not
+                :class:`~google.cloud.bigquery.routine.ExternalRuntimeOptions` or
+                :data:`None`.
+        """
+        prop = self._properties.get(
+            self._PROPERTY_TO_API_FIELD["external_runtime_options"]
+        )
+        if prop is not None:
+            return ExternalRuntimeOptions.from_api_repr(prop)
+
+    @external_runtime_options.setter
+    def external_runtime_options(self, value):
+        api_repr = value
+        if isinstance(value, ExternalRuntimeOptions):
+            api_repr = value.to_api_repr()
+        elif value is not None:
+            raise ValueError(
+                "value must be google.cloud.bigquery.routine.ExternalRuntimeOptions "
+                "or None"
+            )
+        self._properties[
+            self._PROPERTY_TO_API_FIELD["external_runtime_options"]
+        ] = api_repr
 
     @classmethod
     def from_api_repr(cls, resource: dict) -> "Routine":
@@ -736,3 +768,154 @@ class RemoteFunctionOptions(object):
             for property_name in sorted(self._PROPERTY_TO_API_FIELD)
         ]
         return "RemoteFunctionOptions({})".format(", ".join(all_properties))
+
+
+class ExternalRuntimeOptions(object):
+    """Options for the runtime of the external system.
+
+    Args:
+        container_memory (str):
+            Optional. Amount of memory provisioned for a Python UDF container
+            instance. Format: {number}{unit} where unit is one of "M", "G", "Mi"
+            and "Gi" (e.g. 1G, 512Mi). If not specified, the default value is
+            512Mi. For more information, see `Configure container limits for
+            Python UDFs <https://cloud.google.com/bigquery/docs/user-defined-functions-python#configure-container-limits>`_
+        container_cpu (int):
+            Optional. Amount of CPU provisioned for a Python UDF container
+            instance. For more information, see `Configure container limits
+            for Python UDFs <https://cloud.google.com/bigquery/docs/user-defined-functions-python#configure-container-limits>`_
+        runtime_connection (str):
+            Optional. Fully qualified name of the connection whose service account
+            will be used to execute the code in the container. Format:
+            "projects/{projectId}/locations/{locationId}/connections/{connectionId}"
+        max_batching_rows (int):
+            Optional. Maximum number of rows in each batch sent to the external
+            runtime. If absent or if 0, BigQuery dynamically decides the number of
+            rows in a batch.
+        runtime_version (str):
+            Optional. Language runtime version. Example: python-3.11.
+    """
+
+    _PROPERTY_TO_API_FIELD = {
+        "container_memory": "containerMemory",
+        "container_cpu": "containerCpu",
+        "runtime_connection": "runtimeConnection",
+        "max_batching_rows": "maxBatchingRows",
+        "runtime_version": "runtimeVersion",
+    }
+
+    def __init__(
+        self,
+        container_memory: Optional[str] = None,
+        container_cpu: Optional[int] = None,
+        runtime_connection: Optional[str] = None,
+        max_batching_rows: Optional[int] = None,
+        runtime_version: Optional[str] = None,
+        _properties: Optional[Dict] = None,
+    ) -> None:
+        if _properties is None:
+            _properties = {}
+        self._properties = _properties
+
+        if container_memory is not None:
+            self.container_memory = container_memory
+        if container_cpu is not None:
+            self.container_cpu = container_cpu
+        if runtime_connection is not None:
+            self.runtime_connection = runtime_connection
+        if max_batching_rows is not None:
+            self.max_batching_rows = max_batching_rows
+        if runtime_version is not None:
+            self.runtime_version = runtime_version
+
+    @property
+    def container_memory(self) -> Optional[str]:
+        """Optional. Amount of memory provisioned for a Python UDF container instance."""
+        return _helpers._str_or_none(self._properties.get("containerMemory"))
+
+    @container_memory.setter
+    def container_memory(self, value: Optional[str]):
+        if value is not None and not isinstance(value, str):
+            raise ValueError("container_memory must be a string or None.")
+        self._properties["containerMemory"] = value
+
+    @property
+    def container_cpu(self) -> Optional[int]:
+        """Optional. Amount of CPU provisioned for a Python UDF container instance."""
+        return _helpers._int_or_none(self._properties.get("containerCpu"))
+
+    @container_cpu.setter
+    def container_cpu(self, value: Optional[int]):
+        if value is not None and not isinstance(value, int):
+            raise ValueError("container_cpu must be an integer or None.")
+        self._properties["containerCpu"] = value
+
+    @property
+    def runtime_connection(self) -> Optional[str]:
+        """Optional. Fully qualified name of the connection."""
+        return _helpers._str_or_none(self._properties.get("runtimeConnection"))
+
+    @runtime_connection.setter
+    def runtime_connection(self, value: Optional[str]):
+        if value is not None and not isinstance(value, str):
+            raise ValueError("runtime_connection must be a string or None.")
+        self._properties["runtimeConnection"] = value
+
+    @property
+    def max_batching_rows(self) -> Optional[int]:
+        """Optional. Maximum number of rows in each batch sent to the external runtime."""
+        return typing.cast(
+            int, _helpers._int_or_none(self._properties.get("maxBatchingRows"))
+        )
+
+    @max_batching_rows.setter
+    def max_batching_rows(self, value: Optional[int]):
+        if value is not None and not isinstance(value, int):
+            raise ValueError("max_batching_rows must be an integer or None.")
+        self._properties["maxBatchingRows"] = _helpers._str_or_none(value)
+
+    @property
+    def runtime_version(self) -> Optional[str]:
+        """Optional. Language runtime version."""
+        return _helpers._str_or_none(self._properties.get("runtimeVersion"))
+
+    @runtime_version.setter
+    def runtime_version(self, value: Optional[str]):
+        if value is not None and not isinstance(value, str):
+            raise ValueError("runtime_version must be a string or None.")
+        self._properties["runtimeVersion"] = value
+
+    @classmethod
+    def from_api_repr(cls, resource: dict) -> "ExternalRuntimeOptions":
+        """Factory: construct external runtime options given its API representation.
+        Args:
+            resource (Dict[str, object]): Resource, as returned from the API.
+        Returns:
+            google.cloud.bigquery.routine.ExternalRuntimeOptions:
+                Python object, as parsed from ``resource``.
+        """
+        ref = cls()
+        ref._properties = resource
+        return ref
+
+    def to_api_repr(self) -> dict:
+        """Construct the API resource representation of this ExternalRuntimeOptions.
+        Returns:
+            Dict[str, object]: External runtime options represented as an API resource.
+        """
+        return self._properties
+
+    def __eq__(self, other):
+        if not isinstance(other, ExternalRuntimeOptions):
+            return NotImplemented
+        return self._properties == other._properties
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __repr__(self):
+        all_properties = [
+            "{}={}".format(property_name, repr(getattr(self, property_name)))
+            for property_name in sorted(self._PROPERTY_TO_API_FIELD)
+        ]
+        return "ExternalRuntimeOptions({})".format(", ".join(all_properties))

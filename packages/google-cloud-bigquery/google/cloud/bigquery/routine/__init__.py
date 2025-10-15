@@ -21,6 +21,7 @@ from google.cloud.bigquery.routine.routine import RoutineArgument
 from google.cloud.bigquery.routine.routine import RoutineReference
 from google.cloud.bigquery.routine.routine import RoutineType
 from google.cloud.bigquery.routine.routine import RemoteFunctionOptions
+from google.cloud.bigquery.routine.routine import ExternalRuntimeOptions
 
 
 __all__ = (
@@ -30,4 +31,5 @@ __all__ = (
     "RoutineReference",
     "RoutineType",
     "RemoteFunctionOptions",
+    "ExternalRuntimeOptions",
 )

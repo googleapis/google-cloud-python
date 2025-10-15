@@ -81,6 +81,13 @@ def test_ctor_w_properties(target_class):
         max_batching_rows=99,
         user_defined_context={"foo": "bar"},
     )
+    external_runtime_options = bigquery.ExternalRuntimeOptions(
+        container_memory="1G",
+        container_cpu=1,
+        runtime_connection="projects/p/locations/l/connections/c",
+        max_batching_rows=100,
+        runtime_version="python-3.11",
+    )
 
     actual_routine = target_class(
         routine_id,
@@ -92,6 +99,7 @@ def test_ctor_w_properties(target_class):
         description=description,
         determinism_level=determinism_level,
         remote_function_options=options,
+        external_runtime_options=external_runtime_options,
     )
 
     ref = RoutineReference.from_string(routine_id)
@@ -106,6 +114,7 @@ def test_ctor_w_properties(target_class):
         actual_routine.determinism_level == bigquery.DeterminismLevel.NOT_DETERMINISTIC
     )
     assert actual_routine.remote_function_options == options
+    assert actual_routine.external_runtime_options == external_runtime_options
 
 
 def test_ctor_invalid_remote_function_options(target_class):
@@ -116,6 +125,17 @@ def test_ctor_invalid_remote_function_options(target_class):
         target_class(
             "my-proj.my_dset.my_routine",
             remote_function_options=object(),
+        )
+
+
+def test_ctor_invalid_external_runtime_options(target_class):
+    with pytest.raises(
+        ValueError,
+        match=".*must be google.cloud.bigquery.routine.ExternalRuntimeOptions.*",
+    ):
+        target_class(
+            "my-proj.my_dset.my_routine",
+            external_runtime_options=object(),
         )
 
 
@@ -155,6 +175,13 @@ def test_from_api_repr(target_class):
             },
         },
         "dataGovernanceType": "DATA_MASKING",
+        "externalRuntimeOptions": {
+            "containerMemory": "1G",
+            "containerCpu": 1,
+            "runtimeConnection": "projects/p/locations/l/connections/c",
+            "maxBatchingRows": 100,
+            "runtimeVersion": "python-3.11",
+        },
     }
     actual_routine = target_class.from_api_repr(resource)
 
@@ -194,6 +221,14 @@ def test_from_api_repr(target_class):
     assert actual_routine.remote_function_options.max_batching_rows == 50
     assert actual_routine.remote_function_options.user_defined_context == {"foo": "bar"}
     assert actual_routine.data_governance_type == "DATA_MASKING"
+    assert actual_routine.external_runtime_options.container_memory == "1G"
+    assert actual_routine.external_runtime_options.container_cpu == 1
+    assert (
+        actual_routine.external_runtime_options.runtime_connection
+        == "projects/p/locations/l/connections/c"
+    )
+    assert actual_routine.external_runtime_options.max_batching_rows == 100
+    assert actual_routine.external_runtime_options.runtime_version == "python-3.11"
 
 
 def test_from_api_repr_tvf_function(target_class):
@@ -297,6 +332,7 @@ def test_from_api_repr_w_minimal_resource(target_class):
     assert actual_routine.determinism_level is None
     assert actual_routine.remote_function_options is None
     assert actual_routine.data_governance_type is None
+    assert actual_routine.external_runtime_options is None
 
 
 def test_from_api_repr_w_unknown_fields(target_class):
@@ -569,6 +605,12 @@ def test_set_remote_function_options_w_none(object_under_test):
     object_under_test.remote_function_options = None
     assert object_under_test.remote_function_options is None
     assert object_under_test._properties["remoteFunctionOptions"] is None
+
+
+def test_set_external_runtime_options_w_none(object_under_test):
+    object_under_test.external_runtime_options = None
+    assert object_under_test.external_runtime_options is None
+    assert object_under_test._properties["externalRuntimeOptions"] is None
 
 
 def test_set_data_governance_type_w_none(object_under_test):
