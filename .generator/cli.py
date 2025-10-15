@@ -1425,6 +1425,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             source=args.source,
             repo=args.repo,
             input=args.input,
+            output=args.output,
         )
     elif args.command == "generate":
         args.func(
