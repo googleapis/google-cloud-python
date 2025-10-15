@@ -4349,29 +4349,6 @@ libraries:
     remove_regex:
       - ^packages/googleapis-common-protos/google/(?:api|cloud|rpc|type)/.*/.*_pb2\.(?:py|pyi)$/
     tag_format: '{id}-v{version}'
-  - id: google-cloud-monitoring
-    version: 2.28.0
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
-    apis:
-      - path: google/monitoring/v3
-    source_roots:
-      - packages/google-cloud-monitoring
-    preserve_regex:
-      - packages/google-cloud-monitoring/CHANGELOG.md
-      - docs/CHANGELOG.md
-      - docs/README.rst
-      - docs/query.rst
-      - packages/google-cloud-monitoring/google/cloud/monitoring_v3/_dataframe.py
-      - packages/google-cloud-monitoring/google/cloud/monitoring_v3/query.py
-      - samples/README.txt
-      - scripts/client-post-processing
-      - samples/snippets/README.rst
-      - tests/system
-      - tests/unit/test__dataframe.py
-      - tests/unit/test_query.py
-    remove_regex:
-      - packages/google-cloud-monitoring
-    tag_format: '{id}-v{version}'
   - id: google-cloud-biglake
     version: 0.1.1
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
