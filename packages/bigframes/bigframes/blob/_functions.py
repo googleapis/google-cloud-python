@@ -21,7 +21,13 @@ import google.cloud.bigquery as bigquery
 import bigframes.session
 import bigframes.session._io.bigquery as bf_io_bigquery
 
-_PYTHON_TO_BQ_TYPES = {int: "INT64", float: "FLOAT64", str: "STRING", bytes: "BYTES"}
+_PYTHON_TO_BQ_TYPES = {
+    int: "INT64",
+    float: "FLOAT64",
+    str: "STRING",
+    bytes: "BYTES",
+    bool: "BOOL",
+}
 
 
 @dataclass(frozen=True)
@@ -113,7 +119,7 @@ AS r\"\"\"
         return self._session.read_gbq_function(udf_name)
 
 
-def exif_func(src_obj_ref_rt: str) -> str:
+def exif_func(src_obj_ref_rt: str, verbose: bool) -> str:
     import io
     import json
 
@@ -121,25 +127,36 @@ def exif_func(src_obj_ref_rt: str) -> str:
     import requests
     from requests import adapters
 
-    session = requests.Session()
-    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
+    result_dict = {"status": "", "content": "{}"}
+    try:
+        session = requests.Session()
+        session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
-    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+        src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
 
-    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+        src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
 
-    response = session.get(src_url, timeout=30)
-    bts = response.content
+        response = session.get(src_url, timeout=30)
+        bts = response.content
 
-    image = Image.open(io.BytesIO(bts))
-    exif_data = image.getexif()
-    exif_dict = {}
-    if exif_data:
-        for tag, value in exif_data.items():
-            tag_name = ExifTags.TAGS.get(tag, tag)
-            exif_dict[tag_name] = value
+        image = Image.open(io.BytesIO(bts))
+        exif_data = image.getexif()
+        exif_dict = {}
+        if exif_data:
+            for tag, value in exif_data.items():
+                tag_name = ExifTags.TAGS.get(tag, tag)
+                # Pillow might return bytes, which are not serializable.
+                if isinstance(value, bytes):
+                    value = value.decode("utf-8", "replace")
+                exif_dict[tag_name] = value
+        result_dict["content"] = json.dumps(exif_dict)
+    except Exception as e:
+        result_dict["status"] = str(e)
 
-    return json.dumps(exif_dict)
+    if verbose:
+        return json.dumps(result_dict)
+    else:
+        return result_dict["content"]
 
 
 exif_func_def = FunctionDef(exif_func, ["pillow", "requests"])
@@ -147,82 +164,109 @@ exif_func_def = FunctionDef(exif_func, ["pillow", "requests"])
 
 # Blur images. Takes ObjectRefRuntime as JSON string. Outputs ObjectRefRuntime JSON string.
 def image_blur_func(
-    src_obj_ref_rt: str, dst_obj_ref_rt: str, ksize_x: int, ksize_y: int, ext: str
+    src_obj_ref_rt: str,
+    dst_obj_ref_rt: str,
+    ksize_x: int,
+    ksize_y: int,
+    ext: str,
+    verbose: bool,
 ) -> str:
     import json
 
-    import cv2 as cv  # type: ignore
-    import numpy as np
-    import requests
-    from requests import adapters
+    result_dict = {"status": "", "content": dst_obj_ref_rt}
 
-    session = requests.Session()
-    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
+    try:
+        import cv2 as cv  # type: ignore
+        import numpy as np
+        import requests
+        from requests import adapters
 
-    ext = ext or ".jpeg"
+        session = requests.Session()
+        session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
-    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
-    dst_obj_ref_rt_json = json.loads(dst_obj_ref_rt)
+        ext = ext or ".jpeg"
 
-    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
-    dst_url = dst_obj_ref_rt_json["access_urls"]["write_url"]
+        src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+        dst_obj_ref_rt_json = json.loads(dst_obj_ref_rt)
 
-    response = session.get(src_url, timeout=30)
-    bts = response.content
+        src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+        dst_url = dst_obj_ref_rt_json["access_urls"]["write_url"]
 
-    nparr = np.frombuffer(bts, np.uint8)
-    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
-    img_blurred = cv.blur(img, ksize=(ksize_x, ksize_y))
+        response = session.get(src_url, timeout=30)
+        bts = response.content
 
-    bts = cv.imencode(ext, img_blurred)[1].tobytes()
+        nparr = np.frombuffer(bts, np.uint8)
+        img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+        img_blurred = cv.blur(img, ksize=(ksize_x, ksize_y))
 
-    ext = ext.replace(".", "")
-    ext_mappings = {"jpg": "jpeg", "tif": "tiff"}
-    ext = ext_mappings.get(ext, ext)
-    content_type = "image/" + ext
+        bts = cv.imencode(ext, img_blurred)[1].tobytes()
 
-    session.put(
-        url=dst_url,
-        data=bts,
-        headers={
-            "Content-Type": content_type,
-        },
-        timeout=30,
-    )
+        ext = ext.replace(".", "")
+        ext_mappings = {"jpg": "jpeg", "tif": "tiff"}
+        ext = ext_mappings.get(ext, ext)
+        content_type = "image/" + ext
 
-    return dst_obj_ref_rt
+        session.put(
+            url=dst_url,
+            data=bts,
+            headers={
+                "Content-Type": content_type,
+            },
+            timeout=30,
+        )
+
+    except Exception as e:
+        result_dict["status"] = str(e)
+
+    if verbose:
+        return json.dumps(result_dict)
+    else:
+        return result_dict["content"]
 
 
 image_blur_def = FunctionDef(image_blur_func, ["opencv-python", "numpy", "requests"])
 
 
 def image_blur_to_bytes_func(
-    src_obj_ref_rt: str, ksize_x: int, ksize_y: int, ext: str
-) -> bytes:
+    src_obj_ref_rt: str, ksize_x: int, ksize_y: int, ext: str, verbose: bool
+) -> str:
+    import base64
     import json
 
-    import cv2 as cv  # type: ignore
-    import numpy as np
-    import requests
-    from requests import adapters
+    status = ""
+    content = b""
 
-    session = requests.Session()
-    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
+    try:
+        import cv2 as cv  # type: ignore
+        import numpy as np
+        import requests
+        from requests import adapters
 
-    ext = ext or ".jpeg"
+        session = requests.Session()
+        session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
-    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
-    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+        ext = ext or ".jpeg"
 
-    response = session.get(src_url, timeout=30)
-    bts = response.content
+        src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+        src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
 
-    nparr = np.frombuffer(bts, np.uint8)
-    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
-    img_blurred = cv.blur(img, ksize=(ksize_x, ksize_y))
-    bts = cv.imencode(ext, img_blurred)[1].tobytes()
+        response = session.get(src_url, timeout=30)
+        bts = response.content
 
-    return bts
+        nparr = np.frombuffer(bts, np.uint8)
+        img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+        img_blurred = cv.blur(img, ksize=(ksize_x, ksize_y))
+        content = cv.imencode(ext, img_blurred)[1].tobytes()
+
+    except Exception as e:
+        status = str(e)
+
+    encoded_content = base64.b64encode(content).decode("utf-8")
+    result_dict = {"status": status, "content": encoded_content}
+    if verbose:
+        return json.dumps(result_dict)
+    else:
+        return result_dict["content"]
 
 
 image_blur_to_bytes_def = FunctionDef(
@@ -238,49 +282,59 @@ def image_resize_func(
     fx: float,
     fy: float,
     ext: str,
+    verbose: bool,
 ) -> str:
     import json
 
-    import cv2 as cv  # type: ignore
-    import numpy as np
-    import requests
-    from requests import adapters
+    result_dict = {"status": "", "content": dst_obj_ref_rt}
 
-    session = requests.Session()
-    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
+    try:
+        import cv2 as cv  # type: ignore
+        import numpy as np
+        import requests
+        from requests import adapters
 
-    ext = ext or ".jpeg"
+        session = requests.Session()
+        session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
-    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
-    dst_obj_ref_rt_json = json.loads(dst_obj_ref_rt)
+        ext = ext or ".jpeg"
 
-    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
-    dst_url = dst_obj_ref_rt_json["access_urls"]["write_url"]
+        src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+        dst_obj_ref_rt_json = json.loads(dst_obj_ref_rt)
 
-    response = session.get(src_url, timeout=30)
-    bts = response.content
+        src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+        dst_url = dst_obj_ref_rt_json["access_urls"]["write_url"]
 
-    nparr = np.frombuffer(bts, np.uint8)
-    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
-    img_resized = cv.resize(img, dsize=(dsize_x, dsize_y), fx=fx, fy=fy)
+        response = session.get(src_url, timeout=30)
+        bts = response.content
 
-    bts = cv.imencode(ext, img_resized)[1].tobytes()
+        nparr = np.frombuffer(bts, np.uint8)
+        img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+        img_resized = cv.resize(img, dsize=(dsize_x, dsize_y), fx=fx, fy=fy)
 
-    ext = ext.replace(".", "")
-    ext_mappings = {"jpg": "jpeg", "tif": "tiff"}
-    ext = ext_mappings.get(ext, ext)
-    content_type = "image/" + ext
+        bts = cv.imencode(ext, img_resized)[1].tobytes()
 
-    session.put(
-        url=dst_url,
-        data=bts,
-        headers={
-            "Content-Type": content_type,
-        },
-        timeout=30,
-    )
+        ext = ext.replace(".", "")
+        ext_mappings = {"jpg": "jpeg", "tif": "tiff"}
+        ext = ext_mappings.get(ext, ext)
+        content_type = "image/" + ext
 
-    return dst_obj_ref_rt
+        session.put(
+            url=dst_url,
+            data=bts,
+            headers={
+                "Content-Type": content_type,
+            },
+            timeout=30,
+        )
+
+    except Exception as e:
+        result_dict["status"] = str(e)
+
+    if verbose:
+        return json.dumps(result_dict)
+    else:
+        return result_dict["content"]
 
 
 image_resize_def = FunctionDef(
@@ -295,31 +349,45 @@ def image_resize_to_bytes_func(
     fx: float,
     fy: float,
     ext: str,
-) -> bytes:
+    verbose: bool,
+) -> str:
+    import base64
     import json
 
-    import cv2 as cv  # type: ignore
-    import numpy as np
-    import requests
-    from requests import adapters
+    status = ""
+    content = b""
 
-    session = requests.Session()
-    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
+    try:
+        import cv2 as cv  # type: ignore
+        import numpy as np
+        import requests
+        from requests import adapters
 
-    ext = ext or ".jpeg"
+        session = requests.Session()
+        session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
-    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
-    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+        ext = ext or ".jpeg"
 
-    response = session.get(src_url, timeout=30)
-    bts = response.content
+        src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+        src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
 
-    nparr = np.frombuffer(bts, np.uint8)
-    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
-    img_resized = cv.resize(img, dsize=(dsize_x, dsize_y), fx=fx, fy=fy)
-    bts = cv.imencode(".jpeg", img_resized)[1].tobytes()
+        response = session.get(src_url, timeout=30)
+        bts = response.content
 
-    return bts
+        nparr = np.frombuffer(bts, np.uint8)
+        img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+        img_resized = cv.resize(img, dsize=(dsize_x, dsize_y), fx=fx, fy=fy)
+        content = cv.imencode(".jpeg", img_resized)[1].tobytes()
+
+    except Exception as e:
+        status = str(e)
+
+    encoded_content = base64.b64encode(content).decode("utf-8")
+    result_dict = {"status": status, "content": encoded_content}
+    if verbose:
+        return json.dumps(result_dict)
+    else:
+        return result_dict["content"]
 
 
 image_resize_to_bytes_def = FunctionDef(
@@ -334,58 +402,68 @@ def image_normalize_func(
     beta: float,
     norm_type: str,
     ext: str,
+    verbose: bool,
 ) -> str:
     import json
 
-    import cv2 as cv  # type: ignore
-    import numpy as np
-    import requests
-    from requests import adapters
+    result_dict = {"status": "", "content": dst_obj_ref_rt}
 
-    session = requests.Session()
-    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
+    try:
+        import cv2 as cv  # type: ignore
+        import numpy as np
+        import requests
+        from requests import adapters
 
-    ext = ext or ".jpeg"
+        session = requests.Session()
+        session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
-    norm_type_mapping = {
-        "inf": cv.NORM_INF,
-        "l1": cv.NORM_L1,
-        "l2": cv.NORM_L2,
-        "minmax": cv.NORM_MINMAX,
-    }
+        ext = ext or ".jpeg"
 
-    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
-    dst_obj_ref_rt_json = json.loads(dst_obj_ref_rt)
+        norm_type_mapping = {
+            "inf": cv.NORM_INF,
+            "l1": cv.NORM_L1,
+            "l2": cv.NORM_L2,
+            "minmax": cv.NORM_MINMAX,
+        }
 
-    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
-    dst_url = dst_obj_ref_rt_json["access_urls"]["write_url"]
+        src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+        dst_obj_ref_rt_json = json.loads(dst_obj_ref_rt)
 
-    response = session.get(src_url, timeout=30)
-    bts = response.content
+        src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+        dst_url = dst_obj_ref_rt_json["access_urls"]["write_url"]
 
-    nparr = np.frombuffer(bts, np.uint8)
-    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
-    img_normalized = cv.normalize(
-        img, None, alpha=alpha, beta=beta, norm_type=norm_type_mapping[norm_type]
-    )
+        response = session.get(src_url, timeout=30)
+        bts = response.content
 
-    bts = cv.imencode(ext, img_normalized)[1].tobytes()
+        nparr = np.frombuffer(bts, np.uint8)
+        img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+        img_normalized = cv.normalize(
+            img, None, alpha=alpha, beta=beta, norm_type=norm_type_mapping[norm_type]
+        )
 
-    ext = ext.replace(".", "")
-    ext_mappings = {"jpg": "jpeg", "tif": "tiff"}
-    ext = ext_mappings.get(ext, ext)
-    content_type = "image/" + ext
+        bts = cv.imencode(ext, img_normalized)[1].tobytes()
 
-    session.put(
-        url=dst_url,
-        data=bts,
-        headers={
-            "Content-Type": content_type,
-        },
-        timeout=30,
-    )
+        ext = ext.replace(".", "")
+        ext_mappings = {"jpg": "jpeg", "tif": "tiff"}
+        ext = ext_mappings.get(ext, ext)
+        content_type = "image/" + ext
 
-    return dst_obj_ref_rt
+        session.put(
+            url=dst_url,
+            data=bts,
+            headers={
+                "Content-Type": content_type,
+            },
+            timeout=30,
+        )
+
+    except Exception as e:
+        result_dict["status"] = str(e)
+
+    if verbose:
+        return json.dumps(result_dict)
+    else:
+        return result_dict["content"]
 
 
 image_normalize_def = FunctionDef(
@@ -394,41 +472,59 @@ image_normalize_def = FunctionDef(
 
 
 def image_normalize_to_bytes_func(
-    src_obj_ref_rt: str, alpha: float, beta: float, norm_type: str, ext: str
-) -> bytes:
+    src_obj_ref_rt: str,
+    alpha: float,
+    beta: float,
+    norm_type: str,
+    ext: str,
+    verbose: bool,
+) -> str:
+    import base64
     import json
 
-    import cv2 as cv  # type: ignore
-    import numpy as np
-    import requests
-    from requests import adapters
+    result_dict = {"status": "", "content": ""}
 
-    session = requests.Session()
-    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
+    try:
+        import cv2 as cv  # type: ignore
+        import numpy as np
+        import requests
+        from requests import adapters
 
-    ext = ext or ".jpeg"
+        session = requests.Session()
+        session.mount("https://", adapters.HTTPAdapter(max_retries=3))
 
-    norm_type_mapping = {
-        "inf": cv.NORM_INF,
-        "l1": cv.NORM_L1,
-        "l2": cv.NORM_L2,
-        "minmax": cv.NORM_MINMAX,
-    }
+        ext = ext or ".jpeg"
 
-    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
-    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+        norm_type_mapping = {
+            "inf": cv.NORM_INF,
+            "l1": cv.NORM_L1,
+            "l2": cv.NORM_L2,
+            "minmax": cv.NORM_MINMAX,
+        }
 
-    response = session.get(src_url, timeout=30)
-    bts = response.content
+        src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+        src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
 
-    nparr = np.frombuffer(bts, np.uint8)
-    img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
-    img_normalized = cv.normalize(
-        img, None, alpha=alpha, beta=beta, norm_type=norm_type_mapping[norm_type]
-    )
-    bts = cv.imencode(".jpeg", img_normalized)[1].tobytes()
+        response = session.get(src_url, timeout=30)
+        bts = response.content
 
-    return bts
+        nparr = np.frombuffer(bts, np.uint8)
+        img = cv.imdecode(nparr, cv.IMREAD_UNCHANGED)
+        img_normalized = cv.normalize(
+            img, None, alpha=alpha, beta=beta, norm_type=norm_type_mapping[norm_type]
+        )
+        bts = cv.imencode(".jpeg", img_normalized)[1].tobytes()
+
+        content_b64 = base64.b64encode(bts).decode("utf-8")
+        result_dict["content"] = content_b64
+
+    except Exception as e:
+        result_dict["status"] = str(e)
+
+    if verbose:
+        return json.dumps(result_dict)
+    else:
+        return result_dict["content"]
 
 
 image_normalize_to_bytes_def = FunctionDef(
@@ -437,7 +533,7 @@ image_normalize_to_bytes_def = FunctionDef(
 
 
 # Extracts all text from a PDF url
-def pdf_extract_func(src_obj_ref_rt: str) -> str:
+def pdf_extract_func(src_obj_ref_rt: str, verbose: bool) -> str:
     try:
         import io
         import json
@@ -470,8 +566,10 @@ def pdf_extract_func(src_obj_ref_rt: str) -> str:
     except Exception as e:
         result_dict = {"status": str(e), "content": ""}
 
-    result_json = json.dumps(result_dict)
-    return result_json
+    if verbose:
+        return json.dumps(result_dict)
+    else:
+        return result_dict["content"]
 
 
 pdf_extract_def = FunctionDef(
@@ -480,7 +578,9 @@ pdf_extract_def = FunctionDef(
 
 
 # Extracts text from a PDF url and chunks it simultaneously
-def pdf_chunk_func(src_obj_ref_rt: str, chunk_size: int, overlap_size: int) -> str:
+def pdf_chunk_func(
+    src_obj_ref_rt: str, chunk_size: int, overlap_size: int, verbose: bool
+) -> str:
     try:
         import io
         import json
@@ -526,8 +626,10 @@ def pdf_chunk_func(src_obj_ref_rt: str, chunk_size: int, overlap_size: int) -> s
     except Exception as e:
         result_dict = {"status": str(e), "content": []}
 
-    result_json = json.dumps(result_dict)
-    return result_json
+    if verbose:
+        return json.dumps(result_dict)
+    else:
+        return json.dumps(result_dict["content"])
 
 
 pdf_chunk_def = FunctionDef(

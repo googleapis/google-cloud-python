@@ -63,7 +63,7 @@ def test_blob_exif(
     )
 
     actual = exif_image_df["blob_col"].blob.exif(
-        engine="pillow", connection=bq_connection
+        engine="pillow", connection=bq_connection, verbose=False
     )
     expected = bpd.Series(
         ['{"ExifOffset": 47, "Make": "MyCamera"}'],
@@ -78,6 +78,31 @@ def test_blob_exif(
     )
 
 
+def test_blob_exif_verbose(
+    bq_connection: str,
+    session: bigframes.Session,
+):
+    exif_image_df = session.from_glob_path(
+        "gs://bigframes_blob_test/images_exif/*",
+        name="blob_col",
+        connection=bq_connection,
+    )
+
+    actual = exif_image_df["blob_col"].blob.exif(
+        engine="pillow", connection=bq_connection, verbose=True
+    )
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    content_series = actual_exploded["content"]
+    assert content_series.dtype == dtypes.JSON_DTYPE
+
+
 def test_blob_image_blur_to_series(
     images_mm_df: bpd.DataFrame,
     bq_connection: str,
@@ -89,8 +114,9 @@ def test_blob_image_blur_to_series(
     )
 
     actual = images_mm_df["blob_col"].blob.image_blur(
-        (8, 8), dst=series, connection=bq_connection, engine="opencv"
+        (8, 8), dst=series, connection=bq_connection, engine="opencv", verbose=False
     )
+
     expected_df = pd.DataFrame(
         {
             "uri": images_output_uris,
@@ -106,6 +132,33 @@ def test_blob_image_blur_to_series(
         check_index_type=False,
     )
 
+    # verify the files exist
+    assert not actual.blob.size().isna().any()
+
+
+def test_blob_image_blur_to_series_verbose(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_uris: list[str],
+    session: bigframes.Session,
+):
+    series = bpd.Series(images_output_uris, session=session).str.to_blob(
+        connection=bq_connection
+    )
+
+    actual = images_mm_df["blob_col"].blob.image_blur(
+        (8, 8), dst=series, connection=bq_connection, engine="opencv", verbose=True
+    )
+
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    # Content should be blob objects for GCS destination
     # verify the files exist
     assert not actual.blob.size().isna().any()
 
@@ -117,7 +170,11 @@ def test_blob_image_blur_to_folder(
     images_output_uris: list[str],
 ):
     actual = images_mm_df["blob_col"].blob.image_blur(
-        (8, 8), dst=images_output_folder, connection=bq_connection, engine="opencv"
+        (8, 8),
+        dst=images_output_folder,
+        connection=bq_connection,
+        engine="opencv",
+        verbose=False,
     )
     expected_df = pd.DataFrame(
         {
@@ -138,14 +195,63 @@ def test_blob_image_blur_to_folder(
     assert not actual.blob.size().isna().any()
 
 
+def test_blob_image_blur_to_folder_verbose(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_folder: str,
+    images_output_uris: list[str],
+):
+    actual = images_mm_df["blob_col"].blob.image_blur(
+        (8, 8),
+        dst=images_output_folder,
+        connection=bq_connection,
+        engine="opencv",
+        verbose=True,
+    )
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    content_series = actual_exploded["content"]
+    # Content should be blob objects for GCS destination
+    assert hasattr(content_series, "blob")
+
+    # verify the files exist
+    assert not actual.blob.size().isna().any()
+
+
 def test_blob_image_blur_to_bq(images_mm_df: bpd.DataFrame, bq_connection: str):
     actual = images_mm_df["blob_col"].blob.image_blur(
-        (8, 8), connection=bq_connection, engine="opencv"
+        (8, 8), connection=bq_connection, engine="opencv", verbose=False
     )
 
     assert isinstance(actual, bpd.Series)
     assert len(actual) == 2
     assert actual.dtype == dtypes.BYTES_DTYPE
+
+
+def test_blob_image_blur_to_bq_verbose(images_mm_df: bpd.DataFrame, bq_connection: str):
+    actual = images_mm_df["blob_col"].blob.image_blur(
+        (8, 8), connection=bq_connection, engine="opencv", verbose=True
+    )
+
+    assert isinstance(actual, bpd.Series)
+    assert len(actual) == 2
+
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    content_series = actual_exploded["content"]
+    assert content_series.dtype == dtypes.BYTES_DTYPE
 
 
 def test_blob_image_resize_to_series(
@@ -159,8 +265,13 @@ def test_blob_image_resize_to_series(
     )
 
     actual = images_mm_df["blob_col"].blob.image_resize(
-        (200, 300), dst=series, connection=bq_connection, engine="opencv"
+        (200, 300),
+        dst=series,
+        connection=bq_connection,
+        engine="opencv",
+        verbose=False,
     )
+
     expected_df = pd.DataFrame(
         {
             "uri": images_output_uris,
@@ -175,6 +286,40 @@ def test_blob_image_resize_to_series(
         check_dtype=False,
         check_index_type=False,
     )
+
+    # verify the files exist
+    assert not actual.blob.size().isna().any()
+
+
+def test_blob_image_resize_to_series_verbose(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_uris: list[str],
+    session: bigframes.Session,
+):
+    series = bpd.Series(images_output_uris, session=session).str.to_blob(
+        connection=bq_connection
+    )
+
+    actual = images_mm_df["blob_col"].blob.image_resize(
+        (200, 300),
+        dst=series,
+        connection=bq_connection,
+        engine="opencv",
+        verbose=True,
+    )
+
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    content_series = actual_exploded["content"]
+    # Content should be blob objects for GCS destination
+    assert hasattr(content_series, "blob")
 
     # verify the files exist
     assert not actual.blob.size().isna().any()
@@ -187,8 +332,13 @@ def test_blob_image_resize_to_folder(
     images_output_uris: list[str],
 ):
     actual = images_mm_df["blob_col"].blob.image_resize(
-        (200, 300), dst=images_output_folder, connection=bq_connection, engine="opencv"
+        (200, 300),
+        dst=images_output_folder,
+        connection=bq_connection,
+        engine="opencv",
+        verbose=False,
     )
+
     expected_df = pd.DataFrame(
         {
             "uri": images_output_uris,
@@ -208,14 +358,66 @@ def test_blob_image_resize_to_folder(
     assert not actual.blob.size().isna().any()
 
 
+def test_blob_image_resize_to_folder_verbose(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_folder: str,
+    images_output_uris: list[str],
+):
+    actual = images_mm_df["blob_col"].blob.image_resize(
+        (200, 300),
+        dst=images_output_folder,
+        connection=bq_connection,
+        engine="opencv",
+        verbose=True,
+    )
+
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    content_series = actual_exploded["content"]
+    # Content should be blob objects for GCS destination
+    assert hasattr(content_series, "blob")
+
+    # verify the files exist
+    assert not content_series.blob.size().isna().any()
+
+
 def test_blob_image_resize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: str):
     actual = images_mm_df["blob_col"].blob.image_resize(
-        (200, 300), connection=bq_connection, engine="opencv"
+        (200, 300), connection=bq_connection, engine="opencv", verbose=False
     )
 
     assert isinstance(actual, bpd.Series)
     assert len(actual) == 2
     assert actual.dtype == dtypes.BYTES_DTYPE
+
+
+def test_blob_image_resize_to_bq_verbose(
+    images_mm_df: bpd.DataFrame, bq_connection: str
+):
+    actual = images_mm_df["blob_col"].blob.image_resize(
+        (200, 300), connection=bq_connection, engine="opencv", verbose=True
+    )
+
+    assert isinstance(actual, bpd.Series)
+    assert len(actual) == 2
+
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    content_series = actual_exploded["content"]
+    assert content_series.dtype == dtypes.BYTES_DTYPE
 
 
 def test_blob_image_normalize_to_series(
@@ -235,7 +437,9 @@ def test_blob_image_normalize_to_series(
         dst=series,
         connection=bq_connection,
         engine="opencv",
+        verbose=False,
     )
+
     expected_df = pd.DataFrame(
         {
             "uri": images_output_uris,
@@ -253,6 +457,39 @@ def test_blob_image_normalize_to_series(
 
     # verify the files exist
     assert not actual.blob.size().isna().any()
+
+
+def test_blob_image_normalize_to_series_verbose(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_uris: list[str],
+    session: bigframes.Session,
+):
+    series = bpd.Series(images_output_uris, session=session).str.to_blob(
+        connection=bq_connection
+    )
+
+    actual = images_mm_df["blob_col"].blob.image_normalize(
+        alpha=50.0,
+        beta=150.0,
+        norm_type="minmax",
+        dst=series,
+        connection=bq_connection,
+        engine="opencv",
+        verbose=True,
+    )
+
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    content_series = actual_exploded["content"]
+    # Content should be blob objects for GCS destination
+    assert hasattr(content_series, "blob")
 
 
 def test_blob_image_normalize_to_folder(
@@ -268,7 +505,9 @@ def test_blob_image_normalize_to_folder(
         dst=images_output_folder,
         connection=bq_connection,
         engine="opencv",
+        verbose=False,
     )
+
     expected_df = pd.DataFrame(
         {
             "uri": images_output_uris,
@@ -288,6 +527,35 @@ def test_blob_image_normalize_to_folder(
     assert not actual.blob.size().isna().any()
 
 
+def test_blob_image_normalize_to_folder_verbose(
+    images_mm_df: bpd.DataFrame,
+    bq_connection: str,
+    images_output_folder: str,
+    images_output_uris: list[str],
+):
+    actual = images_mm_df["blob_col"].blob.image_normalize(
+        alpha=50.0,
+        beta=150.0,
+        norm_type="minmax",
+        dst=images_output_folder,
+        connection=bq_connection,
+        engine="opencv",
+        verbose=True,
+    )
+
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    content_series = actual_exploded["content"]
+    # Content should be blob objects for GCS destination
+    assert hasattr(content_series, "blob")
+
+
 def test_blob_image_normalize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: str):
     actual = images_mm_df["blob_col"].blob.image_normalize(
         alpha=50.0,
@@ -295,6 +563,7 @@ def test_blob_image_normalize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: 
         norm_type="minmax",
         connection=bq_connection,
         engine="opencv",
+        verbose=False,
     )
 
     assert isinstance(actual, bpd.Series)
@@ -302,21 +571,40 @@ def test_blob_image_normalize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: 
     assert actual.dtype == dtypes.BYTES_DTYPE
 
 
-@pytest.mark.parametrize(
-    "verbose",
-    [
-        (True),
-        (False),
-    ],
-)
+def test_blob_image_normalize_to_bq_verbose(
+    images_mm_df: bpd.DataFrame, bq_connection: str
+):
+    actual = images_mm_df["blob_col"].blob.image_normalize(
+        alpha=50.0,
+        beta=150.0,
+        norm_type="minmax",
+        connection=bq_connection,
+        engine="opencv",
+        verbose=True,
+    )
+
+    assert isinstance(actual, bpd.Series)
+    assert len(actual) == 2
+
+    assert hasattr(actual, "struct")
+    actual_exploded = actual.struct.explode()
+    assert "status" in actual_exploded.columns
+    assert "content" in actual_exploded.columns
+
+    status_series = actual_exploded["status"]
+    assert status_series.dtype == dtypes.STRING_DTYPE
+
+    content_series = actual_exploded["content"]
+    assert content_series.dtype == dtypes.BYTES_DTYPE
+
+
 def test_blob_pdf_extract(
     pdf_mm_df: bpd.DataFrame,
-    verbose: bool,
     bq_connection: str,
 ):
     actual = (
         pdf_mm_df["pdf"]
-        .blob.pdf_extract(connection=bq_connection, verbose=verbose, engine="pypdf")
+        .blob.pdf_extract(connection=bq_connection, verbose=False, engine="pypdf")
         .explode()
         .to_pandas()
     )
@@ -325,20 +613,14 @@ def test_blob_pdf_extract(
     expected_text = "Sample PDF This is a testing file. Some dummy messages are used for testing purposes."
     expected_len = len(expected_text)
 
-    actual_text = ""
-    if verbose:
-        # The first entry is for a file that doesn't exist, so we check the second one
-        successful_results = actual[actual.apply(lambda x: x["status"] == "")]
-        actual_text = successful_results.apply(lambda x: x["content"]).iloc[0]
-    else:
-        actual_text = actual[actual != ""].iloc[0]
+    actual_text = actual[actual != ""].iloc[0]
     actual_len = len(actual_text)
 
     relative_length_tolerance = 0.25
     min_acceptable_len = expected_len * (1 - relative_length_tolerance)
     max_acceptable_len = expected_len * (1 + relative_length_tolerance)
     assert min_acceptable_len <= actual_len <= max_acceptable_len, (
-        f"Item (verbose={verbose}): Extracted text length {actual_len} is outside the acceptable range "
+        f"Item (verbose=False): Extracted text length {actual_len} is outside the acceptable range "
         f"[{min_acceptable_len:.0f}, {max_acceptable_len:.0f}]. "
         f"Expected reference length was {expected_len}. "
     )
@@ -348,24 +630,54 @@ def test_blob_pdf_extract(
     for keyword in major_keywords:
         assert (
             keyword.lower() in actual_text.lower()
-        ), f"Item (verbose={verbose}): Expected keyword '{keyword}' not found in extracted text. "
+        ), f"Item (verbose=False): Expected keyword '{keyword}' not found in extracted text. "
 
 
-@pytest.mark.parametrize(
-    "verbose",
-    [
-        (True),
-        (False),
-    ],
-)
-def test_blob_pdf_chunk(pdf_mm_df: bpd.DataFrame, verbose: bool, bq_connection: str):
+def test_blob_pdf_extract_verbose(
+    pdf_mm_df: bpd.DataFrame,
+    bq_connection: str,
+):
+    actual = (
+        pdf_mm_df["pdf"]
+        .blob.pdf_extract(connection=bq_connection, verbose=True, engine="pypdf")
+        .explode()
+        .to_pandas()
+    )
+
+    # check relative length
+    expected_text = "Sample PDF This is a testing file. Some dummy messages are used for testing purposes."
+    expected_len = len(expected_text)
+
+    # The first entry is for a file that doesn't exist, so we check the second one
+    successful_results = actual[actual.apply(lambda x: x["status"] == "")]
+    actual_text = successful_results.apply(lambda x: x["content"]).iloc[0]
+    actual_len = len(actual_text)
+
+    relative_length_tolerance = 0.25
+    min_acceptable_len = expected_len * (1 - relative_length_tolerance)
+    max_acceptable_len = expected_len * (1 + relative_length_tolerance)
+    assert min_acceptable_len <= actual_len <= max_acceptable_len, (
+        f"Item (verbose=True): Extracted text length {actual_len} is outside the acceptable range "
+        f"[{min_acceptable_len:.0f}, {max_acceptable_len:.0f}]. "
+        f"Expected reference length was {expected_len}. "
+    )
+
+    # check for major keywords
+    major_keywords = ["Sample", "PDF", "testing", "dummy", "messages"]
+    for keyword in major_keywords:
+        assert (
+            keyword.lower() in actual_text.lower()
+        ), f"Item (verbose=True): Expected keyword '{keyword}' not found in extracted text. "
+
+
+def test_blob_pdf_chunk(pdf_mm_df: bpd.DataFrame, bq_connection: str):
     actual = (
         pdf_mm_df["pdf"]
         .blob.pdf_chunk(
             connection=bq_connection,
             chunk_size=50,
             overlap_size=10,
-            verbose=verbose,
+            verbose=False,
             engine="pypdf",
         )
         .explode()
@@ -376,21 +688,15 @@ def test_blob_pdf_chunk(pdf_mm_df: bpd.DataFrame, verbose: bool, bq_connection: 
     expected_text = "Sample PDF This is a testing file. Some dummy messages are used for testing purposes."
     expected_len = len(expected_text)
 
-    actual_text = ""
-    if verbose:
-        # The first entry is for a file that doesn't exist, so we check the second one
-        successful_results = actual[actual.apply(lambda x: x["status"] == "")]
-        actual_text = "".join(successful_results.apply(lambda x: x["content"]).iloc[0])
-    else:
-        # First entry is NA
-        actual_text = "".join(actual.dropna())
+    # First entry is NA
+    actual_text = "".join(actual.dropna())
     actual_len = len(actual_text)
 
     relative_length_tolerance = 0.25
     min_acceptable_len = expected_len * (1 - relative_length_tolerance)
     max_acceptable_len = expected_len * (1 + relative_length_tolerance)
     assert min_acceptable_len <= actual_len <= max_acceptable_len, (
-        f"Item (verbose={verbose}): Extracted text length {actual_len} is outside the acceptable range "
+        f"Item (verbose=False): Extracted text length {actual_len} is outside the acceptable range "
         f"[{min_acceptable_len:.0f}, {max_acceptable_len:.0f}]. "
         f"Expected reference length was {expected_len}. "
     )
@@ -400,28 +706,65 @@ def test_blob_pdf_chunk(pdf_mm_df: bpd.DataFrame, verbose: bool, bq_connection: 
     for keyword in major_keywords:
         assert (
             keyword.lower() in actual_text.lower()
-        ), f"Item (verbose={verbose}): Expected keyword '{keyword}' not found in extracted text. "
+        ), f"Item (verbose=False): Expected keyword '{keyword}' not found in extracted text. "
+
+
+def test_blob_pdf_chunk_verbose(pdf_mm_df: bpd.DataFrame, bq_connection: str):
+    actual = (
+        pdf_mm_df["pdf"]
+        .blob.pdf_chunk(
+            connection=bq_connection,
+            chunk_size=50,
+            overlap_size=10,
+            verbose=True,
+            engine="pypdf",
+        )
+        .explode()
+        .to_pandas()
+    )
+
+    # check relative length
+    expected_text = "Sample PDF This is a testing file. Some dummy messages are used for testing purposes."
+    expected_len = len(expected_text)
+
+    # The first entry is for a file that doesn't exist, so we check the second one
+    successful_results = actual[actual.apply(lambda x: x["status"] == "")]
+    actual_text = "".join(successful_results.apply(lambda x: x["content"]).iloc[0])
+    actual_len = len(actual_text)
+
+    relative_length_tolerance = 0.25
+    min_acceptable_len = expected_len * (1 - relative_length_tolerance)
+    max_acceptable_len = expected_len * (1 + relative_length_tolerance)
+    assert min_acceptable_len <= actual_len <= max_acceptable_len, (
+        f"Item (verbose=True): Extracted text length {actual_len} is outside the acceptable range "
+        f"[{min_acceptable_len:.0f}, {max_acceptable_len:.0f}]. "
+        f"Expected reference length was {expected_len}. "
+    )
+
+    # check for major keywords
+    major_keywords = ["Sample", "PDF", "testing", "dummy", "messages"]
+    for keyword in major_keywords:
+        assert (
+            keyword.lower() in actual_text.lower()
+        ), f"Item (verbose=True): Expected keyword '{keyword}' not found in extracted text. "
 
 
 @pytest.mark.parametrize(
-    "model_name, verbose",
+    "model_name",
     [
-        ("gemini-2.0-flash-001", True),
-        ("gemini-2.0-flash-001", False),
-        ("gemini-2.0-flash-lite-001", True),
-        ("gemini-2.0-flash-lite-001", False),
+        "gemini-2.0-flash-001",
+        "gemini-2.0-flash-lite-001",
     ],
 )
 def test_blob_transcribe(
     audio_mm_df: bpd.DataFrame,
     model_name: str,
-    verbose: bool,
 ):
     actual = (
         audio_mm_df["audio"]
         .blob.audio_transcribe(
             model_name=model_name,  # type: ignore
-            verbose=verbose,
+            verbose=False,
         )
         .to_pandas()
     )
@@ -430,18 +773,12 @@ def test_blob_transcribe(
     expected_text = "Now, as all books not primarily intended as picture-books consist principally of types composed to form letterpress"
     expected_len = len(expected_text)
 
-    actual_text = ""
-    if verbose:
-        actual_text = actual[0]["content"]
-    else:
-        actual_text = actual[0]
+    actual_text = actual[0]
 
     if pd.isna(actual_text) or actual_text == "":
         # Ensure the tests are robust to flakes in the model, which isn't
         # particularly useful information for the bigframes team.
-        logging.warning(
-            f"blob_transcribe() model {model_name} verbose={verbose} failure"
-        )
+        logging.warning(f"blob_transcribe() model {model_name} verbose=False failure")
         return
 
     actual_len = len(actual_text)
@@ -450,7 +787,7 @@ def test_blob_transcribe(
     min_acceptable_len = expected_len * (1 - relative_length_tolerance)
     max_acceptable_len = expected_len * (1 + relative_length_tolerance)
     assert min_acceptable_len <= actual_len <= max_acceptable_len, (
-        f"Item (verbose={verbose}): Transcribed text length {actual_len} is outside the acceptable range "
+        f"Item (verbose=False): Transcribed text length {actual_len} is outside the acceptable range "
         f"[{min_acceptable_len:.0f}, {max_acceptable_len:.0f}]. "
         f"Expected reference length was {expected_len}. "
     )
@@ -460,4 +797,55 @@ def test_blob_transcribe(
     for keyword in major_keywords:
         assert (
             keyword.lower() in actual_text.lower()
-        ), f"Item (verbose={verbose}): Expected keyword '{keyword}' not found in transcribed text. "
+        ), f"Item (verbose=False): Expected keyword '{keyword}' not found in transcribed text. "
+
+
+@pytest.mark.parametrize(
+    "model_name",
+    [
+        "gemini-2.0-flash-001",
+        "gemini-2.0-flash-lite-001",
+    ],
+)
+def test_blob_transcribe_verbose(
+    audio_mm_df: bpd.DataFrame,
+    model_name: str,
+):
+    actual = (
+        audio_mm_df["audio"]
+        .blob.audio_transcribe(
+            model_name=model_name,  # type: ignore
+            verbose=True,
+        )
+        .to_pandas()
+    )
+
+    # check relative length
+    expected_text = "Now, as all books not primarily intended as picture-books consist principally of types composed to form letterpress"
+    expected_len = len(expected_text)
+
+    actual_text = actual[0]["content"]
+
+    if pd.isna(actual_text) or actual_text == "":
+        # Ensure the tests are robust to flakes in the model, which isn't
+        # particularly useful information for the bigframes team.
+        logging.warning(f"blob_transcribe() model {model_name} verbose=True failure")
+        return
+
+    actual_len = len(actual_text)
+
+    relative_length_tolerance = 0.2
+    min_acceptable_len = expected_len * (1 - relative_length_tolerance)
+    max_acceptable_len = expected_len * (1 + relative_length_tolerance)
+    assert min_acceptable_len <= actual_len <= max_acceptable_len, (
+        f"Item (verbose=True): Transcribed text length {actual_len} is outside the acceptable range "
+        f"[{min_acceptable_len:.0f}, {max_acceptable_len:.0f}]. "
+        f"Expected reference length was {expected_len}. "
+    )
+
+    # check for major keywords
+    major_keywords = ["book", "picture"]
+    for keyword in major_keywords:
+        assert (
+            keyword.lower() in actual_text.lower()
+        ), f"Item (verbose=True): Expected keyword '{keyword}' not found in transcribed text. "
