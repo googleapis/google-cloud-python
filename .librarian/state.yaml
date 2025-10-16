@@ -112,7 +112,7 @@ libraries:
     last_generated_commit: a9ebc23947a515fab3de97ff326c86fc8f03fae1
     apis:
       - path: google/apps/card/v1
-        service_config: ""
+        service_config: ''
     source_roots:
       - packages/google-apps-card
     preserve_regex:
@@ -271,7 +271,7 @@ libraries:
       - path: google/identity/accesscontextmanager/v1
         service_config: accesscontextmanager_v1.yaml
       - path: google/identity/accesscontextmanager/type
-        service_config: ""
+        service_config: ''
     source_roots:
       - packages/google-cloud-access-context-manager
     preserve_regex: []
@@ -463,7 +463,7 @@ libraries:
     last_generated_commit: a9ebc23947a515fab3de97ff326c86fc8f03fae1
     apis:
       - path: google/appengine/logging/v1
-        service_config: ""
+        service_config: ''
     source_roots:
       - packages/google-cloud-appengine-logging
     preserve_regex:
@@ -883,7 +883,7 @@ libraries:
     last_generated_commit: a9ebc23947a515fab3de97ff326c86fc8f03fae1
     apis:
       - path: google/cloud/bigquery/logging/v1
-        service_config: ""
+        service_config: ''
     source_roots:
       - packages/google-cloud-bigquery-logging
     preserve_regex:
@@ -2013,7 +2013,7 @@ libraries:
     last_generated_commit: a9ebc23947a515fab3de97ff326c86fc8f03fae1
     apis:
       - path: google/iam/v1/logging
-        service_config: ""
+        service_config: ''
     source_roots:
       - packages/google-cloud-iam-logging
     preserve_regex:
@@ -3228,7 +3228,7 @@ libraries:
     last_generated_commit: a9ebc23947a515fab3de97ff326c86fc8f03fae1
     apis:
       - path: google/devtools/source/v1
-        service_config: ""
+        service_config: ''
     source_roots:
       - packages/google-cloud-source-context
     preserve_regex:
@@ -4312,7 +4312,7 @@ libraries:
     last_generated_commit: a9ebc23947a515fab3de97ff326c86fc8f03fae1
     apis:
       - path: google/shopping/type
-        service_config: ""
+        service_config: ''
     source_roots:
       - packages/google-shopping-type
     preserve_regex:
@@ -4336,11 +4336,11 @@ libraries:
       - path: google/cloud/location
         service_config: cloud.yaml
       - path: google/logging/type
-        service_config: ""
+        service_config: ''
       - path: google/rpc
         service_config: rpc_publish.yaml
       - path: google/rpc/context
-        service_config: ""
+        service_config: ''
       - path: google/type
         service_config: type.yaml
     source_roots:
@@ -4367,6 +4367,26 @@ libraries:
     remove_regex:
       - packages/google-cloud-biglake
     tag_format: '{id}-v{version}'
+  - id: google-cloud-monitoring-dashboards
+    version: 2.19.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/monitoring/dashboard/v1
+    source_roots:
+      - packages/google-cloud-monitoring-dashboards
+    preserve_regex:
+      - packages/google-cloud-monitoring-dashboards/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - packages/google-cloud-monitoring-dashboards/google/monitoring
+      - tests/unit/gapic/dashboard_v1
+    remove_regex:
+      - packages/google-cloud-monitoring-dashboards
+    tag_format: '{id}-v{version}'    
   - id: google-cloud-gke-multicloud
     version: 0.6.22
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
