@@ -350,14 +350,6 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
             f"{output}/{path_to_library}/.repo-metadata.json",
         )
 
-    source_readme_path = Path(output) / path_to_library / "README.rst"
-    if source_readme_path.exists():
-        destination_docs_dir = Path(output) / path_to_library / "docs"
-        destination_readme_path = destination_docs_dir / "README.rst"
-
-        os.makedirs(destination_docs_dir, exist_ok=True)
-        shutil.copy(source_readme_path, destination_readme_path)
-
     # copy post-procesing files
     for post_processing_file in glob.glob(
         f"{input}/client-post-processing/*.yaml"
@@ -509,6 +501,30 @@ def _generate_repo_metadata_file(
     _write_json_file(output_repo_metadata, metadata_content)
 
 
+def _copy_readme_to_docs(output: str, library_id: str):
+    """Copies the generated README.rst to the docs directory.
+
+    Args:
+        output(str): Path to the directory in the container where code
+            should be generated.
+        library_id(str): The library id.
+    """
+    path_to_library = f"packages/{library_id}"
+    source_readme_path = Path(output) / path_to_library / "README.rst"
+    if source_readme_path.exists():
+        destination_docs_dir = Path(output) / path_to_library / "docs"
+        destination_readme_path = destination_docs_dir / "README.rst"
+
+        os.makedirs(destination_docs_dir, exist_ok=True)
+
+        # If docs/README.rst already exists (as a file or symlink), remove it.
+        if destination_readme_path.exists() or destination_readme_path.is_symlink():
+            destination_readme_path.unlink()
+
+        # Create a relative symlink from docs/README.rst to ../README.rst
+        os.symlink("../README.rst", destination_readme_path)
+
+
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
@@ -550,6 +566,7 @@ def handle_generate(
         _copy_files_needed_for_post_processing(output, input, library_id)
         _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
+        _copy_readme_to_docs(output, library_id)
         _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
         raise ValueError("Generation failed.") from e

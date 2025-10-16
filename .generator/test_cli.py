@@ -68,6 +68,7 @@ from cli import (
     _update_version_for_library,
     _verify_library_dist_name,
     _verify_library_namespace,
+    _copy_readme_to_docs,
     _write_json_file,
     _write_text_file,
     handle_build,
@@ -639,6 +640,11 @@ def test_handle_generate_success(
         "cli._clean_up_files_after_post_processing"
     )
     mocker.patch("cli._generate_repo_metadata_file")
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_symlink = mocker.patch("os.symlink")
+    mock_path_exists = mocker.patch("pathlib.Path.exists", return_value=True)
+    mock_path_is_symlink = mocker.patch("pathlib.Path.is_symlink", return_value=False)
+    mock_path_unlink = mocker.patch("pathlib.Path.unlink")
 
     handle_generate()
 
@@ -646,11 +652,22 @@ def test_handle_generate_success(
     mock_copy_files_needed_for_post_processing.assert_called_once_with(
         "output", "input", "google-cloud-language"
     )
+    mock_makedirs.assert_called_with(
+        Path("output") / "packages" / "google-cloud-language" / "docs", exist_ok=True
+    )
+    mock_path_unlink.assert_called_once()
+    mock_symlink.assert_called_with(
+        "../README.rst",
+        Path("output")
+        / "packages"
+        / "google-cloud-language"
+        / "docs"
+        / "README.rst",
+    )
     mock_clean_up_files_after_post_processing.assert_called_once_with(
         "output", "google-cloud-language"
     )
     mock_generate_api.assert_called_once()
-
 
 def test_handle_generate_fail(caplog):
     """
@@ -814,28 +831,6 @@ def test_copy_files_needed_for_post_processing_copies_metadata_if_exists(mocker)
     mock_makedirs.assert_called()
 
 
-def test_copy_files_needed_for_post_processing_copies_readme(mocker):
-    """Tests that README.rst is copied to the docs directory if it exists."""
-    mock_makedirs = mocker.patch("os.makedirs")
-    mock_shutil_copy = mocker.patch("shutil.copy")
-    mock_path_exists = mocker.patch("pathlib.Path.exists", return_value=True)
-    mocker.patch("os.path.exists", return_value=False)  # for .repo-metadata.json
-
-    _copy_files_needed_for_post_processing("output", "input", "google-cloud-language")
-
-    mock_makedirs.assert_called_with(
-        Path("output") / "packages" / "google-cloud-language" / "docs", exist_ok=True
-    )
-    mock_shutil_copy.assert_called_with(
-        Path("output") / "packages" / "google-cloud-language" / "README.rst",
-        Path("output")
-        / "packages"
-        / "google-cloud-language"
-        / "docs"
-        / "README.rst",
-    )
-
-
 def test_copy_files_needed_for_post_processing_skips_metadata_if_not_exists(mocker):
     """Tests that .repo-metadata.json is not copied if it does not exist."""
     mock_makedirs = mocker.patch("os.makedirs")
@@ -846,6 +841,32 @@ def test_copy_files_needed_for_post_processing_skips_metadata_if_not_exists(mock
 
     mock_shutil_copy.assert_not_called()
     mock_makedirs.assert_called()
+
+
+def test_copy_readme_to_docs(mocker):
+    """Tests that a symlink is created from docs/README.rst to ../README.rst."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_symlink = mocker.patch("os.symlink")
+    mock_path_exists = mocker.patch("pathlib.Path.exists", return_value=True)
+    mock_path_is_symlink = mocker.patch("pathlib.Path.is_symlink", return_value=False)
+    mock_path_unlink = mocker.patch("pathlib.Path.unlink")
+
+    _copy_readme_to_docs("output", "google-cloud-language")
+
+    mock_makedirs.assert_called_with(
+        Path("output") / "packages" / "google-cloud-language" / "docs", exist_ok=True
+    )
+    mock_path_unlink.assert_called_once()
+    mock_symlink.assert_called_with(
+        "../README.rst",
+        Path("output")
+        / "packages"
+        / "google-cloud-language"
+        / "docs"
+        / "README.rst",
+    )
+
+
 
 
 def test_clean_up_files_after_post_processing_success(mocker):
