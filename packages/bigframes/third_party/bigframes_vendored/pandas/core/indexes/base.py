@@ -957,17 +957,23 @@ class Index:
 
     def fillna(self, value) -> Index:
         """
-        Fill NA/NaN values with the specified value.
+        Fill NA (NULL in BigQuery) values using the specified method.
+
+        Note that empty strings ``''``, :attr:`numpy.inf`, and
+        :attr:`numpy.nan` are ***not*** considered NA values. This NA/NULL
+        logic differs from numpy, but it is the same as BigQuery and the
+        :class:`pandas.ArrowDtype`.
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
-            >>> import numpy as np
-            >>> bpd.options.display.progress_bar = None
-
-            >>> idx = bpd.Index([np.nan, np.nan, 3])
+            >>> idx = bpd.Index(
+            ...     pa.array([None, np.nan, 3, None], type=pa.float64()),
+            ...     dtype=pd.ArrowDtype(pa.float64()),
+            ... )
+            >>> idx
+            Index([<NA>, nan, 3.0, <NA>], dtype='Float64')
             >>> idx.fillna(0)
-            Index([0.0, 0.0, 3.0], dtype='Float64')
+            Index([0.0, nan, 3.0, 0.0], dtype='Float64')
 
         Args:
             value (scalar):

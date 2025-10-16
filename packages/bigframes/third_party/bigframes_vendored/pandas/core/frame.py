@@ -6978,7 +6978,7 @@ class DataFrame(generic.NDFrame):
 
     def interpolate(self, method: str = "linear"):
         """
-        Fill NaN values using an interpolation method.
+        Fill NA (NULL in BigQuery) values using an interpolation method.
 
         **Examples:**
 
@@ -7028,35 +7028,39 @@ class DataFrame(generic.NDFrame):
 
     def fillna(self, value):
         """
-        Fill NA/NaN values using the specified method.
+        Fill NA (NULL in BigQuery) values using the specified method.
+
+        Note that empty strings ``''``, :attr:`numpy.inf`, and
+        :attr:`numpy.nan` are ***not*** considered NA values. This NA/NULL
+        logic differs from numpy, but it is the same as BigQuery and the
+        :class:`pandas.ArrowDtype`.
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-
-            >>> df = bpd.DataFrame([[np.nan, 2, np.nan, 0],
-            ...                     [3, 4, np.nan, 1],
-            ...                     [np.nan, np.nan, np.nan, np.nan],
-            ...                     [np.nan, 3, np.nan, 4]],
-            ...                    columns=list("ABCD")).astype("Float64")
+            >>> df = bpd.DataFrame(
+            ...     [
+            ...         pa.array([np.nan, 2, None, 0], type=pa.float64()),
+            ...         pa.array([3, np.nan, None, 1], type=pa.float64()),
+            ...         pa.array([None, None, np.nan, None], type=pa.float64()),
+            ...         pa.array([4, 5, None, np.nan], type=pa.float64()),
+            ...     ], columns=list("ABCD"), dtype=pd.ArrowDtype(pa.float64()))
             >>> df
-                A     B     C     D
-            0  <NA>   2.0  <NA>   0.0
-            1   3.0   4.0  <NA>   1.0
-            2  <NA>  <NA>  <NA>  <NA>
-            3  <NA>   3.0  <NA>   4.0
+                  A     B     C     D
+            0   NaN   2.0  <NA>   0.0
+            1   3.0   NaN  <NA>   1.0
+            2  <NA>  <NA>   NaN  <NA>
+            3   4.0   5.0  <NA>   NaN
             <BLANKLINE>
             [4 rows x 4 columns]
 
-        Replace all NA elements with 0s.
+        Replace all NA (NULL) elements with 0s.
 
             >>> df.fillna(0)
                  A    B    C    D
-            0  0.0  2.0  0.0  0.0
-            1  3.0  4.0  0.0  1.0
-            2  0.0  0.0  0.0  0.0
-            3  0.0  3.0  0.0  4.0
+            0  NaN  2.0  0.0  0.0
+            1  3.0  NaN  0.0  1.0
+            2  0.0  0.0  NaN  0.0
+            3  4.0  5.0  0.0  NaN
             <BLANKLINE>
             [4 rows x 4 columns]
 
@@ -7072,11 +7076,11 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [3 rows x 4 columns]
             >>> df.fillna(df_fill)
-                A    B     C     D
-            0   0.0  2.0   2.0   0.0
-            1   3.0  4.0   6.0   1.0
-            2   8.0  9.0  10.0  11.0
-            3  <NA>  3.0  <NA>   4.0
+                 A    B     C     D
+            0  NaN  2.0   2.0   0.0
+            1  3.0  NaN   6.0   1.0
+            2  8.0  9.0   NaN  11.0
+            3  4.0  5.0  <NA>   NaN
             <BLANKLINE>
             [4 rows x 4 columns]
 

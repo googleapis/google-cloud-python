@@ -2410,26 +2410,30 @@ class Series(NDFrame):  # type: ignore[misc]
         value=None,
     ) -> Series | None:
         """
-        Fill NA/NaN values using the specified method.
+        Fill NA (NULL in BigQuery) values using the specified method.
+
+        Note that empty strings ``''``, :attr:`numpy.inf`, and
+        :attr:`numpy.nan` are ***not*** considered NA values. This NA/NULL
+        logic differs from numpy, but it is the same as BigQuery and the
+        :class:`pandas.ArrowDtype`.
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
-            >>> import numpy as np
-            >>> bpd.options.display.progress_bar = None
-
-            >>> s = bpd.Series([np.nan, 2, np.nan, -1])
+            >>> s = bpd.Series(
+            ...     pa.array([np.nan, 2, None, -1], type=pa.float64()),
+            ...     dtype=pd.ArrowDtype(pa.float64()),
+            ... )
             >>> s
-            0    <NA>
+            0     NaN
             1     2.0
             2    <NA>
             3    -1.0
             dtype: Float64
 
-        Replace all NA elements with 0s.
+        Replace all NA (NULL) elements with 0s.
 
             >>> s.fillna(0)
-            0    0.0
+            0    NaN
             1    2.0
             2    0.0
             3   -1.0
@@ -2439,7 +2443,7 @@ class Series(NDFrame):  # type: ignore[misc]
 
             >>> s_fill = bpd.Series([11, 22, 33])
             >>> s.fillna(s_fill)
-            0    11.0
+            0     NaN
             1     2.0
             2    33.0
             3    -1.0
@@ -4482,7 +4486,7 @@ class Series(NDFrame):  # type: ignore[misc]
             2    6
             dtype: Int64
 
-            If ``other`` contains NaNs the corresponding values are not updated
+            If ``other`` contains NA (NULL values) the corresponding values are not updated
             in the original Series.
 
             >>> s = bpd.Series([1, 2, 3])

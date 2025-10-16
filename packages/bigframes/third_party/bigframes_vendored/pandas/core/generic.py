@@ -816,67 +816,80 @@ class NDFrame(indexing.IndexingMixin):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def isna(self) -> NDFrame:
-        """Detect missing values.
+        """Detect missing (NULL) values.
 
-        Return a boolean same-sized object indicating if the values are NA.
-        NA values get mapped to True values. Everything else gets mapped to
-        False values. Characters such as empty strings ``''`` or
-        :attr:`numpy.inf` are not considered NA values.
+        Return a boolean same-sized object indicating if the values are NA
+        (NULL in BigQuery). NA/NULL values get mapped to True values.
+        Everything else gets mapped to False values.
+
+        Note that empty strings ``''``, :attr:`numpy.inf`, and
+        :attr:`numpy.nan` are ***not*** considered NA values. This NA/NULL
+        logic differs from numpy, but it is the same as BigQuery and the
+        :class:`pandas.ArrowDtype`.
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-            >>> import numpy as np
-
             >>> df = bpd.DataFrame(dict(
-            ...         age=[5, 6, np.nan],
-            ...         born=[bpd.NA, "1940-04-25", "1940-04-25"],
-            ...         name=['Alfred', 'Batman', ''],
-            ...         toy=[None, 'Batmobile', 'Joker'],
+            ...         age=pd.Series(pa.array(
+            ...             [5, 6, None, 4],
+            ...             type=pa.int64(),
+            ...         ), dtype=pd.ArrowDtype(pa.int64())),
+            ...         born=pd.to_datetime([pd.NA, "1940-04-25", "1940-04-25", "1941-08-25"]),
+            ...         name=['Alfred', 'Batman', '', 'Plastic Man'],
+            ...         toy=[None, 'Batmobile', 'Joker', 'Play dough'],
+            ...         height=pd.Series(pa.array(
+            ...             [6.1, 5.9, None, np.nan],
+            ...             type=pa.float64(),
+            ...         ), dtype=pd.ArrowDtype(pa.float64())),
             ... ))
             >>> df
-                age        born    name        toy
-            0   5.0        <NA>  Alfred       <NA>
-            1   6.0  1940-04-25  Batman  Batmobile
-            2  <NA>  1940-04-25              Joker
+                age                 born         name         toy  height
+            0     5                 <NA>       Alfred        <NA>     6.1
+            1     6  1940-04-25 00:00:00       Batman   Batmobile     5.9
+            2  <NA>  1940-04-25 00:00:00                    Joker    <NA>
+            3     4  1941-08-25 00:00:00  Plastic Man  Play dough     NaN
             <BLANKLINE>
-            [3 rows x 4 columns]
+            [4 rows x 5 columns]
 
-        Show which entries in a DataFrame are NA:
+        Show which entries in a DataFrame are NA (NULL in BigQuery):
 
             >>> df.isna()
-                age   born   name    toy
-            0  False   True  False   True
-            1  False  False  False  False
-            2   True  False  False  False
+                 age   born   name    toy  height
+            0  False   True  False   True   False
+            1  False  False  False  False   False
+            2   True  False  False  False    True
+            3  False  False  False  False   False
             <BLANKLINE>
-            [3 rows x 4 columns]
+            [4 rows x 5 columns]
 
             >>> df.isnull()
-                age   born   name    toy
-            0  False   True  False   True
-            1  False  False  False  False
-            2   True  False  False  False
+                 age   born   name    toy  height
+            0  False   True  False   True   False
+            1  False  False  False  False   False
+            2   True  False  False  False    True
+            3  False  False  False  False   False
             <BLANKLINE>
-            [3 rows x 4 columns]
+            [4 rows x 5 columns]
 
-        Show which entries in a Series are NA:
+        Show which entries in a Series are NA (NULL in BigQuery):
 
-            >>> ser = bpd.Series([5, None, 6, np.nan, bpd.NA])
+            >>> ser = bpd.Series(pa.array(
+            ...     [5, None, 6, np.nan, None],
+            ...     type=pa.float64(),
+            ... ), dtype=pd.ArrowDtype(pa.float64()))
             >>> ser
-            0       5
+            0     5.0
             1    <NA>
-            2       6
-            3    <NA>
+            2     6.0
+            3     NaN
             4    <NA>
-            dtype: Int64
+            dtype: Float64
 
             >>> ser.isna()
             0    False
             1     True
             2    False
-            3     True
+            3    False
             4     True
             dtype: boolean
 
@@ -884,7 +897,7 @@ class NDFrame(indexing.IndexingMixin):
             0    False
             1     True
             2    False
-            3     True
+            3    False
             4     True
             dtype: boolean
 
