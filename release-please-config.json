@@ -78,13 +78,6 @@
                 }
             ],
             "release-type": "python"
-        },
-        "packages/grpc-google-iam-v1": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "grpc-google-iam-v1",
-            "extra-files": [],
-            "release-type": "python"
         }
     }
 }
