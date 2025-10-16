@@ -285,7 +285,6 @@ def test_ai_if_multi_model(session):
 
 def test_ai_classify(session):
     s = bpd.Series(["cat", "orchid"], session=session)
-    bpd.options.display.repr_mode = "deferred"
 
     result = bbq.ai.classify(s, ["animal", "plant"])
 
