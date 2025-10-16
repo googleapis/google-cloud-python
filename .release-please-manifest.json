@@ -2,7 +2,6 @@
     "packages/google-cloud-bigquery-storage": "2.33.1",
     "packages/google-cloud-dialogflow-cx": "2.0.0",
     "packages/google-cloud-gke-hub": "1.19.0",
-    "packages/google-cloud-monitoring-dashboards": "2.19.0",
     "packages/google-cloud-org-policy": "1.14.0",
     "packages/grpc-google-iam-v1": "0.14.3"
 }
