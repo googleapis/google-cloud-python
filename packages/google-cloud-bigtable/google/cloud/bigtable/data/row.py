@@ -190,7 +190,7 @@ class Row:
             elif len(cell_list) == 1:
                 line.append(f"[{cell_list[0]}],")
             else:
-                line.append(f"[{cell_list[0]}, (+{len(cell_list)-1} more)],")
+                line.append(f"[{cell_list[0]}, (+{len(cell_list) - 1} more)],")
             output.append("".join(line))
         output.append("}")
         return "\n".join(output)

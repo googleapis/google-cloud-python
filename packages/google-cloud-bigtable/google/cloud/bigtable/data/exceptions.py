@@ -90,7 +90,7 @@ class _BigtableExceptionGroup(ExceptionGroup if is_311_plus else Exception):  # 
                 # apply index header
                 if idx != 0:
                     message_parts.append(
-                        f"+---------------- {str(idx+1).rjust(2)} ----------------"
+                        f"+---------------- {str(idx + 1).rjust(2)} ----------------"
                     )
                 cause = e.__cause__
                 # if this exception was had a cause, print the cause first

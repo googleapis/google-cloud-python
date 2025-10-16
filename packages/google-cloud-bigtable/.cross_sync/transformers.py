@@ -71,18 +71,19 @@ class SymbolReplacer(ast.NodeTransformer):
         Replace function docstrings
         """
         docstring = ast.get_docstring(node)
-        if docstring and isinstance(node.body[0], ast.Expr) and isinstance(
-            node.body[0].value, ast.Str
-        ):
+        if docstring and isinstance(node.body[0], ast.Expr) \
+            and isinstance(node.body[0].value, ast.Constant) \
+            and isinstance(node.body[0].value.value, str) \
+        :
             for key_word, replacement in self.replacements.items():
                 docstring = docstring.replace(key_word, replacement)
-            node.body[0].value.s = docstring
+            node.body[0].value.value = docstring
         return self.generic_visit(node)
 
     def visit_Constant(self, node):
         """Replace string type annotations"""
         try:
-            node.s = self.replacements.get(node.s, node.s)
+            node.value = self.replacements.get(node.value, node.value)
         except TypeError:
             # ignore unhashable types (e.g. list)
             pass
@@ -264,7 +265,7 @@ class CrossSyncFileProcessor(ast.NodeTransformer):
                 for target in n.targets:
                     if isinstance(target, ast.Name) and target.id == self.FILE_ANNOTATION:
                         # return the output path
-                        return n.value.s.replace(".", "/") + ".py"
+                        return n.value.value.replace(".", "/") + ".py"
 
     def visit_Module(self, node):
         # look for __CROSS_SYNC_OUTPUT__ Assign statement
