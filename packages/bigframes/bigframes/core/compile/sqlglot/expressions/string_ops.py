@@ -23,6 +23,7 @@ from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
 register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
+register_binary_op = scalar_compiler.scalar_op_compiler.register_binary_op
 
 
 @register_unary_op(ops.capitalize_op)
@@ -274,6 +275,11 @@ def _(expr: TypedExpr, op: ops.StrSliceOp) -> sge.Expression:
 @register_unary_op(ops.upper_op)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.Upper(this=expr.expr)
+
+
+@register_binary_op(ops.strconcat_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.Concat(expressions=[left.expr, right.expr])
 
 
 @register_unary_op(ops.ZfillOp, pass_op=True)

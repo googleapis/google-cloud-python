@@ -311,3 +311,10 @@ def test_add_string(scalar_types_df: bpd.DataFrame, snapshot):
     sql = utils._apply_binary_op(bf_df, ops.add_op, "string_col", ex.const("a"))
 
     snapshot.assert_match(sql, "out.sql")
+
+
+def test_strconcat(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = utils._apply_binary_op(bf_df, ops.strconcat_op, "string_col", ex.const("a"))
+
+    snapshot.assert_match(sql, "out.sql")
