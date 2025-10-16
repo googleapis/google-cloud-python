@@ -1207,7 +1207,7 @@ def _process_changelog(
 
     # Group changes by type (e.g., feat, fix, docs)
     type_key = "type"
-    source_commit_hash_key = "source_commit_hash"
+    commit_hash_key = "commit_hash"
     subject_key = "subject"
     body_key = "body"
     library_changes.sort(key=lambda x: x[type_key])
@@ -1224,7 +1224,7 @@ def _process_changelog(
         if adjusted_change_type in change_type_map:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
-                commit_link = f"([{change[source_commit_hash_key]}]({_REPO_URL}/commit/{change[source_commit_hash_key]}))"
+                commit_link = f"([{change[commit_hash_key]}]({_REPO_URL}/commit/{change[commit_hash_key]}))"
                 entry_parts.append(
                     f"* {change[subject_key]} {change[body_key]} {commit_link}"
                 )
