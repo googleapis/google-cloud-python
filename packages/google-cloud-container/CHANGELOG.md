@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.60.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.59.0...google-cloud-container-v2.60.0) (2025-10-16)
+
+
+### Documentation
+
+* updated comments for various types, messages, and fields.  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+
+
+### Features
+
+* Add &#39;enabled&#39; field to AutoIpamConfig to enable/disable Auto IPAM  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add fields to DNSEndpointConfig to control k8s token and cert authentication via DNS  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add SecretSyncConfig to sync secrets from Secret Manager  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add SwapConfig to enable and configure swap memory for node pools  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add &#39;end_time_behavior&#39; to MaintenanceExclusionOptions  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add network_tier_config and accelerator_network_profile to NodePool  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add cluster-level network_tier_config  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add &#39;wait_for_drain_duration&#39; to AutoscaledRolloutPolicy in BlueGreenSettings  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add PrivilegedAdmissionConfig for Autopilot clusters  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add MembershipType to Fleet config  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add WritableCgroups to the containerd config  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add NodeKernelModuleLoading to configure kernel module loading policies for nodes  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [2.59.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.58.0...google-cloud-container-v2.59.0) (2025-07-23)
 
 
