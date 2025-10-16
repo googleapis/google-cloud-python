@@ -42,6 +42,7 @@ class geminidataanalyticsCallTransformer(cst.CSTTransformer):
         'chat': ('parent', 'messages', 'inline_context', 'conversation_reference', 'data_agent_context', 'project', ),
         'create_conversation': ('parent', 'conversation', 'conversation_id', 'request_id', ),
         'create_data_agent': ('parent', 'data_agent', 'data_agent_id', 'request_id', ),
+        'delete_conversation': ('name', ),
         'delete_data_agent': ('name', 'request_id', ),
         'get_conversation': ('name', ),
         'get_data_agent': ('name', ),
@@ -51,7 +52,6 @@ class geminidataanalyticsCallTransformer(cst.CSTTransformer):
         'list_data_agents': ('parent', 'page_size', 'page_token', 'filter', 'order_by', 'show_deleted', ),
         'list_messages': ('parent', 'page_size', 'page_token', 'filter', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
-        'update_conversation': ('conversation', 'update_mask', 'request_id', ),
         'update_data_agent': ('data_agent', 'update_mask', 'request_id', ),
     }
 

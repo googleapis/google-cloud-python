@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import ClassVar as _ClassVar
+from typing import Optional as _Optional
 
-deep-remove-regex:
-  - /owl-bot-staging
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
 
-deep-copy-regex:
-  - source: /google/cloud/secretmanager/(v.*)/.*-py
-    dest: /owl-bot-staging/google-cloud-secret-manager/$1
-  - source: /google/cloud/secrets/(v.*)/.*-py
-    dest: /owl-bot-staging/google-cloud-secret-manager/$1
+DESCRIPTOR: _descriptor.FileDescriptor
 
-
-begin-after-commit-hash: 219c70cd9e899bc85b467a0557b3237d4c0a41ca
-
-api-name: google-cloud-secret-manager
+class GetPolicyOptions(_message.Message):
+    __slots__ = ("requested_policy_version",)
+    REQUESTED_POLICY_VERSION_FIELD_NUMBER: _ClassVar[int]
+    requested_policy_version: int
+    def __init__(self, requested_policy_version: _Optional[int] = ...) -> None: ...

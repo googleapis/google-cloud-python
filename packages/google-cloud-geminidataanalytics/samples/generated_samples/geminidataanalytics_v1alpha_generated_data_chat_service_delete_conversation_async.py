@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateConversation
+# Snippet for DeleteConversation
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-geminidataanalytics
 
 
-# [START geminidataanalytics_v1alpha_generated_DataChatService_UpdateConversation_async]
+# [START geminidataanalytics_v1alpha_generated_DataChatService_DeleteConversation_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,22 +34,17 @@
 from google.cloud import geminidataanalytics_v1alpha
 
 
-async def sample_update_conversation():
+async def sample_delete_conversation():
     # Create a client
     client = geminidataanalytics_v1alpha.DataChatServiceAsyncClient()
 
     # Initialize request argument(s)
-    conversation = geminidataanalytics_v1alpha.Conversation()
-    conversation.agents = ['agents_value1', 'agents_value2']
-
-    request = geminidataanalytics_v1alpha.UpdateConversationRequest(
-        conversation=conversation,
+    request = geminidataanalytics_v1alpha.DeleteConversationRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = await client.update_conversation(request=request)
+    await client.delete_conversation(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END geminidataanalytics_v1alpha_generated_DataChatService_UpdateConversation_async]
+# [END geminidataanalytics_v1alpha_generated_DataChatService_DeleteConversation_async]

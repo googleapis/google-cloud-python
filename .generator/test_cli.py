@@ -83,28 +83,28 @@ _MOCK_LIBRARY_CHANGES = [
         "subject": "add new UpdateRepository API",
         "body": "This adds the ability to update a repository's properties.",
         "piper_cl_number": "786353207",
-        "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
+        "commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
     },
     {
         "type": "fix",
         "subject": "some fix",
         "body": "some body",
         "piper_cl_number": "786353208",
-        "source_commit_hash": "1231532e7d19c8d71709ec3b502e5d81340fb661",
+        "commit_hash": "1231532e7d19c8d71709ec3b502e5d81340fb661",
     },
     {
         "type": "fix",
         "subject": "another fix",
         "body": "",
         "piper_cl_number": "786353209",
-        "source_commit_hash": "1241532e7d19c8d71709ec3b502e5d81340fb661",
+        "commit_hash": "1241532e7d19c8d71709ec3b502e5d81340fb661",
     },
     {
         "type": "docs",
         "subject": "fix typo in BranchRule comment",
         "body": "",
         "piper_cl_number": "786353210",
-        "source_commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
+        "commit_hash": "9461532e7d19c8d71709ec3b502e5d81340fb661",
     },
 ]
 

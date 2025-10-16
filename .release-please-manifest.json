@@ -1,15 +1,9 @@
 {
-    "packages/google-cloud-biglake": "0.1.1",
     "packages/google-cloud-bigquery-storage": "2.33.1",
     "packages/google-cloud-dialogflow-cx": "2.0.0",
     "packages/google-cloud-gke-hub": "1.19.0",
-    "packages/google-cloud-gke-multicloud": "0.6.22",
-    "packages/google-cloud-gsuiteaddons": "0.3.18",
     "packages/google-cloud-iam": "2.20.0",
     "packages/google-cloud-monitoring-dashboards": "2.19.0",
     "packages/google-cloud-org-policy": "1.14.0",
-    "packages/google-cloud-os-login": "2.18.0",
-    "packages/google-cloud-secret-manager": "2.25.0",
-    "packages/grafeas": "1.16.0",
-    "packages/grpc-google-iam-v1": "0.14.2"
+    "packages/grpc-google-iam-v1": "0.14.3"
 }
