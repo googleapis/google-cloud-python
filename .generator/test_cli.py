@@ -639,12 +639,36 @@ def test_handle_generate_success(
         "cli._clean_up_files_after_post_processing"
     )
     mocker.patch("cli._generate_repo_metadata_file")
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+
+    # Create a dummy README.rst file in the expected source path
+    source_readme_path = (
+        mock_generate_request_file.parent.parent
+        / "output"
+        / "packages"
+        / "google-cloud-language"
+        / "README.rst"
+    )
+    source_readme_path.parent.mkdir(parents=True, exist_ok=True)
+    source_readme_path.write_text("Mock README content")
 
     handle_generate()
 
     mock_run_post_processor.assert_called_once_with("output", "google-cloud-language")
     mock_copy_files_needed_for_post_processing.assert_called_once_with(
         "output", "input", "google-cloud-language"
+    )
+    mock_makedirs.assert_called_once_with(
+        Path("output") / "packages" / "google-cloud-language" / "docs", exist_ok=True
+    )
+    mock_shutil_copy.assert_called_once_with(
+        Path("output") / "packages" / "google-cloud-language" / "README.rst",
+        Path("output")
+        / "packages"
+        / "google-cloud-language"
+        / "docs"
+        / "README.rst",
     )
     mock_clean_up_files_after_post_processing.assert_called_once_with(
         "output", "google-cloud-language"

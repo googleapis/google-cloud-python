@@ -542,6 +542,14 @@ def handle_generate(
         _copy_files_needed_for_post_processing(output, input, library_id)
         _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
+
+        source_readme_path = Path(output) / "packages" / library_id / "README.rst"
+        destination_docs_dir = Path(output) / "packages" / library_id / "docs"
+        destination_readme_path = destination_docs_dir / "README.rst"
+
+        os.makedirs(destination_docs_dir, exist_ok=True)
+        shutil.copy(source_readme_path, destination_readme_path)
+
         _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
         raise ValueError("Generation failed.") from e
