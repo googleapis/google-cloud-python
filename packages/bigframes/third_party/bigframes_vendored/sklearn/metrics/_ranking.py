@@ -33,7 +33,6 @@ def auc(x, y) -> float:
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.ml.metrics
-        >>> bpd.options.display.progress_bar = None
 
         >>> x = bpd.DataFrame([1, 1, 2, 2])
         >>> y = bpd.DataFrame([2, 3, 4, 5])
@@ -89,7 +88,6 @@ def roc_auc_score(y_true, y_score) -> float:
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.ml.metrics
-        >>> bpd.options.display.progress_bar = None
 
         >>> y_true = bpd.DataFrame([0, 0, 1, 1, 0, 1, 0, 1, 1, 1])
         >>> y_score = bpd.DataFrame([0.1, 0.4, 0.35, 0.8, 0.65, 0.9, 0.5, 0.3, 0.6, 0.45])
@@ -139,7 +137,6 @@ def roc_curve(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.ml.metrics
-        >>> bpd.options.display.progress_bar = None
 
         >>> y_true = bpd.DataFrame([1, 1, 2, 2])
         >>> y_score = bpd.DataFrame([0.1, 0.4, 0.35, 0.8])

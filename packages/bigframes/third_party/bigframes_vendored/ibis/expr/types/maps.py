@@ -35,7 +35,6 @@ class MapValue(Value):
     --------
     >>> import ibis
     >>> ibis.options.interactive = True
-    >>> import pyarrow as pa
     >>> tab = pa.table(
     ...     {
     ...         "m": pa.array(
@@ -101,7 +100,6 @@ class MapValue(Value):
         Examples
         --------
         >>> import ibis
-        >>> import pyarrow as pa
         >>> ibis.options.interactive = True
         >>> tab = pa.table(
         ...     {
@@ -167,7 +165,6 @@ class MapValue(Value):
         Examples
         --------
         >>> import ibis
-        >>> import pyarrow as pa
         >>> ibis.options.interactive = True
         >>> tab = pa.table(
         ...     {
@@ -224,7 +221,6 @@ class MapValue(Value):
         Examples
         --------
         >>> import ibis
-        >>> import pyarrow as pa
         >>> ibis.options.interactive = True
         >>> tab = pa.table(
         ...     {
@@ -276,7 +272,6 @@ class MapValue(Value):
         Examples
         --------
         >>> import ibis
-        >>> import pyarrow as pa
         >>> ibis.options.interactive = True
         >>> tab = pa.table(
         ...     {
@@ -321,7 +316,6 @@ class MapValue(Value):
         Examples
         --------
         >>> import ibis
-        >>> import pyarrow as pa
         >>> ibis.options.interactive = True
         >>> tab = pa.table(
         ...     {

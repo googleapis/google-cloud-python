@@ -62,7 +62,6 @@ def dtype(value: Any, nullable: bool = True) -> DataType:
 
     Or other type systems, like numpy/pandas/pyarrow types:
 
-    >>> import pyarrow as pa
     >>> ibis.dtype(pa.int32())
     Int32(nullable=True)
 

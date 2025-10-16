@@ -20,7 +20,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(['Alice', 'Bob', 'Charlie'])
             >>> s.str[0]
@@ -54,7 +53,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
         A pattern with two groups will return a DataFrame with two columns.
         Non-matches will be `NaN`.
@@ -115,7 +113,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> ser = bpd.Series(["cow_", "duck_", "do_ve"])
             >>> ser.str.find("_")
@@ -146,11 +143,10 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
         Returns the length (number of characters) in a string.
 
-            >>> s = bpd.Series(['dog', '', bpd.NA])
+            >>> s = bpd.Series(['dog', '', pd.NA])
             >>> s.str.len()
             0       3
             1       0
@@ -172,7 +168,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(['lower',
             ...                 'CAPITALS',
@@ -197,7 +192,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(["koala", "dog", "chameleon"])
             >>> s
@@ -250,13 +244,12 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series([
             ...     '1. Ant.',
             ...     '  2. Bee? ',
             ...     '\\t3. Cat!\\n',
-            ...     bpd.NA,
+            ...     pd.NA,
             ... ])
             >>> s.str.strip()
             0    1. Ant.
@@ -293,7 +286,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(['lower',
             ...                 'CAPITALS',
@@ -322,7 +314,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s1 = bpd.Series(['one', 'one1', '1', ''])
             >>> s1.str.isnumeric()
@@ -349,7 +340,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s1 = bpd.Series(['one', 'one1', '1', ''])
             >>> s1.str.isalpha()
@@ -375,7 +365,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(['23', '1a', '1/5', ''])
             >>> s.str.isdigit()
@@ -401,7 +390,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s1 = bpd.Series(['one', 'one1', '1', ''])
             >>> s1.str.isalnum()
@@ -439,7 +427,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series([' ', '\\t\\r\\n ', ''])
             >>> s.str.isspace()
@@ -465,7 +452,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
             >>> s.str.islower()
@@ -492,7 +478,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(['leopard', 'Golden Eagle', 'SNAKE', ''])
             >>> s.str.isupper()
@@ -519,7 +504,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
         The `isdecimal` method checks for characters used to form numbers in
         base 10.
@@ -550,9 +534,8 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
-            >>> s = bpd.Series(['Ant', '  Bee ', '\tCat\n', bpd.NA])
+            >>> s = bpd.Series(['Ant', '  Bee ', '\tCat\n', pd.NA])
             >>> s.str.rstrip()
             0      Ant
             1      Bee
@@ -583,9 +566,8 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
-            >>> s = bpd.Series(['Ant', '  Bee ', '\tCat\n', bpd.NA])
+            >>> s = bpd.Series(['Ant', '  Bee ', '\tCat\n', pd.NA])
             >>> s.str.lstrip()
             0      Ant
             1     Bee
@@ -611,7 +593,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(['a', 'b', 'c'])
             >>> s
@@ -645,7 +626,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(['lower',
             ...                 'CAPITALS',
@@ -673,7 +653,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
         You can concatenate each string in a Series to another string.
 
@@ -730,7 +709,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
         Returning a Series of booleans using only a literal pattern.
 
@@ -834,13 +812,12 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
         When *pat* is a string and *regex* is True, the given *pat* is compiled
         as a regex. When *repl* is a string, it replaces matching regex patterns
         as with `re.sub()`. NaN value(s) in the Series are left as is:
 
-            >>> s = bpd.Series(['foo', 'fuz', bpd.NA])
+            >>> s = bpd.Series(['foo', 'fuz', pd.NA])
             >>> s.str.replace('f.', 'ba', regex=True)
             0     bao
             1     baz
@@ -850,7 +827,7 @@ class StringMethods:
         When *pat* is a string and *regex* is False, every *pat* is replaced
         with *repl* as with `str.replace()`:
 
-            >>> s = bpd.Series(['f.o', 'fuz', bpd.NA])
+            >>> s = bpd.Series(['f.o', 'fuz', pd.NA])
             >>> s.str.replace('f.', 'ba', regex=False)
             0     bao
             1     fuz
@@ -896,9 +873,8 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
-            >>> s = bpd.Series(['bat', 'Bear', 'caT', bpd.NA])
+            >>> s = bpd.Series(['bat', 'Bear', 'caT', pd.NA])
             >>> s
             0     bat
             1    Bear
@@ -941,9 +917,8 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
-            >>> s = bpd.Series(['bat', 'bear', 'caT', bpd.NA])
+            >>> s = bpd.Series(['bat', 'bear', 'caT', pd.NA])
             >>> s
             0     bat
             1    bear
@@ -987,8 +962,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> import numpy as np
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(
             ...     [
@@ -1031,7 +1004,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> ser = bpd.Series(["horse", "eagle", "donkey"])
             >>> ser.str.match("e")
@@ -1060,7 +1032,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> ser = bpd.Series(["cat", "duck", "dove"])
             >>> ser.str.fullmatch(r'd.+')
@@ -1092,7 +1063,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(["apple", "banana", "fig"])
             >>> s.str.get(3)
@@ -1122,7 +1092,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bpd.Series(["caribou", "tiger"])
             >>> s
@@ -1170,7 +1139,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> ser = bpd.Series(['dog', 'bird', 'mouse'])
             >>> ser.str.ljust(8, fillchar='.')
@@ -1202,7 +1170,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> ser = bpd.Series(['dog', 'bird', 'mouse'])
             >>> ser.str.rjust(8, fillchar='.')
@@ -1238,9 +1205,8 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
-            >>> s = bpd.Series(['-1', '1', '1000', bpd.NA])
+            >>> s = bpd.Series(['-1', '1', '1000', pd.NA])
             >>> s
             0      -1
             1       1
@@ -1278,7 +1244,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> ser = bpd.Series(['dog', 'bird', 'mouse'])
             >>> ser.str.center(8, fillchar='.')
@@ -1310,8 +1275,6 @@ class StringMethods:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-            >>> import pandas as pd
 
         Example with a list that contains non-string elements.
 

@@ -538,362 +538,371 @@ if polars_installed:
                 f"Aggregate op {op} not yet supported in polars engine."
             )
 
+    @dataclasses.dataclass(frozen=True)
+    class PolarsCompiler:
+        """
+        Compiles ArrayValue to polars LazyFrame and executes.
 
-@dataclasses.dataclass(frozen=True)
-class PolarsCompiler:
-    """
-    Compiles ArrayValue to polars LazyFrame and executes.
+        This feature is in development and is incomplete.
+        While most node types are supported, this has the following limitations:
+        1. GBQ data sources not supported.
+        2. Joins do not order rows correctly
+        3. Incomplete scalar op support
+        4. Incomplete aggregate op support
+        5. Incomplete analytic op support
+        6. Some complex windowing types not supported (eg. groupby + rolling)
+        7. UDFs are not supported.
+        8. Returned types may not be entirely consistent with BigQuery backend
+        9. Some operations are not entirely lazy - sampling and somse windowing.
+        """
 
-    This feature is in development and is incomplete.
-    While most node types are supported, this has the following limitations:
-    1. GBQ data sources not supported.
-    2. Joins do not order rows correctly
-    3. Incomplete scalar op support
-    4. Incomplete aggregate op support
-    5. Incomplete analytic op support
-    6. Some complex windowing types not supported (eg. groupby + rolling)
-    7. UDFs are not supported.
-    8. Returned types may not be entirely consistent with BigQuery backend
-    9. Some operations are not entirely lazy - sampling and somse windowing.
-    """
+        expr_compiler = PolarsExpressionCompiler()
+        agg_compiler = PolarsAggregateCompiler()
 
-    expr_compiler = PolarsExpressionCompiler()
-    agg_compiler = PolarsAggregateCompiler()
-
-    def compile(self, plan: nodes.BigFrameNode) -> pl.LazyFrame:
-        if not polars_installed:
-            raise ValueError(
-                "Polars is not installed, cannot compile to polars engine."
-            )
-
-        # TODO: Create standard way to configure BFET -> BFET rewrites
-        # Polars has incomplete slice support in lazy mode
-        node = plan
-        node = bigframes.core.rewrite.column_pruning(node)
-        node = nodes.bottom_up(node, bigframes.core.rewrite.rewrite_slice)
-        node = bigframes.core.rewrite.pull_out_window_order(node)
-        node = bigframes.core.rewrite.schema_binding.bind_schema_to_tree(node)
-        node = lowering.lower_ops_to_polars(node)
-        return self.compile_node(node)
-
-    @functools.singledispatchmethod
-    def compile_node(self, node: nodes.BigFrameNode) -> pl.LazyFrame:
-        """Defines transformation but isn't cached, always use compile_node instead"""
-        raise ValueError(f"Can't compile unrecognized node: {node}")
-
-    @compile_node.register
-    def compile_readlocal(self, node: nodes.ReadLocalNode):
-        cols_to_read = {
-            scan_item.source_id: scan_item.id.sql for scan_item in node.scan_list.items
-        }
-        lazy_frame = cast(
-            pl.DataFrame, pl.from_arrow(node.local_data_source.data)
-        ).lazy()
-        lazy_frame = lazy_frame.select(cols_to_read.keys()).rename(cols_to_read)
-        if node.offsets_col:
-            lazy_frame = lazy_frame.with_columns(
-                [pl.int_range(pl.len(), dtype=pl.Int64).alias(node.offsets_col.sql)]
-            )
-        return lazy_frame
-
-    @compile_node.register
-    def compile_filter(self, node: nodes.FilterNode):
-        return self.compile_node(node.child).filter(
-            self.expr_compiler.compile_expression(node.predicate)
-        )
-
-    @compile_node.register
-    def compile_orderby(self, node: nodes.OrderByNode):
-        frame = self.compile_node(node.child)
-        if len(node.by) == 0:
-            # pragma: no cover
-            return frame
-        return self._sort(frame, node.by)
-
-    def _sort(
-        self, frame: pl.LazyFrame, by: Sequence[ordering.OrderingExpression]
-    ) -> pl.LazyFrame:
-        sorted = frame.sort(
-            [self.expr_compiler.compile_expression(by.scalar_expression) for by in by],
-            descending=[not by.direction.is_ascending for by in by],
-            nulls_last=[by.na_last for by in by],
-            maintain_order=True,
-        )
-        return sorted
-
-    @compile_node.register
-    def compile_reversed(self, node: nodes.ReversedNode):
-        return self.compile_node(node.child).reverse()
-
-    @compile_node.register
-    def compile_selection(self, node: nodes.SelectionNode):
-        return self.compile_node(node.child).select(
-            **{new.sql: orig.id.sql for orig, new in node.input_output_pairs}
-        )
-
-    @compile_node.register
-    def compile_projection(self, node: nodes.ProjectionNode):
-        new_cols = []
-        for proj_expr, name in node.assignments:
-            bound_expr = ex.bind_schema_fields(proj_expr, node.child.field_by_id)
-            new_col = self.expr_compiler.compile_expression(bound_expr).alias(name.sql)
-            if bound_expr.output_type is None:
-                new_col = new_col.cast(
-                    _bigframes_dtype_to_polars_dtype(bigframes.dtypes.DEFAULT_DTYPE)
+        def compile(self, plan: nodes.BigFrameNode) -> pl.LazyFrame:
+            if not polars_installed:
+                raise ValueError(
+                    "Polars is not installed, cannot compile to polars engine."
                 )
-            new_cols.append(new_col)
-        return self.compile_node(node.child).with_columns(new_cols)
 
-    @compile_node.register
-    def compile_offsets(self, node: nodes.PromoteOffsetsNode):
-        return self.compile_node(node.child).with_columns(
-            [pl.int_range(pl.len(), dtype=pl.Int64).alias(node.col_id.sql)]
-        )
+            # TODO: Create standard way to configure BFET -> BFET rewrites
+            # Polars has incomplete slice support in lazy mode
+            node = plan
+            node = bigframes.core.rewrite.column_pruning(node)
+            node = nodes.bottom_up(node, bigframes.core.rewrite.rewrite_slice)
+            node = bigframes.core.rewrite.pull_out_window_order(node)
+            node = bigframes.core.rewrite.schema_binding.bind_schema_to_tree(node)
+            node = lowering.lower_ops_to_polars(node)
+            return self.compile_node(node)
 
-    @compile_node.register
-    def compile_join(self, node: nodes.JoinNode):
-        left = self.compile_node(node.left_child)
-        right = self.compile_node(node.right_child)
+        @functools.singledispatchmethod
+        def compile_node(self, node: nodes.BigFrameNode) -> pl.LazyFrame:
+            """Defines transformation but isn't cached, always use compile_node instead"""
+            raise ValueError(f"Can't compile unrecognized node: {node}")
 
-        left_on = []
-        right_on = []
-        for left_ex, right_ex in node.conditions:
-            left_ex, right_ex = lowering._coerce_comparables(left_ex, right_ex)
-            left_on.append(self.expr_compiler.compile_expression(left_ex))
-            right_on.append(self.expr_compiler.compile_expression(right_ex))
+        @compile_node.register
+        def compile_readlocal(self, node: nodes.ReadLocalNode):
+            cols_to_read = {
+                scan_item.source_id: scan_item.id.sql
+                for scan_item in node.scan_list.items
+            }
+            lazy_frame = cast(
+                pl.DataFrame, pl.from_arrow(node.local_data_source.data)
+            ).lazy()
+            lazy_frame = lazy_frame.select(cols_to_read.keys()).rename(cols_to_read)
+            if node.offsets_col:
+                lazy_frame = lazy_frame.with_columns(
+                    [pl.int_range(pl.len(), dtype=pl.Int64).alias(node.offsets_col.sql)]
+                )
+            return lazy_frame
 
-        if node.type == "right":
+        @compile_node.register
+        def compile_filter(self, node: nodes.FilterNode):
+            return self.compile_node(node.child).filter(
+                self.expr_compiler.compile_expression(node.predicate)
+            )
+
+        @compile_node.register
+        def compile_orderby(self, node: nodes.OrderByNode):
+            frame = self.compile_node(node.child)
+            if len(node.by) == 0:
+                # pragma: no cover
+                return frame
+            return self._sort(frame, node.by)
+
+        def _sort(
+            self, frame: pl.LazyFrame, by: Sequence[ordering.OrderingExpression]
+        ) -> pl.LazyFrame:
+            sorted = frame.sort(
+                [
+                    self.expr_compiler.compile_expression(by.scalar_expression)
+                    for by in by
+                ],
+                descending=[not by.direction.is_ascending for by in by],
+                nulls_last=[by.na_last for by in by],
+                maintain_order=True,
+            )
+            return sorted
+
+        @compile_node.register
+        def compile_reversed(self, node: nodes.ReversedNode):
+            return self.compile_node(node.child).reverse()
+
+        @compile_node.register
+        def compile_selection(self, node: nodes.SelectionNode):
+            return self.compile_node(node.child).select(
+                **{new.sql: orig.id.sql for orig, new in node.input_output_pairs}
+            )
+
+        @compile_node.register
+        def compile_projection(self, node: nodes.ProjectionNode):
+            new_cols = []
+            for proj_expr, name in node.assignments:
+                bound_expr = ex.bind_schema_fields(proj_expr, node.child.field_by_id)
+                new_col = self.expr_compiler.compile_expression(bound_expr).alias(
+                    name.sql
+                )
+                if bound_expr.output_type is None:
+                    new_col = new_col.cast(
+                        _bigframes_dtype_to_polars_dtype(bigframes.dtypes.DEFAULT_DTYPE)
+                    )
+                new_cols.append(new_col)
+            return self.compile_node(node.child).with_columns(new_cols)
+
+        @compile_node.register
+        def compile_offsets(self, node: nodes.PromoteOffsetsNode):
+            return self.compile_node(node.child).with_columns(
+                [pl.int_range(pl.len(), dtype=pl.Int64).alias(node.col_id.sql)]
+            )
+
+        @compile_node.register
+        def compile_join(self, node: nodes.JoinNode):
+            left = self.compile_node(node.left_child)
+            right = self.compile_node(node.right_child)
+
+            left_on = []
+            right_on = []
+            for left_ex, right_ex in node.conditions:
+                left_ex, right_ex = lowering._coerce_comparables(left_ex, right_ex)
+                left_on.append(self.expr_compiler.compile_expression(left_ex))
+                right_on.append(self.expr_compiler.compile_expression(right_ex))
+
+            if node.type == "right":
+                return self._ordered_join(
+                    right, left, "left", right_on, left_on, node.joins_nulls
+                ).select([id.sql for id in node.ids])
             return self._ordered_join(
-                right, left, "left", right_on, left_on, node.joins_nulls
-            ).select([id.sql for id in node.ids])
-        return self._ordered_join(
-            left, right, node.type, left_on, right_on, node.joins_nulls
-        )
+                left, right, node.type, left_on, right_on, node.joins_nulls
+            )
 
-    @compile_node.register
-    def compile_isin(self, node: nodes.InNode):
-        left = self.compile_node(node.left_child)
-        right = self.compile_node(node.right_child).unique(node.right_col.id.sql)
-        right = right.with_columns(pl.lit(True).alias(node.indicator_col.sql))
+        @compile_node.register
+        def compile_isin(self, node: nodes.InNode):
+            left = self.compile_node(node.left_child)
+            right = self.compile_node(node.right_child).unique(node.right_col.id.sql)
+            right = right.with_columns(pl.lit(True).alias(node.indicator_col.sql))
 
-        left_ex, right_ex = lowering._coerce_comparables(node.left_col, node.right_col)
+            left_ex, right_ex = lowering._coerce_comparables(
+                node.left_col, node.right_col
+            )
 
-        left_pl_ex = self.expr_compiler.compile_expression(left_ex)
-        right_pl_ex = self.expr_compiler.compile_expression(right_ex)
+            left_pl_ex = self.expr_compiler.compile_expression(left_ex)
+            right_pl_ex = self.expr_compiler.compile_expression(right_ex)
 
-        joined = left.join(
-            right,
-            how="left",
-            left_on=left_pl_ex,
-            right_on=right_pl_ex,
-            # Note: join_nulls renamed to nulls_equal for polars 1.24
-            join_nulls=node.joins_nulls,  # type: ignore
-            coalesce=False,
-        )
-        passthrough = [pl.col(id) for id in left.columns]
-        indicator = pl.col(node.indicator_col.sql).fill_null(False)
-        return joined.select((*passthrough, indicator))
-
-    def _ordered_join(
-        self,
-        left_frame: pl.LazyFrame,
-        right_frame: pl.LazyFrame,
-        how: Literal["inner", "outer", "left", "cross"],
-        left_on: Sequence[pl.Expr],
-        right_on: Sequence[pl.Expr],
-        join_nulls: bool,
-    ):
-        if how == "right":
-            # seems to cause seg faults as of v1.30 for no apparent reason
-            raise ValueError("right join not supported")
-        left = left_frame.with_columns(
-            [
-                pl.int_range(pl.len()).alias("_bf_join_l"),
-            ]
-        )
-        right = right_frame.with_columns(
-            [
-                pl.int_range(pl.len()).alias("_bf_join_r"),
-            ]
-        )
-        if how != "cross":
             joined = left.join(
                 right,
-                how=how,
-                left_on=left_on,
-                right_on=right_on,
+                how="left",
+                left_on=left_pl_ex,
+                right_on=right_pl_ex,
                 # Note: join_nulls renamed to nulls_equal for polars 1.24
-                join_nulls=join_nulls,  # type: ignore
+                join_nulls=node.joins_nulls,  # type: ignore
                 coalesce=False,
             )
-        else:
-            joined = left.join(right, how=how, coalesce=False)
+            passthrough = [pl.col(id) for id in left.columns]
+            indicator = pl.col(node.indicator_col.sql).fill_null(False)
+            return joined.select((*passthrough, indicator))
 
-        join_order = (
-            ["_bf_join_l", "_bf_join_r"]
-            if how != "right"
-            else ["_bf_join_r", "_bf_join_l"]
-        )
-        return joined.sort(join_order, nulls_last=True).drop(
-            ["_bf_join_l", "_bf_join_r"]
-        )
-
-    @compile_node.register
-    def compile_concat(self, node: nodes.ConcatNode):
-        child_frames = [self.compile_node(child) for child in node.child_nodes]
-        child_frames = [
-            frame.rename(
-                {col: id.sql for col, id in zip(frame.columns, node.output_ids)}
-            ).cast(
-                {
-                    field.id.sql: _bigframes_dtype_to_polars_dtype(field.dtype)
-                    for field in node.fields
-                }
-            )
-            for frame in child_frames
-        ]
-        df = pl.concat(child_frames)
-        return df
-
-    @compile_node.register
-    def compile_agg(self, node: nodes.AggregateNode):
-        df = self.compile_node(node.child)
-        if node.dropna and len(node.by_column_ids) > 0:
-            df = df.filter(
-                [pl.col(ref.id.sql).is_not_null() for ref in node.by_column_ids]
-            )
-        if node.order_by:
-            df = self._sort(df, node.order_by)
-        return self._aggregate(df, node.aggregations, node.by_column_ids)
-
-    def _aggregate(
-        self,
-        df: pl.LazyFrame,
-        aggregations: Sequence[
-            Tuple[agg_expressions.Aggregation, identifiers.ColumnId]
-        ],
-        grouping_keys: Tuple[ex.DerefOp, ...],
-    ) -> pl.LazyFrame:
-        # Need to materialize columns to broadcast constants
-        agg_inputs = [
-            list(
-                map(
-                    lambda x: x.alias(guid.generate_guid()),
-                    self.agg_compiler.get_args(agg),
-                )
-            )
-            for agg, _ in aggregations
-        ]
-
-        df_agg_inputs = df.with_columns(itertools.chain(*agg_inputs))
-
-        agg_exprs = [
-            self.agg_compiler.compile_agg_op(
-                agg.op, list(map(lambda x: x.meta.output_name(), inputs))
-            ).alias(id.sql)
-            for (agg, id), inputs in zip(aggregations, agg_inputs)
-        ]
-
-        if len(grouping_keys) > 0:
-            group_exprs = [pl.col(ref.id.sql) for ref in grouping_keys]
-            grouped_df = df_agg_inputs.group_by(group_exprs)
-            return grouped_df.agg(agg_exprs).sort(group_exprs, nulls_last=True)
-        else:
-            return df_agg_inputs.select(agg_exprs)
-
-    @compile_node.register
-    def compile_explode(self, node: nodes.ExplodeNode):
-        assert node.offsets_col is None
-        df = self.compile_node(node.child)
-        cols = [col.id.sql for col in node.column_ids]
-        return df.explode(cols)
-
-    @compile_node.register
-    def compile_sample(self, node: nodes.RandomSampleNode):
-        df = self.compile_node(node.child)
-        # Sample is not available on lazyframe
-        return df.collect().sample(fraction=node.fraction).lazy()
-
-    @compile_node.register
-    def compile_window(self, node: nodes.WindowOpNode):
-        df = self.compile_node(node.child)
-
-        window = node.window_spec
-        # Should have been handled by reweriter
-        assert len(window.ordering) == 0
-        if window.min_periods > 0:
-            raise NotImplementedError("min_period not yet supported for polars engine")
-
-        if (window.bounds is None) or (window.is_unbounded):
-            # polars will automatically broadcast the aggregate to the matching input rows
-            agg_pl = self.agg_compiler.compile_agg_expr(node.expression)
-            if window.grouping_keys:
-                agg_pl = agg_pl.over(
-                    self.expr_compiler.compile_expression(key)
-                    for key in window.grouping_keys
-                )
-            result = df.with_columns(agg_pl.alias(node.output_name.sql))
-        else:  # row-bounded window
-            window_result = self._calc_row_analytic_func(
-                df, node.expression, node.window_spec, node.output_name.sql
-            )
-            result = pl.concat([df, window_result], how="horizontal")
-
-        # Probably easier just to pull this out as a rewriter
-        if (
-            node.expression.op.skips_nulls
-            and not node.never_skip_nulls
-            and node.expression.column_references
+        def _ordered_join(
+            self,
+            left_frame: pl.LazyFrame,
+            right_frame: pl.LazyFrame,
+            how: Literal["inner", "outer", "left", "cross"],
+            left_on: Sequence[pl.Expr],
+            right_on: Sequence[pl.Expr],
+            join_nulls: bool,
         ):
-            nullity_expr = functools.reduce(
-                operator.or_,
-                (
-                    pl.col(column.sql).is_null()
-                    for column in node.expression.column_references
-                ),
+            if how == "right":
+                # seems to cause seg faults as of v1.30 for no apparent reason
+                raise ValueError("right join not supported")
+            left = left_frame.with_columns(
+                [
+                    pl.int_range(pl.len()).alias("_bf_join_l"),
+                ]
             )
-            result = result.with_columns(
-                pl.when(nullity_expr)
-                .then(None)
-                .otherwise(pl.col(node.output_name.sql))
-                .alias(node.output_name.sql)
+            right = right_frame.with_columns(
+                [
+                    pl.int_range(pl.len()).alias("_bf_join_r"),
+                ]
             )
-        return result
+            if how != "cross":
+                joined = left.join(
+                    right,
+                    how=how,
+                    left_on=left_on,
+                    right_on=right_on,
+                    # Note: join_nulls renamed to nulls_equal for polars 1.24
+                    join_nulls=join_nulls,  # type: ignore
+                    coalesce=False,
+                )
+            else:
+                joined = left.join(right, how=how, coalesce=False)
 
-    def _calc_row_analytic_func(
-        self,
-        frame: pl.LazyFrame,
-        agg_expr: agg_expressions.Aggregation,
-        window: window_spec.WindowSpec,
-        name: str,
-    ) -> pl.LazyFrame:
-        if not isinstance(window.bounds, window_spec.RowsWindowBounds):
-            raise NotImplementedError("Only row bounds supported by polars engine")
-        groupby = None
-        if len(window.grouping_keys) > 0:
-            groupby = [
-                self.expr_compiler.compile_expression(ref)
-                for ref in window.grouping_keys
+            join_order = (
+                ["_bf_join_l", "_bf_join_r"]
+                if how != "right"
+                else ["_bf_join_r", "_bf_join_l"]
+            )
+            return joined.sort(join_order, nulls_last=True).drop(
+                ["_bf_join_l", "_bf_join_r"]
+            )
+
+        @compile_node.register
+        def compile_concat(self, node: nodes.ConcatNode):
+            child_frames = [self.compile_node(child) for child in node.child_nodes]
+            child_frames = [
+                frame.rename(
+                    {col: id.sql for col, id in zip(frame.columns, node.output_ids)}
+                ).cast(
+                    {
+                        field.id.sql: _bigframes_dtype_to_polars_dtype(field.dtype)
+                        for field in node.fields
+                    }
+                )
+                for frame in child_frames
+            ]
+            df = pl.concat(child_frames)
+            return df
+
+        @compile_node.register
+        def compile_agg(self, node: nodes.AggregateNode):
+            df = self.compile_node(node.child)
+            if node.dropna and len(node.by_column_ids) > 0:
+                df = df.filter(
+                    [pl.col(ref.id.sql).is_not_null() for ref in node.by_column_ids]
+                )
+            if node.order_by:
+                df = self._sort(df, node.order_by)
+            return self._aggregate(df, node.aggregations, node.by_column_ids)
+
+        def _aggregate(
+            self,
+            df: pl.LazyFrame,
+            aggregations: Sequence[
+                Tuple[agg_expressions.Aggregation, identifiers.ColumnId]
+            ],
+            grouping_keys: Tuple[ex.DerefOp, ...],
+        ) -> pl.LazyFrame:
+            # Need to materialize columns to broadcast constants
+            agg_inputs = [
+                list(
+                    map(
+                        lambda x: x.alias(guid.generate_guid()),
+                        self.agg_compiler.get_args(agg),
+                    )
+                )
+                for agg, _ in aggregations
             ]
 
-        # Polars API semi-bounded, and any grouped rolling window challenging
-        # https://github.com/pola-rs/polars/issues/4799
-        # https://github.com/pola-rs/polars/issues/8976
-        pl_agg_expr = self.agg_compiler.compile_agg_expr(agg_expr).alias(name)
-        index_col_name = "_bf_pl_engine_offsets"
-        indexed_df = frame.with_row_index(index_col_name)
-        # https://docs.pola.rs/api/python/stable/reference/dataframe/api/polars.DataFrame.rolling.html
-        period_n, offset_n = _get_period_and_offset(window.bounds)
-        return (
-            indexed_df.rolling(
-                index_column=index_col_name,
-                period=f"{period_n}i",
-                offset=f"{offset_n}i" if (offset_n is not None) else None,
-                group_by=groupby,
+            df_agg_inputs = df.with_columns(itertools.chain(*agg_inputs))
+
+            agg_exprs = [
+                self.agg_compiler.compile_agg_op(
+                    agg.op, list(map(lambda x: x.meta.output_name(), inputs))
+                ).alias(id.sql)
+                for (agg, id), inputs in zip(aggregations, agg_inputs)
+            ]
+
+            if len(grouping_keys) > 0:
+                group_exprs = [pl.col(ref.id.sql) for ref in grouping_keys]
+                grouped_df = df_agg_inputs.group_by(group_exprs)
+                return grouped_df.agg(agg_exprs).sort(group_exprs, nulls_last=True)
+            else:
+                return df_agg_inputs.select(agg_exprs)
+
+        @compile_node.register
+        def compile_explode(self, node: nodes.ExplodeNode):
+            assert node.offsets_col is None
+            df = self.compile_node(node.child)
+            cols = [col.id.sql for col in node.column_ids]
+            return df.explode(cols)
+
+        @compile_node.register
+        def compile_sample(self, node: nodes.RandomSampleNode):
+            df = self.compile_node(node.child)
+            # Sample is not available on lazyframe
+            return df.collect().sample(fraction=node.fraction).lazy()
+
+        @compile_node.register
+        def compile_window(self, node: nodes.WindowOpNode):
+            df = self.compile_node(node.child)
+
+            window = node.window_spec
+            # Should have been handled by reweriter
+            assert len(window.ordering) == 0
+            if window.min_periods > 0:
+                raise NotImplementedError(
+                    "min_period not yet supported for polars engine"
+                )
+
+            if (window.bounds is None) or (window.is_unbounded):
+                # polars will automatically broadcast the aggregate to the matching input rows
+                agg_pl = self.agg_compiler.compile_agg_expr(node.expression)
+                if window.grouping_keys:
+                    agg_pl = agg_pl.over(
+                        self.expr_compiler.compile_expression(key)
+                        for key in window.grouping_keys
+                    )
+                result = df.with_columns(agg_pl.alias(node.output_name.sql))
+            else:  # row-bounded window
+                window_result = self._calc_row_analytic_func(
+                    df, node.expression, node.window_spec, node.output_name.sql
+                )
+                result = pl.concat([df, window_result], how="horizontal")
+
+            # Probably easier just to pull this out as a rewriter
+            if (
+                node.expression.op.skips_nulls
+                and not node.never_skip_nulls
+                and node.expression.column_references
+            ):
+                nullity_expr = functools.reduce(
+                    operator.or_,
+                    (
+                        pl.col(column.sql).is_null()
+                        for column in node.expression.column_references
+                    ),
+                )
+                result = result.with_columns(
+                    pl.when(nullity_expr)
+                    .then(None)
+                    .otherwise(pl.col(node.output_name.sql))
+                    .alias(node.output_name.sql)
+                )
+            return result
+
+        def _calc_row_analytic_func(
+            self,
+            frame: pl.LazyFrame,
+            agg_expr: agg_expressions.Aggregation,
+            window: window_spec.WindowSpec,
+            name: str,
+        ) -> pl.LazyFrame:
+            if not isinstance(window.bounds, window_spec.RowsWindowBounds):
+                raise NotImplementedError("Only row bounds supported by polars engine")
+            groupby = None
+            if len(window.grouping_keys) > 0:
+                groupby = [
+                    self.expr_compiler.compile_expression(ref)
+                    for ref in window.grouping_keys
+                ]
+
+            # Polars API semi-bounded, and any grouped rolling window challenging
+            # https://github.com/pola-rs/polars/issues/4799
+            # https://github.com/pola-rs/polars/issues/8976
+            pl_agg_expr = self.agg_compiler.compile_agg_expr(agg_expr).alias(name)
+            index_col_name = "_bf_pl_engine_offsets"
+            indexed_df = frame.with_row_index(index_col_name)
+            # https://docs.pola.rs/api/python/stable/reference/dataframe/api/polars.DataFrame.rolling.html
+            period_n, offset_n = _get_period_and_offset(window.bounds)
+            return (
+                indexed_df.rolling(
+                    index_column=index_col_name,
+                    period=f"{period_n}i",
+                    offset=f"{offset_n}i" if (offset_n is not None) else None,
+                    group_by=groupby,
+                )
+                .agg(pl_agg_expr)
+                .select(name)
             )
-            .agg(pl_agg_expr)
-            .select(name)
-        )
 
 
 def _get_period_and_offset(

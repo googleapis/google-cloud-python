@@ -18,7 +18,6 @@ class GeoSeries:
         >>> import bigframes.geopandas
         >>> import bigframes.pandas as bpd
         >>> from shapely.geometry import Point
-        >>> bpd.options.display.progress_bar = None
 
         >>> s = bigframes.geopandas.GeoSeries([Point(1, 1), Point(2, 2), Point(3, 3)])
         >>> s
@@ -73,7 +72,6 @@ class GeoSeries:
             >>> import bigframes.pandas as bpd
             >>> import geopandas.array
             >>> import shapely.geometry
-            >>> bpd.options.display.progress_bar = None
 
             >>> series = bpd.Series(
             ...     [shapely.geometry.Point(1, 2), shapely.geometry.Point(2, 3), shapely.geometry.Point(3, 4)],
@@ -100,7 +98,6 @@ class GeoSeries:
             >>> import bigframes.pandas as bpd
             >>> import geopandas.array
             >>> import shapely.geometry
-            >>> bpd.options.display.progress_bar = None
 
             >>> series = bpd.Series(
             ...     [shapely.geometry.Point(1, 2), shapely.geometry.Point(2, 3), shapely.geometry.Point(3, 4)],
@@ -129,7 +126,6 @@ class GeoSeries:
             >>> import bigframes.pandas as bpd
             >>> import geopandas.array
             >>> import shapely.geometry
-            >>> bpd.options.display.progress_bar = None
 
             >>> from shapely.geometry import Polygon, LineString, Point
             >>> s = geopandas.GeoSeries(
@@ -171,7 +167,6 @@ class GeoSeries:
 
             >>> import bigframes.pandas as bpd
             >>> import bigframes.geopandas
-            >>> bpd.options.display.progress_bar = None
 
             >>> x = [2.5, 5, -3.0]
             >>> y = [0.5, 1, 1.5]
@@ -210,7 +205,6 @@ class GeoSeries:
 
             >>> import bigframes as bpd
             >>> import bigframes.geopandas
-            >>> bpd.options.display.progress_bar = None
 
             >>> wkts = [
             ... 'POINT (1 1)',
@@ -246,7 +240,6 @@ class GeoSeries:
             >>> import bigframes as bpd
             >>> import bigframes.geopandas
             >>> from shapely.geometry import Point
-            >>> bpd.options.display.progress_bar = None
 
             >>> s = bigframes.geopandas.GeoSeries([Point(1, 1), Point(2, 2), Point(3, 3)])
             >>> s
@@ -279,7 +272,6 @@ class GeoSeries:
             >>> import bigframes as bpd
             >>> import bigframes.geopandas
             >>> from shapely.geometry import Polygon, LineString, Point
-            >>> bpd.options.display.progress_bar = None
 
         We can check two GeoSeries against each other, row by row:
 
@@ -411,7 +403,6 @@ class GeoSeries:
             >>> import bigframes as bpd
             >>> import bigframes.geopandas
             >>> from shapely.geometry import Polygon, LineString, Point
-            >>> bpd.options.display.progress_bar = None
 
         We can check two GeoSeries against each other, row by row.
 

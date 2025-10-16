@@ -34,8 +34,6 @@ def cut(
     **Examples:**
 
         >>> import bigframes.pandas as bpd
-        >>> bpd.options.display.progress_bar = None
-
         >>> s = bpd.Series([0, 1, 5, 10])
         >>> s
         0     0
@@ -73,7 +71,6 @@ def cut(
 
     Cut with pd.IntervalIndex, requires importing pandas for IntervalIndex:
 
-        >>> import pandas as pd
         >>> interval_index = pd.IntervalIndex.from_tuples([(0, 1), (1, 5), (5, 20)])
         >>> bpd.cut(s, bins=interval_index)
         0                                            <NA>

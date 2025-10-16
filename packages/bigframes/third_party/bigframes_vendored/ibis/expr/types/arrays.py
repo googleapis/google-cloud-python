@@ -1008,7 +1008,6 @@ class ArrayValue(Value):
         ...     "nulls_only": [None, None, None],
         ...     "mixed_nulls": [[], None, [None]],
         ... }
-        >>> import pyarrow as pa
         >>> t = ibis.memtable(
         ...     pa.Table.from_pydict(
         ...         data,

@@ -22,7 +22,6 @@ class SimpleImputer(_BaseImputer):
 
         >>> import bigframes.pandas as bpd
         >>> from bigframes.ml.impute import SimpleImputer
-        >>> bpd.options.display.progress_bar = None
         >>> X_train = bpd.DataFrame({"feat0": [7.0, 4.0, 10.0], "feat1": [2.0, None, 5.0], "feat2": [3.0, 6.0, 9.0]})
         >>> imp_mean = SimpleImputer().fit(X_train)
         >>> X_test = bpd.DataFrame({"feat0": [None, 4.0, 10.0], "feat1": [2.0, None, None], "feat2": [3.0, 6.0, 9.0]})

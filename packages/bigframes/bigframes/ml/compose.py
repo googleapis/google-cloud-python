@@ -69,7 +69,6 @@ class SQLScalarColumnTransformer:
 
         >>> from bigframes.ml.compose import ColumnTransformer, SQLScalarColumnTransformer
         >>> import bigframes.pandas as bpd
-        >>> bpd.options.display.progress_bar = None
 
         >>> df = bpd.DataFrame({'name': ["James", None, "Mary"], 'city': ["New York", "Boston", None]})
         >>> col_trans = ColumnTransformer([

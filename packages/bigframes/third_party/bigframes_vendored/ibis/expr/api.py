@@ -1532,7 +1532,6 @@ def read_parquet(
     Examples
     --------
     >>> import ibis
-    >>> import pandas as pd
     >>> ibis.options.interactive = True
     >>> df = pd.DataFrame({"a": [1, 2, 3], "b": list("ghi")})
     >>> df
@@ -1582,7 +1581,6 @@ def read_delta(
     Examples
     --------
     >>> import ibis
-    >>> import pandas as pd
     >>> ibis.options.interactive = True
     >>> df = pd.DataFrame({"a": [1, 2, 3], "b": list("ghi")})
     >>> df

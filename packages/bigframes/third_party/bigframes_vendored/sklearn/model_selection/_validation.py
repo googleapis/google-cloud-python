@@ -19,7 +19,6 @@ def cross_validate(estimator, X, y=None, *, cv=None):
         >>> import bigframes.pandas as bpd
         >>> from bigframes.ml.model_selection import cross_validate, KFold
         >>> from bigframes.ml.linear_model import LinearRegression
-        >>> bpd.options.display.progress_bar = None
         >>> X = bpd.DataFrame({"feat0": [1, 3, 5], "feat1": [2, 4, 6]})
         >>> y = bpd.DataFrame({"label": [1, 2, 3]})
         >>> model = LinearRegression()

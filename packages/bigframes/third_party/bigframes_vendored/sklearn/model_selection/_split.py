@@ -69,7 +69,6 @@ class KFold(_BaseKFold):
 
         >>> import bigframes.pandas as bpd
         >>> from bigframes.ml.model_selection import KFold
-        >>> bpd.options.display.progress_bar = None
         >>> X = bpd.DataFrame({"feat0": [1, 3, 5], "feat1": [2, 4, 6]})
         >>> y = bpd.DataFrame({"label": [1, 2, 3]})
         >>> kf = KFold(n_splits=3, random_state=42)
@@ -162,7 +161,6 @@ def train_test_split(
 
         >>> import bigframes.pandas as bpd
         >>> from bigframes.ml.model_selection import train_test_split
-        >>> bpd.options.display.progress_bar = None
         >>> X = bpd.DataFrame({"feat0": [0, 2, 4, 6, 8], "feat1": [1, 3, 5, 7, 9]})
         >>> y = bpd.DataFrame({"label": [0, 1, 2, 3, 4]})
         >>> X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)

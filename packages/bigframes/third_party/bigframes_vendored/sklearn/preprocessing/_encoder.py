@@ -25,7 +25,6 @@ class OneHotEncoder(BaseEstimator):
 
         >>> from bigframes.ml.preprocessing import OneHotEncoder
         >>> import bigframes.pandas as bpd
-        >>> bpd.options.display.progress_bar = None
 
         >>> enc = OneHotEncoder()
         >>> X = bpd.DataFrame({"a": ["Male", "Female", "Female"], "b": ["1", "3", "2"]})

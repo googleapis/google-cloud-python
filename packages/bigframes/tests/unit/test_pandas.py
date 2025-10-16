@@ -174,7 +174,7 @@ def test_cut_raises_with_invalid_bins(bins: int, error_message: str):
 
 
 def test_pandas_attribute():
-    assert bpd.NA is pd.NA
+    assert pd.NA is pd.NA
     assert bpd.BooleanDtype is pd.BooleanDtype
     assert bpd.Float64Dtype is pd.Float64Dtype
     assert bpd.Int64Dtype is pd.Int64Dtype

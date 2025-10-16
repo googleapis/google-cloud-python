@@ -288,7 +288,7 @@ def test_strip(scalars_dfs):
     ],
 )
 def test_strip_w_to_strip(to_strip):
-    s = bpd.Series(["1. Ant.  ", "2. Bee!\n", "3. Cat?\t", bpd.NA])
+    s = bpd.Series(["1. Ant.  ", "2. Bee!\n", "3. Cat?\t", pd.NA])
     pd_s = s.to_pandas()
 
     bf_result = s.str.strip(to_strip=to_strip).to_pandas()
@@ -434,7 +434,7 @@ def test_rstrip(scalars_dfs):
     ],
 )
 def test_rstrip_w_to_strip(to_strip):
-    s = bpd.Series(["1. Ant.  ", "2. Bee!\n", "3. Cat?\t", bpd.NA])
+    s = bpd.Series(["1. Ant.  ", "2. Bee!\n", "3. Cat?\t", pd.NA])
     pd_s = s.to_pandas()
 
     bf_result = s.str.rstrip(to_strip=to_strip).to_pandas()
@@ -469,7 +469,7 @@ def test_lstrip(scalars_dfs):
     ],
 )
 def test_lstrip_w_to_strip(to_strip):
-    s = bpd.Series(["1. Ant.  ", "2. Bee!\n", "3. Cat?\t", bpd.NA])
+    s = bpd.Series(["1. Ant.  ", "2. Bee!\n", "3. Cat?\t", pd.NA])
     pd_s = s.to_pandas()
 
     bf_result = s.str.lstrip(to_strip=to_strip).to_pandas()

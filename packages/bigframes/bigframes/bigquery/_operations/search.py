@@ -111,7 +111,6 @@ def vector_search(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bpd.options.display.progress_bar = None
 
     DataFrame embeddings for which to find nearest neighbors. The ``ARRAY<FLOAT64>`` column
     is used as the search query:

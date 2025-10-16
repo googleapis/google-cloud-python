@@ -1979,7 +1979,10 @@ def test_series_small_repr(scalars_dfs):
     col_name = "int64_col"
     bf_series = scalars_df[col_name]
     pd_series = scalars_pandas_df[col_name]
-    assert repr(bf_series) == pd_series.to_string(length=False, dtype=True, name=True)
+    with bigframes.pandas.option_context("display.repr_mode", "head"):
+        assert repr(bf_series) == pd_series.to_string(
+            length=False, dtype=True, name=True
+        )
 
 
 def test_sum(scalars_dfs):

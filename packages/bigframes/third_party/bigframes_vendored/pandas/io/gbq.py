@@ -61,7 +61,6 @@ class GBQIOMixin:
         **Examples:**
 
             >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
         If the input is a table ID:
 

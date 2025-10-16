@@ -25,7 +25,6 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
 
     >>> from bigframes.ml.linear_model import LogisticRegression
     >>> import bigframes.pandas as bpd
-    >>> bpd.options.display.progress_bar = None
     >>> X = bpd.DataFrame({ \
             "feature0": [20, 21, 19, 18], \
             "feature1": [0, 1, 1, 0], \

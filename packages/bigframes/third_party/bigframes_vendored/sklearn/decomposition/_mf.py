@@ -24,7 +24,6 @@ class MatrixFactorization(BaseEstimator, metaclass=ABCMeta):
 
         >>> import bigframes.pandas as bpd
         >>> from bigframes.ml.decomposition import MatrixFactorization
-        >>> bpd.options.display.progress_bar = None
         >>> X = bpd.DataFrame({
         ... "row": [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6],
         ... "column": [0,1] * 7,

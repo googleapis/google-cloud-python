@@ -49,7 +49,6 @@ notebook,
 
 or just remove it.
 
-    >>> bpd.options.display.progress_bar = None
 
 Setting to default value "auto" will detect and show progress bar automatically.
 

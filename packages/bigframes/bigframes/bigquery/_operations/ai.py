@@ -53,7 +53,6 @@ def generate(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bpd.options.display.progress_bar = None
         >>> country = bpd.Series(["Japan", "Canada"])
         >>> bbq.ai.generate(("What's the capital city of ", country, " one word only"))
         0    {'result': 'Tokyo\\n', 'full_response': '{"cand...
@@ -155,7 +154,6 @@ def generate_bool(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bpd.options.display.progress_bar = None
         >>> df = bpd.DataFrame({
         ...     "col_1": ["apple", "bear", "pear"],
         ...     "col_2": ["fruit", "animal", "animal"]
@@ -240,7 +238,6 @@ def generate_int(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bpd.options.display.progress_bar = None
         >>> animal = bpd.Series(["Kangaroo", "Rabbit", "Spider"])
         >>> bbq.ai.generate_int(("How many legs does a ", animal, " have?"))
         0    {'result': 2, 'full_response': '{"candidates":...
@@ -322,7 +319,6 @@ def generate_double(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bpd.options.display.progress_bar = None
         >>> animal = bpd.Series(["Kangaroo", "Rabbit", "Spider"])
         >>> bbq.ai.generate_double(("How many legs does a ", animal, " have?"))
         0    {'result': 2.0, 'full_response': '{"candidates...
@@ -402,7 +398,6 @@ def if_(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bpd.options.display.progress_bar = None
         >>> us_state = bpd.Series(["Massachusetts", "Illinois", "Hawaii"])
         >>> bbq.ai.if_((us_state, " has a city called Springfield"))
         0     True
@@ -459,7 +454,6 @@ def classify(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bpd.options.display.progress_bar = None
         >>> df = bpd.DataFrame({'creature': ['Cat', 'Salmon']})
         >>> df['type'] = bbq.ai.classify(df['creature'], ['Mammal', 'Fish'])
         >>> df
@@ -517,7 +511,6 @@ def score(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bpd.options.display.progress_bar = None
         >>> animal = bpd.Series(["Tiger", "Rabbit", "Blue Whale"])
         >>> bbq.ai.score(("Rank the relative weights of ", animal, " on the scale from 1 to 3")) # doctest: +SKIP
         0    2.0

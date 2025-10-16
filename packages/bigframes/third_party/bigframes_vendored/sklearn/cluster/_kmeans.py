@@ -30,7 +30,6 @@ class KMeans(_BaseKMeans):
     **Examples:**
 
         >>> import bigframes.pandas as bpd
-        >>> bpd.options.display.progress_bar = None
         >>> from bigframes.ml.cluster import KMeans
 
         >>> X = bpd.DataFrame({"feat0": [1, 1, 1, 10, 10, 10], "feat1": [2, 4, 0, 2, 4, 0]})

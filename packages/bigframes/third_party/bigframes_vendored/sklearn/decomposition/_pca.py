@@ -24,7 +24,6 @@ class PCA(BaseEstimator, metaclass=ABCMeta):
 
         >>> import bigframes.pandas as bpd
         >>> from bigframes.ml.decomposition import PCA
-        >>> bpd.options.display.progress_bar = None
         >>> X = bpd.DataFrame({"feat0": [-1, -2, -3, 1, 2, 3], "feat1": [-1, -1, -2, 1, 1, 2]})
         >>> pca = PCA(n_components=2).fit(X)
         >>> pca.predict(X) # doctest:+SKIP

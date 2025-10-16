@@ -38,7 +38,6 @@ def to_datetime(
     **Examples:**
 
         >>> import bigframes.pandas as bpd
-        >>> bpd.options.display.progress_bar = None
 
     Converting a Scalar to datetime:
 

@@ -40,7 +40,6 @@ def approx_top_count(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
-        >>> bpd.options.display.progress_bar = None
         >>> s = bpd.Series(["apple", "apple", "pear", "pear", "pear", "banana"])
         >>> bbq.approx_top_count(s, number=2)
         [{'value': 'pear', 'count': 3}, {'value': 'apple', 'count': 2}]

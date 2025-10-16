@@ -46,7 +46,6 @@ def r2_score(y_true, y_pred, force_finite=True) -> float:
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.ml.metrics
-        >>> bpd.options.display.progress_bar = None
 
         >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])
         >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])
@@ -73,7 +72,6 @@ def mean_squared_error(y_true, y_pred) -> float:
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.ml.metrics
-        >>> bpd.options.display.progress_bar = None
 
         >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])
         >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])
@@ -100,7 +98,6 @@ def mean_absolute_error(y_true, y_pred) -> float:
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.ml.metrics
-        >>> bpd.options.display.progress_bar = None
 
         >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])
         >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])

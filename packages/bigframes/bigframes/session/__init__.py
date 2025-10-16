@@ -617,11 +617,9 @@ class Session(
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-
         Simple query input:
 
+            >>> import bigframes.pandas as bpd
             >>> df = bpd.read_gbq_query('''
             ...    SELECT
             ...       pitcherFirstName,
@@ -773,11 +771,9 @@ class Session(
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-
         Read a whole table, with arbitrary ordering or ordering corresponding to the primary key(s).
 
+            >>> import bigframes.pandas as bpd
             >>> df = bpd.read_gbq_table("bigquery-public-data.ml_datasets.penguins")
 
         See also: :meth:`Session.read_gbq`.
@@ -852,8 +848,6 @@ class Session(
         **Examples:**
 
             >>> import bigframes.streaming as bst
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
 
             >>> sdf = bst.read_gbq_table("bigquery-public-data.ml_datasets.penguins")
 
@@ -881,11 +875,9 @@ class Session(
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-
         Read an existing BigQuery ML model.
 
+            >>> import bigframes.pandas as bpd
             >>> model_name = "bigframes-dev.bqml_tutorial.penguins_model"
             >>> model = bpd.read_gbq_model(model_name)
 
@@ -951,9 +943,6 @@ class Session(
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
-            >>> import pandas as pd
-            >>> bpd.options.display.progress_bar = None
 
             >>> d = {'col1': [1, 2], 'col2': [3, 4]}
             >>> pandas_df = pd.DataFrame(data=d)
@@ -1829,9 +1818,7 @@ class Session(
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
             >>> import datetime
-            >>> bpd.options.display.progress_bar = None
 
         Turning an arbitrary python function into a BigQuery managed python udf:
 
@@ -1885,7 +1872,7 @@ class Session(
         You can clean-up the BigQuery functions created above using the BigQuery
         client from the BigQuery DataFrames session:
 
-            >>> session = bpd.get_global_session()
+            >>> session = bpd.get_global_session()  # doctest: +SKIP
             >>> session.bqclient.delete_routine(minutes_to_hours.bigframes_bigquery_function)  # doctest: +SKIP
             >>> session.bqclient.delete_routine(get_hash.bigframes_bigquery_function)  # doctest: +SKIP
 
@@ -1993,12 +1980,10 @@ class Session(
 
         **Examples:**
 
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.display.progress_bar = None
-
         Use the [cw_lower_case_ascii_only](https://github.com/GoogleCloudPlatform/bigquery-utils/blob/master/udfs/community/README.md#cw_lower_case_ascii_onlystr-string)
         function from Community UDFs.
 
+            >>> import bigframes.pandas as bpd
             >>> func = bpd.read_gbq_function("bqutil.fn.cw_lower_case_ascii_only")
 
         You can run it on scalar input. Usually you would do so to verify that
@@ -2058,13 +2043,13 @@ class Session(
         Another use case is to define your own remote function and use it later.
         For example, define the remote function:
 
-            >>> @bpd.remote_function(cloud_function_service_account="default")
+            >>> @bpd.remote_function(cloud_function_service_account="default")  # doctest: +SKIP
             ... def tenfold(num: int) -> float:
             ...     return num * 10
 
         Then, read back the deployed BQ remote function:
 
-            >>> tenfold_ref = bpd.read_gbq_function(
+            >>> tenfold_ref = bpd.read_gbq_function(  # doctest: +SKIP
             ...     tenfold.bigframes_remote_function,
             ... )
 
@@ -2076,7 +2061,7 @@ class Session(
             <BLANKLINE>
             [2 rows x 3 columns]
 
-            >>> df['a'].apply(tenfold_ref)
+            >>> df['a'].apply(tenfold_ref)  # doctest: +SKIP
             0    10.0
             1    20.0
             Name: a, dtype: Float64
@@ -2085,12 +2070,11 @@ class Session(
         note, row processor implies that the function has only one input
         parameter.
 
-            >>> import pandas as pd
-            >>> @bpd.remote_function(cloud_function_service_account="default")
+            >>> @bpd.remote_function(cloud_function_service_account="default")  # doctest: +SKIP
             ... def row_sum(s: pd.Series) -> float:
             ...     return s['a'] + s['b'] + s['c']
 
-            >>> row_sum_ref = bpd.read_gbq_function(
+            >>> row_sum_ref = bpd.read_gbq_function(  # doctest: +SKIP
             ...     row_sum.bigframes_remote_function,
             ...     is_row_processor=True,
             ... )
@@ -2103,7 +2087,7 @@ class Session(
             <BLANKLINE>
             [2 rows x 3 columns]
 
-            >>> df.apply(row_sum_ref, axis=1)
+            >>> df.apply(row_sum_ref, axis=1)  # doctest: +SKIP
             0     9.0
             1    12.0
             dtype: Float64

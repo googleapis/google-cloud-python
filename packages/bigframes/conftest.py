@@ -20,11 +20,24 @@ import pyarrow as pa
 import pytest
 
 import bigframes._config
-import bigframes.pandas as bpd
+
+
+@pytest.fixture(scope="session")
+def polars_session_or_bpd():
+    # Since the doctest imports fixture is autouse=True, don't skip if polars
+    # isn't available.
+    try:
+        from bigframes.testing import polars_session
+
+        return polars_session.TestSession()
+    except ImportError:
+        import bigframes.pandas as bpd
+
+        return bpd
 
 
 @pytest.fixture(autouse=True)
-def default_doctest_imports(doctest_namespace):
+def default_doctest_imports(doctest_namespace, polars_session_or_bpd):
     """
     Avoid some boilerplate in pandas-inspired tests.
 
@@ -33,5 +46,10 @@ def default_doctest_imports(doctest_namespace):
     doctest_namespace["np"] = np
     doctest_namespace["pd"] = pd
     doctest_namespace["pa"] = pa
-    doctest_namespace["bpd"] = bpd
+    doctest_namespace["bpd"] = polars_session_or_bpd
     bigframes._config.options.display.progress_bar = None
+
+    # TODO(tswast): Consider setting the numpy printoptions here for better
+    # compatibility across numpy versions.
+    # https://numpy.org/doc/stable/release/2.0.0-notes.html#representation-of-numpy-scalars-changed
+    # https://numpy.org/doc/stable/reference/generated/numpy.set_printoptions.html#numpy-set-printoptions

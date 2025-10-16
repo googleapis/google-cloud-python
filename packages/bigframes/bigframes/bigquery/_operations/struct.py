@@ -39,7 +39,6 @@ def struct(value: dataframe.DataFrame) -> series.Series:
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
         >>> import bigframes.series as series
-        >>> bpd.options.display.progress_bar = None
 
         >>> srs = series.Series([{"version": 1, "project": "pandas"}, {"version": 2, "project": "numpy"},])
         >>> df = srs.struct.explode()

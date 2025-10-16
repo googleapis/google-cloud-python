@@ -463,7 +463,7 @@
 
 * Address `read_csv` with both `index_col` and `use_cols` behavior inconsistency with pandas ([#1785](https://github.com/googleapis/python-bigquery-dataframes/issues/1785)) ([ba7c313](https://github.com/googleapis/python-bigquery-dataframes/commit/ba7c313c8d308e3ff3f736b60978cb7a51715209))
 * Allow KMeans model init parameter as k-means++ alias ([#1790](https://github.com/googleapis/python-bigquery-dataframes/issues/1790)) ([0b59cf1](https://github.com/googleapis/python-bigquery-dataframes/commit/0b59cf1008613770fa1433c6da395e755c86fe22))
-* Replace function now can handle bpd.NA value. ([#1786](https://github.com/googleapis/python-bigquery-dataframes/issues/1786)) ([7269512](https://github.com/googleapis/python-bigquery-dataframes/commit/7269512a28eb42029447d5380c764353278a74e1))
+* Replace function now can handle pd.NA value. ([#1786](https://github.com/googleapis/python-bigquery-dataframes/issues/1786)) ([7269512](https://github.com/googleapis/python-bigquery-dataframes/commit/7269512a28eb42029447d5380c764353278a74e1))
 
 
 ### Documentation
