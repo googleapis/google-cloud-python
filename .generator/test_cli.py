@@ -287,6 +287,7 @@ def mock_state_file(tmp_path, monkeypatch):
 
 def test_handle_configure_success(mock_configure_request_file, mocker):
     """Tests the successful execution path of handle_configure."""
+    mocker.patch("cli._update_global_changelog", return_value=None)
     mock_write_json = mocker.patch("cli._write_json_file")
     mock_prepare_config = mocker.patch(
         "cli._prepare_new_library_config", return_value={"id": "prepared"}
