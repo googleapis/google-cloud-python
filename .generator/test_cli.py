@@ -814,6 +814,28 @@ def test_copy_files_needed_for_post_processing_copies_metadata_if_exists(mocker)
     mock_makedirs.assert_called()
 
 
+def test_copy_files_needed_for_post_processing_copies_readme(mocker):
+    """Tests that README.rst is copied to the docs directory if it exists."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_path_exists = mocker.patch("pathlib.Path.exists", return_value=True)
+    mocker.patch("os.path.exists", return_value=False)  # for .repo-metadata.json
+
+    _copy_files_needed_for_post_processing("output", "input", "google-cloud-language")
+
+    mock_makedirs.assert_called_with(
+        Path("output") / "packages" / "google-cloud-language" / "docs", exist_ok=True
+    )
+    mock_shutil_copy.assert_called_with(
+        Path("output") / "packages" / "google-cloud-language" / "README.rst",
+        Path("output")
+        / "packages"
+        / "google-cloud-language"
+        / "docs"
+        / "README.rst",
+    )
+
+
 def test_copy_files_needed_for_post_processing_skips_metadata_if_not_exists(mocker):
     """Tests that .repo-metadata.json is not copied if it does not exist."""
     mock_makedirs = mocker.patch("os.makedirs")

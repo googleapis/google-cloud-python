@@ -350,6 +350,14 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
             f"{output}/{path_to_library}/.repo-metadata.json",
         )
 
+    source_readme_path = Path(output) / path_to_library / "README.rst"
+    if source_readme_path.exists():
+        destination_docs_dir = Path(output) / path_to_library / "docs"
+        destination_readme_path = destination_docs_dir / "README.rst"
+
+        os.makedirs(destination_docs_dir, exist_ok=True)
+        shutil.copy(source_readme_path, destination_readme_path)
+
     # copy post-procesing files
     for post_processing_file in glob.glob(
         f"{input}/client-post-processing/*.yaml"
