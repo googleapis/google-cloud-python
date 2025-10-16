@@ -4527,3 +4527,46 @@ libraries:
     remove_regex:
       - packages/google-cloud-network-security
     tag_format: '{id}-v{version}'
+  - id: google-cloud-bigquery-storage
+    version: 2.33.1
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/bigquery/storage/v1beta2
+        service_config: bigquerystorage_v1beta2.yaml
+      - path: google/cloud/bigquery/storage/v1alpha
+        service_config: bigquerystorage_v1alpha.yaml
+      - path: google/cloud/bigquery/storage/v1beta
+        service_config: bigquerystorage_v1beta.yaml
+      - path: google/cloud/bigquery/storage/v1
+        service_config: bigquerystorage_v1.yaml
+    source_roots:
+      - packages/google-cloud-bigquery-storage
+    preserve_regex:
+      - docs/.*/library.rst
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - google/cloud/bigquery_storage_v1/client.py
+      - google/cloud/bigquery_storage_v1/exceptions.py
+      - google/cloud/bigquery_storage_v1/gapic_types.py
+      - google/cloud/bigquery_storage_v1/reader.py
+      - google/cloud/bigquery_storage_v1/writer.py
+      - google/cloud/bigquery_storage_v1beta2/client.py
+      - google/cloud/bigquery_storage_v1beta2/exceptions.py
+      - packages/google-cloud-bigquery-storage/CHANGELOG.md
+      - packages/google-cloud-bigquery-storage/CONTRIBUTING
+      - samples/README.txt
+      - samples/conftest.py
+      - samples/pyarrow
+      - samples/quickstart
+      - samples/snippets
+      - samples/to_dataframe
+      - scripts/client-post-processing
+      - scripts/decrypt-secrets.sh
+      - scripts/readme-gen
+      - testing/.gitignore
+      - tests/system
+      - tests/system
+      - tests/unit/.*.py
+    remove_regex:
+      - packages/google-cloud-bigquery-storage
+    tag_format: '{id}-v{version}'
