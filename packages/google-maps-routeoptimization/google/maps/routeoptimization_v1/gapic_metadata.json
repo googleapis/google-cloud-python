@@ -19,6 +19,16 @@
               "methods": [
                 "optimize_tours"
               ]
+            },
+            "OptimizeToursLongRunning": {
+              "methods": [
+                "optimize_tours_long_running"
+              ]
+            },
+            "OptimizeToursUri": {
+              "methods": [
+                "optimize_tours_uri"
+              ]
             }
           }
         },
@@ -34,6 +44,16 @@
               "methods": [
                 "optimize_tours"
               ]
+            },
+            "OptimizeToursLongRunning": {
+              "methods": [
+                "optimize_tours_long_running"
+              ]
+            },
+            "OptimizeToursUri": {
+              "methods": [
+                "optimize_tours_uri"
+              ]
             }
           }
         },
@@ -48,6 +68,16 @@
             "OptimizeTours": {
               "methods": [
                 "optimize_tours"
+              ]
+            },
+            "OptimizeToursLongRunning": {
+              "methods": [
+                "optimize_tours_long_running"
+              ]
+            },
+            "OptimizeToursUri": {
+              "methods": [
+                "optimize_tours_uri"
               ]
             }
           }

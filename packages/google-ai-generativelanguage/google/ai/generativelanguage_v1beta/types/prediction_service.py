@@ -30,7 +30,7 @@ __protobuf__ = proto.module(
         "PredictLongRunningMetadata",
         "Media",
         "Video",
-        "GenerateVideoResponse",
+        "PredictLongRunningGeneratedVideoResponse",
     },
 )
 
@@ -119,18 +119,18 @@ class PredictLongRunningResponse(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        generate_video_response (google.ai.generativelanguage_v1beta.types.GenerateVideoResponse):
+        generate_video_response (google.ai.generativelanguage_v1beta.types.PredictLongRunningGeneratedVideoResponse):
             The response of the video generation
             prediction.
 
             This field is a member of `oneof`_ ``response``.
     """
 
-    generate_video_response: "GenerateVideoResponse" = proto.Field(
+    generate_video_response: "PredictLongRunningGeneratedVideoResponse" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="response",
-        message="GenerateVideoResponse",
+        message="PredictLongRunningGeneratedVideoResponse",
     )
 
 
@@ -192,7 +192,7 @@ class Video(proto.Message):
     )
 
 
-class GenerateVideoResponse(proto.Message):
+class PredictLongRunningGeneratedVideoResponse(proto.Message):
     r"""Veo response.
 
     Attributes:

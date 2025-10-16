@@ -484,6 +484,14 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                     "method": "get",
                     "uri": "/v1/{name=corpora/*/operations/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=ragStores/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=ragStores/*/upload/operations/*}",
+                },
             ]
             return http_options
 

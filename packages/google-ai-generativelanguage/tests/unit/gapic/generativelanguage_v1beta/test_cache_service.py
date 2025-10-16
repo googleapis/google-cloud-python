@@ -4241,6 +4241,14 @@ def test_create_cached_content_rest_call_success(request_type):
                         "id": "id_value",
                         "name": "name_value",
                         "response": {},
+                        "parts": [
+                            {
+                                "inline_data": {
+                                    "mime_type": "mime_type_value",
+                                    "data": b"data_blob",
+                                }
+                            }
+                        ],
                         "will_continue": True,
                         "scheduling": 1,
                     },
@@ -4257,6 +4265,7 @@ def test_create_cached_content_rest_call_success(request_type):
                     },
                     "thought": True,
                     "thought_signature": b"thought_signature_blob",
+                    "part_metadata": {},
                 }
             ],
             "role": "role_value",
@@ -4314,6 +4323,13 @@ def test_create_cached_content_rest_call_success(request_type):
                 "code_execution": {},
                 "google_search": {
                     "time_range_filter": {"start_time": {}, "end_time": {}}
+                },
+                "computer_use": {
+                    "environment": 1,
+                    "excluded_predefined_functions": [
+                        "excluded_predefined_functions_value1",
+                        "excluded_predefined_functions_value2",
+                    ],
                 },
                 "url_context": {},
             }
@@ -4688,6 +4704,14 @@ def test_update_cached_content_rest_call_success(request_type):
                         "id": "id_value",
                         "name": "name_value",
                         "response": {},
+                        "parts": [
+                            {
+                                "inline_data": {
+                                    "mime_type": "mime_type_value",
+                                    "data": b"data_blob",
+                                }
+                            }
+                        ],
                         "will_continue": True,
                         "scheduling": 1,
                     },
@@ -4704,6 +4728,7 @@ def test_update_cached_content_rest_call_success(request_type):
                     },
                     "thought": True,
                     "thought_signature": b"thought_signature_blob",
+                    "part_metadata": {},
                 }
             ],
             "role": "role_value",
@@ -4761,6 +4786,13 @@ def test_update_cached_content_rest_call_success(request_type):
                 "code_execution": {},
                 "google_search": {
                     "time_range_filter": {"start_time": {}, "end_time": {}}
+                },
+                "computer_use": {
+                    "environment": 1,
+                    "excluded_predefined_functions": [
+                        "excluded_predefined_functions_value1",
+                        "excluded_predefined_functions_value2",
+                    ],
                 },
                 "url_context": {},
             }

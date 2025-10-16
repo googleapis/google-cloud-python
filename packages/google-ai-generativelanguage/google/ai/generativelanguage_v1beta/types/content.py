@@ -29,7 +29,9 @@ __protobuf__ = proto.module(
         "Modality",
         "Content",
         "Part",
+        "FunctionResponsePart",
         "Blob",
+        "FunctionResponseBlob",
         "FileData",
         "VideoMetadata",
         "ExecutableCode",
@@ -206,6 +208,14 @@ class Part(proto.Message):
         thought_signature (bytes):
             Optional. An opaque signature for the thought
             so it can be reused in subsequent requests.
+        part_metadata (google.protobuf.struct_pb2.Struct):
+            Custom metadata associated with the Part.
+            Agents using genai.Part as content
+            representation may need to keep track of the
+            additional information. For example it can be
+            name of a file/source from which the Part
+            originates or a way to multiplex multiple Part
+            streams.
     """
 
     text: str = proto.Field(
@@ -263,12 +273,76 @@ class Part(proto.Message):
         proto.BYTES,
         number=13,
     )
+    part_metadata: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=struct_pb2.Struct,
+    )
+
+
+class FunctionResponsePart(proto.Message):
+    r"""A datatype containing media that is part of a ``FunctionResponse``
+    message.
+
+    A ``FunctionResponsePart`` consists of data which has an associated
+    datatype. A ``FunctionResponsePart`` can only contain one of the
+    accepted types in ``FunctionResponsePart.data``.
+
+    A ``FunctionResponsePart`` must have a fixed IANA MIME type
+    identifying the type and subtype of the media if the ``inline_data``
+    field is filled with raw bytes.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        inline_data (google.ai.generativelanguage_v1beta.types.FunctionResponseBlob):
+            Inline media bytes.
+
+            This field is a member of `oneof`_ ``data``.
+    """
+
+    inline_data: "FunctionResponseBlob" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="data",
+        message="FunctionResponseBlob",
+    )
 
 
 class Blob(proto.Message):
     r"""Raw media bytes.
 
     Text should not be sent as raw bytes, use the 'text' field.
+
+    Attributes:
+        mime_type (str):
+            The IANA standard MIME type of the source data. Examples:
+
+            - image/png
+            - image/jpeg If an unsupported MIME type is provided, an
+              error will be returned. For a complete list of supported
+              types, see `Supported file
+              formats <https://ai.google.dev/gemini-api/docs/prompting_with_media#supported_file_formats>`__.
+        data (bytes):
+            Raw bytes for media formats.
+    """
+
+    mime_type: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+
+
+class FunctionResponseBlob(proto.Message):
+    r"""Raw media bytes for function response.
+
+    Text should not be sent as raw bytes, use the
+    'FunctionResponse.response' field.
 
     Attributes:
         mime_type (str):
@@ -439,6 +513,8 @@ class Tool(proto.Message):
     with external systems to perform an action, or set of actions,
     outside of knowledge and scope of the model.
 
+    Next ID: 12
+
     Attributes:
         function_declarations (MutableSequence[google.ai.generativelanguage_v1beta.types.FunctionDeclaration]):
             Optional. A list of ``FunctionDeclarations`` available to
@@ -465,6 +541,11 @@ class Tool(proto.Message):
             Optional. GoogleSearch tool type.
             Tool to support Google Search in Model. Powered
             by Google.
+        computer_use (google.ai.generativelanguage_v1beta.types.Tool.ComputerUse):
+            Optional. Tool to support the model
+            interacting directly with the computer. If
+            enabled, it automatically populates computer-use
+            specific Function Declarations.
         url_context (google.ai.generativelanguage_v1beta.types.UrlContext):
             Optional. Tool to support URL context
             retrieval.
@@ -487,6 +568,48 @@ class Tool(proto.Message):
             message=interval_pb2.Interval,
         )
 
+    class ComputerUse(proto.Message):
+        r"""Computer Use tool type.
+
+        Attributes:
+            environment (google.ai.generativelanguage_v1beta.types.Tool.ComputerUse.Environment):
+                Required. The environment being operated.
+            excluded_predefined_functions (MutableSequence[str]):
+                Optional. By default, predefined functions
+                are included in the final model call. Some of
+                them can be explicitly excluded from being
+                automatically included. This can serve two
+                purposes:
+
+                1. Using a more restricted / different action
+                    space.
+                2. Improving the definitions / instructions of
+                    predefined functions.
+        """
+
+        class Environment(proto.Enum):
+            r"""Represents the environment being operated, such as a web
+            browser.
+
+            Values:
+                ENVIRONMENT_UNSPECIFIED (0):
+                    Defaults to browser.
+                ENVIRONMENT_BROWSER (1):
+                    Operates in a web browser.
+            """
+            ENVIRONMENT_UNSPECIFIED = 0
+            ENVIRONMENT_BROWSER = 1
+
+        environment: "Tool.ComputerUse.Environment" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="Tool.ComputerUse.Environment",
+        )
+        excluded_predefined_functions: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=5,
+        )
+
     function_declarations: MutableSequence["FunctionDeclaration"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
@@ -506,6 +629,11 @@ class Tool(proto.Message):
         proto.MESSAGE,
         number=4,
         message=GoogleSearch,
+    )
+    computer_use: ComputerUse = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=ComputerUse,
     )
     url_context: "UrlContext" = proto.Field(
         proto.MESSAGE,
@@ -615,10 +743,10 @@ class FunctionCallingConfig(proto.Message):
             Optional. A set of function names that, when provided,
             limits the functions the model will call.
 
-            This should only be set when the Mode is ANY. Function names
-            should match [FunctionDeclaration.name]. With mode set to
-            ANY, model will predict a function call from the set of
-            function names provided.
+            This should only be set when the Mode is ANY or VALIDATED.
+            Function names should match [FunctionDeclaration.name]. When
+            set, model will predict a function call from only allowed
+            function names.
     """
 
     class Mode(proto.Enum):
@@ -644,10 +772,12 @@ class FunctionCallingConfig(proto.Message):
                 Model behavior is same as when not passing any
                 function declarations.
             VALIDATED (4):
-                Model decides to predict either a function
-                call or a natural language response, but will
-                validate function calls with constrained
-                decoding.
+                Model decides to predict either a function call or a natural
+                language response, but will validate function calls with
+                constrained decoding. If "allowed_function_names" are set,
+                the predicted function call will be limited to any one of
+                "allowed_function_names", else the predicted function call
+                will be any one of the provided "function_declarations".
         """
         MODE_UNSPECIFIED = 0
         AUTO = 1
@@ -680,8 +810,9 @@ class FunctionDeclaration(proto.Message):
     Attributes:
         name (str):
             Required. The name of the function.
-            Must be a-z, A-Z, 0-9, or contain underscores
-            and dashes, with a maximum length of 63.
+            Must be a-z, A-Z, 0-9, or contain underscores,
+            colons, dots, and dashes, with a maximum length
+            of 64.
         description (str):
             Required. A brief description of the
             function.
@@ -813,7 +944,7 @@ class FunctionCall(proto.Message):
         name (str):
             Required. The name of the function to call.
             Must be a-z, A-Z, 0-9, or contain underscores
-            and dashes, with a maximum length of 63.
+            and dashes, with a maximum length of 64.
         args (google.protobuf.struct_pb2.Struct):
             Optional. The function parameters and values
             in JSON object format.
@@ -855,10 +986,18 @@ class FunctionResponse(proto.Message):
         name (str):
             Required. The name of the function to call.
             Must be a-z, A-Z, 0-9, or contain underscores
-            and dashes, with a maximum length of 63.
+            and dashes, with a maximum length of 64.
         response (google.protobuf.struct_pb2.Struct):
             Required. The function response in JSON
-            object format.
+            object format. Callers can use any keys of their
+            choice that fit the function's syntax to return
+            the function output, e.g. "output", "result",
+            etc. In particular, if the function call failed
+            to execute, the response can have an "error" key
+            to return error details to the model.
+        parts (MutableSequence[google.ai.generativelanguage_v1beta.types.FunctionResponsePart]):
+            Optional. Ordered ``Parts`` that constitute a function
+            response. Parts may have different IANA MIME types.
         will_continue (bool):
             Optional. Signals that function call continues, and more
             responses will be returned, turning the function call into a
@@ -915,6 +1054,11 @@ class FunctionResponse(proto.Message):
         number=2,
         message=struct_pb2.Struct,
     )
+    parts: MutableSequence["FunctionResponsePart"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="FunctionResponsePart",
+    )
     will_continue: bool = proto.Field(
         proto.BOOL,
         number=4,
@@ -940,13 +1084,9 @@ class Schema(proto.Message):
         type_ (google.ai.generativelanguage_v1beta.types.Type):
             Required. Data type.
         format_ (str):
-            Optional. The format of the data. This is
-            used only for primitive datatypes. Supported
-            formats:
-
-             for NUMBER type: float, double
-             for INTEGER type: int32, int64
-             for STRING type: enum, date-time
+            Optional. The format of the data. Any value
+            is allowed, but most do not trigger any special
+            functionality.
         title (str):
             Optional. The title of the schema.
         description (str):
