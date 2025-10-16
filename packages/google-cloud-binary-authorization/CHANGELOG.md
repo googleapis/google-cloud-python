@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-binary-authorization/#history
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-binary-authorization-v1.13.2...google-cloud-binary-authorization-v1.14.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-binary-authorization-v1.13.1...google-cloud-binary-authorization-v1.13.2) (2025-06-11)
 
 

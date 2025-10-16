@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-batch/#history
 
+## [0.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.37...google-cloud-batch-v0.18.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.17.37](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.36...google-cloud-batch-v0.17.37) (2025-09-22)
 
 

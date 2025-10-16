@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.32.0...google-cloud-build-v3.33.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [3.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.31.3...google-cloud-build-v3.32.0) (2025-08-29)
 
 

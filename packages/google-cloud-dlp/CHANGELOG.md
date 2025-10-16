@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.32.0...google-cloud-dlp-v3.33.0) (2025-10-16)
+
+
+### Documentation
+
+* clarify filter syntax for List* APIs  ([a5dbb64fe1815aa7e62b4d582791ef33b93d7712](https://github.com/googleapis/google-cloud-python/commit/a5dbb64fe1815aa7e62b4d582791ef33b93d7712))
+* clarify ListProjectDataProfiles API supports filter by project_id  ([a5dbb64fe1815aa7e62b4d582791ef33b93d7712](https://github.com/googleapis/google-cloud-python/commit/a5dbb64fe1815aa7e62b4d582791ef33b93d7712))
+* clarify List*DataProfiles APIs supports filter by profile_last_generated  ([a5dbb64fe1815aa7e62b4d582791ef33b93d7712](https://github.com/googleapis/google-cloud-python/commit/a5dbb64fe1815aa7e62b4d582791ef33b93d7712))
+
+
+### Features
+
+* inspect and deid templates in RedactImage  ([a5dbb64fe1815aa7e62b4d582791ef33b93d7712](https://github.com/googleapis/google-cloud-python/commit/a5dbb64fe1815aa7e62b4d582791ef33b93d7712))
+* store DlpJob findings in a Cloud Storage bucket  ([a5dbb64fe1815aa7e62b4d582791ef33b93d7712](https://github.com/googleapis/google-cloud-python/commit/a5dbb64fe1815aa7e62b4d582791ef33b93d7712))
+* publish DlpJob findings to Dataplex Universal Catalog  ([a5dbb64fe1815aa7e62b4d582791ef33b93d7712](https://github.com/googleapis/google-cloud-python/commit/a5dbb64fe1815aa7e62b4d582791ef33b93d7712))
+* Cloud Storage discovery filters based on tag filters  ([a5dbb64fe1815aa7e62b4d582791ef33b93d7712](https://github.com/googleapis/google-cloud-python/commit/a5dbb64fe1815aa7e62b4d582791ef33b93d7712))
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [3.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.31.0...google-cloud-dlp-v3.32.0) (2025-09-15)
 
 

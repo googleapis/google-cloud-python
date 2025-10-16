@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-ai-generativelanguage/#history
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.7.0...google-ai-generativelanguage-v0.8.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.18...google-ai-generativelanguage-v0.7.0) (2025-08-29)
 
 
