@@ -64,6 +64,7 @@ from cli import (
     _stage_gapic_library,
     _stage_proto_only_library,
     _update_changelog_for_library,
+    _update_docs_index_rst,
     _update_global_changelog,
     _update_version_for_library,
     _verify_library_dist_name,
@@ -1514,3 +1515,51 @@ def test_stage_gapic_library(mocker):
     mock_shutil_copytree.assert_called_once_with(
         tmp_dir, staging_dir, dirs_exist_ok=True
     )
+
+
+class TestUpdateDocsIndexRst:
+    @pytest.fixture
+    def mock_new_library_config(self):
+        return {
+            "id": "google-cloud-test",
+            "apis": [{"path": "google/cloud/test/v1"}],
+        }
+
+    def test_creates_new_file_when_not_exists(
+        self, mocker, mock_new_library_config
+    ):
+        mocker.patch("os.makedirs")
+        mock_path_exists = mocker.patch("pathlib.Path.exists", return_value=False)
+        mock_write_text_file = mocker.patch("cli._write_text_file")
+
+        _update_docs_index_rst("output", mock_new_library_config)
+
+        mock_path_exists.assert_called_once()
+        mock_write_text_file.assert_called_once()
+        # Verify that the content contains the expected sections
+        written_content = mock_write_text_file.call_args[0][1]
+        assert "API Reference" in written_content
+        assert "v1/services" in written_content
+        assert "Changelog" in written_content
+
+    def test_updates_existing_file(self, mocker, mock_new_library_config):
+        mocker.patch("os.makedirs")
+        mock_path_exists = mocker.patch("pathlib.Path.exists", return_value=True)
+        mock_read_text_file = mocker.patch(
+            "cli._read_text_file",
+            return_value=".. include:: README.rst\n\nChangelog\n---------",
+        )
+        mock_write_text_file = mocker.patch("cli._write_text_file")
+
+        _update_docs_index_rst("output", mock_new_library_config)
+
+        mock_path_exists.assert_called_once()
+        mock_read_text_file.assert_called_once()
+        mock_write_text_file.assert_called_once()
+        # Verify that the new API reference is inserted before the changelog
+        written_content = mock_write_text_file.call_args[0][1]
+        assert "API Reference" in written_content
+        assert "v1/services" in written_content
+        assert written_content.find("API Reference") < written_content.find(
+            "Changelog"
+        )

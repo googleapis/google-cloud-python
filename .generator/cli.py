@@ -23,6 +23,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import textwrap
 import yaml
 from datetime import datetime
 from pathlib import Path
@@ -223,12 +224,68 @@ def _prepare_new_library_config(library_config: Dict) -> Dict:
     return library_config
 
 
+def _update_docs_index_rst(output: str, new_library_config: Dict):
+    """Creates or updates the docs/index.rst file for a library.
+
+    If the file does not exist, it will be created. If it exists, a new
+    API reference section will be appended.
+
+    Args:
+        output(str): Path to the directory where code should be generated.
+        new_library_config(Dict): The configuration of the new library.
+    """
+    library_id = _get_library_id(new_library_config)
+    # a library can have multiple apis, but we'll use the first one to get the version
+    api_version = Path(new_library_config["apis"][0]["path"]).name.replace("_", "-")
+    docs_dir = Path(output) / "packages" / library_id / "docs"
+    os.makedirs(docs_dir, exist_ok=True)
+    index_rst_path = docs_dir / "index.rst"
+
+    new_api_reference = textwrap.dedent(f"""\
+        API Reference
+        -------------
+        .. toctree::
+            :maxdepth: 2
+
+            {api_version}/services
+            {api_version}/types
+    """)
+
+    if not index_rst_path.exists():
+        content = textwrap.dedent(f"""\
+            .. include:: README.rst
+
+            .. include:: multiprocessing.rst
+
+            {new_api_reference}
+
+            Changelog
+            ---------
+
+            For a list of all ``{library_id}`` releases:
+
+            .. toctree::
+                :maxdepth: 2
+
+                CHANGELOG
+        """)
+        _write_text_file(str(index_rst_path), content)
+    else:
+        content = _read_text_file(str(index_rst_path))
+        # a changelog is guaranteed to exist
+        changelog_section = "Changelog\n---------"
+        parts = content.split(changelog_section)
+        # insert api reference before the changelog
+        # The prepended newline is important for formatting.
+        content = parts[0] + "\n" + new_api_reference + changelog_section + parts[1]
+        _write_text_file(str(index_rst_path), content)
+
 def handle_configure(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
     repo: str = REPO_DIR,
     input: str = INPUT_DIR,
-    output: str = OUTPUT_DIR
+    output: str = OUTPUT_DIR,
 ):
     """Onboards a new library by completing its configuration.
 
@@ -259,13 +316,14 @@ def handle_configure(
         # configure-request.json contains the library definitions.
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
         new_library_config = _get_new_library_config(request_data)
-        
+
         _update_global_changelog(
             f"{repo}/CHANGELOG.md",
             f"{output}/CHANGELOG.md",
             [new_library_config],
         )
         prepared_config = _prepare_new_library_config(new_library_config)
+        _update_docs_index_rst(output, new_library_config)
 
         # Write the new library configuration to configure-response.json.
         _write_json_file(f"{librarian}/configure-response.json", prepared_config)
