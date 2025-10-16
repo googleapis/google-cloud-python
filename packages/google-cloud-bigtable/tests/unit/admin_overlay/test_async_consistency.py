@@ -43,7 +43,8 @@ def async_mock_check_consistency_callable(max_poll_count=1):
     return mock.AsyncMock(spec=["__call__"], side_effect=side_effect)
 
 
-def test_check_consistency_future_cancel():
+@pytest.mark.asyncio
+async def test_check_consistency_future_cancel():
     check_consistency_call = async_mock_check_consistency_callable()
     future = async_consistency._AsyncCheckConsistencyPollingFuture(
         check_consistency_call
