@@ -228,6 +228,7 @@ def handle_configure(
     source: str = SOURCE_DIR,
     repo: str = REPO_DIR,
     input: str = INPUT_DIR,
+    output: str = OUTPUT_DIR
 ):
     """Onboards a new library by completing its configuration.
 
@@ -248,6 +249,8 @@ def handle_configure(
             the config.yaml.
         input(str): The path to the directory in the container
             which contains additional generator input.
+        output(str): Path to the directory in the container where code
+            should be generated.
 
     Raises:
         ValueError: If configuring a new library fails.
@@ -256,6 +259,12 @@ def handle_configure(
         # configure-request.json contains the library definitions.
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
         new_library_config = _get_new_library_config(request_data)
+        
+        _update_global_changelog(
+            f"{repo}/CHANGELOG.md",
+            f"{output}/CHANGELOG.md",
+            [new_library_config],
+        )
         prepared_config = _prepare_new_library_config(new_library_config)
 
         # Write the new library configuration to configure-response.json.
@@ -1418,6 +1427,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             source=args.source,
             repo=args.repo,
             input=args.input,
+            output=args.output,
         )
     elif args.command == "generate":
         args.func(
