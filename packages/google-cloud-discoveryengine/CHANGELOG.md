@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-discoveryengine/#history
 
+## [0.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.12...google-cloud-discoveryengine-v0.14.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.13.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.11...google-cloud-discoveryengine-v0.13.12) (2025-09-22)
 
 

@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.4.0...google-cloud-geminidataanalytics-v0.5.0) (2025-10-16)
+
+
+### Documentation
+
+* A comment for field `generated_looker_query` in message `.google.cloud.geminidataanalytics.v1alpha.DataMessage` is changed  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+
+
+### Features
+
+* added support for Delete Conversatstion  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* removed support for Update Conversation  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* An existing message `UpdateConversationRequest` is removed  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* An existing method `UpdateConversation` is removed from service `DataChatService`  ([89cd6f54ea4b20b057c43225acc5d6a7cb5496c3](https://github.com/googleapis/google-cloud-python/commit/89cd6f54ea4b20b057c43225acc5d6a7cb5496c3))
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.3.0...google-cloud-geminidataanalytics-v0.4.0) (2025-09-24)
 
 

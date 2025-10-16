@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-containeranalysis/#history
 
+## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.18.1...google-cloud-containeranalysis-v2.19.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [2.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.18.0...google-cloud-containeranalysis-v2.18.1) (2025-06-11)
 
 

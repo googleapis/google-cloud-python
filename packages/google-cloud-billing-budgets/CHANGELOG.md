@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-billing-budgets/#history
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.17.2...google-cloud-billing-budgets-v1.18.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.17.1...google-cloud-billing-budgets-v1.17.2) (2025-06-11)
 
 

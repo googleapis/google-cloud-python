@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dataform/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.6.2...google-cloud-dataform-v0.7.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.6.1...google-cloud-dataform-v0.6.2) (2025-05-20)
 
 
