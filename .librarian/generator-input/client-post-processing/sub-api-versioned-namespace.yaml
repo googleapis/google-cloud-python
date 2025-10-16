@@ -51,22 +51,6 @@ replacements:
     after: configmanagement_v1
     count: 4
   - paths: [
-      packages/google-cloud-gke-hub/google/cloud/gkehub_v1/configmanagement_v1/__init__.py
-    ]
-    before: |
-      from google.cloud.gkehub.configmanagement_v1 import gapic_version as package_version
-    after: |
-      from google.cloud.gkehub_v1 import gapic_version as package_version
-    count: 1
-  - paths: [
-      packages/google-cloud-gke-hub/google/cloud/gkehub_v1/multiclusteringress_v1/__init__.py
-    ]
-    before: |
-      from google.cloud.gkehub.multiclusteringress_v1 import gapic_version as package_version
-    after: |
-      from google.cloud.gkehub_v1 import gapic_version as package_version
-    count: 1
-  - paths: [
       packages/google-cloud-gke-hub/docs/index.rst
     ]
     before: |

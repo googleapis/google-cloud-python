@@ -4378,6 +4378,29 @@ libraries:
     remove_regex:
       - packages/google-cloud-biglake
     tag_format: '{id}-v{version}'
+  - id: google-cloud-gke-hub
+    version: 1.19.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/gkehub/v1
+      - path: google/cloud/gkehub/v1beta1
+    source_roots:
+      - packages/google-cloud-gke-hub
+    preserve_regex:
+      - packages/google-cloud-gke-hub/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - docs/gkehub_v1/configmanagement_v1
+      - docs/gkehub_v1/multiclusteringress_v1
+      - google/cloud/gkehub_v1/configmanagement_v1
+      - google/cloud/gkehub_v1/multiclusteringress_v1
+    remove_regex:
+      - packages/google-cloud-gke-hub
+    tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring-dashboards
     version: 2.19.0
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
