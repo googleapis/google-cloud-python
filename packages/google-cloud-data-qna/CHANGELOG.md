@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-data-qna/#history
 
+## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.17...google-cloud-data-qna-v0.11.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.10.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.16...google-cloud-data-qna-v0.10.17) (2025-06-11)
 
 

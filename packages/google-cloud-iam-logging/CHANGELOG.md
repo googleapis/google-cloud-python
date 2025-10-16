@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-iam-logging/#history
 
+## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-logging-v1.4.3...google-cloud-iam-logging-v1.5.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-logging-v1.4.2...google-cloud-iam-logging-v1.4.3) (2025-06-11)
 
 

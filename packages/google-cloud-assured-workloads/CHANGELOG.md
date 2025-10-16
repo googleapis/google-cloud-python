@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-assured-workloads/#history
 
+## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-assured-workloads-v2.0.0...google-cloud-assured-workloads-v2.1.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-assured-workloads-v1.15.2...google-cloud-assured-workloads-v2.0.0) (2025-10-07)
 
 

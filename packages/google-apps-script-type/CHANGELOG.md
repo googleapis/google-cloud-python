@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-apps-script-type/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.3.15...google-apps-script-type-v0.4.0) (2025-10-16)
+
+
+### Documentation
+
+* minor doc revision  ([c0121f12ba6c9cc23bde096c78fb50e737a5f1c2](https://github.com/googleapis/google-cloud-python/commit/c0121f12ba6c9cc23bde096c78fb50e737a5f1c2))
+
+
+### Features
+
+* Add support for Python 3.14 (#14723) Towards b/375664027 ([5802b55b80a25ec639fee2d203a37374e386aaf8](https://github.com/googleapis/google-cloud-python/commit/5802b55b80a25ec639fee2d203a37374e386aaf8))
+* add SaveToGcsFindingsOutput  ([c0121f12ba6c9cc23bde096c78fb50e737a5f1c2](https://github.com/googleapis/google-cloud-python/commit/c0121f12ba6c9cc23bde096c78fb50e737a5f1c2))
+
 ## [0.3.15](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.3.14...google-apps-script-type-v0.3.15) (2025-06-11)
 
 

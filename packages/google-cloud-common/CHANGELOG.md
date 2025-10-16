@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-common/#history
 
+## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.5.2...google-cloud-common-v1.6.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.5.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.5.1...google-cloud-common-v1.5.2) (2025-06-11)
 
 
