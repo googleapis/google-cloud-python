@@ -238,4 +238,5 @@ packages_to_onboard: [
   "google-shopping-type",
   "googleapis-common-protos",
   "grafeas",
+  "grpc-google-iam-v1",
 ]
