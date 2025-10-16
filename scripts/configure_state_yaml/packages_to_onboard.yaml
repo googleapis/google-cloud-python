@@ -139,6 +139,7 @@ packages_to_onboard: [
   "google-cloud-migrationcenter",
   "google-cloud-modelarmor",
   "google-cloud-monitoring",
+  "google-cloud-monitoring-dashboards",
   "google-cloud-monitoring-metrics-scopes",
   "google-cloud-netapp",
   "google-cloud-network-connectivity",

@@ -228,6 +228,7 @@ def handle_configure(
     source: str = SOURCE_DIR,
     repo: str = REPO_DIR,
     input: str = INPUT_DIR,
+    output: str = OUTPUT_DIR
 ):
     """Onboards a new library by completing its configuration.
 
@@ -248,6 +249,8 @@ def handle_configure(
             the config.yaml.
         input(str): The path to the directory in the container
             which contains additional generator input.
+        output(str): Path to the directory in the container where code
+            should be generated.
 
     Raises:
         ValueError: If configuring a new library fails.
@@ -256,6 +259,12 @@ def handle_configure(
         # configure-request.json contains the library definitions.
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
         new_library_config = _get_new_library_config(request_data)
+        
+        _update_global_changelog(
+            f"{repo}/CHANGELOG.md",
+            f"{output}/CHANGELOG.md",
+            [new_library_config],
+        )
         prepared_config = _prepare_new_library_config(new_library_config)
 
         # Write the new library configuration to configure-response.json.
@@ -1207,7 +1216,7 @@ def _process_changelog(
 
     # Group changes by type (e.g., feat, fix, docs)
     type_key = "type"
-    source_commit_hash_key = "source_commit_hash"
+    commit_hash_key = "commit_hash"
     subject_key = "subject"
     body_key = "body"
     library_changes.sort(key=lambda x: x[type_key])
@@ -1224,7 +1233,7 @@ def _process_changelog(
         if adjusted_change_type in change_type_map:
             entry_parts.append(f"\n\n### {change_type_map[adjusted_change_type]}\n")
             for change in library_changes:
-                commit_link = f"([{change[source_commit_hash_key]}]({_REPO_URL}/commit/{change[source_commit_hash_key]}))"
+                commit_link = f"([{change[commit_hash_key]}]({_REPO_URL}/commit/{change[commit_hash_key]}))"
                 entry_parts.append(
                     f"* {change[subject_key]} {change[body_key]} {commit_link}"
                 )
@@ -1418,6 +1427,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             source=args.source,
             repo=args.repo,
             input=args.input,
+            output=args.output,
         )
     elif args.command == "generate":
         args.func(
