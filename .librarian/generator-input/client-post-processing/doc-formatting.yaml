@@ -576,3 +576,17 @@ replacements:
                   organizations/{organization}/locations/{location}
                   or folders/{folder}/locations/{location}
     count: 4
+  - paths: [
+      packages/google-maps-routeoptimization/google/maps/routeoptimization_v1/types/route_optimization_service.py,
+    ]
+    before: |
+      The ratio \(vehicle_end_time - vehicle_start_time\) / \(latest_vehicle_end_time - earliest_vehicle_start_time\) for a given vehicle. If the denominator is not present, it uses \(\[ShipmentModel.global_end_time\]\[google.maps.routeoptimization.v1.ShipmentModel.global_end_time\]
+      \            ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n
+      \            \[ShipmentModel.global_start_time\]\[google.maps.routeoptimization.v1.ShipmentModel.global_start_time\]\)
+      \            instead.
+    after: |
+      The ratio (vehicle_end_time - vehicle_start_time) / (latest_vehicle_end_time - earliest_vehicle_start_time) for a given vehicle. If the denominator is not present, it uses
+                  ([ShipmentModel.global_end_time][google.maps.routeoptimization.v1.ShipmentModel.global_end_time] -
+                  [ShipmentModel.global_start_time][google.maps.routeoptimization.v1.ShipmentModel.global_start_time])
+                  instead.
+    count: 1
