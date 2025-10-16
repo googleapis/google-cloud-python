@@ -261,7 +261,7 @@ def handle_configure(
         _update_global_changelog(
             f"{repo}/CHANGELOG.md",
             f"{output}/CHANGELOG.md",
-            new_library_config,
+            [new_library_config],
         )
         prepared_config = _prepare_new_library_config(new_library_config)
 
