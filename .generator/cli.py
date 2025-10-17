@@ -381,7 +381,6 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     # Safely remove specific files if they exist using pathlib.
     Path(f"{output}/{path_to_library}/CHANGELOG.md").unlink(missing_ok=True)
     Path(f"{output}/{path_to_library}/docs/CHANGELOG.md").unlink(missing_ok=True)
-    Path(f"{output}/{path_to_library}/docs/README.rst").unlink(missing_ok=True)
 
     # The glob loops are already safe, as they do nothing if no files match.
     for post_processing_file in glob.glob(
