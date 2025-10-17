@@ -2316,6 +2316,7 @@ class DataFrame(generic.NDFrame):
     def sort_index(
         self,
         *,
+        axis: str | int = 0,
         ascending: bool = True,
         inplace: bool = False,
         na_position: Literal["first", "last"] = "last",
@@ -2323,6 +2324,9 @@ class DataFrame(generic.NDFrame):
         """Sort object by labels (along an axis).
 
         Args:
+            axis ({0 or 'index', 1 or 'columns'}, default 0):
+                The axis along which to sort.  The value 0 identifies the rows,
+                and 1 identifies the columns.
             ascending (bool, default True)
                 Sort ascending vs. descending.
             inplace (bool, default False):

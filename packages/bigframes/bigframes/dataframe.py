@@ -2564,25 +2564,33 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> None:
         ...
 
-    @validations.requires_index
     def sort_index(
         self,
         *,
+        axis: Union[int, str] = 0,
         ascending: bool = True,
         inplace: bool = False,
         na_position: Literal["first", "last"] = "last",
     ) -> Optional[DataFrame]:
-        if na_position not in ["first", "last"]:
-            raise ValueError("Param na_position must be one of 'first' or 'last'")
-        na_last = na_position == "last"
-        index_columns = self._block.index_columns
-        ordering = [
-            order.ascending_over(column, na_last)
-            if ascending
-            else order.descending_over(column, na_last)
-            for column in index_columns
-        ]
-        block = self._block.order_by(ordering)
+        if utils.get_axis_number(axis) == 0:
+            if na_position not in ["first", "last"]:
+                raise ValueError("Param na_position must be one of 'first' or 'last'")
+            na_last = na_position == "last"
+            index_columns = self._block.index_columns
+            ordering = [
+                order.ascending_over(column, na_last)
+                if ascending
+                else order.descending_over(column, na_last)
+                for column in index_columns
+            ]
+            block = self._block.order_by(ordering)
+        else:  # axis=1
+            _, indexer = self.columns.sort_values(
+                return_indexer=True, ascending=ascending, na_position=na_position  # type: ignore
+            )
+            block = self._block.select_columns(
+                [self._block.value_columns[i] for i in indexer]
+            )
         if inplace:
             self._set_block(block)
             return None
