@@ -349,7 +349,7 @@ class GenerativeServiceAsyncClient:
         Args:
             request (Optional[Union[google.ai.generativelanguage_v1.types.GenerateContentRequest, dict]]):
                 The request object. Request to generate a completion from
-                the model.
+                the model. NEXT ID: 18
             model (:class:`str`):
                 Required. The name of the ``Model`` to use for
                 generating the completion.
@@ -493,7 +493,7 @@ class GenerativeServiceAsyncClient:
         Args:
             request (Optional[Union[google.ai.generativelanguage_v1.types.GenerateContentRequest, dict]]):
                 The request object. Request to generate a completion from
-                the model.
+                the model. NEXT ID: 18
             model (:class:`str`):
                 Required. The name of the ``Model`` to use for
                 generating the completion.

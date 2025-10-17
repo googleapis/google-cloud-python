@@ -66,7 +66,8 @@ class HarmCategory(proto.Enum):
             **Gemini** - Dangerous content.
         HARM_CATEGORY_CIVIC_INTEGRITY (11):
             **Gemini** - Content that may be used to harm civic
-            integrity.
+            integrity. DEPRECATED: use enable_enhanced_civic_answers
+            instead.
     """
     HARM_CATEGORY_UNSPECIFIED = 0
     HARM_CATEGORY_DEROGATORY = 1

@@ -26,9 +26,14 @@ __protobuf__ = proto.module(
     package="google.maps.routeoptimization.v1",
     manifest={
         "DataFormat",
+        "Uri",
+        "OptimizeToursUriRequest",
+        "OptimizeToursUriResponse",
+        "OptimizeToursUriMetadata",
         "BatchOptimizeToursRequest",
         "BatchOptimizeToursResponse",
         "BatchOptimizeToursMetadata",
+        "OptimizeToursLongRunningMetadata",
         "OptimizeToursRequest",
         "OptimizeToursResponse",
         "ShipmentModel",
@@ -46,6 +51,7 @@ __protobuf__ = proto.module(
         "ShipmentRoute",
         "SkippedShipment",
         "AggregatedMetrics",
+        "VehicleFullness",
         "InjectedSolutionConstraint",
         "OptimizeToursValidationError",
         "InputConfig",
@@ -72,6 +78,95 @@ class DataFormat(proto.Enum):
     DATA_FORMAT_UNSPECIFIED = 0
     JSON = 1
     PROTO_TEXT = 2
+
+
+class Uri(proto.Message):
+    r"""A Universal Resource Identifier that points to a resource
+    that can be read and written by the Route Optimization API.
+
+    Attributes:
+        uri (str):
+            The URI of the resource. The resource may not yet exist.
+
+            The contents of the resource are encoded as either JSON or
+            textproto. Only Google Cloud Storage resources are
+            supported. If the resource is encoded as JSON, the resource
+            name must be suffixed with ``.json``. If the resource is
+            encoded as textproto, the resource name must be suffixed
+            with ``.txtpb``. For example, a Google Cloud Storage URI to
+            a JSON encoded file might look like:
+            ``gs://bucket/path/input/object.json``.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class OptimizeToursUriRequest(proto.Message):
+    r"""A request used by the ``OptimizeToursUri`` method.
+
+    Attributes:
+        parent (str):
+            Required. Target project or location to make a call.
+
+            Format:
+
+            - ``projects/{project-id}``
+            - ``projects/{project-id}/locations/{location-id}``
+
+            If no location is specified, a region will be chosen
+            automatically.
+        input (google.maps.routeoptimization_v1.types.Uri):
+            Required. The URI of the Cloud Storage object containing the
+            ``OptimizeToursRequest``.
+        output (google.maps.routeoptimization_v1.types.Uri):
+            Required. The URI of the Cloud Storage object that will
+            contain the ``OptimizeToursResponse``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    input: "Uri" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Uri",
+    )
+    output: "Uri" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Uri",
+    )
+
+
+class OptimizeToursUriResponse(proto.Message):
+    r"""A response returned by the ``OptimizeToursUri`` method.
+
+    Attributes:
+        output (google.maps.routeoptimization_v1.types.Uri):
+            Optional. The URI of the Cloud Storage object containing the
+            ``OptimizeToursResponse`` encoded as either JSON or
+            textproto. If the object was encoded as JSON, the extension
+            of the object name will be ``.json``. If the object was
+            encoded as textproto, the extension of the object name will
+            be ``.txtpb``.
+
+            The ``crc32_checksum`` of the resource can be used to verify
+            the contents of the resource have not been modified.
+    """
+
+    output: "Uri" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Uri",
+    )
+
+
+class OptimizeToursUriMetadata(proto.Message):
+    r"""Operation metadata for ``OptimizeToursUri`` calls."""
 
 
 class BatchOptimizeToursRequest(proto.Message):
@@ -148,6 +243,10 @@ class BatchOptimizeToursResponse(proto.Message):
 
 class BatchOptimizeToursMetadata(proto.Message):
     r"""Operation metadata for ``BatchOptimizeToursRequest`` calls."""
+
+
+class OptimizeToursLongRunningMetadata(proto.Message):
+    r"""Operation metadata for ``OptimizeToursLongRunning`` calls."""
 
 
 class OptimizeToursRequest(proto.Message):
@@ -408,10 +507,22 @@ class OptimizeToursRequest(proto.Message):
                 *IMPORTANT*: not all infeasible shipments are returned here,
                 but only the ones that are detected as infeasible during
                 preprocessing.
+            TRANSFORM_AND_RETURN_REQUEST (3):
+                This mode only works if ``ShipmentModel.objectives`` is not
+                empty. The request is not solved. It is only validated and
+                filled with costs corresponding to the given objectives.
+                Also see the documentation of ``ShipmentModel.objectives``.
+                The resulting request is returned as
+                ``OptimizeToursResponse.processed_request``.
+
+                Experimental: See
+                https://developers.google.com/maps/tt/route-optimization/experimental/objectives/make-request
+                for more details.
         """
         DEFAULT_SOLVE = 0
         VALIDATE_ONLY = 1
         DETECT_SOME_INFEASIBLE_SHIPMENTS = 2
+        TRANSFORM_AND_RETURN_REQUEST = 3
 
     class SearchMode(proto.Enum):
         r"""Mode defining the behavior of the search, trading off latency
@@ -536,6 +647,15 @@ class OptimizeToursResponse(proto.Message):
             [OptimizeToursValidationError][google.maps.routeoptimization.v1.OptimizeToursValidationError]
             message. Instead of errors, this will include warnings in
             the case ``solving_mode`` is ``DEFAULT_SOLVE``.
+        processed_request (google.maps.routeoptimization_v1.types.OptimizeToursRequest):
+            In some cases we modify the incoming request before solving
+            it, i.e. adding costs. If solving_mode ==
+            TRANSFORM_AND_RETURN_REQUEST, the modified request is
+            returned here.
+
+            Experimental: See
+            https://developers.google.com/maps/tt/route-optimization/experimental/objectives/make-request
+            for more details.
         metrics (google.maps.routeoptimization_v1.types.OptimizeToursResponse.Metrics):
             Duration, distance and usage metrics for this
             solution.
@@ -636,6 +756,11 @@ class OptimizeToursResponse(proto.Message):
         number=5,
         message="OptimizeToursValidationError",
     )
+    processed_request: "OptimizeToursRequest" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="OptimizeToursRequest",
+    )
     metrics: Metrics = proto.Field(
         proto.MESSAGE,
         number=6,
@@ -663,6 +788,17 @@ class ShipmentModel(proto.Message):
         vehicles (MutableSequence[google.maps.routeoptimization_v1.types.Vehicle]):
             Set of vehicles which can be used to perform
             visits.
+        objectives (MutableSequence[google.maps.routeoptimization_v1.types.ShipmentModel.Objective]):
+            The set of objectives for this model, that we will transform
+            into costs. If not empty, the input model has to be
+            costless. To obtain the modified request, please use
+            ``solving_mode`` = TRANSFORM_AND_RETURN_REQUEST. Note that
+            the request will not be solved in this case. See
+            corresponding documentation.
+
+            Experimental: See
+            https://developers.google.com/maps/tt/route-optimization/experimental/objectives/make-request
+            for more details.
         max_active_vehicles (int):
             Constrains the maximum number of active
             vehicles. A vehicle is active if its route
@@ -835,9 +971,80 @@ class ShipmentModel(proto.Message):
             Sets of ``shipment_type`` requirements (see
             ``ShipmentTypeRequirement``).
         precedence_rules (MutableSequence[google.maps.routeoptimization_v1.types.ShipmentModel.PrecedenceRule]):
-            Set of precedence rules which must be
-            enforced in the model.
+            Set of precedence rules which must be enforced in the model.
+
+            *IMPORTANT*: Use of precedence rules limits the size of
+            problem that can be optimized. Requests using precedence
+            rules that include many shipments may be rejected.
     """
+
+    class Objective(proto.Message):
+        r"""Objectives replace the cost model completely, and are
+        therefore incompatible with pre-existing costs. Each objective
+        maps to a number of pre-defined costs for, e.g., vehicles,
+        shipments or transition attributes.
+
+        Experimental: See
+        https://developers.google.com/maps/tt/route-optimization/experimental/objectives/make-request
+        for more details.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            type_ (google.maps.routeoptimization_v1.types.ShipmentModel.Objective.Type):
+                The type of the objective.
+
+                This field is a member of `oneof`_ ``_type``.
+            weight (float):
+                How much this objective should count
+                relatively to the others. This can be any
+                non-negative number, weights do not have to sum
+                to 1. Weights default to 1.0.
+
+                This field is a member of `oneof`_ ``_weight``.
+        """
+
+        class Type(proto.Enum):
+            r"""The objective type that will be mapped to a set of costs.
+
+            Values:
+                DEFAULT (0):
+                    A default set of costs will be used, to
+                    ensure a reasonable solution. Note: this
+                    objective can be used on its own, but will also
+                    always be added with weight 1.0, as a baseline,
+                    to the objectives specified by the user, if it's
+                    not already present.
+                MIN_DISTANCE (10):
+                    "MIN" objectives.
+                    Minimize the total distance traveled.
+                MIN_WORKING_TIME (11):
+                    Minimize the total working time, summed over
+                    all vehicles.
+                MIN_TRAVEL_TIME (12):
+                    Same as above but focusing on travel time
+                    only.
+                MIN_NUM_VEHICLES (13):
+                    Minimize the number of vehicles used.
+            """
+            DEFAULT = 0
+            MIN_DISTANCE = 10
+            MIN_WORKING_TIME = 11
+            MIN_TRAVEL_TIME = 12
+            MIN_NUM_VEHICLES = 13
+
+        type_: "ShipmentModel.Objective.Type" = proto.Field(
+            proto.ENUM,
+            number=1,
+            optional=True,
+            enum="ShipmentModel.Objective.Type",
+        )
+        weight: float = proto.Field(
+            proto.DOUBLE,
+            number=2,
+            optional=True,
+        )
 
     class DurationDistanceMatrix(proto.Message):
         r"""Specifies a duration and distance matrix from visit and
@@ -965,6 +1172,11 @@ class ShipmentModel(proto.Message):
         proto.MESSAGE,
         number=2,
         message="Vehicle",
+    )
+    objectives: MutableSequence[Objective] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=17,
+        message=Objective,
     )
     max_active_vehicles: int = proto.Field(
         proto.INT32,
@@ -1191,6 +1403,9 @@ class Shipment(proto.Message):
         spent by the vehicle once it has arrived to pickup or drop off
         goods).
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             arrival_location (google.type.latlng_pb2.LatLng):
                 The geo-location where the vehicle arrives when performing
@@ -1265,6 +1480,19 @@ class Shipment(proto.Message):
                 reported in the response as ``visit_label`` in the
                 corresponding
                 [ShipmentRoute.Visit][google.maps.routeoptimization.v1.ShipmentRoute.Visit].
+            avoid_u_turns (bool):
+                Specifies whether U-turns should be avoided
+                in driving routes at this location.
+                U-turn avoidance is best effort and complete
+                avoidance is not guaranteed. This is an
+                experimental feature and behavior is subject to
+                change.
+
+                Experimental: See
+                https://developers.google.com/maps/tt/route-optimization/experimental/u-turn-avoidance/make-request
+                for more details.
+
+                This field is a member of `oneof`_ ``_avoid_u_turns``.
         """
 
         arrival_location: latlng_pb2.LatLng = proto.Field(
@@ -1318,6 +1546,11 @@ class Shipment(proto.Message):
         label: str = proto.Field(
             proto.STRING,
             number=11,
+        )
+        avoid_u_turns: bool = proto.Field(
+            proto.BOOL,
+            number=13,
+            optional=True,
         )
 
     class Load(proto.Message):
@@ -1431,16 +1664,14 @@ class ShipmentTypeIncompatibility(proto.Message):
                 In this mode, two shipments with incompatible
                 types can never share the same vehicle.
             NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY (2):
-                For two shipments with incompatible types with the
-                ``NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY`` incompatibility mode:
+                In this mode, two shipments with incompatible types can
+                never be on the same vehicle at the same time:
 
-                - If both are pickups only (no deliveries) or deliveries
-                  only (no pickups), they cannot share the same vehicle at
-                  all.
-                - If one of the shipments has a delivery and the other a
-                  pickup, the two shipments can share the same vehicle iff
-                  the former shipment is delivered before the latter is
-                  picked up.
+                - They can share the same vehicle only if one is delivered
+                  before the other is picked up.
+                - When both shipments are pickups-only (no deliveries) or
+                  deliveries-only (no pickups), they can't share the same
+                  vehicle at all.
         """
         INCOMPATIBILITY_MODE_UNSPECIFIED = 0
         NOT_PERFORMED_BY_SAME_VEHICLE = 1
@@ -1785,9 +2016,13 @@ class Vehicle(proto.Message):
     class TravelMode(proto.Enum):
         r"""Travel modes which can be used by vehicles.
 
-        These should be a subset of the Google Maps Platform Routes
-        Preferred API travel modes, see:
-        https://developers.google.com/maps/documentation/routes_preferred/reference/rest/Shared.Types/RouteTravelMode.
+        These should be a subset of the Google Maps Platform Routes API
+        travel modes, see:
+        https://developers.google.com/maps/documentation/routes/reference/rest/v2/RouteTravelMode
+
+        Note: ``WALKING`` routes are in beta and might sometimes be missing
+        clear sidewalks or pedestrian paths. You must display this warning
+        to the user for all walking routes that you display in your app.
 
         Values:
             TRAVEL_MODE_UNSPECIFIED (0):
@@ -1851,12 +2086,34 @@ class Vehicle(proto.Message):
                 - [cost_per_unit_above_soft_max][google.maps.routeoptimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max].
                   All costs add up and must be in the same unit as
                   [Shipment.penalty_cost][google.maps.routeoptimization.v1.Shipment.penalty_cost].
+                  Soft limits may only be defined on types that apply to
+                  either pickups only or deliveries only throughout the
+                  model.
             start_load_interval (google.maps.routeoptimization_v1.types.Vehicle.LoadLimit.Interval):
                 The acceptable load interval of the vehicle
                 at the start of the route.
             end_load_interval (google.maps.routeoptimization_v1.types.Vehicle.LoadLimit.Interval):
                 The acceptable load interval of the vehicle
                 at the end of the route.
+            cost_per_kilometer (google.maps.routeoptimization_v1.types.Vehicle.LoadLimit.LoadCost):
+                Cost of moving one unit of load over one kilometer for this
+                vehicle. This can be used as a proxy for fuel consumption:
+                if the load is a weight (in Newtons), then load*kilometer
+                has the dimension of an energy.
+
+                Experimental: See
+                https://developers.google.com/maps/tt/route-optimization/experimental/load-cost/make-request
+                for more details.
+
+                This field is a member of `oneof`_ ``_cost_per_kilometer``.
+            cost_per_traveled_hour (google.maps.routeoptimization_v1.types.Vehicle.LoadLimit.LoadCost):
+                Cost of traveling with a unit of load during
+                one hour for this vehicle.
+                Experimental: See
+                https://developers.google.com/maps/tt/route-optimization/experimental/load-cost/make-request
+                for more details.
+
+                This field is a member of `oneof`_ ``_cost_per_traveled_hour``.
         """
 
         class Interval(proto.Message):
@@ -1892,6 +2149,131 @@ class Vehicle(proto.Message):
                 optional=True,
             )
 
+        class LoadCost(proto.Message):
+            r"""Cost of moving one unit of load during a ``Transition``. For a given
+            load, the cost is the sum of two parts:
+
+            - min(load, ``load_threshold``) \* ``cost_per_unit_below_threshold``
+            - max(0, load - ``load_threshold``) \*
+              ``cost_per_unit_above_threshold``
+
+            With this cost, solutions prefer to deliver high demands first, or
+            equivalently pickup high demands last. For example, if a vehicle has
+
+            ::
+
+                load_limit {
+                  key: "weight"
+                  value {
+                    cost_per_kilometer {
+                      load_threshold: 15
+                      cost_per_unit_below_threshold: 2.0
+                      cost_per_unit_above_threshold: 10.0
+                    }
+                  }
+                }
+
+            and its route is start,pickup,pickup,delivery,delivery,end with
+            transitions:
+
+            ::
+
+                transition { vehicle_load['weight'] { amount: 0 }
+                             travel_distance_meters: 1000.0 }
+                transition { vehicle_load['weight'] { amount: 10 }
+                             travel_distance_meters: 1000.0 }
+                transition { vehicle_load['weight'] { amount: 20 }
+                             travel_distance_meters: 1000.0 }
+                transition { vehicle_load['weight'] { amount: 10 }
+                             travel_distance_meters: 1000.0 }
+                transition { vehicle_load['weight'] { amount: 0 }
+                             travel_distance_meters: 1000.0 }
+
+            then the cost incurred by this ``LoadCost`` is (cost_below \*
+            load_below \* kilometers + cost_above \* load_above \* kms)
+
+            - transition 0: 0.0
+            - transition 1: 2.0 \* 10 \* 1.0 + 10.0 \* 0 \* 1.0 = 20.0
+            - transition 2: 2.0 \* 15 \* 1.0 + 10.0 \* (20 - 15) \* 1.0 = 80.0
+            - transition 3: 2.0 \* 10 \* 1.0 + 10.0 \* 0 \* 1.0 = 20.0
+            - transition 4: 0.0
+
+            So the ``LoadCost`` over the route is 120.0.
+
+            However, if the route is start,pickup,delivery,pickup,delivery,end
+            with transitions:
+
+            ::
+
+                transition { vehicle_load['weight'] { amount: 0 }
+                             travel_distance_meters: 1000.0 }
+                transition { vehicle_load['weight'] { amount: 10 }
+                             travel_distance_meters: 1000.0 }
+                transition { vehicle_load['weight'] { amount: 0 }
+                             travel_distance_meters: 1000.0 }
+                transition { vehicle_load['weight'] { amount: 10 }
+                             travel_distance_meters: 1000.0 }
+                transition { vehicle_load['weight'] { amount: 0 }
+                             travel_distance_meters: 1000.0 }
+
+            then the cost incurred by this ``LoadCost`` is
+
+            - transition 0: 0.0
+            - transition 1: 2.0 \* 10 \* 1.0 + 10.0 \* 0 \* 1.0 = 20.0
+            - transition 2: 0.0
+            - transition 3: 2.0 \* 10 \* 1.0 + 10.0 \* 0 \* 1.0 = 20.0
+            - transition 4: 0.0
+
+            Here the ``LoadCost`` over the route is 40.0.
+
+            ``LoadCost`` makes solutions with heavy-loaded transitions more
+            expensive.
+
+            Experimental: See
+            https://developers.google.com/maps/tt/route-optimization/experimental/load-cost/make-request
+            for more details.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                load_threshold (int):
+                    Amount of load above which the cost of moving a unit of load
+                    changes from cost_per_unit_below_threshold to
+                    cost_per_unit_above_threshold. Must be >= 0.
+
+                    This field is a member of `oneof`_ ``_load_threshold``.
+                cost_per_unit_below_threshold (float):
+                    Cost of moving a unit of load, for each unit
+                    between 0 and threshold. Must be a finite value,
+                    and >= 0.
+
+                    This field is a member of `oneof`_ ``_cost_per_unit_below_threshold``.
+                cost_per_unit_above_threshold (float):
+                    Cost of moving a unit of load, for each unit
+                    above threshold. In the special case threshold =
+                    0, this is a fixed cost per unit. Must be a
+                    finite value, and >= 0.
+
+                    This field is a member of `oneof`_ ``_cost_per_unit_above_threshold``.
+            """
+
+            load_threshold: int = proto.Field(
+                proto.INT64,
+                number=1,
+                optional=True,
+            )
+            cost_per_unit_below_threshold: float = proto.Field(
+                proto.DOUBLE,
+                number=2,
+                optional=True,
+            )
+            cost_per_unit_above_threshold: float = proto.Field(
+                proto.DOUBLE,
+                number=3,
+                optional=True,
+            )
+
         max_load: int = proto.Field(
             proto.INT64,
             number=1,
@@ -1914,6 +2296,18 @@ class Vehicle(proto.Message):
             proto.MESSAGE,
             number=5,
             message="Vehicle.LoadLimit.Interval",
+        )
+        cost_per_kilometer: "Vehicle.LoadLimit.LoadCost" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            optional=True,
+            message="Vehicle.LoadLimit.LoadCost",
+        )
+        cost_per_traveled_hour: "Vehicle.LoadLimit.LoadCost" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            optional=True,
+            message="Vehicle.LoadLimit.LoadCost",
         )
 
     class DurationLimit(proto.Message):
@@ -2424,8 +2818,15 @@ class Waypoint(proto.Message):
 
             This field is a member of `oneof`_ ``location_type``.
         place_id (str):
-            The POI Place ID associated with the
+            The POI place ID associated with the
             waypoint.
+            When using a place ID to specify arrival or
+            departure location of a VisitRequest, use a
+            place ID that is specific enough to determine a
+            LatLng location for navigation to the place.
+            For example, a place ID representing a building
+            is suitable, but a place ID representing a road
+            is discouraged.
 
             This field is a member of `oneof`_ ``location_type``.
         side_of_road (bool):
@@ -2438,6 +2839,14 @@ class Waypoint(proto.Message):
             biased towards from the center of the road. This
             option doesn't work for the 'WALKING' travel
             mode.
+        vehicle_stopover (bool):
+            Indicates that the waypoint is meant for vehicles to stop
+            at, where the intention is to either pick up or drop off.
+            This option works only for the 'DRIVING' travel mode, and
+            when the 'location_type' is 'location'.
+
+            Experimental: This field's behavior or existence may change
+            in future.
     """
 
     location: "Location" = proto.Field(
@@ -2454,6 +2863,10 @@ class Waypoint(proto.Message):
     side_of_road: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    vehicle_stopover: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
@@ -2775,6 +3188,17 @@ class ShipmentRoute(proto.Message):
             or
             [ShipmentRoute.visits][google.maps.routeoptimization.v1.ShipmentRoute.visits],
             depending on the context.
+        vehicle_fullness (google.maps.routeoptimization_v1.types.VehicleFullness):
+            [VehicleFullness][google.maps.routeoptimization.v1.VehicleFullness]
+            field for computing how close the capped metrics are to
+            their respective vehicle limits. Its fields are ratios
+            between a capped metric field (e.g.
+            [AggregatedMetrics.travel_distance_meters][google.maps.routeoptimization.v1.AggregatedMetrics.travel_distance_meters])
+            and the related vehicle limit (e.g.
+            [Vehicle.route_distance_limit][google.maps.routeoptimization.v1.Vehicle.route_distance_limit]).
+
+            Experimental: This field's behavior or existence may change
+            in future.
         route_costs (MutableMapping[str, float]):
             Cost of the route, broken down by cost-related request
             fields. The keys are proto paths, relative to the input
@@ -2794,6 +3218,9 @@ class ShipmentRoute(proto.Message):
     class Visit(proto.Message):
         r"""A visit performed during a route. This visit corresponds to a pickup
         or a delivery of a ``Shipment``.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             shipment_index (int):
@@ -2843,6 +3270,23 @@ class ShipmentRoute(proto.Message):
                 Copy of the corresponding
                 [VisitRequest.label][google.maps.routeoptimization.v1.Shipment.VisitRequest.label],
                 if specified in the ``VisitRequest``.
+            injected_solution_location_token (int):
+                An opaque token representing information about a visit
+                location.
+
+                This field may be populated in the result routes' visits
+                when
+                [VisitRequest.avoid_u_turns][google.maps.routeoptimization.v1.Shipment.VisitRequest.avoid_u_turns]
+                was set to true for this visit or if
+                [ShipmentModel.avoid_u_turns][google.maps.routeoptimization.v1.ShipmentModel.avoid_u_turns]
+                was set to true in the request
+                [OptimizeToursRequest][google.maps.routeoptimization.v1.OptimizeToursRequest].
+
+                Experimental: See
+                https://developers.google.com/maps/tt/route-optimization/experimental/u-turn-avoidance/make-request
+                for more details.
+
+                This field is a member of `oneof`_ ``_injected_solution_location_token``.
         """
 
         shipment_index: int = proto.Field(
@@ -2880,6 +3324,11 @@ class ShipmentRoute(proto.Message):
         visit_label: str = proto.Field(
             proto.STRING,
             number=8,
+        )
+        injected_solution_location_token: int = proto.Field(
+            proto.INT32,
+            number=13,
+            optional=True,
         )
 
     class Transition(proto.Message):
@@ -3124,6 +3573,11 @@ class ShipmentRoute(proto.Message):
         number=12,
         message="AggregatedMetrics",
     )
+    vehicle_fullness: "VehicleFullness" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message="VehicleFullness",
+    )
     route_costs: MutableMapping[str, float] = proto.MapField(
         proto.STRING,
         proto.DOUBLE,
@@ -3140,6 +3594,9 @@ class SkippedShipment(proto.Message):
     trivial cases and/or if we are able to identify the cause for
     skipping, we report the reason here.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         index (int):
             The index corresponds to the index of the shipment in the
@@ -3148,6 +3605,26 @@ class SkippedShipment(proto.Message):
             Copy of the corresponding
             [Shipment.label][google.maps.routeoptimization.v1.Shipment.label],
             if specified in the ``Shipment``.
+        penalty_cost (float):
+            This is a copy of the
+            [Shipment.penalty_cost][google.maps.routeoptimization.v1.Shipment.penalty_cost],
+            included here to make it easier to see the severity of a
+            skipped shipment.
+
+            Experimental: This field's behavior or existence may change
+            in future.
+
+            This field is a member of `oneof`_ ``_penalty_cost``.
+        estimated_incompatible_vehicle_ratio (float):
+            Estimated ratio of vehicles that cannot
+            perform this shipment for at least one of the
+            reasons below. Note: this is only filled when
+            reasons involve a vehicle.
+
+            Experimental: This field's behavior or existence
+            may change in future.
+
+            This field is a member of `oneof`_ ``_estimated_incompatible_vehicle_ratio``.
         reasons (MutableSequence[google.maps.routeoptimization_v1.types.SkippedShipment.Reason]):
             A list of reasons that explain why the shipment was skipped.
             See comment above ``Reason``. If we are unable to understand
@@ -3197,6 +3674,16 @@ class SkippedShipment(proto.Message):
                 provides the index of one relevant vehicle.
 
                 This field is a member of `oneof`_ ``_example_vehicle_index``.
+            example_vehicle_indices (MutableSequence[int]):
+                Same as
+                [example_vehicle_index][google.maps.routeoptimization.v1.SkippedShipment.Reason.example_vehicle_index]
+                except that we provide the list of multiple identified
+                vehicles. This list is not necessarily exhaustive. This is
+                only filled if
+                [fill_example_vehicle_indices_in_skipped_reasons][] is true.
+
+                Experimental: This field's behavior or existence may change
+                in future.
             example_exceeded_capacity_type (str):
                 If the reason code is ``DEMAND_EXCEEDS_VEHICLE_CAPACITY``,
                 documents one capacity type that is exceeded.
@@ -3246,6 +3733,37 @@ class SkippedShipment(proto.Message):
                 VEHICLE_NOT_ALLOWED (7):
                     The ``allowed_vehicle_indices`` field of the shipment is not
                     empty and this vehicle does not belong to it.
+                VEHICLE_IGNORED (8):
+                    The vehicle's ``ignore`` field is true.
+
+                    Experimental: This field's behavior or existence may change
+                    in future.
+                SHIPMENT_IGNORED (9):
+                    The shipment's ``ignore`` field is true.
+
+                    Experimental: This field's behavior or existence may change
+                    in future.
+                SKIPPED_IN_INJECTED_SOLUTION_CONSTRAINT (10):
+                    The shipment is skipped in the
+                    ``injected_solution_constraint``.
+
+                    Experimental: This field's behavior or existence may change
+                    in future.
+                VEHICLE_ROUTE_IS_FULLY_SEQUENCE_CONSTRAINED (11):
+                    The vehicle route relaxation specified in the
+                    ``injected_solution_constraint`` doesn't permit any visit to
+                    be inserted.
+
+                    Experimental: This field's behavior or existence may change
+                    in future.
+                ZERO_PENALTY_COST (13):
+                    The shipment has a zero penalty cost. While
+                    this can be useful as an advanced modelling
+                    choice, it may also explain after the fact why a
+                    shipment was skipped.
+
+                    Experimental: This field's behavior or existence
+                    may change in future.
             """
             CODE_UNSPECIFIED = 0
             NO_VEHICLE = 1
@@ -3255,6 +3773,11 @@ class SkippedShipment(proto.Message):
             CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TRAVEL_DURATION_LIMIT = 5
             CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TIME_WINDOWS = 6
             VEHICLE_NOT_ALLOWED = 7
+            VEHICLE_IGNORED = 8
+            SHIPMENT_IGNORED = 9
+            SKIPPED_IN_INJECTED_SOLUTION_CONSTRAINT = 10
+            VEHICLE_ROUTE_IS_FULLY_SEQUENCE_CONSTRAINED = 11
+            ZERO_PENALTY_COST = 13
 
         code: "SkippedShipment.Reason.Code" = proto.Field(
             proto.ENUM,
@@ -3265,6 +3788,10 @@ class SkippedShipment(proto.Message):
             proto.INT32,
             number=2,
             optional=True,
+        )
+        example_vehicle_indices: MutableSequence[int] = proto.RepeatedField(
+            proto.INT32,
+            number=5,
         )
         example_exceeded_capacity_type: str = proto.Field(
             proto.STRING,
@@ -3278,6 +3805,16 @@ class SkippedShipment(proto.Message):
     label: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    penalty_cost: float = proto.Field(
+        proto.DOUBLE,
+        number=6,
+        optional=True,
+    )
+    estimated_incompatible_vehicle_ratio: float = proto.Field(
+        proto.DOUBLE,
+        number=5,
+        optional=True,
     )
     reasons: MutableSequence[Reason] = proto.RepeatedField(
         proto.MESSAGE,
@@ -3298,10 +3835,29 @@ class AggregatedMetrics(proto.Message):
     [ShipmentRoute][google.maps.routeoptimization.v1.ShipmentRoute])
     elements.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         performed_shipment_count (int):
             Number of shipments performed. Note that a
             pickup and delivery pair only counts once.
+        performed_mandatory_shipment_count (int):
+            Number of mandatory shipments performed.
+
+            Experimental: This field's behavior or existence
+            may change in future.
+
+            This field is a member of `oneof`_ ``_performed_mandatory_shipment_count``.
+        performed_shipment_penalty_cost_sum (float):
+            The sum of the
+            [Shipment.penalty_cost][google.maps.routeoptimization.v1.Shipment.penalty_cost]
+            of the performed shipments.
+
+            Experimental: This field's behavior or existence may change
+            in future.
+
+            This field is a member of `oneof`_ ``_performed_shipment_penalty_cost_sum``.
         travel_duration (google.protobuf.duration_pb2.Duration):
             Total travel duration for a route or a
             solution.
@@ -3342,6 +3898,16 @@ class AggregatedMetrics(proto.Message):
         proto.INT32,
         number=1,
     )
+    performed_mandatory_shipment_count: int = proto.Field(
+        proto.INT32,
+        number=12,
+        optional=True,
+    )
+    performed_shipment_penalty_cost_sum: float = proto.Field(
+        proto.DOUBLE,
+        number=13,
+        optional=True,
+    )
     travel_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -3381,6 +3947,107 @@ class AggregatedMetrics(proto.Message):
         proto.MESSAGE,
         number=9,
         message="ShipmentRoute.VehicleLoad",
+    )
+
+
+class VehicleFullness(proto.Message):
+    r"""[VehicleFullness][google.maps.routeoptimization.v1.VehicleFullness]
+    is a metric which computes how full a vehicle is. Each
+    [VehicleFullness][google.maps.routeoptimization.v1.VehicleFullness]
+    field is between 0 and 1, computed as the ratio between a capped
+    metric field (e.g.
+    [AggregatedMetrics.travel_distance_meters][google.maps.routeoptimization.v1.AggregatedMetrics.travel_distance_meters])
+    and its related vehicle limit (e.g.
+    [Vehicle.route_distance_limit][google.maps.routeoptimization.v1.Vehicle.route_distance_limit]),
+    if it exists. Otherwise the fullness ratio stays unset. If the limit
+    is 0, the field is set to 1. Note: when a route is subject to
+    traffic infeasibilities, some raw fullness ratios might exceed 1.0,
+    e.g. the vehicle might exceed its distance limit. In these cases, we
+    cap the fullness values at 1.0.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        max_fullness (float):
+            Maximum of all other fields in this message.
+
+            This field is a member of `oneof`_ ``_max_fullness``.
+        distance (float):
+            The ratio between
+            [AggregatedMetrics.travel_distance_meters][google.maps.routeoptimization.v1.AggregatedMetrics.travel_distance_meters]
+            and
+            [Vehicle.route_distance_limit][google.maps.routeoptimization.v1.Vehicle.route_distance_limit].
+            If
+            [Vehicle.route_distance_limit][google.maps.routeoptimization.v1.Vehicle.route_distance_limit]
+            is unset, this field will be unset.
+
+            This field is a member of `oneof`_ ``_distance``.
+        travel_duration (float):
+            The ratio between
+            [AggregatedMetrics.travel_duration_seconds][] and
+            [Vehicle.travel_duration_limit][google.maps.routeoptimization.v1.Vehicle.travel_duration_limit].
+            If
+            [Vehicle.travel_duration_limit][google.maps.routeoptimization.v1.Vehicle.travel_duration_limit]
+            is unset, this field will be unset.
+
+            This field is a member of `oneof`_ ``_travel_duration``.
+        active_duration (float):
+            The ratio between
+            [AggregatedMetrics.total_duration_seconds][] and
+            [Vehicle.route_duration_limit][google.maps.routeoptimization.v1.Vehicle.route_duration_limit].
+            If
+            [Vehicle.route_duration_limit][google.maps.routeoptimization.v1.Vehicle.route_duration_limit]
+            is unset, this field will be unset.
+
+            This field is a member of `oneof`_ ``_active_duration``.
+        max_load (float):
+            The maximum ratio among all types of
+            [AggregatedMetrics.max_load][] and their respective
+            [Vehicle.load_limits][google.maps.routeoptimization.v1.Vehicle.load_limits].
+            If all
+            [Vehicle.load_limits][google.maps.routeoptimization.v1.Vehicle.load_limits]
+            fields are unset, this field will be unset.
+
+            This field is a member of `oneof`_ ``_max_load``.
+        active_span (float):
+            The ratio (vehicle_end_time - vehicle_start_time) / (latest_vehicle_end_time - earliest_vehicle_start_time) for a given vehicle. If the denominator is not present, it uses
+            ([ShipmentModel.global_end_time][google.maps.routeoptimization.v1.ShipmentModel.global_end_time] -
+            [ShipmentModel.global_start_time][google.maps.routeoptimization.v1.ShipmentModel.global_start_time])
+            instead.
+
+            This field is a member of `oneof`_ ``_active_span``.
+    """
+
+    max_fullness: float = proto.Field(
+        proto.DOUBLE,
+        number=1,
+        optional=True,
+    )
+    distance: float = proto.Field(
+        proto.DOUBLE,
+        number=2,
+        optional=True,
+    )
+    travel_duration: float = proto.Field(
+        proto.DOUBLE,
+        number=3,
+        optional=True,
+    )
+    active_duration: float = proto.Field(
+        proto.DOUBLE,
+        number=4,
+        optional=True,
+    )
+    max_load: float = proto.Field(
+        proto.DOUBLE,
+        number=5,
+        optional=True,
+    )
+    active_span: float = proto.Field(
+        proto.DOUBLE,
+        number=6,
+        optional=True,
     )
 
 

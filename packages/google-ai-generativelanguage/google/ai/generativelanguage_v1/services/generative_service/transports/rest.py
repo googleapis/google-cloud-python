@@ -1071,7 +1071,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             Args:
                 request (~.generative_service.GenerateContentRequest):
                     The request object. Request to generate a completion from
-                the model.
+                the model. NEXT ID: 18
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1244,7 +1244,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             Args:
                 request (~.generative_service.GenerateContentRequest):
                     The request object. Request to generate a completion from
-                the model.
+                the model. NEXT ID: 18
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
