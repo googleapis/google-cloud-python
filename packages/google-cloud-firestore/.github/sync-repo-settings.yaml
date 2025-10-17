@@ -17,18 +17,18 @@ branchProtectionRules:
   # List of required status check contexts that must pass for commits to be accepted to matching branches.
   requiredStatusCheckContexts:
     - 'Kokoro'
-    - 'Kokoro system-3.7'
+    - 'Kokoro system'
     - 'cla/google'
     - 'OwlBot Post Processor'
     - 'docs'
     - 'docfx'
     - 'lint'
-    - 'unit (3.7)'
-    - 'unit (3.8)'
     - 'unit (3.9)'
     - 'unit (3.10)'
     - 'unit (3.11)'
     - 'unit (3.12)'
+    - 'unit (3.13)'
+    - 'unit (3.14)'
     - 'cover'
     - 'run-systests'
 # List of explicit permissions to add (additive only)

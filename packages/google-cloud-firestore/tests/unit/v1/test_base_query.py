@@ -1400,6 +1400,19 @@ def test_basequery__normalize_cursor_as_snapshot_hit():
     assert query._normalize_cursor(cursor, query._orders) == ([1], True)
 
 
+def test_basequery__normalize_cursor_non_existant_snapshot():
+    from google.cloud.firestore_v1 import document
+
+    values = {"b": 1}
+    docref = _make_docref("here", "doc_id")
+    snapshot = document.DocumentSnapshot(docref, values, False, None, None, None)
+    cursor = (snapshot, True)
+    collection = _make_collection("here")
+    query = _make_base_query(collection).order_by("b", "ASCENDING")
+
+    assert query._normalize_cursor(cursor, query._orders) == ([1], True)
+
+
 def test_basequery__normalize_cursor_w___name___w_reference():
     db_string = "projects/my-project/database/(default)"
     client = mock.Mock(spec=["_database_string"])

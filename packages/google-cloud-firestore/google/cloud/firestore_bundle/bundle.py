@@ -344,9 +344,10 @@ class FirestoreBundle:
                 BundleElement(document_metadata=bundled_document.metadata)
             )
             document_count += 1
+            bundle_pb = bundled_document.snapshot._to_protobuf()
             buffer += self._compile_bundle_element(
                 BundleElement(
-                    document=bundled_document.snapshot._to_protobuf()._pb,
+                    document=bundle_pb._pb if bundle_pb else None,
                 )
             )
 
