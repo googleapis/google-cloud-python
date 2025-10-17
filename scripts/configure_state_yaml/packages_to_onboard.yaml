@@ -97,6 +97,7 @@ packages_to_onboard: [
   "google-cloud-developerconnect",
   "google-cloud-devicestreaming",
   "google-cloud-dialogflow",
+  "google-cloud-dialogflow-cx",
   "google-cloud-discoveryengine",
   "google-cloud-dlp",
   "google-cloud-dms",
