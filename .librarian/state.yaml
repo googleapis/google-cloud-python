@@ -4582,3 +4582,27 @@ libraries:
     remove_regex:
       - ^packages/grpc-google-iam-v1/google/.*/.*_pb2\.(?:py|pyi)$/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-org-policy
+    version: 1.14.0
+    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    apis:
+      - path: google/cloud/orgpolicy/v1
+        service_config: ""
+      - path: google/cloud/orgpolicy/v2
+        service_config: orgpolicy_v2.yaml
+    source_roots:
+      - packages/google-cloud-org-policy
+    preserve_regex:
+      - packages/google-cloud-org-policy/pytest.ini
+      - packages/google-cloud-org-policy/CHANGELOG.md
+      - google/cloud/orgpolicy/v1/__init__.py
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+      - tests/unit/test_packaging.py
+    remove_regex:
+      - packages/google-cloud-org-policy
+    tag_format: '{id}-v{version}'

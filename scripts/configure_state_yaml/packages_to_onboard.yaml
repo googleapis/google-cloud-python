@@ -150,6 +150,7 @@ packages_to_onboard: [
   "google-cloud-optimization",
   "google-cloud-oracledatabase",
   "google-cloud-orchestration-airflow",
+  "google-cloud-org-policy",
   "google-cloud-os-config",
   "google-cloud-os-login",
   "google-cloud-parallelstore",
