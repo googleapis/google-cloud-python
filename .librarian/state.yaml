@@ -761,7 +761,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/cloud/biglake/v1
-        service_config: ""
+        service_config: biglake_v1.yaml
     source_roots:
       - packages/google-cloud-biglake
     preserve_regex:
@@ -2032,9 +2032,9 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/cloud/gkehub/v1
-        service_config: ""
+        service_config: gkehub_v1.yaml
       - path: google/cloud/gkehub/v1beta1
-        service_config: ""
+        service_config: gkehub_v1beta1.yaml
     source_roots:
       - packages/google-cloud-gke-hub
     preserve_regex:
@@ -2057,7 +2057,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/cloud/gkemulticloud/v1
-        service_config: ""
+        service_config: gkemulticloud_v1.yaml
     source_roots:
       - packages/google-cloud-gke-multicloud
     preserve_regex:
@@ -2071,12 +2071,31 @@ libraries:
     remove_regex:
       - packages/google-cloud-gke-multicloud
     tag_format: '{id}-v{version}'
+  - id: google-cloud-gkerecommender
+    version: 0.0.0
+    last_generated_commit: b153a9181ce3a5e76009ab69988889cc91fa4530
+    apis:
+      - path: google/cloud/gkerecommender/v1
+        service_config: gkerecommender_v1.yaml
+    source_roots:
+      - packages/google-cloud-gkerecommender
+    preserve_regex:
+      - packages/google-cloud-gkerecommender/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-gkerecommender
+    tag_format: '{id}-v{version}'
   - id: google-cloud-gsuiteaddons
     version: 0.3.18
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/cloud/gsuiteaddons/v1
-        service_config: ""
+        service_config: gsuiteaddons_v1.yaml
     source_roots:
       - packages/google-cloud-gsuiteaddons
     preserve_regex:
@@ -2095,17 +2114,17 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/iam/v3
-        service_config: ""
+        service_config: iam_v3.yaml
       - path: google/iam/v3beta
-        service_config: ""
+        service_config: iam_v3beta.yaml
       - path: google/iam/admin/v1
-        service_config: ""
+        service_config: iam.yaml
       - path: google/iam/v2
-        service_config: ""
+        service_config: iam_v2.yaml
       - path: google/iam/credentials/v1
-        service_config: ""
+        service_config: iamcredentials_v1.yaml
       - path: google/iam/v2beta
-        service_config: ""
+        service_config: iam_v2beta.yaml
     source_roots:
       - packages/google-cloud-iam
     preserve_regex:
@@ -2520,7 +2539,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/monitoring/dashboard/v1
-        service_config: ""
+        service_config: monitoring.yaml
     source_roots:
       - packages/google-cloud-monitoring-dashboards
     preserve_regex:
@@ -2619,11 +2638,11 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/cloud/networksecurity/v1alpha1
-        service_config: ""
+        service_config: networksecurity_v1alpha1.yaml
       - path: google/cloud/networksecurity/v1beta1
-        service_config: ""
+        service_config: networksecurity_v1beta1.yaml
       - path: google/cloud/networksecurity/v1
-        service_config: ""
+        service_config: networksecurity_v1.yaml
     source_roots:
       - packages/google-cloud-network-security
     preserve_regex:
@@ -2764,7 +2783,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/cloud/oslogin/v1
-        service_config: ""
+        service_config: oslogin_v1.yaml
     source_roots:
       - packages/google-cloud-os-login
     preserve_regex:
@@ -3202,11 +3221,11 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/cloud/secretmanager/v1
-        service_config: ""
+        service_config: secretmanager_v1.yaml
       - path: google/cloud/secretmanager/v1beta2
-        service_config: ""
+        service_config: secretmanager_v1beta2.yaml
       - path: google/cloud/secrets/v1beta1
-        service_config: ""
+        service_config: secretmanager_v1beta1.yaml
     source_roots:
       - packages/google-cloud-secret-manager
     preserve_regex:
@@ -4553,7 +4572,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: grafeas/v1
-        service_config: ""
+        service_config: grafeas_v1.yaml
     source_roots:
       - packages/grafeas
     preserve_regex:
@@ -4575,7 +4594,7 @@ libraries:
     last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
     apis:
       - path: google/iam/v1
-        service_config: ""
+        service_config: iam_meta_api.yaml
     source_roots:
       - packages/grpc-google-iam-v1/
     preserve_regex: []
