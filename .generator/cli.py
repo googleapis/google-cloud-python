@@ -500,8 +500,8 @@ def _generate_repo_metadata_file(
     _write_json_file(output_repo_metadata, metadata_content)
 
 
-def _copy_readme_to_docs(output: str, library_id: str):
-    """Copies the README.rst file for a generated library to docs/README.rst.
+def _copy_file_to_docs(output: str, library_id: str, filename: str):
+    """Copies a file for a generated library to the docs directory.
 
     This function is robust against various symlink configurations that could
     cause `shutil.copy` to fail with a `SameFileError`. It reads the content
@@ -512,11 +512,12 @@ def _copy_readme_to_docs(output: str, library_id: str):
         output(str): Path to the directory in the container where code
             should be generated.
         library_id(str): The library id.
+        filename(str): The name of the file to copy.
     """
     path_to_library = f"packages/{library_id}"
-    source_path = f"{output}/{path_to_library}/README.rst"
+    source_path = f"{output}/{path_to_library}/{filename}"
     docs_path = f"{output}/{path_to_library}/docs"
-    destination_path = f"{docs_path}/README.rst"
+    destination_path = f"{docs_path}/{filename}"
 
     # If the source file doesn't exist (not even as a broken symlink),
     # there's nothing to copy.
@@ -539,6 +540,32 @@ def _copy_readme_to_docs(output: str, library_id: str):
     # Write the content to the destination, creating a new physical file.
     with open(destination_path, "w") as f:
         f.write(content)
+
+
+def _copy_readme_to_docs(output: str, library_id: str):
+    """Copies the README.rst file for a generated library to docs/README.rst.
+
+    This function is a wrapper around `_copy_file_to_docs` for README.rst.
+
+    Args:
+        output(str): Path to the directory in the container where code
+            should be generated.
+        library_id(str): The library id.
+    """
+    _copy_file_to_docs(output, library_id, "README.rst")
+
+
+def _copy_changelog_to_docs(output: str, library_id: str):
+    """Copies the CHANGELOG.md file for a generated library to docs/CHANGELOG.md.
+
+    This function is a wrapper around `_copy_file_to_docs` for CHANGELOG.md.
+
+    Args:
+        output(str): Path to the directory in the container where code
+            should be generated.
+        library_id(str): The library id.
+    """
+    _copy_file_to_docs(output, library_id, "CHANGELOG.md")
 
 
 def handle_generate(
@@ -583,6 +610,7 @@ def handle_generate(
         _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
         _copy_readme_to_docs(output, library_id)
+        _copy_changelog_to_docs(output, library_id)
         _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
         raise ValueError("Generation failed.") from e
