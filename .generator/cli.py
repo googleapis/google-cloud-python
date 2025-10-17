@@ -381,7 +381,6 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     # Safely remove specific files if they exist using pathlib.
     Path(f"{output}/{path_to_library}/CHANGELOG.md").unlink(missing_ok=True)
     Path(f"{output}/{path_to_library}/docs/CHANGELOG.md").unlink(missing_ok=True)
-    Path(f"{output}/{path_to_library}/docs/README.rst").unlink(missing_ok=True)
 
     # The glob loops are already safe, as they do nothing if no files match.
     for post_processing_file in glob.glob(
@@ -501,6 +500,47 @@ def _generate_repo_metadata_file(
     _write_json_file(output_repo_metadata, metadata_content)
 
 
+def _copy_readme_to_docs(output: str, library_id: str):
+    """Copies the README.rst file for a generated library to docs/README.rst.
+
+    This function is robust against various symlink configurations that could
+    cause `shutil.copy` to fail with a `SameFileError`. It reads the content
+    from the source and writes it to the destination, ensuring the final
+    destination is a real file.
+
+    Args:
+        output(str): Path to the directory in the container where code
+            should be generated.
+        library_id(str): The library id.
+    """
+    path_to_library = f"packages/{library_id}"
+    source_path = f"{output}/{path_to_library}/README.rst"
+    docs_path = f"{output}/{path_to_library}/docs"
+    destination_path = f"{docs_path}/README.rst"
+
+    # If the source file doesn't exist (not even as a broken symlink),
+    # there's nothing to copy.
+    if not os.path.lexists(source_path):
+        return
+
+    # Read the content from the source, which will resolve any symlinks.
+    with open(source_path, "r") as f:
+        content = f.read()
+
+    # Remove any symlinks at the destination to prevent errors.
+    if os.path.islink(destination_path):
+        os.remove(destination_path)
+    elif os.path.islink(docs_path):
+        os.remove(docs_path)
+
+    # Ensure the destination directory exists as a real directory.
+    os.makedirs(docs_path, exist_ok=True)
+
+    # Write the content to the destination, creating a new physical file.
+    with open(destination_path, "w") as f:
+        f.write(content)
+
+
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
@@ -542,6 +582,7 @@ def handle_generate(
         _copy_files_needed_for_post_processing(output, input, library_id)
         _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
+        _copy_readme_to_docs(output, library_id)
         _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
         raise ValueError("Generation failed.") from e
