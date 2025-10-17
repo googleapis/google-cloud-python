@@ -530,7 +530,7 @@ def _copy_readme_to_docs(output: str, library_id: str):
     # Remove any symlinks at the destination to prevent errors.
     if os.path.islink(destination_path):
         os.remove(destination_path)
-    elif os.path.islink(docs_path):
+    if os.path.islink(docs_path):
         os.remove(docs_path)
 
     # Ensure the destination directory exists as a real directory.
