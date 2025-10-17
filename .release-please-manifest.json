@@ -1,5 +1,4 @@
 {
     "packages/google-cloud-bigquery-storage": "2.33.1",
-    "packages/google-cloud-dialogflow-cx": "2.0.0",
-    "packages/google-cloud-org-policy": "1.14.0"
+    "packages/google-cloud-dialogflow-cx": "2.0.0"
 }
