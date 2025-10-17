@@ -153,6 +153,16 @@ class RouteOptimizationTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.optimize_tours_long_running: gapic_v1.method.wrap_method(
+                self.optimize_tours_long_running,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.optimize_tours_uri: gapic_v1.method.wrap_method(
+                self.optimize_tours_uri,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -191,6 +201,24 @@ class RouteOptimizationTransport(abc.ABC):
         self,
     ) -> Callable[
         [route_optimization_service.BatchOptimizeToursRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def optimize_tours_long_running(
+        self,
+    ) -> Callable[
+        [route_optimization_service.OptimizeToursRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def optimize_tours_uri(
+        self,
+    ) -> Callable[
+        [route_optimization_service.OptimizeToursUriRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
