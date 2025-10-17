@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-biglake/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.4.15...google-cloud-bigquery-biglake-v0.5.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.4.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.4.14...google-cloud-bigquery-biglake-v0.4.15) (2025-06-11)
 
 

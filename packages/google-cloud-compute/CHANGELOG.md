@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-compute/#history
 
+## [1.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.39.0...google-cloud-compute-v1.40.0) (2025-10-16)
+
+
+### Features
+
+* Update Compute Engine v1 API to revision 20250916 (#1107)  ([4dc7381c2121c9e13b24cb3aae59523f8ff31a3a](https://github.com/googleapis/google-cloud-python/commit/4dc7381c2121c9e13b24cb3aae59523f8ff31a3a))
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.38.0...google-cloud-compute-v1.39.0) (2025-10-07)
 
 

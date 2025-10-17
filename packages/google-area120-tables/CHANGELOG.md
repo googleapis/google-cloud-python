@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-area120-tables/#history
 
+## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.17...google-area120-tables-v0.12.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.11.17](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.16...google-area120-tables-v0.11.17) (2025-06-11)
 
 

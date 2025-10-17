@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-eventarc/#history
 
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.16.0...google-cloud-eventarc-v1.17.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.15.3...google-cloud-eventarc-v1.16.0) (2025-09-24)
 
 

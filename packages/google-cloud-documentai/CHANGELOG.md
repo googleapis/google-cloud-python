@@ -4,6 +4,44 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai/#history
 
+## [3.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.6.0...google-cloud-documentai-v3.7.0) (2025-10-16)
+
+
+### Documentation
+
+* The field `training_method` in `TrainProcessorVersionRequest` is now marked as optional  ([4dc7381c2121c9e13b24cb3aae59523f8ff31a3a](https://github.com/googleapis/google-cloud-python/commit/4dc7381c2121c9e13b24cb3aae59523f8ff31a3a))
+* A comment for field `latest_evaluation` in message `.google.cloud.documentai.v1beta3.ProcessorVersion` is changed  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A comment for field `training_method` in message `.google.cloud.documentai.v1beta3.TrainProcessorVersionRequest` is changed  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A comment for field `processor_version_source` in message `.google.cloud.documentai.v1beta3.ImportProcessorVersionRequest` is changed  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A comment for field `deprecation_info` in message `.google.cloud.documentai.v1beta3.ProcessorVersion` is changed  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A comment for field `create_time` in message `.google.cloud.documentai.v1beta3.Processor` is changed  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A comment for field `document_schema` in message `.google.cloud.documentai.v1beta3.ProcessorVersion` is changed  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A comment for field `kms_key_name` in message `.google.cloud.documentai.v1beta3.ProcessorVersion` is changed  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A comment for field `create_time` in message `.google.cloud.documentai.v1beta3.ProcessorVersion` is changed  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A comment for field `kms_key_version_name` in message `.google.cloud.documentai.v1beta3.ProcessorVersion` is changed  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Features
+
+* Added new messages `EntityValidationOutput` and `EntitiesRevision`  ([4dc7381c2121c9e13b24cb3aae59523f8ff31a3a](https://github.com/googleapis/google-cloud-python/commit/4dc7381c2121c9e13b24cb3aae59523f8ff31a3a))
+* Added new fields `entity_validation_output`, `entities_revisions`, and `entities_revision_id` to the `Document` message  ([4dc7381c2121c9e13b24cb3aae59523f8ff31a3a](https://github.com/googleapis/google-cloud-python/commit/4dc7381c2121c9e13b24cb3aae59523f8ff31a3a))
+* A new field `signature_value` is added to message `.google.cloud.documentai.v1beta3.Document`  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A new message `EntitiesRevision` is added  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A new field `entities_revisions` is added to message `.google.cloud.documentai.v1beta3.Document`  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A new field `entity_validation_output` is added to message `.google.cloud.documentai.v1beta3.Document`  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A new field `method` is added to message `.google.cloud.documentai.v1beta3.DocumentSchema`  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A new enum `Method` is added  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A new field `method` is added to message `.google.cloud.documentai.v1beta3.Document`  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A new message `EntityValidationOutput` is added  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A new field `entities_revision_id` is added to message `.google.cloud.documentai.v1beta3.Document`  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* A new field `annotations` is added to message `.google.cloud.documentai.v1beta3.Document`  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [3.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.5.0...google-cloud-documentai-v3.6.0) (2025-08-29)
 
 

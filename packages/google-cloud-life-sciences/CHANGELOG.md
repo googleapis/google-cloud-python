@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-life-sciences/#history
 
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.18...google-cloud-life-sciences-v0.10.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.9.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.17...google-cloud-life-sciences-v0.9.18) (2025-06-11)
 
 

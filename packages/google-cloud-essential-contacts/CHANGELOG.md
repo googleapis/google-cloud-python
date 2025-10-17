@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-essential-contacts/#history
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.10.2...google-cloud-essential-contacts-v1.11.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.10.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.10.1...google-cloud-essential-contacts-v1.10.2) (2025-06-11)
 
 

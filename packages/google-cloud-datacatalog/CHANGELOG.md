@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.27.1...google-cloud-datacatalog-v3.28.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [3.27.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.27.0...google-cloud-datacatalog-v3.27.1) (2025-05-08)
 
 

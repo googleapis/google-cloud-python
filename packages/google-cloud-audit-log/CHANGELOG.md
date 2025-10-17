@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-audit-log/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.3.3...google-cloud-audit-log-v0.4.0) (2025-10-16)
+
+
+### Features
+
+* add support for Python 3.14 (#14699) Towards b/375664027 ([8b69540bf6fd862bc1aebb3baf423c419b1556d4](https://github.com/googleapis/google-cloud-python/commit/8b69540bf6fd862bc1aebb3baf423c419b1556d4))
+
 ## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.3.2...google-cloud-audit-log-v0.3.3) (2025-10-07)
 
 

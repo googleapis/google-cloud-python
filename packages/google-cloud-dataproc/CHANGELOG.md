@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.22.0...google-cloud-dataproc-v5.23.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [5.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.21.0...google-cloud-dataproc-v5.22.0) (2025-09-24)
 
 

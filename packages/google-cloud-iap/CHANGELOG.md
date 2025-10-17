@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-iap/#history
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.17.1...google-cloud-iap-v1.18.0) (2025-10-16)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.17.0...google-cloud-iap-v1.17.1) (2025-05-29)
 
 
