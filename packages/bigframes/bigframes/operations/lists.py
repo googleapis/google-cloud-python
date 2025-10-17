@@ -22,24 +22,24 @@ import bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
 from bigframes.core import log_adapter
 import bigframes.operations as ops
 from bigframes.operations._op_converters import convert_index, convert_slice
-import bigframes.operations.base
 import bigframes.series as series
 
 
 @log_adapter.class_logger
-class ListAccessor(
-    bigframes.operations.base.SeriesMethods, vendoracessors.ListAccessor
-):
+class ListAccessor(vendoracessors.ListAccessor):
     __doc__ = vendoracessors.ListAccessor.__doc__
 
+    def __init__(self, data: series.Series):
+        self._data = data
+
     def len(self):
-        return self._apply_unary_op(ops.len_op)
+        return self._data._apply_unary_op(ops.len_op)
 
     def __getitem__(self, key: Union[int, slice]) -> series.Series:
         if isinstance(key, int):
-            return self._apply_unary_op(convert_index(key))
+            return self._data._apply_unary_op(convert_index(key))
         elif isinstance(key, slice):
-            return self._apply_unary_op(convert_slice(key))
+            return self._data._apply_unary_op(convert_slice(key))
         else:
             raise ValueError(f"key must be an int or slice, got {type(key).__name__}")
 

@@ -27,7 +27,7 @@ if TYPE_CHECKING:
     from bigframes import Session
     from bigframes.core.blocks import Block
     from bigframes.dataframe import DataFrame
-    from bigframes.operations.base import SeriesMethods
+    from bigframes.series import Series
 
 
 class HasSession(Protocol):
@@ -42,7 +42,7 @@ class HasSession(Protocol):
 
 def requires_index(meth):
     @functools.wraps(meth)
-    def guarded_meth(df: Union[DataFrame, SeriesMethods], *args, **kwargs):
+    def guarded_meth(df: Union[DataFrame, Series], *args, **kwargs):
         df._throw_if_null_index(meth.__name__)
         return meth(df, *args, **kwargs)
 

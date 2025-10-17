@@ -26,7 +26,6 @@ from bigframes import clients, dtypes
 from bigframes.core import log_adapter
 import bigframes.dataframe
 import bigframes.exceptions as bfe
-from bigframes.operations import base
 import bigframes.operations as ops
 import bigframes.series
 
@@ -35,7 +34,7 @@ FILE_EXT_REGEX = r"(\.[0-9a-zA-Z]+$)"
 
 
 @log_adapter.class_logger
-class BlobAccessor(base.SeriesMethods):
+class BlobAccessor:
     """
     Blob functions for Series and Index.
 
@@ -46,15 +45,15 @@ class BlobAccessor(base.SeriesMethods):
         (https://cloud.google.com/products#product-launch-stages).
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, data: bigframes.series.Series):
+        self._data = data
 
     def uri(self) -> bigframes.series.Series:
         """URIs of the Blob.
 
         Returns:
             bigframes.series.Series: URIs as string."""
-        s = bigframes.series.Series(self._block)
+        s = bigframes.series.Series(self._data._block)
 
         return s.struct.field("uri")
 
@@ -63,7 +62,7 @@ class BlobAccessor(base.SeriesMethods):
 
         Returns:
             bigframes.series.Series: Autorithers(connection) as string."""
-        s = bigframes.series.Series(self._block)
+        s = bigframes.series.Series(self._data._block)
 
         return s.struct.field("authorizer")
 
@@ -73,14 +72,16 @@ class BlobAccessor(base.SeriesMethods):
         Returns:
             bigframes.series.Series: Version as string."""
         # version must be retrieved after fetching metadata
-        return self._apply_unary_op(ops.obj_fetch_metadata_op).struct.field("version")
+        return self._data._apply_unary_op(ops.obj_fetch_metadata_op).struct.field(
+            "version"
+        )
 
     def metadata(self) -> bigframes.series.Series:
         """Retrieve the metadata of the Blob.
 
         Returns:
             bigframes.series.Series: JSON metadata of the Blob. Contains fields: content_type, md5_hash, size and updated(time)."""
-        series_to_check = bigframes.series.Series(self._block)
+        series_to_check = bigframes.series.Series(self._data._block)
         # Check if it's a struct series from a verbose operation
         if dtypes.is_struct_like(series_to_check.dtype):
             pyarrow_dtype = series_to_check.dtype.pyarrow_dtype
@@ -160,7 +161,11 @@ class BlobAccessor(base.SeriesMethods):
         Returns:
             bigframes.series.Series: ObjectRefRuntime JSON.
         """
-        s = self._apply_unary_op(ops.obj_fetch_metadata_op) if with_metadata else self
+        s = (
+            self._data._apply_unary_op(ops.obj_fetch_metadata_op)
+            if with_metadata
+            else self._data
+        )
 
         return s._apply_unary_op(ops.ObjGetAccessUrl(mode=mode))
 
@@ -226,7 +231,7 @@ class BlobAccessor(base.SeriesMethods):
         height = height or bigframes.options.display.blob_display_height
 
         # col name doesn't matter here. Rename to avoid column name conflicts
-        df = bigframes.series.Series(self._block).rename("blob_col").to_frame()
+        df = bigframes.series.Series(self._data._block).rename("blob_col").to_frame()
 
         df["read_url"] = df["blob_col"].blob.read_url()
 
@@ -274,7 +279,7 @@ class BlobAccessor(base.SeriesMethods):
 
     @property
     def session(self):
-        return self._block.session
+        return self._data._block.session
 
     def _resolve_connection(self, connection: Optional[str] = None) -> str:
         """Resovle the BigQuery connection.
@@ -291,11 +296,11 @@ class BlobAccessor(base.SeriesMethods):
         Raises:
             ValueError: If the connection cannot be resolved to a valid string.
         """
-        connection = connection or self._block.session._bq_connection
+        connection = connection or self._data._block.session._bq_connection
         return clients.get_canonical_bq_connection_id(
             connection,
-            default_project=self._block.session._project,
-            default_location=self._block.session._location,
+            default_project=self._data._block.session._project,
+            default_location=self._data._block.session._location,
         )
 
     def get_runtime_json_str(
@@ -352,7 +357,7 @@ class BlobAccessor(base.SeriesMethods):
 
         exif_udf = blob_func.TransformFunction(
             blob_func.exif_func_def,
-            session=self._block.session,
+            session=self._data._block.session,
             connection=connection,
             max_batching_rows=max_batching_rows,
             container_cpu=container_cpu,
@@ -422,7 +427,7 @@ class BlobAccessor(base.SeriesMethods):
 
             image_blur_udf = blob_func.TransformFunction(
                 blob_func.image_blur_to_bytes_def,
-                session=self._block.session,
+                session=self._data._block.session,
                 connection=connection,
                 max_batching_rows=max_batching_rows,
                 container_cpu=container_cpu,
@@ -467,7 +472,7 @@ class BlobAccessor(base.SeriesMethods):
 
         image_blur_udf = blob_func.TransformFunction(
             blob_func.image_blur_def,
-            session=self._block.session,
+            session=self._data._block.session,
             connection=connection,
             max_batching_rows=max_batching_rows,
             container_cpu=container_cpu,
@@ -558,7 +563,7 @@ class BlobAccessor(base.SeriesMethods):
 
             image_resize_udf = blob_func.TransformFunction(
                 blob_func.image_resize_to_bytes_def,
-                session=self._block.session,
+                session=self._data._block.session,
                 connection=connection,
                 max_batching_rows=max_batching_rows,
                 container_cpu=container_cpu,
@@ -605,7 +610,7 @@ class BlobAccessor(base.SeriesMethods):
 
         image_resize_udf = blob_func.TransformFunction(
             blob_func.image_resize_def,
-            session=self._block.session,
+            session=self._data._block.session,
             connection=connection,
             max_batching_rows=max_batching_rows,
             container_cpu=container_cpu,
@@ -690,7 +695,7 @@ class BlobAccessor(base.SeriesMethods):
 
             image_normalize_udf = blob_func.TransformFunction(
                 blob_func.image_normalize_to_bytes_def,
-                session=self._block.session,
+                session=self._data._block.session,
                 connection=connection,
                 max_batching_rows=max_batching_rows,
                 container_cpu=container_cpu,
@@ -737,7 +742,7 @@ class BlobAccessor(base.SeriesMethods):
 
         image_normalize_udf = blob_func.TransformFunction(
             blob_func.image_normalize_def,
-            session=self._block.session,
+            session=self._data._block.session,
             connection=connection,
             max_batching_rows=max_batching_rows,
             container_cpu=container_cpu,
@@ -816,7 +821,7 @@ class BlobAccessor(base.SeriesMethods):
 
         pdf_extract_udf = blob_func.TransformFunction(
             blob_func.pdf_extract_def,
-            session=self._block.session,
+            session=self._data._block.session,
             connection=connection,
             max_batching_rows=max_batching_rows,
             container_cpu=container_cpu,
@@ -898,7 +903,7 @@ class BlobAccessor(base.SeriesMethods):
 
         pdf_chunk_udf = blob_func.TransformFunction(
             blob_func.pdf_chunk_def,
-            session=self._block.session,
+            session=self._data._block.session,
             connection=connection,
             max_batching_rows=max_batching_rows,
             container_cpu=container_cpu,
@@ -965,7 +970,7 @@ class BlobAccessor(base.SeriesMethods):
         import bigframes.pandas as bpd
 
         # col name doesn't matter here. Rename to avoid column name conflicts
-        audio_series = bigframes.series.Series(self._block)
+        audio_series = bigframes.series.Series(self._data._block)
 
         prompt_text = "**Task:** Transcribe the provided audio. **Instructions:** - Your response must contain only the verbatim transcription of the audio. - Do not include any introductory text, summaries, or conversational filler in your response. The output should begin directly with the first word of the audio."
 

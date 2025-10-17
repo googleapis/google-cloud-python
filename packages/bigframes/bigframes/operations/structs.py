@@ -20,29 +20,31 @@ import pandas as pd
 from bigframes.core import backports, log_adapter
 import bigframes.dataframe
 import bigframes.operations
-import bigframes.operations.base
 import bigframes.series
 
 
 @log_adapter.class_logger
-class StructAccessor(
-    bigframes.operations.base.SeriesMethods, vendoracessors.StructAccessor
-):
+class StructAccessor(vendoracessors.StructAccessor):
     __doc__ = vendoracessors.StructAccessor.__doc__
 
+    def __init__(self, data: bigframes.series.Series):
+        self._data = data
+
     def field(self, name_or_index: str | int) -> bigframes.series.Series:
-        series = self._apply_unary_op(bigframes.operations.StructFieldOp(name_or_index))
+        series = self._data._apply_unary_op(
+            bigframes.operations.StructFieldOp(name_or_index)
+        )
         if isinstance(name_or_index, str):
             name = name_or_index
         else:
-            struct_field = self._dtype.pyarrow_dtype[name_or_index]
+            struct_field = self._data._dtype.pyarrow_dtype[name_or_index]
             name = struct_field.name
         return series.rename(name)
 
     def explode(self) -> bigframes.dataframe.DataFrame:
         import bigframes.pandas
 
-        pa_type = self._dtype.pyarrow_dtype
+        pa_type = self._data._dtype.pyarrow_dtype
         return bigframes.pandas.concat(
             [
                 self.field(field.name)
@@ -53,7 +55,7 @@ class StructAccessor(
 
     @property
     def dtypes(self) -> pd.Series:
-        pa_type = self._dtype.pyarrow_dtype
+        pa_type = self._data._dtype.pyarrow_dtype
         return pd.Series(
             data=[
                 pd.ArrowDtype(field.type)
