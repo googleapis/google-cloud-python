@@ -4606,3 +4606,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-org-policy
     tag_format: '{id}-v{version}'
+  - id: google-cloud-dialogflow-cx
+    version: 2.0.0
+    last_generated_commit: b153a9181ce3a5e76009ab69988889cc91fa4530
+    apis:
+      - path: google/cloud/dialogflow/cx/v3
+        service_config: dialogflow_v3.yaml
+      - path: google/cloud/dialogflow/cx/v3beta1
+        service_config: dialogflow_v3beta1.yaml
+    source_roots:
+      - packages/google-cloud-dialogflow-cx
+    preserve_regex:
+      - packages/google-cloud-dialogflow-cx/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-dialogflow-cx
+    tag_format: '{id}-v{version}'
