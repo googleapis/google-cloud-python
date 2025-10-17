@@ -503,6 +503,9 @@ def _generate_repo_metadata_file(
 def _copy_readme_to_docs(output: str, library_id: str):
     """Copies the README.rst file for a generated library to docs/README.rst.
 
+    This function handles the case where `docs` is a symlink to the parent
+    directory, which would cause `shutil.copy` to fail.
+
     Args:
         output(str): Path to the directory in the container where code
             should be generated.
@@ -510,8 +513,14 @@ def _copy_readme_to_docs(output: str, library_id: str):
     """
     path_to_library = f"packages/{library_id}"
     source_path = f"{output}/{path_to_library}/README.rst"
-    destination_path = f"{output}/{path_to_library}/docs/README.rst"
-    os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+    docs_path = f"{output}/{path_to_library}/docs"
+    destination_path = f"{docs_path}/README.rst"
+
+    # If the docs directory is a symlink, remove it so we can create a real directory.
+    if os.path.islink(docs_path):
+        os.remove(docs_path)
+
+    os.makedirs(docs_path, exist_ok=True)
     shutil.copy(source_path, destination_path)
 
 
