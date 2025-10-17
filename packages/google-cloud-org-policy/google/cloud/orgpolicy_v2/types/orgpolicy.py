@@ -60,9 +60,9 @@ class Policy(proto.Message):
             the following forms, where ``constraint_name`` is the name
             of the constraint which this policy configures:
 
-            -  ``projects/{project_number}/policies/{constraint_name}``
-            -  ``folders/{folder_id}/policies/{constraint_name}``
-            -  ``organizations/{organization_id}/policies/{constraint_name}``
+            - ``projects/{project_number}/policies/{constraint_name}``
+            - ``folders/{folder_id}/policies/{constraint_name}``
+            - ``organizations/{organization_id}/policies/{constraint_name}``
 
             For example,
             ``projects/123/policies/compute.disableSerialPortAccess``.
@@ -167,13 +167,12 @@ class PolicySpec(proto.Message):
             In policies for boolean constraints, the following
             requirements apply:
 
-            -  There must be one and only one policy rule where
-               condition is unset.
-            -  Boolean policy rules with conditions must set
-               ``enforced`` to the opposite of the policy rule without a
-               condition.
-            -  During policy evaluation, policy rules with conditions
-               that are true for a target resource take precedence.
+            - There must be one and only one policy rule where condition
+              is unset.
+            - Boolean policy rules with conditions must set ``enforced``
+              to the opposite of the policy rule without a condition.
+            - During policy evaluation, policy rules with conditions
+              that are true for a target resource take precedence.
         inherit_from_parent (bool):
             Determines the inheritance behavior for this policy.
 
@@ -231,7 +230,7 @@ class PolicySpec(proto.Message):
                 A condition which determines whether this rule is used in
                 the evaluation of the policy. When set, the ``expression``
                 field in the \`Expr' must include from 1 to 10
-                subexpressions, joined by the "||" or "&&" operators. Each
+                subexpressions, joined by the "\|\|" or "&&" operators. Each
                 subexpression must be of the form
                 "resource.matchTag('<ORG_ID>/tag_key_short_name,
                 'tag_value_short_name')". or
@@ -263,11 +262,11 @@ class PolicySpec(proto.Message):
             values with no prefix. Ancestry subtrees must be in one of the
             following formats:
 
-            -  ``projects/<project-id>`` (for example,
-               ``projects/tokyo-rain-123``)
-            -  ``folders/<folder-id>`` (for example, ``folders/1234``)
-            -  ``organizations/<organization-id>`` (for example,
-               ``organizations/1234``)
+            - ``projects/<project-id>`` (for example,
+              ``projects/tokyo-rain-123``)
+            - ``folders/<folder-id>`` (for example, ``folders/1234``)
+            - ``organizations/<organization-id>`` (for example,
+              ``organizations/1234``)
 
             The ``supports_under`` field of the associated ``Constraint``
             defines whether ancestry prefixes can be used.
@@ -353,10 +352,10 @@ class ListConstraintsRequest(proto.Message):
             Required. The Google Cloud resource that parents the
             constraint. Must be in one of the following forms:
 
-            -  ``projects/{project_number}``
-            -  ``projects/{project_id}``
-            -  ``folders/{folder_id}``
-            -  ``organizations/{organization_id}``
+            - ``projects/{project_number}``
+            - ``projects/{project_id}``
+            - ``folders/{folder_id}``
+            - ``organizations/{organization_id}``
         page_size (int):
             Size of the pages to be returned. This is
             currently unsupported and will be ignored. The
@@ -421,10 +420,10 @@ class ListPoliciesRequest(proto.Message):
             set of constraints and policies that will be returned from
             this call. Must be in one of the following forms:
 
-            -  ``projects/{project_number}``
-            -  ``projects/{project_id}``
-            -  ``folders/{folder_id}``
-            -  ``organizations/{organization_id}``
+            - ``projects/{project_number}``
+            - ``projects/{project_id}``
+            - ``folders/{folder_id}``
+            - ``organizations/{organization_id}``
         page_size (int):
             Size of the pages to be returned. This is
             currently unsupported and will be ignored. The
@@ -524,10 +523,10 @@ class CreatePolicyRequest(proto.Message):
             Required. The Google Cloud resource that will parent the new
             policy. Must be in one of the following forms:
 
-            -  ``projects/{project_number}``
-            -  ``projects/{project_id}``
-            -  ``folders/{folder_id}``
-            -  ``organizations/{organization_id}``
+            - ``projects/{project_number}``
+            - ``projects/{project_id}``
+            - ``folders/{folder_id}``
+            - ``organizations/{organization_id}``
         policy (google.cloud.orgpolicy_v2.types.Policy):
             Required. Policy to create.
     """
@@ -602,7 +601,7 @@ class CreateCustomConstraintRequest(proto.Message):
         parent (str):
             Required. Must be in the following form:
 
-            -  ``organizations/{organization_id}``
+            - ``organizations/{organization_id}``
         custom_constraint (google.cloud.orgpolicy_v2.types.CustomConstraint):
             Required. Custom constraint to create.
     """
@@ -645,7 +644,7 @@ class ListCustomConstraintsRequest(proto.Message):
             set of custom constraints that will be returned from this
             call. Must be in one of the following forms:
 
-            -  ``organizations/{organization_id}``
+            - ``organizations/{organization_id}``
         page_size (int):
             Size of the pages to be returned. This is
             currently unsupported and will be ignored. The

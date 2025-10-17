@@ -35,9 +35,15 @@ ALL_PYTHON = [
     "3.11",
     "3.12",
     "3.13",
+    "3.14",
 ]
 
-DEFAULT_PYTHON_VERSION = ALL_PYTHON[-1]
+DEFAULT_PYTHON_VERSION = "3.14"
+
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
+# Switch this to Python 3.15 alpha1
+# https://peps.python.org/pep-0790/
+PREVIEW_PYTHON_VERSION = "3.14"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -57,7 +63,7 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
@@ -87,7 +93,8 @@ nox.options.error_on_missing_interpreters = True
 def mypy(session):
     """Run the type checker."""
     session.install(
-        "mypy",
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410): Use the latest version of mypy
+        "mypy<1.16.0",
         "types-requests",
         "types-protobuf",
     )
@@ -221,7 +228,14 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
+    # Remove this check once support for Protobuf 3.x is dropped.
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
@@ -229,7 +243,7 @@ def unit(session, protobuf_implementation):
     )
     install_unittest_dependencies(session, "-c", constraints_path)
 
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
     # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
     # The 'cpp' implementation requires Protobuf<4.
     if protobuf_implementation == "cpp":
@@ -364,9 +378,10 @@ def docs(session):
         "-T",  # show full traceback on exception
         "-N",  # no colors
         "-b",
-        "html",
+        "html",  # builder
         "-d",
-        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        # paths to build:
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
@@ -418,7 +433,7 @@ def docfx(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=PREVIEW_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -431,7 +446,14 @@ def prerelease_deps(session, protobuf_implementation):
     `pip install --pre <package>`.
     """
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
+    # Remove this check once support for Protobuf 3.x is dropped.
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
