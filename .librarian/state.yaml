@@ -1,4 +1,4 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
+image: python-librarian-generator:latest
 libraries:
   - id: google-ads-admanager
     version: 0.4.0
