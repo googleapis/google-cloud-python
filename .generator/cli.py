@@ -503,8 +503,10 @@ def _generate_repo_metadata_file(
 def _copy_readme_to_docs(output: str, library_id: str):
     """Copies the README.rst file for a generated library to docs/README.rst.
 
-    This function handles the case where `docs` is a symlink to the parent
-    directory, which would cause `shutil.copy` to fail.
+    This function is robust against various symlink configurations that could
+    cause `shutil.copy` to fail with a `SameFileError`. It reads the content
+    from the source and writes it to the destination, ensuring the final
+    destination is a real file.
 
     Args:
         output(str): Path to the directory in the container where code
@@ -516,12 +518,27 @@ def _copy_readme_to_docs(output: str, library_id: str):
     docs_path = f"{output}/{path_to_library}/docs"
     destination_path = f"{docs_path}/README.rst"
 
-    # If the docs directory is a symlink, remove it so we can create a real directory.
-    if os.path.islink(docs_path):
+    # If the source file doesn't exist (not even as a broken symlink),
+    # there's nothing to copy.
+    if not os.path.lexists(source_path):
+        return
+
+    # Read the content from the source, which will resolve any symlinks.
+    with open(source_path, "r") as f:
+        content = f.read()
+
+    # Remove any symlinks at the destination to prevent errors.
+    if os.path.islink(destination_path):
+        os.remove(destination_path)
+    elif os.path.islink(docs_path):
         os.remove(docs_path)
 
+    # Ensure the destination directory exists as a real directory.
     os.makedirs(docs_path, exist_ok=True)
-    shutil.copy(source_path, destination_path)
+
+    # Write the content to the destination, creating a new physical file.
+    with open(destination_path, "w") as f:
+        f.write(content)
 
 
 def handle_generate(
