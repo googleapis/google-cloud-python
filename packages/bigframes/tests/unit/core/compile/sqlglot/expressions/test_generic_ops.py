@@ -168,6 +168,47 @@ def test_astype_json_invalid(
         )
 
 
+def test_case_when_op(scalar_types_df: bpd.DataFrame, snapshot):
+    ops_map = {
+        "single_case": ops.case_when_op.as_expr(
+            "bool_col",
+            "int64_col",
+        ),
+        "double_case": ops.case_when_op.as_expr(
+            "bool_col",
+            "int64_col",
+            "bool_col",
+            "int64_too",
+        ),
+        "bool_types_case": ops.case_when_op.as_expr(
+            "bool_col",
+            "bool_col",
+            "bool_col",
+            "bool_col",
+        ),
+        "mixed_types_cast": ops.case_when_op.as_expr(
+            "bool_col",
+            "int64_col",
+            "bool_col",
+            "bool_col",
+            "bool_col",
+            "float64_col",
+        ),
+    }
+
+    array_value = scalar_types_df._block.expr
+    result, col_ids = array_value.compute_values(list(ops_map.values()))
+
+    # Rename columns for deterministic golden SQL results.
+    assert len(col_ids) == len(ops_map.keys())
+    result = result.rename_columns(
+        {col_id: key for col_id, key in zip(col_ids, ops_map.keys())}
+    ).select_columns(list(ops_map.keys()))
+
+    sql = result.session._executor.to_sql(result, enable_cache=False)
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_clip(scalar_types_df: bpd.DataFrame, snapshot):
     op_expr = ops.clip_op.as_expr("rowindex", "int64_col", "int64_too")
 
@@ -188,6 +229,18 @@ def test_hash(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "string_col"
     bf_df = scalar_types_df[[col_name]]
     sql = utils._apply_unary_ops(bf_df, [ops.hash_op.as_expr(col_name)], [col_name])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_invert(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bytes_col", "bool_col"]]
+    ops_map = {
+        "int64_col": ops.invert_op.as_expr("int64_col"),
+        "bytes_col": ops.invert_op.as_expr("bytes_col"),
+        "bool_col": ops.invert_op.as_expr("bool_col"),
+    }
+    sql = utils._apply_unary_ops(bf_df, list(ops_map.values()), list(ops_map.keys()))
 
     snapshot.assert_match(sql, "out.sql")
 

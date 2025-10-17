@@ -126,14 +126,6 @@ def test_floor(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
-def test_invert(scalar_types_df: bpd.DataFrame, snapshot):
-    col_name = "int64_col"
-    bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_unary_ops(bf_df, [ops.invert_op.as_expr(col_name)], [col_name])
-
-    snapshot.assert_match(sql, "out.sql")
-
-
 def test_ln(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]

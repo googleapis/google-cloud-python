@@ -357,7 +357,7 @@ def test_engines_fillna_op(scalars_array_value: array_value.ArrayValue, engine):
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_casewhen_op_single_case(
     scalars_array_value: array_value.ArrayValue, engine
 ):
@@ -373,7 +373,7 @@ def test_engines_casewhen_op_single_case(
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_casewhen_op_double_case(
     scalars_array_value: array_value.ArrayValue, engine
 ):
@@ -391,7 +391,7 @@ def test_engines_casewhen_op_double_case(
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_isnull_op(scalars_array_value: array_value.ArrayValue, engine):
     arr, _ = scalars_array_value.compute_values(
         [ops.isnull_op.as_expr(expression.deref("string_col"))]
@@ -400,7 +400,7 @@ def test_engines_isnull_op(scalars_array_value: array_value.ArrayValue, engine):
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_notnull_op(scalars_array_value: array_value.ArrayValue, engine):
     arr, _ = scalars_array_value.compute_values(
         [ops.notnull_op.as_expr(expression.deref("string_col"))]
@@ -409,7 +409,7 @@ def test_engines_notnull_op(scalars_array_value: array_value.ArrayValue, engine)
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_invert_op(scalars_array_value: array_value.ArrayValue, engine):
     arr, _ = scalars_array_value.compute_values(
         [

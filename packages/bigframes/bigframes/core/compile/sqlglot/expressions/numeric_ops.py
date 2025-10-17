@@ -148,11 +148,6 @@ def _(expr: TypedExpr) -> sge.Expression:
     return sge.Floor(this=expr.expr)
 
 
-@register_unary_op(ops.invert_op)
-def _(expr: TypedExpr) -> sge.Expression:
-    return sge.BitwiseNot(this=expr.expr)
-
-
 @register_unary_op(ops.ln_op)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.Case(
