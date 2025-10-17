@@ -500,6 +500,21 @@ def _generate_repo_metadata_file(
     _write_json_file(output_repo_metadata, metadata_content)
 
 
+def _copy_readme_to_docs(output: str, library_id: str):
+    """Copies the README.rst file for a generated library to docs/README.rst.
+
+    Args:
+        output(str): Path to the directory in the container where code
+            should be generated.
+        library_id(str): The library id.
+    """
+    path_to_library = f"packages/{library_id}"
+    source_path = f"{output}/{path_to_library}/README.rst"
+    destination_path = f"{output}/{path_to_library}/docs/README.rst"
+    os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+    shutil.copy(source_path, destination_path)
+
+
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
@@ -541,6 +556,7 @@ def handle_generate(
         _copy_files_needed_for_post_processing(output, input, library_id)
         _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
+        _copy_readme_to_docs(output, library_id)
         _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
         raise ValueError("Generation failed.") from e
