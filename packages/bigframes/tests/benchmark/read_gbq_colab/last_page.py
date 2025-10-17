@@ -28,8 +28,9 @@ def last_page(*, project_id, dataset_id, table_id):
     )
 
     # Get number of rows (to calculate number of pages) and then all pages.
-    df.shape
-    for _ in df.to_pandas_batches(page_size=PAGE_SIZE):
+    batches = df._to_pandas_batches(page_size=PAGE_SIZE)
+    assert (tr := batches.total_rows) is not None and tr >= 0
+    for _ in batches:
         pass
 
 

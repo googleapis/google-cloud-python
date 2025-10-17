@@ -26,8 +26,9 @@ def aggregate_output(*, project_id, dataset_id, table_id):
     df = bpd._read_gbq_colab(f"SELECT * FROM `{project_id}`.{dataset_id}.{table_id}")
 
     # Simulate getting the first page, since we'll always do that first in the UI.
-    df.shape
-    next(iter(df.to_pandas_batches(page_size=PAGE_SIZE)))
+    batches = df._to_pandas_batches(page_size=PAGE_SIZE)
+    assert (tr := batches.total_rows) is not None and tr >= 0
+    next(iter(batches))
 
     # To simulate very small rows that can only fit a boolean,
     # some tables don't have an integer column. If an integer column is available,
@@ -43,8 +44,9 @@ def aggregate_output(*, project_id, dataset_id, table_id):
         .sum(numeric_only=True)
     )
 
-    df_aggregated.shape
-    next(iter(df_aggregated.to_pandas_batches(page_size=PAGE_SIZE)))
+    batches = df_aggregated._to_pandas_batches(page_size=PAGE_SIZE)
+    assert (tr := batches.total_rows) is not None and tr >= 0
+    next(iter(batches))
 
 
 if __name__ == "__main__":

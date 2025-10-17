@@ -693,7 +693,7 @@ class Block:
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
         allow_large_results: Optional[bool] = None,
-    ) -> Iterator[pd.DataFrame]:
+    ) -> PandasBatches:
         """Download results one message at a time.
 
         page_size and max_results determine the size and number of batches,

@@ -1930,6 +1930,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 form the original dataframe. Results stream from bigquery,
                 see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.table.RowIterator#google_cloud_bigquery_table_RowIterator_to_arrow_iterable
         """
+        return self._to_pandas_batches(
+            page_size=page_size,
+            max_results=max_results,
+            allow_large_results=allow_large_results,
+        )
+
+    def _to_pandas_batches(
+        self,
+        page_size: Optional[int] = None,
+        max_results: Optional[int] = None,
+        *,
+        allow_large_results: Optional[bool] = None,
+    ) -> blocks.PandasBatches:
         return self._block.to_pandas_batches(
             page_size=page_size,
             max_results=max_results,
