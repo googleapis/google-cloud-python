@@ -1574,6 +1574,23 @@ def test_copy_readme_to_docs_handles_symlink(mocker):
     mock_open().write.assert_called_once_with("dummy content")
 
 
+def test_copy_readme_to_docs_destination_path_is_symlink(mocker):
+    """Tests that the README.rst is copied to the docs directory, handling destination_path being a symlink."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_os_islink = mocker.patch("os.path.islink", return_value=True)
+    mock_os_remove = mocker.patch("os.remove")
+    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
+    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+
+    output = "output"
+    library_id = "google-cloud-language"
+    _copy_readme_to_docs(output, library_id)
+
+    expected_destination = "output/packages/google-cloud-language/docs/README.rst"
+    mock_os_remove.assert_called_once_with(expected_destination)
+
+
 def test_copy_readme_to_docs_source_not_exists(mocker):
     """Tests that the function returns early if the source README.rst does not exist."""
     mock_makedirs = mocker.patch("os.makedirs")
