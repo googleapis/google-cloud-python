@@ -230,6 +230,34 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def assist_answer_path(
+        project: str,
+        location: str,
+        collection: str,
+        engine: str,
+        session: str,
+        assist_answer: str,
+    ) -> str:
+        """Returns a fully-qualified assist_answer string."""
+        return "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}/assistAnswers/{assist_answer}".format(
+            project=project,
+            location=location,
+            collection=collection,
+            engine=engine,
+            session=session,
+            assist_answer=assist_answer,
+        )
+
+    @staticmethod
+    def parse_assist_answer_path(path: str) -> Dict[str, str]:
+        """Parses a assist_answer path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)/engines/(?P<engine>.+?)/sessions/(?P<session>.+?)/assistAnswers/(?P<assist_answer>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def chunk_path(
         project: str,
         location: str,

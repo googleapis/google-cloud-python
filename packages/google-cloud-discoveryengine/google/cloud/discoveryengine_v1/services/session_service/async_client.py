@@ -82,6 +82,10 @@ class SessionServiceAsyncClient:
 
     answer_path = staticmethod(SessionServiceClient.answer_path)
     parse_answer_path = staticmethod(SessionServiceClient.parse_answer_path)
+    assist_answer_path = staticmethod(SessionServiceClient.assist_answer_path)
+    parse_assist_answer_path = staticmethod(
+        SessionServiceClient.parse_assist_answer_path
+    )
     chunk_path = staticmethod(SessionServiceClient.chunk_path)
     parse_chunk_path = staticmethod(SessionServiceClient.parse_chunk_path)
     data_store_path = staticmethod(SessionServiceClient.data_store_path)

@@ -97,6 +97,12 @@ class ConversationalSearchServiceAsyncClient:
     parse_answer_path = staticmethod(
         ConversationalSearchServiceClient.parse_answer_path
     )
+    assist_answer_path = staticmethod(
+        ConversationalSearchServiceClient.assist_answer_path
+    )
+    parse_assist_answer_path = staticmethod(
+        ConversationalSearchServiceClient.parse_assist_answer_path
+    )
     chunk_path = staticmethod(ConversationalSearchServiceClient.chunk_path)
     parse_chunk_path = staticmethod(ConversationalSearchServiceClient.parse_chunk_path)
     conversation_path = staticmethod(
