@@ -1540,7 +1540,7 @@ def test_copy_readme_to_docs(mocker):
     mock_os_islink.assert_any_call(expected_destination)
     mock_os_islink.assert_any_call(expected_docs_path)
     mock_os_remove.assert_not_called()
-    mock_makedirs.assert_called_once_with(expected_docs_path, exist_ok=True)
+    mock_makedirs.assert_called_with(Path(expected_docs_path), exist_ok=True)
     mock_open.assert_any_call(expected_destination, "w")
     mock_open().write.assert_called_once_with("dummy content")
 
@@ -1575,7 +1575,7 @@ def test_copy_readme_to_docs_handles_symlink(mocker):
     mock_os_islink.assert_any_call(expected_destination)
     mock_os_islink.assert_any_call(expected_docs_path)
     mock_os_remove.assert_called_once_with(expected_docs_path)
-    mock_makedirs.assert_called_once_with(expected_docs_path, exist_ok=True)
+    mock_makedirs.assert_called_with(Path(expected_docs_path), exist_ok=True)
     mock_open.assert_any_call(expected_destination, "w")
     mock_open().write.assert_called_once_with("dummy content")
 
@@ -1621,81 +1621,67 @@ def test_copy_readme_to_docs_source_not_exists(mocker):
 
 
 def test_copy_changelog_to_docs_handles_symlink(mocker):
-    """Tests that the CHANGELOG.md is copied to the docs directory, handling symlinks."""
-    mock_makedirs = mocker.patch("os.makedirs")
-    mock_shutil_copy = mocker.patch("shutil.copy")
-    mock_os_remove = mocker.patch("os.remove")
-    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    """Tests that the CHANGELOG.md is created if it does not exist."""
+    mock_os_lexists = mocker.patch("os.path.lexists", return_value=False)
+    mock_open = mocker.patch("builtins.open", mocker.mock_open())
+    mocker.patch("cli._copy_file_to_docs") # Mock the call to _copy_file_to_docs
 
     output = "output"
     library_id = "google-cloud-language"
     expected_source = f"{output}/packages/{library_id}/CHANGELOG.md"
-    expected_docs_path = f"{output}/packages/{library_id}/docs"
-    expected_destination = f"{expected_docs_path}/CHANGELOG.md"
-
-    def islink_side_effect(path):
-        if path == expected_destination:
-            return False
-        if path == expected_docs_path:
-            return True
-        return False
-
-    mock_os_islink = mocker.patch("os.path.islink", side_effect=islink_side_effect)
 
     _copy_changelog_to_docs(output, library_id)
 
     mock_os_lexists.assert_called_once_with(expected_source)
-    mock_open.assert_any_call(expected_source, "r")
-    mock_os_islink.assert_any_call(expected_destination)
-    mock_os_islink.assert_any_call(expected_docs_path)
-    mock_os_remove.assert_called_once_with(expected_docs_path)
-    mock_makedirs.assert_called_once_with(expected_docs_path, exist_ok=True)
-    mock_open.assert_any_call(expected_destination, "w")
-    mock_open().write.assert_called_once_with("dummy content")
+    mock_open.assert_called_once_with(expected_source, "w")
+    mock_open().write.assert_called_once_with("# Changelog\n")
 
 
 def test_copy_changelog_to_docs_source_not_exists(mocker):
-    """Tests that the function returns early if the source CHANGELOG.md does not exist."""
-    mock_makedirs = mocker.patch("os.makedirs")
-    mock_shutil_copy = mocker.patch("shutil.copy")
-    mock_os_islink = mocker.patch("os.path.islink")
-    mock_os_remove = mocker.patch("os.remove")
+    """Tests that the function creates CHANGELOG.md with correct content if it does not exist."""
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=False)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch("builtins.open", mocker.mock_open())
+    mocker.patch("cli._copy_file_to_docs") # Mock the call to _copy_file_to_docs
 
     output = "output"
     library_id = "google-cloud-language"
+    expected_source = f"{output}/packages/{library_id}/CHANGELOG.md"
+
     _copy_changelog_to_docs(output, library_id)
 
-    expected_source = "output/packages/google-cloud-language/CHANGELOG.md"
-
     mock_os_lexists.assert_called_once_with(expected_source)
-    mock_open.assert_not_called()
-    mock_os_islink.assert_not_called()
-    mock_os_remove.assert_not_called()
-    mock_makedirs.assert_not_called()
-    mock_shutil_copy.assert_not_called()
+    mock_open.assert_called_once_with(expected_source, "w")
+    mock_open().write.assert_called_once_with("# Changelog\n")
 
 
 def test_copy_changelog_to_docs_destination_path_is_symlink(mocker):
     """Tests that the CHANGELOG.md is copied to the docs directory, handling destination_path being a symlink."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
-    mock_os_islink = mocker.patch("os.path.islink", return_value=True)
     mock_os_remove = mocker.patch("os.remove")
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="# Changelog\n"))
 
     output = "output"
     library_id = "google-cloud-language"
+    expected_destination = "output/packages/google-cloud-language/docs/CHANGELOG.md"
+    expected_docs_path = "output/packages/google-cloud-language/docs"
+
+    def islink_side_effect(path):
+        if path == expected_destination:
+            return True
+        if path == expected_docs_path:
+            return False
+        return False
+
+    mock_os_islink = mocker.patch("os.path.islink", side_effect=islink_side_effect)
+
     _copy_changelog_to_docs(output, library_id)
 
-    expected_destination = "output/packages/google-cloud-language/docs/CHANGELOG.md"
     mock_os_remove.assert_called_once_with(expected_destination)
-
-
-def test_copy_readme_to_docs_source_not_exists(mocker):
+    mock_makedirs.assert_called_with(Path(expected_docs_path), exist_ok=True)
+    mock_open.assert_any_call(expected_destination, "w")
+    mock_open().write.assert_called_with("# Changelog\n")
     """Tests that the function returns early if the source README.rst does not exist."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")

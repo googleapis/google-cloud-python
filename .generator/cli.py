@@ -379,7 +379,6 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     shutil.rmtree(f"{output}/owl-bot-staging", ignore_errors=True)
 
     # Safely remove specific files if they exist using pathlib.
-    Path(f"{output}/{path_to_library}/CHANGELOG.md").unlink(missing_ok=True)
     Path(f"{output}/{path_to_library}/docs/CHANGELOG.md").unlink(missing_ok=True)
 
     # The glob loops are already safe, as they do nothing if no files match.
@@ -524,9 +523,7 @@ def _copy_file_to_docs(output: str, library_id: str, filename: str):
     if not os.path.lexists(source_path):
         return
 
-    # Read the content from the source, which will resolve any symlinks.
-    with open(source_path, "r") as f:
-        content = f.read()
+    content = _read_text_file(source_path)
 
     # Remove any symlinks at the destination to prevent errors.
     if os.path.islink(destination_path):
@@ -536,10 +533,7 @@ def _copy_file_to_docs(output: str, library_id: str, filename: str):
 
     # Ensure the destination directory exists as a real directory.
     os.makedirs(docs_path, exist_ok=True)
-
-    # Write the content to the destination, creating a new physical file.
-    with open(destination_path, "w") as f:
-        f.write(content)
+    _write_text_file(destination_path, content)
 
 
 def _copy_readme_to_docs(output: str, library_id: str):
@@ -565,6 +559,12 @@ def _copy_changelog_to_docs(output: str, library_id: str):
             should be generated.
         library_id(str): The library id.
     """
+    path_to_library = f"packages/{library_id}"
+    source_path = f"{output}/{path_to_library}/CHANGELOG.md"
+    if not os.path.lexists(source_path):
+        # Create a valid CHANGELOG.md if it doesn't exist.
+        content = "# Changelog\n"
+        _write_text_file(source_path, content)
     _copy_file_to_docs(output, library_id, "CHANGELOG.md")
 
 
