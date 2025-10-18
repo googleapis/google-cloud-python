@@ -25,6 +25,7 @@ In the hierarchy of API concepts
 """
 import grpc
 import os
+import logging
 import warnings
 
 from google.api_core.gapic_v1 import client_info
@@ -95,6 +96,9 @@ def _get_spanner_optimizer_version():
 
 def _get_spanner_optimizer_statistics_package():
     return os.getenv(OPTIMIZER_STATISITCS_PACKAGE_ENV_VAR, "")
+
+
+log = logging.getLogger(__name__)
 
 
 def _get_spanner_enable_builtin_metrics():
@@ -240,19 +244,24 @@ class Client(ClientWithProject):
             and HAS_GOOGLE_CLOUD_MONITORING_INSTALLED
         ):
             meter_provider = metrics.NoOpMeterProvider()
-            if not _get_spanner_emulator_host():
-                meter_provider = MeterProvider(
-                    metric_readers=[
-                        PeriodicExportingMetricReader(
-                            CloudMonitoringMetricsExporter(
-                                project_id=project, credentials=credentials
+            try:
+                if not _get_spanner_emulator_host():
+                    meter_provider = MeterProvider(
+                        metric_readers=[
+                            PeriodicExportingMetricReader(
+                                CloudMonitoringMetricsExporter(
+                                    project_id=project, credentials=credentials
+                                ),
+                                export_interval_millis=METRIC_EXPORT_INTERVAL_MS,
                             ),
-                            export_interval_millis=METRIC_EXPORT_INTERVAL_MS,
-                        )
-                    ]
+                        ]
+                    )
+                metrics.set_meter_provider(meter_provider)
+                SpannerMetricsTracerFactory()
+            except Exception as e:
+                log.warning(
+                    "Failed to initialize Spanner built-in metrics. Error: %s", e
                 )
-            metrics.set_meter_provider(meter_provider)
-            SpannerMetricsTracerFactory()
         else:
             SpannerMetricsTracerFactory(enabled=False)
 

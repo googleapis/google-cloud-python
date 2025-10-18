@@ -13,9 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+import unittest
+from unittest import mock
+
+from google.cloud.spanner_v1.metrics.constants import GOOGLE_CLOUD_REGION_KEY
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
     SpannerMetricsTracerFactory,
 )
+from opentelemetry.sdk.resources import Resource
+
+pytest.importorskip("opentelemetry")
 
 
 class TestSpannerMetricsTracerFactory:
@@ -48,3 +56,42 @@ class TestSpannerMetricsTracerFactory:
         location = SpannerMetricsTracerFactory._get_location()
         assert isinstance(location, str)
         assert location  # Simply asserting for non empty as this can change depending on the instance this test runs in.
+
+
+class TestSpannerMetricsTracerFactoryGetLocation(unittest.TestCase):
+    @mock.patch(
+        "opentelemetry.resourcedetector.gcp_resource_detector.GoogleCloudResourceDetector.detect"
+    )
+    def test_get_location_with_region(self, mock_detect):
+        """Test that _get_location returns the region when detected."""
+        mock_resource = Resource.create({GOOGLE_CLOUD_REGION_KEY: "us-central1"})
+        mock_detect.return_value = mock_resource
+
+        location = SpannerMetricsTracerFactory._get_location()
+        assert location == "us-central1"
+
+    @mock.patch(
+        "opentelemetry.resourcedetector.gcp_resource_detector.GoogleCloudResourceDetector.detect"
+    )
+    def test_get_location_without_region(self, mock_detect):
+        """Test that _get_location returns 'global' when no region is detected."""
+        mock_resource = Resource.create({})  # No region attribute
+        mock_detect.return_value = mock_resource
+
+        location = SpannerMetricsTracerFactory._get_location()
+        assert location == "global"
+
+    @mock.patch(
+        "opentelemetry.resourcedetector.gcp_resource_detector.GoogleCloudResourceDetector.detect"
+    )
+    def test_get_location_with_exception(self, mock_detect):
+        """Test that _get_location returns 'global' and logs a warning on exception."""
+        mock_detect.side_effect = Exception("detector failed")
+
+        with self.assertLogs(
+            "google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory",
+            level="WARNING",
+        ) as log:
+            location = SpannerMetricsTracerFactory._get_location()
+            assert location == "global"
+            self.assertIn("Failed to detect GCP resource location", log.output[0])

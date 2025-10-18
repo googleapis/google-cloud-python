@@ -255,6 +255,29 @@ class TestClient(unittest.TestCase):
             expected_scopes, creds, directed_read_options=self.DIRECTED_READ_OPTIONS
         )
 
+    @mock.patch.dict(os.environ, {"SPANNER_ENABLE_BUILTIN_METRICS": "true"})
+    @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
+    def test_constructor_w_metrics_initialization_error(
+        self, mock_spanner_metrics_factory
+    ):
+        """
+        Test that Client constructor handles exceptions during metrics
+        initialization and logs a warning.
+        """
+        from google.cloud.spanner_v1.client import Client
+
+        mock_spanner_metrics_factory.side_effect = Exception("Metrics init failed")
+        creds = build_scoped_credentials()
+
+        with self.assertLogs("google.cloud.spanner_v1.client", level="WARNING") as log:
+            client = Client(project=self.PROJECT, credentials=creds)
+            self.assertIsNotNone(client)
+            self.assertIn(
+                "Failed to initialize Spanner built-in metrics. Error: Metrics init failed",
+                log.output[0],
+            )
+        mock_spanner_metrics_factory.assert_called_once()
+
     def test_constructor_route_to_leader_disbled(self):
         from google.cloud.spanner_v1 import client as MUT
 

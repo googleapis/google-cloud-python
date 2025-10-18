@@ -17,6 +17,7 @@
 
 from .metrics_tracer_factory import MetricsTracerFactory
 import os
+import logging
 from .constants import (
     SPANNER_SERVICE_NAME,
     GOOGLE_CLOUD_REGION_KEY,
@@ -33,9 +34,6 @@ try:
 
     import mmh3
 
-    # Override Resource detector logging to not warn when GCP resources are not detected
-    import logging
-
     logging.getLogger("opentelemetry.resourcedetector.gcp_resource_detector").setLevel(
         logging.ERROR
     )
@@ -47,6 +45,8 @@ except ImportError:  # pragma: NO COVER
 from .metrics_tracer import MetricsTracer
 from google.cloud.spanner_v1 import __version__
 from uuid import uuid4
+
+log = logging.getLogger(__name__)
 
 
 class SpannerMetricsTracerFactory(MetricsTracerFactory):
@@ -158,15 +158,23 @@ class SpannerMetricsTracerFactory(MetricsTracerFactory):
     def _get_location() -> str:
         """Get the location of the resource.
 
+        In case of any error during detection, this method will log a warning
+        and default to the "global" location.
+
         Returns:
             str: The location of the resource. If OpenTelemetry is not installed, returns a global region.
         """
         if not HAS_OPENTELEMETRY_INSTALLED:
             return GOOGLE_CLOUD_REGION_GLOBAL
-        detector = gcp_resource_detector.GoogleCloudResourceDetector()
-        resources = detector.detect()
+        try:
+            detector = gcp_resource_detector.GoogleCloudResourceDetector()
+            resources = detector.detect()
 
-        if GOOGLE_CLOUD_REGION_KEY not in resources.attributes:
-            return GOOGLE_CLOUD_REGION_GLOBAL
-        else:
-            return resources[GOOGLE_CLOUD_REGION_KEY]
+            if GOOGLE_CLOUD_REGION_KEY in resources.attributes:
+                return resources.attributes[GOOGLE_CLOUD_REGION_KEY]
+        except Exception as e:
+            log.warning(
+                "Failed to detect GCP resource location for Spanner metrics, defaulting to 'global'. Error: %s",
+                e,
+            )
+        return GOOGLE_CLOUD_REGION_GLOBAL
