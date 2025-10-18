@@ -1,4 +1,4 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator:latest
+image: python-librarian-generator:latest
 libraries:
   - id: google-ads-admanager
     version: 0.5.0
@@ -2070,6 +2070,25 @@ libraries:
       - tests/system
     remove_regex:
       - packages/google-cloud-gke-multicloud
+    tag_format: '{id}-v{version}'
+  - id: google-cloud-gkerecommender
+    version: 0.0.0
+    last_generated_commit: b153a9181ce3a5e76009ab69988889cc91fa4530
+    apis:
+      - path: google/cloud/gkerecommender/v1
+        service_config: gkerecommender_v1.yaml
+    source_roots:
+      - packages/google-cloud-gkerecommender
+    preserve_regex:
+      - packages/google-cloud-gkerecommender/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-gkerecommender
     tag_format: '{id}-v{version}'
   - id: google-cloud-gsuiteaddons
     version: 0.3.18
