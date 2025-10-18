@@ -70,6 +70,7 @@ from cli import (
     _verify_library_namespace,
     _write_json_file,
     _write_text_file,
+    _copy_readme_to_docs,
     handle_build,
     handle_configure,
     handle_generate,
@@ -1514,3 +1515,100 @@ def test_stage_gapic_library(mocker):
     mock_shutil_copytree.assert_called_once_with(
         tmp_dir, staging_dir, dirs_exist_ok=True
     )
+
+
+def test_copy_readme_to_docs(mocker):
+    """Tests that the README.rst is copied to the docs directory, handling symlinks."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_os_islink = mocker.patch("os.path.islink", return_value=False)
+    mock_os_remove = mocker.patch("os.remove")
+    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
+    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+
+    output = "output"
+    library_id = "google-cloud-language"
+    _copy_readme_to_docs(output, library_id)
+
+    expected_source = "output/packages/google-cloud-language/README.rst"
+    expected_docs_path = "output/packages/google-cloud-language/docs"
+    expected_destination = "output/packages/google-cloud-language/docs/README.rst"
+
+    mock_os_lexists.assert_called_once_with(expected_source)
+    mock_open.assert_any_call(expected_source, "r")
+    mock_os_islink.assert_any_call(expected_destination)
+    mock_os_islink.assert_any_call(expected_docs_path)
+    mock_os_remove.assert_not_called()
+    mock_makedirs.assert_called_once_with(expected_docs_path, exist_ok=True)
+    mock_open.assert_any_call(expected_destination, "w")
+    mock_open().write.assert_called_once_with("dummy content")
+
+
+def test_copy_readme_to_docs_handles_symlink(mocker):
+    """Tests that the README.rst is copied to the docs directory, handling symlinks."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_os_islink = mocker.patch("os.path.islink")
+    mock_os_remove = mocker.patch("os.remove")
+    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
+    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+
+    # Simulate docs_path being a symlink
+    mock_os_islink.side_effect = [False, True] # First call for destination_path, second for docs_path
+
+    output = "output"
+    library_id = "google-cloud-language"
+    _copy_readme_to_docs(output, library_id)
+
+    expected_source = "output/packages/google-cloud-language/README.rst"
+    expected_docs_path = "output/packages/google-cloud-language/docs"
+    expected_destination = "output/packages/google-cloud-language/docs/README.rst"
+
+    mock_os_lexists.assert_called_once_with(expected_source)
+    mock_open.assert_any_call(expected_source, "r")
+    mock_os_islink.assert_any_call(expected_destination)
+    mock_os_islink.assert_any_call(expected_docs_path)
+    mock_os_remove.assert_called_once_with(expected_docs_path)
+    mock_makedirs.assert_called_once_with(expected_docs_path, exist_ok=True)
+    mock_open.assert_any_call(expected_destination, "w")
+    mock_open().write.assert_called_once_with("dummy content")
+
+
+def test_copy_readme_to_docs_destination_path_is_symlink(mocker):
+    """Tests that the README.rst is copied to the docs directory, handling destination_path being a symlink."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_os_islink = mocker.patch("os.path.islink", return_value=True)
+    mock_os_remove = mocker.patch("os.remove")
+    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
+    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+
+    output = "output"
+    library_id = "google-cloud-language"
+    _copy_readme_to_docs(output, library_id)
+
+    expected_destination = "output/packages/google-cloud-language/docs/README.rst"
+    mock_os_remove.assert_called_once_with(expected_destination)
+
+
+def test_copy_readme_to_docs_source_not_exists(mocker):
+    """Tests that the function returns early if the source README.rst does not exist."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_os_islink = mocker.patch("os.path.islink")
+    mock_os_remove = mocker.patch("os.remove")
+    mock_os_lexists = mocker.patch("os.path.lexists", return_value=False)
+    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+
+    output = "output"
+    library_id = "google-cloud-language"
+    _copy_readme_to_docs(output, library_id)
+
+    expected_source = "output/packages/google-cloud-language/README.rst"
+
+    mock_os_lexists.assert_called_once_with(expected_source)
+    mock_open.assert_not_called()
+    mock_os_islink.assert_not_called()
+    mock_os_remove.assert_not_called()
+    mock_makedirs.assert_not_called()
+    mock_shutil_copy.assert_not_called()
