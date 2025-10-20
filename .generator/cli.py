@@ -518,9 +518,15 @@ def _copy_file_to_docs(output: str, library_id: str, filename: str):
     docs_path = f"{output}/{path_to_library}/docs"
     destination_path = f"{docs_path}/{filename}"
 
+    print(f"[_copy_file_to_docs] source_path: {source_path}")
+    print(f"[_copy_file_to_docs] docs_path: {docs_path}")
+    print(f"[_copy_file_to_docs] destination_path: {destination_path}")
+    print(f"[_copy_file_to_docs] os.path.lexists(source_path): {os.path.lexists(source_path)}")
+
     # If the source file doesn't exist (not even as a broken symlink),
     # there's nothing to copy.
     if not os.path.lexists(source_path):
+        print(f"[_copy_file_to_docs] Source file does not exist, returning.")
         return
 
     content = _read_text_file(source_path)
@@ -561,11 +567,13 @@ def _copy_changelog_to_docs(output: str, library_id: str):
     """
     path_to_library = f"packages/{library_id}"
     source_path = f"{output}/{path_to_library}/CHANGELOG.md"
+    print(f"[_copy_changelog_to_docs] Initial source_path: {source_path}")
 
     # If the source CHANGELOG.md doesn't exist, create it at the source location.
     if not os.path.lexists(source_path):
         content = "# Changelog\n"
         _write_text_file(source_path, content)
+        print(f"[_copy_changelog_to_docs] Created CHANGELOG.md at: {source_path}")
 
     # Now, copy the (guaranteed to exist) source CHANGELOG.md to the docs directory.
     _copy_file_to_docs(output, library_id, "CHANGELOG.md")
