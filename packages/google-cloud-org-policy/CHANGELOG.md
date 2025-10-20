@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-org-policy/#history
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-org-policy-v1.14.0...google-cloud-org-policy-v1.15.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([a925caeb1fffce7e8554fb6b5437c98fa5168754](https://github.com/googleapis/google-cloud-python/commit/a925caeb1fffce7e8554fb6b5437c98fa5168754))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([a925caeb1fffce7e8554fb6b5437c98fa5168754](https://github.com/googleapis/google-cloud-python/commit/a925caeb1fffce7e8554fb6b5437c98fa5168754))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-org-policy-v1.13.1...google-cloud-org-policy-v1.14.0) (2025-04-17)
 
 

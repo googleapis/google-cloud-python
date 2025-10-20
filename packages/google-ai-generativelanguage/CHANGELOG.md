@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-ai-generativelanguage/#history
 
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.8.0...google-ai-generativelanguage-v0.9.0) (2025-10-20)
+
+
+### Documentation
+
+* deprecation notice for HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+
+
+### Features
+
+* add support for additional reasons to stop image generation  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add support for finish_message that contain details the reason why the model stopped generating tokens  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add URL_RETRIEVAL_STATUS_UNSAFE and URL_RETRIEVAL_STATUS_PAYWALL statuses for url retrieval  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add log_probability_sum  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add Computer Use tool type  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add support for FunctionResponsePart  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add support for image generation features  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add support for additional reasons to stop image generation  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add support for raw media bytes for function response  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add log_probability_sum  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* add URL_RETRIEVAL_STATUS_UNSAFE and URL_RETRIEVAL_STATUS_PAYWALL statuses for url retrieval  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+
+
+### Bug Fixes
+
+* replaced GenerateVideoResponse by PredictLongRunningGeneratedVideoResponse field  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+
 ## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.7.0...google-ai-generativelanguage-v0.8.0) (2025-10-16)
 
 

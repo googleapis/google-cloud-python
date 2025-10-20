@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-managedkafka/#history
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.12...google-cloud-managedkafka-v0.2.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.11...google-cloud-managedkafka-v0.1.12) (2025-07-10)
 
 

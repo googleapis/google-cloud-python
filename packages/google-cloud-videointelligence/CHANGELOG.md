@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-videointelligence-v2.16.2...google-cloud-videointelligence-v2.17.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [2.16.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-videointelligence-v2.16.1...google-cloud-videointelligence-v2.16.2) (2025-06-11)
 
 
