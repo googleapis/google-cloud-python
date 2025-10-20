@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.26.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.25.0...v2.26.0) (2025-10-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* turn Series.struct.dtypes into a property to match pandas (https://github.com/googleapis/python-bigquery-dataframes/pull/2169)
+
+### Features
+
+* Add df.sort_index(axis=1) ([#2173](https://github.com/googleapis/python-bigquery-dataframes/issues/2173)) ([ebf95e3](https://github.com/googleapis/python-bigquery-dataframes/commit/ebf95e3ef77822650f2e190df7b868011174d412))
+* Enhanced multimodal error handling with verbose mode for blob image functions ([#2024](https://github.com/googleapis/python-bigquery-dataframes/issues/2024)) ([f9e28fe](https://github.com/googleapis/python-bigquery-dataframes/commit/f9e28fe3f883cc4d486178fe241bc8b76473700f))
+* Implement cos, sin, and log operations for polars compiler ([#2170](https://github.com/googleapis/python-bigquery-dataframes/issues/2170)) ([5613e44](https://github.com/googleapis/python-bigquery-dataframes/commit/5613e4454f198691209ec28e58ce652104ac2de4))
+* Make `all` and `any` compatible with integer columns on Polars session ([#2154](https://github.com/googleapis/python-bigquery-dataframes/issues/2154)) ([6353d6e](https://github.com/googleapis/python-bigquery-dataframes/commit/6353d6ecad5139551ef68376c08f8749dd440014))
+
+
+### Bug Fixes
+
+* `blob.display()` shows &lt;NA&gt; for null rows ([#2158](https://github.com/googleapis/python-bigquery-dataframes/issues/2158)) ([ddb4df0](https://github.com/googleapis/python-bigquery-dataframes/commit/ddb4df0dd991bef051e2a365c5cacf502803014d))
+* Turn Series.struct.dtypes into a property to match pandas (https://github.com/googleapis/python-bigquery-dataframes/pull/2169) ([62f7e9f](https://github.com/googleapis/python-bigquery-dataframes/commit/62f7e9f38f26b6eb549219a4cbf2c9b9023c9c35))
+
+
+### Documentation
+
+* Clarify that only NULL values are handled by fillna/isna, not NaN ([#2176](https://github.com/googleapis/python-bigquery-dataframes/issues/2176)) ([8f27e73](https://github.com/googleapis/python-bigquery-dataframes/commit/8f27e737fc78a182238090025d09479fac90b326))
+* Remove import bigframes.pandas as bpd boilerplate from many samples ([#2147](https://github.com/googleapis/python-bigquery-dataframes/issues/2147)) ([1a01ab9](https://github.com/googleapis/python-bigquery-dataframes/commit/1a01ab97f103361f489f37b0af8c4b4d7806707c))
+
 ## [2.25.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.24.0...v2.25.0) (2025-10-13)
 
 
