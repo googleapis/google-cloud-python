@@ -1641,11 +1641,8 @@ def test_copy_file_to_docs_docs_path_is_symlink(mocker):
     library_id = "google-cloud-language"
     filename = "README.rst"
     docs_path = f"{output}/packages/{library_id}/docs"
-    destination_path = f"{docs_path}/{filename}"
     
     def islink_side_effect(path):
-        if path == destination_path:
-            return False
         if path == docs_path:
             return True
         return False
@@ -1689,11 +1686,7 @@ def test_copy_changelog_to_docs_destination_path_is_symlink(mocker):
     expected_docs_path = "output/packages/google-cloud-language/docs"
 
     def islink_side_effect(path):
-        if path == expected_destination:
-            return True
-        if path == expected_docs_path:
-            return False
-        return False
+        return path == expected_destination
 
     mock_os_islink = mocker.patch("os.path.islink", side_effect=islink_side_effect)
 
