@@ -56,7 +56,7 @@ templated_files = common.py_library(
         "pandas": "https://pandas.pydata.org/pandas-docs/stable/",
     },
     system_test_python_versions=["3.9", "3.13"],
-    unit_test_python_versions=["3.9", "3.10", "3.11", "3.12", "3.13"],
+    unit_test_python_versions=["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"],
     default_python_version="3.9",
 )
 

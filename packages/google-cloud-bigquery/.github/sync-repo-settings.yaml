@@ -19,6 +19,7 @@ branchProtectionRules:
     - 'Samples - Python 3.11'
     - 'Samples - Python 3.12'
     - 'Samples - Python 3.13'
+    - 'Samples - Python 3.14'
 - pattern: v2
   requiresLinearHistory: true
   requiresCodeOwnerReviews: true

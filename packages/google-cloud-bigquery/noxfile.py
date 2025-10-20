@@ -39,7 +39,7 @@ BLACK_PATHS = (
 
 DEFAULT_PYTHON_VERSION = "3.9"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12", "3.13"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12", "3.13"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 
