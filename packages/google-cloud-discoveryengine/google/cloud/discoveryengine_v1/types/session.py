@@ -21,6 +21,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import answer as gcd_answer
+from google.cloud.discoveryengine_v1.types import assist_answer
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -50,6 +51,9 @@ class Session(proto.Message):
             A unique identifier for tracking users.
         turns (MutableSequence[google.cloud.discoveryengine_v1.types.Session.Turn]):
             Turns.
+        labels (MutableSequence[str]):
+            Optional. The labels for the session.
+            Can be set as filter in ListSessionsRequest.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the session started.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -93,6 +97,13 @@ class Session(proto.Message):
                 [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1.GetSessionRequest.include_answer_details]
                 is set to true, this field will be populated when getting
                 answer query session.
+            detailed_assist_answer (google.cloud.discoveryengine_v1.types.AssistAnswer):
+                Output only. In
+                [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1.ConversationalSearchService.GetSession]
+                API, if
+                [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1.GetSessionRequest.include_answer_details]
+                is set to true, this field will be populated when getting
+                assistant session.
             query_config (MutableMapping[str, str]):
                 Optional. Represents metadata related to the
                 query config, for example LLM model and version
@@ -114,6 +125,11 @@ class Session(proto.Message):
             proto.MESSAGE,
             number=7,
             message=gcd_answer.Answer,
+        )
+        detailed_assist_answer: assist_answer.AssistAnswer = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=assist_answer.AssistAnswer,
         )
         query_config: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
@@ -142,6 +158,10 @@ class Session(proto.Message):
         proto.MESSAGE,
         number=4,
         message=Turn,
+    )
+    labels: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
     )
     start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

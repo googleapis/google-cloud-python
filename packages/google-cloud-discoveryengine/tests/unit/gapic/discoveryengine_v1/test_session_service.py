@@ -65,6 +65,7 @@ from google.cloud.discoveryengine_v1.services.session_service import (
 )
 from google.cloud.discoveryengine_v1.types import (
     answer,
+    assist_answer,
     conversational_search_service,
     safety,
 )
@@ -1146,6 +1147,7 @@ def test_create_session(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
         )
         response = client.create_session(request)
@@ -1162,6 +1164,7 @@ def test_create_session(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
 
 
@@ -1293,6 +1296,7 @@ async def test_create_session_async(
                 display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
             )
         )
@@ -1310,6 +1314,7 @@ async def test_create_session_async(
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
 
 
@@ -1804,6 +1809,7 @@ def test_update_session(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
         )
         response = client.update_session(request)
@@ -1820,6 +1826,7 @@ def test_update_session(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
 
 
@@ -1947,6 +1954,7 @@ async def test_update_session_async(
                 display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
             )
         )
@@ -1964,6 +1972,7 @@ async def test_update_session_async(
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
 
 
@@ -2146,6 +2155,7 @@ def test_get_session(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
         )
         response = client.get_session(request)
@@ -2162,6 +2172,7 @@ def test_get_session(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
 
 
@@ -2293,6 +2304,7 @@ async def test_get_session_async(
                 display_name="display_name_value",
                 state=session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
             )
         )
@@ -2310,6 +2322,7 @@ async def test_get_session_async(
     assert response.display_name == "display_name_value"
     assert response.state == session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
 
 
@@ -4223,6 +4236,7 @@ async def test_create_session_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
             )
         )
@@ -4277,6 +4291,7 @@ async def test_update_session_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
             )
         )
@@ -4308,6 +4323,7 @@ async def test_get_session_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
             )
         )
@@ -4515,9 +4531,62 @@ def test_create_session_rest_call_success(request_type):
                         }
                     ],
                 },
+                "detailed_assist_answer": {
+                    "name": "name_value",
+                    "state": 1,
+                    "replies": [
+                        {
+                            "grounded_content": {
+                                "text_grounding_metadata": {
+                                    "segments": [
+                                        {
+                                            "start_index": 1189,
+                                            "end_index": 942,
+                                            "reference_indices": [1774, 1775],
+                                            "grounding_score": 0.1608,
+                                            "text": "text_value",
+                                        }
+                                    ],
+                                    "references": [
+                                        {
+                                            "content": "content_value",
+                                            "document_metadata": {
+                                                "document": "document_value",
+                                                "uri": "uri_value",
+                                                "title": "title_value",
+                                                "page_identifier": "page_identifier_value",
+                                                "domain": "domain_value",
+                                            },
+                                        }
+                                    ],
+                                },
+                                "content": {
+                                    "text": "text_value",
+                                    "inline_data": {
+                                        "mime_type": "mime_type_value",
+                                        "data": b"data_blob",
+                                    },
+                                    "file": {
+                                        "mime_type": "mime_type_value",
+                                        "file_id": "file_id_value",
+                                    },
+                                    "executable_code": {"code": "code_value"},
+                                    "code_execution_result": {
+                                        "outcome": 1,
+                                        "output": "output_value",
+                                    },
+                                    "role": "role_value",
+                                    "thought": True,
+                                },
+                            }
+                        }
+                    ],
+                    "assist_skipped_reasons": [1],
+                },
                 "query_config": {},
             }
         ],
+        "labels": ["labels_value1", "labels_value2"],
         "start_time": {},
         "end_time": {},
         "is_pinned": True,
@@ -4601,6 +4670,7 @@ def test_create_session_rest_call_success(request_type):
             display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
         )
 
@@ -4622,6 +4692,7 @@ def test_create_session_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
 
 
@@ -4968,9 +5039,62 @@ def test_update_session_rest_call_success(request_type):
                         }
                     ],
                 },
+                "detailed_assist_answer": {
+                    "name": "name_value",
+                    "state": 1,
+                    "replies": [
+                        {
+                            "grounded_content": {
+                                "text_grounding_metadata": {
+                                    "segments": [
+                                        {
+                                            "start_index": 1189,
+                                            "end_index": 942,
+                                            "reference_indices": [1774, 1775],
+                                            "grounding_score": 0.1608,
+                                            "text": "text_value",
+                                        }
+                                    ],
+                                    "references": [
+                                        {
+                                            "content": "content_value",
+                                            "document_metadata": {
+                                                "document": "document_value",
+                                                "uri": "uri_value",
+                                                "title": "title_value",
+                                                "page_identifier": "page_identifier_value",
+                                                "domain": "domain_value",
+                                            },
+                                        }
+                                    ],
+                                },
+                                "content": {
+                                    "text": "text_value",
+                                    "inline_data": {
+                                        "mime_type": "mime_type_value",
+                                        "data": b"data_blob",
+                                    },
+                                    "file": {
+                                        "mime_type": "mime_type_value",
+                                        "file_id": "file_id_value",
+                                    },
+                                    "executable_code": {"code": "code_value"},
+                                    "code_execution_result": {
+                                        "outcome": 1,
+                                        "output": "output_value",
+                                    },
+                                    "role": "role_value",
+                                    "thought": True,
+                                },
+                            }
+                        }
+                    ],
+                    "assist_skipped_reasons": [1],
+                },
                 "query_config": {},
             }
         ],
+        "labels": ["labels_value1", "labels_value2"],
         "start_time": {},
         "end_time": {},
         "is_pinned": True,
@@ -5054,6 +5178,7 @@ def test_update_session_rest_call_success(request_type):
             display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
         )
 
@@ -5075,6 +5200,7 @@ def test_update_session_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
 
 
@@ -5193,6 +5319,7 @@ def test_get_session_rest_call_success(request_type):
             display_name="display_name_value",
             state=session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
         )
 
@@ -5214,6 +5341,7 @@ def test_get_session_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
 
 
@@ -6177,6 +6305,43 @@ def test_parse_answer_path():
 
     # Check that the path construction is reversible.
     actual = SessionServiceClient.parse_answer_path(path)
+    assert expected == actual
+
+
+def test_assist_answer_path():
+    project = "scallop"
+    location = "abalone"
+    collection = "squid"
+    engine = "clam"
+    session = "whelk"
+    assist_answer = "octopus"
+    expected = "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}/assistAnswers/{assist_answer}".format(
+        project=project,
+        location=location,
+        collection=collection,
+        engine=engine,
+        session=session,
+        assist_answer=assist_answer,
+    )
+    actual = SessionServiceClient.assist_answer_path(
+        project, location, collection, engine, session, assist_answer
+    )
+    assert expected == actual
+
+
+def test_parse_assist_answer_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "collection": "cuttlefish",
+        "engine": "mussel",
+        "session": "winkle",
+        "assist_answer": "nautilus",
+    }
+    path = SessionServiceClient.assist_answer_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionServiceClient.parse_assist_answer_path(path)
     assert expected == actual
 
 
