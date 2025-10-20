@@ -26,7 +26,7 @@ import nox
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 
-LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
+LINT_PATHS = ["docs", "google", "samples", "tests", "noxfile.py", "setup.py"]
 
 ALL_PYTHON = [
     "3.7",
