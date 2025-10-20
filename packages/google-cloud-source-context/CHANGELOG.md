@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-source-context/#history
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.7.1...google-cloud-source-context-v1.8.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.7.0...google-cloud-source-context-v1.7.1) (2025-03-15)
 
 

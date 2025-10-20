@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-maps-addressvalidation/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.20...google-maps-addressvalidation-v0.4.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.3.20](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.19...google-maps-addressvalidation-v0.3.20) (2025-07-16)
 
 

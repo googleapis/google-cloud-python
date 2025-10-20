@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-netapp/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.24...google-cloud-netapp-v0.4.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.3.24](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.23...google-cloud-netapp-v0.3.24) (2025-09-04)
 
 

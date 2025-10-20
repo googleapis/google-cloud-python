@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-apps-card/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.2.0...google-apps-card-v0.3.0) (2025-10-20)
+
+
+### Documentation
+
+* change `Workspace Add-ons` to `Workspace add-ons`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* improve comments  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+
+
+### Features
+
+* Add `NestedWidget`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* Add `Validation` and the field `TextInput.validation`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* Add the field `TextParagraph.TextSyntax`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* Add `ChipList`,`Chip` and field `Widgets.chip_list`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* Add `Button.Type` and field `Button.type`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* Add `Carousel` widget  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* Add the field `TextParagraph.max_lines`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* Add the field `DecoratedText.start_icon_vertical_alignment`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* Add `OverflowMenu` widget  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+
+
+### Bug Fixes
+
+* An existing field `start_icon_uri` is moved in to oneof in message `.google.apps.card.v1.SelectionInput`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+* Changed proto3 optional flag of an existing field `multi_select_max_selected_items` in message `.google.apps.card.v1.SelectionInput`  ([84be9032eb7ba04bb305870160699d2bc12e0dac](https://github.com/googleapis/google-cloud-python/commit/84be9032eb7ba04bb305870160699d2bc12e0dac))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.8...google-apps-card-v0.2.0) (2025-10-16)
 
 
