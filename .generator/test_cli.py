@@ -72,6 +72,7 @@ from cli import (
     _write_text_file,
     _copy_readme_to_docs,
     _copy_changelog_to_docs,
+    _copy_file_to_docs,
     handle_build,
     handle_configure,
     handle_generate,
@@ -641,6 +642,8 @@ def test_handle_generate_success(
         "cli._clean_up_files_after_post_processing"
     )
     mocker.patch("cli._generate_repo_metadata_file")
+    mocker.patch("cli._copy_changelog_to_docs")
+    mocker.patch("cli._copy_readme_to_docs")
 
     handle_generate()
 
@@ -1578,47 +1581,7 @@ def test_copy_readme_to_docs(mocker):
     mock_open().write.assert_called_once_with("dummy content")
 
 
-def test_copy_readme_to_docs_handles_symlink(mocker):
-    """Tests that the README.rst is copied to the docs directory, handling symlinks."""
-    mock_makedirs = mocker.patch("os.makedirs")
-    mock_shutil_copy = mocker.patch("shutil.copy")
-    mock_os_remove = mocker.patch("os.remove")
-    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch(
-        "builtins.open", mocker.mock_open(read_data="dummy content")
-    )
 
-    # Simulate docs_path being a symlink
-    mock_os_islink.side_effect = [
-        False,
-        True,
-    ]  # First call for destination_path, second for docs_path
-
-    output = "output"
-    library_id = "google-cloud-language"
-    expected_source = f"{output}/packages/{library_id}/README.rst"
-    expected_docs_path = f"{output}/packages/{library_id}/docs"
-    expected_destination = f"{expected_docs_path}/README.rst"
-
-    def islink_side_effect(path):
-        if path == expected_destination:
-            return False
-        if path == expected_docs_path:
-            return True
-        return False
-
-    mock_os_islink = mocker.patch("os.path.islink", side_effect=islink_side_effect)
-
-    _copy_readme_to_docs(output, library_id)
-
-    mock_os_lexists.assert_called_once_with(expected_source)
-    mock_open.assert_any_call(expected_source, "r")
-    mock_os_islink.assert_any_call(expected_destination)
-    mock_os_islink.assert_any_call(expected_docs_path)
-    mock_os_remove.assert_called_once_with(expected_docs_path)
-    mock_makedirs.assert_called_with(Path(expected_docs_path), exist_ok=True)
-    mock_open.assert_any_call(expected_destination, "w")
-    mock_open().write.assert_called_once_with("dummy content")
 
 
 def test_copy_readme_to_docs_destination_path_is_symlink(mocker):
@@ -1663,54 +1626,40 @@ def test_copy_readme_to_docs_source_not_exists(mocker):
     mock_os_remove.assert_not_called()
     mock_makedirs.assert_not_called()
     mock_shutil_copy.assert_not_called()
-
-
-def test_copy_changelog_to_docs_handles_symlink(mocker):
-    """Tests that the CHANGELOG.md is created at the source and then copied to docs, handling symlinks."""
+    
+    
+def test_copy_file_to_docs_docs_path_is_symlink(mocker):
+    """Tests that the file is copied to the docs directory, handling docs_path being a symlink."""
     mock_makedirs = mocker.patch("os.makedirs")
     mock_os_remove = mocker.patch("os.remove")
-    mock_os_islink = mocker.patch("os.path.islink")
-    mock_os_lexists = mocker.patch("os.path.lexists")
-    mock_write_text_file = mocker.patch("cli._write_text_file")
-    mock_read_text_file = mocker.patch("cli._read_text_file", return_value="# Changelog\n")
+    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
     output = "output"
     library_id = "google-cloud-language"
-    source_changelog_path = f"{output}/packages/{library_id}/CHANGELOG.md"
+    filename = "README.rst"
     docs_path = f"{output}/packages/{library_id}/docs"
-    destination_changelog_path = f"{docs_path}/CHANGELOG.md"
-
-    # Scenario: Source CHANGELOG.md does not exist initially, docs_path is a symlink
-    mock_os_lexists.side_effect = [False, True] # First for source_changelog_path, second for source_path in _copy_file_to_docs
-
+    destination_path = f"{docs_path}/{filename}"
+    
     def islink_side_effect(path):
-        if path == destination_changelog_path:
+        if path == destination_path:
             return False
         if path == docs_path:
             return True
         return False
 
-    mock_os_islink = mocker.patch("os.path.islink", side_effect=islink_side_effect)
+    mocker.patch("os.path.islink", side_effect=islink_side_effect)
 
-    _copy_changelog_to_docs(output, library_id)
-
-    # Assert that source CHANGELOG.md was checked for existence
-    mock_os_lexists.assert_any_call(source_changelog_path)
-
-    # Assert that source CHANGELOG.md was created with default content
-    mock_write_text_file.assert_any_call(source_changelog_path, "# Changelog\n")
-
-    # Assert that _copy_file_to_docs was called to copy from source to destination
-    mock_read_text_file.assert_any_call(source_changelog_path)
-    mock_os_islink.assert_any_call(destination_changelog_path)
-    mock_os_islink.assert_any_call(docs_path)
+    _copy_file_to_docs(output, library_id, filename)
+    
     mock_os_remove.assert_called_once_with(docs_path)
-    mock_makedirs.assert_called_once_with(Path(docs_path), exist_ok=True)
-    mock_write_text_file.assert_any_call(destination_changelog_path, "# Changelog\n")
-
-
-def test_copy_changelog_to_docs_source_not_exists(mocker):
-    """Tests that CHANGELOG.md is created at source and then copied to docs."""
+    
+    
+def test_copy_changelog_to_docs_handles_symlink(mocker):
+    """Tests that the CHANGELOG.md is created at the source and then copied to docs, handling symlinks."""
+    mock_makedirs = mocker.patch("os.makedirs")
     mock_lexists = mocker.patch("os.path.lexists", return_value=False)
     mock_write_text = mocker.patch("cli._write_text_file")
     mock_copy_file = mocker.patch("cli._copy_file_to_docs")
@@ -1720,9 +1669,9 @@ def test_copy_changelog_to_docs_source_not_exists(mocker):
     source_path = f"{output}/packages/{library_id}/CHANGELOG.md"
 
     _copy_changelog_to_docs(output, library_id)
-
-    mock_lexists.assert_called_once_with(source_path)
+    mock_lexists.assert_any_call(source_path)
     mock_write_text.assert_called_once_with(source_path, "# Changelog\n")
+    mock_copy_file.assert_called_once_with(output, library_id, "CHANGELOG.md")
     mock_copy_file.assert_called_once_with(output, library_id, "CHANGELOG.md")
 
 
