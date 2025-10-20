@@ -228,7 +228,7 @@ def handle_configure(
     source: str = SOURCE_DIR,
     repo: str = REPO_DIR,
     input: str = INPUT_DIR,
-    output: str = OUTPUT_DIR
+    output: str = OUTPUT_DIR,
 ):
     """Onboards a new library by completing its configuration.
 
@@ -259,7 +259,7 @@ def handle_configure(
         # configure-request.json contains the library definitions.
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
         new_library_config = _get_new_library_config(request_data)
-        
+
         _update_global_changelog(
             f"{repo}/CHANGELOG.md",
             f"{output}/CHANGELOG.md",
@@ -1110,7 +1110,9 @@ def _process_version_file(content, version, version_path) -> str:
 
     Returns: A string with the modified content.
     """
-    if version_path.name.endswith("gapic_version.py"):
+    if version_path.name.endswith("gapic_version.py") or version_path.name.endswith(
+        "version.py"
+    ):
         pattern = r"(__version__\s*=\s*[\"'])([^\"']+)([\"'].*)"
     else:
         pattern = r"(version\s*=\s*[\"'])([^\"']+)([\"'].*)"
@@ -1126,7 +1128,7 @@ def _process_version_file(content, version, version_path) -> str:
 def _update_version_for_library(
     repo: str, output: str, path_to_library: str, version: str
 ):
-    """Updates the version string in `**/gapic_version.py`, `setup.py`,
+    """Updates the version string in `**/gapic_version.py`, `**/version.py`, `setup.py`,
         `pyproject.toml` and `samples/**/snippet_metadata.json` for a
         given library, if applicable.
 
@@ -1140,12 +1142,31 @@ def _update_version_for_library(
         version(str): The new version of the library
 
     Raises: `ValueError` if a version string could not be located in `**/gapic_version.py`
-        within the given library.
+        or `**/version.py` within the given library.
     """
 
-    # Find and update gapic_version.py files
-    version_files = list(Path(f"{repo}/{path_to_library}").rglob("**/gapic_version.py"))
-    if len(version_files) == 0:
+    # Find and update version.py or gapic_version.py files
+    search_base = Path(f"{repo}/{path_to_library}")
+    version_files = list(search_base.rglob("**/gapic_version.py"))
+    excluded_dirs = {
+        ".nox",
+        ".venv",
+        "venv",
+        "site-packages",
+        ".git",
+        "build",
+        "dist",
+        "__pycache__",
+    }
+    version_files.extend(
+        [
+            p
+            for p in search_base.rglob("**/version.py")
+            if not any(part in excluded_dirs for part in p.parts)
+        ]
+    )
+
+    if not version_files:
         # Fallback to `pyproject.toml`` or `setup.py``. Proto-only libraries have
         # version information in `setup.py` or `pyproject.toml` instead of `gapic_version.py`.
         pyproject_toml = Path(f"{repo}/{path_to_library}/pyproject.toml")
@@ -1161,7 +1182,7 @@ def _update_version_for_library(
 
     # Find and update snippet_metadata.json files
     snippet_metadata_files = Path(f"{repo}/{path_to_library}").rglob(
-        "samples/**/*.json"
+        "samples/**/*snippet*.json"
     )
     for metadata_file in snippet_metadata_files:
         output_path = f"{output}/{metadata_file.relative_to(repo)}"
@@ -1301,6 +1322,7 @@ def _update_changelog_for_library(
     version: str,
     previous_version: str,
     library_id: str,
+    relative_path: str,
 ):
     """Prepends a new release entry with multiple, grouped changes, to a changelog.
 
@@ -1317,8 +1339,6 @@ def _update_changelog_for_library(
         library_id(str): The id of the library where the changelog should
             be updated.
     """
-
-    relative_path = f"packages/{library_id}/CHANGELOG.md"
     changelog_src = f"{repo}/{relative_path}"
     changelog_dest = f"{output}/{relative_path}"
     updated_content = _process_changelog(
@@ -1329,6 +1349,19 @@ def _update_changelog_for_library(
         library_id,
     )
     _write_text_file(changelog_dest, updated_content)
+
+
+def _is_mono_repo(repo: str) -> bool:
+    """Determines if a library is generated or handwritten.
+
+    Args:
+        repo(str): This directory will contain all directories that make up a
+            library, the .librarian folder, and any global file declared in
+            the config.yaml.
+
+    Returns: True if the library is generated, False otherwise.
+    """
+    return Path(f"{repo}/packages").exists()
 
 
 def handle_release_init(
@@ -1358,19 +1391,23 @@ def handle_release_init(
             `release-init-request.json` file in the given
             librarian directory cannot be read.
     """
-
     try:
+        is_mono_repo = _is_mono_repo(repo)
+
         # Read a release-init-request.json file
         request_data = _read_json_file(f"{librarian}/{RELEASE_INIT_REQUEST_FILE}")
         libraries_to_prep_for_release = _get_libraries_to_prepare_for_release(
             request_data
         )
 
-        _update_global_changelog(
-            f"{repo}/CHANGELOG.md",
-            f"{output}/CHANGELOG.md",
-            libraries_to_prep_for_release,
-        )
+        if is_mono_repo:
+
+            # only a mono repo has a global changelog
+            _update_global_changelog(
+                f"{repo}/CHANGELOG.md",
+                f"{output}/CHANGELOG.md",
+                libraries_to_prep_for_release,
+            )
 
         # Prepare the release for each library by updating the
         # library specific version files and library specific changelog.
@@ -1378,7 +1415,6 @@ def handle_release_init(
             version = library_release_data["version"]
             library_id = library_release_data["id"]
             library_changes = library_release_data["changes"]
-            path_to_library = f"packages/{library_id}"
 
             # Get previous version from state.yaml
             previous_version = _get_previous_version(library_id, librarian)
@@ -1388,6 +1424,13 @@ def handle_release_init(
                     f"{library_id} version: {previous_version}\n"
                 )
 
+            if is_mono_repo:
+                path_to_library = f"packages/{library_id}"
+                changelog_relative_path = f"packages/{library_id}/CHANGELOG.md"
+            else:
+                path_to_library = "."
+                changelog_relative_path = "CHANGELOG.md"
+
             _update_version_for_library(repo, output, path_to_library, version)
             _update_changelog_for_library(
                 repo,
@@ -1396,6 +1439,7 @@ def handle_release_init(
                 version,
                 previous_version,
                 library_id,
+                relative_path=changelog_relative_path,
             )
 
     except Exception as e:
