@@ -1665,11 +1665,29 @@ def test_copy_changelog_to_docs_handles_symlink(mocker):
     library_id = "google-cloud-language"
     source_path = f"{output}/packages/{library_id}/CHANGELOG.md"
 
-    _copy_changelog_to_docs(output, library_id)
+    _copy_changelog_to_docs(output, library_id, "repo")
     mock_lexists.assert_any_call(source_path)
     mock_write_text.assert_called_once_with(source_path, "# Changelog\n")
     mock_copy_file.assert_called_once_with(output, library_id, "CHANGELOG.md")
-    mock_copy_file.assert_called_once_with(output, library_id, "CHANGELOG.md")
+
+
+def test_copy_changelog_to_docs_preserves_existing(mocker):
+    """Tests that the function returns early if a changelog exists in the repo."""
+    mock_lexists = mocker.patch("os.path.lexists", return_value=True)
+    mock_write_text = mocker.patch("cli._write_text_file")
+    mock_copy_file = mocker.patch("cli._copy_file_to_docs")
+
+    output = "output"
+    library_id = "google-cloud-language"
+    repo = "repo"
+    repo_changelog_path = f"{repo}/packages/{library_id}/CHANGELOG.md"
+
+    _copy_changelog_to_docs(output, library_id, repo)
+
+    mock_lexists.assert_called_once_with(repo_changelog_path)
+    mock_write_text.assert_not_called()
+    mock_copy_file.assert_not_called()
+
 
 
 def test_copy_changelog_to_docs_destination_path_is_symlink(mocker):
@@ -1677,42 +1695,31 @@ def test_copy_changelog_to_docs_destination_path_is_symlink(mocker):
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_os_remove = mocker.patch("os.remove")
-    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
     mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="# Changelog\n"))
 
     output = "output"
     library_id = "google-cloud-language"
+    repo = "repo"
+    source_path = f"{output}/packages/{library_id}/CHANGELOG.md"
+    repo_changelog_path = f"{repo}/packages/{library_id}/CHANGELOG.md"
     expected_destination = "output/packages/google-cloud-language/docs/CHANGELOG.md"
     expected_docs_path = "output/packages/google-cloud-language/docs"
+
+    def lexists_side_effect(path):
+        if path == repo_changelog_path:
+            return False  # Allow the function to proceed
+        return True  # Assume other paths exist
+
+    mock_os_lexists = mocker.patch("os.path.lexists", side_effect=lexists_side_effect)
 
     def islink_side_effect(path):
         return path == expected_destination
 
     mock_os_islink = mocker.patch("os.path.islink", side_effect=islink_side_effect)
 
-    _copy_changelog_to_docs(output, library_id)
+    _copy_changelog_to_docs(output, library_id, repo)
 
     mock_os_remove.assert_called_once_with(expected_destination)
     mock_makedirs.assert_called_with(Path(expected_docs_path), exist_ok=True)
     mock_open.assert_any_call(expected_destination, "w")
     mock_open().write.assert_called_with("# Changelog\n")
-    """Tests that the function returns early if the source README.rst does not exist."""
-    mock_makedirs = mocker.patch("os.makedirs")
-    mock_shutil_copy = mocker.patch("shutil.copy")
-    mock_os_islink = mocker.patch("os.path.islink")
-    mock_os_remove = mocker.patch("os.remove")
-    mock_os_lexists = mocker.patch("os.path.lexists", return_value=False)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
-
-    output = "output"
-    library_id = "google-cloud-language"
-    _copy_readme_to_docs(output, library_id)
-
-    expected_source = "output/packages/google-cloud-language/README.rst"
-
-    mock_os_lexists.assert_called_once_with(expected_source)
-    mock_open.assert_not_called()
-    mock_os_islink.assert_not_called()
-    mock_os_remove.assert_not_called()
-    mock_makedirs.assert_not_called()
-    mock_shutil_copy.assert_not_called()

@@ -549,7 +549,7 @@ def _copy_readme_to_docs(output: str, library_id: str):
     _copy_file_to_docs(output, library_id, "README.rst")
 
 
-def _copy_changelog_to_docs(output: str, library_id: str):
+def _copy_changelog_to_docs(output: str, library_id: str, repo: str):
     """Copies the CHANGELOG.md file for a generated library to docs/CHANGELOG.md.
 
     This function is a wrapper around `_copy_file_to_docs` for CHANGELOG.md.
@@ -558,11 +558,19 @@ def _copy_changelog_to_docs(output: str, library_id: str):
         output(str): Path to the directory in the container where code
             should be generated.
         library_id(str): The library id.
+        repo(str): Path to the directory in the container which contains the repository.
     """
     path_to_library = f"packages/{library_id}"
+    repo_changelog_path = f"{repo}/{path_to_library}/CHANGELOG.md"
+
+    # If a changelog already exists in the repo, it should be preserved. Do nothing.
+    if os.path.lexists(repo_changelog_path):
+        return
+
+    # Otherwise, proceed with generating a new changelog.
     source_path = f"{output}/{path_to_library}/CHANGELOG.md"
 
-    # If the source CHANGELOG.md doesn't exist, create it at the source location.
+    # If the source CHANGELOG.md doesn't exist in the output, create it.
     if not os.path.lexists(source_path):
         content = "# Changelog\n"
         _write_text_file(source_path, content)
@@ -576,6 +584,7 @@ def handle_generate(
     source: str = SOURCE_DIR,
     output: str = OUTPUT_DIR,
     input: str = INPUT_DIR,
+    repo: str = REPO_DIR,
 ):
     """The main coordinator for the code generation process.
 
@@ -613,7 +622,7 @@ def handle_generate(
         _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
         _copy_readme_to_docs(output, library_id)
-        _copy_changelog_to_docs(output, library_id)
+        _copy_changelog_to_docs(output, library_id, repo)
         _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
         raise ValueError("Generation failed.") from e
@@ -1553,6 +1562,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             source=args.source,
             output=args.output,
             input=args.input,
+            repo=args.repo,
         )
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
