@@ -1717,7 +1717,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dlp
     version: 3.33.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 1b5c44879f3281d05731a0bf3fc0345ff4463eed
     apis:
       - path: google/privacy/dlp/v2
         service_config: dlp_v2.yaml
