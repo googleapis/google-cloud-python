@@ -937,6 +937,7 @@ def _verify_library_namespace(library_id: str, repo: str):
         "google.cloud.gkeconnect",
         "google.cloud.gkehub_v1",
         "google.cloud.orchestration.airflow",
+        "google.cloud.orgpolicy",
         "google.cloud.security",
         "google.cloud.video",
         "google.cloud.workflows",
