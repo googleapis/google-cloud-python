@@ -228,7 +228,7 @@ def handle_configure(
     source: str = SOURCE_DIR,
     repo: str = REPO_DIR,
     input: str = INPUT_DIR,
-    output: str = OUTPUT_DIR
+    output: str = OUTPUT_DIR,
 ):
     """Onboards a new library by completing its configuration.
 
@@ -259,7 +259,7 @@ def handle_configure(
         # configure-request.json contains the library definitions.
         request_data = _read_json_file(f"{librarian}/{CONFIGURE_REQUEST_FILE}")
         new_library_config = _get_new_library_config(request_data)
-        
+
         _update_global_changelog(
             f"{repo}/CHANGELOG.md",
             f"{output}/CHANGELOG.md",
@@ -1350,7 +1350,7 @@ def _update_changelog_for_library(
     _write_text_file(changelog_dest, updated_content)
 
 
-def _is_generated_library(repo: str) -> bool:
+def _is_mono_repo(repo: str) -> bool:
     """Determines if a library is generated or handwritten.
 
     Args:
@@ -1391,7 +1391,7 @@ def handle_release_init(
             librarian directory cannot be read.
     """
     try:
-        is_generated = _is_generated_library(repo)
+        is_mono_repo = _is_mono_repo(repo)
 
         # Read a release-init-request.json file
         request_data = _read_json_file(f"{librarian}/{RELEASE_INIT_REQUEST_FILE}")
@@ -1399,7 +1399,9 @@ def handle_release_init(
             request_data
         )
 
-        if is_generated:
+        if is_mono_repo:
+
+            # only a mono repo has a global changelog
             _update_global_changelog(
                 f"{repo}/CHANGELOG.md",
                 f"{output}/CHANGELOG.md",
@@ -1421,7 +1423,7 @@ def handle_release_init(
                     f"{library_id} version: {previous_version}\n"
                 )
 
-            if is_generated:
+            if is_mono_repo:
                 path_to_library = f"packages/{library_id}"
                 changelog_relative_path = f"packages/{library_id}/CHANGELOG.md"
             else:

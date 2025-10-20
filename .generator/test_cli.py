@@ -990,9 +990,9 @@ def test_update_version_for_library_success_gapic(mocker):
 
     mock_rglob = mocker.patch("pathlib.Path.rglob")
     mock_rglob.side_effect = [
-        [pathlib.Path("repo/gapic_version.py")],                  # 1st call (gapic_version.py)
-        [],                                                       # 2nd call (version.py)
-        [pathlib.Path("repo/samples/snippet_metadata.json")]      # 3rd call (snippets)
+        [pathlib.Path("repo/gapic_version.py")],  # 1st call (gapic_version.py)
+        [],  # 2nd call (version.py)
+        [pathlib.Path("repo/samples/snippet_metadata.json")],  # 3rd call (snippets)
     ]
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_content = '__version__ = "1.2.2"'
@@ -1026,7 +1026,7 @@ def test_update_version_for_library_success_proto_only_setup_py(mocker):
     mock_rglob.side_effect = [
         [],
         [pathlib.Path("repo/setup.py")],
-        [pathlib.Path("repo/samples/snippet_metadata.json")]
+        [pathlib.Path("repo/samples/snippet_metadata.json")],
     ]
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_content = 'version = "1.2.2"'
@@ -1061,7 +1061,7 @@ def test_update_version_for_library_success_proto_only_pyproject_toml(mocker):
     mock_rglob.side_effect = [
         [],  # gapic_version.py
         [],  # version.py
-        [pathlib.Path("repo/samples/snippet_metadata.json")]
+        [pathlib.Path("repo/samples/snippet_metadata.json")],
     ]
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_content = 'version = "1.2.2"'
@@ -1555,7 +1555,9 @@ def test_copy_readme_to_docs(mocker):
     mock_os_islink = mocker.patch("os.path.islink", return_value=False)
     mock_os_remove = mocker.patch("os.remove")
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
     output = "output"
     library_id = "google-cloud-language"
@@ -1582,10 +1584,15 @@ def test_copy_readme_to_docs_handles_symlink(mocker):
     mock_os_islink = mocker.patch("os.path.islink")
     mock_os_remove = mocker.patch("os.remove")
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
     # Simulate docs_path being a symlink
-    mock_os_islink.side_effect = [False, True] # First call for destination_path, second for docs_path
+    mock_os_islink.side_effect = [
+        False,
+        True,
+    ]  # First call for destination_path, second for docs_path
 
     output = "output"
     library_id = "google-cloud-language"
@@ -1612,7 +1619,9 @@ def test_copy_readme_to_docs_destination_path_is_symlink(mocker):
     mock_os_islink = mocker.patch("os.path.islink", return_value=True)
     mock_os_remove = mocker.patch("os.remove")
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
     output = "output"
     library_id = "google-cloud-language"
@@ -1629,7 +1638,9 @@ def test_copy_readme_to_docs_source_not_exists(mocker):
     mock_os_islink = mocker.patch("os.path.islink")
     mock_os_remove = mocker.patch("os.remove")
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=False)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
     output = "output"
     library_id = "google-cloud-language"
