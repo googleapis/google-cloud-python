@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.28.2](https://github.com/googleapis/gapic-generator-python/compare/v1.28.1...v1.28.2) (2025-10-20)
+
+
+### Bug Fixes
+
+* Bump the minimum version of google-apps-card to 0.3.0 ([#2464](https://github.com/googleapis/gapic-generator-python/issues/2464)) ([bfb87e2](https://github.com/googleapis/gapic-generator-python/commit/bfb87e27a38a9c3b77902d1f61899ebc545082e8))
+
 ## [1.28.1](https://github.com/googleapis/gapic-generator-python/compare/v1.28.0...v1.28.1) (2025-10-14)
 
 
