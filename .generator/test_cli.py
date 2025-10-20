@@ -1666,37 +1666,64 @@ def test_copy_readme_to_docs_source_not_exists(mocker):
 
 
 def test_copy_changelog_to_docs_handles_symlink(mocker):
-    """Tests that the CHANGELOG.md is created if it does not exist."""
-    mock_os_lexists = mocker.patch("os.path.lexists", return_value=False)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open())
-    mocker.patch("cli._copy_file_to_docs") # Mock the call to _copy_file_to_docs
+    """Tests that the CHANGELOG.md is created at the source and then copied to docs, handling symlinks."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_os_remove = mocker.patch("os.remove")
+    mock_os_islink = mocker.patch("os.path.islink")
+    mock_os_lexists = mocker.patch("os.path.lexists")
+    mock_write_text_file = mocker.patch("cli._write_text_file")
+    mock_read_text_file = mocker.patch("cli._read_text_file", return_value="# Changelog\n")
 
     output = "output"
     library_id = "google-cloud-language"
-    expected_source = f"{output}/packages/{library_id}/CHANGELOG.md"
+    source_changelog_path = f"{output}/packages/{library_id}/CHANGELOG.md"
+    docs_path = f"{output}/packages/{library_id}/docs"
+    destination_changelog_path = f"{docs_path}/CHANGELOG.md"
+
+    # Scenario: Source CHANGELOG.md does not exist initially, docs_path is a symlink
+    mock_os_lexists.side_effect = [False, True] # First for source_changelog_path, second for source_path in _copy_file_to_docs
+
+    def islink_side_effect(path):
+        if path == destination_changelog_path:
+            return False
+        if path == docs_path:
+            return True
+        return False
+
+    mock_os_islink = mocker.patch("os.path.islink", side_effect=islink_side_effect)
 
     _copy_changelog_to_docs(output, library_id)
 
-    mock_os_lexists.assert_called_once_with(expected_source)
-    mock_open.assert_called_once_with(expected_source, "w")
-    mock_open().write.assert_called_once_with("# Changelog\n")
+    # Assert that source CHANGELOG.md was checked for existence
+    mock_os_lexists.assert_any_call(source_changelog_path)
+
+    # Assert that source CHANGELOG.md was created with default content
+    mock_write_text_file.assert_any_call(source_changelog_path, "# Changelog\n")
+
+    # Assert that _copy_file_to_docs was called to copy from source to destination
+    mock_read_text_file.assert_any_call(source_changelog_path)
+    mock_os_islink.assert_any_call(destination_changelog_path)
+    mock_os_islink.assert_any_call(docs_path)
+    mock_os_remove.assert_called_once_with(docs_path)
+    mock_makedirs.assert_called_once_with(Path(docs_path), exist_ok=True)
+    mock_write_text_file.assert_any_call(destination_changelog_path, "# Changelog\n")
 
 
 def test_copy_changelog_to_docs_source_not_exists(mocker):
-    """Tests that the function creates CHANGELOG.md with correct content if it does not exist."""
-    mock_os_lexists = mocker.patch("os.path.lexists", return_value=False)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open())
-    mocker.patch("cli._copy_file_to_docs") # Mock the call to _copy_file_to_docs
+    """Tests that CHANGELOG.md is created at source and then copied to docs."""
+    mock_lexists = mocker.patch("os.path.lexists", return_value=False)
+    mock_write_text = mocker.patch("cli._write_text_file")
+    mock_copy_file = mocker.patch("cli._copy_file_to_docs")
 
     output = "output"
     library_id = "google-cloud-language"
-    expected_source = f"{output}/packages/{library_id}/CHANGELOG.md"
+    source_path = f"{output}/packages/{library_id}/CHANGELOG.md"
 
     _copy_changelog_to_docs(output, library_id)
 
-    mock_os_lexists.assert_called_once_with(expected_source)
-    mock_open.assert_called_once_with(expected_source, "w")
-    mock_open().write.assert_called_once_with("# Changelog\n")
+    mock_lexists.assert_called_once_with(source_path)
+    mock_write_text.assert_called_once_with(source_path, "# Changelog\n")
+    mock_copy_file.assert_called_once_with(output, library_id, "CHANGELOG.md")
 
 
 def test_copy_changelog_to_docs_destination_path_is_symlink(mocker):

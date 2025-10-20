@@ -561,10 +561,13 @@ def _copy_changelog_to_docs(output: str, library_id: str):
     """
     path_to_library = f"packages/{library_id}"
     source_path = f"{output}/{path_to_library}/CHANGELOG.md"
+
+    # If the source CHANGELOG.md doesn't exist, create it at the source location.
     if not os.path.lexists(source_path):
-        # Create a valid CHANGELOG.md if it doesn't exist.
         content = "# Changelog\n"
         _write_text_file(source_path, content)
+
+    # Now, copy the (guaranteed to exist) source CHANGELOG.md to the docs directory.
     _copy_file_to_docs(output, library_id, "CHANGELOG.md")
 
 
