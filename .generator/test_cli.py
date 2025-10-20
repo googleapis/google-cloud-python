@@ -1053,14 +1053,14 @@ def test_update_version_for_library_success_proto_only_setup_py(mocker):
         )
 
 
-def test_update_version_for_library_success_proto_only_py_project_toml(mocker):
+def test_update_version_for_library_success_proto_only_pyproject_toml(mocker):
     m = mock_open()
 
-    mock_path_exists = mocker.patch("pathlib.Path.exists")
+    mock_path_exists = mocker.patch("pathlib.Path.exists", return_value=True)
     mock_rglob = mocker.patch("pathlib.Path.rglob")
     mock_rglob.side_effect = [
-        [],
-        [pathlib.Path("repo/pyproject.toml")],
+        [],  # gapic_version.py
+        [],  # version.py
         [pathlib.Path("repo/samples/snippet_metadata.json")]
     ]
     mock_shutil_copy = mocker.patch("shutil.copy")
