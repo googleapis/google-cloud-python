@@ -2092,6 +2092,25 @@ libraries:
     remove_regex:
       - packages/google-cloud-gke-multicloud
     tag_format: '{id}-v{version}'
+  - id: google-cloud-gkerecommender
+    version: 0.0.0
+    last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
+    apis:
+      - path: google/cloud/gkerecommender/v1
+        service_config: gkerecommender_v1.yaml
+    source_roots:
+      - packages/google-cloud-gkerecommender
+    preserve_regex:
+      - packages/google-cloud-gkerecommender/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - docs/README.rst
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-gkerecommender
+    tag_format: '{id}-v{version}'
   - id: google-cloud-gsuiteaddons
     version: 0.3.18
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
