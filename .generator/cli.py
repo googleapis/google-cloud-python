@@ -1373,6 +1373,12 @@ def _update_changelog_for_library(
     )
     _write_text_file(changelog_dest, updated_content)
 
+    docs_relative_path = f"packages/{library_id}/docs/CHANGELOG.md"
+    docs_changelog_src = f"{repo}/{docs_relative_path}"
+    if os.path.lexists(docs_changelog_src):
+        docs_changelog_dst = f"{output}/{docs_relative_path}"
+        _write_text_file(docs_changelog_dst, updated_content)
+
 
 def _is_mono_repo(repo: str) -> bool:
     """Determines if a library is generated or handwritten.
@@ -1424,7 +1430,6 @@ def handle_release_init(
         )
 
         if is_mono_repo:
-
             # only a mono repo has a global changelog
             _update_global_changelog(
                 f"{repo}/CHANGELOG.md",
