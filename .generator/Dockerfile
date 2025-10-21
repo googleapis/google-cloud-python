@@ -72,8 +72,9 @@ RUN mkdir pandoc-binary
 RUN wget https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz
 RUN tar -xvf pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz -C pandoc-binary --strip-components=1
 
-# Download synthtool
-RUN git clone --depth 1 https://github.com/googleapis/synthtool.git synthtool
+# Pin synthtool for a more hermetic build
+RUN git clone https://github.com/googleapis/synthtool.git synthtool
+RUN cd synthtool && git checkout 35313ccd8cdd2d12d2447ccdc497a7919aae1e3e
 
 # --- Final Stage ---
 # This stage creates the lightweight final image, copying only the
