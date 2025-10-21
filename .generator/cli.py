@@ -565,6 +565,7 @@ def _copy_changelog_to_docs(output: str, library_id: str, repo: str):
 
     # If a changelog already exists in the repo, it should be preserved. Do nothing.
     if os.path.lexists(repo_changelog_path):
+        print("OMAIR: changelog already exists in repo so do nothing.")
         return
 
     # Otherwise, proceed with generating a new changelog.
