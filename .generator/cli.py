@@ -223,6 +223,24 @@ def _prepare_new_library_config(library_config: Dict) -> Dict:
     return library_config
 
 
+def _create_new_changelog_for_library(library_id: str, output: str):
+    """Creates a new changelog for the library.
+
+    Args:
+        library_id(str): The id of the library.
+        output(str): Path to the directory in the container where code
+            should be generated.
+    """
+    package_changelog_path = f"{output}/packages/{library_id}/CHANGELOG.md"
+    docs_changelog_path = f"{output}/packages/{library_id}/docs/CHANGELOG.md"
+
+    os.makedirs(os.path.dirname(package_changelog_path), exist_ok=True)
+    _write_text_file(package_changelog_path, "# Changelog\n")
+
+    os.makedirs(os.path.dirname(docs_changelog_path), exist_ok=True)
+    _write_text_file(docs_changelog_path, "# Changelog\n")
+
+
 def handle_configure(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
@@ -266,6 +284,9 @@ def handle_configure(
             [new_library_config],
         )
         prepared_config = _prepare_new_library_config(new_library_config)
+
+        library_id = _get_library_id(prepared_config)
+        _create_new_changelog_for_library(library_id, output)
 
         # Write the new library configuration to configure-response.json.
         _write_json_file(f"{librarian}/configure-response.json", prepared_config)
@@ -549,35 +570,6 @@ def _copy_readme_to_docs(output: str, library_id: str):
     _copy_file_to_docs(output, library_id, "README.rst")
 
 
-def _copy_changelog_to_docs(output: str, library_id: str, repo: str):
-    """Copies the CHANGELOG.md file for a generated library to docs/CHANGELOG.md.
-
-    This function is a wrapper around `_copy_file_to_docs` for CHANGELOG.md.
-
-    Args:
-        output(str): Path to the directory in the container where code
-            should be generated.
-        library_id(str): The library id.
-        repo(str): Path to the directory in the container which contains the repository.
-    """
-    path_to_library = f"packages/{library_id}"
-    repo_changelog_path = f"{repo}/{path_to_library}/CHANGELOG.md"
-
-    # If a changelog already exists in the repo, it should be preserved. Do nothing.
-    if os.path.lexists(repo_changelog_path):
-        print("OMAIR: changelog already exists in repo so do nothing.")
-        return
-
-    # Otherwise, proceed with generating a new changelog.
-    source_path = f"{output}/{path_to_library}/CHANGELOG.md"
-
-    # If the source CHANGELOG.md doesn't exist in the output, create it.
-    if not os.path.lexists(source_path):
-        content = "# Changelog\n"
-        _write_text_file(source_path, content)
-
-    # Now, copy the (guaranteed to exist) source CHANGELOG.md to the docs directory.
-    _copy_file_to_docs(output, library_id, "CHANGELOG.md")
 
 
 def handle_generate(
@@ -623,7 +615,6 @@ def handle_generate(
         _generate_repo_metadata_file(output, library_id, source, apis_to_generate)
         _run_post_processor(output, library_id)
         _copy_readme_to_docs(output, library_id)
-        _copy_changelog_to_docs(output, library_id, repo)
         _clean_up_files_after_post_processing(output, library_id)
     except Exception as e:
         raise ValueError("Generation failed.") from e

@@ -37,6 +37,7 @@ from cli import (
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
+    _create_new_changelog_for_library,
     _create_repo_metadata_from_service_config,
     _determine_generator_command,
     _determine_library_namespace,
@@ -71,7 +72,6 @@ from cli import (
     _write_json_file,
     _write_text_file,
     _copy_readme_to_docs,
-    _copy_changelog_to_docs,
     _copy_file_to_docs,
     handle_build,
     handle_configure,
@@ -293,15 +293,43 @@ def test_handle_configure_success(mock_configure_request_file, mocker):
     mocker.patch("cli._update_global_changelog", return_value=None)
     mock_write_json = mocker.patch("cli._write_json_file")
     mock_prepare_config = mocker.patch(
-        "cli._prepare_new_library_config", return_value={"id": "prepared"}
+        "cli._prepare_new_library_config",
+        return_value={"id": "google-cloud-language"},
     )
+    mock_create_changelog = mocker.patch("cli._create_new_changelog_for_library")
 
-    handle_configure()
+    handle_configure(output="output")
 
     mock_prepare_config.assert_called_once()
+    mock_create_changelog.assert_called_once_with("google-cloud-language", "output")
     mock_write_json.assert_called_once_with(
-        f"{LIBRARIAN_DIR}/configure-response.json", {"id": "prepared"}
+        f"{LIBRARIAN_DIR}/configure-response.json",
+        {"id": "google-cloud-language"},
     )
+
+
+def test_create_new_changelog_for_library(mocker):
+    """Tests that the changelog files are created correctly."""
+    library_id = "google-cloud-language"
+    output = "output"
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_write_text_file = mocker.patch("cli._write_text_file")
+
+    _create_new_changelog_for_library(library_id, output)
+
+    package_changelog_path = f"{output}/packages/{library_id}/CHANGELOG.md"
+    docs_changelog_path = f"{output}/packages/{library_id}/docs/CHANGELOG.md"
+
+    # Check that makedirs was called for both parent directories
+    mock_makedirs.assert_any_call(os.path.dirname(package_changelog_path), exist_ok=True)
+    mock_makedirs.assert_any_call(os.path.dirname(docs_changelog_path), exist_ok=True)
+    assert mock_makedirs.call_count == 2
+
+    # Check that the files were "written" with the correct content
+    mock_write_text_file.assert_any_call(package_changelog_path, "# Changelog\n")
+    mock_write_text_file.assert_any_call(docs_changelog_path, "# Changelog\n")
+    assert mock_write_text_file.call_count == 2
+
 
 
 def test_handle_configure_no_new_library(mocker):
@@ -642,7 +670,6 @@ def test_handle_generate_success(
         "cli._clean_up_files_after_post_processing"
     )
     mocker.patch("cli._generate_repo_metadata_file")
-    mocker.patch("cli._copy_changelog_to_docs")
     mocker.patch("cli._copy_readme_to_docs")
 
     handle_generate()
@@ -1653,73 +1680,4 @@ def test_copy_file_to_docs_docs_path_is_symlink(mocker):
     
     mock_os_remove.assert_called_once_with(docs_path)
     
-    
-def test_copy_changelog_to_docs_handles_symlink(mocker):
-    """Tests that the CHANGELOG.md is created at the source and then copied to docs, handling symlinks."""
-    mock_makedirs = mocker.patch("os.makedirs")
-    mock_lexists = mocker.patch("os.path.lexists", return_value=False)
-    mock_write_text = mocker.patch("cli._write_text_file")
-    mock_copy_file = mocker.patch("cli._copy_file_to_docs")
 
-    output = "output"
-    library_id = "google-cloud-language"
-    source_path = f"{output}/packages/{library_id}/CHANGELOG.md"
-
-    _copy_changelog_to_docs(output, library_id, "repo")
-    mock_lexists.assert_any_call(source_path)
-    mock_write_text.assert_called_once_with(source_path, "# Changelog\n")
-    mock_copy_file.assert_called_once_with(output, library_id, "CHANGELOG.md")
-
-
-def test_copy_changelog_to_docs_preserves_existing(mocker):
-    """Tests that the function returns early if a changelog exists in the repo."""
-    mock_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_write_text = mocker.patch("cli._write_text_file")
-    mock_copy_file = mocker.patch("cli._copy_file_to_docs")
-
-    output = "output"
-    library_id = "google-cloud-language"
-    repo = "repo"
-    repo_changelog_path = f"{repo}/packages/{library_id}/CHANGELOG.md"
-
-    _copy_changelog_to_docs(output, library_id, repo)
-
-    mock_lexists.assert_called_once_with(repo_changelog_path)
-    mock_write_text.assert_not_called()
-    mock_copy_file.assert_not_called()
-
-
-
-def test_copy_changelog_to_docs_destination_path_is_symlink(mocker):
-    """Tests that the CHANGELOG.md is copied to the docs directory, handling destination_path being a symlink."""
-    mock_makedirs = mocker.patch("os.makedirs")
-    mock_shutil_copy = mocker.patch("shutil.copy")
-    mock_os_remove = mocker.patch("os.remove")
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="# Changelog\n"))
-
-    output = "output"
-    library_id = "google-cloud-language"
-    repo = "repo"
-    source_path = f"{output}/packages/{library_id}/CHANGELOG.md"
-    repo_changelog_path = f"{repo}/packages/{library_id}/CHANGELOG.md"
-    expected_destination = "output/packages/google-cloud-language/docs/CHANGELOG.md"
-    expected_docs_path = "output/packages/google-cloud-language/docs"
-
-    def lexists_side_effect(path):
-        if path == repo_changelog_path:
-            return False  # Allow the function to proceed
-        return True  # Assume other paths exist
-
-    mock_os_lexists = mocker.patch("os.path.lexists", side_effect=lexists_side_effect)
-
-    def islink_side_effect(path):
-        return path == expected_destination
-
-    mock_os_islink = mocker.patch("os.path.islink", side_effect=islink_side_effect)
-
-    _copy_changelog_to_docs(output, library_id, repo)
-
-    mock_os_remove.assert_called_once_with(expected_destination)
-    mock_makedirs.assert_called_with(Path(expected_docs_path), exist_ok=True)
-    mock_open.assert_any_call(expected_destination, "w")
-    mock_open().write.assert_called_with("# Changelog\n")
