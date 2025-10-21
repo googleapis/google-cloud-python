@@ -71,6 +71,7 @@ from cli import (
     _write_json_file,
     _write_text_file,
     _copy_readme_to_docs,
+    _create_new_changelog_for_library,
     handle_build,
     handle_configure,
     handle_generate,
@@ -293,6 +294,7 @@ def test_handle_configure_success(mock_configure_request_file, mocker):
     mock_prepare_config = mocker.patch(
         "cli._prepare_new_library_config", return_value={"id": "prepared"}
     )
+    mock_create_changelog = mocker.patch("cli._create_new_changelog_for_library")
 
     handle_configure()
 
@@ -309,6 +311,28 @@ def test_handle_configure_no_new_library(mocker):
     # because _get_library_id will fail.
     with pytest.raises(ValueError, match="Configuring a new library failed."):
         handle_configure()
+
+def test_create_new_changelog_for_library(mocker):
+    """Tests that the changelog files are created correctly."""
+    library_id = "google-cloud-language"
+    output = "output"
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_write_text_file = mocker.patch("cli._write_text_file")
+
+    _create_new_changelog_for_library(library_id, output)
+
+    package_changelog_path = f"{output}/packages/{library_id}/CHANGELOG.md"
+    docs_changelog_path = f"{output}/packages/{library_id}/docs/CHANGELOG.md"
+
+    # Check that makedirs was called for both parent directories
+    mock_makedirs.assert_any_call(os.path.dirname(package_changelog_path), exist_ok=True)
+    mock_makedirs.assert_any_call(os.path.dirname(docs_changelog_path), exist_ok=True)
+    assert mock_makedirs.call_count == 2
+
+    # Check that the files were "written" with the correct content
+    mock_write_text_file.assert_any_call(package_changelog_path, "# Changelog\n")
+    mock_write_text_file.assert_any_call(docs_changelog_path, "# Changelog\n")
+    assert mock_write_text_file.call_count == 2
 
 
 def test_get_new_library_config_found(mock_configure_request_data):

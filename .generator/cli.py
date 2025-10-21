@@ -223,6 +223,23 @@ def _prepare_new_library_config(library_config: Dict) -> Dict:
     return library_config
 
 
+def _create_new_changelog_for_library(library_id: str, output: str):
+    """Creates a new changelog for the library.
+    Args:
+        library_id(str): The id of the library.
+        output(str): Path to the directory in the container where code
+            should be generated.
+    """
+    package_changelog_path = f"{output}/packages/{library_id}/CHANGELOG.md"
+    docs_changelog_path = f"{output}/packages/{library_id}/docs/CHANGELOG.md"
+
+    os.makedirs(os.path.dirname(package_changelog_path), exist_ok=True)
+    _write_text_file(package_changelog_path, "# Changelog\n")
+
+    os.makedirs(os.path.dirname(docs_changelog_path), exist_ok=True)
+    _write_text_file(docs_changelog_path, "# Changelog\n")
+
+
 def handle_configure(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
@@ -266,6 +283,10 @@ def handle_configure(
             [new_library_config],
         )
         prepared_config = _prepare_new_library_config(new_library_config)
+
+        # Create a `CHANGELOG.md` and `docs/CHANGELOG.md` file for the new library
+        library_id = _get_library_id(prepared_config)
+        _create_new_changelog_for_library(library_id, output)
 
         # Write the new library configuration to configure-response.json.
         _write_json_file(f"{librarian}/configure-response.json", prepared_config)
