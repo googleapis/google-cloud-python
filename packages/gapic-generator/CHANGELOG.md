@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.28.3](https://github.com/googleapis/gapic-generator-python/compare/v1.28.2...v1.28.3) (2025-10-21)
+
+
+### Bug Fixes
+
+* Only format samples if the directory exists ([#2466](https://github.com/googleapis/gapic-generator-python/issues/2466)) ([2d85dee](https://github.com/googleapis/gapic-generator-python/commit/2d85dee33cc1cd2815dcf1e9304905013ec561b6))
+
 ## [1.28.2](https://github.com/googleapis/gapic-generator-python/compare/v1.28.1...v1.28.2) (2025-10-20)
 
 
