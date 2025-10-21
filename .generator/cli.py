@@ -233,11 +233,13 @@ def _create_new_changelog_for_library(library_id: str, output: str):
     package_changelog_path = f"{output}/packages/{library_id}/CHANGELOG.md"
     docs_changelog_path = f"{output}/packages/{library_id}/docs/CHANGELOG.md"
 
+    changelog_content = f"# Changelog\n\n[PyPI History][1]\n\n[1]: https://pypi.org/project/{library_id}/#history\n"
+
     os.makedirs(os.path.dirname(package_changelog_path), exist_ok=True)
-    _write_text_file(package_changelog_path, "# Changelog\n")
+    _write_text_file(package_changelog_path, changelog_content)
 
     os.makedirs(os.path.dirname(docs_changelog_path), exist_ok=True)
-    _write_text_file(docs_changelog_path, "# Changelog\n")
+    _write_text_file(docs_changelog_path, changelog_content)
 
 
 def handle_configure(
