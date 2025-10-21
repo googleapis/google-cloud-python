@@ -33,7 +33,10 @@ __protobuf__ = proto.module(
         "OperationsInsightsState",
         "DBWorkload",
         "AutonomousDatabase",
+        "SourceConfig",
         "AutonomousDatabaseProperties",
+        "EncryptionKeyHistoryEntry",
+        "EncryptionKey",
         "AutonomousDatabaseApex",
         "AutonomousDatabaseConnectionStrings",
         "DatabaseConnectionStringProfile",
@@ -250,10 +253,33 @@ class AutonomousDatabase(proto.Message):
             projects/{project}/global/networks/{network}
         cidr (str):
             Optional. The subnet CIDR range for the
-            Autonmous Database.
+            Autonomous Database.
+        odb_network (str):
+            Optional. The name of the OdbNetwork associated with the
+            Autonomous Database. Format:
+            projects/{project}/locations/{location}/odbNetworks/{odb_network}
+            It is optional but if specified, this should match the
+            parent ODBNetwork of the OdbSubnet.
+        odb_subnet (str):
+            Optional. The name of the OdbSubnet associated with the
+            Autonomous Database. Format:
+            projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+        source_config (google.cloud.oracledatabase_v1.types.SourceConfig):
+            Optional. The source Autonomous Database
+            configuration for the standby Autonomous
+            Database. The source Autonomous Database is
+            configured while creating the Peer Autonomous
+            Database and can't be updated after creation.
+        peer_autonomous_databases (MutableSequence[str]):
+            Output only. The peer Autonomous Database
+            names of the given Autonomous Database.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The date and time that the
             Autonomous Database was created.
+        disaster_recovery_supported_locations (MutableSequence[str]):
+            Output only. List of supported GCP region to clone the
+            Autonomous Database for disaster recovery. Format:
+            ``project/{project}/locations/{location}``.
     """
 
     name: str = proto.Field(
@@ -294,10 +320,55 @@ class AutonomousDatabase(proto.Message):
         proto.STRING,
         number=10,
     )
+    odb_network: str = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    odb_subnet: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    source_config: "SourceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="SourceConfig",
+    )
+    peer_autonomous_databases: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
+    )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
+    )
+    disaster_recovery_supported_locations: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=15,
+    )
+
+
+class SourceConfig(proto.Message):
+    r"""The source configuration for the standby Autonomous Database.
+
+    Attributes:
+        autonomous_database (str):
+            Optional. The name of the primary Autonomous
+            Database that is used to create a Peer
+            Autonomous Database from a source.
+        automatic_backups_replication_enabled (bool):
+            Optional. This field specifies if the
+            replication of automatic backups is enabled when
+            creating a Data Guard.
+    """
+
+    autonomous_database: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    automatic_backups_replication_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -498,12 +569,36 @@ class AutonomousDatabaseProperties(proto.Message):
         next_long_term_backup_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The long term backup schedule of
             the Autonomous Database.
+        data_guard_role_changed_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The date and time the Autonomous
+            Data Guard role was changed for the standby
+            Autonomous Database.
+        disaster_recovery_role_changed_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The date and time the Disaster
+            Recovery role was changed for the standby
+            Autonomous Database.
         maintenance_begin_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The date and time when
             maintenance will begin.
         maintenance_end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The date and time when
             maintenance will end.
+        allowlisted_ips (MutableSequence[str]):
+            Optional. The list of allowlisted IP
+            addresses for the Autonomous Database.
+        encryption_key (google.cloud.oracledatabase_v1.types.EncryptionKey):
+            Optional. The encryption key used to encrypt the Autonomous
+            Database. Updating this field will add a new entry in the
+            ``encryption_key_history_entries`` field with the former
+            version.
+        encryption_key_history_entries (MutableSequence[google.cloud.oracledatabase_v1.types.EncryptionKeyHistoryEntry]):
+            Output only. The history of the encryption
+            keys used to encrypt the Autonomous Database.
+        service_agent_email (str):
+            Output only. An Oracle-managed Google Cloud
+            service account on which customers can grant
+            roles to access resources in the customer
+            project.
     """
 
     class DatabaseEdition(proto.Enum):
@@ -958,6 +1053,16 @@ class AutonomousDatabaseProperties(proto.Message):
         number=60,
         message=timestamp_pb2.Timestamp,
     )
+    data_guard_role_changed_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=61,
+        message=timestamp_pb2.Timestamp,
+    )
+    disaster_recovery_role_changed_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=62,
+        message=timestamp_pb2.Timestamp,
+    )
     maintenance_begin_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=65,
@@ -967,6 +1072,93 @@ class AutonomousDatabaseProperties(proto.Message):
         proto.MESSAGE,
         number=66,
         message=timestamp_pb2.Timestamp,
+    )
+    allowlisted_ips: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=67,
+    )
+    encryption_key: "EncryptionKey" = proto.Field(
+        proto.MESSAGE,
+        number=68,
+        message="EncryptionKey",
+    )
+    encryption_key_history_entries: MutableSequence[
+        "EncryptionKeyHistoryEntry"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=69,
+        message="EncryptionKeyHistoryEntry",
+    )
+    service_agent_email: str = proto.Field(
+        proto.STRING,
+        number=70,
+    )
+
+
+class EncryptionKeyHistoryEntry(proto.Message):
+    r"""The history of the encryption keys used to encrypt the
+    Autonomous Database.
+
+    Attributes:
+        encryption_key (google.cloud.oracledatabase_v1.types.EncryptionKey):
+            Output only. The encryption key used to
+            encrypt the Autonomous Database.
+        activation_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The date and time when the
+            encryption key was activated on the Autonomous
+            Database..
+    """
+
+    encryption_key: "EncryptionKey" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="EncryptionKey",
+    )
+    activation_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class EncryptionKey(proto.Message):
+    r"""The encryption key used to encrypt the Autonomous Database.
+
+    Attributes:
+        provider (google.cloud.oracledatabase_v1.types.EncryptionKey.Provider):
+            Optional. The provider of the encryption key.
+        kms_key (str):
+            Optional. The KMS key used to encrypt the Autonomous
+            Database. This field is required if the provider is
+            GOOGLE_MANAGED. The name of the KMS key resource in the
+            following format:
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+    """
+
+    class Provider(proto.Enum):
+        r"""The provider of the encryption key.
+
+        Values:
+            PROVIDER_UNSPECIFIED (0):
+                Default unspecified value.
+            GOOGLE_MANAGED (1):
+                Google Managed KMS key, if selected, please
+                provide the KMS key name.
+            ORACLE_MANAGED (2):
+                Oracle Managed.
+        """
+        PROVIDER_UNSPECIFIED = 0
+        GOOGLE_MANAGED = 1
+        ORACLE_MANAGED = 2
+
+    provider: Provider = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Provider,
+    )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

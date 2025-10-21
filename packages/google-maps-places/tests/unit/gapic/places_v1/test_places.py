@@ -1808,6 +1808,8 @@ def test_get_place(request_type, transport: str = "grpc"):
             good_for_groups=True,
             good_for_watching_sports=True,
             pure_service_area_business=True,
+            moved_place="moved_place_value",
+            moved_place_id="moved_place_id_value",
         )
         response = client.get_place(request)
 
@@ -1861,6 +1863,8 @@ def test_get_place(request_type, transport: str = "grpc"):
     assert response.good_for_groups is True
     assert response.good_for_watching_sports is True
     assert response.pure_service_area_business is True
+    assert response.moved_place == "moved_place_value"
+    assert response.moved_place_id == "moved_place_id_value"
 
 
 def test_get_place_non_empty_request_with_auto_populated_field():
@@ -2032,6 +2036,8 @@ async def test_get_place_async(
                 good_for_groups=True,
                 good_for_watching_sports=True,
                 pure_service_area_business=True,
+                moved_place="moved_place_value",
+                moved_place_id="moved_place_id_value",
             )
         )
         response = await client.get_place(request)
@@ -2086,6 +2092,8 @@ async def test_get_place_async(
     assert response.good_for_groups is True
     assert response.good_for_watching_sports is True
     assert response.pure_service_area_business is True
+    assert response.moved_place == "moved_place_value"
+    assert response.moved_place_id == "moved_place_id_value"
 
 
 @pytest.mark.asyncio
@@ -3530,6 +3538,8 @@ async def test_get_place_empty_call_grpc_asyncio():
                 good_for_groups=True,
                 good_for_watching_sports=True,
                 pure_service_area_business=True,
+                moved_place="moved_place_value",
+                moved_place_id="moved_place_id_value",
             )
         )
         await client.get_place(request=None)
@@ -4037,6 +4047,8 @@ def test_get_place_rest_call_success(request_type):
             good_for_groups=True,
             good_for_watching_sports=True,
             pure_service_area_business=True,
+            moved_place="moved_place_value",
+            moved_place_id="moved_place_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4095,6 +4107,8 @@ def test_get_place_rest_call_success(request_type):
     assert response.good_for_groups is True
     assert response.good_for_watching_sports is True
     assert response.pure_service_area_business is True
+    assert response.moved_place == "moved_place_value"
+    assert response.moved_place_id == "moved_place_id_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

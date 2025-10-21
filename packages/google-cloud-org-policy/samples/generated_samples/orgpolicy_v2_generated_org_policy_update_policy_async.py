@@ -39,13 +39,13 @@ async def sample_update_policy():
     client = orgpolicy_v2.OrgPolicyAsyncClient()
 
     # Initialize request argument(s)
-    request = orgpolicy_v2.UpdatePolicyRequest(
-    )
+    request = orgpolicy_v2.UpdatePolicyRequest()
 
     # Make the request
     response = await client.update_policy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END orgpolicy_v2_generated_OrgPolicy_UpdatePolicy_async]

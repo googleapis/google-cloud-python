@@ -50,4 +50,5 @@ async def sample_list_autonomous_database_character_sets():
     async for response in page_result:
         print(response)
 
+
 # [END oracledatabase_v1_generated_OracleDatabase_ListAutonomousDatabaseCharacterSets_async]
