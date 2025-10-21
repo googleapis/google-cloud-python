@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.17.0...v1.17.1) (2025-10-21)
+
+
+### Bug Fixes
+
+* Return Correct Column Order in get_multi_foreign_keys ([#783](https://github.com/googleapis/python-spanner-sqlalchemy/issues/783)) ([42027d5](https://github.com/googleapis/python-spanner-sqlalchemy/commit/42027d56abe3b3e87faece03f4ade84b9703acd6)), closes [#779](https://github.com/googleapis/python-spanner-sqlalchemy/issues/779)
+
 ## [1.17.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.16.0...v1.17.0) (2025-10-09)
 
 
