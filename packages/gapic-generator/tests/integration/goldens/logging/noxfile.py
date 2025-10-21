@@ -26,7 +26,11 @@ import nox
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 
-LINT_PATHS = ["docs", "google", "samples", "tests", "noxfile.py", "setup.py"]
+LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
+
+# Add samples to the list of directories to format if the directory exists.
+if os.path.isdir("samples"):
+    LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
     "3.7",

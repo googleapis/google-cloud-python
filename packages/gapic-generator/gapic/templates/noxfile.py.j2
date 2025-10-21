@@ -16,10 +16,14 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 
 {% if api.naming.module_namespace %}
-LINT_PATHS = ["docs", "{{ api.naming.module_namespace[0] }}", "samples", "tests", "noxfile.py", "setup.py"]
+LINT_PATHS = ["docs", "{{ api.naming.module_namespace[0] }}", "tests", "noxfile.py", "setup.py"]
 {% else %}
-LINT_PATHS = ["docs", "{{ api.naming.versioned_module_name }}", "samples", "tests", "noxfile.py", "setup.py"]
+LINT_PATHS = ["docs", "{{ api.naming.versioned_module_name }}", "tests", "noxfile.py", "setup.py"]
 {% endif %}
+
+# Add samples to the list of directories to format if the directory exists.
+if os.path.isdir("samples"):
+    LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
     "3.7",
