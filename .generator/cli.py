@@ -1345,7 +1345,7 @@ def _update_changelog_for_library(
     version: str,
     previous_version: str,
     library_id: str,
-    relative_path: str,
+    is_mono_repo: bool,
 ):
     """Prepends a new release entry with multiple, grouped changes, to a changelog.
 
@@ -1361,8 +1361,15 @@ def _update_changelog_for_library(
         previous_version(str): The version in state.yaml for a given library
         library_id(str): The id of the library where the changelog should
             be updated.
-        relative_path(str): The path to the changelog file relative to the repository root.
+        is_mono_repo(bool): True if the current repository is a mono-repo.
     """
+    if is_mono_repo:
+        relative_path = f"packages/{library_id}/CHANGELOG.md"
+        docs_relative_path = f"packages/{library_id}/docs/CHANGELOG.md"
+    else:
+        relative_path = "CHANGELOG.md"
+        docs_relative_path = f"docs/CHANGELOG.md"
+
     changelog_src = f"{repo}/{relative_path}"
     changelog_dest = f"{output}/{relative_path}"
     updated_content = _process_changelog(
@@ -1374,7 +1381,6 @@ def _update_changelog_for_library(
     )
     _write_text_file(changelog_dest, updated_content)
 
-    docs_relative_path = f"packages/{library_id}/docs/CHANGELOG.md"
     docs_changelog_src = f"{repo}/{docs_relative_path}"
     if os.path.lexists(docs_changelog_src):
         docs_changelog_dst = f"{output}/{docs_relative_path}"
@@ -1455,10 +1461,8 @@ def handle_release_init(
 
             if is_mono_repo:
                 path_to_library = f"packages/{library_id}"
-                changelog_relative_path = f"packages/{library_id}/CHANGELOG.md"
             else:
                 path_to_library = "."
-                changelog_relative_path = "CHANGELOG.md"
 
             _update_version_for_library(repo, output, path_to_library, version)
             _update_changelog_for_library(
@@ -1468,7 +1472,7 @@ def handle_release_init(
                 version,
                 previous_version,
                 library_id,
-                relative_path=changelog_relative_path,
+                is_mono_repo=is_mono_repo,
             )
 
     except Exception as e:
