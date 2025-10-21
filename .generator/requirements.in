@@ -1,5 +1,5 @@
 click
-gapic-generator>=1.28.2 # Bump `google-apps-card` dep to 0.3.0
+gapic-generator>=1.28.3 # format generated samples
 nox
 starlark-pyo3>=2025.1
 build
