@@ -40,7 +40,7 @@ def sample_batch_delete_versions():
 
     # Initialize request argument(s)
     request = artifactregistry_v1.BatchDeleteVersionsRequest(
-        names=['names_value1', 'names_value2'],
+        names=["names_value1", "names_value2"],
     )
 
     # Make the request
@@ -52,5 +52,6 @@ def sample_batch_delete_versions():
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_BatchDeleteVersions_sync]

@@ -49,4 +49,5 @@ def sample_get_project_billing_info():
     # Handle the response
     print(response)
 
+
 # [END cloudbilling_v1_generated_CloudBilling_GetProjectBillingInfo_sync]

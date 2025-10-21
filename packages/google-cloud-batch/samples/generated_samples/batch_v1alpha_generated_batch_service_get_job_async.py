@@ -49,4 +49,5 @@ async def sample_get_job():
     # Handle the response
     print(response)
 
+
 # [END batch_v1alpha_generated_BatchService_GetJob_async]

@@ -49,4 +49,5 @@ def sample_get_organization_intelligence_config():
     # Handle the response
     print(response)
 
+
 # [END storage_v2_generated_StorageControl_GetOrganizationIntelligenceConfig_sync]

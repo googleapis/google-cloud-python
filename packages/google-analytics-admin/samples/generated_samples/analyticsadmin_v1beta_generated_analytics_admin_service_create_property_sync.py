@@ -53,4 +53,5 @@ def sample_create_property():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_CreateProperty_sync]

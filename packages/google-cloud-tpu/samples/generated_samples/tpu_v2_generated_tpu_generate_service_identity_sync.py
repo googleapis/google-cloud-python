@@ -49,4 +49,5 @@ def sample_generate_service_identity():
     # Handle the response
     print(response)
 
+
 # [END tpu_v2_generated_Tpu_GenerateServiceIdentity_sync]

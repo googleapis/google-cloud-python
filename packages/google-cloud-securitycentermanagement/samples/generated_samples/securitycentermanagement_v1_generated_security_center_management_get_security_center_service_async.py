@@ -49,4 +49,5 @@ async def sample_get_security_center_service():
     # Handle the response
     print(response)
 
+
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_GetSecurityCenterService_async]

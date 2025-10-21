@@ -49,4 +49,5 @@ def sample_get_device_category():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_DeviceCategoryService_GetDeviceCategory_sync]

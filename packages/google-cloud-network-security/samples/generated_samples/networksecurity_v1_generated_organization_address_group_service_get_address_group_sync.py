@@ -49,4 +49,5 @@ def sample_get_address_group():
     # Handle the response
     print(response)
 
+
 # [END networksecurity_v1_generated_OrganizationAddressGroupService_GetAddressGroup_sync]

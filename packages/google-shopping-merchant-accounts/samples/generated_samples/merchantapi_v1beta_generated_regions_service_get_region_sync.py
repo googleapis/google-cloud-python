@@ -49,4 +49,5 @@ def sample_get_region():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_RegionsService_GetRegion_sync]

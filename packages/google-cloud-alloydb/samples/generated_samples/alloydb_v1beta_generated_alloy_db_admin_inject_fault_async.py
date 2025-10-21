@@ -54,4 +54,5 @@ async def sample_inject_fault():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1beta_generated_AlloyDBAdmin_InjectFault_async]

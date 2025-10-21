@@ -39,8 +39,7 @@ def sample_list_authorized_certificates():
     client = appengine_admin_v1.AuthorizedCertificatesClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.ListAuthorizedCertificatesRequest(
-    )
+    request = appengine_admin_v1.ListAuthorizedCertificatesRequest()
 
     # Make the request
     page_result = client.list_authorized_certificates(request=request)
@@ -48,5 +47,6 @@ def sample_list_authorized_certificates():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END appengine_v1_generated_AuthorizedCertificates_ListAuthorizedCertificates_sync]

@@ -49,4 +49,5 @@ async def sample_get_notification_channel_descriptor():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_NotificationChannelService_GetNotificationChannelDescriptor_async]

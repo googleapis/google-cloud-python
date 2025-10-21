@@ -39,8 +39,7 @@ def sample_update_service():
     client = metastore_v1alpha.DataprocMetastoreClient()
 
     # Initialize request argument(s)
-    request = metastore_v1alpha.UpdateServiceRequest(
-    )
+    request = metastore_v1alpha.UpdateServiceRequest()
 
     # Make the request
     operation = client.update_service(request=request)
@@ -51,5 +50,6 @@ def sample_update_service():
 
     # Handle the response
     print(response)
+
 
 # [END metastore_v1alpha_generated_DataprocMetastore_UpdateService_sync]

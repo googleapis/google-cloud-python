@@ -50,4 +50,5 @@ async def sample_lookup_entry():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_LookupEntry_async]

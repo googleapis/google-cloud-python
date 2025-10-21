@@ -41,7 +41,7 @@ def sample_add_grantees():
     # Initialize request argument(s)
     request = bigquery_datapolicies_v2beta1.AddGranteesRequest(
         data_policy="data_policy_value",
-        grantees=['grantees_value1', 'grantees_value2'],
+        grantees=["grantees_value1", "grantees_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ def sample_add_grantees():
 
     # Handle the response
     print(response)
+
 
 # [END bigquerydatapolicy_v2beta1_generated_DataPolicyService_AddGrantees_sync]

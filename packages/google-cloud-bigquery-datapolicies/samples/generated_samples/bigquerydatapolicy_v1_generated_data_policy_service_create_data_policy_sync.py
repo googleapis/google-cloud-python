@@ -54,4 +54,5 @@ def sample_create_data_policy():
     # Handle the response
     print(response)
 
+
 # [END bigquerydatapolicy_v1_generated_DataPolicyService_CreateDataPolicy_sync]

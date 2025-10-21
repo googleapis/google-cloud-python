@@ -39,13 +39,13 @@ def sample_snapshot_job():
     client = dataflow_v1beta3.JobsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.SnapshotJobRequest(
-    )
+    request = dataflow_v1beta3.SnapshotJobRequest()
 
     # Make the request
     response = client.snapshot_job(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataflow_v1beta3_generated_JobsV1Beta3_SnapshotJob_sync]

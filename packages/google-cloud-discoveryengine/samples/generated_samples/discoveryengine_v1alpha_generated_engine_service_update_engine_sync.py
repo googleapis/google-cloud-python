@@ -53,4 +53,5 @@ def sample_update_engine():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_EngineService_UpdateEngine_sync]

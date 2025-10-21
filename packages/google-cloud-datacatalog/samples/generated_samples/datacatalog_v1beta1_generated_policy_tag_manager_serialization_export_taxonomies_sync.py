@@ -42,7 +42,7 @@ def sample_export_taxonomies():
     request = datacatalog_v1beta1.ExportTaxonomiesRequest(
         serialized_taxonomies=True,
         parent="parent_value",
-        taxonomies=['taxonomies_value1', 'taxonomies_value2'],
+        taxonomies=["taxonomies_value1", "taxonomies_value2"],
     )
 
     # Make the request
@@ -50,5 +50,6 @@ def sample_export_taxonomies():
 
     # Handle the response
     print(response)
+
 
 # [END datacatalog_v1beta1_generated_PolicyTagManagerSerialization_ExportTaxonomies_sync]

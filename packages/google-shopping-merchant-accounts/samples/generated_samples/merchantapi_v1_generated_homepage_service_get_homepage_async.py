@@ -49,4 +49,5 @@ async def sample_get_homepage():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_HomepageService_GetHomepage_async]

@@ -39,8 +39,7 @@ def sample_set_default_branch():
     client = retail_v2.CatalogServiceClient()
 
     # Initialize request argument(s)
-    request = retail_v2.SetDefaultBranchRequest(
-    )
+    request = retail_v2.SetDefaultBranchRequest()
 
     # Make the request
     client.set_default_branch(request=request)

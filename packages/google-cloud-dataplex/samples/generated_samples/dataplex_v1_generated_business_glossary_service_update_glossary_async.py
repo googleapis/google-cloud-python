@@ -39,8 +39,7 @@ async def sample_update_glossary():
     client = dataplex_v1.BusinessGlossaryServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = dataplex_v1.UpdateGlossaryRequest(
-    )
+    request = dataplex_v1.UpdateGlossaryRequest()
 
     # Make the request
     operation = client.update_glossary(request=request)
@@ -51,5 +50,6 @@ async def sample_update_glossary():
 
     # Handle the response
     print(response)
+
 
 # [END dataplex_v1_generated_BusinessGlossaryService_UpdateGlossary_async]

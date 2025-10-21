@@ -39,13 +39,13 @@ def sample_create_billing_account():
     client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
-    request = billing_v1.CreateBillingAccountRequest(
-    )
+    request = billing_v1.CreateBillingAccountRequest()
 
     # Make the request
     response = client.create_billing_account(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudbilling_v1_generated_CloudBilling_CreateBillingAccount_sync]

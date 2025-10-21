@@ -49,4 +49,5 @@ def sample_destroy_secret_version():
     # Handle the response
     print(response)
 
+
 # [END secretmanager_v1beta1_generated_SecretManagerService_DestroySecretVersion_sync]

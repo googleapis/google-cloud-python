@@ -42,7 +42,7 @@ async def sample_export_tools():
     request = dialogflowcx_v3beta1.ExportToolsRequest(
         tools_uri="tools_uri_value",
         parent="parent_value",
-        tools=['tools_value1', 'tools_value2'],
+        tools=["tools_value1", "tools_value2"],
     )
 
     # Make the request
@@ -54,5 +54,6 @@ async def sample_export_tools():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v3beta1_generated_Tools_ExportTools_async]

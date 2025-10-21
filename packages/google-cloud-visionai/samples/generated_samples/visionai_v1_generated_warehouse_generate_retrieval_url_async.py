@@ -49,4 +49,5 @@ async def sample_generate_retrieval_url():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_GenerateRetrievalUrl_async]

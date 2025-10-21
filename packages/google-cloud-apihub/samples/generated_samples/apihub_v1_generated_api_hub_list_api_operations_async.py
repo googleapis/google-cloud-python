@@ -50,4 +50,5 @@ async def sample_list_api_operations():
     async for response in page_result:
         print(response)
 
+
 # [END apihub_v1_generated_ApiHub_ListApiOperations_async]

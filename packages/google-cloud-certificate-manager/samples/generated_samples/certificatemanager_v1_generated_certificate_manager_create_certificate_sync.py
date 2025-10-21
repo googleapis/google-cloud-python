@@ -54,4 +54,5 @@ def sample_create_certificate():
     # Handle the response
     print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_CreateCertificate_sync]

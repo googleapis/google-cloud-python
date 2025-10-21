@@ -50,4 +50,5 @@ def sample_list_hooks():
     for response in page_result:
         print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_ListHooks_sync]

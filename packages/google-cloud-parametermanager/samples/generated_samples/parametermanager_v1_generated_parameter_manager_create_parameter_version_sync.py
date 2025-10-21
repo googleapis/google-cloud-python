@@ -40,7 +40,7 @@ def sample_create_parameter_version():
 
     # Initialize request argument(s)
     parameter_version = parametermanager_v1.ParameterVersion()
-    parameter_version.payload.data = b'data_blob'
+    parameter_version.payload.data = b"data_blob"
 
     request = parametermanager_v1.CreateParameterVersionRequest(
         parent="parent_value",
@@ -53,5 +53,6 @@ def sample_create_parameter_version():
 
     # Handle the response
     print(response)
+
 
 # [END parametermanager_v1_generated_ParameterManager_CreateParameterVersion_sync]

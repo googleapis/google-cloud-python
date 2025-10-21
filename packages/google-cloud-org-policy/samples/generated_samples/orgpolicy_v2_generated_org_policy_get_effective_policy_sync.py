@@ -49,4 +49,5 @@ def sample_get_effective_policy():
     # Handle the response
     print(response)
 
+
 # [END orgpolicy_v2_generated_OrgPolicy_GetEffectivePolicy_sync]

@@ -53,4 +53,5 @@ def sample_delete_network_peering():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_DeleteNetworkPeering_sync]

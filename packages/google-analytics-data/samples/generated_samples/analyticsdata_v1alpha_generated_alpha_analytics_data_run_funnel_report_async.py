@@ -39,13 +39,13 @@ async def sample_run_funnel_report():
     client = data_v1alpha.AlphaAnalyticsDataAsyncClient()
 
     # Initialize request argument(s)
-    request = data_v1alpha.RunFunnelReportRequest(
-    )
+    request = data_v1alpha.RunFunnelReportRequest()
 
     # Make the request
     response = await client.run_funnel_report(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsdata_v1alpha_generated_AlphaAnalyticsData_RunFunnelReport_async]

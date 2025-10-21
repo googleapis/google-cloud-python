@@ -49,4 +49,5 @@ async def sample_get_service_class():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_GetServiceClass_async]

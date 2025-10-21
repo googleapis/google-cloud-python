@@ -49,4 +49,5 @@ def sample_list_schema_types():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedSchemaRegistry_ListSchemaTypes_sync]

@@ -49,4 +49,5 @@ async def sample_get_attribute():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHub_GetAttribute_async]

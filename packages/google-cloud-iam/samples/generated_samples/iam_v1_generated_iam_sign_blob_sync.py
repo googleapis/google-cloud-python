@@ -41,7 +41,7 @@ def sample_sign_blob():
     # Initialize request argument(s)
     request = iam_admin_v1.SignBlobRequest(
         name="name_value",
-        bytes_to_sign=b'bytes_to_sign_blob',
+        bytes_to_sign=b"bytes_to_sign_blob",
     )
 
     # Make the request
@@ -49,5 +49,6 @@ def sample_sign_blob():
 
     # Handle the response
     print(response)
+
 
 # [END iam_v1_generated_IAM_SignBlob_sync]

@@ -50,4 +50,5 @@ def sample_calendar_mode():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Advice_CalendarMode_sync]

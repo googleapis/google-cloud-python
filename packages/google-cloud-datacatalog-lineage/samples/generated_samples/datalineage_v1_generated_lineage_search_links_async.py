@@ -54,4 +54,5 @@ async def sample_search_links():
     async for response in page_result:
         print(response)
 
+
 # [END datalineage_v1_generated_Lineage_SearchLinks_async]

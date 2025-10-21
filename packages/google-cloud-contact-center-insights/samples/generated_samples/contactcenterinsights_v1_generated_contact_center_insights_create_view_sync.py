@@ -49,4 +49,5 @@ def sample_create_view():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_CreateView_sync]

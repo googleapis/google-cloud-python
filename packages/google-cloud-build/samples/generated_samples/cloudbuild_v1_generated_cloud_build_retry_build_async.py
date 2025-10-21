@@ -54,4 +54,5 @@ async def sample_retry_build():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_RetryBuild_async]

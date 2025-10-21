@@ -49,4 +49,5 @@ def sample_get_domain():
     # Handle the response
     print(response)
 
+
 # [END managedidentities_v1_generated_ManagedIdentitiesService_GetDomain_sync]

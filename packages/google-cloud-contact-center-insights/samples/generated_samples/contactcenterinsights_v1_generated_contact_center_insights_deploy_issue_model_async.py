@@ -53,4 +53,5 @@ async def sample_deploy_issue_model():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_DeployIssueModel_async]

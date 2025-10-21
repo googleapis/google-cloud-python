@@ -49,4 +49,5 @@ def sample_get_backup():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_GetBackup_sync]

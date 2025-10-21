@@ -51,4 +51,5 @@ def sample_get_iam_policy():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_NodeGroups_GetIamPolicy_sync]

@@ -50,4 +50,5 @@ async def sample_search():
     # Handle the response
     print(response)
 
+
 # [END enterpriseknowledgegraph_v1_generated_EnterpriseKnowledgeGraphService_Search_async]

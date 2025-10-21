@@ -49,4 +49,5 @@ async def sample_get_annotated_dataset():
     # Handle the response
     print(response)
 
+
 # [END datalabeling_v1beta1_generated_DataLabelingService_GetAnnotatedDataset_async]

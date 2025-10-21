@@ -52,4 +52,5 @@ async def sample_update_release_config():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_UpdateReleaseConfig_async]

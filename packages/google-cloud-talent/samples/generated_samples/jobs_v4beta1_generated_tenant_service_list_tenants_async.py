@@ -50,4 +50,5 @@ async def sample_list_tenants():
     async for response in page_result:
         print(response)
 
+
 # [END jobs_v4beta1_generated_TenantService_ListTenants_async]

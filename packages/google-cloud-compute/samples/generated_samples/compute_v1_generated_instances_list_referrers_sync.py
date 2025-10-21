@@ -52,4 +52,5 @@ def sample_list_referrers():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1_generated_Instances_ListReferrers_sync]

@@ -55,4 +55,5 @@ def sample_update_product_input():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_ProductInputsService_UpdateProductInput_sync]

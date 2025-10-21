@@ -56,4 +56,5 @@ async def sample_update_target_project():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_UpdateTargetProject_async]

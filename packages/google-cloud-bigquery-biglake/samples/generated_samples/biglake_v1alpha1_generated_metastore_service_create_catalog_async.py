@@ -50,4 +50,5 @@ async def sample_create_catalog():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1alpha1_generated_MetastoreService_CreateCatalog_async]

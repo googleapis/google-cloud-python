@@ -39,8 +39,7 @@ def sample_update_group():
     client = migrationcenter_v1.MigrationCenterClient()
 
     # Initialize request argument(s)
-    request = migrationcenter_v1.UpdateGroupRequest(
-    )
+    request = migrationcenter_v1.UpdateGroupRequest()
 
     # Make the request
     operation = client.update_group(request=request)
@@ -51,5 +50,6 @@ def sample_update_group():
 
     # Handle the response
     print(response)
+
 
 # [END migrationcenter_v1_generated_MigrationCenter_UpdateGroup_sync]

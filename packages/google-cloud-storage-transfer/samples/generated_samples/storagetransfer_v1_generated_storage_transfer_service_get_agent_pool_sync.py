@@ -49,4 +49,5 @@ def sample_get_agent_pool():
     # Handle the response
     print(response)
 
+
 # [END storagetransfer_v1_generated_StorageTransferService_GetAgentPool_sync]

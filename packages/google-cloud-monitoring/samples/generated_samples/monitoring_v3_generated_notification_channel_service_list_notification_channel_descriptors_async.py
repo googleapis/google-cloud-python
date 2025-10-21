@@ -50,4 +50,5 @@ async def sample_list_notification_channel_descriptors():
     async for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_NotificationChannelService_ListNotificationChannelDescriptors_async]

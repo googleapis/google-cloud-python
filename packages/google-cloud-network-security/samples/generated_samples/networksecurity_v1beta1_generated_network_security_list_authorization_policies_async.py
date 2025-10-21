@@ -50,4 +50,5 @@ async def sample_list_authorization_policies():
     async for response in page_result:
         print(response)
 
+
 # [END networksecurity_v1beta1_generated_NetworkSecurity_ListAuthorizationPolicies_async]

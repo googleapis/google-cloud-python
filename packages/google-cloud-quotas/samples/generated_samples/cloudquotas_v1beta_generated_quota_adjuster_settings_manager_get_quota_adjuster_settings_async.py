@@ -49,4 +49,5 @@ async def sample_get_quota_adjuster_settings():
     # Handle the response
     print(response)
 
+
 # [END cloudquotas_v1beta_generated_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_async]

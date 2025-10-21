@@ -53,4 +53,5 @@ async def sample_create_index_endpoint():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_CreateIndexEndpoint_async]

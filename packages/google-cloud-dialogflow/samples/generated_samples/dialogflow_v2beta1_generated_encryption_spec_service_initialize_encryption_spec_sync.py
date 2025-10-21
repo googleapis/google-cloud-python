@@ -56,4 +56,5 @@ def sample_initialize_encryption_spec():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_EncryptionSpecService_InitializeEncryptionSpec_sync]

@@ -49,4 +49,5 @@ async def sample_get_participant():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_Participants_GetParticipant_async]

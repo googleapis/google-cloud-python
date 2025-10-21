@@ -51,4 +51,5 @@ def sample_remove_traffic_classification_rule():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionNetworkPolicies_RemoveTrafficClassificationRule_sync]

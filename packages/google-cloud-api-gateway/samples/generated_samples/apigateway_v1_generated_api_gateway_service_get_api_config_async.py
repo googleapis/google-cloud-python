@@ -49,4 +49,5 @@ async def sample_get_api_config():
     # Handle the response
     print(response)
 
+
 # [END apigateway_v1_generated_ApiGatewayService_GetApiConfig_async]

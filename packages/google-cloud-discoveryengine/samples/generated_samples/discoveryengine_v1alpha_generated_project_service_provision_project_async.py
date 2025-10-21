@@ -55,4 +55,5 @@ async def sample_provision_project():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_ProjectService_ProvisionProject_async]

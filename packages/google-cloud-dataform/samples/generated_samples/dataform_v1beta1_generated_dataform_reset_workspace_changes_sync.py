@@ -49,4 +49,5 @@ def sample_reset_workspace_changes():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_ResetWorkspaceChanges_sync]

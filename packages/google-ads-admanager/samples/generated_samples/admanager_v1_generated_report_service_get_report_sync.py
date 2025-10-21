@@ -49,4 +49,5 @@ def sample_get_report():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_ReportService_GetReport_sync]

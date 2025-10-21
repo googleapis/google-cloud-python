@@ -52,4 +52,5 @@ def sample_update_tenant():
     # Handle the response
     print(response)
 
+
 # [END jobs_v4_generated_TenantService_UpdateTenant_sync]

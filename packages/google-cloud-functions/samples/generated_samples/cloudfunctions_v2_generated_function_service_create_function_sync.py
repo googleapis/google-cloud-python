@@ -53,4 +53,5 @@ def sample_create_function():
     # Handle the response
     print(response)
 
+
 # [END cloudfunctions_v2_generated_FunctionService_CreateFunction_sync]

@@ -50,4 +50,5 @@ async def sample_list_resources():
     async for response in page_result:
         print(response)
 
+
 # [END config_v1_generated_Config_ListResources_async]

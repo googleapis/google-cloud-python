@@ -50,4 +50,5 @@ def sample_list_service_classes():
     for response in page_result:
         print(response)
 
+
 # [END networkconnectivity_v1_generated_CrossNetworkAutomationService_ListServiceClasses_sync]

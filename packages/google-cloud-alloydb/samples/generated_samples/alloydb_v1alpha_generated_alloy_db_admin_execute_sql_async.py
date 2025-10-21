@@ -53,4 +53,5 @@ async def sample_execute_sql():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1alpha_generated_AlloyDBAdmin_ExecuteSql_async]

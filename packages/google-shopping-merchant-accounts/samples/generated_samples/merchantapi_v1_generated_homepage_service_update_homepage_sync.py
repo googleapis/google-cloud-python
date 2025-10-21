@@ -39,13 +39,13 @@ def sample_update_homepage():
     client = merchant_accounts_v1.HomepageServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1.UpdateHomepageRequest(
-    )
+    request = merchant_accounts_v1.UpdateHomepageRequest()
 
     # Make the request
     response = client.update_homepage(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_HomepageService_UpdateHomepage_sync]

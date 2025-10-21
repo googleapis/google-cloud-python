@@ -39,13 +39,13 @@ def sample_merge_capacity_commitments():
     client = bigquery_reservation_v1.ReservationServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_reservation_v1.MergeCapacityCommitmentsRequest(
-    )
+    request = bigquery_reservation_v1.MergeCapacityCommitmentsRequest()
 
     # Make the request
     response = client.merge_capacity_commitments(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END bigqueryreservation_v1_generated_ReservationService_MergeCapacityCommitments_sync]

@@ -50,4 +50,5 @@ def sample_list_pull_request_file_diffs():
     for response in page_result:
         print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_ListPullRequestFileDiffs_sync]

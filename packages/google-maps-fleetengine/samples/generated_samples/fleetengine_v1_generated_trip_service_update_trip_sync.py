@@ -49,4 +49,5 @@ def sample_update_trip():
     # Handle the response
     print(response)
 
+
 # [END fleetengine_v1_generated_TripService_UpdateTrip_sync]

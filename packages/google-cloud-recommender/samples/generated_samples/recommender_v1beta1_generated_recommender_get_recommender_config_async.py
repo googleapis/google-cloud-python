@@ -49,4 +49,5 @@ async def sample_get_recommender_config():
     # Handle the response
     print(response)
 
+
 # [END recommender_v1beta1_generated_Recommender_GetRecommenderConfig_async]

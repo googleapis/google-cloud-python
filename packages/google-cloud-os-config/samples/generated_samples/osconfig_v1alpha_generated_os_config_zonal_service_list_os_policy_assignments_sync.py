@@ -50,4 +50,5 @@ def sample_list_os_policy_assignments():
     for response in page_result:
         print(response)
 
+
 # [END osconfig_v1alpha_generated_OsConfigZonalService_ListOSPolicyAssignments_sync]

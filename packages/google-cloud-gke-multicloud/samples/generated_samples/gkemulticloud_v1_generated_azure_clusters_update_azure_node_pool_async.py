@@ -61,4 +61,5 @@ async def sample_update_azure_node_pool():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AzureClusters_UpdateAzureNodePool_async]

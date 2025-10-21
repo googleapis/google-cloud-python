@@ -39,8 +39,7 @@ async def sample_search_catalog():
     client = datacatalog_v1beta1.DataCatalogAsyncClient()
 
     # Initialize request argument(s)
-    request = datacatalog_v1beta1.SearchCatalogRequest(
-    )
+    request = datacatalog_v1beta1.SearchCatalogRequest()
 
     # Make the request
     page_result = client.search_catalog(request=request)
@@ -48,5 +47,6 @@ async def sample_search_catalog():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END datacatalog_v1beta1_generated_DataCatalog_SearchCatalog_async]

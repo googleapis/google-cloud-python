@@ -39,13 +39,13 @@ def sample_generate_upload_url():
     client = functions_v1.CloudFunctionsServiceClient()
 
     # Initialize request argument(s)
-    request = functions_v1.GenerateUploadUrlRequest(
-    )
+    request = functions_v1.GenerateUploadUrlRequest()
 
     # Make the request
     response = client.generate_upload_url(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudfunctions_v1_generated_CloudFunctionsService_GenerateUploadUrl_sync]

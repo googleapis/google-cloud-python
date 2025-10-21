@@ -50,4 +50,5 @@ async def sample_list_build_triggers():
     async for response in page_result:
         print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_ListBuildTriggers_async]

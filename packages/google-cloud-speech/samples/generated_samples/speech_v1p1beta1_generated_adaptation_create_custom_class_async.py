@@ -50,4 +50,5 @@ async def sample_create_custom_class():
     # Handle the response
     print(response)
 
+
 # [END speech_v1p1beta1_generated_Adaptation_CreateCustomClass_async]

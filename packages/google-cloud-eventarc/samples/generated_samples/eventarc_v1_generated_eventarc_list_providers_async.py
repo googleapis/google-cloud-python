@@ -50,4 +50,5 @@ async def sample_list_providers():
     async for response in page_result:
         print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_ListProviders_async]

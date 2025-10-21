@@ -51,4 +51,5 @@ def sample_stop():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_Stop_sync]

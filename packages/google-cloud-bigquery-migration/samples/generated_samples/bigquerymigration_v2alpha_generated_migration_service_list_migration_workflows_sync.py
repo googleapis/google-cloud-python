@@ -50,4 +50,5 @@ def sample_list_migration_workflows():
     for response in page_result:
         print(response)
 
+
 # [END bigquerymigration_v2alpha_generated_MigrationService_ListMigrationWorkflows_sync]

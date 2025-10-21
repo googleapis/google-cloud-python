@@ -50,4 +50,5 @@ def sample_list_key_handles():
     for response in page_result:
         print(response)
 
+
 # [END cloudkms_v1_generated_Autokey_ListKeyHandles_sync]

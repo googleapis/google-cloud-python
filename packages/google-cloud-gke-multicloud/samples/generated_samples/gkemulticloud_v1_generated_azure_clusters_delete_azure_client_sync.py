@@ -53,4 +53,5 @@ def sample_delete_azure_client():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AzureClusters_DeleteAzureClient_sync]

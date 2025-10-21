@@ -49,4 +49,5 @@ def sample_get_principal_access_boundary_policy():
     # Handle the response
     print(response)
 
+
 # [END iam_v3beta_generated_PrincipalAccessBoundaryPolicies_GetPrincipalAccessBoundaryPolicy_sync]

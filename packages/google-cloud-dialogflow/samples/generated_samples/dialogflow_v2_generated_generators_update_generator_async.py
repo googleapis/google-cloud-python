@@ -52,4 +52,5 @@ async def sample_update_generator():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_Generators_UpdateGenerator_async]

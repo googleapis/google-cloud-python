@@ -58,4 +58,5 @@ async def sample_create_pipeline():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_CreatePipeline_async]

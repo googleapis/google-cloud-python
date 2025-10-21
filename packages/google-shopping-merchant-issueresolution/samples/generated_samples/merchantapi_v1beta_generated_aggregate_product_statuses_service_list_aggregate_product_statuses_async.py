@@ -36,7 +36,9 @@ from google.shopping import merchant_issueresolution_v1beta
 
 async def sample_list_aggregate_product_statuses():
     # Create a client
-    client = merchant_issueresolution_v1beta.AggregateProductStatusesServiceAsyncClient()
+    client = (
+        merchant_issueresolution_v1beta.AggregateProductStatusesServiceAsyncClient()
+    )
 
     # Initialize request argument(s)
     request = merchant_issueresolution_v1beta.ListAggregateProductStatusesRequest(
@@ -49,5 +51,6 @@ async def sample_list_aggregate_product_statuses():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END merchantapi_v1beta_generated_AggregateProductStatusesService_ListAggregateProductStatuses_async]

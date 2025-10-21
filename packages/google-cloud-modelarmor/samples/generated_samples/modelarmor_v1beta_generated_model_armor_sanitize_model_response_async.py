@@ -53,4 +53,5 @@ async def sample_sanitize_model_response():
     # Handle the response
     print(response)
 
+
 # [END modelarmor_v1beta_generated_ModelArmor_SanitizeModelResponse_async]

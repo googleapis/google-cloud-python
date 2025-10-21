@@ -50,4 +50,5 @@ def sample_list_constraints():
     for response in page_result:
         print(response)
 
+
 # [END orgpolicy_v2_generated_OrgPolicy_ListConstraints_sync]

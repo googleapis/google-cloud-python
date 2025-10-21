@@ -49,4 +49,5 @@ def sample_get_transcript_entry():
     # Handle the response
     print(response)
 
+
 # [END meet_v2beta_generated_ConferenceRecordsService_GetTranscriptEntry_sync]

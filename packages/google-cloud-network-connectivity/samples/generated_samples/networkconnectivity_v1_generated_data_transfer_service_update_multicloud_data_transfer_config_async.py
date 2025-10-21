@@ -39,8 +39,7 @@ async def sample_update_multicloud_data_transfer_config():
     client = networkconnectivity_v1.DataTransferServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = networkconnectivity_v1.UpdateMulticloudDataTransferConfigRequest(
-    )
+    request = networkconnectivity_v1.UpdateMulticloudDataTransferConfigRequest()
 
     # Make the request
     operation = client.update_multicloud_data_transfer_config(request=request)
@@ -51,5 +50,6 @@ async def sample_update_multicloud_data_transfer_config():
 
     # Handle the response
     print(response)
+
 
 # [END networkconnectivity_v1_generated_DataTransferService_UpdateMulticloudDataTransferConfig_async]

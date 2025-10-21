@@ -53,4 +53,5 @@ def sample_delete_backup():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_DeleteBackup_sync]

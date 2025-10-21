@@ -50,4 +50,5 @@ def sample_link_gbp_account():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_GbpAccountsService_LinkGbpAccount_sync]

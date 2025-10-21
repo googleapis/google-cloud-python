@@ -49,4 +49,5 @@ def sample_enable_xpn_resource():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Projects_EnableXpnResource_sync]

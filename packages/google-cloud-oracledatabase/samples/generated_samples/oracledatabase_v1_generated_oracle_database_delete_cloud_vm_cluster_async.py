@@ -53,4 +53,5 @@ async def sample_delete_cloud_vm_cluster():
     # Handle the response
     print(response)
 
+
 # [END oracledatabase_v1_generated_OracleDatabase_DeleteCloudVmCluster_async]

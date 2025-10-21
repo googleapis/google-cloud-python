@@ -54,4 +54,5 @@ async def sample_update_serving_config():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_ServingConfigService_UpdateServingConfig_async]

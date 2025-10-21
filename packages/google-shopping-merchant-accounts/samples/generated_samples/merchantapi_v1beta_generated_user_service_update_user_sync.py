@@ -39,13 +39,13 @@ def sample_update_user():
     client = merchant_accounts_v1beta.UserServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1beta.UpdateUserRequest(
-    )
+    request = merchant_accounts_v1beta.UpdateUserRequest()
 
     # Make the request
     response = client.update_user(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1beta_generated_UserService_UpdateUser_sync]

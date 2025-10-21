@@ -49,4 +49,5 @@ async def sample_get_license_pool():
     # Handle the response
     print(response)
 
+
 # [END cloudcommerceconsumerprocurement_v1_generated_LicenseManagementService_GetLicensePool_async]

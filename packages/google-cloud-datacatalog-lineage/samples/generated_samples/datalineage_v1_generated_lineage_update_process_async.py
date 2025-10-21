@@ -39,13 +39,13 @@ async def sample_update_process():
     client = datacatalog_lineage_v1.LineageAsyncClient()
 
     # Initialize request argument(s)
-    request = datacatalog_lineage_v1.UpdateProcessRequest(
-    )
+    request = datacatalog_lineage_v1.UpdateProcessRequest()
 
     # Make the request
     response = await client.update_process(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END datalineage_v1_generated_Lineage_UpdateProcess_async]

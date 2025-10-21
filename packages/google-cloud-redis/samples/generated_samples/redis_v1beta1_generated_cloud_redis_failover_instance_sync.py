@@ -53,4 +53,5 @@ def sample_failover_instance():
     # Handle the response
     print(response)
 
+
 # [END redis_v1beta1_generated_CloudRedis_FailoverInstance_sync]

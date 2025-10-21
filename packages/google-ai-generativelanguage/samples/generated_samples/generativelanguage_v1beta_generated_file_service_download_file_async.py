@@ -49,4 +49,5 @@ async def sample_download_file():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_FileService_DownloadFile_async]

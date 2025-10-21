@@ -51,4 +51,5 @@ def sample_search_protected_resources():
     for response in page_result:
         print(response)
 
+
 # [END kmsinventory_v1_generated_KeyTrackingService_SearchProtectedResources_sync]

@@ -50,4 +50,5 @@ async def sample_list_violations():
     async for response in page_result:
         print(response)
 
+
 # [END cloudcontrolspartner_v1_generated_CloudControlsPartnerMonitoring_ListViolations_async]

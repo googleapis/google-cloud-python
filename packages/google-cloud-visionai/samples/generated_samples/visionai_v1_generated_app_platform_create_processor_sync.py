@@ -58,4 +58,5 @@ def sample_create_processor():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_AppPlatform_CreateProcessor_sync]

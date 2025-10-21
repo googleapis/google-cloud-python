@@ -39,13 +39,13 @@ def sample_update_asset():
     client = migrationcenter_v1.MigrationCenterClient()
 
     # Initialize request argument(s)
-    request = migrationcenter_v1.UpdateAssetRequest(
-    )
+    request = migrationcenter_v1.UpdateAssetRequest()
 
     # Make the request
     response = client.update_asset(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END migrationcenter_v1_generated_MigrationCenter_UpdateAsset_sync]

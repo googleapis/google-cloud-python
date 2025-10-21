@@ -51,4 +51,5 @@ def sample_start_with_encryption_key():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_StartWithEncryptionKey_sync]

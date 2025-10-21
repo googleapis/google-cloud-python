@@ -52,4 +52,5 @@ def sample_get_nat_mapping_info():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1beta_generated_Routers_GetNatMappingInfo_sync]

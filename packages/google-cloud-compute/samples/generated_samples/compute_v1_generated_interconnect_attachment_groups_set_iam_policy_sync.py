@@ -50,4 +50,5 @@ def sample_set_iam_policy():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_InterconnectAttachmentGroups_SetIamPolicy_sync]

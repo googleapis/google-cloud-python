@@ -39,8 +39,7 @@ async def sample_update_cluster():
     client = edgecontainer_v1.EdgeContainerAsyncClient()
 
     # Initialize request argument(s)
-    request = edgecontainer_v1.UpdateClusterRequest(
-    )
+    request = edgecontainer_v1.UpdateClusterRequest()
 
     # Make the request
     operation = client.update_cluster(request=request)
@@ -51,5 +50,6 @@ async def sample_update_cluster():
 
     # Handle the response
     print(response)
+
 
 # [END edgecontainer_v1_generated_EdgeContainer_UpdateCluster_async]

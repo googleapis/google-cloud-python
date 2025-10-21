@@ -50,4 +50,5 @@ def sample_list_glossaries():
     for response in page_result:
         print(response)
 
+
 # [END translate_v3beta1_generated_TranslationService_ListGlossaries_sync]

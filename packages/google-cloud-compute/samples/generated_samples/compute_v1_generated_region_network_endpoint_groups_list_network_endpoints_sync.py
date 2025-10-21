@@ -52,4 +52,5 @@ def sample_list_network_endpoints():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1_generated_RegionNetworkEndpointGroups_ListNetworkEndpoints_sync]

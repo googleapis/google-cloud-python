@@ -53,4 +53,5 @@ async def sample_undelete_certificate_authority():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1_generated_CertificateAuthorityService_UndeleteCertificateAuthority_async]

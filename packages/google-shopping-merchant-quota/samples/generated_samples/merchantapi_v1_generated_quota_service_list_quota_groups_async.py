@@ -50,4 +50,5 @@ async def sample_list_quota_groups():
     async for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1_generated_QuotaService_ListQuotaGroups_async]

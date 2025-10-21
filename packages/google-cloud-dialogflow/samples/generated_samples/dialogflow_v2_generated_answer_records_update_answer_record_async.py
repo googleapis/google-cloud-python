@@ -39,13 +39,13 @@ async def sample_update_answer_record():
     client = dialogflow_v2.AnswerRecordsAsyncClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2.UpdateAnswerRecordRequest(
-    )
+    request = dialogflow_v2.UpdateAnswerRecordRequest()
 
     # Make the request
     response = await client.update_answer_record(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2_generated_AnswerRecords_UpdateAnswerRecord_async]

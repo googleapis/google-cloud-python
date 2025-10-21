@@ -50,4 +50,5 @@ async def sample_list_jobs():
     async for response in page_result:
         print(response)
 
+
 # [END cloudscheduler_v1beta1_generated_CloudScheduler_ListJobs_async]

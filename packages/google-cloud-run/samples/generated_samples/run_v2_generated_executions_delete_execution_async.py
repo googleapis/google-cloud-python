@@ -53,4 +53,5 @@ async def sample_delete_execution():
     # Handle the response
     print(response)
 
+
 # [END run_v2_generated_Executions_DeleteExecution_async]

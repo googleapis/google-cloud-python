@@ -50,4 +50,5 @@ async def sample_list_assets():
     async for response in page_result:
         print(response)
 
+
 # [END visionai_v1alpha1_generated_Warehouse_ListAssets_async]

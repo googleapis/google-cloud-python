@@ -53,4 +53,5 @@ async def sample_delete_entry_group():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_DeleteEntryGroup_async]

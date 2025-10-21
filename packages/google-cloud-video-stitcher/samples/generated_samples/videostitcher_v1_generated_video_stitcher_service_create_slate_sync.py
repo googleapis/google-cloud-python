@@ -54,4 +54,5 @@ def sample_create_slate():
     # Handle the response
     print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_CreateSlate_sync]

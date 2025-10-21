@@ -50,4 +50,5 @@ async def sample_list_policy_bindings():
     async for response in page_result:
         print(response)
 
+
 # [END iam_v3_generated_PolicyBindings_ListPolicyBindings_async]

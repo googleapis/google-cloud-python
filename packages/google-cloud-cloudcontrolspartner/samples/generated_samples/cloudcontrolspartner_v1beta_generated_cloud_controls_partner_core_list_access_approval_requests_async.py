@@ -50,4 +50,5 @@ async def sample_list_access_approval_requests():
     async for response in page_result:
         print(response)
 
+
 # [END cloudcontrolspartner_v1beta_generated_CloudControlsPartnerCore_ListAccessApprovalRequests_async]

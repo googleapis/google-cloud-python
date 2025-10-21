@@ -50,4 +50,5 @@ def sample_list_conversations():
     for response in page_result:
         print(response)
 
+
 # [END geminidataanalytics_v1beta_generated_DataChatService_ListConversations_sync]

@@ -51,4 +51,5 @@ def sample_attach_disk():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_AttachDisk_sync]

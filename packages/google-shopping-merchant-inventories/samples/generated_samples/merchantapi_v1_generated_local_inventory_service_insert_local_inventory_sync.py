@@ -53,4 +53,5 @@ def sample_insert_local_inventory():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_LocalInventoryService_InsertLocalInventory_sync]

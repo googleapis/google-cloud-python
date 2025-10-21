@@ -39,8 +39,7 @@ def sample_update_snapshot():
     client = netapp_v1.NetAppClient()
 
     # Initialize request argument(s)
-    request = netapp_v1.UpdateSnapshotRequest(
-    )
+    request = netapp_v1.UpdateSnapshotRequest()
 
     # Make the request
     operation = client.update_snapshot(request=request)
@@ -51,5 +50,6 @@ def sample_update_snapshot():
 
     # Handle the response
     print(response)
+
 
 # [END netapp_v1_generated_NetApp_UpdateSnapshot_sync]

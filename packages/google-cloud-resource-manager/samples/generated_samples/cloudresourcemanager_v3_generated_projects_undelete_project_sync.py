@@ -53,4 +53,5 @@ def sample_undelete_project():
     # Handle the response
     print(response)
 
+
 # [END cloudresourcemanager_v3_generated_Projects_UndeleteProject_sync]

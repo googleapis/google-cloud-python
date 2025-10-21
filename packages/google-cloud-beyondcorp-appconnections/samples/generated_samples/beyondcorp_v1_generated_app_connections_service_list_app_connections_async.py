@@ -50,4 +50,5 @@ async def sample_list_app_connections():
     async for response in page_result:
         print(response)
 
+
 # [END beyondcorp_v1_generated_AppConnectionsService_ListAppConnections_async]

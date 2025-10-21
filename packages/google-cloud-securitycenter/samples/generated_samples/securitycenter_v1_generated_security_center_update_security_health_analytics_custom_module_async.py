@@ -39,13 +39,15 @@ async def sample_update_security_health_analytics_custom_module():
     client = securitycenter_v1.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1.UpdateSecurityHealthAnalyticsCustomModuleRequest(
-    )
+    request = securitycenter_v1.UpdateSecurityHealthAnalyticsCustomModuleRequest()
 
     # Make the request
-    response = await client.update_security_health_analytics_custom_module(request=request)
+    response = await client.update_security_health_analytics_custom_module(
+        request=request
+    )
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1_generated_SecurityCenter_UpdateSecurityHealthAnalyticsCustomModule_async]

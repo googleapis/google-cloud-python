@@ -56,4 +56,5 @@ async def sample_update_vpc_flow_logs_config():
     # Handle the response
     print(response)
 
+
 # [END networkmanagement_v1_generated_VpcFlowLogsService_UpdateVpcFlowLogsConfig_async]

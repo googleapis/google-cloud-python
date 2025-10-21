@@ -49,4 +49,5 @@ def sample_create_case():
     # Handle the response
     print(response)
 
+
 # [END cloudsupport_v2_generated_CaseService_CreateCase_sync]

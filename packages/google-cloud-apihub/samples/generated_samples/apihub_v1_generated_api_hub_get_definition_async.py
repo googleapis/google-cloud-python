@@ -49,4 +49,5 @@ async def sample_get_definition():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHub_GetDefinition_async]

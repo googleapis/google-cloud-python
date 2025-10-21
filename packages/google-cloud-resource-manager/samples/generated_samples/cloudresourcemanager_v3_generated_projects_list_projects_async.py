@@ -50,4 +50,5 @@ async def sample_list_projects():
     async for response in page_result:
         print(response)
 
+
 # [END cloudresourcemanager_v3_generated_Projects_ListProjects_async]

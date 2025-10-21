@@ -49,4 +49,5 @@ async def sample_update_connection():
     # Handle the response
     print(response)
 
+
 # [END bigqueryconnection_v1_generated_ConnectionService_UpdateConnection_async]

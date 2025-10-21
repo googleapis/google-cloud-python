@@ -50,4 +50,5 @@ def sample_list_instance_os_policies_compliances():
     for response in page_result:
         print(response)
 
+
 # [END osconfig_v1alpha_generated_OsConfigZonalService_ListInstanceOSPoliciesCompliances_sync]

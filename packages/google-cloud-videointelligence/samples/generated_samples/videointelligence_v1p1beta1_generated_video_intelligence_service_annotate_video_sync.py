@@ -40,7 +40,7 @@ def sample_annotate_video():
 
     # Initialize request argument(s)
     request = videointelligence_v1p1beta1.AnnotateVideoRequest(
-        features=['SPEECH_TRANSCRIPTION'],
+        features=["SPEECH_TRANSCRIPTION"],
     )
 
     # Make the request
@@ -52,5 +52,6 @@ def sample_annotate_video():
 
     # Handle the response
     print(response)
+
 
 # [END videointelligence_v1p1beta1_generated_VideoIntelligenceService_AnnotateVideo_sync]

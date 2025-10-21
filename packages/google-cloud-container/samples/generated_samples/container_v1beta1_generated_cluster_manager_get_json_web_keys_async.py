@@ -39,13 +39,13 @@ async def sample_get_json_web_keys():
     client = container_v1beta1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.GetJSONWebKeysRequest(
-    )
+    request = container_v1beta1.GetJSONWebKeysRequest()
 
     # Make the request
     response = await client.get_json_web_keys(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_GetJSONWebKeys_async]

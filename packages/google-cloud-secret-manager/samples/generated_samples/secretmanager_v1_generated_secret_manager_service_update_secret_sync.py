@@ -39,13 +39,13 @@ def sample_update_secret():
     client = secretmanager_v1.SecretManagerServiceClient()
 
     # Initialize request argument(s)
-    request = secretmanager_v1.UpdateSecretRequest(
-    )
+    request = secretmanager_v1.UpdateSecretRequest()
 
     # Make the request
     response = client.update_secret(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END secretmanager_v1_generated_SecretManagerService_UpdateSecret_sync]

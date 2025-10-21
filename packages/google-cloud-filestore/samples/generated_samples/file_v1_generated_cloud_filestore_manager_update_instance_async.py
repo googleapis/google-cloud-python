@@ -39,8 +39,7 @@ async def sample_update_instance():
     client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.UpdateInstanceRequest(
-    )
+    request = filestore_v1.UpdateInstanceRequest()
 
     # Make the request
     operation = client.update_instance(request=request)
@@ -51,5 +50,6 @@ async def sample_update_instance():
 
     # Handle the response
     print(response)
+
 
 # [END file_v1_generated_CloudFilestoreManager_UpdateInstance_async]

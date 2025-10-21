@@ -50,4 +50,5 @@ def sample_insert():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_NetworkAttachments_Insert_sync]

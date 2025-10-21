@@ -49,4 +49,5 @@ def sample_get_question():
     # Handle the response
     print(response)
 
+
 # [END dataqna_v1alpha_generated_QuestionService_GetQuestion_sync]

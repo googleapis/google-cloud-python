@@ -49,4 +49,5 @@ def sample_get_utilization_report():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_GetUtilizationReport_sync]

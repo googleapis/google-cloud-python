@@ -39,8 +39,7 @@ def sample_list_services():
     client = appengine_admin_v1.ServicesClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.ListServicesRequest(
-    )
+    request = appengine_admin_v1.ListServicesRequest()
 
     # Make the request
     page_result = client.list_services(request=request)
@@ -48,5 +47,6 @@ def sample_list_services():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END appengine_v1_generated_Services_ListServices_sync]

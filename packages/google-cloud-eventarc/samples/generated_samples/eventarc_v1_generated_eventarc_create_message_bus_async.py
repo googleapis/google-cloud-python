@@ -54,4 +54,5 @@ async def sample_create_message_bus():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_CreateMessageBus_async]

@@ -50,4 +50,5 @@ def sample_list_custom_classes():
     for response in page_result:
         print(response)
 
+
 # [END speech_v1_generated_Adaptation_ListCustomClasses_sync]

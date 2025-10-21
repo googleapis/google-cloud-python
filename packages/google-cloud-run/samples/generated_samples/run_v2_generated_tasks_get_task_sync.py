@@ -49,4 +49,5 @@ def sample_get_task():
     # Handle the response
     print(response)
 
+
 # [END run_v2_generated_Tasks_GetTask_sync]

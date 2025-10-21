@@ -39,13 +39,13 @@ def sample_create_cluster():
     client = container_v1beta1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.CreateClusterRequest(
-    )
+    request = container_v1beta1.CreateClusterRequest()
 
     # Make the request
     response = client.create_cluster(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_CreateCluster_sync]

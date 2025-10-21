@@ -54,4 +54,5 @@ def sample_update_quota_preference():
     # Handle the response
     print(response)
 
+
 # [END cloudquotas_v1beta_generated_CloudQuotas_UpdateQuotaPreference_sync]

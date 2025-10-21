@@ -39,8 +39,7 @@ async def sample_delete_job():
     client = batch_v1alpha.BatchServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = batch_v1alpha.DeleteJobRequest(
-    )
+    request = batch_v1alpha.DeleteJobRequest()
 
     # Make the request
     operation = client.delete_job(request=request)
@@ -51,5 +50,6 @@ async def sample_delete_job():
 
     # Handle the response
     print(response)
+
 
 # [END batch_v1alpha_generated_BatchService_DeleteJob_async]

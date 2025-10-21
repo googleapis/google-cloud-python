@@ -39,13 +39,13 @@ async def sample_update_secret():
     client = secretmanager_v1beta1.SecretManagerServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = secretmanager_v1beta1.UpdateSecretRequest(
-    )
+    request = secretmanager_v1beta1.UpdateSecretRequest()
 
     # Make the request
     response = await client.update_secret(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END secretmanager_v1beta1_generated_SecretManagerService_UpdateSecret_async]

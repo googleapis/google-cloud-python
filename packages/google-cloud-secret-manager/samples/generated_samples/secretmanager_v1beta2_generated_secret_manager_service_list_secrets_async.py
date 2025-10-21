@@ -50,4 +50,5 @@ async def sample_list_secrets():
     async for response in page_result:
         print(response)
 
+
 # [END secretmanager_v1beta2_generated_SecretManagerService_ListSecrets_async]

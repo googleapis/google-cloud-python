@@ -54,4 +54,5 @@ def sample_create_data_access_label():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_DataAccessControlService_CreateDataAccessLabel_sync]

@@ -49,4 +49,5 @@ def sample_get_protected_resources_summary():
     # Handle the response
     print(response)
 
+
 # [END kmsinventory_v1_generated_KeyTrackingService_GetProtectedResourcesSummary_sync]

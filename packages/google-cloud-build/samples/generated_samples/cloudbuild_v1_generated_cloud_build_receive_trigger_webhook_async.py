@@ -39,13 +39,13 @@ async def sample_receive_trigger_webhook():
     client = cloudbuild_v1.CloudBuildAsyncClient()
 
     # Initialize request argument(s)
-    request = cloudbuild_v1.ReceiveTriggerWebhookRequest(
-    )
+    request = cloudbuild_v1.ReceiveTriggerWebhookRequest()
 
     # Make the request
     response = await client.receive_trigger_webhook(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudbuild_v1_generated_CloudBuild_ReceiveTriggerWebhook_async]

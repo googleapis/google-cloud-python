@@ -50,4 +50,5 @@ def sample_create_table():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1_generated_MetastoreService_CreateTable_sync]

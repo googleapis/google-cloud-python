@@ -39,8 +39,7 @@ def sample_streaming_annotate_video():
     client = videointelligence_v1p3beta1.StreamingVideoIntelligenceServiceClient()
 
     # Initialize request argument(s)
-    request = videointelligence_v1p3beta1.StreamingAnnotateVideoRequest(
-    )
+    request = videointelligence_v1p3beta1.StreamingAnnotateVideoRequest()
 
     # This method expects an iterator which contains
     # 'videointelligence_v1p3beta1.StreamingAnnotateVideoRequest' objects
@@ -58,5 +57,6 @@ def sample_streaming_annotate_video():
     # Handle the response
     for response in stream:
         print(response)
+
 
 # [END videointelligence_v1p3beta1_generated_StreamingVideoIntelligenceService_StreamingAnnotateVideo_sync]

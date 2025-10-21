@@ -49,4 +49,5 @@ async def sample_get_product():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_ProductsService_GetProduct_async]

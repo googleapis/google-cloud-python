@@ -49,4 +49,5 @@ async def sample_lock_document():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_DocumentService_LockDocument_async]

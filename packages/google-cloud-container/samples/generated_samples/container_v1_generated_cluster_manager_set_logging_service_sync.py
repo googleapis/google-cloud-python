@@ -49,4 +49,5 @@ def sample_set_logging_service():
     # Handle the response
     print(response)
 
+
 # [END container_v1_generated_ClusterManager_SetLoggingService_sync]

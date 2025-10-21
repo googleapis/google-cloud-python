@@ -39,13 +39,13 @@ def sample_set_addons_config():
     client = container_v1beta1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.SetAddonsConfigRequest(
-    )
+    request = container_v1beta1.SetAddonsConfigRequest()
 
     # Make the request
     response = client.set_addons_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_SetAddonsConfig_sync]

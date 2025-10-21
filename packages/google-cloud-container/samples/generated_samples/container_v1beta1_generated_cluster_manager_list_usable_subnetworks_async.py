@@ -50,4 +50,5 @@ async def sample_list_usable_subnetworks():
     async for response in page_result:
         print(response)
 
+
 # [END container_v1beta1_generated_ClusterManager_ListUsableSubnetworks_async]

@@ -50,4 +50,5 @@ async def sample_tag_api_deployment_revision():
     # Handle the response
     print(response)
 
+
 # [END apigeeregistry_v1_generated_Registry_TagApiDeploymentRevision_async]

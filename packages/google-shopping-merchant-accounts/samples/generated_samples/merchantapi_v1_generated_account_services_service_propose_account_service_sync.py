@@ -50,4 +50,5 @@ def sample_propose_account_service():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_AccountServicesService_ProposeAccountService_sync]

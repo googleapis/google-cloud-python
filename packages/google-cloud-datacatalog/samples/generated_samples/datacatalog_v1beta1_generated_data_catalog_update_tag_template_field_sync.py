@@ -53,4 +53,5 @@ def sample_update_tag_template_field():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1beta1_generated_DataCatalog_UpdateTagTemplateField_sync]

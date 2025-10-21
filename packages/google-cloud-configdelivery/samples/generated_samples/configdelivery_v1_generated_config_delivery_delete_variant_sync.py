@@ -53,4 +53,5 @@ def sample_delete_variant():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1_generated_ConfigDelivery_DeleteVariant_sync]

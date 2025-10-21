@@ -39,13 +39,13 @@ async def sample_list_info_types():
     client = dlp_v2.DlpServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = dlp_v2.ListInfoTypesRequest(
-    )
+    request = dlp_v2.ListInfoTypesRequest()
 
     # Make the request
     response = await client.list_info_types(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dlp_v2_generated_DlpService_ListInfoTypes_async]

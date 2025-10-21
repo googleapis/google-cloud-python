@@ -56,4 +56,5 @@ async def sample_update_folder():
     # Handle the response
     print(response)
 
+
 # [END cloudresourcemanager_v3_generated_Folders_UpdateFolder_async]

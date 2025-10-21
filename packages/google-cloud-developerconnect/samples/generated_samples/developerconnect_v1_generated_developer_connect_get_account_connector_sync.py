@@ -49,4 +49,5 @@ def sample_get_account_connector():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_GetAccountConnector_sync]

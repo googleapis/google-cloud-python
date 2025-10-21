@@ -39,8 +39,10 @@ def sample_list_security_health_analytics_custom_modules():
     client = securitycentermanagement_v1.SecurityCenterManagementClient()
 
     # Initialize request argument(s)
-    request = securitycentermanagement_v1.ListSecurityHealthAnalyticsCustomModulesRequest(
-        parent="parent_value",
+    request = (
+        securitycentermanagement_v1.ListSecurityHealthAnalyticsCustomModulesRequest(
+            parent="parent_value",
+        )
     )
 
     # Make the request
@@ -49,5 +51,6 @@ def sample_list_security_health_analytics_custom_modules():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_ListSecurityHealthAnalyticsCustomModules_sync]

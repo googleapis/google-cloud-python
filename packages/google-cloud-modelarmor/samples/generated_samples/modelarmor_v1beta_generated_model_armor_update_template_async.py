@@ -39,13 +39,13 @@ async def sample_update_template():
     client = modelarmor_v1beta.ModelArmorAsyncClient()
 
     # Initialize request argument(s)
-    request = modelarmor_v1beta.UpdateTemplateRequest(
-    )
+    request = modelarmor_v1beta.UpdateTemplateRequest()
 
     # Make the request
     response = await client.update_template(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END modelarmor_v1beta_generated_ModelArmor_UpdateTemplate_async]

@@ -39,13 +39,13 @@ def sample_update_license_pool():
     client = commerce_consumer_procurement_v1.LicenseManagementServiceClient()
 
     # Initialize request argument(s)
-    request = commerce_consumer_procurement_v1.UpdateLicensePoolRequest(
-    )
+    request = commerce_consumer_procurement_v1.UpdateLicensePoolRequest()
 
     # Make the request
     response = client.update_license_pool(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudcommerceconsumerprocurement_v1_generated_LicenseManagementService_UpdateLicensePool_sync]

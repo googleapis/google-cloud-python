@@ -49,4 +49,5 @@ async def sample_get_analysis():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_GetAnalysis_async]

@@ -42,7 +42,7 @@ async def sample_add_fulfillment_places():
     request = retail_v2.AddFulfillmentPlacesRequest(
         product="product_value",
         type_="type__value",
-        place_ids=['place_ids_value1', 'place_ids_value2'],
+        place_ids=["place_ids_value1", "place_ids_value2"],
     )
 
     # Make the request
@@ -54,5 +54,6 @@ async def sample_add_fulfillment_places():
 
     # Handle the response
     print(response)
+
 
 # [END retail_v2_generated_ProductService_AddFulfillmentPlaces_async]

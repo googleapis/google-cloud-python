@@ -39,13 +39,13 @@ async def sample_get_snapshot():
     client = dataflow_v1beta3.SnapshotsV1Beta3AsyncClient()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.GetSnapshotRequest(
-    )
+    request = dataflow_v1beta3.GetSnapshotRequest()
 
     # Make the request
     response = await client.get_snapshot(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataflow_v1beta3_generated_SnapshotsV1Beta3_GetSnapshot_async]

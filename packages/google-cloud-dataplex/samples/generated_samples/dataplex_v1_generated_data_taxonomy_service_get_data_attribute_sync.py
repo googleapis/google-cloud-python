@@ -49,4 +49,5 @@ def sample_get_data_attribute():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_DataTaxonomyService_GetDataAttribute_sync]

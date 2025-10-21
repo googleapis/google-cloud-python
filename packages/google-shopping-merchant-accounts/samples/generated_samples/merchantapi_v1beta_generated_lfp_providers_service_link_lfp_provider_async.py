@@ -50,4 +50,5 @@ async def sample_link_lfp_provider():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_LfpProvidersService_LinkLfpProvider_async]

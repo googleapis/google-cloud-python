@@ -53,4 +53,5 @@ async def sample_batch_create_resource_value_configs():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v2_generated_SecurityCenter_BatchCreateResourceValueConfigs_async]

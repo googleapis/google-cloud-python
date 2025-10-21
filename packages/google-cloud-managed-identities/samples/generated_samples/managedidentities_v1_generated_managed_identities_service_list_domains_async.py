@@ -50,4 +50,5 @@ async def sample_list_domains():
     async for response in page_result:
         print(response)
 
+
 # [END managedidentities_v1_generated_ManagedIdentitiesService_ListDomains_async]

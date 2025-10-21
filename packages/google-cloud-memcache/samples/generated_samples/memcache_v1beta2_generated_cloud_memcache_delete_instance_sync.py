@@ -53,4 +53,5 @@ def sample_delete_instance():
     # Handle the response
     print(response)
 
+
 # [END memcache_v1beta2_generated_CloudMemcache_DeleteInstance_sync]

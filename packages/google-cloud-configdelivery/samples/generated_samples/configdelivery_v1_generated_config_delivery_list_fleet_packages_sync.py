@@ -50,4 +50,5 @@ def sample_list_fleet_packages():
     for response in page_result:
         print(response)
 
+
 # [END configdelivery_v1_generated_ConfigDelivery_ListFleetPackages_sync]

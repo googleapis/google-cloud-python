@@ -50,4 +50,5 @@ async def sample_list_subscriptions():
     async for response in page_result:
         print(response)
 
+
 # [END workspaceevents_v1beta_generated_SubscriptionsService_ListSubscriptions_async]

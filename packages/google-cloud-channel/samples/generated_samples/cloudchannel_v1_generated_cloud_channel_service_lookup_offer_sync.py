@@ -49,4 +49,5 @@ def sample_lookup_offer():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_LookupOffer_sync]

@@ -39,8 +39,7 @@ async def sample_update_cluster():
     client = vmwareengine_v1.VmwareEngineAsyncClient()
 
     # Initialize request argument(s)
-    request = vmwareengine_v1.UpdateClusterRequest(
-    )
+    request = vmwareengine_v1.UpdateClusterRequest()
 
     # Make the request
     operation = client.update_cluster(request=request)
@@ -51,5 +50,6 @@ async def sample_update_cluster():
 
     # Handle the response
     print(response)
+
 
 # [END vmwareengine_v1_generated_VmwareEngine_UpdateCluster_async]

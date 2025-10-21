@@ -53,4 +53,5 @@ def sample_undelete_key():
     # Handle the response
     print(response)
 
+
 # [END apikeys_v2_generated_ApiKeys_UndeleteKey_sync]

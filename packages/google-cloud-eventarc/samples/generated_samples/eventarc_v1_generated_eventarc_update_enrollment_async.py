@@ -58,4 +58,5 @@ async def sample_update_enrollment():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_UpdateEnrollment_async]

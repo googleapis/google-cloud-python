@@ -49,4 +49,5 @@ def sample_get_function():
     # Handle the response
     print(response)
 
+
 # [END cloudfunctions_v2_generated_FunctionService_GetFunction_sync]

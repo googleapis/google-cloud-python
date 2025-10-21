@@ -49,4 +49,5 @@ def sample_get_vehicle():
     # Handle the response
     print(response)
 
+
 # [END fleetengine_v1_generated_VehicleService_GetVehicle_sync]

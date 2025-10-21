@@ -49,4 +49,5 @@ async def sample_get_instance():
     # Handle the response
     print(response)
 
+
 # [END licensemanager_v1_generated_LicenseManager_GetInstance_async]

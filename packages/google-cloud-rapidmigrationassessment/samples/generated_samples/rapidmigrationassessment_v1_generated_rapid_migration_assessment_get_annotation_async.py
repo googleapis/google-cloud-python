@@ -49,4 +49,5 @@ async def sample_get_annotation():
     # Handle the response
     print(response)
 
+
 # [END rapidmigrationassessment_v1_generated_RapidMigrationAssessment_GetAnnotation_async]

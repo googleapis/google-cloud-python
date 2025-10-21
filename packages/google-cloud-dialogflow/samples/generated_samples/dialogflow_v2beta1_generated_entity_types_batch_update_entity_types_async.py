@@ -54,4 +54,5 @@ async def sample_batch_update_entity_types():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_EntityTypes_BatchUpdateEntityTypes_async]

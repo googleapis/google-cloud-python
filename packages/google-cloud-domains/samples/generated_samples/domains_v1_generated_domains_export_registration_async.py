@@ -53,4 +53,5 @@ async def sample_export_registration():
     # Handle the response
     print(response)
 
+
 # [END domains_v1_generated_Domains_ExportRegistration_async]

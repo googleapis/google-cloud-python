@@ -39,13 +39,13 @@ async def sample_update_user_workloads_secret():
     client = service_v1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1.UpdateUserWorkloadsSecretRequest(
-    )
+    request = service_v1.UpdateUserWorkloadsSecretRequest()
 
     # Make the request
     response = await client.update_user_workloads_secret(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1_generated_Environments_UpdateUserWorkloadsSecret_async]

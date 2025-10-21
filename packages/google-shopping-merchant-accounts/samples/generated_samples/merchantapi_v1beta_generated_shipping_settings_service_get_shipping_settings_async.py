@@ -49,4 +49,5 @@ async def sample_get_shipping_settings():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_ShippingSettingsService_GetShippingSettings_async]

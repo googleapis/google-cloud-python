@@ -50,4 +50,5 @@ async def sample_list_column_data_profiles():
     async for response in page_result:
         print(response)
 
+
 # [END dlp_v2_generated_DlpService_ListColumnDataProfiles_async]

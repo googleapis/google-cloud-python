@@ -50,4 +50,5 @@ async def sample_list_subnets():
     async for response in page_result:
         print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_ListSubnets_async]

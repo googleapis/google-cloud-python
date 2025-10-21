@@ -48,7 +48,10 @@ def sample_batch_translate_document():
     request = translate_v3beta1.BatchTranslateDocumentRequest(
         parent="parent_value",
         source_language_code="source_language_code_value",
-        target_language_codes=['target_language_codes_value1', 'target_language_codes_value2'],
+        target_language_codes=[
+            "target_language_codes_value1",
+            "target_language_codes_value2",
+        ],
         input_configs=input_configs,
         output_config=output_config,
     )
@@ -62,5 +65,6 @@ def sample_batch_translate_document():
 
     # Handle the response
     print(response)
+
 
 # [END translate_v3beta1_generated_TranslationService_BatchTranslateDocument_sync]

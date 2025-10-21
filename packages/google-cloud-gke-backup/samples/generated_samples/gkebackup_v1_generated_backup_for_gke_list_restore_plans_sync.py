@@ -50,4 +50,5 @@ def sample_list_restore_plans():
     for response in page_result:
         print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_ListRestorePlans_sync]

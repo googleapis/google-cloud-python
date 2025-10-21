@@ -53,4 +53,5 @@ def sample_import_taxonomies():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1beta1_generated_PolicyTagManagerSerialization_ImportTaxonomies_sync]

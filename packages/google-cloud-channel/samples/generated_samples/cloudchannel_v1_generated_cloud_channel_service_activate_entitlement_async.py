@@ -53,4 +53,5 @@ async def sample_activate_entitlement():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ActivateEntitlement_async]

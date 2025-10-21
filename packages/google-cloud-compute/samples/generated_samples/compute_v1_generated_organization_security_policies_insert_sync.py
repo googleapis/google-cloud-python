@@ -39,13 +39,13 @@ def sample_insert():
     client = compute_v1.OrganizationSecurityPoliciesClient()
 
     # Initialize request argument(s)
-    request = compute_v1.InsertOrganizationSecurityPolicyRequest(
-    )
+    request = compute_v1.InsertOrganizationSecurityPolicyRequest()
 
     # Make the request
     response = client.insert(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END compute_v1_generated_OrganizationSecurityPolicies_Insert_sync]

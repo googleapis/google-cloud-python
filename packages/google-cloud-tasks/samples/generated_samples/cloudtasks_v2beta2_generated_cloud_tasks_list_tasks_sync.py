@@ -50,4 +50,5 @@ def sample_list_tasks():
     for response in page_result:
         print(response)
 
+
 # [END cloudtasks_v2beta2_generated_CloudTasks_ListTasks_sync]

@@ -49,4 +49,5 @@ async def sample_request_inventory_verification():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_OmnichannelSettingsService_RequestInventoryVerification_async]

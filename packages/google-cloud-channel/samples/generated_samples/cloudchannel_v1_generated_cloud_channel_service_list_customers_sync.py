@@ -50,4 +50,5 @@ def sample_list_customers():
     for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ListCustomers_sync]

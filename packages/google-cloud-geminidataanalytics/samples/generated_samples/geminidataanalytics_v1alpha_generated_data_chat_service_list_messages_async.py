@@ -50,4 +50,5 @@ async def sample_list_messages():
     async for response in page_result:
         print(response)
 
+
 # [END geminidataanalytics_v1alpha_generated_DataChatService_ListMessages_async]

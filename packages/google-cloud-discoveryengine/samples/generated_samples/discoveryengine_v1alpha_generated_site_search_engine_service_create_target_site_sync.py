@@ -57,4 +57,5 @@ def sample_create_target_site():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_SiteSearchEngineService_CreateTargetSite_sync]

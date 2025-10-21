@@ -49,4 +49,5 @@ async def sample_get_route():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1_generated_Datastream_GetRoute_async]

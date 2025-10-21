@@ -50,4 +50,5 @@ async def sample_list_service_configs():
     async for response in page_result:
         print(response)
 
+
 # [END servicemanagement_v1_generated_ServiceManager_ListServiceConfigs_async]

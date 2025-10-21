@@ -53,4 +53,5 @@ def sample_create_compilation_result():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_CreateCompilationResult_sync]

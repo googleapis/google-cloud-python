@@ -51,4 +51,5 @@ async def sample_search_grants():
     async for response in page_result:
         print(response)
 
+
 # [END privilegedaccessmanager_v1_generated_PrivilegedAccessManager_SearchGrants_async]

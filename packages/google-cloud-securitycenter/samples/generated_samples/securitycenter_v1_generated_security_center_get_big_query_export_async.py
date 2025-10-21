@@ -49,4 +49,5 @@ async def sample_get_big_query_export():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_GetBigQueryExport_async]

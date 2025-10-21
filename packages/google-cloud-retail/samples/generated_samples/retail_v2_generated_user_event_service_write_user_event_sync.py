@@ -54,4 +54,5 @@ def sample_write_user_event():
     # Handle the response
     print(response)
 
+
 # [END retail_v2_generated_UserEventService_WriteUserEvent_sync]

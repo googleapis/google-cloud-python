@@ -49,4 +49,5 @@ def sample_get_endpoint():
     # Handle the response
     print(response)
 
+
 # [END ids_v1_generated_IDS_GetEndpoint_sync]

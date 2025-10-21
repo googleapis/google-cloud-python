@@ -50,4 +50,5 @@ def sample_list_entries():
     for response in page_result:
         print(response)
 
+
 # [END datacatalog_v1beta1_generated_DataCatalog_ListEntries_sync]

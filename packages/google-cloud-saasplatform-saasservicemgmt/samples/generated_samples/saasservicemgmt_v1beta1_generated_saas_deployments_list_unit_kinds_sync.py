@@ -50,4 +50,5 @@ def sample_list_unit_kinds():
     for response in page_result:
         print(response)
 
+
 # [END saasservicemgmt_v1beta1_generated_SaasDeployments_ListUnitKinds_sync]

@@ -40,7 +40,7 @@ def sample_translate_text():
 
     # Initialize request argument(s)
     request = translate_v3.TranslateTextRequest(
-        contents=['contents_value1', 'contents_value2'],
+        contents=["contents_value1", "contents_value2"],
         target_language_code="target_language_code_value",
         parent="parent_value",
     )
@@ -50,5 +50,6 @@ def sample_translate_text():
 
     # Handle the response
     print(response)
+
 
 # [END translate_v3_generated_TranslationService_TranslateText_sync]

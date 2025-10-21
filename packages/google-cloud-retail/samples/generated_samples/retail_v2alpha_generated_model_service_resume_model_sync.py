@@ -49,4 +49,5 @@ def sample_resume_model():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_ModelService_ResumeModel_sync]

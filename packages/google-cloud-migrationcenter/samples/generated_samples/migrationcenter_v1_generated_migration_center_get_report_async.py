@@ -49,4 +49,5 @@ async def sample_get_report():
     # Handle the response
     print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_GetReport_async]

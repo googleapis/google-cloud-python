@@ -39,13 +39,13 @@ def sample_check():
     client = servicecontrol_v1.ServiceControllerClient()
 
     # Initialize request argument(s)
-    request = servicecontrol_v1.CheckRequest(
-    )
+    request = servicecontrol_v1.CheckRequest()
 
     # Make the request
     response = client.check(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END servicecontrol_v1_generated_ServiceController_Check_sync]

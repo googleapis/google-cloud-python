@@ -49,4 +49,5 @@ def sample_get_aws_json_web_keys():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AwsClusters_GetAwsJsonWebKeys_sync]

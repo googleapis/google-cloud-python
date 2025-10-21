@@ -50,4 +50,5 @@ async def sample_search_lite():
     async for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1beta_generated_SearchService_SearchLite_async]

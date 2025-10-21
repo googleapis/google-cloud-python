@@ -39,13 +39,13 @@ async def sample_update_document():
     client = generativelanguage_v1beta.RetrieverServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.UpdateDocumentRequest(
-    )
+    request = generativelanguage_v1beta.UpdateDocumentRequest()
 
     # Make the request
     response = await client.update_document(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta_generated_RetrieverService_UpdateDocument_async]

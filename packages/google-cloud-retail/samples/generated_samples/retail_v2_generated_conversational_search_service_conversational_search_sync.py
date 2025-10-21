@@ -52,4 +52,5 @@ def sample_conversational_search():
     for response in stream:
         print(response)
 
+
 # [END retail_v2_generated_ConversationalSearchService_ConversationalSearch_sync]

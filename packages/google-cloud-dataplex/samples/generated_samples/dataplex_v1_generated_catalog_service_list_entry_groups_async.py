@@ -50,4 +50,5 @@ async def sample_list_entry_groups():
     async for response in page_result:
         print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_ListEntryGroups_async]

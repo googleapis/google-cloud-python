@@ -50,4 +50,5 @@ def sample_list_vod_ad_tag_details():
     for response in page_result:
         print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_ListVodAdTagDetails_sync]

@@ -53,4 +53,5 @@ def sample_delete_process():
     # Handle the response
     print(response)
 
+
 # [END datalineage_v1_generated_Lineage_DeleteProcess_sync]

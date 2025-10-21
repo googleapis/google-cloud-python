@@ -51,4 +51,5 @@ def sample_get_status():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_VpnGateways_GetStatus_sync]

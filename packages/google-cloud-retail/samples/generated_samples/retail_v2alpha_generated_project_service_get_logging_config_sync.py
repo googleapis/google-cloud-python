@@ -49,4 +49,5 @@ def sample_get_logging_config():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_ProjectService_GetLoggingConfig_sync]

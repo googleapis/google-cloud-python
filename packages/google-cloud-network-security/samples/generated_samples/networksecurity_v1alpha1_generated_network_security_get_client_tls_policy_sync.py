@@ -49,4 +49,5 @@ def sample_get_client_tls_policy():
     # Handle the response
     print(response)
 
+
 # [END networksecurity_v1alpha1_generated_NetworkSecurity_GetClientTlsPolicy_sync]

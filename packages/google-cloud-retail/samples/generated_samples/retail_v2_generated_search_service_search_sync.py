@@ -51,4 +51,5 @@ def sample_search():
     for response in page_result:
         print(response)
 
+
 # [END retail_v2_generated_SearchService_Search_sync]

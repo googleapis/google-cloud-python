@@ -64,4 +64,5 @@ async def sample_transfer_domain():
     # Handle the response
     print(response)
 
+
 # [END domains_v1_generated_Domains_TransferDomain_async]

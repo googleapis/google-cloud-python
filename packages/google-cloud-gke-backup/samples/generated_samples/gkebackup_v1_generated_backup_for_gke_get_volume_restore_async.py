@@ -49,4 +49,5 @@ async def sample_get_volume_restore():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_GetVolumeRestore_async]

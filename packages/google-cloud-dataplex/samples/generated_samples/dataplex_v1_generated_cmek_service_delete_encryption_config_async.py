@@ -53,4 +53,5 @@ async def sample_delete_encryption_config():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CmekService_DeleteEncryptionConfig_async]

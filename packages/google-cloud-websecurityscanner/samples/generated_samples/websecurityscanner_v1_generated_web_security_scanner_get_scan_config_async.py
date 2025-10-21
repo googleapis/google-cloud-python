@@ -39,13 +39,13 @@ async def sample_get_scan_config():
     client = websecurityscanner_v1.WebSecurityScannerAsyncClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.GetScanConfigRequest(
-    )
+    request = websecurityscanner_v1.GetScanConfigRequest()
 
     # Make the request
     response = await client.get_scan_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END websecurityscanner_v1_generated_WebSecurityScanner_GetScanConfig_async]

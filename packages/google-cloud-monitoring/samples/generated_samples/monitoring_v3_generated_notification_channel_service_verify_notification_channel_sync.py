@@ -50,4 +50,5 @@ def sample_verify_notification_channel():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_NotificationChannelService_VerifyNotificationChannel_sync]

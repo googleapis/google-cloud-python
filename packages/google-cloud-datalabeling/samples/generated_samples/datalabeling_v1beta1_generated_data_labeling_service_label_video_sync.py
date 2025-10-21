@@ -40,7 +40,9 @@ def sample_label_video():
 
     # Initialize request argument(s)
     video_classification_config = datalabeling_v1beta1.VideoClassificationConfig()
-    video_classification_config.annotation_spec_set_configs.annotation_spec_set = "annotation_spec_set_value"
+    video_classification_config.annotation_spec_set_configs.annotation_spec_set = (
+        "annotation_spec_set_value"
+    )
 
     basic_config = datalabeling_v1beta1.HumanAnnotationConfig()
     basic_config.instruction = "instruction_value"
@@ -62,5 +64,6 @@ def sample_label_video():
 
     # Handle the response
     print(response)
+
 
 # [END datalabeling_v1beta1_generated_DataLabelingService_LabelVideo_sync]

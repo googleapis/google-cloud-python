@@ -60,4 +60,5 @@ async def sample_synthesize_speech():
     # Handle the response
     print(response)
 
+
 # [END texttospeech_v1beta1_generated_TextToSpeech_SynthesizeSpeech_async]

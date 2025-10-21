@@ -50,4 +50,5 @@ def sample_complete_query():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_CompletionService_CompleteQuery_sync]

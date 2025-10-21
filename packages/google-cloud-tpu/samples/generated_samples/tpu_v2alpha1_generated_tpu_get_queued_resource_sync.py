@@ -49,4 +49,5 @@ def sample_get_queued_resource():
     # Handle the response
     print(response)
 
+
 # [END tpu_v2alpha1_generated_Tpu_GetQueuedResource_sync]

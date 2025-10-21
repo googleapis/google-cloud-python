@@ -60,4 +60,5 @@ def sample_create_hardware_group():
     # Handle the response
     print(response)
 
+
 # [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_CreateHardwareGroup_sync]

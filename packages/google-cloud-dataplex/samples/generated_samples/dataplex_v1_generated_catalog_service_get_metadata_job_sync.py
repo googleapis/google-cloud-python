@@ -49,4 +49,5 @@ def sample_get_metadata_job():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_GetMetadataJob_sync]

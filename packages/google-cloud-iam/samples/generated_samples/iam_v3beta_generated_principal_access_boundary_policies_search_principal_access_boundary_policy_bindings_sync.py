@@ -44,10 +44,13 @@ def sample_search_principal_access_boundary_policy_bindings():
     )
 
     # Make the request
-    page_result = client.search_principal_access_boundary_policy_bindings(request=request)
+    page_result = client.search_principal_access_boundary_policy_bindings(
+        request=request
+    )
 
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END iam_v3beta_generated_PrincipalAccessBoundaryPolicies_SearchPrincipalAccessBoundaryPolicyBindings_sync]

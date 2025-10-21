@@ -41,7 +41,7 @@ def sample_batch_create_entities():
     # Initialize request argument(s)
     entities = dialogflow_v2.Entity()
     entities.value = "value_value"
-    entities.synonyms = ['synonyms_value1', 'synonyms_value2']
+    entities.synonyms = ["synonyms_value1", "synonyms_value2"]
 
     request = dialogflow_v2.BatchCreateEntitiesRequest(
         parent="parent_value",
@@ -57,5 +57,6 @@ def sample_batch_create_entities():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2_generated_EntityTypes_BatchCreateEntities_sync]

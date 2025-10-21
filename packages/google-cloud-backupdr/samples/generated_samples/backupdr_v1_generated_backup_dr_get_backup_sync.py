@@ -49,4 +49,5 @@ def sample_get_backup():
     # Handle the response
     print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_GetBackup_sync]

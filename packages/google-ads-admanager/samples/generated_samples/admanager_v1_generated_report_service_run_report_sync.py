@@ -53,4 +53,5 @@ def sample_run_report():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_ReportService_RunReport_sync]

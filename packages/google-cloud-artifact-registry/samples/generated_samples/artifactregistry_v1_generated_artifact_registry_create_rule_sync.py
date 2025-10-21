@@ -49,4 +49,5 @@ def sample_create_rule():
     # Handle the response
     print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_CreateRule_sync]

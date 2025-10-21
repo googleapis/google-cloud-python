@@ -53,4 +53,5 @@ async def sample_stop_node():
     # Handle the response
     print(response)
 
+
 # [END tpu_v2_generated_Tpu_StopNode_async]

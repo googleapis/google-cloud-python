@@ -54,4 +54,5 @@ async def sample_create_stream():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_StreamsService_CreateStream_async]

@@ -53,4 +53,5 @@ async def sample_failover_instance():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_FailoverInstance_async]

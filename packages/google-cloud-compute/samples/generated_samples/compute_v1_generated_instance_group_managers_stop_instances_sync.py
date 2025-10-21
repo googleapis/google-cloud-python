@@ -51,4 +51,5 @@ def sample_stop_instances():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_InstanceGroupManagers_StopInstances_sync]

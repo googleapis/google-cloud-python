@@ -52,4 +52,5 @@ async def sample_update_customer():
     # Handle the response
     print(response)
 
+
 # [END cloudcontrolspartner_v1beta_generated_CloudControlsPartnerCore_UpdateCustomer_async]

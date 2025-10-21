@@ -53,4 +53,5 @@ def sample_undelete_private_cloud():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_UndeletePrivateCloud_sync]

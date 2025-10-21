@@ -39,13 +39,13 @@ async def sample_compute_routes():
     client = routing_v2.RoutesAsyncClient()
 
     # Initialize request argument(s)
-    request = routing_v2.ComputeRoutesRequest(
-    )
+    request = routing_v2.ComputeRoutesRequest()
 
     # Make the request
     response = await client.compute_routes(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END routes_v2_generated_Routes_ComputeRoutes_async]

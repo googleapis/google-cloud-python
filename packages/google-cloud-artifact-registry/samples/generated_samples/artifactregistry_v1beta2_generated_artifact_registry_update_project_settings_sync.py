@@ -39,13 +39,13 @@ def sample_update_project_settings():
     client = artifactregistry_v1beta2.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1beta2.UpdateProjectSettingsRequest(
-    )
+    request = artifactregistry_v1beta2.UpdateProjectSettingsRequest()
 
     # Make the request
     response = client.update_project_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1beta2_generated_ArtifactRegistry_UpdateProjectSettings_sync]

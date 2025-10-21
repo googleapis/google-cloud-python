@@ -49,4 +49,5 @@ def sample_get_space():
     # Handle the response
     print(response)
 
+
 # [END meet_v2_generated_SpacesService_GetSpace_sync]

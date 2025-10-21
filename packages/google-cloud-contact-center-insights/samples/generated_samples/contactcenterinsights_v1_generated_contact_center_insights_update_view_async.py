@@ -39,13 +39,13 @@ async def sample_update_view():
     client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
     # Initialize request argument(s)
-    request = contact_center_insights_v1.UpdateViewRequest(
-    )
+    request = contact_center_insights_v1.UpdateViewRequest()
 
     # Make the request
     response = await client.update_view(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_UpdateView_async]

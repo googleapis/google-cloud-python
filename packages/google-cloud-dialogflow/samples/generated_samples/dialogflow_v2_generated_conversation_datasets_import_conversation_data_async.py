@@ -40,7 +40,7 @@ async def sample_import_conversation_data():
 
     # Initialize request argument(s)
     input_config = dialogflow_v2.InputConfig()
-    input_config.gcs_source.uris = ['uris_value1', 'uris_value2']
+    input_config.gcs_source.uris = ["uris_value1", "uris_value2"]
 
     request = dialogflow_v2.ImportConversationDataRequest(
         name="name_value",
@@ -56,5 +56,6 @@ async def sample_import_conversation_data():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2_generated_ConversationDatasets_ImportConversationData_async]

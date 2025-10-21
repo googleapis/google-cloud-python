@@ -50,4 +50,5 @@ def sample_list_external_addresses():
     for response in page_result:
         print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_ListExternalAddresses_sync]

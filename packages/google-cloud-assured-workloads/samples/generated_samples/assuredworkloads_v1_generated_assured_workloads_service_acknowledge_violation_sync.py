@@ -50,4 +50,5 @@ def sample_acknowledge_violation():
     # Handle the response
     print(response)
 
+
 # [END assuredworkloads_v1_generated_AssuredWorkloadsService_AcknowledgeViolation_sync]

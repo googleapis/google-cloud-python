@@ -54,4 +54,5 @@ def sample_insert_product_review():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_ProductReviewsService_InsertProductReview_sync]

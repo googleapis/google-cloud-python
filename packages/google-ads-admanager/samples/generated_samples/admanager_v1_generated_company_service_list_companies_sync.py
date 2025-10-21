@@ -50,4 +50,5 @@ def sample_list_companies():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_CompanyService_ListCompanies_sync]

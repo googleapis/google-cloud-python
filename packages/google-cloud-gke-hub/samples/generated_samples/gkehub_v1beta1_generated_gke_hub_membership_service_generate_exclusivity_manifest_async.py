@@ -49,4 +49,5 @@ async def sample_generate_exclusivity_manifest():
     # Handle the response
     print(response)
 
+
 # [END gkehub_v1beta1_generated_GkeHubMembershipService_GenerateExclusivityManifest_async]

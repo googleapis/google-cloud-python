@@ -39,13 +39,13 @@ def sample_update_big_query_export():
     client = securitycenter_v2.SecurityCenterClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v2.UpdateBigQueryExportRequest(
-    )
+    request = securitycenter_v2.UpdateBigQueryExportRequest()
 
     # Make the request
     response = client.update_big_query_export(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v2_generated_SecurityCenter_UpdateBigQueryExport_sync]

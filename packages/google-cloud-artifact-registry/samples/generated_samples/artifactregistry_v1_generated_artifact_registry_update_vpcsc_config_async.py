@@ -39,13 +39,13 @@ async def sample_update_vpcsc_config():
     client = artifactregistry_v1.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.UpdateVPCSCConfigRequest(
-    )
+    request = artifactregistry_v1.UpdateVPCSCConfigRequest()
 
     # Make the request
     response = await client.update_vpcsc_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_UpdateVPCSCConfig_async]

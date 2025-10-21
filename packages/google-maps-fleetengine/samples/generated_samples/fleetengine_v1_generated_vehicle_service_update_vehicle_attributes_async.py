@@ -53,4 +53,5 @@ async def sample_update_vehicle_attributes():
     # Handle the response
     print(response)
 
+
 # [END fleetengine_v1_generated_VehicleService_UpdateVehicleAttributes_async]

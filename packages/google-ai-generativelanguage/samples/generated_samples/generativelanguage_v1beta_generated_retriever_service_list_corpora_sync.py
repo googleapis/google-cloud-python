@@ -39,8 +39,7 @@ def sample_list_corpora():
     client = generativelanguage_v1beta.RetrieverServiceClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.ListCorporaRequest(
-    )
+    request = generativelanguage_v1beta.ListCorporaRequest()
 
     # Make the request
     page_result = client.list_corpora(request=request)
@@ -48,5 +47,6 @@ def sample_list_corpora():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END generativelanguage_v1beta_generated_RetrieverService_ListCorpora_sync]

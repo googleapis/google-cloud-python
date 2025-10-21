@@ -54,4 +54,5 @@ def sample_create_sample_query():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1beta_generated_SampleQueryService_CreateSampleQuery_sync]

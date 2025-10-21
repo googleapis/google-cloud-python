@@ -50,4 +50,5 @@ def sample_set_finding_state():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v2_generated_SecurityCenter_SetFindingState_sync]

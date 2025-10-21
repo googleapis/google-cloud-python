@@ -39,13 +39,13 @@ def sample_list_associations():
     client = compute_v1beta.FirewallPoliciesClient()
 
     # Initialize request argument(s)
-    request = compute_v1beta.ListAssociationsFirewallPolicyRequest(
-    )
+    request = compute_v1beta.ListAssociationsFirewallPolicyRequest()
 
     # Make the request
     response = client.list_associations(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END compute_v1beta_generated_FirewallPolicies_ListAssociations_sync]

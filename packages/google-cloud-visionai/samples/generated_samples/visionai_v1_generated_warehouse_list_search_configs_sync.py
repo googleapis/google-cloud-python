@@ -50,4 +50,5 @@ def sample_list_search_configs():
     for response in page_result:
         print(response)
 
+
 # [END visionai_v1_generated_Warehouse_ListSearchConfigs_sync]

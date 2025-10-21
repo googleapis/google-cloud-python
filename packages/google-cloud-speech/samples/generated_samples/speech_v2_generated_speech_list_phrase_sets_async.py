@@ -50,4 +50,5 @@ async def sample_list_phrase_sets():
     async for response in page_result:
         print(response)
 
+
 # [END speech_v2_generated_Speech_ListPhraseSets_async]

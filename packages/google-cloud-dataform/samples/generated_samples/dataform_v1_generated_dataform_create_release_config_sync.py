@@ -54,4 +54,5 @@ def sample_create_release_config():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1_generated_Dataform_CreateReleaseConfig_sync]

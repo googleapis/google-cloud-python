@@ -43,7 +43,7 @@ async def sample_insert_promotion():
     promotion.promotion_id = "promotion_id_value"
     promotion.content_language = "content_language_value"
     promotion.target_country = "target_country_value"
-    promotion.redemption_channel = ['ONLINE']
+    promotion.redemption_channel = ["ONLINE"]
 
     request = merchant_promotions_v1.InsertPromotionRequest(
         parent="parent_value",
@@ -56,5 +56,6 @@ async def sample_insert_promotion():
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_PromotionsService_InsertPromotion_async]

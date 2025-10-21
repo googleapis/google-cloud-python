@@ -49,4 +49,5 @@ async def sample_embed_text():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1alpha_generated_TextService_EmbedText_async]

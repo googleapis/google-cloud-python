@@ -39,13 +39,13 @@ async def sample_update_custom_constraint():
     client = orgpolicy_v2.OrgPolicyAsyncClient()
 
     # Initialize request argument(s)
-    request = orgpolicy_v2.UpdateCustomConstraintRequest(
-    )
+    request = orgpolicy_v2.UpdateCustomConstraintRequest()
 
     # Make the request
     response = await client.update_custom_constraint(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END orgpolicy_v2_generated_OrgPolicy_UpdateCustomConstraint_async]

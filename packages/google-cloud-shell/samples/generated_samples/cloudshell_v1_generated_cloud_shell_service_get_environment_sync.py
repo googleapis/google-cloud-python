@@ -49,4 +49,5 @@ def sample_get_environment():
     # Handle the response
     print(response)
 
+
 # [END cloudshell_v1_generated_CloudShellService_GetEnvironment_sync]

@@ -41,7 +41,7 @@ def sample_assign():
     # Initialize request argument(s)
     request = commerce_consumer_procurement_v1.AssignRequest(
         parent="parent_value",
-        usernames=['usernames_value1', 'usernames_value2'],
+        usernames=["usernames_value1", "usernames_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ def sample_assign():
 
     # Handle the response
     print(response)
+
 
 # [END cloudcommerceconsumerprocurement_v1_generated_LicenseManagementService_Assign_sync]

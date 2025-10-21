@@ -41,7 +41,7 @@ async def sample_import_adaptive_mt_file():
     # Initialize request argument(s)
     file_input_source = translate_v3.FileInputSource()
     file_input_source.mime_type = "mime_type_value"
-    file_input_source.content = b'content_blob'
+    file_input_source.content = b"content_blob"
     file_input_source.display_name = "display_name_value"
 
     request = translate_v3.ImportAdaptiveMtFileRequest(
@@ -54,5 +54,6 @@ async def sample_import_adaptive_mt_file():
 
     # Handle the response
     print(response)
+
 
 # [END translate_v3_generated_TranslationService_ImportAdaptiveMtFile_async]

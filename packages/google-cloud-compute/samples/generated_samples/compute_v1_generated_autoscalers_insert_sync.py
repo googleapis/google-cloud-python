@@ -50,4 +50,5 @@ def sample_insert():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Autoscalers_Insert_sync]

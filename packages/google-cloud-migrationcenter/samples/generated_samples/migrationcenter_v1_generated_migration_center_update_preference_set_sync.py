@@ -39,8 +39,7 @@ def sample_update_preference_set():
     client = migrationcenter_v1.MigrationCenterClient()
 
     # Initialize request argument(s)
-    request = migrationcenter_v1.UpdatePreferenceSetRequest(
-    )
+    request = migrationcenter_v1.UpdatePreferenceSetRequest()
 
     # Make the request
     operation = client.update_preference_set(request=request)
@@ -51,5 +50,6 @@ def sample_update_preference_set():
 
     # Handle the response
     print(response)
+
 
 # [END migrationcenter_v1_generated_MigrationCenter_UpdatePreferenceSet_sync]

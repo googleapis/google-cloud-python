@@ -60,4 +60,5 @@ async def sample_batch_update_jobs():
     # Handle the response
     print(response)
 
+
 # [END jobs_v4_generated_JobService_BatchUpdateJobs_async]

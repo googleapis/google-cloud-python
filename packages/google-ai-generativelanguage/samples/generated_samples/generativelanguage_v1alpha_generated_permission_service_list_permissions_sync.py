@@ -50,4 +50,5 @@ def sample_list_permissions():
     for response in page_result:
         print(response)
 
+
 # [END generativelanguage_v1alpha_generated_PermissionService_ListPermissions_sync]

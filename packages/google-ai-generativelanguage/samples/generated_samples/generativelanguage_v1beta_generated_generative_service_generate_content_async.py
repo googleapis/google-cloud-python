@@ -49,4 +49,5 @@ async def sample_generate_content():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_GenerativeService_GenerateContent_async]

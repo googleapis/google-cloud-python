@@ -50,4 +50,5 @@ async def sample_fetch_tree():
     async for response in page_result:
         print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_FetchTree_async]

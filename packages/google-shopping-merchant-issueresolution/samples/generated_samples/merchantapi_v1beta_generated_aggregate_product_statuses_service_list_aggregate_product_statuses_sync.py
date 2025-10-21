@@ -50,4 +50,5 @@ def sample_list_aggregate_product_statuses():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1beta_generated_AggregateProductStatusesService_ListAggregateProductStatuses_sync]

@@ -40,7 +40,7 @@ def sample_translate_document():
 
     # Initialize request argument(s)
     document_input_config = translate_v3beta1.DocumentInputConfig()
-    document_input_config.content = b'content_blob'
+    document_input_config.content = b"content_blob"
 
     request = translate_v3beta1.TranslateDocumentRequest(
         parent="parent_value",
@@ -53,5 +53,6 @@ def sample_translate_document():
 
     # Handle the response
     print(response)
+
 
 # [END translate_v3beta1_generated_TranslationService_TranslateDocument_sync]

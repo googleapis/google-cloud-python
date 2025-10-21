@@ -49,4 +49,5 @@ async def sample_lookup_service_project_attachment():
     # Handle the response
     print(response)
 
+
 # [END apphub_v1_generated_AppHub_LookupServiceProjectAttachment_async]

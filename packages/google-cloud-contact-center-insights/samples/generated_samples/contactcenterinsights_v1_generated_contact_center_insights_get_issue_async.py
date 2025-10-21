@@ -49,4 +49,5 @@ async def sample_get_issue():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_GetIssue_async]

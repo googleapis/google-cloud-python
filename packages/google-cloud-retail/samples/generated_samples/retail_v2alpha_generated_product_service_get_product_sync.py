@@ -49,4 +49,5 @@ def sample_get_product():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_ProductService_GetProduct_sync]

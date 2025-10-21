@@ -53,4 +53,5 @@ def sample_delete_endpoint():
     # Handle the response
     print(response)
 
+
 # [END ids_v1_generated_IDS_DeleteEndpoint_sync]

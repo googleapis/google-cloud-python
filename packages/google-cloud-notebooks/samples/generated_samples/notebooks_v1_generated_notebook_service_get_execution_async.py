@@ -49,4 +49,5 @@ async def sample_get_execution():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_GetExecution_async]

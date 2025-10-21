@@ -52,4 +52,5 @@ def sample_list():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1beta_generated_InstanceGroupManagerResizeRequests_List_sync]

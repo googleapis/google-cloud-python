@@ -54,4 +54,5 @@ def sample_create_listing():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1beta1_generated_AnalyticsHubService_CreateListing_sync]

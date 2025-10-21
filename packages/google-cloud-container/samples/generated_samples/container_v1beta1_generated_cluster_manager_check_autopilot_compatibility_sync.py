@@ -39,13 +39,13 @@ def sample_check_autopilot_compatibility():
     client = container_v1beta1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.CheckAutopilotCompatibilityRequest(
-    )
+    request = container_v1beta1.CheckAutopilotCompatibilityRequest()
 
     # Make the request
     response = client.check_autopilot_compatibility(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_CheckAutopilotCompatibility_sync]

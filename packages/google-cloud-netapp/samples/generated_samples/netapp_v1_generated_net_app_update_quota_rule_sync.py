@@ -57,4 +57,5 @@ def sample_update_quota_rule():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_UpdateQuotaRule_sync]

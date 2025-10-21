@@ -41,7 +41,7 @@ def sample_update_serving_config():
     # Initialize request argument(s)
     serving_config = retail_v2beta.ServingConfig()
     serving_config.display_name = "display_name_value"
-    serving_config.solution_types = ['SOLUTION_TYPE_SEARCH']
+    serving_config.solution_types = ["SOLUTION_TYPE_SEARCH"]
 
     request = retail_v2beta.UpdateServingConfigRequest(
         serving_config=serving_config,
@@ -52,5 +52,6 @@ def sample_update_serving_config():
 
     # Handle the response
     print(response)
+
 
 # [END retail_v2beta_generated_ServingConfigService_UpdateServingConfig_sync]

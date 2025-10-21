@@ -49,4 +49,5 @@ async def sample_get_stream():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1alpha1_generated_Datastream_GetStream_async]

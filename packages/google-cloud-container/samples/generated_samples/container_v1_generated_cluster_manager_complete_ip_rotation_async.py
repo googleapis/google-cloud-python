@@ -39,13 +39,13 @@ async def sample_complete_ip_rotation():
     client = container_v1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1.CompleteIPRotationRequest(
-    )
+    request = container_v1.CompleteIPRotationRequest()
 
     # Make the request
     response = await client.complete_ip_rotation(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1_generated_ClusterManager_CompleteIPRotation_async]

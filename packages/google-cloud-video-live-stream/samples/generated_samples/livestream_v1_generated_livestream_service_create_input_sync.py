@@ -54,4 +54,5 @@ def sample_create_input():
     # Handle the response
     print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_CreateInput_sync]

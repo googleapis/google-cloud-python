@@ -50,4 +50,5 @@ def sample_list_clusters():
     for response in page_result:
         print(response)
 
+
 # [END visionai_v1_generated_StreamsService_ListClusters_sync]

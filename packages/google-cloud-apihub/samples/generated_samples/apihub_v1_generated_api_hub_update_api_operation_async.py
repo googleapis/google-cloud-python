@@ -39,13 +39,13 @@ async def sample_update_api_operation():
     client = apihub_v1.ApiHubAsyncClient()
 
     # Initialize request argument(s)
-    request = apihub_v1.UpdateApiOperationRequest(
-    )
+    request = apihub_v1.UpdateApiOperationRequest()
 
     # Make the request
     response = await client.update_api_operation(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END apihub_v1_generated_ApiHub_UpdateApiOperation_async]

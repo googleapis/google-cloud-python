@@ -40,7 +40,7 @@ async def sample_publish():
 
     # Initialize request argument(s)
     proto_message = eventarc_publishing_v1.CloudEvent()
-    proto_message.binary_data = b'binary_data_blob'
+    proto_message.binary_data = b"binary_data_blob"
     proto_message.id = "id_value"
     proto_message.source = "source_value"
     proto_message.spec_version = "spec_version_value"
@@ -56,5 +56,6 @@ async def sample_publish():
 
     # Handle the response
     print(response)
+
 
 # [END eventarcpublishing_v1_generated_Publisher_Publish_async]

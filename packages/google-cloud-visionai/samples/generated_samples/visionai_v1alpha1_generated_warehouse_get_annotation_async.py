@@ -49,4 +49,5 @@ async def sample_get_annotation():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_Warehouse_GetAnnotation_async]

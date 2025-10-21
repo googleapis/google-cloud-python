@@ -49,4 +49,5 @@ async def sample_list_network_usage():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_ListNetworkUsage_async]

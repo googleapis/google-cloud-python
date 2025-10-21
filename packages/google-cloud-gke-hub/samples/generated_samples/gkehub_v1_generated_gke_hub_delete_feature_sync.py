@@ -39,8 +39,7 @@ def sample_delete_feature():
     client = gkehub_v1.GkeHubClient()
 
     # Initialize request argument(s)
-    request = gkehub_v1.DeleteFeatureRequest(
-    )
+    request = gkehub_v1.DeleteFeatureRequest()
 
     # Make the request
     operation = client.delete_feature(request=request)
@@ -51,5 +50,6 @@ def sample_delete_feature():
 
     # Handle the response
     print(response)
+
 
 # [END gkehub_v1_generated_GkeHub_DeleteFeature_sync]

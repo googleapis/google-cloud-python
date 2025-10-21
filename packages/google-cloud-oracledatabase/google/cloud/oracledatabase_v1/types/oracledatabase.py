@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -29,12 +30,14 @@ from google.cloud.oracledatabase_v1.types import (
     db_system_shape,
     entitlement,
     exadata_infra,
-    gi_version,
-    vm_cluster,
 )
 from google.cloud.oracledatabase_v1.types import (
     autonomous_database as gco_autonomous_database,
 )
+from google.cloud.oracledatabase_v1.types import (
+    exadb_vm_cluster as gco_exadb_vm_cluster,
+)
+from google.cloud.oracledatabase_v1.types import gi_version, vm_cluster
 
 __protobuf__ = proto.module(
     package="google.cloud.oracledatabase.v1",
@@ -64,11 +67,14 @@ __protobuf__ = proto.module(
         "ListAutonomousDatabasesResponse",
         "GetAutonomousDatabaseRequest",
         "CreateAutonomousDatabaseRequest",
+        "UpdateAutonomousDatabaseRequest",
         "DeleteAutonomousDatabaseRequest",
         "RestoreAutonomousDatabaseRequest",
         "StopAutonomousDatabaseRequest",
         "StartAutonomousDatabaseRequest",
         "RestartAutonomousDatabaseRequest",
+        "SwitchoverAutonomousDatabaseRequest",
+        "FailoverAutonomousDatabaseRequest",
         "GenerateAutonomousDatabaseWalletRequest",
         "GenerateAutonomousDatabaseWalletResponse",
         "ListAutonomousDbVersionsRequest",
@@ -77,6 +83,13 @@ __protobuf__ = proto.module(
         "ListAutonomousDatabaseCharacterSetsResponse",
         "ListAutonomousDatabaseBackupsRequest",
         "ListAutonomousDatabaseBackupsResponse",
+        "CreateExadbVmClusterRequest",
+        "DeleteExadbVmClusterRequest",
+        "GetExadbVmClusterRequest",
+        "ListExadbVmClustersRequest",
+        "ListExadbVmClustersResponse",
+        "UpdateExadbVmClusterRequest",
+        "RemoveVirtualMachineExadbVmClusterRequest",
     },
 )
 
@@ -98,6 +111,12 @@ class ListCloudExadataInfrastructuresRequest(proto.Message):
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
+        filter (str):
+            Optional. An expression for filtering the
+            results of the request.
+        order_by (str):
+            Optional. An expression for ordering the
+            results of the request.
     """
 
     parent: str = proto.Field(
@@ -111,6 +130,14 @@ class ListCloudExadataInfrastructuresRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -546,6 +573,7 @@ class ListDbNodesRequest(proto.Message):
             Required. The parent value for database node
             in the following format:
             projects/{project}/locations/{location}/cloudVmClusters/{cloudVmCluster}.
+            .
         page_size (int):
             Optional. The maximum number of items to
             return. If unspecified, at most 50 db nodes will
@@ -613,6 +641,10 @@ class ListGiVersionsRequest(proto.Message):
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
+        filter (str):
+            Optional. An expression for filtering the results of the
+            request. Only the shape, gcp_oracle_zone and gi_version
+            fields are supported in this format: ``shape="{shape}"``.
     """
 
     parent: str = proto.Field(
@@ -626,6 +658,10 @@ class ListGiVersionsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -673,6 +709,10 @@ class ListDbSystemShapesRequest(proto.Message):
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
+        filter (str):
+            Optional. An expression for filtering the results of the
+            request. Only the gcp_oracle_zone_id field is supported in
+            this format: ``gcp_oracle_zone_id="{gcp_oracle_zone_id}"``.
     """
 
     parent: str = proto.Field(
@@ -686,6 +726,10 @@ class ListDbSystemShapesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -927,6 +971,50 @@ class CreateAutonomousDatabaseRequest(proto.Message):
     )
 
 
+class UpdateAutonomousDatabaseRequest(proto.Message):
+    r"""The request for ``AutonomousDatabase.Update``.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Exadata resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
+        autonomous_database (google.cloud.oracledatabase_v1.types.AutonomousDatabase):
+            Required. The resource being updated
+        request_id (str):
+            Optional. An optional ID to identify the
+            request. This value is used to identify
+            duplicate requests. If you make a request with
+            the same request ID and the original request is
+            still in progress or completed, the server
+            ignores the second request. This prevents
+            clients from accidentally creating duplicate
+            commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    autonomous_database: gco_autonomous_database.AutonomousDatabase = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gco_autonomous_database.AutonomousDatabase,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class DeleteAutonomousDatabaseRequest(proto.Message):
     r"""The request for ``AutonomousDatabase.Delete``.
 
@@ -1028,6 +1116,52 @@ class RestartAutonomousDatabaseRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class SwitchoverAutonomousDatabaseRequest(proto.Message):
+    r"""The request for ``OracleDatabase.SwitchoverAutonomousDatabase``.
+
+    Attributes:
+        name (str):
+            Required. The name of the Autonomous Database in the
+            following format:
+            projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+        peer_autonomous_database (str):
+            Required. The peer database name to switch
+            over to.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    peer_autonomous_database: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class FailoverAutonomousDatabaseRequest(proto.Message):
+    r"""The request for ``OracleDatabase.FailoverAutonomousDatabase``.
+
+    Attributes:
+        name (str):
+            Required. The name of the Autonomous Database in the
+            following format:
+            projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+        peer_autonomous_database (str):
+            Required. The peer database name to fail over
+            to.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    peer_autonomous_database: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1289,6 +1423,271 @@ class ListAutonomousDatabaseBackupsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class CreateExadbVmClusterRequest(proto.Message):
+    r"""The request for ``ExadbVmCluster.Create``.
+
+    Attributes:
+        parent (str):
+            Required. The value for parent of the
+            ExadbVmCluster in the following format:
+            projects/{project}/locations/{location}.
+        exadb_vm_cluster_id (str):
+            Required. The ID of the ExadbVmCluster to create. This value
+            is restricted to (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$)
+            and must be a maximum of 63 characters in length. The value
+            must start with a letter and end with a letter or a number.
+        exadb_vm_cluster (google.cloud.oracledatabase_v1.types.ExadbVmCluster):
+            Required. The resource being created.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    exadb_vm_cluster_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    exadb_vm_cluster: gco_exadb_vm_cluster.ExadbVmCluster = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gco_exadb_vm_cluster.ExadbVmCluster,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeleteExadbVmClusterRequest(proto.Message):
+    r"""The request for ``ExadbVmCluster.Delete``.
+
+    Attributes:
+        name (str):
+            Required. The name of the ExadbVmCluster in the following
+            format:
+            projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
+        request_id (str):
+            Optional. An optional ID to identify the
+            request. This value is used to identify
+            duplicate requests. If you make a request with
+            the same request ID and the original request is
+            still in progress or completed, the server
+            ignores the second request. This prevents
+            clients from accidentally creating duplicate
+            commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetExadbVmClusterRequest(proto.Message):
+    r"""The request for ``ExadbVmCluster.Get``.
+
+    Attributes:
+        name (str):
+            Required. The name of the ExadbVmCluster in the following
+            format:
+            projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListExadbVmClustersRequest(proto.Message):
+    r"""The request for ``ExadbVmCluster.List``.
+
+    Attributes:
+        parent (str):
+            Required. The parent value for
+            ExadbVmClusters in the following format:
+            projects/{project}/locations/{location}.
+        page_size (int):
+            Optional. The maximum number of items to
+            return. If unspecified, at most 50
+            ExadbVmClusters will be returned. The maximum
+            value is 1000; values above 1000 will be coerced
+            to 1000.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+        filter (str):
+            Optional. An expression for filtering the
+            results of the request.
+        order_by (str):
+            Optional. An expression for ordering the
+            results of the request.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListExadbVmClustersResponse(proto.Message):
+    r"""The response for ``ExadbVmCluster.List``.
+
+    Attributes:
+        exadb_vm_clusters (MutableSequence[google.cloud.oracledatabase_v1.types.ExadbVmCluster]):
+            The list of ExadbVmClusters.
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    exadb_vm_clusters: MutableSequence[
+        gco_exadb_vm_cluster.ExadbVmCluster
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gco_exadb_vm_cluster.ExadbVmCluster,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateExadbVmClusterRequest(proto.Message):
+    r"""The request for ``ExadbVmCluster.Update``. We only support adding
+    the Virtual Machine to the ExadbVmCluster. Rest of the fields in
+    ExadbVmCluster are immutable.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. A mask specifying which fields in
+            th VM Cluster should be updated. A field
+            specified in the mask is overwritten. If a mask
+            isn't provided then all the fields in the VM
+            Cluster are overwritten.
+        exadb_vm_cluster (google.cloud.oracledatabase_v1.types.ExadbVmCluster):
+            Required. The resource being updated.
+        request_id (str):
+            Optional. An optional ID to identify the
+            request. This value is used to identify
+            duplicate requests. If you make a request with
+            the same request ID and the original request is
+            still in progress or completed, the server
+            ignores the second request. This prevents
+            clients from accidentally creating duplicate
+            commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    exadb_vm_cluster: gco_exadb_vm_cluster.ExadbVmCluster = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gco_exadb_vm_cluster.ExadbVmCluster,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class RemoveVirtualMachineExadbVmClusterRequest(proto.Message):
+    r"""The request for ``ExadbVmCluster.RemoveVirtualMachine``.
+
+    Attributes:
+        name (str):
+            Required. The name of the ExadbVmCluster in the following
+            format:
+            projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
+        request_id (str):
+            Optional. An optional ID to identify the
+            request. This value is used to identify
+            duplicate requests. If you make a request with
+            the same request ID and the original request is
+            still in progress or completed, the server
+            ignores the second request. This prevents
+            clients from accidentally creating duplicate
+            commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        hostnames (MutableSequence[str]):
+            Required. The list of host names of db nodes
+            to be removed from the ExadbVmCluster.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    hostnames: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
     )
 
 

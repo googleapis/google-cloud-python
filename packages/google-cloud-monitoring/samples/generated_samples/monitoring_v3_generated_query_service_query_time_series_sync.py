@@ -51,4 +51,5 @@ def sample_query_time_series():
     for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_QueryService_QueryTimeSeries_sync]

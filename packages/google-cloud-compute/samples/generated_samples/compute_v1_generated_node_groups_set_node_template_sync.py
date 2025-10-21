@@ -51,4 +51,5 @@ def sample_set_node_template():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_NodeGroups_SetNodeTemplate_sync]

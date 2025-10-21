@@ -39,13 +39,13 @@ async def sample_validate_address():
     client = addressvalidation_v1.AddressValidationAsyncClient()
 
     # Initialize request argument(s)
-    request = addressvalidation_v1.ValidateAddressRequest(
-    )
+    request = addressvalidation_v1.ValidateAddressRequest()
 
     # Make the request
     response = await client.validate_address(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END addressvalidation_v1_generated_AddressValidation_ValidateAddress_async]

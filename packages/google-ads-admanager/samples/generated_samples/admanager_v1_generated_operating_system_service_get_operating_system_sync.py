@@ -49,4 +49,5 @@ def sample_get_operating_system():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_OperatingSystemService_GetOperatingSystem_sync]

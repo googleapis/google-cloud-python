@@ -50,4 +50,5 @@ async def sample_fetch_usable_backup_vaults():
     async for response in page_result:
         print(response)
 
+
 # [END backupdr_v1_generated_BackupDR_FetchUsableBackupVaults_async]

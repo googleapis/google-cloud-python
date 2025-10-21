@@ -54,4 +54,5 @@ async def sample_upgrade_cluster():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_UpgradeCluster_async]

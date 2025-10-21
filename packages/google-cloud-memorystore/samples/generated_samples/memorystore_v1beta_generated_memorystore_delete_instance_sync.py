@@ -53,4 +53,5 @@ def sample_delete_instance():
     # Handle the response
     print(response)
 
+
 # [END memorystore_v1beta_generated_Memorystore_DeleteInstance_sync]

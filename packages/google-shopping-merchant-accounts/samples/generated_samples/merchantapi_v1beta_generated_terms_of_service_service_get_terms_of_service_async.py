@@ -49,4 +49,5 @@ async def sample_get_terms_of_service():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_TermsOfServiceService_GetTermsOfService_async]

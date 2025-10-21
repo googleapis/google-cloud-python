@@ -49,4 +49,5 @@ async def sample_get_metric_descriptor():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v3_generated_MetricService_GetMetricDescriptor_async]

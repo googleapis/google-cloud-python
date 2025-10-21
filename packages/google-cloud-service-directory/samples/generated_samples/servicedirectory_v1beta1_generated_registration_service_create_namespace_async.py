@@ -50,4 +50,5 @@ async def sample_create_namespace():
     # Handle the response
     print(response)
 
+
 # [END servicedirectory_v1beta1_generated_RegistrationService_CreateNamespace_async]

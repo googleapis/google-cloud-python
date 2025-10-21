@@ -51,4 +51,5 @@ def sample_wait():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_ZoneOperations_Wait_sync]

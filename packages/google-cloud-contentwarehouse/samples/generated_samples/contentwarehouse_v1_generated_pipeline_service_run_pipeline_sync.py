@@ -53,4 +53,5 @@ def sample_run_pipeline():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_PipelineService_RunPipeline_sync]

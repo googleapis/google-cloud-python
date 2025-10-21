@@ -50,4 +50,5 @@ def sample_list_sources():
     for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1p1beta1_generated_SecurityCenter_ListSources_sync]

@@ -49,4 +49,5 @@ def sample_add_association():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_FirewallPolicies_AddAssociation_sync]

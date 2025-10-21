@@ -42,8 +42,12 @@ async def sample_update_os_policy_assignment():
     os_policy_assignment = osconfig_v1alpha.OSPolicyAssignment()
     os_policy_assignment.os_policies.id = "id_value"
     os_policy_assignment.os_policies.mode = "ENFORCEMENT"
-    os_policy_assignment.os_policies.resource_groups.resources.pkg.apt.name = "name_value"
-    os_policy_assignment.os_policies.resource_groups.resources.pkg.desired_state = "REMOVED"
+    os_policy_assignment.os_policies.resource_groups.resources.pkg.apt.name = (
+        "name_value"
+    )
+    os_policy_assignment.os_policies.resource_groups.resources.pkg.desired_state = (
+        "REMOVED"
+    )
     os_policy_assignment.os_policies.resource_groups.resources.id = "id_value"
     os_policy_assignment.rollout.disruption_budget.fixed = 528
 
@@ -60,5 +64,6 @@ async def sample_update_os_policy_assignment():
 
     # Handle the response
     print(response)
+
 
 # [END osconfig_v1alpha_generated_OsConfigZonalService_UpdateOSPolicyAssignment_async]

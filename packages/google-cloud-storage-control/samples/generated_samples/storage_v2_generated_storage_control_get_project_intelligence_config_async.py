@@ -49,4 +49,5 @@ async def sample_get_project_intelligence_config():
     # Handle the response
     print(response)
 
+
 # [END storage_v2_generated_StorageControl_GetProjectIntelligenceConfig_async]

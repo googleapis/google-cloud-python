@@ -39,8 +39,7 @@ def sample_update_certificate_revocation_list():
     client = privateca_v1.CertificateAuthorityServiceClient()
 
     # Initialize request argument(s)
-    request = privateca_v1.UpdateCertificateRevocationListRequest(
-    )
+    request = privateca_v1.UpdateCertificateRevocationListRequest()
 
     # Make the request
     operation = client.update_certificate_revocation_list(request=request)
@@ -51,5 +50,6 @@ def sample_update_certificate_revocation_list():
 
     # Handle the response
     print(response)
+
 
 # [END privateca_v1_generated_CertificateAuthorityService_UpdateCertificateRevocationList_sync]

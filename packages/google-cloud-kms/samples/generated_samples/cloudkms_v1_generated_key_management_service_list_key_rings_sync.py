@@ -50,4 +50,5 @@ def sample_list_key_rings():
     for response in page_result:
         print(response)
 
+
 # [END cloudkms_v1_generated_KeyManagementService_ListKeyRings_sync]

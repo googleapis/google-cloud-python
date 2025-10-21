@@ -50,4 +50,5 @@ def sample_list_workloads():
     for response in page_result:
         print(response)
 
+
 # [END cloudcontrolspartner_v1_generated_CloudControlsPartnerCore_ListWorkloads_sync]

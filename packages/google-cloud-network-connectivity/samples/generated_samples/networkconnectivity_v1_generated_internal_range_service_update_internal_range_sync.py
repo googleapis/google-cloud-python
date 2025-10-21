@@ -39,8 +39,7 @@ def sample_update_internal_range():
     client = networkconnectivity_v1.InternalRangeServiceClient()
 
     # Initialize request argument(s)
-    request = networkconnectivity_v1.UpdateInternalRangeRequest(
-    )
+    request = networkconnectivity_v1.UpdateInternalRangeRequest()
 
     # Make the request
     operation = client.update_internal_range(request=request)
@@ -51,5 +50,6 @@ def sample_update_internal_range():
 
     # Handle the response
     print(response)
+
 
 # [END networkconnectivity_v1_generated_InternalRangeService_UpdateInternalRange_sync]

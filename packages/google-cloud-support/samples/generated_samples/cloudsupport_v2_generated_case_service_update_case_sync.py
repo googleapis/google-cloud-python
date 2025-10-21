@@ -39,13 +39,13 @@ def sample_update_case():
     client = support_v2.CaseServiceClient()
 
     # Initialize request argument(s)
-    request = support_v2.UpdateCaseRequest(
-    )
+    request = support_v2.UpdateCaseRequest()
 
     # Make the request
     response = client.update_case(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudsupport_v2_generated_CaseService_UpdateCase_sync]

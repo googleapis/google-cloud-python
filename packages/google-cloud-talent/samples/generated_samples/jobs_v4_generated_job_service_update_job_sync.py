@@ -55,4 +55,5 @@ def sample_update_job():
     # Handle the response
     print(response)
 
+
 # [END jobs_v4_generated_JobService_UpdateJob_sync]

@@ -49,4 +49,5 @@ def sample_get_dataset_schema():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1beta3_generated_DocumentService_GetDatasetSchema_sync]

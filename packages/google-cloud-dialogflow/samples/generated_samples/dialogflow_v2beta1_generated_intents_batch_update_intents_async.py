@@ -54,4 +54,5 @@ async def sample_batch_update_intents():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_Intents_BatchUpdateIntents_async]

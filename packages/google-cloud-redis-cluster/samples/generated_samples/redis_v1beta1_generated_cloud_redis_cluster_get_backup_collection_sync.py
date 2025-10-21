@@ -49,4 +49,5 @@ def sample_get_backup_collection():
     # Handle the response
     print(response)
 
+
 # [END redis_v1beta1_generated_CloudRedisCluster_GetBackupCollection_sync]

@@ -39,13 +39,13 @@ def sample_get_service():
     client = service_usage_v1.ServiceUsageClient()
 
     # Initialize request argument(s)
-    request = service_usage_v1.GetServiceRequest(
-    )
+    request = service_usage_v1.GetServiceRequest()
 
     # Make the request
     response = client.get_service(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END serviceusage_v1_generated_ServiceUsage_GetService_sync]

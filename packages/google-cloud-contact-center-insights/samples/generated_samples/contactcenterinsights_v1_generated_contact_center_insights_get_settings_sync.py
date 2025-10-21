@@ -49,4 +49,5 @@ def sample_get_settings():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_GetSettings_sync]

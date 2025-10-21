@@ -49,4 +49,5 @@ def sample_get_organization_settings():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_GetOrganizationSettings_sync]

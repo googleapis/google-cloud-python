@@ -39,8 +39,7 @@ async def sample_update_tcp_route():
     client = network_services_v1.NetworkServicesAsyncClient()
 
     # Initialize request argument(s)
-    request = network_services_v1.UpdateTcpRouteRequest(
-    )
+    request = network_services_v1.UpdateTcpRouteRequest()
 
     # Make the request
     operation = client.update_tcp_route(request=request)
@@ -51,5 +50,6 @@ async def sample_update_tcp_route():
 
     # Handle the response
     print(response)
+
 
 # [END networkservices_v1_generated_NetworkServices_UpdateTcpRoute_async]

@@ -39,13 +39,13 @@ async def sample_update_config():
     client = speech_v2.SpeechAsyncClient()
 
     # Initialize request argument(s)
-    request = speech_v2.UpdateConfigRequest(
-    )
+    request = speech_v2.UpdateConfigRequest()
 
     # Make the request
     response = await client.update_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END speech_v2_generated_Speech_UpdateConfig_async]

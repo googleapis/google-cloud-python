@@ -49,4 +49,5 @@ def sample_get_backup():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_GetBackup_sync]

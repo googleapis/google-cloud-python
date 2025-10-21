@@ -39,8 +39,7 @@ def sample_list_instances():
     client = appengine_admin_v1.InstancesClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.ListInstancesRequest(
-    )
+    request = appengine_admin_v1.ListInstancesRequest()
 
     # Make the request
     page_result = client.list_instances(request=request)
@@ -48,5 +47,6 @@ def sample_list_instances():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END appengine_v1_generated_Instances_ListInstances_sync]

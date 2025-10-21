@@ -39,13 +39,13 @@ def sample_list_clusters():
     client = container_v1beta1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.ListClustersRequest(
-    )
+    request = container_v1beta1.ListClustersRequest()
 
     # Make the request
     response = client.list_clusters(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_ListClusters_sync]

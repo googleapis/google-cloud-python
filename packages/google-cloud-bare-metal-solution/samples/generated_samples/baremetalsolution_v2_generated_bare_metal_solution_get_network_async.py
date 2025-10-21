@@ -49,4 +49,5 @@ async def sample_get_network():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_GetNetwork_async]

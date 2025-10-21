@@ -49,4 +49,5 @@ def sample_resolve_service():
     # Handle the response
     print(response)
 
+
 # [END servicedirectory_v1beta1_generated_LookupService_ResolveService_sync]

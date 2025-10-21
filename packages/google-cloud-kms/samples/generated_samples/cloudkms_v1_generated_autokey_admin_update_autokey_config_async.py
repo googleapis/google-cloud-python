@@ -39,13 +39,13 @@ async def sample_update_autokey_config():
     client = kms_v1.AutokeyAdminAsyncClient()
 
     # Initialize request argument(s)
-    request = kms_v1.UpdateAutokeyConfigRequest(
-    )
+    request = kms_v1.UpdateAutokeyConfigRequest()
 
     # Make the request
     response = await client.update_autokey_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END cloudkms_v1_generated_AutokeyAdmin_UpdateAutokeyConfig_async]

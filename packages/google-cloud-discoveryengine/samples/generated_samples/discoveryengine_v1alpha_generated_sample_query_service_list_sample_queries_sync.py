@@ -50,4 +50,5 @@ def sample_list_sample_queries():
     for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1alpha_generated_SampleQueryService_ListSampleQueries_sync]

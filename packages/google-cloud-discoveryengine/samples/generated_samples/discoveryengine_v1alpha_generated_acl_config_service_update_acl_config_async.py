@@ -39,13 +39,13 @@ async def sample_update_acl_config():
     client = discoveryengine_v1alpha.AclConfigServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1alpha.UpdateAclConfigRequest(
-    )
+    request = discoveryengine_v1alpha.UpdateAclConfigRequest()
 
     # Make the request
     response = await client.update_acl_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END discoveryengine_v1alpha_generated_AclConfigService_UpdateAclConfig_async]

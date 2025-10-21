@@ -41,7 +41,7 @@ async def sample_lookup_public_kg():
     # Initialize request argument(s)
     request = enterpriseknowledgegraph_v1.LookupPublicKgRequest(
         parent="parent_value",
-        ids=['ids_value1', 'ids_value2'],
+        ids=["ids_value1", "ids_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_lookup_public_kg():
 
     # Handle the response
     print(response)
+
 
 # [END enterpriseknowledgegraph_v1_generated_EnterpriseKnowledgeGraphService_LookupPublicKg_async]

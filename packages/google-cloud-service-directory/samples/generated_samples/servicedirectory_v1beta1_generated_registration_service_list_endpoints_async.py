@@ -50,4 +50,5 @@ async def sample_list_endpoints():
     async for response in page_result:
         print(response)
 
+
 # [END servicedirectory_v1beta1_generated_RegistrationService_ListEndpoints_async]

@@ -49,4 +49,5 @@ def sample_get_npm_package():
     # Handle the response
     print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_GetNpmPackage_sync]

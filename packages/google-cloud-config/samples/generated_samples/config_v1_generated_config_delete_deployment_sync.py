@@ -53,4 +53,5 @@ def sample_delete_deployment():
     # Handle the response
     print(response)
 
+
 # [END config_v1_generated_Config_DeleteDeployment_sync]

@@ -39,8 +39,7 @@ async def sample_list_models():
     client = generativelanguage_v1beta2.ModelServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta2.ListModelsRequest(
-    )
+    request = generativelanguage_v1beta2.ListModelsRequest()
 
     # Make the request
     page_result = client.list_models(request=request)
@@ -48,5 +47,6 @@ async def sample_list_models():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END generativelanguage_v1beta2_generated_ModelService_ListModels_async]

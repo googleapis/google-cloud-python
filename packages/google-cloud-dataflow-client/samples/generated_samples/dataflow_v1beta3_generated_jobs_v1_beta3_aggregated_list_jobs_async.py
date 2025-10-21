@@ -39,8 +39,7 @@ async def sample_aggregated_list_jobs():
     client = dataflow_v1beta3.JobsV1Beta3AsyncClient()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.ListJobsRequest(
-    )
+    request = dataflow_v1beta3.ListJobsRequest()
 
     # Make the request
     page_result = client.aggregated_list_jobs(request=request)
@@ -48,5 +47,6 @@ async def sample_aggregated_list_jobs():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END dataflow_v1beta3_generated_JobsV1Beta3_AggregatedListJobs_async]

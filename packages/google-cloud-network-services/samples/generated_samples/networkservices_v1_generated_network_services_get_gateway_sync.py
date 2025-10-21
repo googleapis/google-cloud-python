@@ -49,4 +49,5 @@ def sample_get_gateway():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_GetGateway_sync]

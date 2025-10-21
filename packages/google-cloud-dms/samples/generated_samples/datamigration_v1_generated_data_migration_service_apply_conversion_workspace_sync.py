@@ -54,4 +54,5 @@ def sample_apply_conversion_workspace():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_ApplyConversionWorkspace_sync]

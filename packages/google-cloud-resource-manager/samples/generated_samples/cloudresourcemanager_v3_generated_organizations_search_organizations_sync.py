@@ -39,8 +39,7 @@ def sample_search_organizations():
     client = resourcemanager_v3.OrganizationsClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.SearchOrganizationsRequest(
-    )
+    request = resourcemanager_v3.SearchOrganizationsRequest()
 
     # Make the request
     page_result = client.search_organizations(request=request)
@@ -48,5 +47,6 @@ def sample_search_organizations():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END cloudresourcemanager_v3_generated_Organizations_SearchOrganizations_sync]

@@ -63,4 +63,5 @@ def sample_streaming_synthesize():
     for response in stream:
         print(response)
 
+
 # [END texttospeech_v1beta1_generated_TextToSpeech_StreamingSynthesize_sync]

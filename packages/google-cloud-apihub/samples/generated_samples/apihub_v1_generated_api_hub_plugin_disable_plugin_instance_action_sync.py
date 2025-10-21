@@ -54,4 +54,5 @@ def sample_disable_plugin_instance_action():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubPlugin_DisablePluginInstanceAction_sync]

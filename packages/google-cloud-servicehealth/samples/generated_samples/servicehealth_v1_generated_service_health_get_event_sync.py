@@ -49,4 +49,5 @@ def sample_get_event():
     # Handle the response
     print(response)
 
+
 # [END servicehealth_v1_generated_ServiceHealth_GetEvent_sync]

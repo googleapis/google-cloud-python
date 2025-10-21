@@ -39,8 +39,7 @@ async def sample_check_upgrade():
     client = service_v1beta1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.CheckUpgradeRequest(
-    )
+    request = service_v1beta1.CheckUpgradeRequest()
 
     # Make the request
     operation = client.check_upgrade(request=request)
@@ -51,5 +50,6 @@ async def sample_check_upgrade():
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_CheckUpgrade_async]

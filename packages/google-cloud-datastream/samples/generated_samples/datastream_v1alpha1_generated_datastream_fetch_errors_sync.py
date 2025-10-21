@@ -39,8 +39,7 @@ def sample_fetch_errors():
     client = datastream_v1alpha1.DatastreamClient()
 
     # Initialize request argument(s)
-    request = datastream_v1alpha1.FetchErrorsRequest(
-    )
+    request = datastream_v1alpha1.FetchErrorsRequest()
 
     # Make the request
     operation = client.fetch_errors(request=request)
@@ -51,5 +50,6 @@ def sample_fetch_errors():
 
     # Handle the response
     print(response)
+
 
 # [END datastream_v1alpha1_generated_Datastream_FetchErrors_sync]

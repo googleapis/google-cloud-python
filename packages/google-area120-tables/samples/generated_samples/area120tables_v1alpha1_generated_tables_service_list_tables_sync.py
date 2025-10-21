@@ -39,8 +39,7 @@ def sample_list_tables():
     client = tables_v1alpha1.TablesServiceClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.ListTablesRequest(
-    )
+    request = tables_v1alpha1.ListTablesRequest()
 
     # Make the request
     page_result = client.list_tables(request=request)
@@ -48,5 +47,6 @@ def sample_list_tables():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END area120tables_v1alpha1_generated_TablesService_ListTables_sync]

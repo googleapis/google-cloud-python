@@ -49,4 +49,5 @@ def sample_get_login_profile():
     # Handle the response
     print(response)
 
+
 # [END oslogin_v1_generated_OsLoginService_GetLoginProfile_sync]

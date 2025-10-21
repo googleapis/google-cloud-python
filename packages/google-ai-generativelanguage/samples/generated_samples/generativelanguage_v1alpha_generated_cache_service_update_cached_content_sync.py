@@ -39,13 +39,13 @@ def sample_update_cached_content():
     client = generativelanguage_v1alpha.CacheServiceClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1alpha.UpdateCachedContentRequest(
-    )
+    request = generativelanguage_v1alpha.UpdateCachedContentRequest()
 
     # Make the request
     response = client.update_cached_content(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1alpha_generated_CacheService_UpdateCachedContent_sync]

@@ -53,4 +53,5 @@ async def sample_delete_quota_rule():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_DeleteQuotaRule_async]

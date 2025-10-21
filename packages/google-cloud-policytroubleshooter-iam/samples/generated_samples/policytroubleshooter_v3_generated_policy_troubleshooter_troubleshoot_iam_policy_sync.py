@@ -39,13 +39,13 @@ def sample_troubleshoot_iam_policy():
     client = policytroubleshooter_iam_v3.PolicyTroubleshooterClient()
 
     # Initialize request argument(s)
-    request = policytroubleshooter_iam_v3.TroubleshootIamPolicyRequest(
-    )
+    request = policytroubleshooter_iam_v3.TroubleshootIamPolicyRequest()
 
     # Make the request
     response = client.troubleshoot_iam_policy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END policytroubleshooter_v3_generated_PolicyTroubleshooter_TroubleshootIamPolicy_sync]

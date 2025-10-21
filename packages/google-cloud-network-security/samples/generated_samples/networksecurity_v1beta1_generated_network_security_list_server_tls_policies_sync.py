@@ -50,4 +50,5 @@ def sample_list_server_tls_policies():
     for response in page_result:
         print(response)
 
+
 # [END networksecurity_v1beta1_generated_NetworkSecurity_ListServerTlsPolicies_sync]

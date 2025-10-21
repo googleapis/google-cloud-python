@@ -53,4 +53,5 @@ def sample_delete_data_taxonomy():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_DataTaxonomyService_DeleteDataTaxonomy_sync]

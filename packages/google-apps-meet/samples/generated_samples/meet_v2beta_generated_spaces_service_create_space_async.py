@@ -39,13 +39,13 @@ async def sample_create_space():
     client = meet_v2beta.SpacesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = meet_v2beta.CreateSpaceRequest(
-    )
+    request = meet_v2beta.CreateSpaceRequest()
 
     # Make the request
     response = await client.create_space(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END meet_v2beta_generated_SpacesService_CreateSpace_async]

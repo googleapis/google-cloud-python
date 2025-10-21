@@ -50,4 +50,5 @@ def sample_list_rules():
     for response in page_result:
         print(response)
 
+
 # [END chronicle_v1_generated_RuleService_ListRules_sync]

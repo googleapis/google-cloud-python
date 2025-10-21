@@ -50,4 +50,5 @@ def sample_list_networks():
     for response in page_result:
         print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_ListNetworks_sync]

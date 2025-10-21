@@ -49,4 +49,5 @@ def sample_render_parameter_version():
     # Handle the response
     print(response)
 
+
 # [END parametermanager_v1_generated_ParameterManager_RenderParameterVersion_sync]

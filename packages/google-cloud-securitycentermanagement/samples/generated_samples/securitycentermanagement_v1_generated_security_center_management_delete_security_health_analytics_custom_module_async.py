@@ -39,8 +39,10 @@ async def sample_delete_security_health_analytics_custom_module():
     client = securitycentermanagement_v1.SecurityCenterManagementAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycentermanagement_v1.DeleteSecurityHealthAnalyticsCustomModuleRequest(
-        name="name_value",
+    request = (
+        securitycentermanagement_v1.DeleteSecurityHealthAnalyticsCustomModuleRequest(
+            name="name_value",
+        )
     )
 
     # Make the request

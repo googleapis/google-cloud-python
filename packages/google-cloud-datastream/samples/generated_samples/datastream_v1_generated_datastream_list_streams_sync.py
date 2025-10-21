@@ -50,4 +50,5 @@ def sample_list_streams():
     for response in page_result:
         print(response)
 
+
 # [END datastream_v1_generated_Datastream_ListStreams_sync]

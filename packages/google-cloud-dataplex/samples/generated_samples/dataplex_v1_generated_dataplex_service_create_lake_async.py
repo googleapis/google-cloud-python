@@ -54,4 +54,5 @@ async def sample_create_lake():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_DataplexService_CreateLake_async]

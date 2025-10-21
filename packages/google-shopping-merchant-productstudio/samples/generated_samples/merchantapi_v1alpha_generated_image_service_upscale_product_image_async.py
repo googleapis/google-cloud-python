@@ -53,4 +53,5 @@ async def sample_upscale_product_image():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1alpha_generated_ImageService_UpscaleProductImage_async]

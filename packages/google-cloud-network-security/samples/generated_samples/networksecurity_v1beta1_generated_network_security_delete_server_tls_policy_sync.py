@@ -53,4 +53,5 @@ def sample_delete_server_tls_policy():
     # Handle the response
     print(response)
 
+
 # [END networksecurity_v1beta1_generated_NetworkSecurity_DeleteServerTlsPolicy_sync]

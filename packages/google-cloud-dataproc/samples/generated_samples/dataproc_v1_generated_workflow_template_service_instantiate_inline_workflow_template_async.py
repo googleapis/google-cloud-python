@@ -60,4 +60,5 @@ async def sample_instantiate_inline_workflow_template():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_async]

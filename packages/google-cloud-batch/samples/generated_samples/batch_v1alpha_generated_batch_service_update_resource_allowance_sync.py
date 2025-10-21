@@ -53,4 +53,5 @@ def sample_update_resource_allowance():
     # Handle the response
     print(response)
 
+
 # [END batch_v1alpha_generated_BatchService_UpdateResourceAllowance_sync]

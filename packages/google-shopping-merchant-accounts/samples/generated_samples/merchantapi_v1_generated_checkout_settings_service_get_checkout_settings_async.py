@@ -49,4 +49,5 @@ async def sample_get_checkout_settings():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_CheckoutSettingsService_GetCheckoutSettings_async]

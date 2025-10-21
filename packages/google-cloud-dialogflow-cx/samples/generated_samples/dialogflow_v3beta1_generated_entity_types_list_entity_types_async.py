@@ -50,4 +50,5 @@ async def sample_list_entity_types():
     async for response in page_result:
         print(response)
 
+
 # [END dialogflow_v3beta1_generated_EntityTypes_ListEntityTypes_async]

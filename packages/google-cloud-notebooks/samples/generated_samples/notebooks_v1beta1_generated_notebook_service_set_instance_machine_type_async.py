@@ -54,4 +54,5 @@ async def sample_set_instance_machine_type():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1beta1_generated_NotebookService_SetInstanceMachineType_async]

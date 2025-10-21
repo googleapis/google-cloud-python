@@ -39,8 +39,7 @@ async def sample_update_channel():
     client = live_stream_v1.LivestreamServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = live_stream_v1.UpdateChannelRequest(
-    )
+    request = live_stream_v1.UpdateChannelRequest()
 
     # Make the request
     operation = client.update_channel(request=request)
@@ -51,5 +50,6 @@ async def sample_update_channel():
 
     # Handle the response
     print(response)
+
 
 # [END livestream_v1_generated_LivestreamService_UpdateChannel_async]

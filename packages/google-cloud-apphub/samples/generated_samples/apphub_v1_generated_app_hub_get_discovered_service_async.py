@@ -49,4 +49,5 @@ async def sample_get_discovered_service():
     # Handle the response
     print(response)
 
+
 # [END apphub_v1_generated_AppHub_GetDiscoveredService_async]

@@ -41,7 +41,7 @@ def sample_create_subscription():
     # Initialize request argument(s)
     subscription = events_subscriptions_v1.Subscription()
     subscription.target_resource = "target_resource_value"
-    subscription.event_types = ['event_types_value1', 'event_types_value2']
+    subscription.event_types = ["event_types_value1", "event_types_value2"]
     subscription.notification_endpoint.pubsub_topic = "pubsub_topic_value"
 
     request = events_subscriptions_v1.CreateSubscriptionRequest(
@@ -57,5 +57,6 @@ def sample_create_subscription():
 
     # Handle the response
     print(response)
+
 
 # [END workspaceevents_v1_generated_SubscriptionsService_CreateSubscription_sync]

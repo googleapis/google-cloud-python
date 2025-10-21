@@ -50,4 +50,5 @@ def sample_list_violations():
     for response in page_result:
         print(response)
 
+
 # [END cloudcontrolspartner_v1_generated_CloudControlsPartnerMonitoring_ListViolations_sync]

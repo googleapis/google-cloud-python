@@ -50,4 +50,5 @@ def sample_list_phrase_set():
     for response in page_result:
         print(response)
 
+
 # [END speech_v1_generated_Adaptation_ListPhraseSet_sync]

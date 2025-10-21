@@ -50,4 +50,5 @@ async def sample_list_catalogs():
     async for response in page_result:
         print(response)
 
+
 # [END retail_v2_generated_CatalogService_ListCatalogs_async]

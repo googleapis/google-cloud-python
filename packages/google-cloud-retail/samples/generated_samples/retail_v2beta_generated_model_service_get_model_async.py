@@ -49,4 +49,5 @@ async def sample_get_model():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_ModelService_GetModel_async]

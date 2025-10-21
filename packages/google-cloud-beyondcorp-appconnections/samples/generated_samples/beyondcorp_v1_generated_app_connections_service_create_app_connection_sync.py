@@ -60,4 +60,5 @@ def sample_create_app_connection():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_AppConnectionsService_CreateAppConnection_sync]

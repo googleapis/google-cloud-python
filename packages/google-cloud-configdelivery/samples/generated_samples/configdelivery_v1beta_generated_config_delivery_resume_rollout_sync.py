@@ -53,4 +53,5 @@ def sample_resume_rollout():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1beta_generated_ConfigDelivery_ResumeRollout_sync]

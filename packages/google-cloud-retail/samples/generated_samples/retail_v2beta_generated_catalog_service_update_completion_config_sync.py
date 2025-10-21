@@ -52,4 +52,5 @@ def sample_update_completion_config():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_CatalogService_UpdateCompletionConfig_sync]

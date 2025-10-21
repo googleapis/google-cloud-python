@@ -39,8 +39,7 @@ def sample_list_models():
     client = generativelanguage_v1beta.ModelServiceClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.ListModelsRequest(
-    )
+    request = generativelanguage_v1beta.ListModelsRequest()
 
     # Make the request
     page_result = client.list_models(request=request)
@@ -48,5 +47,6 @@ def sample_list_models():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END generativelanguage_v1beta_generated_ModelService_ListModels_sync]

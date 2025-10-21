@@ -50,4 +50,5 @@ def sample_list_machines():
     for response in page_result:
         print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_ListMachines_sync]

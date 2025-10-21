@@ -39,13 +39,13 @@ def sample_update_saas():
     client = saasplatform_saasservicemgmt_v1beta1.SaasDeploymentsClient()
 
     # Initialize request argument(s)
-    request = saasplatform_saasservicemgmt_v1beta1.UpdateSaasRequest(
-    )
+    request = saasplatform_saasservicemgmt_v1beta1.UpdateSaasRequest()
 
     # Make the request
     response = client.update_saas(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END saasservicemgmt_v1beta1_generated_SaasDeployments_UpdateSaas_sync]

@@ -50,4 +50,5 @@ def sample_search_lite():
     for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1beta_generated_SearchService_SearchLite_sync]

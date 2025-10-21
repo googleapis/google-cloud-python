@@ -50,4 +50,5 @@ def sample_list_local_inventories():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1_generated_LocalInventoryService_ListLocalInventories_sync]

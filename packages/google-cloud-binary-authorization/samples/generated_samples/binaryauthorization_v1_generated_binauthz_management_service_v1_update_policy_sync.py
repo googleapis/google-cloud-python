@@ -53,4 +53,5 @@ def sample_update_policy():
     # Handle the response
     print(response)
 
+
 # [END binaryauthorization_v1_generated_BinauthzManagementServiceV1_UpdatePolicy_sync]

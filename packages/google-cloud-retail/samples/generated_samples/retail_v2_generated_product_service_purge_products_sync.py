@@ -54,4 +54,5 @@ def sample_purge_products():
     # Handle the response
     print(response)
 
+
 # [END retail_v2_generated_ProductService_PurgeProducts_sync]

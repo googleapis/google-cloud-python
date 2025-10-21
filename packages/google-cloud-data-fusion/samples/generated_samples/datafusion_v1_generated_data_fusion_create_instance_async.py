@@ -54,4 +54,5 @@ async def sample_create_instance():
     # Handle the response
     print(response)
 
+
 # [END datafusion_v1_generated_DataFusion_CreateInstance_async]

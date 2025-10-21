@@ -49,4 +49,5 @@ def sample_create_qa_scorecard():
     # Handle the response
     print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_CreateQaScorecard_sync]

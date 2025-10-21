@@ -63,4 +63,5 @@ async def sample_streaming_synthesize():
     async for response in stream:
         print(response)
 
+
 # [END texttospeech_v1beta1_generated_TextToSpeech_StreamingSynthesize_async]

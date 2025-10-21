@@ -50,4 +50,5 @@ def sample_list_network_peerings():
     for response in page_result:
         print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_ListNetworkPeerings_sync]

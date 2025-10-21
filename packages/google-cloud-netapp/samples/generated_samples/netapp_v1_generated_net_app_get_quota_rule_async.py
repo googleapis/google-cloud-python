@@ -49,4 +49,5 @@ async def sample_get_quota_rule():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_GetQuotaRule_async]

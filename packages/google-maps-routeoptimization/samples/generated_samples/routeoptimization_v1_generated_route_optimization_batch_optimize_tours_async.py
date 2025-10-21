@@ -60,4 +60,5 @@ async def sample_batch_optimize_tours():
     # Handle the response
     print(response)
 
+
 # [END routeoptimization_v1_generated_RouteOptimization_BatchOptimizeTours_async]

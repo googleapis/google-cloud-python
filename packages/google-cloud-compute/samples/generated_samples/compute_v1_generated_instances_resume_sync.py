@@ -51,4 +51,5 @@ def sample_resume():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_Resume_sync]

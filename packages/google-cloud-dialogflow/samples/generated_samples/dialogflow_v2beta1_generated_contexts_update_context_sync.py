@@ -39,13 +39,13 @@ def sample_update_context():
     client = dialogflow_v2beta1.ContextsClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.UpdateContextRequest(
-    )
+    request = dialogflow_v2beta1.UpdateContextRequest()
 
     # Make the request
     response = client.update_context(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_Contexts_UpdateContext_sync]

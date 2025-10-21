@@ -39,8 +39,7 @@ def sample_update_feature():
     client = gkehub_v1.GkeHubClient()
 
     # Initialize request argument(s)
-    request = gkehub_v1.UpdateFeatureRequest(
-    )
+    request = gkehub_v1.UpdateFeatureRequest()
 
     # Make the request
     operation = client.update_feature(request=request)
@@ -51,5 +50,6 @@ def sample_update_feature():
 
     # Handle the response
     print(response)
+
 
 # [END gkehub_v1_generated_GkeHub_UpdateFeature_sync]

@@ -49,4 +49,5 @@ async def sample_lease_tasks():
     # Handle the response
     print(response)
 
+
 # [END cloudtasks_v2beta2_generated_CloudTasks_LeaseTasks_async]

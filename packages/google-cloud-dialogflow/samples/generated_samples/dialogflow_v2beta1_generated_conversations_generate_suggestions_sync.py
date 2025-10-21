@@ -49,4 +49,5 @@ def sample_generate_suggestions():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_Conversations_GenerateSuggestions_sync]

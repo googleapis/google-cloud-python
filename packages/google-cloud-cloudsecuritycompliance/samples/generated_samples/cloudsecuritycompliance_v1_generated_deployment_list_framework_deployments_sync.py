@@ -50,4 +50,5 @@ def sample_list_framework_deployments():
     for response in page_result:
         print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Deployment_ListFrameworkDeployments_sync]

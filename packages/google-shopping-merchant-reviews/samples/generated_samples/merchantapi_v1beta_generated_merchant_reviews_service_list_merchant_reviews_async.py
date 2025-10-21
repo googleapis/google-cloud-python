@@ -50,4 +50,5 @@ async def sample_list_merchant_reviews():
     async for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1beta_generated_MerchantReviewsService_ListMerchantReviews_async]

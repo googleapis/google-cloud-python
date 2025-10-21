@@ -50,4 +50,5 @@ def sample_list_big_query_exports():
     for response in page_result:
         print(response)
 
+
 # [END securitycenter_v2_generated_SecurityCenter_ListBigQueryExports_sync]

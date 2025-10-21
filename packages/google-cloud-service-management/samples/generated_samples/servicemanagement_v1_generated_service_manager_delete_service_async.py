@@ -53,4 +53,5 @@ async def sample_delete_service():
     # Handle the response
     print(response)
 
+
 # [END servicemanagement_v1_generated_ServiceManager_DeleteService_async]

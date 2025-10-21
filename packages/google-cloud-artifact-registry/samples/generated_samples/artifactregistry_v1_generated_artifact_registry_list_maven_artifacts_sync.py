@@ -50,4 +50,5 @@ def sample_list_maven_artifacts():
     for response in page_result:
         print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_ListMavenArtifacts_sync]

@@ -50,4 +50,5 @@ async def sample_search_related_account_group_memberships():
     async for response in page_result:
         print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_async]

@@ -65,4 +65,5 @@ async def sample_synthesize_long_audio():
     # Handle the response
     print(response)
 
+
 # [END texttospeech_v1beta1_generated_TextToSpeechLongAudioSynthesize_SynthesizeLongAudio_async]

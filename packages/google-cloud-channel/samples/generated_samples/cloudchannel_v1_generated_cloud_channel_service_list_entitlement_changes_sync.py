@@ -50,4 +50,5 @@ def sample_list_entitlement_changes():
     for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ListEntitlementChanges_sync]

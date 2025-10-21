@@ -50,4 +50,5 @@ async def sample_remove_control():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_ServingConfigService_RemoveControl_async]

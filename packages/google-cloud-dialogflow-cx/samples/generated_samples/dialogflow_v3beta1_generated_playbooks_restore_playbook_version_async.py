@@ -49,4 +49,5 @@ async def sample_restore_playbook_version():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_Playbooks_RestorePlaybookVersion_async]

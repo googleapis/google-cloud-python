@@ -56,4 +56,5 @@ async def sample_update_application():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_AppPlatform_UpdateApplication_async]

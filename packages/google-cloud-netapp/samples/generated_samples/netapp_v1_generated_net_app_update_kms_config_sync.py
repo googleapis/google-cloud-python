@@ -56,4 +56,5 @@ def sample_update_kms_config():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_UpdateKmsConfig_sync]

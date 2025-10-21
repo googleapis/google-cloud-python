@@ -49,4 +49,5 @@ async def sample_get_organization_settings():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v1beta1_generated_SecurityCenter_GetOrganizationSettings_async]

@@ -53,4 +53,5 @@ def sample_delete_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v2_generated_NotebookService_DeleteInstance_sync]

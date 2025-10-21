@@ -50,4 +50,5 @@ async def sample_list_node_types():
     async for response in page_result:
         print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_ListNodeTypes_async]

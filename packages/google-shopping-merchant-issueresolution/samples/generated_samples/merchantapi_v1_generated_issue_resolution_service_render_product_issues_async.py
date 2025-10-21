@@ -49,4 +49,5 @@ async def sample_render_product_issues():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_IssueResolutionService_RenderProductIssues_async]

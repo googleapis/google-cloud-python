@@ -39,8 +39,7 @@ def sample_update_certificate():
     client = certificate_manager_v1.CertificateManagerClient()
 
     # Initialize request argument(s)
-    request = certificate_manager_v1.UpdateCertificateRequest(
-    )
+    request = certificate_manager_v1.UpdateCertificateRequest()
 
     # Make the request
     operation = client.update_certificate(request=request)
@@ -51,5 +50,6 @@ def sample_update_certificate():
 
     # Handle the response
     print(response)
+
 
 # [END certificatemanager_v1_generated_CertificateManager_UpdateCertificate_sync]

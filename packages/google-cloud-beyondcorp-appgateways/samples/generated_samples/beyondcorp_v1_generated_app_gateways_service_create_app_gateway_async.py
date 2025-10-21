@@ -59,4 +59,5 @@ async def sample_create_app_gateway():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_AppGatewaysService_CreateAppGateway_async]

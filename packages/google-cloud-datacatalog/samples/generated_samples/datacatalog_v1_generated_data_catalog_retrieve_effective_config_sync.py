@@ -49,4 +49,5 @@ def sample_retrieve_effective_config():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1_generated_DataCatalog_RetrieveEffectiveConfig_sync]

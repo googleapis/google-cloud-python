@@ -52,4 +52,5 @@ def sample_get_effective_firewalls():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_GetEffectiveFirewalls_sync]

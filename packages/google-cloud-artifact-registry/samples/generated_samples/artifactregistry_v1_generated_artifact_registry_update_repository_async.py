@@ -39,13 +39,13 @@ async def sample_update_repository():
     client = artifactregistry_v1.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.UpdateRepositoryRequest(
-    )
+    request = artifactregistry_v1.UpdateRepositoryRequest()
 
     # Make the request
     response = await client.update_repository(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_UpdateRepository_async]

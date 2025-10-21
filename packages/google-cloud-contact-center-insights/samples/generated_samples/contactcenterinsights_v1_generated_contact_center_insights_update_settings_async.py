@@ -39,13 +39,13 @@ async def sample_update_settings():
     client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
     # Initialize request argument(s)
-    request = contact_center_insights_v1.UpdateSettingsRequest(
-    )
+    request = contact_center_insights_v1.UpdateSettingsRequest()
 
     # Make the request
     response = await client.update_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_UpdateSettings_async]

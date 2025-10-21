@@ -39,13 +39,13 @@ def sample_update_corpus():
     client = generativelanguage_v1alpha.RetrieverServiceClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1alpha.UpdateCorpusRequest(
-    )
+    request = generativelanguage_v1alpha.UpdateCorpusRequest()
 
     # Make the request
     response = client.update_corpus(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1alpha_generated_RetrieverService_UpdateCorpus_sync]

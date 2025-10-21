@@ -52,4 +52,5 @@ def sample_update_dashboard():
     # Handle the response
     print(response)
 
+
 # [END monitoring_v1_generated_DashboardsService_UpdateDashboard_sync]

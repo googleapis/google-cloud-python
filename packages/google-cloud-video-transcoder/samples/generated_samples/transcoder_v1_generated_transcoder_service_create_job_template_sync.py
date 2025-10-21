@@ -50,4 +50,5 @@ def sample_create_job_template():
     # Handle the response
     print(response)
 
+
 # [END transcoder_v1_generated_TranscoderService_CreateJobTemplate_sync]

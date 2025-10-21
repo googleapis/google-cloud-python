@@ -51,4 +51,5 @@ def sample_invalidate_cache():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionUrlMaps_InvalidateCache_sync]

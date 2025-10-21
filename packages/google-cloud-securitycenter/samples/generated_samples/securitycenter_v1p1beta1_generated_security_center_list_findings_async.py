@@ -50,4 +50,5 @@ async def sample_list_findings():
     async for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1p1beta1_generated_SecurityCenter_ListFindings_async]

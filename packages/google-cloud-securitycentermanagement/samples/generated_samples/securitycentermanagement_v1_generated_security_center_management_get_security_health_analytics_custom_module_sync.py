@@ -49,4 +49,5 @@ def sample_get_security_health_analytics_custom_module():
     # Handle the response
     print(response)
 
+
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_GetSecurityHealthAnalyticsCustomModule_sync]

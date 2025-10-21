@@ -39,13 +39,13 @@ async def sample_update_alert_policy():
     client = monitoring_v3.AlertPolicyServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = monitoring_v3.UpdateAlertPolicyRequest(
-    )
+    request = monitoring_v3.UpdateAlertPolicyRequest()
 
     # Make the request
     response = await client.update_alert_policy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END monitoring_v3_generated_AlertPolicyService_UpdateAlertPolicy_async]

@@ -50,4 +50,5 @@ def sample_rename_tag_template_field():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1beta1_generated_DataCatalog_RenameTagTemplateField_sync]

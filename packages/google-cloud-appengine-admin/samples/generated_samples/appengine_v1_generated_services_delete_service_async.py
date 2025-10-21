@@ -39,8 +39,7 @@ async def sample_delete_service():
     client = appengine_admin_v1.ServicesAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.DeleteServiceRequest(
-    )
+    request = appengine_admin_v1.DeleteServiceRequest()
 
     # Make the request
     operation = client.delete_service(request=request)
@@ -51,5 +50,6 @@ async def sample_delete_service():
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Services_DeleteService_async]

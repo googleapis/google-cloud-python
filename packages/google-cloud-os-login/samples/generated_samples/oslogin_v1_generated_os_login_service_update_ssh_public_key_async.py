@@ -49,4 +49,5 @@ async def sample_update_ssh_public_key():
     # Handle the response
     print(response)
 
+
 # [END oslogin_v1_generated_OsLoginService_UpdateSshPublicKey_async]

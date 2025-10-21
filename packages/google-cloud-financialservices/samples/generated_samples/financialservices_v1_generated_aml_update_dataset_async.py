@@ -39,8 +39,7 @@ async def sample_update_dataset():
     client = financialservices_v1.AMLAsyncClient()
 
     # Initialize request argument(s)
-    request = financialservices_v1.UpdateDatasetRequest(
-    )
+    request = financialservices_v1.UpdateDatasetRequest()
 
     # Make the request
     operation = client.update_dataset(request=request)
@@ -51,5 +50,6 @@ async def sample_update_dataset():
 
     # Handle the response
     print(response)
+
 
 # [END financialservices_v1_generated_AML_UpdateDataset_async]

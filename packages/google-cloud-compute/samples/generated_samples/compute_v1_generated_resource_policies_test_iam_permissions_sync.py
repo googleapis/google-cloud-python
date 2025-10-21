@@ -51,4 +51,5 @@ def sample_test_iam_permissions():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_ResourcePolicies_TestIamPermissions_sync]

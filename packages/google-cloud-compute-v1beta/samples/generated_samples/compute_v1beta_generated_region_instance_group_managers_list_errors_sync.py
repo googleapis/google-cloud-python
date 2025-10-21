@@ -52,4 +52,5 @@ def sample_list_errors():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1beta_generated_RegionInstanceGroupManagers_ListErrors_sync]

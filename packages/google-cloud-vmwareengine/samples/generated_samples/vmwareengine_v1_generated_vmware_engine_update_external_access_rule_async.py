@@ -39,8 +39,7 @@ async def sample_update_external_access_rule():
     client = vmwareengine_v1.VmwareEngineAsyncClient()
 
     # Initialize request argument(s)
-    request = vmwareengine_v1.UpdateExternalAccessRuleRequest(
-    )
+    request = vmwareengine_v1.UpdateExternalAccessRuleRequest()
 
     # Make the request
     operation = client.update_external_access_rule(request=request)
@@ -51,5 +50,6 @@ async def sample_update_external_access_rule():
 
     # Handle the response
     print(response)
+
 
 # [END vmwareengine_v1_generated_VmwareEngine_UpdateExternalAccessRule_async]

@@ -57,4 +57,5 @@ async def sample_update_authorization_policy():
     # Handle the response
     print(response)
 
+
 # [END networksecurity_v1_generated_NetworkSecurity_UpdateAuthorizationPolicy_async]

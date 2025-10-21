@@ -50,4 +50,5 @@ def sample_get_xpn_resources():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1beta_generated_Projects_GetXpnResources_sync]

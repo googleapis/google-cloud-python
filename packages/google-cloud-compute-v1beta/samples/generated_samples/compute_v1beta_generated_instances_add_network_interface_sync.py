@@ -51,4 +51,5 @@ def sample_add_network_interface():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_AddNetworkInterface_sync]

@@ -53,4 +53,5 @@ def sample_delete_custom_target_type():
     # Handle the response
     print(response)
 
+
 # [END clouddeploy_v1_generated_CloudDeploy_DeleteCustomTargetType_sync]

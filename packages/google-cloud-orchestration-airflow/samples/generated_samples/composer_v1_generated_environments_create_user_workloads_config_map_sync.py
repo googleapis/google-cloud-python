@@ -49,4 +49,5 @@ def sample_create_user_workloads_config_map():
     # Handle the response
     print(response)
 
+
 # [END composer_v1_generated_Environments_CreateUserWorkloadsConfigMap_sync]

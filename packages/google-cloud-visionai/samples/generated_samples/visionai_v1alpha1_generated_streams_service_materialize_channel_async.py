@@ -59,4 +59,5 @@ async def sample_materialize_channel():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_StreamsService_MaterializeChannel_async]

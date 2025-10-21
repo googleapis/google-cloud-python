@@ -54,4 +54,5 @@ def sample_enroll_solution():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_ProjectService_EnrollSolution_sync]

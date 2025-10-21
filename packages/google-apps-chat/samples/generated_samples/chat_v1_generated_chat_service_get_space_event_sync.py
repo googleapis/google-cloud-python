@@ -49,4 +49,5 @@ def sample_get_space_event():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_GetSpaceEvent_sync]

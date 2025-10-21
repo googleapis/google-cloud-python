@@ -50,4 +50,5 @@ def sample_list_session_templates():
     for response in page_result:
         print(response)
 
+
 # [END dataproc_v1_generated_SessionTemplateController_ListSessionTemplates_sync]

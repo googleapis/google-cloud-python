@@ -50,4 +50,5 @@ async def sample_create_rollout():
     # Handle the response
     print(response)
 
+
 # [END saasservicemgmt_v1beta1_generated_SaasRollouts_CreateRollout_async]

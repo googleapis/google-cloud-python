@@ -39,13 +39,13 @@ def sample_update_version():
     client = dialogflow_v2beta1.VersionsClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.UpdateVersionRequest(
-    )
+    request = dialogflow_v2beta1.UpdateVersionRequest()
 
     # Make the request
     response = client.update_version(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_Versions_UpdateVersion_sync]

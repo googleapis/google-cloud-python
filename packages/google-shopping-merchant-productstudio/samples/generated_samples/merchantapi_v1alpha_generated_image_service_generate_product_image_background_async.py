@@ -58,4 +58,5 @@ async def sample_generate_product_image_background():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1alpha_generated_ImageService_GenerateProductImageBackground_async]

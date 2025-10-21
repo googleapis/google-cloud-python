@@ -51,4 +51,5 @@ async def sample_list_findings():
     async for response in page_result:
         print(response)
 
+
 # [END websecurityscanner_v1alpha_generated_WebSecurityScanner_ListFindings_async]

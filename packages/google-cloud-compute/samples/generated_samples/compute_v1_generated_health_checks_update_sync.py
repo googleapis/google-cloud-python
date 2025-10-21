@@ -50,4 +50,5 @@ def sample_update():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_HealthChecks_Update_sync]

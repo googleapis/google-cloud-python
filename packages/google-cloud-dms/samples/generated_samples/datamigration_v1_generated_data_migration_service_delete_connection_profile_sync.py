@@ -53,4 +53,5 @@ def sample_delete_connection_profile():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_DeleteConnectionProfile_sync]

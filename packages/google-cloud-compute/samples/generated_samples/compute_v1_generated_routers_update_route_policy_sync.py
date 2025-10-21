@@ -51,4 +51,5 @@ def sample_update_route_policy():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Routers_UpdateRoutePolicy_sync]

@@ -63,4 +63,5 @@ async def sample_restore_cluster():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_RestoreCluster_async]

@@ -50,4 +50,5 @@ async def sample_create_delivery_vehicle():
     # Handle the response
     print(response)
 
+
 # [END fleetengine_v1_generated_DeliveryService_CreateDeliveryVehicle_async]

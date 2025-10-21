@@ -49,4 +49,5 @@ def sample_suggest_queries():
     # Handle the response
     print(response)
 
+
 # [END dataqna_v1alpha_generated_AutoSuggestionService_SuggestQueries_sync]

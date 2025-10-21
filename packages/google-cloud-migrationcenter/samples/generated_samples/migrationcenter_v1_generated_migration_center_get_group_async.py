@@ -49,4 +49,5 @@ async def sample_get_group():
     # Handle the response
     print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_GetGroup_async]

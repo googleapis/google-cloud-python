@@ -58,4 +58,5 @@ def sample_create_network():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_CreateNetwork_sync]

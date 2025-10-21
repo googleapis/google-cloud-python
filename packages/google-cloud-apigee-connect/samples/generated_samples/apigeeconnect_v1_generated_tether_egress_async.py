@@ -39,8 +39,7 @@ async def sample_egress():
     client = apigeeconnect_v1.TetherAsyncClient()
 
     # Initialize request argument(s)
-    request = apigeeconnect_v1.EgressResponse(
-    )
+    request = apigeeconnect_v1.EgressResponse()
 
     # This method expects an iterator which contains
     # 'apigeeconnect_v1.EgressResponse' objects
@@ -58,5 +57,6 @@ async def sample_egress():
     # Handle the response
     async for response in stream:
         print(response)
+
 
 # [END apigeeconnect_v1_generated_Tether_Egress_async]

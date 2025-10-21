@@ -39,13 +39,13 @@ def sample_update_message():
     client = chat_v1.ChatServiceClient()
 
     # Initialize request argument(s)
-    request = chat_v1.UpdateMessageRequest(
-    )
+    request = chat_v1.UpdateMessageRequest()
 
     # Make the request
     response = client.update_message(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END chat_v1_generated_ChatService_UpdateMessage_sync]

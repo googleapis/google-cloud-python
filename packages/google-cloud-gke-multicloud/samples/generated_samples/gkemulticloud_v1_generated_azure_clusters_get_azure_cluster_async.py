@@ -49,4 +49,5 @@ async def sample_get_azure_cluster():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AzureClusters_GetAzureCluster_async]

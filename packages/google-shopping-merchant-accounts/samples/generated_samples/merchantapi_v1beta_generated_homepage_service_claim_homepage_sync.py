@@ -49,4 +49,5 @@ def sample_claim_homepage():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_HomepageService_ClaimHomepage_sync]

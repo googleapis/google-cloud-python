@@ -49,4 +49,5 @@ def sample_get_data_sharing_settings():
     # Handle the response
     print(response)
 
+
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_GetDataSharingSettings_sync]

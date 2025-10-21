@@ -50,4 +50,5 @@ def sample_query_forecasts():
     # Handle the response
     print(response)
 
+
 # [END capacityplanner_v1beta_generated_UsageService_QueryForecasts_sync]

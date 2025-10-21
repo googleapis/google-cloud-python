@@ -49,4 +49,5 @@ async def sample_mark_recommendation_dismissed():
     # Handle the response
     print(response)
 
+
 # [END recommender_v1_generated_Recommender_MarkRecommendationDismissed_async]

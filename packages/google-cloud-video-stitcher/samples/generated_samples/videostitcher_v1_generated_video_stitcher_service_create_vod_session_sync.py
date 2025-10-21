@@ -53,4 +53,5 @@ def sample_create_vod_session():
     # Handle the response
     print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_CreateVodSession_sync]

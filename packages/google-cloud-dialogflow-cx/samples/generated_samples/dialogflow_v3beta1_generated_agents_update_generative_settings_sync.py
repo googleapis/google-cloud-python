@@ -39,13 +39,13 @@ def sample_update_generative_settings():
     client = dialogflowcx_v3beta1.AgentsClient()
 
     # Initialize request argument(s)
-    request = dialogflowcx_v3beta1.UpdateGenerativeSettingsRequest(
-    )
+    request = dialogflowcx_v3beta1.UpdateGenerativeSettingsRequest()
 
     # Make the request
     response = client.update_generative_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v3beta1_generated_Agents_UpdateGenerativeSettings_sync]

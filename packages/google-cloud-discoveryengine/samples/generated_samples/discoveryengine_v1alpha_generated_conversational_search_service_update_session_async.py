@@ -39,13 +39,13 @@ async def sample_update_session():
     client = discoveryengine_v1alpha.ConversationalSearchServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1alpha.UpdateSessionRequest(
-    )
+    request = discoveryengine_v1alpha.UpdateSessionRequest()
 
     # Make the request
     response = await client.update_session(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END discoveryengine_v1alpha_generated_ConversationalSearchService_UpdateSession_async]

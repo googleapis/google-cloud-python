@@ -49,4 +49,5 @@ def sample_create_job():
     # Handle the response
     print(response)
 
+
 # [END cloudscheduler_v1beta1_generated_CloudScheduler_CreateJob_sync]

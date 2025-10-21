@@ -50,4 +50,5 @@ def sample_list_repositories():
     for response in page_result:
         print(response)
 
+
 # [END artifactregistry_v1beta2_generated_ArtifactRegistry_ListRepositories_sync]

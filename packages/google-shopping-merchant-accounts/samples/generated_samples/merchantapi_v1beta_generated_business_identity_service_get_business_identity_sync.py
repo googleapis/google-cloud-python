@@ -49,4 +49,5 @@ def sample_get_business_identity():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_BusinessIdentityService_GetBusinessIdentity_sync]

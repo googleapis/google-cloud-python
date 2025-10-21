@@ -39,13 +39,13 @@ async def sample_update_generative_settings():
     client = dialogflowcx_v3.AgentsAsyncClient()
 
     # Initialize request argument(s)
-    request = dialogflowcx_v3.UpdateGenerativeSettingsRequest(
-    )
+    request = dialogflowcx_v3.UpdateGenerativeSettingsRequest()
 
     # Make the request
     response = await client.update_generative_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v3_generated_Agents_UpdateGenerativeSettings_async]

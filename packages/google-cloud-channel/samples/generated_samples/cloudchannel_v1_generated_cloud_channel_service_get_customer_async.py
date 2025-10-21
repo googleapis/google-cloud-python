@@ -49,4 +49,5 @@ async def sample_get_customer():
     # Handle the response
     print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_GetCustomer_async]

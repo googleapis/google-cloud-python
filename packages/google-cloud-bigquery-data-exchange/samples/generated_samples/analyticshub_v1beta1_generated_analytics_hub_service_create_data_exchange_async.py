@@ -54,4 +54,5 @@ async def sample_create_data_exchange():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1beta1_generated_AnalyticsHubService_CreateDataExchange_async]

@@ -39,13 +39,13 @@ def sample_get_answer_record():
     client = dialogflow_v2beta1.AnswerRecordsClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.GetAnswerRecordRequest(
-    )
+    request = dialogflow_v2beta1.GetAnswerRecordRequest()
 
     # Make the request
     response = client.get_answer_record(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_AnswerRecords_GetAnswerRecord_sync]

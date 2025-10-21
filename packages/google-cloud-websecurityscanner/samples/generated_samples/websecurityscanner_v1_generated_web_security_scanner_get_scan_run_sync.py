@@ -39,13 +39,13 @@ def sample_get_scan_run():
     client = websecurityscanner_v1.WebSecurityScannerClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.GetScanRunRequest(
-    )
+    request = websecurityscanner_v1.GetScanRunRequest()
 
     # Make the request
     response = client.get_scan_run(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END websecurityscanner_v1_generated_WebSecurityScanner_GetScanRun_sync]

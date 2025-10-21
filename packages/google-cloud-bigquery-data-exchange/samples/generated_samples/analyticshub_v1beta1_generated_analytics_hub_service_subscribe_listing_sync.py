@@ -55,4 +55,5 @@ def sample_subscribe_listing():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1beta1_generated_AnalyticsHubService_SubscribeListing_sync]

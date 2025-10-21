@@ -53,4 +53,5 @@ def sample_update_generative_question_config():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_GenerativeQuestionService_UpdateGenerativeQuestionConfig_sync]

@@ -50,4 +50,5 @@ def sample_list_variants():
     for response in page_result:
         print(response)
 
+
 # [END configdelivery_v1_generated_ConfigDelivery_ListVariants_sync]

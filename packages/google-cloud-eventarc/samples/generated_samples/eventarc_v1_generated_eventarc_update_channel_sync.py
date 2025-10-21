@@ -39,8 +39,7 @@ def sample_update_channel():
     client = eventarc_v1.EventarcClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.UpdateChannelRequest(
-    )
+    request = eventarc_v1.UpdateChannelRequest()
 
     # Make the request
     operation = client.update_channel(request=request)
@@ -51,5 +50,6 @@ def sample_update_channel():
 
     # Handle the response
     print(response)
+
 
 # [END eventarc_v1_generated_Eventarc_UpdateChannel_sync]

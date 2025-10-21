@@ -51,4 +51,5 @@ def sample_get_screenshot():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_GetScreenshot_sync]

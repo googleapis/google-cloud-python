@@ -39,13 +39,13 @@ async def sample_stop_airflow_command():
     client = service_v1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1.StopAirflowCommandRequest(
-    )
+    request = service_v1.StopAirflowCommandRequest()
 
     # Make the request
     response = await client.stop_airflow_command(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1_generated_Environments_StopAirflowCommand_async]

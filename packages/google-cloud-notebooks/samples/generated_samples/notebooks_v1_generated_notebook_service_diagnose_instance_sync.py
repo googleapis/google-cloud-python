@@ -57,4 +57,5 @@ def sample_diagnose_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_DiagnoseInstance_sync]

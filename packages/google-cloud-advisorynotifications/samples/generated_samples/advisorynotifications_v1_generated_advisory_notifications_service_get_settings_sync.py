@@ -49,4 +49,5 @@ def sample_get_settings():
     # Handle the response
     print(response)
 
+
 # [END advisorynotifications_v1_generated_AdvisoryNotificationsService_GetSettings_sync]

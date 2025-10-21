@@ -51,4 +51,5 @@ def sample_set_tags():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_SetTags_sync]

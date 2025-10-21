@@ -49,4 +49,5 @@ def sample_get_configuration():
     # Handle the response
     print(response)
 
+
 # [END licensemanager_v1_generated_LicenseManager_GetConfiguration_sync]

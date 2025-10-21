@@ -50,4 +50,5 @@ def sample_list_document_schemas():
     for response in page_result:
         print(response)
 
+
 # [END contentwarehouse_v1_generated_DocumentSchemaService_ListDocumentSchemas_sync]

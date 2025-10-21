@@ -53,4 +53,5 @@ async def sample_delete_cdn_key():
     # Handle the response
     print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_DeleteCdnKey_async]

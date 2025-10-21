@@ -49,4 +49,5 @@ def sample_get_branch_rule():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_GetBranchRule_sync]

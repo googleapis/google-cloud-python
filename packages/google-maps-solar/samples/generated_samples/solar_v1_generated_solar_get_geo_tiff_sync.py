@@ -49,4 +49,5 @@ def sample_get_geo_tiff():
     # Handle the response
     print(response)
 
+
 # [END solar_v1_generated_Solar_GetGeoTiff_sync]

@@ -52,4 +52,5 @@ def sample_list_nodes():
     for response in page_result:
         print(response)
 
+
 # [END compute_v1beta_generated_NodeGroups_ListNodes_sync]

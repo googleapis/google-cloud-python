@@ -53,4 +53,5 @@ def sample_add_group_migration():
     # Handle the response
     print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_AddGroupMigration_sync]

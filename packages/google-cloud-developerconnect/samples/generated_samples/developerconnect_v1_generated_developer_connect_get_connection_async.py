@@ -49,4 +49,5 @@ async def sample_get_connection():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_GetConnection_async]

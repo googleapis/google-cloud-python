@@ -39,13 +39,13 @@ async def sample_update_job():
     client = dataflow_v1beta3.JobsV1Beta3AsyncClient()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.UpdateJobRequest(
-    )
+    request = dataflow_v1beta3.UpdateJobRequest()
 
     # Make the request
     response = await client.update_job(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataflow_v1beta3_generated_JobsV1Beta3_UpdateJob_async]

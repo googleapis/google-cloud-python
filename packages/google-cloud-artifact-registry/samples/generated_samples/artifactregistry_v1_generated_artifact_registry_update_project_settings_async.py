@@ -39,13 +39,13 @@ async def sample_update_project_settings():
     client = artifactregistry_v1.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.UpdateProjectSettingsRequest(
-    )
+    request = artifactregistry_v1.UpdateProjectSettingsRequest()
 
     # Make the request
     response = await client.update_project_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_UpdateProjectSettings_async]

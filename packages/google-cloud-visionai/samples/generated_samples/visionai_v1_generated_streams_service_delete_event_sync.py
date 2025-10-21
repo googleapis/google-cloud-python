@@ -53,4 +53,5 @@ def sample_delete_event():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_StreamsService_DeleteEvent_sync]

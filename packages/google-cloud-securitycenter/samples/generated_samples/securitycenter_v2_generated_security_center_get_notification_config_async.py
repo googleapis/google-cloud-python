@@ -49,4 +49,5 @@ async def sample_get_notification_config():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v2_generated_SecurityCenter_GetNotificationConfig_async]

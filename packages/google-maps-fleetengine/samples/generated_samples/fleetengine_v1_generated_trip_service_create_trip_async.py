@@ -50,4 +50,5 @@ async def sample_create_trip():
     # Handle the response
     print(response)
 
+
 # [END fleetengine_v1_generated_TripService_CreateTrip_async]

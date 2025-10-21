@@ -53,4 +53,5 @@ def sample_delete_self():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_DeleteSelf_sync]

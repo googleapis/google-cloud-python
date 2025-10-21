@@ -49,4 +49,5 @@ async def sample_get_notification():
     # Handle the response
     print(response)
 
+
 # [END advisorynotifications_v1_generated_AdvisoryNotificationsService_GetNotification_async]

@@ -49,4 +49,5 @@ def sample_purge_queue():
     # Handle the response
     print(response)
 
+
 # [END cloudtasks_v2_generated_CloudTasks_PurgeQueue_sync]

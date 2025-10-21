@@ -39,8 +39,7 @@ def sample_update_data_agent():
     client = geminidataanalytics_v1beta.DataAgentServiceClient()
 
     # Initialize request argument(s)
-    request = geminidataanalytics_v1beta.UpdateDataAgentRequest(
-    )
+    request = geminidataanalytics_v1beta.UpdateDataAgentRequest()
 
     # Make the request
     operation = client.update_data_agent(request=request)
@@ -51,5 +50,6 @@ def sample_update_data_agent():
 
     # Handle the response
     print(response)
+
 
 # [END geminidataanalytics_v1beta_generated_DataAgentService_UpdateDataAgent_sync]

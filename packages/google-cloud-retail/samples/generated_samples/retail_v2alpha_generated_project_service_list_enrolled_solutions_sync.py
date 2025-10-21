@@ -49,4 +49,5 @@ def sample_list_enrolled_solutions():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_ProjectService_ListEnrolledSolutions_sync]

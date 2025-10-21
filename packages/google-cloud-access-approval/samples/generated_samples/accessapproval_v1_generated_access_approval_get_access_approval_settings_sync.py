@@ -39,13 +39,13 @@ def sample_get_access_approval_settings():
     client = accessapproval_v1.AccessApprovalClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.GetAccessApprovalSettingsMessage(
-    )
+    request = accessapproval_v1.GetAccessApprovalSettingsMessage()
 
     # Make the request
     response = client.get_access_approval_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END accessapproval_v1_generated_AccessApproval_GetAccessApprovalSettings_sync]

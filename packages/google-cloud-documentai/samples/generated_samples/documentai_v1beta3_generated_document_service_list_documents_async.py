@@ -50,4 +50,5 @@ async def sample_list_documents():
     async for response in page_result:
         print(response)
 
+
 # [END documentai_v1beta3_generated_DocumentService_ListDocuments_async]

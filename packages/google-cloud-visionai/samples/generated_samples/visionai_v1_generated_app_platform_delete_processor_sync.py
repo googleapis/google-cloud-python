@@ -53,4 +53,5 @@ def sample_delete_processor():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_AppPlatform_DeleteProcessor_sync]

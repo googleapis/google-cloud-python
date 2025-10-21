@@ -50,4 +50,5 @@ def sample_list_customers():
     for response in page_result:
         print(response)
 
+
 # [END cloudcontrolspartner_v1beta_generated_CloudControlsPartnerCore_ListCustomers_sync]

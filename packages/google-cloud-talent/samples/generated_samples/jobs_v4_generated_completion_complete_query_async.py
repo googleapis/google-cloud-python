@@ -51,4 +51,5 @@ async def sample_complete_query():
     # Handle the response
     print(response)
 
+
 # [END jobs_v4_generated_Completion_CompleteQuery_async]

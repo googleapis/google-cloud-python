@@ -41,7 +41,7 @@ def sample_batch_delete_rows():
     # Initialize request argument(s)
     request = tables_v1alpha1.BatchDeleteRowsRequest(
         parent="parent_value",
-        names=['names_value1', 'names_value2'],
+        names=["names_value1", "names_value2"],
     )
 
     # Make the request

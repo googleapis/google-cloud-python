@@ -52,4 +52,5 @@ def sample_update_session_template():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_SessionTemplateController_UpdateSessionTemplate_sync]

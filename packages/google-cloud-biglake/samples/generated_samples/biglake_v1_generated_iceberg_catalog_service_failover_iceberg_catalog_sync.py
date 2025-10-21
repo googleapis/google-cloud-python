@@ -50,4 +50,5 @@ def sample_failover_iceberg_catalog():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1_generated_IcebergCatalogService_FailoverIcebergCatalog_sync]

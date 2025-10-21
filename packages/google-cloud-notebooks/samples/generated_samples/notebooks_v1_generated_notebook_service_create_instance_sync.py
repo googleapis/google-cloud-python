@@ -60,4 +60,5 @@ def sample_create_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_CreateInstance_sync]

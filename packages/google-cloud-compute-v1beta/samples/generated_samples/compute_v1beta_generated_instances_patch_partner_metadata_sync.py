@@ -51,4 +51,5 @@ def sample_patch_partner_metadata():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Instances_PatchPartnerMetadata_sync]

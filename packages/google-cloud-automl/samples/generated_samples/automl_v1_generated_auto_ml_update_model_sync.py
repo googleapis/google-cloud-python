@@ -39,13 +39,13 @@ def sample_update_model():
     client = automl_v1.AutoMlClient()
 
     # Initialize request argument(s)
-    request = automl_v1.UpdateModelRequest(
-    )
+    request = automl_v1.UpdateModelRequest()
 
     # Make the request
     response = client.update_model(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END automl_v1_generated_AutoMl_UpdateModel_sync]

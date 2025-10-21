@@ -51,4 +51,5 @@ def sample_stop_async_replication():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionDisks_StopAsyncReplication_sync]

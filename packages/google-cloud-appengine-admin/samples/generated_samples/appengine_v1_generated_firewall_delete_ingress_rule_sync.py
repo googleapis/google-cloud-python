@@ -39,8 +39,7 @@ def sample_delete_ingress_rule():
     client = appengine_admin_v1.FirewallClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.DeleteIngressRuleRequest(
-    )
+    request = appengine_admin_v1.DeleteIngressRuleRequest()
 
     # Make the request
     client.delete_ingress_rule(request=request)

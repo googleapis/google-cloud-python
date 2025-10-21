@@ -39,13 +39,13 @@ def sample_get_authorized_certificate():
     client = appengine_admin_v1.AuthorizedCertificatesClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.GetAuthorizedCertificateRequest(
-    )
+    request = appengine_admin_v1.GetAuthorizedCertificateRequest()
 
     # Make the request
     response = client.get_authorized_certificate(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_AuthorizedCertificates_GetAuthorizedCertificate_sync]

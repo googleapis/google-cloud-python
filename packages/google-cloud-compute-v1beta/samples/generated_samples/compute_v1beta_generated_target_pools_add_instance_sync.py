@@ -51,4 +51,5 @@ def sample_add_instance():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_TargetPools_AddInstance_sync]

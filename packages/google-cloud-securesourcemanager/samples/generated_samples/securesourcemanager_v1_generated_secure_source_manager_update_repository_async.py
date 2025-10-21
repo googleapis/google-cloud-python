@@ -39,8 +39,7 @@ async def sample_update_repository():
     client = securesourcemanager_v1.SecureSourceManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = securesourcemanager_v1.UpdateRepositoryRequest(
-    )
+    request = securesourcemanager_v1.UpdateRepositoryRequest()
 
     # Make the request
     operation = client.update_repository(request=request)
@@ -51,5 +50,6 @@ async def sample_update_repository():
 
     # Handle the response
     print(response)
+
 
 # [END securesourcemanager_v1_generated_SecureSourceManager_UpdateRepository_async]

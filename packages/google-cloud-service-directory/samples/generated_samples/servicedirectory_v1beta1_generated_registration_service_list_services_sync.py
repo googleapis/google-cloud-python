@@ -50,4 +50,5 @@ def sample_list_services():
     for response in page_result:
         print(response)
 
+
 # [END servicedirectory_v1beta1_generated_RegistrationService_ListServices_sync]

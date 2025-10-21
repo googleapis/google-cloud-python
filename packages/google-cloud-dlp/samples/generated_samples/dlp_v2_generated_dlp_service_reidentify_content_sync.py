@@ -49,4 +49,5 @@ def sample_reidentify_content():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_ReidentifyContent_sync]

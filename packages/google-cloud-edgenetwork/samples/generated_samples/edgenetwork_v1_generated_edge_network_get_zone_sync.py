@@ -49,4 +49,5 @@ def sample_get_zone():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_GetZone_sync]

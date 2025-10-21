@@ -49,4 +49,5 @@ def sample_get_execution():
     # Handle the response
     print(response)
 
+
 # [END workflowexecutions_v1beta_generated_Executions_GetExecution_sync]

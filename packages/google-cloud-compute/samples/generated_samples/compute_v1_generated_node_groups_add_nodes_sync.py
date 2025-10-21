@@ -51,4 +51,5 @@ def sample_add_nodes():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_NodeGroups_AddNodes_sync]

@@ -49,4 +49,5 @@ def sample_get_data_layers():
     # Handle the response
     print(response)
 
+
 # [END solar_v1_generated_Solar_GetDataLayers_sync]

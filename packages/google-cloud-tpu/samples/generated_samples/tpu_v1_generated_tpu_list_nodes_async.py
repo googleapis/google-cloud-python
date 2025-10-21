@@ -50,4 +50,5 @@ async def sample_list_nodes():
     async for response in page_result:
         print(response)
 
+
 # [END tpu_v1_generated_Tpu_ListNodes_async]

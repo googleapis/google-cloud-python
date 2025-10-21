@@ -49,4 +49,5 @@ def sample_get_instance():
     # Handle the response
     print(response)
 
+
 # [END memcache_v1beta2_generated_CloudMemcache_GetInstance_sync]

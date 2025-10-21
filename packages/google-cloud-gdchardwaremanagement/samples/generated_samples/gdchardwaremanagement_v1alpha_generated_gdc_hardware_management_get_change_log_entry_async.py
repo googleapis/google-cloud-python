@@ -49,4 +49,5 @@ async def sample_get_change_log_entry():
     # Handle the response
     print(response)
 
+
 # [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_GetChangeLogEntry_async]

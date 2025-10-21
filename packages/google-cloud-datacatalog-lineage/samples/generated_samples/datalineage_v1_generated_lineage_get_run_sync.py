@@ -49,4 +49,5 @@ def sample_get_run():
     # Handle the response
     print(response)
 
+
 # [END datalineage_v1_generated_Lineage_GetRun_sync]

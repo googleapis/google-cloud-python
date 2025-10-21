@@ -39,13 +39,13 @@ async def sample_get_access_approval_service_account():
     client = accessapproval_v1.AccessApprovalAsyncClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.GetAccessApprovalServiceAccountMessage(
-    )
+    request = accessapproval_v1.GetAccessApprovalServiceAccountMessage()
 
     # Make the request
     response = await client.get_access_approval_service_account(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END accessapproval_v1_generated_AccessApproval_GetAccessApprovalServiceAccount_async]

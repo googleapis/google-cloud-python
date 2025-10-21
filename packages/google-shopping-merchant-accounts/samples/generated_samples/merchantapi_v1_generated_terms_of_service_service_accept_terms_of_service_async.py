@@ -51,4 +51,5 @@ async def sample_accept_terms_of_service():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_TermsOfServiceService_AcceptTermsOfService_async]

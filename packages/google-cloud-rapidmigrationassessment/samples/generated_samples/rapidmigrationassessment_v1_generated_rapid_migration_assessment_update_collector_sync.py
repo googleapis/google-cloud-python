@@ -39,8 +39,7 @@ def sample_update_collector():
     client = rapidmigrationassessment_v1.RapidMigrationAssessmentClient()
 
     # Initialize request argument(s)
-    request = rapidmigrationassessment_v1.UpdateCollectorRequest(
-    )
+    request = rapidmigrationassessment_v1.UpdateCollectorRequest()
 
     # Make the request
     operation = client.update_collector(request=request)
@@ -51,5 +50,6 @@ def sample_update_collector():
 
     # Handle the response
     print(response)
+
 
 # [END rapidmigrationassessment_v1_generated_RapidMigrationAssessment_UpdateCollector_sync]

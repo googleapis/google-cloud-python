@@ -53,4 +53,5 @@ def sample_generate_message():
     # Handle the response
     print(response)
 
+
 # [END generativelanguage_v1beta_generated_DiscussService_GenerateMessage_sync]

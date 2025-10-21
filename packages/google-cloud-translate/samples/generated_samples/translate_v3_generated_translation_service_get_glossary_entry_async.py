@@ -49,4 +49,5 @@ async def sample_get_glossary_entry():
     # Handle the response
     print(response)
 
+
 # [END translate_v3_generated_TranslationService_GetGlossaryEntry_async]

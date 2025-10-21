@@ -49,4 +49,5 @@ def sample_migrate_key():
     # Handle the response
     print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_MigrateKey_sync]

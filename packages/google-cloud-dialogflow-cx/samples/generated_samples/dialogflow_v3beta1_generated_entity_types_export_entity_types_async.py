@@ -42,7 +42,7 @@ async def sample_export_entity_types():
     request = dialogflowcx_v3beta1.ExportEntityTypesRequest(
         entity_types_uri="entity_types_uri_value",
         parent="parent_value",
-        entity_types=['entity_types_value1', 'entity_types_value2'],
+        entity_types=["entity_types_value1", "entity_types_value2"],
     )
 
     # Make the request
@@ -54,5 +54,6 @@ async def sample_export_entity_types():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v3beta1_generated_EntityTypes_ExportEntityTypes_async]

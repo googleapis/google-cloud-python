@@ -54,4 +54,5 @@ async def sample_upgrade_cluster():
     # Handle the response
     print(response)
 
+
 # [END edgecontainer_v1_generated_EdgeContainer_UpgradeCluster_async]

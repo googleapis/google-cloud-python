@@ -50,4 +50,5 @@ def sample_list_artifacts():
     for response in page_result:
         print(response)
 
+
 # [END apigeeregistry_v1_generated_Registry_ListArtifacts_sync]

@@ -39,8 +39,7 @@ def sample_update_certificate_map():
     client = certificate_manager_v1.CertificateManagerClient()
 
     # Initialize request argument(s)
-    request = certificate_manager_v1.UpdateCertificateMapRequest(
-    )
+    request = certificate_manager_v1.UpdateCertificateMapRequest()
 
     # Make the request
     operation = client.update_certificate_map(request=request)
@@ -51,5 +50,6 @@ def sample_update_certificate_map():
 
     # Handle the response
     print(response)
+
 
 # [END certificatemanager_v1_generated_CertificateManager_UpdateCertificateMap_sync]

@@ -49,4 +49,5 @@ def sample_set_usage_export_bucket():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Projects_SetUsageExportBucket_sync]

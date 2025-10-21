@@ -49,4 +49,5 @@ def sample_resume_job():
     # Handle the response
     print(response)
 
+
 # [END cloudscheduler_v1_generated_CloudScheduler_ResumeJob_sync]

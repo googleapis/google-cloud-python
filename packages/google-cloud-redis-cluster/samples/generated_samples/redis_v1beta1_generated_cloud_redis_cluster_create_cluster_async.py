@@ -58,4 +58,5 @@ async def sample_create_cluster():
     # Handle the response
     print(response)
 
+
 # [END redis_v1beta1_generated_CloudRedisCluster_CreateCluster_async]

@@ -49,4 +49,5 @@ def sample_get_workload():
     # Handle the response
     print(response)
 
+
 # [END apphub_v1_generated_AppHub_GetWorkload_sync]

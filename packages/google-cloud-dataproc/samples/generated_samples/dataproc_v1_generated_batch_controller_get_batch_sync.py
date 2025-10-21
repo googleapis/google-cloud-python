@@ -49,4 +49,5 @@ def sample_get_batch():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_BatchController_GetBatch_sync]

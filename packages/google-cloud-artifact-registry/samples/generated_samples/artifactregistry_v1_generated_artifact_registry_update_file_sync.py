@@ -39,13 +39,13 @@ def sample_update_file():
     client = artifactregistry_v1.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.UpdateFileRequest(
-    )
+    request = artifactregistry_v1.UpdateFileRequest()
 
     # Make the request
     response = client.update_file(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_UpdateFile_sync]

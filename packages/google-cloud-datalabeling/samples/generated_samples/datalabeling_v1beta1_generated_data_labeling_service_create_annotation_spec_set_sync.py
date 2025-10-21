@@ -49,4 +49,5 @@ def sample_create_annotation_spec_set():
     # Handle the response
     print(response)
 
+
 # [END datalabeling_v1beta1_generated_DataLabelingService_CreateAnnotationSpecSet_sync]

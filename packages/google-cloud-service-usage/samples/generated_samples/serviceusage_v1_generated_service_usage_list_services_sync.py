@@ -39,8 +39,7 @@ def sample_list_services():
     client = service_usage_v1.ServiceUsageClient()
 
     # Initialize request argument(s)
-    request = service_usage_v1.ListServicesRequest(
-    )
+    request = service_usage_v1.ListServicesRequest()
 
     # Make the request
     page_result = client.list_services(request=request)
@@ -48,5 +47,6 @@ def sample_list_services():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END serviceusage_v1_generated_ServiceUsage_ListServices_sync]

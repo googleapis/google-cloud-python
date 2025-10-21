@@ -53,4 +53,5 @@ def sample_resize_volume():
     # Handle the response
     print(response)
 
+
 # [END baremetalsolution_v2_generated_BareMetalSolution_ResizeVolume_sync]

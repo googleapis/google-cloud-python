@@ -50,4 +50,5 @@ async def sample_list_frameworks():
     async for response in page_result:
         print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Config_ListFrameworks_async]

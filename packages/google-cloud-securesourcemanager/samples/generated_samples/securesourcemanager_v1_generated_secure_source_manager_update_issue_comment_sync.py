@@ -56,4 +56,5 @@ def sample_update_issue_comment():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_UpdateIssueComment_sync]

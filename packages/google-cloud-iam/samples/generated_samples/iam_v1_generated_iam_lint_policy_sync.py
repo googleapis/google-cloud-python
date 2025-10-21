@@ -39,13 +39,13 @@ def sample_lint_policy():
     client = iam_admin_v1.IAMClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.LintPolicyRequest(
-    )
+    request = iam_admin_v1.LintPolicyRequest()
 
     # Make the request
     response = client.lint_policy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END iam_v1_generated_IAM_LintPolicy_sync]

@@ -50,4 +50,5 @@ def sample_get_from_family():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Images_GetFromFamily_sync]

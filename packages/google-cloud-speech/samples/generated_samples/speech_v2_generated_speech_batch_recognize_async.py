@@ -53,4 +53,5 @@ async def sample_batch_recognize():
     # Handle the response
     print(response)
 
+
 # [END speech_v2_generated_Speech_BatchRecognize_async]

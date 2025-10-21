@@ -39,13 +39,13 @@ async def sample_update_issue_model():
     client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
     # Initialize request argument(s)
-    request = contact_center_insights_v1.UpdateIssueModelRequest(
-    )
+    request = contact_center_insights_v1.UpdateIssueModelRequest()
 
     # Make the request
     response = await client.update_issue_model(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_UpdateIssueModel_async]

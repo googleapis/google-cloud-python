@@ -51,4 +51,5 @@ def sample_delete_per_instance_configs():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_InstanceGroupManagers_DeletePerInstanceConfigs_sync]

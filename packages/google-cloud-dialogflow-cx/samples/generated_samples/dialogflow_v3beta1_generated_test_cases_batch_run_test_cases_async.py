@@ -41,7 +41,7 @@ async def sample_batch_run_test_cases():
     # Initialize request argument(s)
     request = dialogflowcx_v3beta1.BatchRunTestCasesRequest(
         parent="parent_value",
-        test_cases=['test_cases_value1', 'test_cases_value2'],
+        test_cases=["test_cases_value1", "test_cases_value2"],
     )
 
     # Make the request
@@ -53,5 +53,6 @@ async def sample_batch_run_test_cases():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v3beta1_generated_TestCases_BatchRunTestCases_async]

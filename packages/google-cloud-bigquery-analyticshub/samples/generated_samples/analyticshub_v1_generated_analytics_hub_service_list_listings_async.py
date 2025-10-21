@@ -50,4 +50,5 @@ async def sample_list_listings():
     async for response in page_result:
         print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_ListListings_async]

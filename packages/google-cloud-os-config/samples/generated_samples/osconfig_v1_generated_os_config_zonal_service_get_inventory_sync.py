@@ -49,4 +49,5 @@ def sample_get_inventory():
     # Handle the response
     print(response)
 
+
 # [END osconfig_v1_generated_OsConfigZonalService_GetInventory_sync]

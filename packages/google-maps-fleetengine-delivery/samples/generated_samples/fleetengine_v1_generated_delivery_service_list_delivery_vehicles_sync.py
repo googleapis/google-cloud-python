@@ -50,4 +50,5 @@ def sample_list_delivery_vehicles():
     for response in page_result:
         print(response)
 
+
 # [END fleetengine_v1_generated_DeliveryService_ListDeliveryVehicles_sync]

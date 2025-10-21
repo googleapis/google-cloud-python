@@ -39,13 +39,13 @@ def sample_batch_annotate_images():
     client = vision_v1p2beta1.ImageAnnotatorClient()
 
     # Initialize request argument(s)
-    request = vision_v1p2beta1.BatchAnnotateImagesRequest(
-    )
+    request = vision_v1p2beta1.BatchAnnotateImagesRequest()
 
     # Make the request
     response = client.batch_annotate_images(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END vision_v1p2beta1_generated_ImageAnnotator_BatchAnnotateImages_sync]

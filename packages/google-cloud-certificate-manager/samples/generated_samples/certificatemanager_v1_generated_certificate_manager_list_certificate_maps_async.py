@@ -50,4 +50,5 @@ async def sample_list_certificate_maps():
     async for response in page_result:
         print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_ListCertificateMaps_async]

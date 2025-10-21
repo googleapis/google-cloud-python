@@ -49,4 +49,5 @@ def sample_generate_connect_manifest():
     # Handle the response
     print(response)
 
+
 # [END gkehub_v1beta1_generated_GkeHubMembershipService_GenerateConnectManifest_sync]

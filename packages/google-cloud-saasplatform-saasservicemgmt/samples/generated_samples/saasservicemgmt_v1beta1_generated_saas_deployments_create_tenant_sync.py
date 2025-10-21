@@ -54,4 +54,5 @@ def sample_create_tenant():
     # Handle the response
     print(response)
 
+
 # [END saasservicemgmt_v1beta1_generated_SaasDeployments_CreateTenant_sync]

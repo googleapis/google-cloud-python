@@ -51,4 +51,5 @@ async def sample_list_utilization_reports():
     async for response in page_result:
         print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_ListUtilizationReports_async]

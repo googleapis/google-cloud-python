@@ -39,8 +39,7 @@ def sample_update_workstation_config():
     client = workstations_v1.WorkstationsClient()
 
     # Initialize request argument(s)
-    request = workstations_v1.UpdateWorkstationConfigRequest(
-    )
+    request = workstations_v1.UpdateWorkstationConfigRequest()
 
     # Make the request
     operation = client.update_workstation_config(request=request)
@@ -51,5 +50,6 @@ def sample_update_workstation_config():
 
     # Handle the response
     print(response)
+
 
 # [END workstations_v1_generated_Workstations_UpdateWorkstationConfig_sync]

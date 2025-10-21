@@ -49,4 +49,5 @@ def sample_get_validation_result():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_Agents_GetValidationResult_sync]

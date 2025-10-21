@@ -53,4 +53,5 @@ def sample_update_discovery_config():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_UpdateDiscoveryConfig_sync]

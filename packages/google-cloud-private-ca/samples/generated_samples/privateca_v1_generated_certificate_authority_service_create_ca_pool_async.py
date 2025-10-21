@@ -58,4 +58,5 @@ async def sample_create_ca_pool():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1_generated_CertificateAuthorityService_CreateCaPool_async]

@@ -51,4 +51,5 @@ async def sample_search_blueprint_revisions():
     async for response in page_result:
         print(response)
 
+
 # [END telcoautomation_v1alpha1_generated_TelcoAutomation_SearchBlueprintRevisions_async]

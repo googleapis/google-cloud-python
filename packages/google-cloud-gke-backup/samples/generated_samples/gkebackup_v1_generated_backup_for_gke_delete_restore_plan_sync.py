@@ -53,4 +53,5 @@ def sample_delete_restore_plan():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_DeleteRestorePlan_sync]

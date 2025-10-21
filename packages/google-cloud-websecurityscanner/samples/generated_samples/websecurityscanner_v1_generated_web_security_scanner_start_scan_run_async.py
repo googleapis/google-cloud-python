@@ -39,13 +39,13 @@ async def sample_start_scan_run():
     client = websecurityscanner_v1.WebSecurityScannerAsyncClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.StartScanRunRequest(
-    )
+    request = websecurityscanner_v1.StartScanRunRequest()
 
     # Make the request
     response = await client.start_scan_run(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END websecurityscanner_v1_generated_WebSecurityScanner_StartScanRun_async]

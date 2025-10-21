@@ -50,4 +50,5 @@ async def sample_list_rollouts():
     async for response in page_result:
         print(response)
 
+
 # [END clouddeploy_v1_generated_CloudDeploy_ListRollouts_async]

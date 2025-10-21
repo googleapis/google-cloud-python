@@ -49,4 +49,5 @@ async def sample_reset_admin_password():
     # Handle the response
     print(response)
 
+
 # [END managedidentities_v1_generated_ManagedIdentitiesService_ResetAdminPassword_async]

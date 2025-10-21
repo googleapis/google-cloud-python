@@ -50,4 +50,5 @@ def sample_list_sip_trunks():
     for response in page_result:
         print(response)
 
+
 # [END dialogflow_v2beta1_generated_SipTrunks_ListSipTrunks_sync]

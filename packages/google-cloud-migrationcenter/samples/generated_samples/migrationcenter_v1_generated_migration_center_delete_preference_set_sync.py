@@ -53,4 +53,5 @@ def sample_delete_preference_set():
     # Handle the response
     print(response)
 
+
 # [END migrationcenter_v1_generated_MigrationCenter_DeletePreferenceSet_sync]

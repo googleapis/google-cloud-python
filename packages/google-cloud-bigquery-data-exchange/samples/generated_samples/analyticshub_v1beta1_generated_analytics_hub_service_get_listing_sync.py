@@ -49,4 +49,5 @@ def sample_get_listing():
     # Handle the response
     print(response)
 
+
 # [END analyticshub_v1beta1_generated_AnalyticsHubService_GetListing_sync]

@@ -49,4 +49,5 @@ def sample_get_evaluation():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1beta_generated_EvaluationService_GetEvaluation_sync]

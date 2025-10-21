@@ -53,4 +53,5 @@ async def sample_submit_config_source():
     # Handle the response
     print(response)
 
+
 # [END servicemanagement_v1_generated_ServiceManager_SubmitConfigSource_async]

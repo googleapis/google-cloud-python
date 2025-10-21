@@ -39,8 +39,7 @@ def sample_update_nfs_share():
     client = bare_metal_solution_v2.BareMetalSolutionClient()
 
     # Initialize request argument(s)
-    request = bare_metal_solution_v2.UpdateNfsShareRequest(
-    )
+    request = bare_metal_solution_v2.UpdateNfsShareRequest()
 
     # Make the request
     operation = client.update_nfs_share(request=request)
@@ -51,5 +50,6 @@ def sample_update_nfs_share():
 
     # Handle the response
     print(response)
+
 
 # [END baremetalsolution_v2_generated_BareMetalSolution_UpdateNfsShare_sync]

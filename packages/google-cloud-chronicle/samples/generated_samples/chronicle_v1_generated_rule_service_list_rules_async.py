@@ -50,4 +50,5 @@ async def sample_list_rules():
     async for response in page_result:
         print(response)
 
+
 # [END chronicle_v1_generated_RuleService_ListRules_async]

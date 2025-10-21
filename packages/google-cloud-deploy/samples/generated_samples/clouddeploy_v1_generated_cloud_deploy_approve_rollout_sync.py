@@ -50,4 +50,5 @@ def sample_approve_rollout():
     # Handle the response
     print(response)
 
+
 # [END clouddeploy_v1_generated_CloudDeploy_ApproveRollout_sync]

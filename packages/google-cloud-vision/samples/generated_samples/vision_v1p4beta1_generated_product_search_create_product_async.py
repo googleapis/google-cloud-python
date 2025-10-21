@@ -49,4 +49,5 @@ async def sample_create_product():
     # Handle the response
     print(response)
 
+
 # [END vision_v1p4beta1_generated_ProductSearch_CreateProduct_async]

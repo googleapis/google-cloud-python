@@ -39,8 +39,7 @@ def sample_delete_version():
     client = appengine_admin_v1.VersionsClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.DeleteVersionRequest(
-    )
+    request = appengine_admin_v1.DeleteVersionRequest()
 
     # Make the request
     operation = client.delete_version(request=request)
@@ -51,5 +50,6 @@ def sample_delete_version():
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_Versions_DeleteVersion_sync]

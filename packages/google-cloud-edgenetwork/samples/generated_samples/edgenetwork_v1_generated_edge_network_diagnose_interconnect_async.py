@@ -49,4 +49,5 @@ async def sample_diagnose_interconnect():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_DiagnoseInterconnect_async]

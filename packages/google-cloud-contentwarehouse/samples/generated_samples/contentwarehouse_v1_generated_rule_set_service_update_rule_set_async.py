@@ -49,4 +49,5 @@ async def sample_update_rule_set():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_RuleSetService_UpdateRuleSet_async]

@@ -42,7 +42,10 @@ async def sample_create_entry():
     entry = datacatalog_v1beta1.Entry()
     entry.type_ = "FILESET"
     entry.integrated_system = "CLOUD_PUBSUB"
-    entry.gcs_fileset_spec.file_patterns = ['file_patterns_value1', 'file_patterns_value2']
+    entry.gcs_fileset_spec.file_patterns = [
+        "file_patterns_value1",
+        "file_patterns_value2",
+    ]
 
     request = datacatalog_v1beta1.CreateEntryRequest(
         parent="parent_value",
@@ -55,5 +58,6 @@ async def sample_create_entry():
 
     # Handle the response
     print(response)
+
 
 # [END datacatalog_v1beta1_generated_DataCatalog_CreateEntry_async]

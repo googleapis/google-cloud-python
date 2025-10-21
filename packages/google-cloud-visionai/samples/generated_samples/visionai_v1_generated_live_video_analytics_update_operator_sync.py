@@ -39,8 +39,7 @@ def sample_update_operator():
     client = visionai_v1.LiveVideoAnalyticsClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.UpdateOperatorRequest(
-    )
+    request = visionai_v1.UpdateOperatorRequest()
 
     # Make the request
     operation = client.update_operator(request=request)
@@ -51,5 +50,6 @@ def sample_update_operator():
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_LiveVideoAnalytics_UpdateOperator_sync]

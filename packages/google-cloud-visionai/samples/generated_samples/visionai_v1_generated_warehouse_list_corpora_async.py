@@ -50,4 +50,5 @@ async def sample_list_corpora():
     async for response in page_result:
         print(response)
 
+
 # [END visionai_v1_generated_Warehouse_ListCorpora_async]

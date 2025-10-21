@@ -54,4 +54,5 @@ def sample_unlock_deployment():
     # Handle the response
     print(response)
 
+
 # [END config_v1_generated_Config_UnlockDeployment_sync]

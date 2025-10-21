@@ -39,14 +39,19 @@ def sample_retrieve_for_application_terms_of_service_agreement_state():
     client = merchant_accounts_v1.TermsOfServiceAgreementStateServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1.RetrieveForApplicationTermsOfServiceAgreementStateRequest(
-        parent="parent_value",
+    request = (
+        merchant_accounts_v1.RetrieveForApplicationTermsOfServiceAgreementStateRequest(
+            parent="parent_value",
+        )
     )
 
     # Make the request
-    response = client.retrieve_for_application_terms_of_service_agreement_state(request=request)
+    response = client.retrieve_for_application_terms_of_service_agreement_state(
+        request=request
+    )
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_TermsOfServiceAgreementStateService_RetrieveForApplicationTermsOfServiceAgreementState_sync]

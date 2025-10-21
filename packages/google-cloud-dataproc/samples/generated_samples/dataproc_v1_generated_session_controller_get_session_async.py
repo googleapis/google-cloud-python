@@ -49,4 +49,5 @@ async def sample_get_session():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_SessionController_GetSession_async]

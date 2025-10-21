@@ -49,4 +49,5 @@ async def sample_get_attached_server_config():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AttachedClusters_GetAttachedServerConfig_async]

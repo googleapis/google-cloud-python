@@ -50,4 +50,5 @@ async def sample_list_resource_allowances():
     async for response in page_result:
         print(response)
 
+
 # [END batch_v1alpha_generated_BatchService_ListResourceAllowances_async]

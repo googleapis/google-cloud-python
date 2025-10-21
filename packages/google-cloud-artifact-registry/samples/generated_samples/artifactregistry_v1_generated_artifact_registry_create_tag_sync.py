@@ -39,13 +39,13 @@ def sample_create_tag():
     client = artifactregistry_v1.ArtifactRegistryClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.CreateTagRequest(
-    )
+    request = artifactregistry_v1.CreateTagRequest()
 
     # Make the request
     response = client.create_tag(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_CreateTag_sync]

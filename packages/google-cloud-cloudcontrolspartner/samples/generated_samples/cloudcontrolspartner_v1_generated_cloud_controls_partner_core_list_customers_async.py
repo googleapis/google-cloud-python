@@ -50,4 +50,5 @@ async def sample_list_customers():
     async for response in page_result:
         print(response)
 
+
 # [END cloudcontrolspartner_v1_generated_CloudControlsPartnerCore_ListCustomers_async]

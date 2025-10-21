@@ -58,4 +58,5 @@ async def sample_update_destination():
     # Handle the response
     print(response)
 
+
 # [END networkconnectivity_v1_generated_DataTransferService_UpdateDestination_async]

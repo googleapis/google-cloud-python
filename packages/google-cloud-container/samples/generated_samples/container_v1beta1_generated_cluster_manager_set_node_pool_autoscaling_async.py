@@ -39,13 +39,13 @@ async def sample_set_node_pool_autoscaling():
     client = container_v1beta1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.SetNodePoolAutoscalingRequest(
-    )
+    request = container_v1beta1.SetNodePoolAutoscalingRequest()
 
     # Make the request
     response = await client.set_node_pool_autoscaling(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_SetNodePoolAutoscaling_async]

@@ -53,4 +53,5 @@ def sample_import_identity_mappings():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_IdentityMappingStoreService_ImportIdentityMappings_sync]

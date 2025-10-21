@@ -49,4 +49,5 @@ async def sample_get_inspect_template():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_GetInspectTemplate_async]

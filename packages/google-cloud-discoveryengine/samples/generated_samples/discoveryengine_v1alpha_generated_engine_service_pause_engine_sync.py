@@ -49,4 +49,5 @@ def sample_pause_engine():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_EngineService_PauseEngine_sync]

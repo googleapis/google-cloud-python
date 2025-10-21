@@ -50,4 +50,5 @@ async def sample_list_disk_migration_jobs():
     async for response in page_result:
         print(response)
 
+
 # [END vmmigration_v1_generated_VmMigration_ListDiskMigrationJobs_async]

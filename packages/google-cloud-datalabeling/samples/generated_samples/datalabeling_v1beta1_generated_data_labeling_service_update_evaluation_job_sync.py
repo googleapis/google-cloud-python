@@ -39,13 +39,13 @@ def sample_update_evaluation_job():
     client = datalabeling_v1beta1.DataLabelingServiceClient()
 
     # Initialize request argument(s)
-    request = datalabeling_v1beta1.UpdateEvaluationJobRequest(
-    )
+    request = datalabeling_v1beta1.UpdateEvaluationJobRequest()
 
     # Make the request
     response = client.update_evaluation_job(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END datalabeling_v1beta1_generated_DataLabelingService_UpdateEvaluationJob_sync]

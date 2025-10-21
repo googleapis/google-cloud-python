@@ -50,4 +50,5 @@ def sample_list_connectors():
     for response in page_result:
         print(response)
 
+
 # [END vpcaccess_v1_generated_VpcAccessService_ListConnectors_sync]

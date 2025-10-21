@@ -41,9 +41,6 @@ async def sample_create_cloud_vm_cluster():
     # Initialize request argument(s)
     cloud_vm_cluster = oracledatabase_v1.CloudVmCluster()
     cloud_vm_cluster.exadata_infrastructure = "exadata_infrastructure_value"
-    cloud_vm_cluster.cidr = "cidr_value"
-    cloud_vm_cluster.backup_subnet_cidr = "backup_subnet_cidr_value"
-    cloud_vm_cluster.network = "network_value"
 
     request = oracledatabase_v1.CreateCloudVmClusterRequest(
         parent="parent_value",
@@ -60,5 +57,6 @@ async def sample_create_cloud_vm_cluster():
 
     # Handle the response
     print(response)
+
 
 # [END oracledatabase_v1_generated_OracleDatabase_CreateCloudVmCluster_async]

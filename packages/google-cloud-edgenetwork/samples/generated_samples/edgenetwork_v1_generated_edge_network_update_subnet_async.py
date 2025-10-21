@@ -57,4 +57,5 @@ async def sample_update_subnet():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_UpdateSubnet_async]

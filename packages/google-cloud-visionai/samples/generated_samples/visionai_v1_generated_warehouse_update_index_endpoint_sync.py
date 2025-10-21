@@ -39,8 +39,7 @@ def sample_update_index_endpoint():
     client = visionai_v1.WarehouseClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.UpdateIndexEndpointRequest(
-    )
+    request = visionai_v1.UpdateIndexEndpointRequest()
 
     # Make the request
     operation = client.update_index_endpoint(request=request)
@@ -51,5 +50,6 @@ def sample_update_index_endpoint():
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_Warehouse_UpdateIndexEndpoint_sync]

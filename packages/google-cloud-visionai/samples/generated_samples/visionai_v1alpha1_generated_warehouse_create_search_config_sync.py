@@ -50,4 +50,5 @@ def sample_create_search_config():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1alpha1_generated_Warehouse_CreateSearchConfig_sync]

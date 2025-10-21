@@ -50,4 +50,5 @@ def sample_list_snoozes():
     for response in page_result:
         print(response)
 
+
 # [END monitoring_v3_generated_SnoozeService_ListSnoozes_sync]

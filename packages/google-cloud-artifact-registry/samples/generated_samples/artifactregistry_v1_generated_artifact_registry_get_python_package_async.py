@@ -49,4 +49,5 @@ async def sample_get_python_package():
     # Handle the response
     print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_GetPythonPackage_async]

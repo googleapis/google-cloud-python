@@ -54,4 +54,5 @@ async def sample_update_reference_list():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_ReferenceListService_UpdateReferenceList_async]

@@ -54,4 +54,5 @@ async def sample_create_cdn_key():
     # Handle the response
     print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_CreateCdnKey_async]

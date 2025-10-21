@@ -39,13 +39,13 @@ async def sample_update_security_center_service():
     client = securitycentermanagement_v1.SecurityCenterManagementAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycentermanagement_v1.UpdateSecurityCenterServiceRequest(
-    )
+    request = securitycentermanagement_v1.UpdateSecurityCenterServiceRequest()
 
     # Make the request
     response = await client.update_security_center_service(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycentermanagement_v1_generated_SecurityCenterManagement_UpdateSecurityCenterService_async]

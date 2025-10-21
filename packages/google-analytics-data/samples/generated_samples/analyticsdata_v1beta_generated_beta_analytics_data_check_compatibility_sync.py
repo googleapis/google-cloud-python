@@ -39,13 +39,13 @@ def sample_check_compatibility():
     client = data_v1beta.BetaAnalyticsDataClient()
 
     # Initialize request argument(s)
-    request = data_v1beta.CheckCompatibilityRequest(
-    )
+    request = data_v1beta.CheckCompatibilityRequest()
 
     # Make the request
     response = client.check_compatibility(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsdata_v1beta_generated_BetaAnalyticsData_CheckCompatibility_sync]

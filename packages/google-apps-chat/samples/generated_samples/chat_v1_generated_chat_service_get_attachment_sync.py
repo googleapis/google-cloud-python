@@ -49,4 +49,5 @@ def sample_get_attachment():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_GetAttachment_sync]

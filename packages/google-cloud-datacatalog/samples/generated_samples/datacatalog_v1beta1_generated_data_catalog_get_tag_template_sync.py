@@ -49,4 +49,5 @@ def sample_get_tag_template():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1beta1_generated_DataCatalog_GetTagTemplate_sync]

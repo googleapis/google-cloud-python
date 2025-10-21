@@ -50,4 +50,5 @@ def sample_list_batches():
     for response in page_result:
         print(response)
 
+
 # [END dataproc_v1_generated_BatchController_ListBatches_sync]

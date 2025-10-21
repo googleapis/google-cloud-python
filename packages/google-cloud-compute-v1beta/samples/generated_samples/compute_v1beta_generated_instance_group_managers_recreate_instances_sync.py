@@ -51,4 +51,5 @@ def sample_recreate_instances():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_InstanceGroupManagers_RecreateInstances_sync]

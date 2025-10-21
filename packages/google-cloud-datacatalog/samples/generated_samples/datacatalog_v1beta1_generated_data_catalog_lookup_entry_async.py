@@ -49,4 +49,5 @@ async def sample_lookup_entry():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1beta1_generated_DataCatalog_LookupEntry_async]

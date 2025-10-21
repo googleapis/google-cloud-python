@@ -39,13 +39,13 @@ def sample_update_service_account():
     client = iam_admin_v1.IAMClient()
 
     # Initialize request argument(s)
-    request = iam_admin_v1.ServiceAccount(
-    )
+    request = iam_admin_v1.ServiceAccount()
 
     # Make the request
     response = client.update_service_account(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END iam_v1_generated_IAM_UpdateServiceAccount_sync]

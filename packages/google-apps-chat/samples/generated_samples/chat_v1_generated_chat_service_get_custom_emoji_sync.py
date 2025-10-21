@@ -49,4 +49,5 @@ def sample_get_custom_emoji():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_GetCustomEmoji_sync]

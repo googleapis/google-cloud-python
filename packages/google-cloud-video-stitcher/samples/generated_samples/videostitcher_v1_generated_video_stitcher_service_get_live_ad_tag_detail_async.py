@@ -49,4 +49,5 @@ async def sample_get_live_ad_tag_detail():
     # Handle the response
     print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_GetLiveAdTagDetail_async]

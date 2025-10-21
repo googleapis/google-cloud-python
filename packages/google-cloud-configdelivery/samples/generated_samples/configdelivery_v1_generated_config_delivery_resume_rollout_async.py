@@ -53,4 +53,5 @@ async def sample_resume_rollout():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1_generated_ConfigDelivery_ResumeRollout_async]

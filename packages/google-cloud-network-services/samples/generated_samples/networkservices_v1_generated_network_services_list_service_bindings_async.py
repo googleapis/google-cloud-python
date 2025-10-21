@@ -50,4 +50,5 @@ async def sample_list_service_bindings():
     async for response in page_result:
         print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_ListServiceBindings_async]

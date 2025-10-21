@@ -52,4 +52,5 @@ def sample_cancel():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_InstanceGroupManagerResizeRequests_Cancel_sync]

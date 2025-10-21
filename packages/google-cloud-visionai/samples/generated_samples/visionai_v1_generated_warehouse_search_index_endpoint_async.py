@@ -40,7 +40,7 @@ async def sample_search_index_endpoint():
 
     # Initialize request argument(s)
     image_query = visionai_v1.ImageQuery()
-    image_query.input_image = b'input_image_blob'
+    image_query.input_image = b"input_image_blob"
 
     request = visionai_v1.SearchIndexEndpointRequest(
         image_query=image_query,
@@ -53,5 +53,6 @@ async def sample_search_index_endpoint():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END visionai_v1_generated_Warehouse_SearchIndexEndpoint_async]

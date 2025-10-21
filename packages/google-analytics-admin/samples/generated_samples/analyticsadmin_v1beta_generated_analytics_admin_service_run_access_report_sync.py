@@ -39,13 +39,13 @@ def sample_run_access_report():
     client = admin_v1beta.AnalyticsAdminServiceClient()
 
     # Initialize request argument(s)
-    request = admin_v1beta.RunAccessReportRequest(
-    )
+    request = admin_v1beta.RunAccessReportRequest()
 
     # Make the request
     response = client.run_access_report(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsadmin_v1beta_generated_AnalyticsAdminService_RunAccessReport_sync]

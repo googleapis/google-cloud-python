@@ -49,4 +49,5 @@ def sample_get_synonym_set():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_SynonymSetService_GetSynonymSet_sync]

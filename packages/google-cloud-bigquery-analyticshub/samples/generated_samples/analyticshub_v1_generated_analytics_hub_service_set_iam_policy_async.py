@@ -23,6 +23,8 @@
 #   python3 -m pip install google-cloud-bigquery-analyticshub
 
 
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+
 # [START analyticshub_v1_generated_AnalyticsHubService_SetIamPolicy_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
@@ -32,7 +34,6 @@
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import bigquery_analyticshub_v1
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_set_iam_policy():
@@ -49,5 +50,6 @@ async def sample_set_iam_policy():
 
     # Handle the response
     print(response)
+
 
 # [END analyticshub_v1_generated_AnalyticsHubService_SetIamPolicy_async]

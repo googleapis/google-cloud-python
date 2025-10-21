@@ -49,4 +49,5 @@ def sample_approve_grant():
     # Handle the response
     print(response)
 
+
 # [END privilegedaccessmanager_v1_generated_PrivilegedAccessManager_ApproveGrant_sync]

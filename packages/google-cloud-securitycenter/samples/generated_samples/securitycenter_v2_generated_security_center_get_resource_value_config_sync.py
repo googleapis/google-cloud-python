@@ -49,4 +49,5 @@ def sample_get_resource_value_config():
     # Handle the response
     print(response)
 
+
 # [END securitycenter_v2_generated_SecurityCenter_GetResourceValueConfig_sync]

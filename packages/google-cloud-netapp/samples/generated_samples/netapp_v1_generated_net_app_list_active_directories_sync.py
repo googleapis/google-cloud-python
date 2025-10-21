@@ -50,4 +50,5 @@ def sample_list_active_directories():
     for response in page_result:
         print(response)
 
+
 # [END netapp_v1_generated_NetApp_ListActiveDirectories_sync]

@@ -40,8 +40,12 @@ async def sample_chat():
 
     # Initialize request argument(s)
     inline_context = geminidataanalytics_v1alpha.Context()
-    inline_context.datasource_references.bq.table_references.project_id = "project_id_value"
-    inline_context.datasource_references.bq.table_references.dataset_id = "dataset_id_value"
+    inline_context.datasource_references.bq.table_references.project_id = (
+        "project_id_value"
+    )
+    inline_context.datasource_references.bq.table_references.dataset_id = (
+        "dataset_id_value"
+    )
     inline_context.datasource_references.bq.table_references.table_id = "table_id_value"
 
     messages = geminidataanalytics_v1alpha.Message()
@@ -59,5 +63,6 @@ async def sample_chat():
     # Handle the response
     async for response in stream:
         print(response)
+
 
 # [END geminidataanalytics_v1alpha_generated_DataChatService_Chat_async]

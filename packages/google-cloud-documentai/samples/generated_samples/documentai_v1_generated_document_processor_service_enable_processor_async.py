@@ -53,4 +53,5 @@ async def sample_enable_processor():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1_generated_DocumentProcessorService_EnableProcessor_async]

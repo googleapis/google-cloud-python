@@ -49,4 +49,5 @@ async def sample_get_occurrence_note():
     # Handle the response
     print(response)
 
+
 # [END containeranalysis_v1_generated_Grafeas_GetOccurrenceNote_async]

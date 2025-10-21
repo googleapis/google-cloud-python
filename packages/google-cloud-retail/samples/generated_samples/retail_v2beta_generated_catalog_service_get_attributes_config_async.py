@@ -49,4 +49,5 @@ async def sample_get_attributes_config():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_CatalogService_GetAttributesConfig_async]

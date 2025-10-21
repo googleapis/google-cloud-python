@@ -53,4 +53,5 @@ def sample_delete_clip():
     # Handle the response
     print(response)
 
+
 # [END livestream_v1_generated_LivestreamService_DeleteClip_sync]

@@ -39,8 +39,7 @@ def sample_update_trigger():
     client = eventarc_v1.EventarcClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.UpdateTriggerRequest(
-    )
+    request = eventarc_v1.UpdateTriggerRequest()
 
     # Make the request
     operation = client.update_trigger(request=request)
@@ -51,5 +50,6 @@ def sample_update_trigger():
 
     # Handle the response
     print(response)
+
 
 # [END eventarc_v1_generated_Eventarc_UpdateTrigger_sync]

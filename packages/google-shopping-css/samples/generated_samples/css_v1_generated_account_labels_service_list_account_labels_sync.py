@@ -50,4 +50,5 @@ def sample_list_account_labels():
     for response in page_result:
         print(response)
 
+
 # [END css_v1_generated_AccountLabelsService_ListAccountLabels_sync]

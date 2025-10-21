@@ -50,4 +50,5 @@ def sample_list_workloads():
     for response in page_result:
         print(response)
 
+
 # [END assuredworkloads_v1beta1_generated_AssuredWorkloadsService_ListWorkloads_sync]

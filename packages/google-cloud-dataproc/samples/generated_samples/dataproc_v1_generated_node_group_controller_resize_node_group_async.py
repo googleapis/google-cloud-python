@@ -54,4 +54,5 @@ async def sample_resize_node_group():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_NodeGroupController_ResizeNodeGroup_async]

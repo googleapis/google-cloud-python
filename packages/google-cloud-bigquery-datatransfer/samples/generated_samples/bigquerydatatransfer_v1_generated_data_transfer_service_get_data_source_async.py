@@ -49,4 +49,5 @@ async def sample_get_data_source():
     # Handle the response
     print(response)
 
+
 # [END bigquerydatatransfer_v1_generated_DataTransferService_GetDataSource_async]

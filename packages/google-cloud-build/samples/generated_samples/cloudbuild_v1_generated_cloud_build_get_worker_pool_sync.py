@@ -49,4 +49,5 @@ def sample_get_worker_pool():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v1_generated_CloudBuild_GetWorkerPool_sync]

@@ -61,4 +61,5 @@ def sample_create_order():
     # Handle the response
     print(response)
 
+
 # [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_CreateOrder_sync]

@@ -49,4 +49,5 @@ async def sample_get_environment():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_GetEnvironment_async]

@@ -49,4 +49,5 @@ def sample_patch_packet_mirroring_rule():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_FirewallPolicies_PatchPacketMirroringRule_sync]

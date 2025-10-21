@@ -39,8 +39,7 @@ def sample_update_spoke():
     client = networkconnectivity_v1.HubServiceClient()
 
     # Initialize request argument(s)
-    request = networkconnectivity_v1.UpdateSpokeRequest(
-    )
+    request = networkconnectivity_v1.UpdateSpokeRequest()
 
     # Make the request
     operation = client.update_spoke(request=request)
@@ -51,5 +50,6 @@ def sample_update_spoke():
 
     # Handle the response
     print(response)
+
 
 # [END networkconnectivity_v1_generated_HubService_UpdateSpoke_sync]

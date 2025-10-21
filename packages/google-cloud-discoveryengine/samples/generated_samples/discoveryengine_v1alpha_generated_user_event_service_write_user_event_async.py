@@ -49,4 +49,5 @@ async def sample_write_user_event():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1alpha_generated_UserEventService_WriteUserEvent_async]

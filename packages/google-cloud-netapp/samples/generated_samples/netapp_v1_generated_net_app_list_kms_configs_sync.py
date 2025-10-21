@@ -50,4 +50,5 @@ def sample_list_kms_configs():
     for response in page_result:
         print(response)
 
+
 # [END netapp_v1_generated_NetApp_ListKmsConfigs_sync]

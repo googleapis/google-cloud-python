@@ -58,4 +58,5 @@ async def sample_update_network_peering():
     # Handle the response
     print(response)
 
+
 # [END vmwareengine_v1_generated_VmwareEngine_UpdateNetworkPeering_async]

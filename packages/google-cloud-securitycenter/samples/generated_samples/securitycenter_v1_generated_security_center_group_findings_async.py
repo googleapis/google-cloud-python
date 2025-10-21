@@ -51,4 +51,5 @@ async def sample_group_findings():
     async for response in page_result:
         print(response)
 
+
 # [END securitycenter_v1_generated_SecurityCenter_GroupFindings_async]

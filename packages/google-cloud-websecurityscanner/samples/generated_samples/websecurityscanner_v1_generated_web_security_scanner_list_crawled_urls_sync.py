@@ -39,8 +39,7 @@ def sample_list_crawled_urls():
     client = websecurityscanner_v1.WebSecurityScannerClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.ListCrawledUrlsRequest(
-    )
+    request = websecurityscanner_v1.ListCrawledUrlsRequest()
 
     # Make the request
     page_result = client.list_crawled_urls(request=request)
@@ -48,5 +47,6 @@ def sample_list_crawled_urls():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END websecurityscanner_v1_generated_WebSecurityScanner_ListCrawledUrls_sync]

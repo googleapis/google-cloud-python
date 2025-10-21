@@ -49,4 +49,5 @@ def sample_get_ca_pool():
     # Handle the response
     print(response)
 
+
 # [END privateca_v1_generated_CertificateAuthorityService_GetCaPool_sync]

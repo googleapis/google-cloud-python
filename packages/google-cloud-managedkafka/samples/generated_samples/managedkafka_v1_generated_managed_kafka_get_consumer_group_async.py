@@ -49,4 +49,5 @@ async def sample_get_consumer_group():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafka_GetConsumerGroup_async]

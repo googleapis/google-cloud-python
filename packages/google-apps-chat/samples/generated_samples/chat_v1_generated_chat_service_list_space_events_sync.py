@@ -51,4 +51,5 @@ def sample_list_space_events():
     for response in page_result:
         print(response)
 
+
 # [END chat_v1_generated_ChatService_ListSpaceEvents_sync]

@@ -50,4 +50,5 @@ async def sample_list_sku_groups():
     async for response in page_result:
         print(response)
 
+
 # [END cloudchannel_v1_generated_CloudChannelService_ListSkuGroups_async]

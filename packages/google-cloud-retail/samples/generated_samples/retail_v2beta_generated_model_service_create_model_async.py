@@ -59,4 +59,5 @@ async def sample_create_model():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_ModelService_CreateModel_async]

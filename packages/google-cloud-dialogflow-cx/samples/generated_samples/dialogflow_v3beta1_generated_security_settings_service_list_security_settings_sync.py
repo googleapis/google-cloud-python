@@ -50,4 +50,5 @@ def sample_list_security_settings():
     for response in page_result:
         print(response)
 
+
 # [END dialogflow_v3beta1_generated_SecuritySettingsService_ListSecuritySettings_sync]

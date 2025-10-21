@@ -49,4 +49,5 @@ def sample_get_cloud_control_deployment():
     # Handle the response
     print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Deployment_GetCloudControlDeployment_sync]

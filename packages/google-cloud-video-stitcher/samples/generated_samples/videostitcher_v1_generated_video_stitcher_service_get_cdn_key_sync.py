@@ -49,4 +49,5 @@ def sample_get_cdn_key():
     # Handle the response
     print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_GetCdnKey_sync]

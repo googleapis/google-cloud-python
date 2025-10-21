@@ -39,8 +39,7 @@ async def sample_list_corpora():
     client = generativelanguage_v1alpha.RetrieverServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1alpha.ListCorporaRequest(
-    )
+    request = generativelanguage_v1alpha.ListCorporaRequest()
 
     # Make the request
     page_result = client.list_corpora(request=request)
@@ -48,5 +47,6 @@ async def sample_list_corpora():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END generativelanguage_v1alpha_generated_RetrieverService_ListCorpora_async]

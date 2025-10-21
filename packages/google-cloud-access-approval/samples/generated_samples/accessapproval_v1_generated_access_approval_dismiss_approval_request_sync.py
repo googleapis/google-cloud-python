@@ -39,13 +39,13 @@ def sample_dismiss_approval_request():
     client = accessapproval_v1.AccessApprovalClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.DismissApprovalRequestMessage(
-    )
+    request = accessapproval_v1.DismissApprovalRequestMessage()
 
     # Make the request
     response = client.dismiss_approval_request(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END accessapproval_v1_generated_AccessApproval_DismissApprovalRequest_sync]

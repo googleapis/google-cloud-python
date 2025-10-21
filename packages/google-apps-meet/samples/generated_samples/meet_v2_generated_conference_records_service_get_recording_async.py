@@ -49,4 +49,5 @@ async def sample_get_recording():
     # Handle the response
     print(response)
 
+
 # [END meet_v2_generated_ConferenceRecordsService_GetRecording_async]

@@ -60,4 +60,5 @@ def sample_create_restore_plan():
     # Handle the response
     print(response)
 
+
 # [END gkebackup_v1_generated_BackupForGKE_CreateRestorePlan_sync]

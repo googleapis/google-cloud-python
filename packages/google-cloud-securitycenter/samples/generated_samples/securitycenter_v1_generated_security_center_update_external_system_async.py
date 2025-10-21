@@ -39,13 +39,13 @@ async def sample_update_external_system():
     client = securitycenter_v1.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1.UpdateExternalSystemRequest(
-    )
+    request = securitycenter_v1.UpdateExternalSystemRequest()
 
     # Make the request
     response = await client.update_external_system(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1_generated_SecurityCenter_UpdateExternalSystem_async]

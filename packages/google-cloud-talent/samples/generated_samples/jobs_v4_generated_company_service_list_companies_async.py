@@ -50,4 +50,5 @@ async def sample_list_companies():
     async for response in page_result:
         print(response)
 
+
 # [END jobs_v4_generated_CompanyService_ListCompanies_async]

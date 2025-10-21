@@ -49,4 +49,5 @@ def sample_get_workstation_config():
     # Handle the response
     print(response)
 
+
 # [END workstations_v1_generated_Workstations_GetWorkstationConfig_sync]

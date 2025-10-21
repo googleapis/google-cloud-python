@@ -50,4 +50,5 @@ def sample_query_hub_status():
     for response in page_result:
         print(response)
 
+
 # [END networkconnectivity_v1_generated_HubService_QueryHubStatus_sync]

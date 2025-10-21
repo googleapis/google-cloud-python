@@ -54,4 +54,5 @@ async def sample_create_key():
     # Handle the response
     print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateKey_async]

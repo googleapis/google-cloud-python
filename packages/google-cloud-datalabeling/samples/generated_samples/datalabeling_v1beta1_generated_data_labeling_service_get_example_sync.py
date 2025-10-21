@@ -49,4 +49,5 @@ def sample_get_example():
     # Handle the response
     print(response)
 
+
 # [END datalabeling_v1beta1_generated_DataLabelingService_GetExample_sync]

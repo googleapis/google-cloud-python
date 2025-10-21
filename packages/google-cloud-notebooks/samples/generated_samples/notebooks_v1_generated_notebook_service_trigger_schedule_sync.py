@@ -53,4 +53,5 @@ def sample_trigger_schedule():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1_generated_NotebookService_TriggerSchedule_sync]

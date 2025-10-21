@@ -55,4 +55,5 @@ def sample_alter_metadata_resource_location():
     # Handle the response
     print(response)
 
+
 # [END metastore_v1_generated_DataprocMetastore_AlterMetadataResourceLocation_sync]

@@ -49,4 +49,5 @@ async def sample_get_entry_group():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_CatalogService_GetEntryGroup_async]

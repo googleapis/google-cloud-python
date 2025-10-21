@@ -49,4 +49,5 @@ def sample_register_gcp():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_DeveloperRegistrationService_RegisterGcp_sync]

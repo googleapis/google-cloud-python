@@ -50,4 +50,5 @@ def sample_list_lineage_events():
     for response in page_result:
         print(response)
 
+
 # [END datalineage_v1_generated_Lineage_ListLineageEvents_sync]

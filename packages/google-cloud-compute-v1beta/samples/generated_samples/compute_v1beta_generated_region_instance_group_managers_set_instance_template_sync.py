@@ -51,4 +51,5 @@ def sample_set_instance_template():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionInstanceGroupManagers_SetInstanceTemplate_sync]

@@ -51,4 +51,5 @@ def sample_start_instances():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_InstanceGroupManagers_StartInstances_sync]

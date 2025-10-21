@@ -53,4 +53,5 @@ async def sample_configure_management_settings():
     # Handle the response
     print(response)
 
+
 # [END domains_v1beta1_generated_Domains_ConfigureManagementSettings_async]

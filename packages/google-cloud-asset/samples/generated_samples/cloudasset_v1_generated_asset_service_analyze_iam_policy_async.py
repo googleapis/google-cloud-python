@@ -52,4 +52,5 @@ async def sample_analyze_iam_policy():
     # Handle the response
     print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_AnalyzeIamPolicy_async]

@@ -39,13 +39,13 @@ def sample_update_table():
     client = bigquery_biglake_v1alpha1.MetastoreServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_biglake_v1alpha1.UpdateTableRequest(
-    )
+    request = bigquery_biglake_v1alpha1.UpdateTableRequest()
 
     # Make the request
     response = client.update_table(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END biglake_v1alpha1_generated_MetastoreService_UpdateTable_sync]

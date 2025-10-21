@@ -54,4 +54,5 @@ async def sample_lookup_stream_object():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1_generated_Datastream_LookupStreamObject_async]

@@ -49,4 +49,5 @@ async def sample_get_instance_os_policies_compliance():
     # Handle the response
     print(response)
 
+
 # [END osconfig_v1alpha_generated_OsConfigZonalService_GetInstanceOSPoliciesCompliance_async]

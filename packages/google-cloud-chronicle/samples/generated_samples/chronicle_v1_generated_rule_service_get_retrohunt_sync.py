@@ -49,4 +49,5 @@ def sample_get_retrohunt():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_RuleService_GetRetrohunt_sync]

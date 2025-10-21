@@ -50,4 +50,5 @@ async def sample_list_repositories():
     async for response in page_result:
         print(response)
 
+
 # [END artifactregistry_v1_generated_ArtifactRegistry_ListRepositories_async]

@@ -40,7 +40,7 @@ def sample_create_question():
 
     # Initialize request argument(s)
     question = dataqna_v1alpha.Question()
-    question.scopes = ['scopes_value1', 'scopes_value2']
+    question.scopes = ["scopes_value1", "scopes_value2"]
     question.query = "query_value"
 
     request = dataqna_v1alpha.CreateQuestionRequest(
@@ -53,5 +53,6 @@ def sample_create_question():
 
     # Handle the response
     print(response)
+
 
 # [END dataqna_v1alpha_generated_QuestionService_CreateQuestion_sync]

@@ -52,4 +52,5 @@ async def sample_update_attributes_config():
     # Handle the response
     print(response)
 
+
 # [END retail_v2beta_generated_CatalogService_UpdateAttributesConfig_async]

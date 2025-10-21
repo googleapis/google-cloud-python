@@ -50,4 +50,5 @@ def sample_list_live_configs():
     for response in page_result:
         print(response)
 
+
 # [END videostitcher_v1_generated_VideoStitcherService_ListLiveConfigs_sync]

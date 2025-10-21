@@ -39,8 +39,7 @@ async def sample_update_project():
     client = resourcemanager_v3.ProjectsAsyncClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.UpdateProjectRequest(
-    )
+    request = resourcemanager_v3.UpdateProjectRequest()
 
     # Make the request
     operation = client.update_project(request=request)
@@ -51,5 +50,6 @@ async def sample_update_project():
 
     # Handle the response
     print(response)
+
 
 # [END cloudresourcemanager_v3_generated_Projects_UpdateProject_async]

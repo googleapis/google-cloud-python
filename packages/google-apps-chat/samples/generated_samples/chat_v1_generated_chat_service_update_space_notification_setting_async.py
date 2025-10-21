@@ -39,13 +39,13 @@ async def sample_update_space_notification_setting():
     client = chat_v1.ChatServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = chat_v1.UpdateSpaceNotificationSettingRequest(
-    )
+    request = chat_v1.UpdateSpaceNotificationSettingRequest()
 
     # Make the request
     response = await client.update_space_notification_setting(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END chat_v1_generated_ChatService_UpdateSpaceNotificationSetting_async]

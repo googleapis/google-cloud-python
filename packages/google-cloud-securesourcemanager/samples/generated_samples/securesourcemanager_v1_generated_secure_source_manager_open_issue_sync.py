@@ -53,4 +53,5 @@ def sample_open_issue():
     # Handle the response
     print(response)
 
+
 # [END securesourcemanager_v1_generated_SecureSourceManager_OpenIssue_sync]

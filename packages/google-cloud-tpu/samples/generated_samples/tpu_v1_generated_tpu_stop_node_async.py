@@ -39,8 +39,7 @@ async def sample_stop_node():
     client = tpu_v1.TpuAsyncClient()
 
     # Initialize request argument(s)
-    request = tpu_v1.StopNodeRequest(
-    )
+    request = tpu_v1.StopNodeRequest()
 
     # Make the request
     operation = client.stop_node(request=request)
@@ -51,5 +50,6 @@ async def sample_stop_node():
 
     # Handle the response
     print(response)
+
 
 # [END tpu_v1_generated_Tpu_StopNode_async]

@@ -39,13 +39,13 @@ def sample_update_user_workloads_config_map():
     client = service_v1beta1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.UpdateUserWorkloadsConfigMapRequest(
-    )
+    request = service_v1beta1.UpdateUserWorkloadsConfigMapRequest()
 
     # Make the request
     response = client.update_user_workloads_config_map(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1beta1_generated_Environments_UpdateUserWorkloadsConfigMap_sync]

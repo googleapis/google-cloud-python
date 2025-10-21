@@ -49,4 +49,5 @@ def sample_get_brand():
     # Handle the response
     print(response)
 
+
 # [END iap_v1_generated_IdentityAwareProxyOAuthService_GetBrand_sync]

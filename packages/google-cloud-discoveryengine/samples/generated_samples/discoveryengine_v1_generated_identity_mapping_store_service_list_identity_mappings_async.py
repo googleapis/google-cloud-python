@@ -50,4 +50,5 @@ async def sample_list_identity_mappings():
     async for response in page_result:
         print(response)
 
+
 # [END discoveryengine_v1_generated_IdentityMappingStoreService_ListIdentityMappings_async]

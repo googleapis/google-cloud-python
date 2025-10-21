@@ -57,4 +57,5 @@ def sample_update_router():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_UpdateRouter_sync]

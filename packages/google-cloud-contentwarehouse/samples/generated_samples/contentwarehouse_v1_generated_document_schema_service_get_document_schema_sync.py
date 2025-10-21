@@ -49,4 +49,5 @@ def sample_get_document_schema():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_DocumentSchemaService_GetDocumentSchema_sync]

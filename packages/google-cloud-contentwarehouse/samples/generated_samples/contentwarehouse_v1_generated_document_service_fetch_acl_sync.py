@@ -49,4 +49,5 @@ def sample_fetch_acl():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_DocumentService_FetchAcl_sync]

@@ -49,4 +49,5 @@ def sample_render_product_issues():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_IssueResolutionService_RenderProductIssues_sync]

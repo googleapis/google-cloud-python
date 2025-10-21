@@ -39,8 +39,7 @@ async def sample_update_certificate_template():
     client = privateca_v1.CertificateAuthorityServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = privateca_v1.UpdateCertificateTemplateRequest(
-    )
+    request = privateca_v1.UpdateCertificateTemplateRequest()
 
     # Make the request
     operation = client.update_certificate_template(request=request)
@@ -51,5 +50,6 @@ async def sample_update_certificate_template():
 
     # Handle the response
     print(response)
+
 
 # [END privateca_v1_generated_CertificateAuthorityService_UpdateCertificateTemplate_async]

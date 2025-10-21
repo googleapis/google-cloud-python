@@ -39,8 +39,7 @@ def sample_update_event():
     client = visionai_v1.StreamsServiceClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.UpdateEventRequest(
-    )
+    request = visionai_v1.UpdateEventRequest()
 
     # Make the request
     operation = client.update_event(request=request)
@@ -51,5 +50,6 @@ def sample_update_event():
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_StreamsService_UpdateEvent_sync]

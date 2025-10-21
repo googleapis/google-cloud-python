@@ -39,8 +39,7 @@ def sample_list():
     client = compute_v1beta.FirewallPoliciesClient()
 
     # Initialize request argument(s)
-    request = compute_v1beta.ListFirewallPoliciesRequest(
-    )
+    request = compute_v1beta.ListFirewallPoliciesRequest()
 
     # Make the request
     page_result = client.list(request=request)
@@ -48,5 +47,6 @@ def sample_list():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END compute_v1beta_generated_FirewallPolicies_List_sync]

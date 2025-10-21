@@ -49,4 +49,5 @@ def sample_get_tensor_flow_version():
     # Handle the response
     print(response)
 
+
 # [END tpu_v1_generated_Tpu_GetTensorFlowVersion_sync]

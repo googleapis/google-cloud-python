@@ -54,4 +54,5 @@ async def sample_update_spec():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHub_UpdateSpec_async]

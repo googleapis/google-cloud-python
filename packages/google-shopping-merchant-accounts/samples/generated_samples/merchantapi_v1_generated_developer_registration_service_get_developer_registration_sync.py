@@ -49,4 +49,5 @@ def sample_get_developer_registration():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_DeveloperRegistrationService_GetDeveloperRegistration_sync]

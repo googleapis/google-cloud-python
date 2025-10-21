@@ -53,4 +53,5 @@ async def sample_create_notification_subscription():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_NotificationsApiService_CreateNotificationSubscription_async]

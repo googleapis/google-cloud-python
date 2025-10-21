@@ -49,4 +49,5 @@ async def sample_get_app_connection():
     # Handle the response
     print(response)
 
+
 # [END beyondcorp_v1_generated_AppConnectionsService_GetAppConnection_async]

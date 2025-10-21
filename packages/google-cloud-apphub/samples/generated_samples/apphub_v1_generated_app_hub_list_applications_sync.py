@@ -50,4 +50,5 @@ def sample_list_applications():
     for response in page_result:
         print(response)
 
+
 # [END apphub_v1_generated_AppHub_ListApplications_sync]

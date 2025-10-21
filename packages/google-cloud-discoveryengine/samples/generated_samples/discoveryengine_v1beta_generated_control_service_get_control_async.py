@@ -49,4 +49,5 @@ async def sample_get_control():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1beta_generated_ControlService_GetControl_async]

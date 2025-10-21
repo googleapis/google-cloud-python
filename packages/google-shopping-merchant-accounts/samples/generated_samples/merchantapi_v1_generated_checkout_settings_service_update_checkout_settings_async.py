@@ -39,13 +39,13 @@ async def sample_update_checkout_settings():
     client = merchant_accounts_v1.CheckoutSettingsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1.UpdateCheckoutSettingsRequest(
-    )
+    request = merchant_accounts_v1.UpdateCheckoutSettingsRequest()
 
     # Make the request
     response = await client.update_checkout_settings(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1_generated_CheckoutSettingsService_UpdateCheckoutSettings_async]

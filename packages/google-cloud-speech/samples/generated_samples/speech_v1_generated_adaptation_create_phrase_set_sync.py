@@ -50,4 +50,5 @@ def sample_create_phrase_set():
     # Handle the response
     print(response)
 
+
 # [END speech_v1_generated_Adaptation_CreatePhraseSet_sync]

@@ -50,4 +50,5 @@ def sample_compare_versions():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3_generated_Versions_CompareVersions_sync]

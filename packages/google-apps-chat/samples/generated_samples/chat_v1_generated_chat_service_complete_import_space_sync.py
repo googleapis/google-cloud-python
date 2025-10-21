@@ -49,4 +49,5 @@ def sample_complete_import_space():
     # Handle the response
     print(response)
 
+
 # [END chat_v1_generated_ChatService_CompleteImportSpace_sync]

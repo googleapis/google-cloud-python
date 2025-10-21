@@ -39,8 +39,7 @@ async def sample_update_slate():
     client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = stitcher_v1.UpdateSlateRequest(
-    )
+    request = stitcher_v1.UpdateSlateRequest()
 
     # Make the request
     operation = client.update_slate(request=request)
@@ -51,5 +50,6 @@ async def sample_update_slate():
 
     # Handle the response
     print(response)
+
 
 # [END videostitcher_v1_generated_VideoStitcherService_UpdateSlate_async]

@@ -39,13 +39,13 @@ async def sample_update_authorized_certificate():
     client = appengine_admin_v1.AuthorizedCertificatesAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.UpdateAuthorizedCertificateRequest(
-    )
+    request = appengine_admin_v1.UpdateAuthorizedCertificateRequest()
 
     # Make the request
     response = await client.update_authorized_certificate(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END appengine_v1_generated_AuthorizedCertificates_UpdateAuthorizedCertificate_async]

@@ -49,4 +49,5 @@ async def sample_verify_attestation():
     # Handle the response
     print(response)
 
+
 # [END confidentialcomputing_v1_generated_ConfidentialComputing_VerifyAttestation_async]

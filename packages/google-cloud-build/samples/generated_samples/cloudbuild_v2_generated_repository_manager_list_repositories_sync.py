@@ -50,4 +50,5 @@ def sample_list_repositories():
     for response in page_result:
         print(response)
 
+
 # [END cloudbuild_v2_generated_RepositoryManager_ListRepositories_sync]

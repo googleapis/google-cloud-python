@@ -54,4 +54,5 @@ def sample_create_cloud_exadata_infrastructure():
     # Handle the response
     print(response)
 
+
 # [END oracledatabase_v1_generated_OracleDatabase_CreateCloudExadataInfrastructure_sync]

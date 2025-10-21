@@ -54,4 +54,5 @@ def sample_create_worker_pool():
     # Handle the response
     print(response)
 
+
 # [END run_v2_generated_WorkerPools_CreateWorkerPool_sync]

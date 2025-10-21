@@ -49,4 +49,5 @@ def sample_get_os_policy_assignment_report():
     # Handle the response
     print(response)
 
+
 # [END osconfig_v1_generated_OsConfigZonalService_GetOSPolicyAssignmentReport_sync]

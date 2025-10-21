@@ -39,13 +39,13 @@ def sample_update_membership():
     client = chat_v1.ChatServiceClient()
 
     # Initialize request argument(s)
-    request = chat_v1.UpdateMembershipRequest(
-    )
+    request = chat_v1.UpdateMembershipRequest()
 
     # Make the request
     response = client.update_membership(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END chat_v1_generated_ChatService_UpdateMembership_sync]

@@ -53,4 +53,5 @@ async def sample_create_data_schema():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_CreateDataSchema_async]

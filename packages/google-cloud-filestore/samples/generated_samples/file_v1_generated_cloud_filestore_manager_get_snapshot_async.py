@@ -49,4 +49,5 @@ async def sample_get_snapshot():
     # Handle the response
     print(response)
 
+
 # [END file_v1_generated_CloudFilestoreManager_GetSnapshot_async]

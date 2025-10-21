@@ -39,8 +39,7 @@ def sample_list_annotations():
     client = visionai_v1alpha1.WarehouseClient()
 
     # Initialize request argument(s)
-    request = visionai_v1alpha1.ListAnnotationsRequest(
-    )
+    request = visionai_v1alpha1.ListAnnotationsRequest()
 
     # Make the request
     page_result = client.list_annotations(request=request)
@@ -48,5 +47,6 @@ def sample_list_annotations():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END visionai_v1alpha1_generated_Warehouse_ListAnnotations_sync]

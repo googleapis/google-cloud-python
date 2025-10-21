@@ -50,4 +50,5 @@ def sample_get_transfer_job():
     # Handle the response
     print(response)
 
+
 # [END storagetransfer_v1_generated_StorageTransferService_GetTransferJob_sync]

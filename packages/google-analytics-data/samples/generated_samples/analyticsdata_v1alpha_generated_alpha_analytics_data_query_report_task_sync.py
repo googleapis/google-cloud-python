@@ -49,4 +49,5 @@ def sample_query_report_task():
     # Handle the response
     print(response)
 
+
 # [END analyticsdata_v1alpha_generated_AlphaAnalyticsData_QueryReportTask_sync]

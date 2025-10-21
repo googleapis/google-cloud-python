@@ -39,13 +39,13 @@ async def sample_create_transfer_job():
     client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = storage_transfer_v1.CreateTransferJobRequest(
-    )
+    request = storage_transfer_v1.CreateTransferJobRequest()
 
     # Make the request
     response = await client.create_transfer_job(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END storagetransfer_v1_generated_StorageTransferService_CreateTransferJob_async]

@@ -50,4 +50,5 @@ def sample_search_all_resources():
     for response in page_result:
         print(response)
 
+
 # [END cloudasset_v1_generated_AssetService_SearchAllResources_sync]

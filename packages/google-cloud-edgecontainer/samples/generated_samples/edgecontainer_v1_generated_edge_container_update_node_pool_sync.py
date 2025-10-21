@@ -39,8 +39,7 @@ def sample_update_node_pool():
     client = edgecontainer_v1.EdgeContainerClient()
 
     # Initialize request argument(s)
-    request = edgecontainer_v1.UpdateNodePoolRequest(
-    )
+    request = edgecontainer_v1.UpdateNodePoolRequest()
 
     # Make the request
     operation = client.update_node_pool(request=request)
@@ -51,5 +50,6 @@ def sample_update_node_pool():
 
     # Handle the response
     print(response)
+
 
 # [END edgecontainer_v1_generated_EdgeContainer_UpdateNodePool_sync]

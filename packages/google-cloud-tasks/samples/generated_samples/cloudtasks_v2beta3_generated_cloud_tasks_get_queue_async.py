@@ -49,4 +49,5 @@ async def sample_get_queue():
     # Handle the response
     print(response)
 
+
 # [END cloudtasks_v2beta3_generated_CloudTasks_GetQueue_async]

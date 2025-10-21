@@ -49,4 +49,5 @@ def sample_update_inspect_template():
     # Handle the response
     print(response)
 
+
 # [END dlp_v2_generated_DlpService_UpdateInspectTemplate_sync]

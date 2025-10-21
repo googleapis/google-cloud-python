@@ -39,13 +39,13 @@ def sample_create_job():
     client = dataflow_v1beta3.JobsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.CreateJobRequest(
-    )
+    request = dataflow_v1beta3.CreateJobRequest()
 
     # Make the request
     response = client.create_job(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataflow_v1beta3_generated_JobsV1Beta3_CreateJob_sync]

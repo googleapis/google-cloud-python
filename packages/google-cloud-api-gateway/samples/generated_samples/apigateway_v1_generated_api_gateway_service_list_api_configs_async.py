@@ -50,4 +50,5 @@ async def sample_list_api_configs():
     async for response in page_result:
         print(response)
 
+
 # [END apigateway_v1_generated_ApiGatewayService_ListApiConfigs_async]

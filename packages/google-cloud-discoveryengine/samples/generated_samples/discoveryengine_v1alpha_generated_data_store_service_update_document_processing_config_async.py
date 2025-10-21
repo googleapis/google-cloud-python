@@ -39,13 +39,13 @@ async def sample_update_document_processing_config():
     client = discoveryengine_v1alpha.DataStoreServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = discoveryengine_v1alpha.UpdateDocumentProcessingConfigRequest(
-    )
+    request = discoveryengine_v1alpha.UpdateDocumentProcessingConfigRequest()
 
     # Make the request
     response = await client.update_document_processing_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END discoveryengine_v1alpha_generated_DataStoreService_UpdateDocumentProcessingConfig_async]

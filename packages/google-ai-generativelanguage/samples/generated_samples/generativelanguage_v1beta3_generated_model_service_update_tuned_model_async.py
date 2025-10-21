@@ -40,7 +40,9 @@ async def sample_update_tuned_model():
 
     # Initialize request argument(s)
     tuned_model = generativelanguage_v1beta3.TunedModel()
-    tuned_model.tuning_task.training_data.examples.examples.text_input = "text_input_value"
+    tuned_model.tuning_task.training_data.examples.examples.text_input = (
+        "text_input_value"
+    )
     tuned_model.tuning_task.training_data.examples.examples.output = "output_value"
 
     request = generativelanguage_v1beta3.UpdateTunedModelRequest(
@@ -52,5 +54,6 @@ async def sample_update_tuned_model():
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta3_generated_ModelService_UpdateTunedModel_async]

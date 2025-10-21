@@ -50,4 +50,5 @@ def sample_list_ca_pools():
     for response in page_result:
         print(response)
 
+
 # [END privateca_v1_generated_CertificateAuthorityService_ListCaPools_sync]

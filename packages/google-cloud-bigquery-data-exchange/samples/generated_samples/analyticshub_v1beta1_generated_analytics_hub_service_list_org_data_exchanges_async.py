@@ -50,4 +50,5 @@ async def sample_list_org_data_exchanges():
     async for response in page_result:
         print(response)
 
+
 # [END analyticshub_v1beta1_generated_AnalyticsHubService_ListOrgDataExchanges_async]

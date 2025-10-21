@@ -50,4 +50,5 @@ def sample_list_shared_resource_subscriptions():
     for response in page_result:
         print(response)
 
+
 # [END analyticshub_v1_generated_AnalyticsHubService_ListSharedResourceSubscriptions_sync]

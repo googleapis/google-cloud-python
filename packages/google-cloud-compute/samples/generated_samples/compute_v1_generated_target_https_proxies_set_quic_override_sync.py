@@ -50,4 +50,5 @@ def sample_set_quic_override():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_TargetHttpsProxies_SetQuicOverride_sync]

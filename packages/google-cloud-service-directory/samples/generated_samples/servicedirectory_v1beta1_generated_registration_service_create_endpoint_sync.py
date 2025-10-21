@@ -50,4 +50,5 @@ def sample_create_endpoint():
     # Handle the response
     print(response)
 
+
 # [END servicedirectory_v1beta1_generated_RegistrationService_CreateEndpoint_sync]

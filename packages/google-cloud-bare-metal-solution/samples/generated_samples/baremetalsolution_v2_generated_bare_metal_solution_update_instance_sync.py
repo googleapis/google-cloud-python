@@ -39,8 +39,7 @@ def sample_update_instance():
     client = bare_metal_solution_v2.BareMetalSolutionClient()
 
     # Initialize request argument(s)
-    request = bare_metal_solution_v2.UpdateInstanceRequest(
-    )
+    request = bare_metal_solution_v2.UpdateInstanceRequest()
 
     # Make the request
     operation = client.update_instance(request=request)
@@ -51,5 +50,6 @@ def sample_update_instance():
 
     # Handle the response
     print(response)
+
 
 # [END baremetalsolution_v2_generated_BareMetalSolution_UpdateInstance_sync]

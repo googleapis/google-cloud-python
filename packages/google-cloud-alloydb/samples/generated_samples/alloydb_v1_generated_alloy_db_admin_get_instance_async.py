@@ -49,4 +49,5 @@ async def sample_get_instance():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1_generated_AlloyDBAdmin_GetInstance_async]

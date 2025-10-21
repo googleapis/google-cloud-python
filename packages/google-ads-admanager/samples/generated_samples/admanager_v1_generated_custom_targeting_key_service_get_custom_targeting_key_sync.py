@@ -49,4 +49,5 @@ def sample_get_custom_targeting_key():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_CustomTargetingKeyService_GetCustomTargetingKey_sync]

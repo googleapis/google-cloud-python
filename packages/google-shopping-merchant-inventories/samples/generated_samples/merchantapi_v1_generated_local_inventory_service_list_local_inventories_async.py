@@ -50,4 +50,5 @@ async def sample_list_local_inventories():
     async for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1_generated_LocalInventoryService_ListLocalInventories_async]

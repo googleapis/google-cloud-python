@@ -56,4 +56,5 @@ def sample_update_process():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_LiveVideoAnalytics_UpdateProcess_sync]

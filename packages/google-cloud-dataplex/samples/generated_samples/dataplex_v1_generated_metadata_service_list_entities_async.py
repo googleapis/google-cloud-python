@@ -51,4 +51,5 @@ async def sample_list_entities():
     async for response in page_result:
         print(response)
 
+
 # [END dataplex_v1_generated_MetadataService_ListEntities_async]

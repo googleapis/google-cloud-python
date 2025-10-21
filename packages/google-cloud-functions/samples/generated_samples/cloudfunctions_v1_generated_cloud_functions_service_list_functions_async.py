@@ -39,8 +39,7 @@ async def sample_list_functions():
     client = functions_v1.CloudFunctionsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = functions_v1.ListFunctionsRequest(
-    )
+    request = functions_v1.ListFunctionsRequest()
 
     # Make the request
     page_result = client.list_functions(request=request)
@@ -48,5 +47,6 @@ async def sample_list_functions():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_async]

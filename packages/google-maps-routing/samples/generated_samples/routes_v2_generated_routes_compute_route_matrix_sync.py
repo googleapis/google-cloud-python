@@ -39,8 +39,7 @@ def sample_compute_route_matrix():
     client = routing_v2.RoutesClient()
 
     # Initialize request argument(s)
-    request = routing_v2.ComputeRouteMatrixRequest(
-    )
+    request = routing_v2.ComputeRouteMatrixRequest()
 
     # Make the request
     stream = client.compute_route_matrix(request=request)
@@ -48,5 +47,6 @@ def sample_compute_route_matrix():
     # Handle the response
     for response in stream:
         print(response)
+
 
 # [END routes_v2_generated_Routes_ComputeRouteMatrix_sync]

@@ -50,4 +50,5 @@ def sample_show_feed():
     for response in page_result:
         print(response)
 
+
 # [END cloudsupport_v2beta_generated_FeedService_ShowFeed_sync]

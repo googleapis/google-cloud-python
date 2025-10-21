@@ -39,8 +39,7 @@ async def sample_get_stage_execution_details():
     client = dataflow_v1beta3.MetricsV1Beta3AsyncClient()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.GetStageExecutionDetailsRequest(
-    )
+    request = dataflow_v1beta3.GetStageExecutionDetailsRequest()
 
     # Make the request
     page_result = client.get_stage_execution_details(request=request)
@@ -48,5 +47,6 @@ async def sample_get_stage_execution_details():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END dataflow_v1beta3_generated_MetricsV1Beta3_GetStageExecutionDetails_async]

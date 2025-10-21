@@ -41,7 +41,7 @@ def sample_unassign():
     # Initialize request argument(s)
     request = commerce_consumer_procurement_v1.UnassignRequest(
         parent="parent_value",
-        usernames=['usernames_value1', 'usernames_value2'],
+        usernames=["usernames_value1", "usernames_value2"],
     )
 
     # Make the request
@@ -49,5 +49,6 @@ def sample_unassign():
 
     # Handle the response
     print(response)
+
 
 # [END cloudcommerceconsumerprocurement_v1_generated_LicenseManagementService_Unassign_sync]

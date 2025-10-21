@@ -39,13 +39,13 @@ def sample_update_provisioning_config():
     client = bare_metal_solution_v2.BareMetalSolutionClient()
 
     # Initialize request argument(s)
-    request = bare_metal_solution_v2.UpdateProvisioningConfigRequest(
-    )
+    request = bare_metal_solution_v2.UpdateProvisioningConfigRequest()
 
     # Make the request
     response = client.update_provisioning_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END baremetalsolution_v2_generated_BareMetalSolution_UpdateProvisioningConfig_sync]

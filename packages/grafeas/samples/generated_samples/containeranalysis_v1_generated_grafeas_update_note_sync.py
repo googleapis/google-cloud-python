@@ -49,4 +49,5 @@ def sample_update_note():
     # Handle the response
     print(response)
 
+
 # [END containeranalysis_v1_generated_Grafeas_UpdateNote_sync]

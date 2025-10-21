@@ -39,13 +39,13 @@ def sample_update_region():
     client = merchant_accounts_v1beta.RegionsServiceClient()
 
     # Initialize request argument(s)
-    request = merchant_accounts_v1beta.UpdateRegionRequest(
-    )
+    request = merchant_accounts_v1beta.UpdateRegionRequest()
 
     # Make the request
     response = client.update_region(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END merchantapi_v1beta_generated_RegionsService_UpdateRegion_sync]

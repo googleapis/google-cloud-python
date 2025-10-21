@@ -50,4 +50,5 @@ def sample_generate_autonomous_database_wallet():
     # Handle the response
     print(response)
 
+
 # [END oracledatabase_v1_generated_OracleDatabase_GenerateAutonomousDatabaseWallet_sync]

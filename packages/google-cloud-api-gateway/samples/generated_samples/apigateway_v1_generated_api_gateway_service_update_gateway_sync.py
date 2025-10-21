@@ -56,4 +56,5 @@ def sample_update_gateway():
     # Handle the response
     print(response)
 
+
 # [END apigateway_v1_generated_ApiGatewayService_UpdateGateway_sync]

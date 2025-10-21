@@ -39,13 +39,13 @@ async def sample_update_tag():
     client = artifactregistry_v1.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.UpdateTagRequest(
-    )
+    request = artifactregistry_v1.UpdateTagRequest()
 
     # Make the request
     response = await client.update_tag(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_UpdateTag_async]

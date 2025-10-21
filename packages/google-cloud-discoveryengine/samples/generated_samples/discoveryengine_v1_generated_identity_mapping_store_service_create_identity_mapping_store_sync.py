@@ -51,4 +51,5 @@ def sample_create_identity_mapping_store():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_IdentityMappingStoreService_CreateIdentityMappingStore_sync]

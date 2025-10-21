@@ -49,4 +49,5 @@ async def sample_create_rule():
     # Handle the response
     print(response)
 
+
 # [END chronicle_v1_generated_RuleService_CreateRule_async]

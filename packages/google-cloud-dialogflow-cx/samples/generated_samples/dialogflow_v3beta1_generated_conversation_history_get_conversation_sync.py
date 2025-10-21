@@ -49,4 +49,5 @@ def sample_get_conversation():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_ConversationHistory_GetConversation_sync]

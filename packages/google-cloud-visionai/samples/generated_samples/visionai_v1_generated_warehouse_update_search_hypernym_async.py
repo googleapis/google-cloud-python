@@ -39,13 +39,13 @@ async def sample_update_search_hypernym():
     client = visionai_v1.WarehouseAsyncClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.UpdateSearchHypernymRequest(
-    )
+    request = visionai_v1.UpdateSearchHypernymRequest()
 
     # Make the request
     response = await client.update_search_hypernym(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_Warehouse_UpdateSearchHypernym_async]

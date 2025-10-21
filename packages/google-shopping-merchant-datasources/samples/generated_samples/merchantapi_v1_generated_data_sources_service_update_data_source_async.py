@@ -53,4 +53,5 @@ async def sample_update_data_source():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1_generated_DataSourcesService_UpdateDataSource_async]

@@ -50,4 +50,5 @@ def sample_find_lfp_providers():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1beta_generated_LfpProvidersService_FindLfpProviders_sync]

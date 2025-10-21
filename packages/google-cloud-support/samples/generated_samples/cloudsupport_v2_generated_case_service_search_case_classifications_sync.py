@@ -39,8 +39,7 @@ def sample_search_case_classifications():
     client = support_v2.CaseServiceClient()
 
     # Initialize request argument(s)
-    request = support_v2.SearchCaseClassificationsRequest(
-    )
+    request = support_v2.SearchCaseClassificationsRequest()
 
     # Make the request
     page_result = client.search_case_classifications(request=request)
@@ -48,5 +47,6 @@ def sample_search_case_classifications():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END cloudsupport_v2_generated_CaseService_SearchCaseClassifications_sync]

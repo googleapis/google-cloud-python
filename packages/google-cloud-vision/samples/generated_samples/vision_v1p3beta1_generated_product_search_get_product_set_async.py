@@ -49,4 +49,5 @@ async def sample_get_product_set():
     # Handle the response
     print(response)
 
+
 # [END vision_v1p3beta1_generated_ProductSearch_GetProductSet_async]

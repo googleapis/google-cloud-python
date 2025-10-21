@@ -51,4 +51,5 @@ def sample_patch_route_policy():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_Routers_PatchRoutePolicy_sync]

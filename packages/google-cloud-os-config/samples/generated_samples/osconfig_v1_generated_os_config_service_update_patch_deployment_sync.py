@@ -39,13 +39,13 @@ def sample_update_patch_deployment():
     client = osconfig_v1.OsConfigServiceClient()
 
     # Initialize request argument(s)
-    request = osconfig_v1.UpdatePatchDeploymentRequest(
-    )
+    request = osconfig_v1.UpdatePatchDeploymentRequest()
 
     # Make the request
     response = client.update_patch_deployment(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END osconfig_v1_generated_OsConfigService_UpdatePatchDeployment_sync]

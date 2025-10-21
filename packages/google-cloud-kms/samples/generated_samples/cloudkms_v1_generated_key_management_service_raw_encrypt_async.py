@@ -41,7 +41,7 @@ async def sample_raw_encrypt():
     # Initialize request argument(s)
     request = kms_v1.RawEncryptRequest(
         name="name_value",
-        plaintext=b'plaintext_blob',
+        plaintext=b"plaintext_blob",
     )
 
     # Make the request
@@ -49,5 +49,6 @@ async def sample_raw_encrypt():
 
     # Handle the response
     print(response)
+
 
 # [END cloudkms_v1_generated_KeyManagementService_RawEncrypt_async]

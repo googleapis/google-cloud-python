@@ -41,7 +41,7 @@ async def sample_delete_application_instances():
     # Initialize request argument(s)
     request = visionai_v1.DeleteApplicationInstancesRequest(
         name="name_value",
-        instance_ids=['instance_ids_value1', 'instance_ids_value2'],
+        instance_ids=["instance_ids_value1", "instance_ids_value2"],
     )
 
     # Make the request
@@ -53,5 +53,6 @@ async def sample_delete_application_instances():
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_AppPlatform_DeleteApplicationInstances_async]

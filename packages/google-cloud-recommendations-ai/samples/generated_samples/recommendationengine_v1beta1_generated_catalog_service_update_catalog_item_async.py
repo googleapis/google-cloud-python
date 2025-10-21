@@ -41,7 +41,10 @@ async def sample_update_catalog_item():
     # Initialize request argument(s)
     catalog_item = recommendationengine_v1beta1.CatalogItem()
     catalog_item.id = "id_value"
-    catalog_item.category_hierarchies.categories = ['categories_value1', 'categories_value2']
+    catalog_item.category_hierarchies.categories = [
+        "categories_value1",
+        "categories_value2",
+    ]
     catalog_item.title = "title_value"
 
     request = recommendationengine_v1beta1.UpdateCatalogItemRequest(
@@ -54,5 +57,6 @@ async def sample_update_catalog_item():
 
     # Handle the response
     print(response)
+
 
 # [END recommendationengine_v1beta1_generated_CatalogService_UpdateCatalogItem_async]

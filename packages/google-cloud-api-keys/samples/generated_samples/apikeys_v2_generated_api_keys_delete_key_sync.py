@@ -53,4 +53,5 @@ def sample_delete_key():
     # Handle the response
     print(response)
 
+
 # [END apikeys_v2_generated_ApiKeys_DeleteKey_sync]

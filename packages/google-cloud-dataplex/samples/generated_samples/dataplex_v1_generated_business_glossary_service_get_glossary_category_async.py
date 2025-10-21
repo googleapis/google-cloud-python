@@ -49,4 +49,5 @@ async def sample_get_glossary_category():
     # Handle the response
     print(response)
 
+
 # [END dataplex_v1_generated_BusinessGlossaryService_GetGlossaryCategory_async]

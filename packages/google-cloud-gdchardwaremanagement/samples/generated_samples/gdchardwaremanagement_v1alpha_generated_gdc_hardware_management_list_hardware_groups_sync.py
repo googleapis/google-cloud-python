@@ -50,4 +50,5 @@ def sample_list_hardware_groups():
     for response in page_result:
         print(response)
 
+
 # [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_ListHardwareGroups_sync]

@@ -39,8 +39,7 @@ def sample_complete_node_pool_upgrade():
     client = container_v1beta1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.CompleteNodePoolUpgradeRequest(
-    )
+    request = container_v1beta1.CompleteNodePoolUpgradeRequest()
 
     # Make the request
     client.complete_node_pool_upgrade(request=request)

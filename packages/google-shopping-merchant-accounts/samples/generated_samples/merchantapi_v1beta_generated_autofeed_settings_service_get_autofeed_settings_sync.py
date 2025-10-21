@@ -49,4 +49,5 @@ def sample_get_autofeed_settings():
     # Handle the response
     print(response)
 
+
 # [END merchantapi_v1beta_generated_AutofeedSettingsService_GetAutofeedSettings_sync]

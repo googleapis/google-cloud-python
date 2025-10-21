@@ -49,4 +49,5 @@ def sample_get_table():
     # Handle the response
     print(response)
 
+
 # [END area120tables_v1alpha1_generated_TablesService_GetTable_sync]

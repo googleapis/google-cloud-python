@@ -53,4 +53,5 @@ def sample_reset_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v1beta1_generated_NotebookService_ResetInstance_sync]

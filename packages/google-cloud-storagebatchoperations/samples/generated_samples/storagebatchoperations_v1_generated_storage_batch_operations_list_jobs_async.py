@@ -50,4 +50,5 @@ async def sample_list_jobs():
     async for response in page_result:
         print(response)
 
+
 # [END storagebatchoperations_v1_generated_StorageBatchOperations_ListJobs_async]

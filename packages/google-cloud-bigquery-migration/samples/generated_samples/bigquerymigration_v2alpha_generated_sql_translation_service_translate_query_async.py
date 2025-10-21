@@ -51,4 +51,5 @@ async def sample_translate_query():
     # Handle the response
     print(response)
 
+
 # [END bigquerymigration_v2alpha_generated_SqlTranslationService_TranslateQuery_async]

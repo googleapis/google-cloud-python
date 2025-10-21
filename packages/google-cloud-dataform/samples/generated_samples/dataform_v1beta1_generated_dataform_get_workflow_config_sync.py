@@ -49,4 +49,5 @@ def sample_get_workflow_config():
     # Handle the response
     print(response)
 
+
 # [END dataform_v1beta1_generated_Dataform_GetWorkflowConfig_sync]

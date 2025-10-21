@@ -55,4 +55,5 @@ def sample_create_topic():
     # Handle the response
     print(response)
 
+
 # [END managedkafka_v1_generated_ManagedKafka_CreateTopic_sync]

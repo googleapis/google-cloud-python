@@ -49,4 +49,5 @@ async def sample_get_router():
     # Handle the response
     print(response)
 
+
 # [END edgenetwork_v1_generated_EdgeNetwork_GetRouter_async]

@@ -50,4 +50,5 @@ def sample_list_endpoints():
     for response in page_result:
         print(response)
 
+
 # [END ids_v1_generated_IDS_ListEndpoints_sync]

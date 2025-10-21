@@ -53,4 +53,5 @@ def sample_delete_private_connection():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1alpha1_generated_Datastream_DeletePrivateConnection_sync]

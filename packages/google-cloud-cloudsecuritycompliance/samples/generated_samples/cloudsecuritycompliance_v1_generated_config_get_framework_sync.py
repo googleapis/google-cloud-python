@@ -49,4 +49,5 @@ def sample_get_framework():
     # Handle the response
     print(response)
 
+
 # [END cloudsecuritycompliance_v1_generated_Config_GetFramework_sync]

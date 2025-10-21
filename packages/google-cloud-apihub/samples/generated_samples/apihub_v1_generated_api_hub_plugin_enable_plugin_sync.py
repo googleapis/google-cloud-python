@@ -49,4 +49,5 @@ def sample_enable_plugin():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHubPlugin_EnablePlugin_sync]

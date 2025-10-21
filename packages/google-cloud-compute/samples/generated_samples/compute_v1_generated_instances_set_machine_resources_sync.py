@@ -51,4 +51,5 @@ def sample_set_machine_resources():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_SetMachineResources_sync]

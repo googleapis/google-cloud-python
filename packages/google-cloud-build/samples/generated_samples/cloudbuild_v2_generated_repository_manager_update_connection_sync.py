@@ -39,8 +39,7 @@ def sample_update_connection():
     client = cloudbuild_v2.RepositoryManagerClient()
 
     # Initialize request argument(s)
-    request = cloudbuild_v2.UpdateConnectionRequest(
-    )
+    request = cloudbuild_v2.UpdateConnectionRequest()
 
     # Make the request
     operation = client.update_connection(request=request)
@@ -51,5 +50,6 @@ def sample_update_connection():
 
     # Handle the response
     print(response)
+
 
 # [END cloudbuild_v2_generated_RepositoryManager_UpdateConnection_sync]

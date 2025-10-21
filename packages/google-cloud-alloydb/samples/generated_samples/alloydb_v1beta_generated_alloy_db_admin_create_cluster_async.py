@@ -59,4 +59,5 @@ async def sample_create_cluster():
     # Handle the response
     print(response)
 
+
 # [END alloydb_v1beta_generated_AlloyDBAdmin_CreateCluster_async]

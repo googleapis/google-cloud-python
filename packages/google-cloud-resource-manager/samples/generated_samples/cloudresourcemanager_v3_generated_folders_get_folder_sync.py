@@ -49,4 +49,5 @@ def sample_get_folder():
     # Handle the response
     print(response)
 
+
 # [END cloudresourcemanager_v3_generated_Folders_GetFolder_sync]

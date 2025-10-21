@@ -39,13 +39,13 @@ async def sample_get_tag():
     client = artifactregistry_v1.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1.GetTagRequest(
-    )
+    request = artifactregistry_v1.GetTagRequest()
 
     # Make the request
     response = await client.get_tag(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END artifactregistry_v1_generated_ArtifactRegistry_GetTag_async]

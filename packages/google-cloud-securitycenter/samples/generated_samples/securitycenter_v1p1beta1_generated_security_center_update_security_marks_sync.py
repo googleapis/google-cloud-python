@@ -39,13 +39,13 @@ def sample_update_security_marks():
     client = securitycenter_v1p1beta1.SecurityCenterClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1p1beta1.UpdateSecurityMarksRequest(
-    )
+    request = securitycenter_v1p1beta1.UpdateSecurityMarksRequest()
 
     # Make the request
     response = client.update_security_marks(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END securitycenter_v1p1beta1_generated_SecurityCenter_UpdateSecurityMarks_sync]

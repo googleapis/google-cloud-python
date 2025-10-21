@@ -49,4 +49,5 @@ async def sample_propose_blueprint():
     # Handle the response
     print(response)
 
+
 # [END telcoautomation_v1alpha1_generated_TelcoAutomation_ProposeBlueprint_async]

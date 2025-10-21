@@ -53,4 +53,5 @@ def sample_delete_private_connection():
     # Handle the response
     print(response)
 
+
 # [END datamigration_v1_generated_DataMigrationService_DeletePrivateConnection_sync]

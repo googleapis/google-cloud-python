@@ -49,4 +49,5 @@ async def sample_get_model():
     # Handle the response
     print(response)
 
+
 # [END automl_v1_generated_AutoMl_GetModel_async]

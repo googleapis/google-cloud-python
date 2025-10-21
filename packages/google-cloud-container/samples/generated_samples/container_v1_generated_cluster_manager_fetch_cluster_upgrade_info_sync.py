@@ -49,4 +49,5 @@ def sample_fetch_cluster_upgrade_info():
     # Handle the response
     print(response)
 
+
 # [END container_v1_generated_ClusterManager_FetchClusterUpgradeInfo_sync]

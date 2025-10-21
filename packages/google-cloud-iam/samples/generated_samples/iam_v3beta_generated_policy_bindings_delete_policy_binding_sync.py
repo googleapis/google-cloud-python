@@ -53,4 +53,5 @@ def sample_delete_policy_binding():
     # Handle the response
     print(response)
 
+
 # [END iam_v3beta_generated_PolicyBindings_DeletePolicyBinding_sync]

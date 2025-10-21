@@ -57,4 +57,5 @@ def sample_review_document():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1beta3_generated_DocumentProcessorService_ReviewDocument_sync]

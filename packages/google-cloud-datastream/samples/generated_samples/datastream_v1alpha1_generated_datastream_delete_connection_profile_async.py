@@ -53,4 +53,5 @@ async def sample_delete_connection_profile():
     # Handle the response
     print(response)
 
+
 # [END datastream_v1alpha1_generated_Datastream_DeleteConnectionProfile_async]

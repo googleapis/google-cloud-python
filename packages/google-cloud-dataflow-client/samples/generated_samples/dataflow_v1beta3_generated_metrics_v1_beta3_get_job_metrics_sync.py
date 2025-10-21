@@ -39,13 +39,13 @@ def sample_get_job_metrics():
     client = dataflow_v1beta3.MetricsV1Beta3Client()
 
     # Initialize request argument(s)
-    request = dataflow_v1beta3.GetJobMetricsRequest(
-    )
+    request = dataflow_v1beta3.GetJobMetricsRequest()
 
     # Make the request
     response = client.get_job_metrics(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dataflow_v1beta3_generated_MetricsV1Beta3_GetJobMetrics_sync]

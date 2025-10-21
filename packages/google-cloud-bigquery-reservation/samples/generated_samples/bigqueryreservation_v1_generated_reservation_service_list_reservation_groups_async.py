@@ -50,4 +50,5 @@ async def sample_list_reservation_groups():
     async for response in page_result:
         print(response)
 
+
 # [END bigqueryreservation_v1_generated_ReservationService_ListReservationGroups_async]

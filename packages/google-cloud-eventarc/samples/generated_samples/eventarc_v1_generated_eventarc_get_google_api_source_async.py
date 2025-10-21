@@ -49,4 +49,5 @@ async def sample_get_google_api_source():
     # Handle the response
     print(response)
 
+
 # [END eventarc_v1_generated_Eventarc_GetGoogleApiSource_async]

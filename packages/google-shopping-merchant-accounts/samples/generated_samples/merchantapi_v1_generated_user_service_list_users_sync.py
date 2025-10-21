@@ -50,4 +50,5 @@ def sample_list_users():
     for response in page_result:
         print(response)
 
+
 # [END merchantapi_v1_generated_UserService_ListUsers_sync]

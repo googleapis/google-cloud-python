@@ -39,8 +39,7 @@ async def sample_list_domain_mappings():
     client = appengine_admin_v1.DomainMappingsAsyncClient()
 
     # Initialize request argument(s)
-    request = appengine_admin_v1.ListDomainMappingsRequest(
-    )
+    request = appengine_admin_v1.ListDomainMappingsRequest()
 
     # Make the request
     page_result = client.list_domain_mappings(request=request)
@@ -48,5 +47,6 @@ async def sample_list_domain_mappings():
     # Handle the response
     async for response in page_result:
         print(response)
+
 
 # [END appengine_v1_generated_DomainMappings_ListDomainMappings_async]

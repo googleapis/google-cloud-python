@@ -58,4 +58,5 @@ async def sample_create_release():
     # Handle the response
     print(response)
 
+
 # [END configdelivery_v1alpha_generated_ConfigDelivery_CreateRelease_async]

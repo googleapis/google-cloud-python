@@ -52,4 +52,5 @@ def sample_update_knowledge_base():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2beta1_generated_KnowledgeBases_UpdateKnowledgeBase_sync]

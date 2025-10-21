@@ -39,8 +39,7 @@ def sample_load_snapshot():
     client = service_v1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1.LoadSnapshotRequest(
-    )
+    request = service_v1.LoadSnapshotRequest()
 
     # Make the request
     operation = client.load_snapshot(request=request)
@@ -51,5 +50,6 @@ def sample_load_snapshot():
 
     # Handle the response
     print(response)
+
 
 # [END composer_v1_generated_Environments_LoadSnapshot_sync]

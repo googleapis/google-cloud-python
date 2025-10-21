@@ -50,4 +50,5 @@ async def sample_list_qa_scorecard_revisions():
     async for response in page_result:
         print(response)
 
+
 # [END contactcenterinsights_v1_generated_ContactCenterInsights_ListQaScorecardRevisions_async]

@@ -50,4 +50,5 @@ def sample_list_certificate_issuance_configs():
     for response in page_result:
         print(response)
 
+
 # [END certificatemanager_v1_generated_CertificateManager_ListCertificateIssuanceConfigs_sync]

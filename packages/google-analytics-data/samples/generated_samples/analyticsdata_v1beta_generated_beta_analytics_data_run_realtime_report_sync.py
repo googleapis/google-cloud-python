@@ -39,13 +39,13 @@ def sample_run_realtime_report():
     client = data_v1beta.BetaAnalyticsDataClient()
 
     # Initialize request argument(s)
-    request = data_v1beta.RunRealtimeReportRequest(
-    )
+    request = data_v1beta.RunRealtimeReportRequest()
 
     # Make the request
     response = client.run_realtime_report(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END analyticsdata_v1beta_generated_BetaAnalyticsData_RunRealtimeReport_sync]

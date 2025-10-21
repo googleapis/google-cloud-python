@@ -53,4 +53,5 @@ async def sample_replace_taxonomy():
     # Handle the response
     print(response)
 
+
 # [END datacatalog_v1_generated_PolicyTagManagerSerialization_ReplaceTaxonomy_async]

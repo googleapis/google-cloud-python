@@ -53,4 +53,5 @@ def sample_terminate_session():
     # Handle the response
     print(response)
 
+
 # [END dataproc_v1_generated_SessionController_TerminateSession_sync]

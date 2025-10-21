@@ -49,4 +49,5 @@ async def sample_delete_table():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1_generated_MetastoreService_DeleteTable_async]

@@ -49,4 +49,5 @@ def sample_create_rule_set():
     # Handle the response
     print(response)
 
+
 # [END contentwarehouse_v1_generated_RuleSetService_CreateRuleSet_sync]

@@ -49,4 +49,5 @@ async def sample_get_data_store():
     # Handle the response
     print(response)
 
+
 # [END discoveryengine_v1_generated_DataStoreService_GetDataStore_async]

@@ -49,4 +49,5 @@ def sample_get_aws_node_pool():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AwsClusters_GetAwsNodePool_sync]

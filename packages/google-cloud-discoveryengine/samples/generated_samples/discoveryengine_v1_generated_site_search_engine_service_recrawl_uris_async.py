@@ -41,7 +41,7 @@ async def sample_recrawl_uris():
     # Initialize request argument(s)
     request = discoveryengine_v1.RecrawlUrisRequest(
         site_search_engine="site_search_engine_value",
-        uris=['uris_value1', 'uris_value2'],
+        uris=["uris_value1", "uris_value2"],
     )
 
     # Make the request
@@ -53,5 +53,6 @@ async def sample_recrawl_uris():
 
     # Handle the response
     print(response)
+
 
 # [END discoveryengine_v1_generated_SiteSearchEngineService_RecrawlUris_async]

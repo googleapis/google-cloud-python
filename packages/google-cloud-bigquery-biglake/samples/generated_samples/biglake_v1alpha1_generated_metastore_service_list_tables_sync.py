@@ -50,4 +50,5 @@ def sample_list_tables():
     for response in page_result:
         print(response)
 
+
 # [END biglake_v1alpha1_generated_MetastoreService_ListTables_sync]

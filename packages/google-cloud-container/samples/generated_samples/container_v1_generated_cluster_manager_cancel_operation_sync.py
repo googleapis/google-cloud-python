@@ -39,8 +39,7 @@ def sample_cancel_operation():
     client = container_v1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1.CancelOperationRequest(
-    )
+    request = container_v1.CancelOperationRequest()
 
     # Make the request
     client.cancel_operation(request=request)

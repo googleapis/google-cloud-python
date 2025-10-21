@@ -41,7 +41,7 @@ def sample_create_control():
     # Initialize request argument(s)
     control = retail_v2.Control()
     control.display_name = "display_name_value"
-    control.solution_types = ['SOLUTION_TYPE_SEARCH']
+    control.solution_types = ["SOLUTION_TYPE_SEARCH"]
 
     request = retail_v2.CreateControlRequest(
         parent="parent_value",
@@ -54,5 +54,6 @@ def sample_create_control():
 
     # Handle the response
     print(response)
+
 
 # [END retail_v2_generated_ControlService_CreateControl_sync]

@@ -39,8 +39,7 @@ async def sample_update_stream():
     client = visionai_v1.StreamsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = visionai_v1.UpdateStreamRequest(
-    )
+    request = visionai_v1.UpdateStreamRequest()
 
     # Make the request
     operation = client.update_stream(request=request)
@@ -51,5 +50,6 @@ async def sample_update_stream():
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1_generated_StreamsService_UpdateStream_async]

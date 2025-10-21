@@ -39,13 +39,13 @@ async def sample_update_cached_content():
     client = generativelanguage_v1beta.CacheServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.UpdateCachedContentRequest(
-    )
+    request = generativelanguage_v1beta.UpdateCachedContentRequest()
 
     # Make the request
     response = await client.update_cached_content(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END generativelanguage_v1beta_generated_CacheService_UpdateCachedContent_async]

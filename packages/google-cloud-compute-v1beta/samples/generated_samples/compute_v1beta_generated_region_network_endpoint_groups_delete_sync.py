@@ -51,4 +51,5 @@ def sample_delete():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_RegionNetworkEndpointGroups_Delete_sync]

@@ -49,4 +49,5 @@ async def sample_delete_catalog():
     # Handle the response
     print(response)
 
+
 # [END biglake_v1alpha1_generated_MetastoreService_DeleteCatalog_async]

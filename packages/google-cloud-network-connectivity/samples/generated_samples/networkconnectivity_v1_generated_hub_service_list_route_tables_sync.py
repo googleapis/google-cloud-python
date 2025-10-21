@@ -50,4 +50,5 @@ def sample_list_route_tables():
     for response in page_result:
         print(response)
 
+
 # [END networkconnectivity_v1_generated_HubService_ListRouteTables_sync]

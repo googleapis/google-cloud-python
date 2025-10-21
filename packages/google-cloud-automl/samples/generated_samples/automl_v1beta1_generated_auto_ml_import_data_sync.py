@@ -53,4 +53,5 @@ def sample_import_data():
     # Handle the response
     print(response)
 
+
 # [END automl_v1beta1_generated_AutoMl_ImportData_sync]

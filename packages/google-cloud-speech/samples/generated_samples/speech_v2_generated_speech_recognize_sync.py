@@ -40,7 +40,7 @@ def sample_recognize():
 
     # Initialize request argument(s)
     request = speech_v2.RecognizeRequest(
-        content=b'content_blob',
+        content=b"content_blob",
         recognizer="recognizer_value",
     )
 
@@ -49,5 +49,6 @@ def sample_recognize():
 
     # Handle the response
     print(response)
+
 
 # [END speech_v2_generated_Speech_Recognize_sync]

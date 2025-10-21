@@ -43,7 +43,7 @@ async def sample_update_document():
     document.content_uri = "content_uri_value"
     document.display_name = "display_name_value"
     document.mime_type = "mime_type_value"
-    document.knowledge_types = ['AGENT_FACING_SMART_REPLY']
+    document.knowledge_types = ["AGENT_FACING_SMART_REPLY"]
 
     request = dialogflow_v2.UpdateDocumentRequest(
         document=document,
@@ -58,5 +58,6 @@ async def sample_update_document():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2_generated_Documents_UpdateDocument_async]

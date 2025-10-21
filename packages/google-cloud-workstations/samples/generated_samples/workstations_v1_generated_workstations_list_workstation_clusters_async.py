@@ -50,4 +50,5 @@ async def sample_list_workstation_clusters():
     async for response in page_result:
         print(response)
 
+
 # [END workstations_v1_generated_Workstations_ListWorkstationClusters_async]

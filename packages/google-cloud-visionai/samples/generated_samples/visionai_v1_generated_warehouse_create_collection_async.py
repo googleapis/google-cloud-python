@@ -53,4 +53,5 @@ async def sample_create_collection():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_CreateCollection_async]

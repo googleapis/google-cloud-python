@@ -50,4 +50,5 @@ async def sample_list_transfer_logs():
     async for response in page_result:
         print(response)
 
+
 # [END bigquerydatatransfer_v1_generated_DataTransferService_ListTransferLogs_async]

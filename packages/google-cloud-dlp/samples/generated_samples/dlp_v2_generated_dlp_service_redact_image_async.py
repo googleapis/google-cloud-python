@@ -39,13 +39,13 @@ async def sample_redact_image():
     client = dlp_v2.DlpServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = dlp_v2.RedactImageRequest(
-    )
+    request = dlp_v2.RedactImageRequest()
 
     # Make the request
     response = await client.redact_image(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dlp_v2_generated_DlpService_RedactImage_async]

@@ -34,11 +34,32 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.oracledatabase_v1.types import (
-    autonomous_database,
+    db_system_initial_storage_size,
+    db_version,
     exadata_infra,
+    exadb_vm_cluster,
+)
+from google.cloud.oracledatabase_v1.types import (
+    autonomous_database,
+    database,
+    database_character_set,
+)
+from google.cloud.oracledatabase_v1.types import (
     oracledatabase,
+    pluggable_database,
     vm_cluster,
 )
+from google.cloud.oracledatabase_v1.types import (
+    exascale_db_storage_vault as gco_exascale_db_storage_vault,
+)
+from google.cloud.oracledatabase_v1.types import db_system
+from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
+from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
+from google.cloud.oracledatabase_v1.types import minor_version
+from google.cloud.oracledatabase_v1.types import odb_network
+from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
+from google.cloud.oracledatabase_v1.types import odb_subnet
+from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
 from .base import DEFAULT_CLIENT_INFO, OracleDatabaseTransport
 from .grpc import OracleDatabaseGrpcTransport
@@ -719,6 +740,36 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
         return self._stubs["list_gi_versions"]
 
     @property
+    def list_minor_versions(
+        self,
+    ) -> Callable[
+        [minor_version.ListMinorVersionsRequest],
+        Awaitable[minor_version.ListMinorVersionsResponse],
+    ]:
+        r"""Return a callable for the list minor versions method over gRPC.
+
+        Lists all the valid minor versions for the given
+        project, location, gi version and shape family.
+
+        Returns:
+            Callable[[~.ListMinorVersionsRequest],
+                    Awaitable[~.ListMinorVersionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_minor_versions" not in self._stubs:
+            self._stubs["list_minor_versions"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListMinorVersions",
+                request_serializer=minor_version.ListMinorVersionsRequest.serialize,
+                response_deserializer=minor_version.ListMinorVersionsResponse.deserialize,
+            )
+        return self._stubs["list_minor_versions"]
+
+    @property
     def list_db_system_shapes(
         self,
     ) -> Callable[
@@ -838,6 +889,38 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_autonomous_database"]
+
+    @property
+    def update_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.UpdateAutonomousDatabaseRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update autonomous database method over gRPC.
+
+        Updates the parameters of a single Autonomous
+        Database.
+
+        Returns:
+            Callable[[~.UpdateAutonomousDatabaseRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_autonomous_database" not in self._stubs:
+            self._stubs[
+                "update_autonomous_database"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/UpdateAutonomousDatabase",
+                request_serializer=oracledatabase.UpdateAutonomousDatabaseRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_autonomous_database"]
 
     @property
     def delete_autonomous_database(
@@ -1120,6 +1203,925 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
             )
         return self._stubs["restart_autonomous_database"]
 
+    @property
+    def switchover_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.SwitchoverAutonomousDatabaseRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the switchover autonomous database method over gRPC.
+
+        Initiates a switchover of specified autonomous
+        database to the associated peer database.
+
+        Returns:
+            Callable[[~.SwitchoverAutonomousDatabaseRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "switchover_autonomous_database" not in self._stubs:
+            self._stubs[
+                "switchover_autonomous_database"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/SwitchoverAutonomousDatabase",
+                request_serializer=oracledatabase.SwitchoverAutonomousDatabaseRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["switchover_autonomous_database"]
+
+    @property
+    def failover_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.FailoverAutonomousDatabaseRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the failover autonomous database method over gRPC.
+
+        Initiates a failover to target autonomous database
+        from the associated primary database.
+
+        Returns:
+            Callable[[~.FailoverAutonomousDatabaseRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "failover_autonomous_database" not in self._stubs:
+            self._stubs[
+                "failover_autonomous_database"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/FailoverAutonomousDatabase",
+                request_serializer=oracledatabase.FailoverAutonomousDatabaseRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["failover_autonomous_database"]
+
+    @property
+    def list_odb_networks(
+        self,
+    ) -> Callable[
+        [odb_network.ListOdbNetworksRequest],
+        Awaitable[odb_network.ListOdbNetworksResponse],
+    ]:
+        r"""Return a callable for the list odb networks method over gRPC.
+
+        Lists the ODB Networks in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListOdbNetworksRequest],
+                    Awaitable[~.ListOdbNetworksResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_odb_networks" not in self._stubs:
+            self._stubs["list_odb_networks"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListOdbNetworks",
+                request_serializer=odb_network.ListOdbNetworksRequest.serialize,
+                response_deserializer=odb_network.ListOdbNetworksResponse.deserialize,
+            )
+        return self._stubs["list_odb_networks"]
+
+    @property
+    def get_odb_network(
+        self,
+    ) -> Callable[
+        [odb_network.GetOdbNetworkRequest], Awaitable[odb_network.OdbNetwork]
+    ]:
+        r"""Return a callable for the get odb network method over gRPC.
+
+        Gets details of a single ODB Network.
+
+        Returns:
+            Callable[[~.GetOdbNetworkRequest],
+                    Awaitable[~.OdbNetwork]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_odb_network" not in self._stubs:
+            self._stubs["get_odb_network"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetOdbNetwork",
+                request_serializer=odb_network.GetOdbNetworkRequest.serialize,
+                response_deserializer=odb_network.OdbNetwork.deserialize,
+            )
+        return self._stubs["get_odb_network"]
+
+    @property
+    def create_odb_network(
+        self,
+    ) -> Callable[
+        [gco_odb_network.CreateOdbNetworkRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create odb network method over gRPC.
+
+        Creates a new ODB Network in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateOdbNetworkRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_odb_network" not in self._stubs:
+            self._stubs["create_odb_network"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateOdbNetwork",
+                request_serializer=gco_odb_network.CreateOdbNetworkRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_odb_network"]
+
+    @property
+    def delete_odb_network(
+        self,
+    ) -> Callable[
+        [odb_network.DeleteOdbNetworkRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete odb network method over gRPC.
+
+        Deletes a single ODB Network.
+
+        Returns:
+            Callable[[~.DeleteOdbNetworkRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_odb_network" not in self._stubs:
+            self._stubs["delete_odb_network"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteOdbNetwork",
+                request_serializer=odb_network.DeleteOdbNetworkRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_odb_network"]
+
+    @property
+    def list_odb_subnets(
+        self,
+    ) -> Callable[
+        [odb_subnet.ListOdbSubnetsRequest], Awaitable[odb_subnet.ListOdbSubnetsResponse]
+    ]:
+        r"""Return a callable for the list odb subnets method over gRPC.
+
+        Lists all the ODB Subnets in a given ODB Network.
+
+        Returns:
+            Callable[[~.ListOdbSubnetsRequest],
+                    Awaitable[~.ListOdbSubnetsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_odb_subnets" not in self._stubs:
+            self._stubs["list_odb_subnets"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListOdbSubnets",
+                request_serializer=odb_subnet.ListOdbSubnetsRequest.serialize,
+                response_deserializer=odb_subnet.ListOdbSubnetsResponse.deserialize,
+            )
+        return self._stubs["list_odb_subnets"]
+
+    @property
+    def get_odb_subnet(
+        self,
+    ) -> Callable[[odb_subnet.GetOdbSubnetRequest], Awaitable[odb_subnet.OdbSubnet]]:
+        r"""Return a callable for the get odb subnet method over gRPC.
+
+        Gets details of a single ODB Subnet.
+
+        Returns:
+            Callable[[~.GetOdbSubnetRequest],
+                    Awaitable[~.OdbSubnet]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_odb_subnet" not in self._stubs:
+            self._stubs["get_odb_subnet"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetOdbSubnet",
+                request_serializer=odb_subnet.GetOdbSubnetRequest.serialize,
+                response_deserializer=odb_subnet.OdbSubnet.deserialize,
+            )
+        return self._stubs["get_odb_subnet"]
+
+    @property
+    def create_odb_subnet(
+        self,
+    ) -> Callable[
+        [gco_odb_subnet.CreateOdbSubnetRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create odb subnet method over gRPC.
+
+        Creates a new ODB Subnet in a given ODB Network.
+
+        Returns:
+            Callable[[~.CreateOdbSubnetRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_odb_subnet" not in self._stubs:
+            self._stubs["create_odb_subnet"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateOdbSubnet",
+                request_serializer=gco_odb_subnet.CreateOdbSubnetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_odb_subnet"]
+
+    @property
+    def delete_odb_subnet(
+        self,
+    ) -> Callable[
+        [odb_subnet.DeleteOdbSubnetRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete odb subnet method over gRPC.
+
+        Deletes a single ODB Subnet.
+
+        Returns:
+            Callable[[~.DeleteOdbSubnetRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_odb_subnet" not in self._stubs:
+            self._stubs["delete_odb_subnet"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteOdbSubnet",
+                request_serializer=odb_subnet.DeleteOdbSubnetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_odb_subnet"]
+
+    @property
+    def list_exadb_vm_clusters(
+        self,
+    ) -> Callable[
+        [oracledatabase.ListExadbVmClustersRequest],
+        Awaitable[oracledatabase.ListExadbVmClustersResponse],
+    ]:
+        r"""Return a callable for the list exadb vm clusters method over gRPC.
+
+        Lists all the Exadb (Exascale) VM Clusters for the
+        given project and location.
+
+        Returns:
+            Callable[[~.ListExadbVmClustersRequest],
+                    Awaitable[~.ListExadbVmClustersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_exadb_vm_clusters" not in self._stubs:
+            self._stubs["list_exadb_vm_clusters"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListExadbVmClusters",
+                request_serializer=oracledatabase.ListExadbVmClustersRequest.serialize,
+                response_deserializer=oracledatabase.ListExadbVmClustersResponse.deserialize,
+            )
+        return self._stubs["list_exadb_vm_clusters"]
+
+    @property
+    def get_exadb_vm_cluster(
+        self,
+    ) -> Callable[
+        [oracledatabase.GetExadbVmClusterRequest],
+        Awaitable[exadb_vm_cluster.ExadbVmCluster],
+    ]:
+        r"""Return a callable for the get exadb vm cluster method over gRPC.
+
+        Gets details of a single Exadb (Exascale) VM Cluster.
+
+        Returns:
+            Callable[[~.GetExadbVmClusterRequest],
+                    Awaitable[~.ExadbVmCluster]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_exadb_vm_cluster" not in self._stubs:
+            self._stubs["get_exadb_vm_cluster"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetExadbVmCluster",
+                request_serializer=oracledatabase.GetExadbVmClusterRequest.serialize,
+                response_deserializer=exadb_vm_cluster.ExadbVmCluster.deserialize,
+            )
+        return self._stubs["get_exadb_vm_cluster"]
+
+    @property
+    def create_exadb_vm_cluster(
+        self,
+    ) -> Callable[
+        [oracledatabase.CreateExadbVmClusterRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create exadb vm cluster method over gRPC.
+
+        Creates a new Exadb (Exascale) VM Cluster resource.
+
+        Returns:
+            Callable[[~.CreateExadbVmClusterRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_exadb_vm_cluster" not in self._stubs:
+            self._stubs["create_exadb_vm_cluster"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateExadbVmCluster",
+                request_serializer=oracledatabase.CreateExadbVmClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_exadb_vm_cluster"]
+
+    @property
+    def delete_exadb_vm_cluster(
+        self,
+    ) -> Callable[
+        [oracledatabase.DeleteExadbVmClusterRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete exadb vm cluster method over gRPC.
+
+        Deletes a single Exadb (Exascale) VM Cluster.
+
+        Returns:
+            Callable[[~.DeleteExadbVmClusterRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_exadb_vm_cluster" not in self._stubs:
+            self._stubs["delete_exadb_vm_cluster"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteExadbVmCluster",
+                request_serializer=oracledatabase.DeleteExadbVmClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_exadb_vm_cluster"]
+
+    @property
+    def update_exadb_vm_cluster(
+        self,
+    ) -> Callable[
+        [oracledatabase.UpdateExadbVmClusterRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update exadb vm cluster method over gRPC.
+
+        Updates a single Exadb (Exascale) VM Cluster. To add
+        virtual machines to existing exadb vm cluster, only pass
+        the node count.
+
+        Returns:
+            Callable[[~.UpdateExadbVmClusterRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_exadb_vm_cluster" not in self._stubs:
+            self._stubs["update_exadb_vm_cluster"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/UpdateExadbVmCluster",
+                request_serializer=oracledatabase.UpdateExadbVmClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_exadb_vm_cluster"]
+
+    @property
+    def remove_virtual_machine_exadb_vm_cluster(
+        self,
+    ) -> Callable[
+        [oracledatabase.RemoveVirtualMachineExadbVmClusterRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the remove virtual machine exadb
+        vm cluster method over gRPC.
+
+        Removes virtual machines from an existing exadb vm
+        cluster.
+
+        Returns:
+            Callable[[~.RemoveVirtualMachineExadbVmClusterRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_virtual_machine_exadb_vm_cluster" not in self._stubs:
+            self._stubs[
+                "remove_virtual_machine_exadb_vm_cluster"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/RemoveVirtualMachineExadbVmCluster",
+                request_serializer=oracledatabase.RemoveVirtualMachineExadbVmClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["remove_virtual_machine_exadb_vm_cluster"]
+
+    @property
+    def list_exascale_db_storage_vaults(
+        self,
+    ) -> Callable[
+        [exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest],
+        Awaitable[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse],
+    ]:
+        r"""Return a callable for the list exascale db storage
+        vaults method over gRPC.
+
+        Lists all the ExascaleDB Storage Vaults for the given
+        project and location.
+
+        Returns:
+            Callable[[~.ListExascaleDbStorageVaultsRequest],
+                    Awaitable[~.ListExascaleDbStorageVaultsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_exascale_db_storage_vaults" not in self._stubs:
+            self._stubs[
+                "list_exascale_db_storage_vaults"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListExascaleDbStorageVaults",
+                request_serializer=exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest.serialize,
+                response_deserializer=exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse.deserialize,
+            )
+        return self._stubs["list_exascale_db_storage_vaults"]
+
+    @property
+    def get_exascale_db_storage_vault(
+        self,
+    ) -> Callable[
+        [exascale_db_storage_vault.GetExascaleDbStorageVaultRequest],
+        Awaitable[exascale_db_storage_vault.ExascaleDbStorageVault],
+    ]:
+        r"""Return a callable for the get exascale db storage vault method over gRPC.
+
+        Gets details of a single ExascaleDB Storage Vault.
+
+        Returns:
+            Callable[[~.GetExascaleDbStorageVaultRequest],
+                    Awaitable[~.ExascaleDbStorageVault]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_exascale_db_storage_vault" not in self._stubs:
+            self._stubs[
+                "get_exascale_db_storage_vault"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetExascaleDbStorageVault",
+                request_serializer=exascale_db_storage_vault.GetExascaleDbStorageVaultRequest.serialize,
+                response_deserializer=exascale_db_storage_vault.ExascaleDbStorageVault.deserialize,
+            )
+        return self._stubs["get_exascale_db_storage_vault"]
+
+    @property
+    def create_exascale_db_storage_vault(
+        self,
+    ) -> Callable[
+        [gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create exascale db storage
+        vault method over gRPC.
+
+        Creates a new ExascaleDB Storage Vault resource.
+
+        Returns:
+            Callable[[~.CreateExascaleDbStorageVaultRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_exascale_db_storage_vault" not in self._stubs:
+            self._stubs[
+                "create_exascale_db_storage_vault"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateExascaleDbStorageVault",
+                request_serializer=gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_exascale_db_storage_vault"]
+
+    @property
+    def delete_exascale_db_storage_vault(
+        self,
+    ) -> Callable[
+        [exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete exascale db storage
+        vault method over gRPC.
+
+        Deletes a single ExascaleDB Storage Vault.
+
+        Returns:
+            Callable[[~.DeleteExascaleDbStorageVaultRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_exascale_db_storage_vault" not in self._stubs:
+            self._stubs[
+                "delete_exascale_db_storage_vault"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteExascaleDbStorageVault",
+                request_serializer=exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_exascale_db_storage_vault"]
+
+    @property
+    def list_db_system_initial_storage_sizes(
+        self,
+    ) -> Callable[
+        [db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest],
+        Awaitable[
+            db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse
+        ],
+    ]:
+        r"""Return a callable for the list db system initial storage
+        sizes method over gRPC.
+
+        Lists all the DbSystemInitialStorageSizes for the
+        given project and location.
+
+        Returns:
+            Callable[[~.ListDbSystemInitialStorageSizesRequest],
+                    Awaitable[~.ListDbSystemInitialStorageSizesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_db_system_initial_storage_sizes" not in self._stubs:
+            self._stubs[
+                "list_db_system_initial_storage_sizes"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDbSystemInitialStorageSizes",
+                request_serializer=db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest.serialize,
+                response_deserializer=db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse.deserialize,
+            )
+        return self._stubs["list_db_system_initial_storage_sizes"]
+
+    @property
+    def list_databases(
+        self,
+    ) -> Callable[
+        [database.ListDatabasesRequest], Awaitable[database.ListDatabasesResponse]
+    ]:
+        r"""Return a callable for the list databases method over gRPC.
+
+        Lists all the Databases for the given project,
+        location and DbSystem.
+
+        Returns:
+            Callable[[~.ListDatabasesRequest],
+                    Awaitable[~.ListDatabasesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_databases" not in self._stubs:
+            self._stubs["list_databases"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDatabases",
+                request_serializer=database.ListDatabasesRequest.serialize,
+                response_deserializer=database.ListDatabasesResponse.deserialize,
+            )
+        return self._stubs["list_databases"]
+
+    @property
+    def get_database(
+        self,
+    ) -> Callable[[database.GetDatabaseRequest], Awaitable[database.Database]]:
+        r"""Return a callable for the get database method over gRPC.
+
+        Gets details of a single Database.
+
+        Returns:
+            Callable[[~.GetDatabaseRequest],
+                    Awaitable[~.Database]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_database" not in self._stubs:
+            self._stubs["get_database"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetDatabase",
+                request_serializer=database.GetDatabaseRequest.serialize,
+                response_deserializer=database.Database.deserialize,
+            )
+        return self._stubs["get_database"]
+
+    @property
+    def list_pluggable_databases(
+        self,
+    ) -> Callable[
+        [pluggable_database.ListPluggableDatabasesRequest],
+        Awaitable[pluggable_database.ListPluggableDatabasesResponse],
+    ]:
+        r"""Return a callable for the list pluggable databases method over gRPC.
+
+        Lists all the PluggableDatabases for the given
+        project, location and Container Database.
+
+        Returns:
+            Callable[[~.ListPluggableDatabasesRequest],
+                    Awaitable[~.ListPluggableDatabasesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_pluggable_databases" not in self._stubs:
+            self._stubs["list_pluggable_databases"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListPluggableDatabases",
+                request_serializer=pluggable_database.ListPluggableDatabasesRequest.serialize,
+                response_deserializer=pluggable_database.ListPluggableDatabasesResponse.deserialize,
+            )
+        return self._stubs["list_pluggable_databases"]
+
+    @property
+    def get_pluggable_database(
+        self,
+    ) -> Callable[
+        [pluggable_database.GetPluggableDatabaseRequest],
+        Awaitable[pluggable_database.PluggableDatabase],
+    ]:
+        r"""Return a callable for the get pluggable database method over gRPC.
+
+        Gets details of a single PluggableDatabase.
+
+        Returns:
+            Callable[[~.GetPluggableDatabaseRequest],
+                    Awaitable[~.PluggableDatabase]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_pluggable_database" not in self._stubs:
+            self._stubs["get_pluggable_database"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetPluggableDatabase",
+                request_serializer=pluggable_database.GetPluggableDatabaseRequest.serialize,
+                response_deserializer=pluggable_database.PluggableDatabase.deserialize,
+            )
+        return self._stubs["get_pluggable_database"]
+
+    @property
+    def list_db_systems(
+        self,
+    ) -> Callable[
+        [db_system.ListDbSystemsRequest], Awaitable[db_system.ListDbSystemsResponse]
+    ]:
+        r"""Return a callable for the list db systems method over gRPC.
+
+        Lists all the DbSystems for the given project and
+        location.
+
+        Returns:
+            Callable[[~.ListDbSystemsRequest],
+                    Awaitable[~.ListDbSystemsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_db_systems" not in self._stubs:
+            self._stubs["list_db_systems"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDbSystems",
+                request_serializer=db_system.ListDbSystemsRequest.serialize,
+                response_deserializer=db_system.ListDbSystemsResponse.deserialize,
+            )
+        return self._stubs["list_db_systems"]
+
+    @property
+    def get_db_system(
+        self,
+    ) -> Callable[[db_system.GetDbSystemRequest], Awaitable[db_system.DbSystem]]:
+        r"""Return a callable for the get db system method over gRPC.
+
+        Gets details of a single DbSystem.
+
+        Returns:
+            Callable[[~.GetDbSystemRequest],
+                    Awaitable[~.DbSystem]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_db_system" not in self._stubs:
+            self._stubs["get_db_system"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/GetDbSystem",
+                request_serializer=db_system.GetDbSystemRequest.serialize,
+                response_deserializer=db_system.DbSystem.deserialize,
+            )
+        return self._stubs["get_db_system"]
+
+    @property
+    def create_db_system(
+        self,
+    ) -> Callable[
+        [gco_db_system.CreateDbSystemRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create db system method over gRPC.
+
+        Creates a new DbSystem in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateDbSystemRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_db_system" not in self._stubs:
+            self._stubs["create_db_system"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateDbSystem",
+                request_serializer=gco_db_system.CreateDbSystemRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_db_system"]
+
+    @property
+    def delete_db_system(
+        self,
+    ) -> Callable[
+        [db_system.DeleteDbSystemRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete db system method over gRPC.
+
+        Deletes a single DbSystem.
+
+        Returns:
+            Callable[[~.DeleteDbSystemRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_db_system" not in self._stubs:
+            self._stubs["delete_db_system"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteDbSystem",
+                request_serializer=db_system.DeleteDbSystemRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_db_system"]
+
+    @property
+    def list_db_versions(
+        self,
+    ) -> Callable[
+        [db_version.ListDbVersionsRequest], Awaitable[db_version.ListDbVersionsResponse]
+    ]:
+        r"""Return a callable for the list db versions method over gRPC.
+
+        List DbVersions for the given project and location.
+
+        Returns:
+            Callable[[~.ListDbVersionsRequest],
+                    Awaitable[~.ListDbVersionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_db_versions" not in self._stubs:
+            self._stubs["list_db_versions"] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDbVersions",
+                request_serializer=db_version.ListDbVersionsRequest.serialize,
+                response_deserializer=db_version.ListDbVersionsResponse.deserialize,
+            )
+        return self._stubs["list_db_versions"]
+
+    @property
+    def list_database_character_sets(
+        self,
+    ) -> Callable[
+        [database_character_set.ListDatabaseCharacterSetsRequest],
+        Awaitable[database_character_set.ListDatabaseCharacterSetsResponse],
+    ]:
+        r"""Return a callable for the list database character sets method over gRPC.
+
+        List DatabaseCharacterSets for the given project and
+        location.
+
+        Returns:
+            Callable[[~.ListDatabaseCharacterSetsRequest],
+                    Awaitable[~.ListDatabaseCharacterSetsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_database_character_sets" not in self._stubs:
+            self._stubs[
+                "list_database_character_sets"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDatabaseCharacterSets",
+                request_serializer=database_character_set.ListDatabaseCharacterSetsRequest.serialize,
+                response_deserializer=database_character_set.ListDatabaseCharacterSetsResponse.deserialize,
+            )
+        return self._stubs["list_database_character_sets"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1131,8 +2133,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1148,8 +2148,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1175,8 +2173,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1192,8 +2188,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1219,8 +2213,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1236,8 +2228,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1253,8 +2243,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1270,8 +2258,21 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_minor_versions: self._wrap_method(
+                self.list_minor_versions,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1287,8 +2288,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1304,8 +2303,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1321,8 +2318,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1332,6 +2327,11 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
             ),
             self.create_autonomous_database: self._wrap_method(
                 self.create_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_autonomous_database: self._wrap_method(
+                self.update_autonomous_database,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1358,8 +2358,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1375,8 +2373,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1392,8 +2388,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -1414,6 +2408,331 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
             self.restart_autonomous_database: self._wrap_method(
                 self.restart_autonomous_database,
                 default_timeout=None,
+                client_info=client_info,
+            ),
+            self.switchover_autonomous_database: self._wrap_method(
+                self.switchover_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.failover_autonomous_database: self._wrap_method(
+                self.failover_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_odb_networks: self._wrap_method(
+                self.list_odb_networks,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_odb_network: self._wrap_method(
+                self.get_odb_network,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_odb_network: self._wrap_method(
+                self.create_odb_network,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_odb_network: self._wrap_method(
+                self.delete_odb_network,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_odb_subnets: self._wrap_method(
+                self.list_odb_subnets,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_odb_subnet: self._wrap_method(
+                self.get_odb_subnet,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_odb_subnet: self._wrap_method(
+                self.create_odb_subnet,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_odb_subnet: self._wrap_method(
+                self.delete_odb_subnet,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_exadb_vm_clusters: self._wrap_method(
+                self.list_exadb_vm_clusters,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_exadb_vm_cluster: self._wrap_method(
+                self.get_exadb_vm_cluster,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_exadb_vm_cluster: self._wrap_method(
+                self.create_exadb_vm_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_exadb_vm_cluster: self._wrap_method(
+                self.delete_exadb_vm_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_exadb_vm_cluster: self._wrap_method(
+                self.update_exadb_vm_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.remove_virtual_machine_exadb_vm_cluster: self._wrap_method(
+                self.remove_virtual_machine_exadb_vm_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_exascale_db_storage_vaults: self._wrap_method(
+                self.list_exascale_db_storage_vaults,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_exascale_db_storage_vault: self._wrap_method(
+                self.get_exascale_db_storage_vault,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_exascale_db_storage_vault: self._wrap_method(
+                self.create_exascale_db_storage_vault,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_exascale_db_storage_vault: self._wrap_method(
+                self.delete_exascale_db_storage_vault,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_db_system_initial_storage_sizes: self._wrap_method(
+                self.list_db_system_initial_storage_sizes,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_databases: self._wrap_method(
+                self.list_databases,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_database: self._wrap_method(
+                self.get_database,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_pluggable_databases: self._wrap_method(
+                self.list_pluggable_databases,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_pluggable_database: self._wrap_method(
+                self.get_pluggable_database,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_db_systems: self._wrap_method(
+                self.list_db_systems,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_db_system: self._wrap_method(
+                self.get_db_system,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_db_system: self._wrap_method(
+                self.create_db_system,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_db_system: self._wrap_method(
+                self.delete_db_system,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_db_versions: self._wrap_method(
+                self.list_db_versions,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_database_character_sets: self._wrap_method(
+                self.list_database_character_sets,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_location: self._wrap_method(

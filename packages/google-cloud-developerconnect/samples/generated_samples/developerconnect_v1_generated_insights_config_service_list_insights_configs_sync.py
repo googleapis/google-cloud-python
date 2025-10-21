@@ -50,4 +50,5 @@ def sample_list_insights_configs():
     for response in page_result:
         print(response)
 
+
 # [END developerconnect_v1_generated_InsightsConfigService_ListInsightsConfigs_sync]

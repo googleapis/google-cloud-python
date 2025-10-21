@@ -49,4 +49,5 @@ def sample_get_participant_session():
     # Handle the response
     print(response)
 
+
 # [END meet_v2beta_generated_ConferenceRecordsService_GetParticipantSession_sync]

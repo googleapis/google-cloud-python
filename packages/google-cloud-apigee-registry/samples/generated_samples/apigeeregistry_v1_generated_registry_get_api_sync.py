@@ -49,4 +49,5 @@ def sample_get_api():
     # Handle the response
     print(response)
 
+
 # [END apigeeregistry_v1_generated_Registry_GetApi_sync]

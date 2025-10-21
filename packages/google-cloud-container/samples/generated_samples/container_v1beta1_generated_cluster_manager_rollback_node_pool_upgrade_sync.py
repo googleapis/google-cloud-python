@@ -39,13 +39,13 @@ def sample_rollback_node_pool_upgrade():
     client = container_v1beta1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.RollbackNodePoolUpgradeRequest(
-    )
+    request = container_v1beta1.RollbackNodePoolUpgradeRequest()
 
     # Make the request
     response = client.rollback_node_pool_upgrade(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_RollbackNodePoolUpgrade_sync]

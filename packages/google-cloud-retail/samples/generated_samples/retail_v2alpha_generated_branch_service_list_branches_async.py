@@ -49,4 +49,5 @@ async def sample_list_branches():
     # Handle the response
     print(response)
 
+
 # [END retail_v2alpha_generated_BranchService_ListBranches_async]

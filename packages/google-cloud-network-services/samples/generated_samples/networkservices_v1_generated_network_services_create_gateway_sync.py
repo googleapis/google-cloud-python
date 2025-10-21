@@ -58,4 +58,5 @@ def sample_create_gateway():
     # Handle the response
     print(response)
 
+
 # [END networkservices_v1_generated_NetworkServices_CreateGateway_sync]

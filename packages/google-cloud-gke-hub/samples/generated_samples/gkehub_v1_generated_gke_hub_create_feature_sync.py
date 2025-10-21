@@ -39,8 +39,7 @@ def sample_create_feature():
     client = gkehub_v1.GkeHubClient()
 
     # Initialize request argument(s)
-    request = gkehub_v1.CreateFeatureRequest(
-    )
+    request = gkehub_v1.CreateFeatureRequest()
 
     # Make the request
     operation = client.create_feature(request=request)
@@ -51,5 +50,6 @@ def sample_create_feature():
 
     # Handle the response
     print(response)
+
 
 # [END gkehub_v1_generated_GkeHub_CreateFeature_sync]

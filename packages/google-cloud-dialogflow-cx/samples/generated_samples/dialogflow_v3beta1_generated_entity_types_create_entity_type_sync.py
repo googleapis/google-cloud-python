@@ -54,4 +54,5 @@ def sample_create_entity_type():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_EntityTypes_CreateEntityType_sync]

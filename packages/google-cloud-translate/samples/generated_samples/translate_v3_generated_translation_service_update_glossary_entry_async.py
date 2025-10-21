@@ -39,13 +39,13 @@ async def sample_update_glossary_entry():
     client = translate_v3.TranslationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = translate_v3.UpdateGlossaryEntryRequest(
-    )
+    request = translate_v3.UpdateGlossaryEntryRequest()
 
     # Make the request
     response = await client.update_glossary_entry(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END translate_v3_generated_TranslationService_UpdateGlossaryEntry_async]

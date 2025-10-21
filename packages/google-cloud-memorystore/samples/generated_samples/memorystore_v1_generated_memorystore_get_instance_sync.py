@@ -49,4 +49,5 @@ def sample_get_instance():
     # Handle the response
     print(response)
 
+
 # [END memorystore_v1_generated_Memorystore_GetInstance_sync]

@@ -54,4 +54,5 @@ def sample_create_host_project_registration():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_HostProjectRegistrationService_CreateHostProjectRegistration_sync]

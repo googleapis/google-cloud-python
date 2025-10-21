@@ -49,4 +49,5 @@ def sample_get_folder():
     # Handle the response
     print(response)
 
+
 # [END storage_v2_generated_StorageControl_GetFolder_sync]

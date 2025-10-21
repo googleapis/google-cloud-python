@@ -53,4 +53,5 @@ def sample_delete_folder():
     # Handle the response
     print(response)
 
+
 # [END cloudresourcemanager_v3_generated_Folders_DeleteFolder_sync]

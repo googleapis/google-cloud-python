@@ -54,4 +54,5 @@ async def sample_update_tool():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v3beta1_generated_Tools_UpdateTool_async]

@@ -50,4 +50,5 @@ async def sample_list_rows():
     async for response in page_result:
         print(response)
 
+
 # [END area120tables_v1alpha1_generated_TablesService_ListRows_async]

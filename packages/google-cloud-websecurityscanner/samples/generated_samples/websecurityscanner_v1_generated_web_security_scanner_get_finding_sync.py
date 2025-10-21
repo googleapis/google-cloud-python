@@ -39,13 +39,13 @@ def sample_get_finding():
     client = websecurityscanner_v1.WebSecurityScannerClient()
 
     # Initialize request argument(s)
-    request = websecurityscanner_v1.GetFindingRequest(
-    )
+    request = websecurityscanner_v1.GetFindingRequest()
 
     # Make the request
     response = client.get_finding(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END websecurityscanner_v1_generated_WebSecurityScanner_GetFinding_sync]

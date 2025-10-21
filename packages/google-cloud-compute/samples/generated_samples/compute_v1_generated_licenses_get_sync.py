@@ -50,4 +50,5 @@ def sample_get():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Licenses_Get_sync]

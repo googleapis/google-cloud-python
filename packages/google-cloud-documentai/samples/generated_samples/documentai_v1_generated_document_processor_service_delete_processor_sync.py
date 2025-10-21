@@ -53,4 +53,5 @@ def sample_delete_processor():
     # Handle the response
     print(response)
 
+
 # [END documentai_v1_generated_DocumentProcessorService_DeleteProcessor_sync]

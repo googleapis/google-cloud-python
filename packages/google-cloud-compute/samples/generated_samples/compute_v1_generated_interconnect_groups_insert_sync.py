@@ -49,4 +49,5 @@ def sample_insert():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_InterconnectGroups_Insert_sync]

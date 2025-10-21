@@ -39,8 +39,7 @@ async def sample_create_tag_binding():
     client = resourcemanager_v3.TagBindingsAsyncClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.CreateTagBindingRequest(
-    )
+    request = resourcemanager_v3.CreateTagBindingRequest()
 
     # Make the request
     operation = client.create_tag_binding(request=request)
@@ -51,5 +50,6 @@ async def sample_create_tag_binding():
 
     # Handle the response
     print(response)
+
 
 # [END cloudresourcemanager_v3_generated_TagBindings_CreateTagBinding_async]

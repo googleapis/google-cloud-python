@@ -53,4 +53,5 @@ def sample_create_transfer_config():
     # Handle the response
     print(response)
 
+
 # [END bigquerydatatransfer_v1_generated_DataTransferService_CreateTransferConfig_sync]

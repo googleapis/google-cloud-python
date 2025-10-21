@@ -50,4 +50,5 @@ def sample_search_documents():
     for response in page_result:
         print(response)
 
+
 # [END contentwarehouse_v1_generated_DocumentService_SearchDocuments_sync]

@@ -40,7 +40,7 @@ def sample_update_variant():
 
     # Initialize request argument(s)
     variant = configdelivery_v1beta.Variant()
-    variant.resources = ['resources_value1', 'resources_value2']
+    variant.resources = ["resources_value1", "resources_value2"]
 
     request = configdelivery_v1beta.UpdateVariantRequest(
         variant=variant,
@@ -55,5 +55,6 @@ def sample_update_variant():
 
     # Handle the response
     print(response)
+
 
 # [END configdelivery_v1beta_generated_ConfigDelivery_UpdateVariant_sync]

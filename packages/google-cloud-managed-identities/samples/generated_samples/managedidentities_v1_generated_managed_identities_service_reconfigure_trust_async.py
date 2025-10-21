@@ -42,7 +42,10 @@ async def sample_reconfigure_trust():
     request = managedidentities_v1.ReconfigureTrustRequest(
         name="name_value",
         target_domain_name="target_domain_name_value",
-        target_dns_ip_addresses=['target_dns_ip_addresses_value1', 'target_dns_ip_addresses_value2'],
+        target_dns_ip_addresses=[
+            "target_dns_ip_addresses_value1",
+            "target_dns_ip_addresses_value2",
+        ],
     )
 
     # Make the request
@@ -54,5 +57,6 @@ async def sample_reconfigure_trust():
 
     # Handle the response
     print(response)
+
 
 # [END managedidentities_v1_generated_ManagedIdentitiesService_ReconfigureTrust_async]

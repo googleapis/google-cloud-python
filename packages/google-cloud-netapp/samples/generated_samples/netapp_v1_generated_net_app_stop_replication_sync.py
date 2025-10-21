@@ -53,4 +53,5 @@ def sample_stop_replication():
     # Handle the response
     print(response)
 
+
 # [END netapp_v1_generated_NetApp_StopReplication_sync]

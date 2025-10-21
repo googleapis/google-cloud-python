@@ -49,4 +49,5 @@ def sample_get_connection():
     # Handle the response
     print(response)
 
+
 # [END cloudbuild_v2_generated_RepositoryManager_GetConnection_sync]

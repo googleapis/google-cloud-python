@@ -49,4 +49,5 @@ def sample_get_api():
     # Handle the response
     print(response)
 
+
 # [END apihub_v1_generated_ApiHub_GetApi_sync]

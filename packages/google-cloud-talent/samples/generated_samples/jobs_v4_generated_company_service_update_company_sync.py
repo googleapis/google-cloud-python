@@ -53,4 +53,5 @@ def sample_update_company():
     # Handle the response
     print(response)
 
+
 # [END jobs_v4_generated_CompanyService_UpdateCompany_sync]

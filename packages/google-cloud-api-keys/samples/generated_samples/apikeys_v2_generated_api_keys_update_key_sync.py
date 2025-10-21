@@ -39,8 +39,7 @@ def sample_update_key():
     client = api_keys_v2.ApiKeysClient()
 
     # Initialize request argument(s)
-    request = api_keys_v2.UpdateKeyRequest(
-    )
+    request = api_keys_v2.UpdateKeyRequest()
 
     # Make the request
     operation = client.update_key(request=request)
@@ -51,5 +50,6 @@ def sample_update_key():
 
     # Handle the response
     print(response)
+
 
 # [END apikeys_v2_generated_ApiKeys_UpdateKey_sync]

@@ -51,4 +51,5 @@ def sample_set_min_cpu_platform():
     # Handle the response
     print(response)
 
+
 # [END compute_v1_generated_Instances_SetMinCpuPlatform_sync]

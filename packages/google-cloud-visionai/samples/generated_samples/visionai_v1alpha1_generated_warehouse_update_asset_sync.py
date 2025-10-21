@@ -39,13 +39,13 @@ def sample_update_asset():
     client = visionai_v1alpha1.WarehouseClient()
 
     # Initialize request argument(s)
-    request = visionai_v1alpha1.UpdateAssetRequest(
-    )
+    request = visionai_v1alpha1.UpdateAssetRequest()
 
     # Make the request
     response = client.update_asset(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END visionai_v1alpha1_generated_Warehouse_UpdateAsset_sync]

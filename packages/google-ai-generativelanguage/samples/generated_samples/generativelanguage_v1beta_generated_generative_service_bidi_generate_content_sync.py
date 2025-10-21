@@ -63,4 +63,5 @@ def sample_bidi_generate_content():
     for response in stream:
         print(response)
 
+
 # [END generativelanguage_v1beta_generated_GenerativeService_BidiGenerateContent_sync]

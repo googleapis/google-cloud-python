@@ -50,4 +50,5 @@ async def sample_list_snapshots():
     async for response in page_result:
         print(response)
 
+
 # [END netapp_v1_generated_NetApp_ListSnapshots_async]

@@ -49,4 +49,5 @@ async def sample_generate_azure_access_token():
     # Handle the response
     print(response)
 
+
 # [END gkemulticloud_v1_generated_AzureClusters_GenerateAzureAccessToken_async]

@@ -50,4 +50,5 @@ def sample_list_tasks():
     for response in page_result:
         print(response)
 
+
 # [END run_v2_generated_Tasks_ListTasks_sync]

@@ -54,4 +54,5 @@ async def sample_remove_collection_item():
     # Handle the response
     print(response)
 
+
 # [END visionai_v1_generated_Warehouse_RemoveCollectionItem_async]

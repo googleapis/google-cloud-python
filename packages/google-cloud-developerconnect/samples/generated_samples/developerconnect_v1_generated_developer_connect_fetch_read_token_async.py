@@ -49,4 +49,5 @@ async def sample_fetch_read_token():
     # Handle the response
     print(response)
 
+
 # [END developerconnect_v1_generated_DeveloperConnect_FetchReadToken_async]

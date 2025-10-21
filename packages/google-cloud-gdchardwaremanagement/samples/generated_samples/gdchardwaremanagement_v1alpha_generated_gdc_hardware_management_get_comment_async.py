@@ -49,4 +49,5 @@ async def sample_get_comment():
     # Handle the response
     print(response)
 
+
 # [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_GetComment_async]

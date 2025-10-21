@@ -49,4 +49,5 @@ def sample_insert():
     # Handle the response
     print(response)
 
+
 # [END compute_v1beta_generated_HealthChecks_Insert_sync]

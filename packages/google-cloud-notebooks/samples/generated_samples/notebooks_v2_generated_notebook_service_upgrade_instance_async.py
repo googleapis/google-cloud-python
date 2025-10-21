@@ -53,4 +53,5 @@ async def sample_upgrade_instance():
     # Handle the response
     print(response)
 
+
 # [END notebooks_v2_generated_NotebookService_UpgradeInstance_async]

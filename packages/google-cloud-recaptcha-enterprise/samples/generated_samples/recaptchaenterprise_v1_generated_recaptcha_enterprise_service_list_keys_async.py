@@ -50,4 +50,5 @@ async def sample_list_keys():
     async for response in page_result:
         print(response)
 
+
 # [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListKeys_async]

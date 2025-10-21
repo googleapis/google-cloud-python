@@ -50,4 +50,5 @@ async def sample_list_managed_folders():
     async for response in page_result:
         print(response)
 
+
 # [END storage_v2_generated_StorageControl_ListManagedFolders_async]
