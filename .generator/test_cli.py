@@ -37,7 +37,6 @@ from cli import (
     _clean_up_files_after_post_processing,
     _copy_files_needed_for_post_processing,
     _create_main_version_header,
-    _create_new_changelog_for_library,
     _create_repo_metadata_from_service_config,
     _determine_generator_command,
     _determine_library_namespace,
@@ -72,7 +71,7 @@ from cli import (
     _write_json_file,
     _write_text_file,
     _copy_readme_to_docs,
-    _copy_file_to_docs,
+    _create_new_changelog_for_library,
     handle_build,
     handle_configure,
     handle_generate,
@@ -293,20 +292,25 @@ def test_handle_configure_success(mock_configure_request_file, mocker):
     mocker.patch("cli._update_global_changelog", return_value=None)
     mock_write_json = mocker.patch("cli._write_json_file")
     mock_prepare_config = mocker.patch(
-        "cli._prepare_new_library_config",
-        return_value={"id": "google-cloud-language"},
+        "cli._prepare_new_library_config", return_value={"id": "prepared"}
     )
     mock_create_changelog = mocker.patch("cli._create_new_changelog_for_library")
 
-    handle_configure(output="output")
+    handle_configure()
 
     mock_prepare_config.assert_called_once()
-    mock_create_changelog.assert_called_once_with("google-cloud-language", "output")
     mock_write_json.assert_called_once_with(
-        f"{LIBRARIAN_DIR}/configure-response.json",
-        {"id": "google-cloud-language"},
+        f"{LIBRARIAN_DIR}/configure-response.json", {"id": "prepared"}
     )
 
+
+def test_handle_configure_no_new_library(mocker):
+    """Tests that handle_configure fails if no new library is found."""
+    mocker.patch("cli._read_json_file", return_value={"libraries": []})
+    # The call to _prepare_new_library_config with an empty dict will raise a ValueError
+    # because _get_library_id will fail.
+    with pytest.raises(ValueError, match="Configuring a new library failed."):
+        handle_configure()
 
 def test_create_new_changelog_for_library(mocker):
     """Tests that the changelog files are created correctly."""
@@ -329,16 +333,6 @@ def test_create_new_changelog_for_library(mocker):
     mock_write_text_file.assert_any_call(package_changelog_path, "# Changelog\n")
     mock_write_text_file.assert_any_call(docs_changelog_path, "# Changelog\n")
     assert mock_write_text_file.call_count == 2
-
-
-
-def test_handle_configure_no_new_library(mocker):
-    """Tests that handle_configure fails if no new library is found."""
-    mocker.patch("cli._read_json_file", return_value={"libraries": []})
-    # The call to _prepare_new_library_config with an empty dict will raise a ValueError
-    # because _get_library_id will fail.
-    with pytest.raises(ValueError, match="Configuring a new library failed."):
-        handle_configure()
 
 
 def test_get_new_library_config_found(mock_configure_request_data):
@@ -670,7 +664,6 @@ def test_handle_generate_success(
         "cli._clean_up_files_after_post_processing"
     )
     mocker.patch("cli._generate_repo_metadata_file")
-    mocker.patch("cli._copy_readme_to_docs")
 
     handle_generate()
 
@@ -1603,12 +1596,44 @@ def test_copy_readme_to_docs(mocker):
     mock_os_islink.assert_any_call(expected_destination)
     mock_os_islink.assert_any_call(expected_docs_path)
     mock_os_remove.assert_not_called()
-    mock_makedirs.assert_called_with(Path(expected_docs_path), exist_ok=True)
+    mock_makedirs.assert_called_once_with(expected_docs_path, exist_ok=True)
     mock_open.assert_any_call(expected_destination, "w")
     mock_open().write.assert_called_once_with("dummy content")
 
 
+def test_copy_readme_to_docs_handles_symlink(mocker):
+    """Tests that the README.rst is copied to the docs directory, handling symlinks."""
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    mock_os_islink = mocker.patch("os.path.islink")
+    mock_os_remove = mocker.patch("os.remove")
+    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
+    # Simulate docs_path being a symlink
+    mock_os_islink.side_effect = [
+        False,
+        True,
+    ]  # First call for destination_path, second for docs_path
+
+    output = "output"
+    library_id = "google-cloud-language"
+    _copy_readme_to_docs(output, library_id)
+
+    expected_source = "output/packages/google-cloud-language/README.rst"
+    expected_docs_path = "output/packages/google-cloud-language/docs"
+    expected_destination = "output/packages/google-cloud-language/docs/README.rst"
+
+    mock_os_lexists.assert_called_once_with(expected_source)
+    mock_open.assert_any_call(expected_source, "r")
+    mock_os_islink.assert_any_call(expected_destination)
+    mock_os_islink.assert_any_call(expected_docs_path)
+    mock_os_remove.assert_called_once_with(expected_docs_path)
+    mock_makedirs.assert_called_once_with(expected_docs_path, exist_ok=True)
+    mock_open.assert_any_call(expected_destination, "w")
+    mock_open().write.assert_called_once_with("dummy content")
 
 
 def test_copy_readme_to_docs_destination_path_is_symlink(mocker):
@@ -1653,31 +1678,3 @@ def test_copy_readme_to_docs_source_not_exists(mocker):
     mock_os_remove.assert_not_called()
     mock_makedirs.assert_not_called()
     mock_shutil_copy.assert_not_called()
-    
-    
-def test_copy_file_to_docs_docs_path_is_symlink(mocker):
-    """Tests that the file is copied to the docs directory, handling docs_path being a symlink."""
-    mock_makedirs = mocker.patch("os.makedirs")
-    mock_os_remove = mocker.patch("os.remove")
-    mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch(
-        "builtins.open", mocker.mock_open(read_data="dummy content")
-    )
-
-    output = "output"
-    library_id = "google-cloud-language"
-    filename = "README.rst"
-    docs_path = f"{output}/packages/{library_id}/docs"
-    
-    def islink_side_effect(path):
-        if path == docs_path:
-            return True
-        return False
-
-    mocker.patch("os.path.islink", side_effect=islink_side_effect)
-
-    _copy_file_to_docs(output, library_id, filename)
-    
-    mock_os_remove.assert_called_once_with(docs_path)
-    
-

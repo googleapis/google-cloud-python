@@ -225,7 +225,6 @@ def _prepare_new_library_config(library_config: Dict) -> Dict:
 
 def _create_new_changelog_for_library(library_id: str, output: str):
     """Creates a new changelog for the library.
-
     Args:
         library_id(str): The id of the library.
         output(str): Path to the directory in the container where code
@@ -285,6 +284,7 @@ def handle_configure(
         )
         prepared_config = _prepare_new_library_config(new_library_config)
 
+        # Create a `CHANGELOG.md` and `docs/CHANGELOG.md` file for the new library
         library_id = _get_library_id(prepared_config)
         _create_new_changelog_for_library(library_id, output)
 
@@ -400,6 +400,8 @@ def _clean_up_files_after_post_processing(output: str, library_id: str):
     shutil.rmtree(f"{output}/owl-bot-staging", ignore_errors=True)
 
     # Safely remove specific files if they exist using pathlib.
+    Path(f"{output}/{path_to_library}/CHANGELOG.md").unlink(missing_ok=True)
+    Path(f"{output}/{path_to_library}/docs/CHANGELOG.md").unlink(missing_ok=True)
 
     # The glob loops are already safe, as they do nothing if no files match.
     for post_processing_file in glob.glob(
@@ -519,8 +521,8 @@ def _generate_repo_metadata_file(
     _write_json_file(output_repo_metadata, metadata_content)
 
 
-def _copy_file_to_docs(output: str, library_id: str, filename: str):
-    """Copies a file for a generated library to the docs directory.
+def _copy_readme_to_docs(output: str, library_id: str):
+    """Copies the README.rst file for a generated library to docs/README.rst.
 
     This function is robust against various symlink configurations that could
     cause `shutil.copy` to fail with a `SameFileError`. It reads the content
@@ -531,20 +533,20 @@ def _copy_file_to_docs(output: str, library_id: str, filename: str):
         output(str): Path to the directory in the container where code
             should be generated.
         library_id(str): The library id.
-        filename(str): The name of the file to copy.
     """
     path_to_library = f"packages/{library_id}"
-    source_path = f"{output}/{path_to_library}/{filename}"
+    source_path = f"{output}/{path_to_library}/README.rst"
     docs_path = f"{output}/{path_to_library}/docs"
-    destination_path = f"{docs_path}/{filename}"
-
+    destination_path = f"{docs_path}/README.rst"
 
     # If the source file doesn't exist (not even as a broken symlink),
     # there's nothing to copy.
     if not os.path.lexists(source_path):
         return
 
-    content = _read_text_file(source_path)
+    # Read the content from the source, which will resolve any symlinks.
+    with open(source_path, "r") as f:
+        content = f.read()
 
     # Remove any symlinks at the destination to prevent errors.
     if os.path.islink(destination_path):
@@ -554,22 +556,10 @@ def _copy_file_to_docs(output: str, library_id: str, filename: str):
 
     # Ensure the destination directory exists as a real directory.
     os.makedirs(docs_path, exist_ok=True)
-    _write_text_file(destination_path, content)
 
-
-def _copy_readme_to_docs(output: str, library_id: str):
-    """Copies the README.rst file for a generated library to docs/README.rst.
-
-    This function is a wrapper around `_copy_file_to_docs` for README.rst.
-
-    Args:
-        output(str): Path to the directory in the container where code
-            should be generated.
-        library_id(str): The library id.
-    """
-    _copy_file_to_docs(output, library_id, "README.rst")
-
-
+    # Write the content to the destination, creating a new physical file.
+    with open(destination_path, "w") as f:
+        f.write(content)
 
 
 def handle_generate(
@@ -577,7 +567,6 @@ def handle_generate(
     source: str = SOURCE_DIR,
     output: str = OUTPUT_DIR,
     input: str = INPUT_DIR,
-    repo: str = REPO_DIR,
 ):
     """The main coordinator for the code generation process.
 
@@ -1554,7 +1543,6 @@ if __name__ == "__main__":  # pragma: NO COVER
             source=args.source,
             output=args.output,
             input=args.input,
-            repo=args.repo,
         )
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
