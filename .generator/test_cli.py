@@ -330,8 +330,9 @@ def test_create_new_changelog_for_library(mocker):
     assert mock_makedirs.call_count == 2
 
     # Check that the files were "written" with the correct content
-    mock_write_text_file.assert_any_call(package_changelog_path, "# Changelog\n")
-    mock_write_text_file.assert_any_call(docs_changelog_path, "# Changelog\n")
+    changelog_content = f"# Changelog\n\n[PyPI History][1]\n\n[1]: https://pypi.org/project/{library_id}/#history\n"
+    mock_write_text_file.assert_any_call(package_changelog_path, changelog_content)
+    mock_write_text_file.assert_any_call(docs_changelog_path, changelog_content)
     assert mock_write_text_file.call_count == 2
 
 
