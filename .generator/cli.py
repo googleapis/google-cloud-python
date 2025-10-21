@@ -1361,6 +1361,7 @@ def _update_changelog_for_library(
         previous_version(str): The version in state.yaml for a given library
         library_id(str): The id of the library where the changelog should
             be updated.
+        relative_path(str): The path to the changelog file relative to the repository root.
     """
     changelog_src = f"{repo}/{relative_path}"
     changelog_dest = f"{output}/{relative_path}"
