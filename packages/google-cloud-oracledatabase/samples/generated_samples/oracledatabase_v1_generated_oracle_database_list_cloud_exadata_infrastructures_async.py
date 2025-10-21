@@ -50,4 +50,5 @@ async def sample_list_cloud_exadata_infrastructures():
     async for response in page_result:
         print(response)
 
+
 # [END oracledatabase_v1_generated_OracleDatabase_ListCloudExadataInfrastructures_async]

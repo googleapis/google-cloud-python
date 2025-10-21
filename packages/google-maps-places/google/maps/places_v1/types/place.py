@@ -395,6 +395,19 @@ class Place(proto.Message):
         neighborhood_summary (google.maps.places_v1.types.Place.NeighborhoodSummary):
             A summary of points of interest near the
             place.
+        moved_place (str):
+            If this Place is permanently closed and has moved to a new
+            Place, this field contains the new Place's resource name, in
+            ``places/{place_id}`` format. If this Place moved multiple
+            times, this field will represent the first moved place. This
+            field will not be populated if this Place has not moved.
+        moved_place_id (str):
+            If this Place is permanently closed and has
+            moved to a new Place, this field contains the
+            new Place's place ID. If this Place moved
+            multiple times, this field will represent the
+            first moved Place. This field will not be
+            populated if this Place has not moved.
     """
 
     class BusinessStatus(proto.Enum):
@@ -1008,6 +1021,9 @@ class Place(proto.Message):
                 Gemini" (and its localized variants). This will
                 be in the language specified in the request if
                 available.
+            reviews_uri (str):
+                A link to show reviews of this place on
+                Google Maps.
         """
 
         text: localized_text_pb2.LocalizedText = proto.Field(
@@ -1023,6 +1039,10 @@ class Place(proto.Message):
             proto.MESSAGE,
             number=3,
             message=localized_text_pb2.LocalizedText,
+        )
+        reviews_uri: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     class EvChargeAmenitySummary(proto.Message):
@@ -1040,7 +1060,7 @@ class Place(proto.Message):
             restaurant (google.maps.places_v1.types.ContentBlock):
                 A summary of the nearby restaurants.
             store (google.maps.places_v1.types.ContentBlock):
-                A summary of the nearby gas stations.
+                A summary of the nearby stores.
             flag_content_uri (str):
                 A link where users can flag a problem with
                 the summary.
@@ -1464,6 +1484,14 @@ class Place(proto.Message):
         proto.MESSAGE,
         number=91,
         message=NeighborhoodSummary,
+    )
+    moved_place: str = proto.Field(
+        proto.STRING,
+        number=93,
+    )
+    moved_place_id: str = proto.Field(
+        proto.STRING,
+        number=94,
     )
 
 

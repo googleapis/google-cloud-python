@@ -53,4 +53,5 @@ async def sample_delete_cloud_exadata_infrastructure():
     # Handle the response
     print(response)
 
+
 # [END oracledatabase_v1_generated_OracleDatabase_DeleteCloudExadataInfrastructure_async]

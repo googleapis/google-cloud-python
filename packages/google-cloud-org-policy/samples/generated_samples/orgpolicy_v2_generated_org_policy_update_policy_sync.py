@@ -39,13 +39,13 @@ def sample_update_policy():
     client = orgpolicy_v2.OrgPolicyClient()
 
     # Initialize request argument(s)
-    request = orgpolicy_v2.UpdatePolicyRequest(
-    )
+    request = orgpolicy_v2.UpdatePolicyRequest()
 
     # Make the request
     response = client.update_policy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END orgpolicy_v2_generated_OrgPolicy_UpdatePolicy_sync]

@@ -50,4 +50,5 @@ def sample_list_entitlements():
     for response in page_result:
         print(response)
 
+
 # [END oracledatabase_v1_generated_OracleDatabase_ListEntitlements_sync]

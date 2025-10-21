@@ -32,7 +32,6 @@ from typing import (
     Union,
     cast,
 )
-import uuid
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -67,6 +66,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.oracledatabase_v1.services.oracle_database import pagers
@@ -74,19 +74,43 @@ from google.cloud.oracledatabase_v1.types import (
     autonomous_database_character_set,
     autonomous_db_backup,
     autonomous_db_version,
+    common,
+    database,
+    database_character_set,
     db_node,
     db_server,
+)
+from google.cloud.oracledatabase_v1.types import (
+    db_system_initial_storage_size,
     db_system_shape,
+    db_version,
     entitlement,
     exadata_infra,
-    gi_version,
+)
+from google.cloud.oracledatabase_v1.types import (
     oracledatabase,
+    pluggable_database,
     vm_cluster,
 )
 from google.cloud.oracledatabase_v1.types import (
     autonomous_database as gco_autonomous_database,
 )
+from google.cloud.oracledatabase_v1.types import (
+    exadb_vm_cluster as gco_exadb_vm_cluster,
+)
+from google.cloud.oracledatabase_v1.types import (
+    exascale_db_storage_vault as gco_exascale_db_storage_vault,
+)
 from google.cloud.oracledatabase_v1.types import autonomous_database
+from google.cloud.oracledatabase_v1.types import db_system
+from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
+from google.cloud.oracledatabase_v1.types import exadb_vm_cluster
+from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
+from google.cloud.oracledatabase_v1.types import gi_version, minor_version
+from google.cloud.oracledatabase_v1.types import odb_network
+from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
+from google.cloud.oracledatabase_v1.types import odb_subnet
+from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
 from .transports.base import DEFAULT_CLIENT_INFO, OracleDatabaseTransport
 from .transports.grpc import OracleDatabaseGrpcTransport
@@ -353,6 +377,74 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def crypto_key_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def database_path(
+        project: str,
+        location: str,
+        database: str,
+    ) -> str:
+        """Returns a fully-qualified database string."""
+        return "projects/{project}/locations/{location}/databases/{database}".format(
+            project=project,
+            location=location,
+            database=database,
+        )
+
+    @staticmethod
+    def parse_database_path(path: str) -> Dict[str, str]:
+        """Parses a database path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/databases/(?P<database>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def database_character_set_path(
+        project: str,
+        location: str,
+        database_character_set: str,
+    ) -> str:
+        """Returns a fully-qualified database_character_set string."""
+        return "projects/{project}/locations/{location}/databaseCharacterSets/{database_character_set}".format(
+            project=project,
+            location=location,
+            database_character_set=database_character_set,
+        )
+
+    @staticmethod
+    def parse_database_character_set_path(path: str) -> Dict[str, str]:
+        """Parses a database_character_set path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/databaseCharacterSets/(?P<database_character_set>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def db_node_path(
         project: str,
         location: str,
@@ -401,6 +493,50 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def db_system_path(
+        project: str,
+        location: str,
+        db_system: str,
+    ) -> str:
+        """Returns a fully-qualified db_system string."""
+        return "projects/{project}/locations/{location}/dbSystems/{db_system}".format(
+            project=project,
+            location=location,
+            db_system=db_system,
+        )
+
+    @staticmethod
+    def parse_db_system_path(path: str) -> Dict[str, str]:
+        """Parses a db_system path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbSystems/(?P<db_system>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def db_system_initial_storage_size_path(
+        project: str,
+        location: str,
+        db_system_initial_storage_size: str,
+    ) -> str:
+        """Returns a fully-qualified db_system_initial_storage_size string."""
+        return "projects/{project}/locations/{location}/dbSystemInitialStorageSizes/{db_system_initial_storage_size}".format(
+            project=project,
+            location=location,
+            db_system_initial_storage_size=db_system_initial_storage_size,
+        )
+
+    @staticmethod
+    def parse_db_system_initial_storage_size_path(path: str) -> Dict[str, str]:
+        """Parses a db_system_initial_storage_size path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbSystemInitialStorageSizes/(?P<db_system_initial_storage_size>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def db_system_shape_path(
         project: str,
         location: str,
@@ -418,6 +554,28 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         """Parses a db_system_shape path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbSystemShapes/(?P<db_system_shape>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def db_version_path(
+        project: str,
+        location: str,
+        db_version: str,
+    ) -> str:
+        """Returns a fully-qualified db_version string."""
+        return "projects/{project}/locations/{location}/dbVersions/{db_version}".format(
+            project=project,
+            location=location,
+            db_version=db_version,
+        )
+
+    @staticmethod
+    def parse_db_version_path(path: str) -> Dict[str, str]:
+        """Parses a db_version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbVersions/(?P<db_version>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -447,6 +605,50 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def exadb_vm_cluster_path(
+        project: str,
+        location: str,
+        exadb_vm_cluster: str,
+    ) -> str:
+        """Returns a fully-qualified exadb_vm_cluster string."""
+        return "projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}".format(
+            project=project,
+            location=location,
+            exadb_vm_cluster=exadb_vm_cluster,
+        )
+
+    @staticmethod
+    def parse_exadb_vm_cluster_path(path: str) -> Dict[str, str]:
+        """Parses a exadb_vm_cluster path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/exadbVmClusters/(?P<exadb_vm_cluster>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def exascale_db_storage_vault_path(
+        project: str,
+        location: str,
+        exascale_db_storage_vault: str,
+    ) -> str:
+        """Returns a fully-qualified exascale_db_storage_vault string."""
+        return "projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}".format(
+            project=project,
+            location=location,
+            exascale_db_storage_vault=exascale_db_storage_vault,
+        )
+
+    @staticmethod
+    def parse_exascale_db_storage_vault_path(path: str) -> Dict[str, str]:
+        """Parses a exascale_db_storage_vault path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/exascaleDbStorageVaults/(?P<exascale_db_storage_vault>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def gi_version_path(
         project: str,
         location: str,
@@ -469,6 +671,30 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def minor_version_path(
+        project: str,
+        location: str,
+        gi_version: str,
+        minor_version: str,
+    ) -> str:
+        """Returns a fully-qualified minor_version string."""
+        return "projects/{project}/locations/{location}/giVersions/{gi_version}/minorVersions/{minor_version}".format(
+            project=project,
+            location=location,
+            gi_version=gi_version,
+            minor_version=minor_version,
+        )
+
+    @staticmethod
+    def parse_minor_version_path(path: str) -> Dict[str, str]:
+        """Parses a minor_version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/giVersions/(?P<gi_version>.+?)/minorVersions/(?P<minor_version>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def network_path(
         project: str,
         network: str,
@@ -484,6 +710,76 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         """Parses a network path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/global/networks/(?P<network>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def odb_network_path(
+        project: str,
+        location: str,
+        odb_network: str,
+    ) -> str:
+        """Returns a fully-qualified odb_network string."""
+        return (
+            "projects/{project}/locations/{location}/odbNetworks/{odb_network}".format(
+                project=project,
+                location=location,
+                odb_network=odb_network,
+            )
+        )
+
+    @staticmethod
+    def parse_odb_network_path(path: str) -> Dict[str, str]:
+        """Parses a odb_network path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/odbNetworks/(?P<odb_network>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def odb_subnet_path(
+        project: str,
+        location: str,
+        odb_network: str,
+        odb_subnet: str,
+    ) -> str:
+        """Returns a fully-qualified odb_subnet string."""
+        return "projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}".format(
+            project=project,
+            location=location,
+            odb_network=odb_network,
+            odb_subnet=odb_subnet,
+        )
+
+    @staticmethod
+    def parse_odb_subnet_path(path: str) -> Dict[str, str]:
+        """Parses a odb_subnet path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/odbNetworks/(?P<odb_network>.+?)/odbSubnets/(?P<odb_subnet>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def pluggable_database_path(
+        project: str,
+        location: str,
+        pluggable_database: str,
+    ) -> str:
+        """Returns a fully-qualified pluggable_database string."""
+        return "projects/{project}/locations/{location}/pluggableDatabases/{pluggable_database}".format(
+            project=project,
+            location=location,
+            pluggable_database=pluggable_database,
+        )
+
+    @staticmethod
+    def parse_pluggable_database_path(path: str) -> Dict[str, str]:
+        """Parses a pluggable_database path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/pluggableDatabases/(?P<pluggable_database>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 
@@ -1788,9 +2084,6 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
                 # Initialize request argument(s)
                 cloud_vm_cluster = oracledatabase_v1.CloudVmCluster()
                 cloud_vm_cluster.exadata_infrastructure = "exadata_infrastructure_value"
-                cloud_vm_cluster.cidr = "cidr_value"
-                cloud_vm_cluster.backup_subnet_cidr = "backup_subnet_cidr_value"
-                cloud_vm_cluster.network = "network_value"
 
                 request = oracledatabase_v1.CreateCloudVmClusterRequest(
                     parent="parent_value",
@@ -2330,6 +2623,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
                 Required. The parent value for
                 database node in the following format:
                 projects/{project}/locations/{location}/cloudVmClusters/{cloudVmCluster}.
+                .
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2520,6 +2814,129 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListGiVersionsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_minor_versions(
+        self,
+        request: Optional[Union[minor_version.ListMinorVersionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListMinorVersionsPager:
+        r"""Lists all the valid minor versions for the given
+        project, location, gi version and shape family.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_minor_versions():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListMinorVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_minor_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListMinorVersionsRequest, dict]):
+                The request object. The request for ``MinorVersion.List``.
+            parent (str):
+                Required. The parent value for the MinorVersion resource
+                with the format:
+                projects/{project}/locations/{location}/giVersions/{gi_version}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListMinorVersionsPager:
+                The response for MinorVersion.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, minor_version.ListMinorVersionsRequest):
+            request = minor_version.ListMinorVersionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_minor_versions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListMinorVersionsPager(
             method=rpc,
             request=request,
             response=response,
@@ -3023,6 +3440,147 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gco_autonomous_database.AutonomousDatabase,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_autonomous_database(
+        self,
+        request: Optional[
+            Union[oracledatabase.UpdateAutonomousDatabaseRequest, dict]
+        ] = None,
+        *,
+        autonomous_database: Optional[
+            gco_autonomous_database.AutonomousDatabase
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates the parameters of a single Autonomous
+        Database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_update_autonomous_database():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.UpdateAutonomousDatabaseRequest(
+                )
+
+                # Make the request
+                operation = client.update_autonomous_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.UpdateAutonomousDatabaseRequest, dict]):
+                The request object. The request for ``AutonomousDatabase.Update``.
+            autonomous_database (google.cloud.oracledatabase_v1.types.AutonomousDatabase):
+                Required. The resource being updated
+                This corresponds to the ``autonomous_database`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the Exadata resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.AutonomousDatabase` Details of the Autonomous Database resource.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/AutonomousDatabase/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [autonomous_database, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oracledatabase.UpdateAutonomousDatabaseRequest):
+            request = oracledatabase.UpdateAutonomousDatabaseRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if autonomous_database is not None:
+                request.autonomous_database = autonomous_database
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_autonomous_database
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("autonomous_database.name", request.autonomous_database.name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -4222,6 +4780,4054 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             self._transport.operations_client,
             autonomous_database.AutonomousDatabase,
             metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def switchover_autonomous_database(
+        self,
+        request: Optional[
+            Union[oracledatabase.SwitchoverAutonomousDatabaseRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        peer_autonomous_database: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Initiates a switchover of specified autonomous
+        database to the associated peer database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_switchover_autonomous_database():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.SwitchoverAutonomousDatabaseRequest(
+                    name="name_value",
+                    peer_autonomous_database="peer_autonomous_database_value",
+                )
+
+                # Make the request
+                operation = client.switchover_autonomous_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.SwitchoverAutonomousDatabaseRequest, dict]):
+                The request object. The request for
+                ``OracleDatabase.SwitchoverAutonomousDatabase``.
+            name (str):
+                Required. The name of the Autonomous Database in the
+                following format:
+                projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            peer_autonomous_database (str):
+                Required. The peer database name to
+                switch over to.
+
+                This corresponds to the ``peer_autonomous_database`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.AutonomousDatabase` Details of the Autonomous Database resource.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/AutonomousDatabase/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, peer_autonomous_database]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oracledatabase.SwitchoverAutonomousDatabaseRequest):
+            request = oracledatabase.SwitchoverAutonomousDatabaseRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if peer_autonomous_database is not None:
+                request.peer_autonomous_database = peer_autonomous_database
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.switchover_autonomous_database
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            autonomous_database.AutonomousDatabase,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def failover_autonomous_database(
+        self,
+        request: Optional[
+            Union[oracledatabase.FailoverAutonomousDatabaseRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        peer_autonomous_database: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Initiates a failover to target autonomous database
+        from the associated primary database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_failover_autonomous_database():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.FailoverAutonomousDatabaseRequest(
+                    name="name_value",
+                    peer_autonomous_database="peer_autonomous_database_value",
+                )
+
+                # Make the request
+                operation = client.failover_autonomous_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.FailoverAutonomousDatabaseRequest, dict]):
+                The request object. The request for
+                ``OracleDatabase.FailoverAutonomousDatabase``.
+            name (str):
+                Required. The name of the Autonomous Database in the
+                following format:
+                projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            peer_autonomous_database (str):
+                Required. The peer database name to
+                fail over to.
+
+                This corresponds to the ``peer_autonomous_database`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.AutonomousDatabase` Details of the Autonomous Database resource.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/AutonomousDatabase/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, peer_autonomous_database]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oracledatabase.FailoverAutonomousDatabaseRequest):
+            request = oracledatabase.FailoverAutonomousDatabaseRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if peer_autonomous_database is not None:
+                request.peer_autonomous_database = peer_autonomous_database
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.failover_autonomous_database
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            autonomous_database.AutonomousDatabase,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_odb_networks(
+        self,
+        request: Optional[Union[odb_network.ListOdbNetworksRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListOdbNetworksPager:
+        r"""Lists the ODB Networks in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_odb_networks():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListOdbNetworksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_odb_networks(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListOdbNetworksRequest, dict]):
+                The request object. The request for ``OdbNetwork.List``.
+            parent (str):
+                Required. The parent value for the
+                ODB Network in the following format:
+                projects/{project}/locations/{location}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListOdbNetworksPager:
+                The response for OdbNetwork.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, odb_network.ListOdbNetworksRequest):
+            request = odb_network.ListOdbNetworksRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_odb_networks]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListOdbNetworksPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_odb_network(
+        self,
+        request: Optional[Union[odb_network.GetOdbNetworkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> odb_network.OdbNetwork:
+        r"""Gets details of a single ODB Network.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_get_odb_network():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.GetOdbNetworkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_odb_network(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.GetOdbNetworkRequest, dict]):
+                The request object. The request for ``OdbNetwork.Get``.
+            name (str):
+                Required. The name of the OdbNetwork in the following
+                format:
+                projects/{project}/locations/{location}/odbNetworks/{odb_network}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.types.OdbNetwork:
+                Represents OdbNetwork resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, odb_network.GetOdbNetworkRequest):
+            request = odb_network.GetOdbNetworkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_odb_network]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_odb_network(
+        self,
+        request: Optional[Union[gco_odb_network.CreateOdbNetworkRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        odb_network: Optional[gco_odb_network.OdbNetwork] = None,
+        odb_network_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new ODB Network in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_create_odb_network():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                odb_network = oracledatabase_v1.OdbNetwork()
+                odb_network.network = "network_value"
+
+                request = oracledatabase_v1.CreateOdbNetworkRequest(
+                    parent="parent_value",
+                    odb_network_id="odb_network_id_value",
+                    odb_network=odb_network,
+                )
+
+                # Make the request
+                operation = client.create_odb_network(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.CreateOdbNetworkRequest, dict]):
+                The request object. The request for ``OdbNetwork.Create``.
+            parent (str):
+                Required. The parent value for the
+                OdbNetwork in the following format:
+                projects/{project}/locations/{location}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            odb_network (google.cloud.oracledatabase_v1.types.OdbNetwork):
+                Required. Details of the OdbNetwork
+                instance to create.
+
+                This corresponds to the ``odb_network`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            odb_network_id (str):
+                Required. The ID of the OdbNetwork to create. This value
+                is restricted to
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+                maximum of 63 characters in length. The value must start
+                with a letter and end with a letter or a number.
+
+                This corresponds to the ``odb_network_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.oracledatabase_v1.types.OdbNetwork`
+                Represents OdbNetwork resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, odb_network, odb_network_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gco_odb_network.CreateOdbNetworkRequest):
+            request = gco_odb_network.CreateOdbNetworkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if odb_network is not None:
+                request.odb_network = odb_network
+            if odb_network_id is not None:
+                request.odb_network_id = odb_network_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_odb_network]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gco_odb_network.OdbNetwork,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_odb_network(
+        self,
+        request: Optional[Union[odb_network.DeleteOdbNetworkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single ODB Network.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_delete_odb_network():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.DeleteOdbNetworkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_odb_network(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.DeleteOdbNetworkRequest, dict]):
+                The request object. The request for ``OdbNetwork.Delete``.
+            name (str):
+                Required. The name of the resource in the following
+                format:
+                projects/{project}/locations/{location}/odbNetworks/{odb_network}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, odb_network.DeleteOdbNetworkRequest):
+            request = odb_network.DeleteOdbNetworkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_odb_network]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_odb_subnets(
+        self,
+        request: Optional[Union[odb_subnet.ListOdbSubnetsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListOdbSubnetsPager:
+        r"""Lists all the ODB Subnets in a given ODB Network.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_odb_subnets():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListOdbSubnetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_odb_subnets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListOdbSubnetsRequest, dict]):
+                The request object. The request for ``OdbSubnet.List``.
+            parent (str):
+                Required. The parent value for the OdbSubnet in the
+                following format:
+                projects/{project}/locations/{location}/odbNetworks/{odb_network}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListOdbSubnetsPager:
+                The response for OdbSubnet.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, odb_subnet.ListOdbSubnetsRequest):
+            request = odb_subnet.ListOdbSubnetsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_odb_subnets]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListOdbSubnetsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_odb_subnet(
+        self,
+        request: Optional[Union[odb_subnet.GetOdbSubnetRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> odb_subnet.OdbSubnet:
+        r"""Gets details of a single ODB Subnet.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_get_odb_subnet():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.GetOdbSubnetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_odb_subnet(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.GetOdbSubnetRequest, dict]):
+                The request object. The request for ``OdbSubnet.Get``.
+            name (str):
+                Required. The name of the OdbSubnet in the following
+                format:
+                projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.types.OdbSubnet:
+                Represents OdbSubnet resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, odb_subnet.GetOdbSubnetRequest):
+            request = odb_subnet.GetOdbSubnetRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_odb_subnet]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_odb_subnet(
+        self,
+        request: Optional[Union[gco_odb_subnet.CreateOdbSubnetRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        odb_subnet: Optional[gco_odb_subnet.OdbSubnet] = None,
+        odb_subnet_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new ODB Subnet in a given ODB Network.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_create_odb_subnet():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                odb_subnet = oracledatabase_v1.OdbSubnet()
+                odb_subnet.cidr_range = "cidr_range_value"
+                odb_subnet.purpose = "BACKUP_SUBNET"
+
+                request = oracledatabase_v1.CreateOdbSubnetRequest(
+                    parent="parent_value",
+                    odb_subnet_id="odb_subnet_id_value",
+                    odb_subnet=odb_subnet,
+                )
+
+                # Make the request
+                operation = client.create_odb_subnet(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.CreateOdbSubnetRequest, dict]):
+                The request object. The request for ``OdbSubnet.Create``.
+            parent (str):
+                Required. The parent value for the OdbSubnet in the
+                following format:
+                projects/{project}/locations/{location}/odbNetworks/{odb_network}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            odb_subnet (google.cloud.oracledatabase_v1.types.OdbSubnet):
+                Required. Details of the OdbSubnet
+                instance to create.
+
+                This corresponds to the ``odb_subnet`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            odb_subnet_id (str):
+                Required. The ID of the OdbSubnet to create. This value
+                is restricted to
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+                maximum of 63 characters in length. The value must start
+                with a letter and end with a letter or a number.
+
+                This corresponds to the ``odb_subnet_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.oracledatabase_v1.types.OdbSubnet`
+                Represents OdbSubnet resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, odb_subnet, odb_subnet_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gco_odb_subnet.CreateOdbSubnetRequest):
+            request = gco_odb_subnet.CreateOdbSubnetRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if odb_subnet is not None:
+                request.odb_subnet = odb_subnet
+            if odb_subnet_id is not None:
+                request.odb_subnet_id = odb_subnet_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_odb_subnet]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gco_odb_subnet.OdbSubnet,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_odb_subnet(
+        self,
+        request: Optional[Union[odb_subnet.DeleteOdbSubnetRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single ODB Subnet.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_delete_odb_subnet():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.DeleteOdbSubnetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_odb_subnet(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.DeleteOdbSubnetRequest, dict]):
+                The request object. The request for ``OdbSubnet.Delete``.
+            name (str):
+                Required. The name of the resource in the following
+                format:
+                projects/{project}/locations/{region}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, odb_subnet.DeleteOdbSubnetRequest):
+            request = odb_subnet.DeleteOdbSubnetRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_odb_subnet]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_exadb_vm_clusters(
+        self,
+        request: Optional[
+            Union[oracledatabase.ListExadbVmClustersRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListExadbVmClustersPager:
+        r"""Lists all the Exadb (Exascale) VM Clusters for the
+        given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_exadb_vm_clusters():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListExadbVmClustersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_exadb_vm_clusters(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListExadbVmClustersRequest, dict]):
+                The request object. The request for ``ExadbVmCluster.List``.
+            parent (str):
+                Required. The parent value for
+                ExadbVmClusters in the following format:
+                projects/{project}/locations/{location}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListExadbVmClustersPager:
+                The response for ExadbVmCluster.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oracledatabase.ListExadbVmClustersRequest):
+            request = oracledatabase.ListExadbVmClustersRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_exadb_vm_clusters]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListExadbVmClustersPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_exadb_vm_cluster(
+        self,
+        request: Optional[Union[oracledatabase.GetExadbVmClusterRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> exadb_vm_cluster.ExadbVmCluster:
+        r"""Gets details of a single Exadb (Exascale) VM Cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_get_exadb_vm_cluster():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.GetExadbVmClusterRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_exadb_vm_cluster(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.GetExadbVmClusterRequest, dict]):
+                The request object. The request for ``ExadbVmCluster.Get``.
+            name (str):
+                Required. The name of the ExadbVmCluster in the
+                following format:
+                projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.types.ExadbVmCluster:
+                ExadbVmCluster represents a cluster
+                of VMs that are used to run Exadata
+                workloads.
+                https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/ExadbVmCluster/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oracledatabase.GetExadbVmClusterRequest):
+            request = oracledatabase.GetExadbVmClusterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_exadb_vm_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_exadb_vm_cluster(
+        self,
+        request: Optional[
+            Union[oracledatabase.CreateExadbVmClusterRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        exadb_vm_cluster: Optional[gco_exadb_vm_cluster.ExadbVmCluster] = None,
+        exadb_vm_cluster_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new Exadb (Exascale) VM Cluster resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_create_exadb_vm_cluster():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                exadb_vm_cluster = oracledatabase_v1.ExadbVmCluster()
+                exadb_vm_cluster.properties.grid_image_id = "grid_image_id_value"
+                exadb_vm_cluster.properties.node_count = 1070
+                exadb_vm_cluster.properties.enabled_ecpu_count_per_node = 2826
+                exadb_vm_cluster.properties.vm_file_system_storage.size_in_gbs_per_node = 2103
+                exadb_vm_cluster.properties.exascale_db_storage_vault = "exascale_db_storage_vault_value"
+                exadb_vm_cluster.properties.hostname_prefix = "hostname_prefix_value"
+                exadb_vm_cluster.properties.ssh_public_keys = ['ssh_public_keys_value1', 'ssh_public_keys_value2']
+                exadb_vm_cluster.properties.shape_attribute = "BLOCK_STORAGE"
+                exadb_vm_cluster.odb_subnet = "odb_subnet_value"
+                exadb_vm_cluster.backup_odb_subnet = "backup_odb_subnet_value"
+                exadb_vm_cluster.display_name = "display_name_value"
+
+                request = oracledatabase_v1.CreateExadbVmClusterRequest(
+                    parent="parent_value",
+                    exadb_vm_cluster_id="exadb_vm_cluster_id_value",
+                    exadb_vm_cluster=exadb_vm_cluster,
+                )
+
+                # Make the request
+                operation = client.create_exadb_vm_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.CreateExadbVmClusterRequest, dict]):
+                The request object. The request for ``ExadbVmCluster.Create``.
+            parent (str):
+                Required. The value for parent of the
+                ExadbVmCluster in the following format:
+                projects/{project}/locations/{location}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            exadb_vm_cluster (google.cloud.oracledatabase_v1.types.ExadbVmCluster):
+                Required. The resource being created.
+                This corresponds to the ``exadb_vm_cluster`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            exadb_vm_cluster_id (str):
+                Required. The ID of the ExadbVmCluster to create. This
+                value is restricted to
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+                maximum of 63 characters in length. The value must start
+                with a letter and end with a letter or a number.
+
+                This corresponds to the ``exadb_vm_cluster_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.ExadbVmCluster` ExadbVmCluster represents a cluster of VMs that are used to run Exadata
+                   workloads.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/ExadbVmCluster/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, exadb_vm_cluster, exadb_vm_cluster_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oracledatabase.CreateExadbVmClusterRequest):
+            request = oracledatabase.CreateExadbVmClusterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if exadb_vm_cluster is not None:
+                request.exadb_vm_cluster = exadb_vm_cluster
+            if exadb_vm_cluster_id is not None:
+                request.exadb_vm_cluster_id = exadb_vm_cluster_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_exadb_vm_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gco_exadb_vm_cluster.ExadbVmCluster,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_exadb_vm_cluster(
+        self,
+        request: Optional[
+            Union[oracledatabase.DeleteExadbVmClusterRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single Exadb (Exascale) VM Cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_delete_exadb_vm_cluster():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.DeleteExadbVmClusterRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_exadb_vm_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.DeleteExadbVmClusterRequest, dict]):
+                The request object. The request for ``ExadbVmCluster.Delete``.
+            name (str):
+                Required. The name of the ExadbVmCluster in the
+                following format:
+                projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oracledatabase.DeleteExadbVmClusterRequest):
+            request = oracledatabase.DeleteExadbVmClusterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_exadb_vm_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_exadb_vm_cluster(
+        self,
+        request: Optional[
+            Union[oracledatabase.UpdateExadbVmClusterRequest, dict]
+        ] = None,
+        *,
+        exadb_vm_cluster: Optional[gco_exadb_vm_cluster.ExadbVmCluster] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates a single Exadb (Exascale) VM Cluster. To add
+        virtual machines to existing exadb vm cluster, only pass
+        the node count.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_update_exadb_vm_cluster():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                exadb_vm_cluster = oracledatabase_v1.ExadbVmCluster()
+                exadb_vm_cluster.properties.grid_image_id = "grid_image_id_value"
+                exadb_vm_cluster.properties.node_count = 1070
+                exadb_vm_cluster.properties.enabled_ecpu_count_per_node = 2826
+                exadb_vm_cluster.properties.vm_file_system_storage.size_in_gbs_per_node = 2103
+                exadb_vm_cluster.properties.exascale_db_storage_vault = "exascale_db_storage_vault_value"
+                exadb_vm_cluster.properties.hostname_prefix = "hostname_prefix_value"
+                exadb_vm_cluster.properties.ssh_public_keys = ['ssh_public_keys_value1', 'ssh_public_keys_value2']
+                exadb_vm_cluster.properties.shape_attribute = "BLOCK_STORAGE"
+                exadb_vm_cluster.odb_subnet = "odb_subnet_value"
+                exadb_vm_cluster.backup_odb_subnet = "backup_odb_subnet_value"
+                exadb_vm_cluster.display_name = "display_name_value"
+
+                request = oracledatabase_v1.UpdateExadbVmClusterRequest(
+                    exadb_vm_cluster=exadb_vm_cluster,
+                )
+
+                # Make the request
+                operation = client.update_exadb_vm_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.UpdateExadbVmClusterRequest, dict]):
+                The request object. The request for ``ExadbVmCluster.Update``. We only
+                support adding the Virtual Machine to the
+                ExadbVmCluster. Rest of the fields in ExadbVmCluster are
+                immutable.
+            exadb_vm_cluster (google.cloud.oracledatabase_v1.types.ExadbVmCluster):
+                Required. The resource being updated.
+                This corresponds to the ``exadb_vm_cluster`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. A mask specifying which
+                fields in th VM Cluster should be
+                updated. A field specified in the mask
+                is overwritten. If a mask isn't provided
+                then all the fields in the VM Cluster
+                are overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.ExadbVmCluster` ExadbVmCluster represents a cluster of VMs that are used to run Exadata
+                   workloads.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/ExadbVmCluster/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [exadb_vm_cluster, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oracledatabase.UpdateExadbVmClusterRequest):
+            request = oracledatabase.UpdateExadbVmClusterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if exadb_vm_cluster is not None:
+                request.exadb_vm_cluster = exadb_vm_cluster
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_exadb_vm_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("exadb_vm_cluster.name", request.exadb_vm_cluster.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gco_exadb_vm_cluster.ExadbVmCluster,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def remove_virtual_machine_exadb_vm_cluster(
+        self,
+        request: Optional[
+            Union[oracledatabase.RemoveVirtualMachineExadbVmClusterRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        hostnames: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Removes virtual machines from an existing exadb vm
+        cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_remove_virtual_machine_exadb_vm_cluster():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.RemoveVirtualMachineExadbVmClusterRequest(
+                    name="name_value",
+                    hostnames=['hostnames_value1', 'hostnames_value2'],
+                )
+
+                # Make the request
+                operation = client.remove_virtual_machine_exadb_vm_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.RemoveVirtualMachineExadbVmClusterRequest, dict]):
+                The request object. The request for ``ExadbVmCluster.RemoveVirtualMachine``.
+            name (str):
+                Required. The name of the ExadbVmCluster in the
+                following format:
+                projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            hostnames (MutableSequence[str]):
+                Required. The list of host names of
+                db nodes to be removed from the
+                ExadbVmCluster.
+
+                This corresponds to the ``hostnames`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.ExadbVmCluster` ExadbVmCluster represents a cluster of VMs that are used to run Exadata
+                   workloads.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/ExadbVmCluster/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, hostnames]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, oracledatabase.RemoveVirtualMachineExadbVmClusterRequest
+        ):
+            request = oracledatabase.RemoveVirtualMachineExadbVmClusterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if hostnames is not None:
+                request.hostnames = hostnames
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.remove_virtual_machine_exadb_vm_cluster
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            exadb_vm_cluster.ExadbVmCluster,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_exascale_db_storage_vaults(
+        self,
+        request: Optional[
+            Union[exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListExascaleDbStorageVaultsPager:
+        r"""Lists all the ExascaleDB Storage Vaults for the given
+        project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_exascale_db_storage_vaults():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListExascaleDbStorageVaultsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_exascale_db_storage_vaults(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListExascaleDbStorageVaultsRequest, dict]):
+                The request object. The request for ``ExascaleDbStorageVault.List``.
+            parent (str):
+                Required. The parent value for
+                ExascaleDbStorageVault in the following
+                format:
+                projects/{project}/locations/{location}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListExascaleDbStorageVaultsPager:
+                The response for ExascaleDbStorageVault.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest
+        ):
+            request = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_exascale_db_storage_vaults
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListExascaleDbStorageVaultsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_exascale_db_storage_vault(
+        self,
+        request: Optional[
+            Union[exascale_db_storage_vault.GetExascaleDbStorageVaultRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> exascale_db_storage_vault.ExascaleDbStorageVault:
+        r"""Gets details of a single ExascaleDB Storage Vault.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_get_exascale_db_storage_vault():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.GetExascaleDbStorageVaultRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_exascale_db_storage_vault(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.GetExascaleDbStorageVaultRequest, dict]):
+                The request object. The request for ``ExascaleDbStorageVault.Get``.
+            name (str):
+                Required. The name of the ExascaleDbStorageVault in the
+                following format:
+                projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.types.ExascaleDbStorageVault:
+                ExascaleDbStorageVault represents a
+                storage vault exadb vm cluster resource.
+                https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/ExascaleDbStorageVault/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, exascale_db_storage_vault.GetExascaleDbStorageVaultRequest
+        ):
+            request = exascale_db_storage_vault.GetExascaleDbStorageVaultRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_exascale_db_storage_vault
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_exascale_db_storage_vault(
+        self,
+        request: Optional[
+            Union[
+                gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest, dict
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        exascale_db_storage_vault: Optional[
+            gco_exascale_db_storage_vault.ExascaleDbStorageVault
+        ] = None,
+        exascale_db_storage_vault_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new ExascaleDB Storage Vault resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_create_exascale_db_storage_vault():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                exascale_db_storage_vault = oracledatabase_v1.ExascaleDbStorageVault()
+                exascale_db_storage_vault.display_name = "display_name_value"
+                exascale_db_storage_vault.properties.exascale_db_storage_details.total_size_gbs = 1497
+
+                request = oracledatabase_v1.CreateExascaleDbStorageVaultRequest(
+                    parent="parent_value",
+                    exascale_db_storage_vault_id="exascale_db_storage_vault_id_value",
+                    exascale_db_storage_vault=exascale_db_storage_vault,
+                )
+
+                # Make the request
+                operation = client.create_exascale_db_storage_vault(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.CreateExascaleDbStorageVaultRequest, dict]):
+                The request object. The request for ``ExascaleDbStorageVault.Create``.
+            parent (str):
+                Required. The value for parent of the
+                ExascaleDbStorageVault in the following
+                format:
+                projects/{project}/locations/{location}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            exascale_db_storage_vault (google.cloud.oracledatabase_v1.types.ExascaleDbStorageVault):
+                Required. The resource being created.
+                This corresponds to the ``exascale_db_storage_vault`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            exascale_db_storage_vault_id (str):
+                Required. The ID of the ExascaleDbStorageVault to
+                create. This value is restricted to
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+                maximum of 63 characters in length. The value must start
+                with a letter and end with a letter or a number.
+
+                This corresponds to the ``exascale_db_storage_vault_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.ExascaleDbStorageVault` ExascaleDbStorageVault represents a storage vault exadb vm cluster resource.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/ExascaleDbStorageVault/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [
+            parent,
+            exascale_db_storage_vault,
+            exascale_db_storage_vault_id,
+        ]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest
+        ):
+            request = gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if exascale_db_storage_vault is not None:
+                request.exascale_db_storage_vault = exascale_db_storage_vault
+            if exascale_db_storage_vault_id is not None:
+                request.exascale_db_storage_vault_id = exascale_db_storage_vault_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_exascale_db_storage_vault
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gco_exascale_db_storage_vault.ExascaleDbStorageVault,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_exascale_db_storage_vault(
+        self,
+        request: Optional[
+            Union[exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single ExascaleDB Storage Vault.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_delete_exascale_db_storage_vault():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.DeleteExascaleDbStorageVaultRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_exascale_db_storage_vault(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.DeleteExascaleDbStorageVaultRequest, dict]):
+                The request object. The request message for
+                ``ExascaleDbStorageVault.Delete``.
+            name (str):
+                Required. The name of the ExascaleDbStorageVault in the
+                following format:
+                projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest
+        ):
+            request = exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_exascale_db_storage_vault
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_db_system_initial_storage_sizes(
+        self,
+        request: Optional[
+            Union[
+                db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListDbSystemInitialStorageSizesPager:
+        r"""Lists all the DbSystemInitialStorageSizes for the
+        given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_db_system_initial_storage_sizes():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListDbSystemInitialStorageSizesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_db_system_initial_storage_sizes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListDbSystemInitialStorageSizesRequest, dict]):
+                The request object. The request for ``DbSystemInitialStorageSizes.List``.
+            parent (str):
+                Required. The parent value for the
+                DbSystemInitialStorageSize resource with
+                the format:
+                projects/{project}/locations/{location}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListDbSystemInitialStorageSizesPager:
+                The response for DbSystemInitialStorageSizes.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
+        ):
+            request = (
+                db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(
+                    request
+                )
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_db_system_initial_storage_sizes
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListDbSystemInitialStorageSizesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_databases(
+        self,
+        request: Optional[Union[database.ListDatabasesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListDatabasesPager:
+        r"""Lists all the Databases for the given project,
+        location and DbSystem.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_databases():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListDatabasesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_databases(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListDatabasesRequest, dict]):
+                The request object. The request for ``Database.List``.
+            parent (str):
+                Required. The parent resource name in
+                the following format:
+                projects/{project}/locations/{region}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListDatabasesPager:
+                The response for Database.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, database.ListDatabasesRequest):
+            request = database.ListDatabasesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_databases]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListDatabasesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_database(
+        self,
+        request: Optional[Union[database.GetDatabaseRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> database.Database:
+        r"""Gets details of a single Database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_get_database():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.GetDatabaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_database(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.GetDatabaseRequest, dict]):
+                The request object. The request for ``Database.Get``.
+            name (str):
+                Required. The name of the Database
+                resource in the following format:
+                projects/{project}/locations/{region}/databases/{database}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.types.Database:
+                Details of the Database resource.
+                https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/Database/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, database.GetDatabaseRequest):
+            request = database.GetDatabaseRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_database]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_pluggable_databases(
+        self,
+        request: Optional[
+            Union[pluggable_database.ListPluggableDatabasesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListPluggableDatabasesPager:
+        r"""Lists all the PluggableDatabases for the given
+        project, location and Container Database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_pluggable_databases():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListPluggableDatabasesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_pluggable_databases(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListPluggableDatabasesRequest, dict]):
+                The request object. The request for ``PluggableDatabase.List``.
+            parent (str):
+                Required. The parent, which owns this
+                collection of PluggableDatabases.
+                Format:
+                projects/{project}/locations/{location}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListPluggableDatabasesPager:
+                The response for PluggableDatabase.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, pluggable_database.ListPluggableDatabasesRequest):
+            request = pluggable_database.ListPluggableDatabasesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_pluggable_databases]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPluggableDatabasesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_pluggable_database(
+        self,
+        request: Optional[
+            Union[pluggable_database.GetPluggableDatabaseRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pluggable_database.PluggableDatabase:
+        r"""Gets details of a single PluggableDatabase.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_get_pluggable_database():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.GetPluggableDatabaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_pluggable_database(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.GetPluggableDatabaseRequest, dict]):
+                The request object. The request for ``PluggableDatabase.Get``.
+            name (str):
+                Required. The name of the PluggableDatabase resource in
+                the following format:
+                projects/{project}/locations/{region}/pluggableDatabases/{pluggable_database}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.types.PluggableDatabase:
+                The PluggableDatabase resource.
+                https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/PluggableDatabase/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, pluggable_database.GetPluggableDatabaseRequest):
+            request = pluggable_database.GetPluggableDatabaseRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_pluggable_database]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_db_systems(
+        self,
+        request: Optional[Union[db_system.ListDbSystemsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListDbSystemsPager:
+        r"""Lists all the DbSystems for the given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_db_systems():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListDbSystemsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_db_systems(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListDbSystemsRequest, dict]):
+                The request object. The request for ``DbSystem.List``.
+            parent (str):
+                Required. The parent value for
+                DbSystems in the following format:
+                projects/{project}/locations/{location}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListDbSystemsPager:
+                The response for DbSystem.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, db_system.ListDbSystemsRequest):
+            request = db_system.ListDbSystemsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_db_systems]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListDbSystemsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_db_system(
+        self,
+        request: Optional[Union[db_system.GetDbSystemRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> db_system.DbSystem:
+        r"""Gets details of a single DbSystem.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_get_db_system():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.GetDbSystemRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_db_system(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.GetDbSystemRequest, dict]):
+                The request object. The request for ``DbSystem.Get``.
+            name (str):
+                Required. The name of the DbSystem in the following
+                format:
+                projects/{project}/locations/{location}/dbSystems/{db_system}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.types.DbSystem:
+                Details of the DbSystem (BaseDB)
+                resource.
+                https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/DbSystem/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, db_system.GetDbSystemRequest):
+            request = db_system.GetDbSystemRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_db_system]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_db_system(
+        self,
+        request: Optional[Union[gco_db_system.CreateDbSystemRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        db_system: Optional[gco_db_system.DbSystem] = None,
+        db_system_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new DbSystem in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_create_db_system():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                db_system = oracledatabase_v1.DbSystem()
+                db_system.odb_subnet = "odb_subnet_value"
+                db_system.display_name = "display_name_value"
+
+                request = oracledatabase_v1.CreateDbSystemRequest(
+                    parent="parent_value",
+                    db_system_id="db_system_id_value",
+                    db_system=db_system,
+                )
+
+                # Make the request
+                operation = client.create_db_system(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.CreateDbSystemRequest, dict]):
+                The request object. The request for ``DbSystem.Create``.
+            parent (str):
+                Required. The value for parent of the
+                DbSystem in the following format:
+                projects/{project}/locations/{location}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            db_system (google.cloud.oracledatabase_v1.types.DbSystem):
+                Required. The resource being created.
+                This corresponds to the ``db_system`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            db_system_id (str):
+                Required. The ID of the DbSystem to create. This value
+                is restricted to
+                (^\ `a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$) and must be a
+                maximum of 63 characters in length. The value must start
+                with a letter and end with a letter or a number.
+
+                This corresponds to the ``db_system_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.DbSystem` Details of the DbSystem (BaseDB) resource.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/DbSystem/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, db_system, db_system_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gco_db_system.CreateDbSystemRequest):
+            request = gco_db_system.CreateDbSystemRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if db_system is not None:
+                request.db_system = db_system
+            if db_system_id is not None:
+                request.db_system_id = db_system_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_db_system]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gco_db_system.DbSystem,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_db_system(
+        self,
+        request: Optional[Union[db_system.DeleteDbSystemRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single DbSystem.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_delete_db_system():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.DeleteDbSystemRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_db_system(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.DeleteDbSystemRequest, dict]):
+                The request object. The request for ``DbSystem.Delete``.
+            name (str):
+                Required. The name of the DbSystem in the following
+                format:
+                projects/{project}/locations/{location}/dbSystems/{db_system}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, db_system.DeleteDbSystemRequest):
+            request = db_system.DeleteDbSystemRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_db_system]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_db_versions(
+        self,
+        request: Optional[Union[db_version.ListDbVersionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListDbVersionsPager:
+        r"""List DbVersions for the given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_db_versions():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListDbVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_db_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListDbVersionsRequest, dict]):
+                The request object. The request for ``DbVersions.List``.
+            parent (str):
+                Required. The parent value for the
+                DbVersion resource with the format:
+                projects/{project}/locations/{location}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListDbVersionsPager:
+                The response for DbVersions.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, db_version.ListDbVersionsRequest):
+            request = db_version.ListDbVersionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_db_versions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListDbVersionsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_database_character_sets(
+        self,
+        request: Optional[
+            Union[database_character_set.ListDatabaseCharacterSetsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListDatabaseCharacterSetsPager:
+        r"""List DatabaseCharacterSets for the given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            def sample_list_database_character_sets():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ListDatabaseCharacterSetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_database_character_sets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.oracledatabase_v1.types.ListDatabaseCharacterSetsRequest, dict]):
+                The request object. The request for ``DatabaseCharacterSet.List``.
+            parent (str):
+                Required. The parent value for
+                DatabaseCharacterSets in the following
+                format:
+                projects/{project}/locations/{location}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.services.oracle_database.pagers.ListDatabaseCharacterSetsPager:
+                The response for DatabaseCharacterSet.List.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, database_character_set.ListDatabaseCharacterSetsRequest
+        ):
+            request = database_character_set.ListDatabaseCharacterSetsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_database_character_sets
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListDatabaseCharacterSetsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

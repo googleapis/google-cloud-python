@@ -49,4 +49,5 @@ def sample_get_cloud_vm_cluster():
     # Handle the response
     print(response)
 
+
 # [END oracledatabase_v1_generated_OracleDatabase_GetCloudVmCluster_sync]

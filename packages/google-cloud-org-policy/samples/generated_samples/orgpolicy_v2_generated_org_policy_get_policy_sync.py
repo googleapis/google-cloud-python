@@ -49,4 +49,5 @@ def sample_get_policy():
     # Handle the response
     print(response)
 
+
 # [END orgpolicy_v2_generated_OrgPolicy_GetPolicy_sync]

@@ -21,6 +21,8 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.oracledatabase_v1.types import common
+
 __protobuf__ = proto.module(
     package="google.cloud.oracledatabase.v1",
     manifest={
@@ -48,11 +50,6 @@ class CloudVmCluster(proto.Message):
         display_name (str):
             Optional. User friendly name for this
             resource.
-        gcp_oracle_zone (str):
-            Output only. Google Cloud Platform location
-            where Oracle Exadata is hosted. It is same as
-            Google Cloud Platform Oracle zone of Exadata
-            infrastructure.
         properties (google.cloud.oracledatabase_v1.types.CloudVmClusterProperties):
             Optional. Various properties of the VM
             Cluster.
@@ -63,14 +60,36 @@ class CloudVmCluster(proto.Message):
             Output only. The date and time that the VM
             cluster was created.
         cidr (str):
-            Required. Network settings. CIDR to use for
+            Optional. Network settings. CIDR to use for
             cluster IP allocation.
         backup_subnet_cidr (str):
-            Required. CIDR range of the backup subnet.
+            Optional. CIDR range of the backup subnet.
         network (str):
-            Required. The name of the VPC network.
+            Optional. The name of the VPC network.
             Format:
             projects/{project}/global/networks/{network}
+        gcp_oracle_zone (str):
+            Output only. The GCP Oracle zone where Oracle CloudVmCluster
+            is hosted. This will be the same as the gcp_oracle_zone of
+            the CloudExadataInfrastructure. Example: us-east4-b-r2.
+        odb_network (str):
+            Optional. The name of the OdbNetwork associated with the VM
+            Cluster. Format:
+            projects/{project}/locations/{location}/odbNetworks/{odb_network}
+            It is optional but if specified, this should match the
+            parent ODBNetwork of the odb_subnet and backup_odb_subnet.
+        odb_subnet (str):
+            Optional. The name of the OdbSubnet associated with the VM
+            Cluster for IP allocation. Format:
+            projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+        backup_odb_subnet (str):
+            Optional. The name of the backup OdbSubnet associated with
+            the VM Cluster. Format:
+            projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
+        identity_connector (google.cloud.oracledatabase_v1.types.IdentityConnector):
+            Output only. The identity connector details
+            which will allow OCI to securely access the
+            resources in the customer project.
     """
 
     name: str = proto.Field(
@@ -84,10 +103,6 @@ class CloudVmCluster(proto.Message):
     display_name: str = proto.Field(
         proto.STRING,
         number=3,
-    )
-    gcp_oracle_zone: str = proto.Field(
-        proto.STRING,
-        number=12,
     )
     properties: "CloudVmClusterProperties" = proto.Field(
         proto.MESSAGE,
@@ -115,6 +130,27 @@ class CloudVmCluster(proto.Message):
     network: str = proto.Field(
         proto.STRING,
         number=11,
+    )
+    gcp_oracle_zone: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    odb_network: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    odb_subnet: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    backup_odb_subnet: str = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    identity_connector: common.IdentityConnector = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=common.IdentityConnector,
     )
 
 
@@ -201,6 +237,9 @@ class CloudVmClusterProperties(proto.Message):
             Output only. DNS listener IP.
         cluster_name (str):
             Optional. OCI Cluster name.
+        compute_model (google.cloud.oracledatabase_v1.types.ComputeModel):
+            Output only. The compute model of the VM
+            Cluster.
     """
 
     class LicenseType(proto.Enum):
@@ -402,6 +441,11 @@ class CloudVmClusterProperties(proto.Message):
     cluster_name: str = proto.Field(
         proto.STRING,
         number=36,
+    )
+    compute_model: common.ComputeModel = proto.Field(
+        proto.ENUM,
+        number=37,
+        enum=common.ComputeModel,
     )
 
 

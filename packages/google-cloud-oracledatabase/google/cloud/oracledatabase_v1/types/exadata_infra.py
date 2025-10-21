@@ -47,8 +47,10 @@ class CloudExadataInfrastructure(proto.Message):
             Optional. User friendly name for this
             resource.
         gcp_oracle_zone (str):
-            Optional. Google Cloud Platform location
-            where Oracle Exadata is hosted.
+            Optional. The GCP Oracle zone where Oracle
+            Exadata Infrastructure is hosted. Example:
+            us-east4-b-r2. If not specified, the system will
+            pick a zone based on availability.
         entitlement_id (str):
             Output only. Entitlement ID of the private
             offer against which this infrastructure resource
@@ -187,6 +189,15 @@ class CloudExadataInfrastructureProperties(proto.Message):
             Output only. The monthly software version of
             the database servers (dom0) in the Exadata
             Infrastructure. Example: 20.1.15
+        compute_model (google.cloud.oracledatabase_v1.types.ComputeModel):
+            Output only. The compute model of the Exadata
+            Infrastructure.
+        database_server_type (str):
+            Output only. The database server type of the
+            Exadata Infrastructure.
+        storage_server_type (str):
+            Output only. The storage server type of the
+            Exadata Infrastructure.
     """
 
     class State(proto.Enum):
@@ -335,6 +346,19 @@ class CloudExadataInfrastructureProperties(proto.Message):
     monthly_db_server_version: str = proto.Field(
         proto.STRING,
         number=27,
+    )
+    compute_model: common.ComputeModel = proto.Field(
+        proto.ENUM,
+        number=31,
+        enum=common.ComputeModel,
+    )
+    database_server_type: str = proto.Field(
+        proto.STRING,
+        number=29,
+    )
+    storage_server_type: str = proto.Field(
+        proto.STRING,
+        number=30,
     )
 
 

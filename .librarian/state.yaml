@@ -2721,7 +2721,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-oracledatabase
     version: 0.2.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/cloud/oracledatabase/v1
         service_config: oracledatabase_v1.yaml
@@ -2761,7 +2761,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-org-policy
     version: 1.15.0
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/cloud/orgpolicy/v1
         service_config: ""
@@ -4165,7 +4165,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-places
     version: 0.3.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/maps/places/v1
         service_config: places_v1.yaml
@@ -4617,7 +4617,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: grpc-google-iam-v1
     version: 0.14.2
-    last_generated_commit: d300b151a973ce0425ae4ad07b3de957ca31bec6
+    last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/iam/v1
         service_config: iam_meta_api.yaml

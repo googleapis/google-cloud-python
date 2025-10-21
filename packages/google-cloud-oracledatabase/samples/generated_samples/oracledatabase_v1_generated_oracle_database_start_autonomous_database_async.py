@@ -53,4 +53,5 @@ async def sample_start_autonomous_database():
     # Handle the response
     print(response)
 
+
 # [END oracledatabase_v1_generated_OracleDatabase_StartAutonomousDatabase_async]
