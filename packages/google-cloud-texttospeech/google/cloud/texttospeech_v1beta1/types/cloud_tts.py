@@ -216,12 +216,22 @@ class AdvancedVoiceOptions(proto.Message):
             latency.
 
             This field is a member of `oneof`_ ``_low_latency_journey_synthesis``.
+        relax_safety_filters (bool):
+            Optional. Input only. If true, relaxes safety filters for
+            Gemini TTS. Only supported for accounts linked to Invoiced
+            (Offline) Cloud billing accounts. Otherwise, will return
+            result
+            [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
     """
 
     low_latency_journey_synthesis: bool = proto.Field(
         proto.BOOL,
         number=1,
         optional=True,
+    )
+    relax_safety_filters: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 

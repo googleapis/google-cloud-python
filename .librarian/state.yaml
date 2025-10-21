@@ -1694,7 +1694,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
     version: 0.14.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
     apis:
       - path: google/cloud/discoveryengine/v1
         service_config: discoveryengine_v1.yaml
@@ -3678,7 +3678,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-texttospeech
     version: 2.32.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
     apis:
       - path: google/cloud/texttospeech/v1
         service_config: texttospeech_v1.yaml
