@@ -1513,40 +1513,45 @@ class SpannerDialect(DefaultDialect):
             tc.table_schema,
             tc.table_name,
             tc.constraint_name,
-            ctu.table_name,
-            ctu.table_schema,
-            ARRAY_AGG(DISTINCT ccu.column_name),
-            ARRAY_AGG(
-                DISTINCT CONCAT(
-                    CAST(kcu.ordinal_position AS STRING),
-                    '_____',
-                    kcu.column_name
-                )
+            tc_uq.table_name,
+            tc_uq.table_schema,
+            -- Find the corresponding pairs of columns for the foreign key constraint
+            -- and its related unique constraint.
+            ARRAY(
+                SELECT (kcu.column_name, kcu_uq.column_name)
+                FROM information_schema.key_column_usage AS kcu
+                JOIN information_schema.key_column_usage AS kcu_uq
+                    ON kcu_uq.constraint_catalog = rc.unique_constraint_catalog
+                    AND kcu_uq.constraint_schema = rc.unique_constraint_schema
+                    AND kcu_uq.constraint_name = rc.unique_constraint_name
+                    AND kcu_uq.ordinal_position = kcu.ordinal_position
+                WHERE
+                    kcu.constraint_catalog = tc.constraint_catalog
+                    AND kcu.constraint_schema = tc.constraint_schema
+                    AND kcu.constraint_name = tc.constraint_name
+                ORDER BY kcu.ordinal_position
             )
             FROM information_schema.table_constraints AS tc
-            JOIN information_schema.constraint_column_usage AS ccu
-                ON ccu.constraint_catalog = tc.table_catalog
-                and ccu.constraint_schema = tc.table_schema
-                and ccu.constraint_name = tc.constraint_name
-            JOIN information_schema.constraint_table_usage AS ctu
-                ON ctu.constraint_catalog = tc.table_catalog
-                and ctu.constraint_schema = tc.table_schema
-                and ctu.constraint_name = tc.constraint_name
-            JOIN information_schema.key_column_usage AS kcu
-                ON kcu.table_catalog = tc.table_catalog
-                and kcu.table_schema = tc.table_schema
-                and kcu.constraint_name = tc.constraint_name
+            -- Join the foreign key constraint for the referring table.
+            JOIN information_schema.referential_constraints AS rc
+                ON rc.constraint_catalog = tc.constraint_catalog
+                AND rc.constraint_schema = tc.constraint_schema
+                AND rc.constraint_name = tc.constraint_name
+            -- Join the corresponding unique constraint on the referenced table.
+            JOIN information_schema.table_constraints AS tc_uq
+                ON tc_uq.constraint_catalog = rc.unique_constraint_catalog
+                AND tc_uq.constraint_schema = rc.unique_constraint_schema
+                AND tc_uq.constraint_name = rc.unique_constraint_name
+            -- Join in the tables view so WHERE filters can reference fields in it.
             JOIN information_schema.tables AS t
                 ON t.table_catalog = tc.table_catalog
-                and t.table_schema = tc.table_schema
-                and t.table_name = tc.table_name
+                AND t.table_schema = tc.table_schema
+                AND t.table_name = tc.table_name
             WHERE
                 {table_filter_query}
                 {table_type_query}
                 {schema_filter_query}
                 tc.constraint_type = "FOREIGN KEY"
-            GROUP BY tc.table_name, tc.table_schema, tc.constraint_name,
-            ctu.table_name, ctu.table_schema
             """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,
@@ -1558,29 +1563,16 @@ class SpannerDialect(DefaultDialect):
             result_dict = {}
 
             for row in rows:
-                # Due to Spanner limitations, arrays order is not guaranteed during
-                # aggregation. Still, for constraints it's vital to keep the order
-                # of the referred columns, otherwise SQLAlchemy and Alembic may start
-                # to occasionally drop and recreate constraints. To avoid this, the
-                # method uses prefixes with the `key_column_usage.ordinal_position`
-                # values to ensure the columns are aggregated into an array in the
-                # correct order. Prefixes are only used under the hood. For more details
-                # see the issue:
-                # https://github.com/googleapis/python-spanner-sqlalchemy/issues/271
-                #
-                # The solution seem a bit clumsy, and should be improved as soon as a
-                # better approach found.
                 row[0] = row[0] or None
                 table_info = result_dict.get((row[0], row[1]), [])
-                for index, value in enumerate(sorted(row[6])):
-                    row[6][index] = value.split("_____")[1]
 
+                constrained_columns, referred_columns = zip(*row[5])
                 fk_info = {
                     "name": row[2],
                     "referred_table": row[3],
                     "referred_schema": row[4] or None,
-                    "referred_columns": row[5],
-                    "constrained_columns": row[6],
+                    "referred_columns": list(referred_columns),
+                    "constrained_columns": list(constrained_columns),
                 }
 
                 table_info.append(fk_info)

@@ -14,12 +14,15 @@
 import datetime
 import os
 from typing import Optional
+
+import pytest
 from sqlalchemy import (
     text,
     Table,
     Column,
     Integer,
     ForeignKey,
+    ForeignKeyConstraint,
     PrimaryKeyConstraint,
     String,
     Index,
@@ -96,6 +99,25 @@ class TestBasics(fixtures.TablesTest):
             Column("color", String(20)),
             schema="schema",
         )
+        # Add a composite primary key & foreign key example.
+        Table(
+            "composite_pk",
+            metadata,
+            Column("a", String, primary_key=True),
+            Column("b", String, primary_key=True),
+        )
+        Table(
+            "composite_fk",
+            metadata,
+            Column("my_a", String, primary_key=True),
+            Column("my_b", String, primary_key=True),
+            Column("my_c", String, primary_key=True),
+            ForeignKeyConstraint(
+                ["my_a", "my_b"],
+                ["composite_pk.a", "composite_pk.b"],
+                name="composite_fk_composite_pk_a_b",
+            ),
+        )
 
     def test_hello_world(self, connection):
         greeting = connection.execute(text("select 'Hello World'"))
@@ -115,7 +137,7 @@ class TestBasics(fixtures.TablesTest):
         engine = connection.engine
         meta: MetaData = MetaData()
         meta.reflect(bind=engine)
-        eq_(3, len(meta.tables))
+        eq_(5, len(meta.tables))
         table = meta.tables["numbers"]
         eq_(5, len(table.columns))
         eq_("number", table.columns[0].name)
@@ -269,6 +291,13 @@ class TestBasics(fixtures.TablesTest):
         eq_(len(inserted_rows), len(selected_rows))
         eq_(set(inserted_rows), set(selected_rows))
 
+    @pytest.mark.skipif(
+        os.environ.get("SPANNER_EMULATOR_HOST") is not None,
+        reason=(
+            "Fails in emulator due to bug: "
+            "https://github.com/GoogleCloudPlatform/cloud-spanner-emulator/issues/279"
+        ),
+    )
     def test_cross_schema_fk_lookups(self, connection):
         """Ensures we introspect FKs within & across schema."""
 
@@ -304,6 +333,27 @@ class TestBasics(fixtures.TablesTest):
             insp.get_multi_foreign_keys(
                 filter_names=["number_colors"], schema="schema"
             ),
+        )
+
+    def test_composite_fk_lookups(self, connection):
+        """Ensures we introspect composite FKs."""
+
+        engine = connection.engine
+
+        insp = inspect(engine)
+        eq_(
+            {
+                (None, "composite_fk"): [
+                    {
+                        "name": "composite_fk_composite_pk_a_b",
+                        "referred_table": "composite_pk",
+                        "referred_schema": None,
+                        "referred_columns": ["a", "b"],
+                        "constrained_columns": ["my_a", "my_b"],
+                    }
+                ]
+            },
+            insp.get_multi_foreign_keys(filter_names=["composite_fk"]),
         )
 
     def test_commit_timestamp(self, connection):
