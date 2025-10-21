@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-maps-fleetengine-delivery/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.13...google-maps-fleetengine-delivery-v0.3.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.2.13](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.12...google-maps-fleetengine-delivery-v0.2.13) (2025-07-10)
 
 

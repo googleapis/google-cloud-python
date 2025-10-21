@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-network-connectivity/#history
 
+## [2.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.10.0...google-cloud-network-connectivity-v2.11.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [2.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.9.0...google-cloud-network-connectivity-v2.10.0) (2025-09-08)
 
 

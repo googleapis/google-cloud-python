@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-parametermanager/#history
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.5...google-cloud-parametermanager-v0.2.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.4...google-cloud-parametermanager-v0.1.5) (2025-06-23)
 
 

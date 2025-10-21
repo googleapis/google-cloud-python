@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-redis-cluster/#history
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.15...google-cloud-redis-cluster-v0.2.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.14...google-cloud-redis-cluster-v0.1.15) (2025-03-15)
 
 

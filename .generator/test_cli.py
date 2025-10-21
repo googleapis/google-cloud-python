@@ -71,6 +71,7 @@ from cli import (
     _write_json_file,
     _write_text_file,
     _copy_readme_to_docs,
+    _create_new_changelog_for_library,
     handle_build,
     handle_configure,
     handle_generate,
@@ -293,6 +294,7 @@ def test_handle_configure_success(mock_configure_request_file, mocker):
     mock_prepare_config = mocker.patch(
         "cli._prepare_new_library_config", return_value={"id": "prepared"}
     )
+    mock_create_changelog = mocker.patch("cli._create_new_changelog_for_library")
 
     handle_configure()
 
@@ -309,6 +311,28 @@ def test_handle_configure_no_new_library(mocker):
     # because _get_library_id will fail.
     with pytest.raises(ValueError, match="Configuring a new library failed."):
         handle_configure()
+
+def test_create_new_changelog_for_library(mocker):
+    """Tests that the changelog files are created correctly."""
+    library_id = "google-cloud-language"
+    output = "output"
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_write_text_file = mocker.patch("cli._write_text_file")
+
+    _create_new_changelog_for_library(library_id, output)
+
+    package_changelog_path = f"{output}/packages/{library_id}/CHANGELOG.md"
+    docs_changelog_path = f"{output}/packages/{library_id}/docs/CHANGELOG.md"
+
+    # Check that makedirs was called for both parent directories
+    mock_makedirs.assert_any_call(os.path.dirname(package_changelog_path), exist_ok=True)
+    mock_makedirs.assert_any_call(os.path.dirname(docs_changelog_path), exist_ok=True)
+    assert mock_makedirs.call_count == 2
+
+    # Check that the files were "written" with the correct content
+    mock_write_text_file.assert_any_call(package_changelog_path, "# Changelog\n")
+    mock_write_text_file.assert_any_call(docs_changelog_path, "# Changelog\n")
+    assert mock_write_text_file.call_count == 2
 
 
 def test_get_new_library_config_found(mock_configure_request_data):
@@ -856,6 +880,24 @@ def test_handle_release_init_success(mocker, mock_release_init_request_file):
     handle_release_init()
 
 
+def test_handle_release_init_is_generated_success(
+    mocker, mock_release_init_request_file
+):
+    """
+    Tests that `handle_release_init` calls `_update_global_changelog` when the
+    `packages` directory exists.
+    """
+    mocker.patch("pathlib.Path.exists", return_value=True)
+    mock_update_global_changelog = mocker.patch("cli._update_global_changelog")
+    mocker.patch("cli._update_version_for_library")
+    mocker.patch("cli._get_previous_version", return_value="1.2.2")
+    mocker.patch("cli._update_changelog_for_library")
+
+    handle_release_init()
+
+    mock_update_global_changelog.assert_called_once()
+
+
 def test_handle_release_init_fail_value_error_file():
     """
     Tests that handle_release_init fails to read `librarian/release-init-request.json`.
@@ -970,9 +1012,12 @@ def test_update_global_changelog(mocker, mock_release_init_request_file):
 def test_update_version_for_library_success_gapic(mocker):
     m = mock_open()
 
-    mock_rglob = mocker.patch(
-        "pathlib.Path.rglob", return_value=[pathlib.Path("repo/gapic_version.py")]
-    )
+    mock_rglob = mocker.patch("pathlib.Path.rglob")
+    mock_rglob.side_effect = [
+        [pathlib.Path("repo/gapic_version.py")],  # 1st call (gapic_version.py)
+        [],  # 2nd call (version.py)
+        [pathlib.Path("repo/samples/snippet_metadata.json")],  # 3rd call (snippets)
+    ]
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_content = '__version__ = "1.2.2"'
     mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
@@ -1002,7 +1047,11 @@ def test_update_version_for_library_success_proto_only_setup_py(mocker):
     m = mock_open()
 
     mock_rglob = mocker.patch("pathlib.Path.rglob")
-    mock_rglob.side_effect = [[], [pathlib.Path("repo/setup.py")]]
+    mock_rglob.side_effect = [
+        [],
+        [pathlib.Path("repo/setup.py")],
+        [pathlib.Path("repo/samples/snippet_metadata.json")],
+    ]
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_content = 'version = "1.2.2"'
     mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
@@ -1028,12 +1077,16 @@ def test_update_version_for_library_success_proto_only_setup_py(mocker):
         )
 
 
-def test_update_version_for_library_success_proto_only_py_project_toml(mocker):
+def test_update_version_for_library_success_proto_only_pyproject_toml(mocker):
     m = mock_open()
 
-    mock_path_exists = mocker.patch("pathlib.Path.exists")
+    mock_path_exists = mocker.patch("pathlib.Path.exists", return_value=True)
     mock_rglob = mocker.patch("pathlib.Path.rglob")
-    mock_rglob.side_effect = [[], [pathlib.Path("repo/pyproject.toml")]]
+    mock_rglob.side_effect = [
+        [],  # gapic_version.py
+        [],  # version.py
+        [pathlib.Path("repo/samples/snippet_metadata.json")],
+    ]
     mock_shutil_copy = mocker.patch("shutil.copy")
     mock_content = 'version = "1.2.2"'
     mock_json_metadata = {"clientLibrary": {"version": "0.1.0"}}
@@ -1108,6 +1161,7 @@ def test_update_changelog_for_library_success(mocker):
             "1.2.3",
             "1.2.2",
             "google-cloud-language",
+            "CHANGELOG.md",
         )
 
 
@@ -1157,6 +1211,7 @@ def test_update_changelog_for_library_failure(mocker):
                 "1.2.3",
                 "1.2.2",
                 "google-cloud-language",
+                "CHANGELOG.md",
             )
 
 
@@ -1524,7 +1579,9 @@ def test_copy_readme_to_docs(mocker):
     mock_os_islink = mocker.patch("os.path.islink", return_value=False)
     mock_os_remove = mocker.patch("os.remove")
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
     output = "output"
     library_id = "google-cloud-language"
@@ -1551,10 +1608,15 @@ def test_copy_readme_to_docs_handles_symlink(mocker):
     mock_os_islink = mocker.patch("os.path.islink")
     mock_os_remove = mocker.patch("os.remove")
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
     # Simulate docs_path being a symlink
-    mock_os_islink.side_effect = [False, True] # First call for destination_path, second for docs_path
+    mock_os_islink.side_effect = [
+        False,
+        True,
+    ]  # First call for destination_path, second for docs_path
 
     output = "output"
     library_id = "google-cloud-language"
@@ -1581,7 +1643,9 @@ def test_copy_readme_to_docs_destination_path_is_symlink(mocker):
     mock_os_islink = mocker.patch("os.path.islink", return_value=True)
     mock_os_remove = mocker.patch("os.remove")
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=True)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
     output = "output"
     library_id = "google-cloud-language"
@@ -1598,7 +1662,9 @@ def test_copy_readme_to_docs_source_not_exists(mocker):
     mock_os_islink = mocker.patch("os.path.islink")
     mock_os_remove = mocker.patch("os.remove")
     mock_os_lexists = mocker.patch("os.path.lexists", return_value=False)
-    mock_open = mocker.patch("builtins.open", mocker.mock_open(read_data="dummy content"))
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="dummy content")
+    )
 
     output = "output"
     library_id = "google-cloud-language"

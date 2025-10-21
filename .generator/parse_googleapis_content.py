@@ -103,6 +103,7 @@ _GLOB_CALLABLES = (
     "glob",
 )
 
+
 def parse_content(content: str) -> dict:
     """Parses content from BUILD.bazel and returns a dictionary
     containing bazel rules and arguments.

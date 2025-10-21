@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-inventories/#history
 
+## [1.1.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v1.0.0...google-shopping-merchant-inventories-v1.1.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.16...google-shopping-merchant-inventories-v1.0.0) (2025-08-29)
 
 

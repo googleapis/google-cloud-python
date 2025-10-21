@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-maps-solar/#history
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.1.9...google-maps-solar-v0.2.0) (2025-10-20)
+
+
+### Features
+
+* Add support for Python 3.14  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument  ([98ee71abc0f97c88239b50bf0e0827df19630def](https://github.com/googleapis/google-cloud-python/commit/98ee71abc0f97c88239b50bf0e0827df19630def))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.1.8...google-maps-solar-v0.1.9) (2025-08-29)
 
 
