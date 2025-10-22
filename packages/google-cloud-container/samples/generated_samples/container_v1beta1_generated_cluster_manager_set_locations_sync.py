@@ -40,7 +40,7 @@ def sample_set_locations():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetLocationsRequest(
-        locations=['locations_value1', 'locations_value2'],
+        locations=["locations_value1", "locations_value2"],
     )
 
     # Make the request
@@ -48,5 +48,6 @@ def sample_set_locations():
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_SetLocations_sync]

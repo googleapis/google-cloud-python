@@ -39,13 +39,13 @@ def sample_get_json_web_keys():
     client = container_v1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1.GetJSONWebKeysRequest(
-    )
+    request = container_v1.GetJSONWebKeysRequest()
 
     # Make the request
     response = client.get_json_web_keys(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1_generated_ClusterManager_GetJSONWebKeys_sync]

@@ -39,13 +39,13 @@ async def sample_delete_cluster():
     client = container_v1beta1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.DeleteClusterRequest(
-    )
+    request = container_v1beta1.DeleteClusterRequest()
 
     # Make the request
     response = await client.delete_cluster(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_DeleteCluster_async]

@@ -199,6 +199,7 @@ __protobuf__ = proto.module(
         "UpgradeAvailableEvent",
         "SecurityBulletinEvent",
         "Autopilot",
+        "PrivilegedAdmissionConfig",
         "WorkloadPolicyConfig",
         "LoggingConfig",
         "LoggingComponentConfig",
@@ -228,6 +229,7 @@ __protobuf__ = proto.module(
         "FetchNodePoolUpgradeInfoRequest",
         "NodePoolUpgradeInfo",
         "GkeAutoUpgradeConfig",
+        "NetworkTierConfig",
     },
 )
 
@@ -423,6 +425,12 @@ class LinuxNodeConfig(proto.Message):
             See
             https://docs.kernel.org/admin-guide/mm/transhuge.html
             for more details.
+        node_kernel_module_loading (google.cloud.container_v1.types.LinuxNodeConfig.NodeKernelModuleLoading):
+            Optional. Configuration for kernel module
+            loading on nodes. When enabled, the node pool
+            will be provisioned with a Container-Optimized
+            OS image that enforces kernel module signature
+            verification.
     """
 
     class CgroupMode(proto.Enum):
@@ -483,7 +491,7 @@ class LinuxNodeConfig(proto.Message):
                 It means that an application will wake kswapd
                 in the background to reclaim pages and wake
                 kcompactd to compact memory so that THP is
-                available in the near future. It’s the
+                available in the near future. It's the
                 responsibility of khugepaged to then install the
                 THP pages later.
             TRANSPARENT_HUGEPAGE_DEFRAG_DEFER_WITH_MADVISE (3):
@@ -535,6 +543,50 @@ class LinuxNodeConfig(proto.Message):
             optional=True,
         )
 
+    class NodeKernelModuleLoading(proto.Message):
+        r"""Configuration for kernel module loading on nodes.
+
+        Attributes:
+            policy (google.cloud.container_v1.types.LinuxNodeConfig.NodeKernelModuleLoading.Policy):
+                Set the node module loading policy for nodes
+                in the node pool.
+        """
+
+        class Policy(proto.Enum):
+            r"""Defines the kernel module loading policy for nodes in the
+            nodepool.
+
+            Values:
+                POLICY_UNSPECIFIED (0):
+                    Default behavior. GKE selects the image based
+                    on node type. For CPU and TPU nodes, the image
+                    will not allow loading external kernel modules.
+                    For GPU nodes, the image will allow loading any
+                    module, whether it is signed or not.
+                ENFORCE_SIGNED_MODULES (1):
+                    Enforced signature verification: Node pools will use a
+                    Container-Optimized OS image configured to allow loading of
+                    *Google-signed* external kernel modules. Loadpin is enabled
+                    but configured to exclude modules, and kernel module
+                    signature checking is enforced.
+                DO_NOT_ENFORCE_SIGNED_MODULES (2):
+                    Mirrors existing DEFAULT behavior:
+
+                    For CPU and TPU nodes, the image will not allow
+                    loading external kernel modules.
+                    For GPU nodes, the image will allow loading any
+                    module, whether it is signed or not.
+            """
+            POLICY_UNSPECIFIED = 0
+            ENFORCE_SIGNED_MODULES = 1
+            DO_NOT_ENFORCE_SIGNED_MODULES = 2
+
+        policy: "LinuxNodeConfig.NodeKernelModuleLoading.Policy" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="LinuxNodeConfig.NodeKernelModuleLoading.Policy",
+        )
+
     sysctls: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -560,6 +612,11 @@ class LinuxNodeConfig(proto.Message):
         proto.ENUM,
         number=5,
         enum=TransparentHugepageDefrag,
+    )
+    node_kernel_module_loading: NodeKernelModuleLoading = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=NodeKernelModuleLoading,
     )
 
 
@@ -649,7 +706,8 @@ class NodeKubeletConfig(proto.Message):
             The string must be a sequence of decimal numbers, each with
             optional fraction and a unit suffix, such as "300ms". Valid
             time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
-            The value must be a positive duration.
+            The value must be a positive duration between 1ms and 1
+            second, inclusive.
         pod_pids_limit (int):
             Set the Pod PID limits. See
             https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits
@@ -1216,9 +1274,9 @@ class NodeConfig(proto.Message):
             - ``https://www.googleapis.com/auth/compute`` is required
               for mounting persistent storage on your nodes.
             - ``https://www.googleapis.com/auth/devstorage.read_only``
-              is required for communicating with **gcr.io** (the `Google
-              Container
-              Registry <https://cloud.google.com/container-registry/>`__).
+              is required for communicating with **gcr.io** (the
+              `Artifact
+              Registry <https://cloud.google.com/artifact-registry/>`__).
 
             If unspecified, no scopes are added, unless Cloud Logging or
             Cloud Monitoring are enabled, in which case their required
@@ -1860,6 +1918,12 @@ class NodeNetworkConfig(proto.Message):
             subnetworks, the subnetwork for the node pool is
             picked based on the IP utilization during node
             pool creation and is immutable.
+        network_tier_config (google.cloud.container_v1.types.NetworkTierConfig):
+            Output only. The network tier configuration
+            for the node pool inherits from the
+            cluster-level configuration and remains
+            immutable throughout the node pool's lifecycle,
+            including during upgrades.
     """
 
     class NetworkPerformanceConfig(proto.Message):
@@ -1944,6 +2008,11 @@ class NodeNetworkConfig(proto.Message):
     subnetwork: str = proto.Field(
         proto.STRING,
         number=19,
+    )
+    network_tier_config: "NetworkTierConfig" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message="NetworkTierConfig",
     )
 
 
@@ -2224,6 +2293,9 @@ class ContainerdConfig(proto.Message):
             PrivateRegistryAccessConfig is used to
             configure access configuration for private
             container registries.
+        writable_cgroups (google.cloud.container_v1.types.ContainerdConfig.WritableCgroups):
+            Optional. WritableCgroups defines writable
+            cgroups configuration for the node pool.
     """
 
     class PrivateRegistryAccessConfig(proto.Message):
@@ -2261,8 +2333,8 @@ class ContainerdConfig(proto.Message):
             """
 
             class GCPSecretManagerCertificateConfig(proto.Message):
-                r"""GCPSecretManagerCertificateConfig configures a secret from `Google
-                Secret Manager <https://cloud.google.com/secret-manager>`__.
+                r"""GCPSecretManagerCertificateConfig configures a secret from `Secret
+                Manager <https://cloud.google.com/secret-manager>`__.
 
                 Attributes:
                     secret_uri (str):
@@ -2299,10 +2371,29 @@ class ContainerdConfig(proto.Message):
             message="ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig",
         )
 
+    class WritableCgroups(proto.Message):
+        r"""Defines writable cgroups configuration.
+
+        Attributes:
+            enabled (bool):
+                Optional. Whether writable cgroups is
+                enabled.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     private_registry_access_config: PrivateRegistryAccessConfig = proto.Field(
         proto.MESSAGE,
         number=1,
         message=PrivateRegistryAccessConfig,
+    )
+    writable_cgroups: WritableCgroups = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=WritableCgroups,
     )
 
 
@@ -2390,7 +2481,7 @@ class NodeLabels(proto.Message):
 
 
 class ResourceLabels(proto.Message):
-    r"""Collection of `GCP
+    r"""Collection of `Resource Manager
     labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
 
     Attributes:
@@ -2552,14 +2643,13 @@ class AddonsConfig(proto.Message):
             running on cluster nodes
         config_connector_config (google.cloud.container_v1.types.ConfigConnectorConfig):
             Configuration for the ConfigConnector add-on,
-            a Kubernetes extension to manage hosted GCP
-            services through the Kubernetes API
+            a Kubernetes extension to manage hosted Google
+            Cloud services through the Kubernetes API.
         gce_persistent_disk_csi_driver_config (google.cloud.container_v1.types.GcePersistentDiskCsiDriverConfig):
             Configuration for the Compute Engine
             Persistent Disk CSI driver.
         gcp_filestore_csi_driver_config (google.cloud.container_v1.types.GcpFilestoreCsiDriverConfig):
-            Configuration for the GCP Filestore CSI
-            driver.
+            Configuration for the Filestore CSI driver.
         gke_backup_agent_config (google.cloud.container_v1.types.GkeBackupAgentConfig):
             Configuration for the Backup for GKE agent
             addon.
@@ -2957,12 +3047,12 @@ class GcePersistentDiskCsiDriverConfig(proto.Message):
 
 
 class GcpFilestoreCsiDriverConfig(proto.Message):
-    r"""Configuration for the GCP Filestore CSI driver.
+    r"""Configuration for the Filestore CSI driver.
 
     Attributes:
         enabled (bool):
-            Whether the GCP Filestore CSI driver is
-            enabled for this cluster.
+            Whether the Filestore CSI driver is enabled
+            for this cluster.
     """
 
     enabled: bool = proto.Field(
@@ -3024,8 +3114,17 @@ class LustreCsiDriverConfig(proto.Message):
             Whether the Lustre CSI driver is enabled for
             this cluster.
         enable_legacy_lustre_port (bool):
-            If set to true, the Lustre CSI driver will
-            install Lustre kernel modules using port 6988.
+            If set to true, the Lustre CSI driver will install Lustre
+            kernel modules using port 6988. This serves as a workaround
+            for a port conflict with the gke-metadata-server. This field
+            is required ONLY under the following conditions:
+
+            1. The GKE node version is older than 1.33.2-gke.4655000.
+            2. You're connecting to a Lustre instance that has the
+               'gke-support-enabled' flag. Deprecated: This flag is no
+               longer required as of GKE node version
+               1.33.2-gke.4655000, unless you are connecting to a Lustre
+               instance that has the ``gke-support-enabled`` flag.
     """
 
     enabled: bool = proto.Field(
@@ -3452,6 +3551,11 @@ class IPAllocationPolicy(proto.Message):
         auto_ipam_config (google.cloud.container_v1.types.AutoIpamConfig):
             Optional. AutoIpamConfig contains all
             information related to Auto IPAM
+        network_tier_config (google.cloud.container_v1.types.NetworkTierConfig):
+            Cluster-level network tier configuration is
+            used to determine the default network tier for
+            external IP addresses on cluster resources, such
+            as node pools and load balancers.
     """
 
     use_ip_aliases: bool = proto.Field(
@@ -3549,6 +3653,11 @@ class IPAllocationPolicy(proto.Message):
         proto.MESSAGE,
         number=30,
         message="AutoIpamConfig",
+    )
+    network_tier_config: "NetworkTierConfig" = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message="NetworkTierConfig",
     )
 
 
@@ -3742,7 +3851,7 @@ class Cluster(proto.Message):
             REGULAR channel with its default version.
         workload_identity_config (google.cloud.container_v1.types.WorkloadIdentityConfig):
             Configuration for the use of Kubernetes
-            Service Accounts in GCP IAM policies.
+            Service Accounts in IAM policies.
         mesh_certificates (google.cloud.container_v1.types.MeshCertificates):
             Configuration for issuance of mTLS keys and
             certificates to Kubernetes pods.
@@ -3895,6 +4004,9 @@ class Cluster(proto.Message):
             Beta APIs Config
         enterprise_config (google.cloud.container_v1.types.EnterpriseConfig):
             GKE Enterprise Configuration.
+
+            Deprecated: GKE Enterprise features are now
+            available without an Enterprise tier.
         secret_manager_config (google.cloud.container_v1.types.SecretManagerConfig):
             Secret CSI driver configuration.
         compliance_posture_config (google.cloud.container_v1.types.CompliancePostureConfig):
@@ -5040,6 +5152,8 @@ class ClusterUpdate(proto.Message):
         desired_enterprise_config (google.cloud.container_v1.types.DesiredEnterpriseConfig):
             The desired enterprise configuration for the
             cluster.
+            Deprecated: GKE Enterprise features are now
+            available without an Enterprise tier.
         desired_auto_ipam_config (google.cloud.container_v1.types.AutoIpamConfig):
             AutoIpamConfig contains all information
             related to Auto IPAM
@@ -5062,6 +5176,9 @@ class ClusterUpdate(proto.Message):
             to all endpoints except the health checks.
         gke_auto_upgrade_config (google.cloud.container_v1.types.GkeAutoUpgradeConfig):
             Configuration for GKE auto upgrade.
+        desired_network_tier_config (google.cloud.container_v1.types.NetworkTierConfig):
+            The desired network tier configuration for
+            the cluster.
     """
 
     desired_node_version: str = proto.Field(
@@ -5423,6 +5540,11 @@ class ClusterUpdate(proto.Message):
         number=154,
         message="GkeAutoUpgradeConfig",
     )
+    desired_network_tier_config: "NetworkTierConfig" = proto.Field(
+        proto.MESSAGE,
+        number=155,
+        message="NetworkTierConfig",
+    )
 
 
 class AdditionalPodRangesConfig(proto.Message):
@@ -5499,7 +5621,23 @@ class DesiredAdditionalIPRangesConfig(proto.Message):
 
 
 class AutoIpamConfig(proto.Message):
-    r"""AutoIpamConfig contains all information related to Auto IPAM"""
+    r"""AutoIpamConfig contains all information related to Auto IPAM
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enabled (bool):
+            The flag that enables Auto IPAM on this
+            cluster
+
+            This field is a member of `oneof`_ ``_enabled``.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
 
 
 class RangeInfo(proto.Message):
@@ -5526,6 +5664,9 @@ class RangeInfo(proto.Message):
 class DesiredEnterpriseConfig(proto.Message):
     r"""DesiredEnterpriseConfig is a wrapper used for updating
     enterprise_config.
+
+    Deprecated: GKE Enterprise features are now available without an
+    Enterprise tier.
 
     Attributes:
         desired_tier (google.cloud.container_v1.types.EnterpriseConfig.ClusterTier):
@@ -6130,6 +6271,16 @@ class UpdateNodePoolRequest(proto.Message):
             the locations for a node pool will result in nodes being
             either created or removed from the node pool, depending on
             whether locations are being added or removed.
+
+            Warning: It is recommended to update node pool locations in
+            a standalone API call. Do not combine a location update with
+            changes to other fields (such as ``tags``, ``labels``,
+            ``taints``, etc.) in the same request. Otherwise, the API
+            performs a structural modification where changes to other
+            fields will only apply to newly created nodes and will not
+            be applied to existing nodes in the node pool. To ensure all
+            nodes are updated consistently, use a separate API call for
+            location changes.
         workload_metadata_config (google.cloud.container_v1.types.WorkloadMetadataConfig):
             The desired workload metadata config for the
             node pool.
@@ -7401,11 +7552,21 @@ class GetNodePoolRequest(proto.Message):
 class BlueGreenSettings(proto.Message):
     r"""Settings for blue-green upgrade.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         standard_rollout_policy (google.cloud.container_v1.types.BlueGreenSettings.StandardRolloutPolicy):
             Standard policy for the blue-green upgrade.
+
+            This field is a member of `oneof`_ ``rollout_policy``.
+        autoscaled_rollout_policy (google.cloud.container_v1.types.BlueGreenSettings.AutoscaledRolloutPolicy):
+            Autoscaled policy for cluster autoscaler
+            enabled blue-green upgrade.
 
             This field is a member of `oneof`_ ``rollout_policy``.
         node_pool_soak_duration (google.protobuf.duration_pb2.Duration):
@@ -7459,11 +7620,36 @@ class BlueGreenSettings(proto.Message):
             message=duration_pb2.Duration,
         )
 
+    class AutoscaledRolloutPolicy(proto.Message):
+        r"""Autoscaled rollout policy utilizes the cluster autoscaler
+        during blue-green upgrade to scale both the blue and green
+        pools.
+
+        Attributes:
+            wait_for_drain_duration (google.protobuf.duration_pb2.Duration):
+                Optional. Time to wait after cordoning the
+                blue pool before draining the nodes. Defaults to
+                3 days. The value can be set between 0 and 7
+                days, inclusive.
+        """
+
+        wait_for_drain_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
+
     standard_rollout_policy: StandardRolloutPolicy = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="rollout_policy",
         message=StandardRolloutPolicy,
+    )
+    autoscaled_rollout_policy: AutoscaledRolloutPolicy = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="rollout_policy",
+        message=AutoscaledRolloutPolicy,
     )
     node_pool_soak_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -8170,6 +8356,9 @@ class MaintenanceExclusionOptions(proto.Message):
         scope (google.cloud.container_v1.types.MaintenanceExclusionOptions.Scope):
             Scope specifies the upgrade scope which
             upgrades are blocked by the exclusion.
+        end_time_behavior (google.cloud.container_v1.types.MaintenanceExclusionOptions.EndTimeBehavior):
+            EndTimeBehavior specifies the behavior of the
+            exclusion end time.
     """
 
     class Scope(proto.Enum):
@@ -8192,10 +8381,31 @@ class MaintenanceExclusionOptions(proto.Message):
         NO_MINOR_UPGRADES = 1
         NO_MINOR_OR_NODE_UPGRADES = 2
 
+    class EndTimeBehavior(proto.Enum):
+        r"""EndTimeBehavior specifies the behavior of the exclusion end
+        time.
+
+        Values:
+            END_TIME_BEHAVIOR_UNSPECIFIED (0):
+                END_TIME_BEHAVIOR_UNSPECIFIED is the default behavior, which
+                is fixed end time.
+            UNTIL_END_OF_SUPPORT (1):
+                UNTIL_END_OF_SUPPORT means the exclusion will be in effect
+                until the end of the support of the cluster's current
+                version.
+        """
+        END_TIME_BEHAVIOR_UNSPECIFIED = 0
+        UNTIL_END_OF_SUPPORT = 1
+
     scope: Scope = proto.Field(
         proto.ENUM,
         number=1,
         enum=Scope,
+    )
+    end_time_behavior: EndTimeBehavior = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=EndTimeBehavior,
     )
 
 
@@ -10109,7 +10319,7 @@ class MaxPodsConstraint(proto.Message):
 
 class WorkloadIdentityConfig(proto.Message):
     r"""Configuration for the use of Kubernetes Service Accounts in
-    GCP IAM policies.
+    IAM policies.
 
     Attributes:
         workload_pool (str):
@@ -11090,6 +11300,10 @@ class Autopilot(proto.Message):
         workload_policy_config (google.cloud.container_v1.types.WorkloadPolicyConfig):
             WorkloadPolicyConfig is the configuration
             related to GCW workload policy
+        privileged_admission_config (google.cloud.container_v1.types.PrivilegedAdmissionConfig):
+            PrivilegedAdmissionConfig is the
+            configuration related to privileged admission
+            control.
     """
 
     enabled: bool = proto.Field(
@@ -11100,6 +11314,39 @@ class Autopilot(proto.Message):
         proto.MESSAGE,
         number=2,
         message="WorkloadPolicyConfig",
+    )
+    privileged_admission_config: "PrivilegedAdmissionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="PrivilegedAdmissionConfig",
+    )
+
+
+class PrivilegedAdmissionConfig(proto.Message):
+    r"""PrivilegedAdmissionConfig stores the list of authorized
+    allowlist paths for the cluster.
+
+    Attributes:
+        allowlist_paths (MutableSequence[str]):
+            The customer allowlist Cloud Storage paths for the cluster.
+            These paths are used with the
+            ``--autopilot-privileged-admission`` flag to authorize
+            privileged workloads in Autopilot clusters.
+
+            Paths can be GKE-owned, in the format
+            ``gke://<partner_name>/<app_name>/<allowlist_path>``, or
+            customer-owned, in the format
+            ``gs://<bucket_name>/<allowlist_path>``.
+
+            Wildcards (``*``) are supported to authorize all allowlists
+            under specific paths or directories. Example:
+            ``gs://my-bucket/*`` will authorize all allowlists under the
+            ``my-bucket`` bucket.
+    """
+
+    allowlist_paths: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -11541,7 +11788,23 @@ class Fleet(proto.Message):
         pre_registered (bool):
             Output only. Whether the cluster has been
             registered through the fleet API.
+        membership_type (google.cloud.container_v1.types.Fleet.MembershipType):
+            The type of the cluster's fleet membership.
     """
+
+    class MembershipType(proto.Enum):
+        r"""MembershipType describes if the membership supports all
+        features or only lightweight compatible ones.
+
+        Values:
+            MEMBERSHIP_TYPE_UNSPECIFIED (0):
+                The MembershipType is not set.
+            LIGHTWEIGHT (1):
+                The membership supports only lightweight
+                compatible features.
+        """
+        MEMBERSHIP_TYPE_UNSPECIFIED = 0
+        LIGHTWEIGHT = 1
 
     project: str = proto.Field(
         proto.STRING,
@@ -11554,6 +11817,11 @@ class Fleet(proto.Message):
     pre_registered: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    membership_type: MembershipType = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=MembershipType,
     )
 
 
@@ -11582,11 +11850,21 @@ class ControlPlaneEndpointsConfig(proto.Message):
                 [DNSEndpointConfig.allow_external_traffic][google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.allow_external_traffic].
             allow_external_traffic (bool):
                 Controls whether user traffic is allowed over
-                this endpoint. Note that GCP-managed services
+                this endpoint. Note that Google-managed services
                 may still use the endpoint even if this is
                 false.
 
                 This field is a member of `oneof`_ ``_allow_external_traffic``.
+            enable_k8s_tokens_via_dns (bool):
+                Controls whether the k8s token auth is
+                allowed via DNS.
+
+                This field is a member of `oneof`_ ``_enable_k8s_tokens_via_dns``.
+            enable_k8s_certs_via_dns (bool):
+                Controls whether the k8s certs auth is
+                allowed via DNS.
+
+                This field is a member of `oneof`_ ``_enable_k8s_certs_via_dns``.
         """
 
         endpoint: str = proto.Field(
@@ -11596,6 +11874,16 @@ class ControlPlaneEndpointsConfig(proto.Message):
         allow_external_traffic: bool = proto.Field(
             proto.BOOL,
             number=3,
+            optional=True,
+        )
+        enable_k8s_tokens_via_dns: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+            optional=True,
+        )
+        enable_k8s_certs_via_dns: bool = proto.Field(
+            proto.BOOL,
+            number=6,
             optional=True,
         )
 
@@ -11796,6 +12084,9 @@ class ResourceManagerTags(proto.Message):
 class EnterpriseConfig(proto.Message):
     r"""EnterpriseConfig is the cluster enterprise configuration.
 
+    Deprecated: GKE Enterprise features are now available without an
+    Enterprise tier.
+
     Attributes:
         cluster_tier (google.cloud.container_v1.types.EnterpriseConfig.ClusterTier):
             Output only. cluster_tier indicates the effective tier of
@@ -11807,6 +12098,9 @@ class EnterpriseConfig(proto.Message):
     class ClusterTier(proto.Enum):
         r"""Premium tiers for GKE Cluster.
 
+        Deprecated: GKE Enterprise features are now available without an
+        Enterprise tier.
+
         Values:
             CLUSTER_TIER_UNSPECIFIED (0):
                 CLUSTER_TIER_UNSPECIFIED is when cluster_tier is not set.
@@ -11816,6 +12110,7 @@ class EnterpriseConfig(proto.Message):
                 ENTERPRISE indicates a GKE Enterprise
                 cluster.
         """
+        _pb_options = {"deprecated": True}
         CLUSTER_TIER_UNSPECIFIED = 0
         STANDARD = 1
         ENTERPRISE = 2
@@ -11842,12 +12137,52 @@ class SecretManagerConfig(proto.Message):
             Enable/Disable Secret Manager Config.
 
             This field is a member of `oneof`_ ``_enabled``.
+        rotation_config (google.cloud.container_v1.types.SecretManagerConfig.RotationConfig):
+            Rotation config for secret manager.
+
+            This field is a member of `oneof`_ ``_rotation_config``.
     """
+
+    class RotationConfig(proto.Message):
+        r"""RotationConfig is config for secret manager auto rotation.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            enabled (bool):
+                Whether the rotation is enabled.
+
+                This field is a member of `oneof`_ ``_enabled``.
+            rotation_interval (google.protobuf.duration_pb2.Duration):
+                The interval between two consecutive
+                rotations. Default rotation interval is 2
+                minutes.
+
+                This field is a member of `oneof`_ ``_rotation_interval``.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+            optional=True,
+        )
+        rotation_interval: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            optional=True,
+            message=duration_pb2.Duration,
+        )
 
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
         optional=True,
+    )
+    rotation_config: RotationConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        optional=True,
+        message=RotationConfig,
     )
 
 
@@ -12355,6 +12690,48 @@ class GkeAutoUpgradeConfig(proto.Message):
         proto.ENUM,
         number=1,
         enum=PatchMode,
+    )
+
+
+class NetworkTierConfig(proto.Message):
+    r"""NetworkTierConfig contains network tier information.
+
+    Attributes:
+        network_tier (google.cloud.container_v1.types.NetworkTierConfig.NetworkTier):
+            Network tier configuration.
+    """
+
+    class NetworkTier(proto.Enum):
+        r"""Network tier configuration.
+
+        Values:
+            NETWORK_TIER_UNSPECIFIED (0):
+                By default, use project-level configuration. When
+                unspecified, the behavior defaults to NETWORK_TIER_DEFAULT.
+                For cluster updates, this implies no action (no-op).
+            NETWORK_TIER_DEFAULT (1):
+                Default network tier. Use project-level
+                configuration. User can specify this value,
+                meaning they want to keep the same behaviour as
+                before cluster level network tier configuration
+                is introduced. This field ensures backward
+                compatibility for the network tier of cluster
+                resources, such as node pools and load
+                balancers, for their external IP addresses.
+            NETWORK_TIER_PREMIUM (2):
+                Premium network tier.
+            NETWORK_TIER_STANDARD (3):
+                Standard network tier.
+        """
+        NETWORK_TIER_UNSPECIFIED = 0
+        NETWORK_TIER_DEFAULT = 1
+        NETWORK_TIER_PREMIUM = 2
+        NETWORK_TIER_STANDARD = 3
+
+    network_tier: NetworkTier = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=NetworkTier,
     )
 
 

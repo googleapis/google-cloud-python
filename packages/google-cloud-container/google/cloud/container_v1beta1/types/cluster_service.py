@@ -1447,9 +1447,9 @@ class NodeConfig(proto.Message):
             - ``https://www.googleapis.com/auth/compute`` is required
               for mounting persistent storage on your nodes.
             - ``https://www.googleapis.com/auth/devstorage.read_only``
-              is required for communicating with **gcr.io** (the `Google
-              Container
-              Registry <https://cloud.google.com/container-registry/>`__).
+              is required for communicating with **gcr.io** (the
+              `Artifact
+              Registry <https://cloud.google.com/artifact-registry/>`__).
 
             If unspecified, no scopes are added, unless Cloud Logging or
             Cloud Monitoring are enabled, in which case their required
@@ -2662,8 +2662,8 @@ class ContainerdConfig(proto.Message):
             """
 
             class GCPSecretManagerCertificateConfig(proto.Message):
-                r"""GCPSecretManagerCertificateConfig configures a secret from `Google
-                Secret Manager <https://cloud.google.com/secret-manager>`__.
+                r"""GCPSecretManagerCertificateConfig configures a secret from `Secret
+                Manager <https://cloud.google.com/secret-manager>`__.
 
                 Attributes:
                     secret_uri (str):
@@ -2921,7 +2921,7 @@ class NodeLabels(proto.Message):
 
 
 class ResourceLabels(proto.Message):
-    r"""Collection of `GCP
+    r"""Collection of `Resource Manager
     labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
 
     Attributes:
@@ -6070,6 +6070,9 @@ class ClusterUpdate(proto.Message):
         desired_network_tier_config (google.cloud.container_v1beta1.types.NetworkTierConfig):
             The desired network tier configuration for
             the cluster.
+        desired_secret_sync_config (google.cloud.container_v1beta1.types.SecretSyncConfig):
+            Configuration for sync Secret Manager secrets
+            as k8s secrets.
     """
 
     desired_node_version: str = proto.Field(
@@ -6481,6 +6484,11 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE,
         number=155,
         message="NetworkTierConfig",
+    )
+    desired_secret_sync_config: "SecretSyncConfig" = proto.Field(
+        proto.MESSAGE,
+        number=158,
+        message="SecretSyncConfig",
     )
 
 
@@ -9800,9 +9808,9 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             - ``https://www.googleapis.com/auth/compute`` is required
               for mounting persistent storage on your nodes.
             - ``https://www.googleapis.com/auth/devstorage.read_only``
-              is required for communicating with **gcr.io** (the `Google
-              Container
-              Registry <https://cloud.google.com/container-registry/>`__).
+              is required for communicating with **gcr.io** (the
+              `Artifact
+              Registry <https://cloud.google.com/artifact-registry/>`__).
 
             If unspecified, no scopes are added, unless Cloud Logging or
             Cloud Monitoring are enabled, in which case their required

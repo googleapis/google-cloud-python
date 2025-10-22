@@ -39,13 +39,13 @@ def sample_start_ip_rotation():
     client = container_v1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1.StartIPRotationRequest(
-    )
+    request = container_v1.StartIPRotationRequest()
 
     # Make the request
     response = client.start_ip_rotation(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1_generated_ClusterManager_StartIPRotation_sync]

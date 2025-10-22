@@ -49,4 +49,5 @@ async def sample_update_master():
     # Handle the response
     print(response)
 
+
 # [END container_v1beta1_generated_ClusterManager_UpdateMaster_async]

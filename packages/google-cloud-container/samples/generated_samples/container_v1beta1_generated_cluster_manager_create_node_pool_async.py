@@ -39,13 +39,13 @@ async def sample_create_node_pool():
     client = container_v1beta1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.CreateNodePoolRequest(
-    )
+    request = container_v1beta1.CreateNodePoolRequest()
 
     # Make the request
     response = await client.create_node_pool(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_CreateNodePool_async]

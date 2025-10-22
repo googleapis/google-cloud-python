@@ -49,4 +49,5 @@ async def sample_list_locations():
     # Handle the response
     print(response)
 
+
 # [END container_v1beta1_generated_ClusterManager_ListLocations_async]

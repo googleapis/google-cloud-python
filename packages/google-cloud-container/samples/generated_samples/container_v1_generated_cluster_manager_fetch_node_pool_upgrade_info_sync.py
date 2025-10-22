@@ -49,4 +49,5 @@ def sample_fetch_node_pool_upgrade_info():
     # Handle the response
     print(response)
 
+
 # [END container_v1_generated_ClusterManager_FetchNodePoolUpgradeInfo_sync]

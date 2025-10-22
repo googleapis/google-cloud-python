@@ -39,13 +39,13 @@ async def sample_list_clusters():
     client = container_v1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1.ListClustersRequest(
-    )
+    request = container_v1.ListClustersRequest()
 
     # Make the request
     response = await client.list_clusters(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1_generated_ClusterManager_ListClusters_async]

@@ -49,4 +49,5 @@ async def sample_set_node_pool_size():
     # Handle the response
     print(response)
 
+
 # [END container_v1_generated_ClusterManager_SetNodePoolSize_async]
