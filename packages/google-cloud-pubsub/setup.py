@@ -36,7 +36,8 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "grpcio >= 1.51.3, < 2.0.0",  # https://github.com/googleapis/python-pubsub/issues/609
+    "grpcio >= 1.51.3, < 2.0.0; python_version < '3.14'",  # https://github.com/googleapis/python-pubsub/issues/609
+    "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     # google-api-core >= 1.34.0 is allowed in order to support google-api-core 1.x
     "google-auth >= 2.14.1, <3.0.0",
     "google-api-core[grpc] >= 1.34.0, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
@@ -88,6 +89,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],

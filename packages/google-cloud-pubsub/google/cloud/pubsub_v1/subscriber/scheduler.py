@@ -21,6 +21,7 @@ each message.
 import abc
 import concurrent.futures
 import queue
+import sys
 import typing
 from typing import Callable, List, Optional
 import warnings
@@ -37,7 +38,7 @@ class Scheduler(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def queue(self) -> queue.Queue:  # pragma: NO COVER
+    def queue(self) -> "queue.Queue":  # pragma: NO COVER
         """Queue: A concurrency-safe queue specific to the underlying
         concurrency implementation.
 
@@ -162,7 +163,25 @@ class ThreadScheduler(Scheduler):
                 work_item = self._executor._work_queue.get(block=False)
                 if work_item is None:  # Exceutor in shutdown mode.
                     continue
-                dropped_messages.append(work_item.args[0])  # type: ignore[index]
+
+                dropped_message = None
+                if sys.version_info < (3, 14):
+                    # For Python < 3.14, work_item.args is a tuple of positional arguments.
+                    # The message is expected to be the first argument.
+                    if hasattr(work_item, "args") and work_item.args:
+                        dropped_message = work_item.args[0]  # type: ignore[index]
+                else:
+                    # For Python >= 3.14, work_item.task is (fn, args, kwargs).
+                    # The message is expected to be the first item in the args tuple (task[1]).
+                    if (
+                        hasattr(work_item, "task")
+                        and len(work_item.task) == 3
+                        and work_item.task[1]
+                    ):
+                        dropped_message = work_item.task[1][0]
+
+                if dropped_message is not None:
+                    dropped_messages.append(dropped_message)
         except queue.Empty:
             pass
 

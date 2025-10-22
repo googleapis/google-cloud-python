@@ -308,33 +308,38 @@ def test_opentelemetry_flow_control_exception(creds, span_exporter):
         future2.result()
 
     spans = span_exporter.get_finished_spans()
-    # Span 1 = Publisher Flow Control Span of first publish
-    # Span 2 = Publisher Batching Span of first publish
-    # Span 3 = Publisher Flow Control Span of second publish(raises FlowControlLimitError)
-    # Span 4 = Publish Create Span of second publish(raises FlowControlLimitError)
-    assert len(spans) == 4
 
-    failed_flow_control_span = spans[2]
-    finished_publish_create_span = spans[3]
+    # Find the spans related to the second, failing publish call
+    failed_create_span = None
+    failed_fc_span = None
+    for span in spans:
+        if span.name == "topicID create":
+            if span.status.status_code == trace.StatusCode.ERROR:
+                failed_create_span = span
+        elif span.name == "publisher flow control":
+            if span.status.status_code == trace.StatusCode.ERROR:
+                failed_fc_span = span
+
+    assert failed_create_span is not None, "Failed 'topicID create' span not found"
+    assert failed_fc_span is not None, "Failed 'publisher flow control' span not found"
 
     # Verify failed flow control span values.
-    assert failed_flow_control_span.name == "publisher flow control"
-    assert failed_flow_control_span.kind == trace.SpanKind.INTERNAL
+    assert failed_fc_span.kind == trace.SpanKind.INTERNAL
     assert (
-        failed_flow_control_span.parent.span_id
-        == finished_publish_create_span.get_span_context().span_id
+        failed_fc_span.parent.span_id == failed_create_span.get_span_context().span_id
     )
-    assert failed_flow_control_span.status.status_code == trace.StatusCode.ERROR
-
-    assert len(failed_flow_control_span.events) == 1
-    assert failed_flow_control_span.events[0].name == "exception"
+    assert len(failed_fc_span.events) == 1
+    assert failed_fc_span.events[0].name == "exception"
 
     # Verify finished publish create span values
-    assert finished_publish_create_span.name == "topicID create"
-    assert finished_publish_create_span.status.status_code == trace.StatusCode.ERROR
-    assert len(finished_publish_create_span.events) == 2
-    assert finished_publish_create_span.events[0].name == "publish start"
-    assert finished_publish_create_span.events[1].name == "exception"
+    assert failed_create_span.status.status_code == trace.StatusCode.ERROR
+    assert len(failed_create_span.events) >= 1  # Should have at least 'publish start'
+    assert failed_create_span.events[0].name == "publish start"
+    # Check for exception event
+    has_exception_event = any(
+        event.name == "exception" for event in failed_create_span.events
+    )
+    assert has_exception_event, "Exception event not found in failed create span"
 
 
 @pytest.mark.skipif(

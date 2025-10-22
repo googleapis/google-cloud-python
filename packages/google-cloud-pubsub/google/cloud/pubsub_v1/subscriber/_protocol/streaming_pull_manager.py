@@ -458,7 +458,7 @@ class StreamingPullManager(object):
         return self._dispatcher
 
     @property
-    def leaser(self) -> Optional[leaser.Leaser]:
+    def leaser(self) -> Optional["leaser.Leaser"]:
         """The leaser helper."""
         return self._leaser
 
