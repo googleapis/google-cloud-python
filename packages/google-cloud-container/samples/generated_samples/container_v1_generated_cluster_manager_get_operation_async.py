@@ -39,13 +39,13 @@ async def sample_get_operation():
     client = container_v1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1.GetOperationRequest(
-    )
+    request = container_v1.GetOperationRequest()
 
     # Make the request
     response = await client.get_operation(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1_generated_ClusterManager_GetOperation_async]

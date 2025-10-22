@@ -39,8 +39,7 @@ async def sample_cancel_operation():
     client = container_v1beta1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.CancelOperationRequest(
-    )
+    request = container_v1beta1.CancelOperationRequest()
 
     # Make the request
     await client.cancel_operation(request=request)

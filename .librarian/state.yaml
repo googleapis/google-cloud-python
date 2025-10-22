@@ -1316,7 +1316,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-container
     version: 2.60.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 94ccdfe4519e0ba817bd33aa22eb9c64f88a6874
     apis:
       - path: google/container/v1
         service_config: container_v1.yaml
@@ -2740,7 +2740,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-oracledatabase
     version: 0.2.0
-    last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
+    last_generated_commit: 94ccdfe4519e0ba817bd33aa22eb9c64f88a6874
     apis:
       - path: google/cloud/oracledatabase/v1
         service_config: oracledatabase_v1.yaml

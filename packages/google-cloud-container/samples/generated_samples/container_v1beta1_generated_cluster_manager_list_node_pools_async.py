@@ -39,13 +39,13 @@ async def sample_list_node_pools():
     client = container_v1beta1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.ListNodePoolsRequest(
-    )
+    request = container_v1beta1.ListNodePoolsRequest()
 
     # Make the request
     response = await client.list_node_pools(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_ListNodePools_async]

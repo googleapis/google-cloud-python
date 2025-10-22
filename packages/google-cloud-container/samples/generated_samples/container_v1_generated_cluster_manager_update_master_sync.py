@@ -49,4 +49,5 @@ def sample_update_master():
     # Handle the response
     print(response)
 
+
 # [END container_v1_generated_ClusterManager_UpdateMaster_sync]

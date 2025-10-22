@@ -50,4 +50,5 @@ def sample_update_node_pool():
     # Handle the response
     print(response)
 
+
 # [END container_v1_generated_ClusterManager_UpdateNodePool_sync]

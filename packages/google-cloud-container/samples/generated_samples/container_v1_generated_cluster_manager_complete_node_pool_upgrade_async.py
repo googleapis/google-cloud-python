@@ -39,8 +39,7 @@ async def sample_complete_node_pool_upgrade():
     client = container_v1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1.CompleteNodePoolUpgradeRequest(
-    )
+    request = container_v1.CompleteNodePoolUpgradeRequest()
 
     # Make the request
     await client.complete_node_pool_upgrade(request=request)

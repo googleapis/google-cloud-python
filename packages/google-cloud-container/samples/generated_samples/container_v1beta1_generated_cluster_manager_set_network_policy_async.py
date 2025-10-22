@@ -39,13 +39,13 @@ async def sample_set_network_policy():
     client = container_v1beta1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.SetNetworkPolicyRequest(
-    )
+    request = container_v1beta1.SetNetworkPolicyRequest()
 
     # Make the request
     response = await client.set_network_policy(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1beta1_generated_ClusterManager_SetNetworkPolicy_async]

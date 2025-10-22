@@ -39,13 +39,13 @@ def sample_get_server_config():
     client = container_v1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1.GetServerConfigRequest(
-    )
+    request = container_v1.GetServerConfigRequest()
 
     # Make the request
     response = client.get_server_config(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1_generated_ClusterManager_GetServerConfig_sync]

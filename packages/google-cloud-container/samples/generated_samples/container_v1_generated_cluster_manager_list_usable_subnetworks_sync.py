@@ -39,8 +39,7 @@ def sample_list_usable_subnetworks():
     client = container_v1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1.ListUsableSubnetworksRequest(
-    )
+    request = container_v1.ListUsableSubnetworksRequest()
 
     # Make the request
     page_result = client.list_usable_subnetworks(request=request)
@@ -48,5 +47,6 @@ def sample_list_usable_subnetworks():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END container_v1_generated_ClusterManager_ListUsableSubnetworks_sync]

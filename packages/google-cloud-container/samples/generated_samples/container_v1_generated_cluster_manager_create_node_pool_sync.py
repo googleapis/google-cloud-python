@@ -39,13 +39,13 @@ def sample_create_node_pool():
     client = container_v1.ClusterManagerClient()
 
     # Initialize request argument(s)
-    request = container_v1.CreateNodePoolRequest(
-    )
+    request = container_v1.CreateNodePoolRequest()
 
     # Make the request
     response = client.create_node_pool(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END container_v1_generated_ClusterManager_CreateNodePool_sync]
