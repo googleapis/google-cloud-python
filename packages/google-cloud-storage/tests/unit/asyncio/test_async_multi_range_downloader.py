@@ -260,25 +260,37 @@ class TestAsyncMultiRangeDownloader:
         assert str(exc.value) == "Underlying bidi-gRPC stream is not open"
         assert not mrd.is_stream_open
 
-    @mock.patch("google.cloud.storage._experimental.asyncio.async_multi_range_downloader.google_crc32c")
-    @mock.patch("google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client")
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.google_crc32c"
+    )
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+    )
     def test_init_raises_if_crc32c_c_extension_is_missing(
         self, mock_grpc_client, mock_google_crc32c
     ):
         mock_google_crc32c.implementation = "python"
 
         with pytest.raises(exceptions.NotFound) as exc_info:
-            AsyncMultiRangeDownloader(
-                mock_grpc_client, "bucket", "object"
-            )
+            AsyncMultiRangeDownloader(mock_grpc_client, "bucket", "object")
 
-        assert "The google-crc32c package is not installed with C support" in str(exc_info.value)
+        assert "The google-crc32c package is not installed with C support" in str(
+            exc_info.value
+        )
 
     @pytest.mark.asyncio
-    @mock.patch("google.cloud.storage._experimental.asyncio.async_multi_range_downloader.Checksum")
-    @mock.patch("google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client")
-    async def test_download_ranges_raises_on_checksum_mismatch(self, mock_client, mock_checksum_class):
-        mock_stream = mock.AsyncMock(spec=async_read_object_stream._AsyncReadObjectStream)
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.Checksum"
+    )
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+    )
+    async def test_download_ranges_raises_on_checksum_mismatch(
+        self, mock_client, mock_checksum_class
+    ):
+        mock_stream = mock.AsyncMock(
+            spec=async_read_object_stream._AsyncReadObjectStream
+        )
 
         test_data = b"some-data"
         server_checksum = 12345
@@ -299,9 +311,7 @@ class TestAsyncMultiRangeDownloader:
 
         mock_stream.recv.side_effect = [mock_response, None]
 
-        mrd = AsyncMultiRangeDownloader(
-            mock_client, "bucket", "object"
-        )
+        mrd = AsyncMultiRangeDownloader(mock_client, "bucket", "object")
         mrd.read_obj_str = mock_stream
         mrd._is_stream_open = True
 
@@ -310,4 +320,3 @@ class TestAsyncMultiRangeDownloader:
 
         assert "Checksum mismatch" in str(exc_info.value)
         mock_checksum_class.assert_called_once_with(test_data)
-

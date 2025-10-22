@@ -47,6 +47,9 @@ from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _rfc3339_nanos_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud.exceptions import NotFound
+from google.cloud.storage._opentelemetry_tracing import (
+    _get_opentelemetry_attributes_from_url,
+)
 from google.cloud.storage._helpers import _add_etag_match_headers
 from google.cloud.storage._helpers import _add_generation_match_parameters
 from google.cloud.storage._helpers import _PropertyMixin
@@ -1055,13 +1058,11 @@ class Blob(_PropertyMixin):
             Please enable this as per your use case.
         """
 
-        extra_attributes = {
-            "url.full": download_url,
-            "download.chunk_size": f"{self.chunk_size}",
-            "download.raw_download": raw_download,
-            "upload.checksum": f"{checksum}",
-            "download.single_shot_download": single_shot_download,
-        }
+        extra_attributes = _get_opentelemetry_attributes_from_url(download_url)
+        extra_attributes["download.chunk_size"] = f"{self.chunk_size}"
+        extra_attributes["download.raw_download"] = raw_download
+        extra_attributes["upload.checksum"] = f"{checksum}"
+        extra_attributes["download.single_shot_download"] = single_shot_download
         args = {"timeout": timeout}
 
         if self.chunk_size is None:
@@ -2048,10 +2049,8 @@ class Blob(_PropertyMixin):
             upload_url, headers=headers, checksum=checksum, retry=retry
         )
 
-        extra_attributes = {
-            "url.full": upload_url,
-            "upload.checksum": f"{checksum}",
-        }
+        extra_attributes = _get_opentelemetry_attributes_from_url(upload_url)
+        extra_attributes["upload.checksum"] = f"{checksum}"
         args = {"timeout": timeout}
         with create_trace_span(
             name="Storage.MultipartUpload/transmit",
@@ -2448,11 +2447,10 @@ class Blob(_PropertyMixin):
             command=command,
             crc32c_checksum_value=crc32c_checksum_value,
         )
-        extra_attributes = {
-            "url.full": upload.resumable_url,
-            "upload.chunk_size": upload.chunk_size,
-            "upload.checksum": f"{checksum}",
-        }
+        extra_attributes = _get_opentelemetry_attributes_from_url(upload.resumable_url)
+        extra_attributes["upload.chunk_size"] = upload.chunk_size
+        extra_attributes["upload.checksum"] = f"{checksum}"
+
         args = {"timeout": timeout}
         with create_trace_span(
             name="Storage.ResumableUpload/transmitNextChunk",

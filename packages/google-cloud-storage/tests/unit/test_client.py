@@ -684,6 +684,7 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
         connection = client._base_connection = _make_connection()
+        connection.build_api_url = mock.Mock(return_value="http://example.com" + path)
 
         iterator = client._list_resource(
             path=path,
@@ -719,6 +720,7 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
         connection = client._base_connection = _make_connection()
+        connection.build_api_url = mock.Mock(return_value="http://example.com" + path)
 
         iterator = client._list_resource(
             path=path,

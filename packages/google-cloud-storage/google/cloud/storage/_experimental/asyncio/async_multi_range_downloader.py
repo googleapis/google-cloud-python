@@ -270,9 +270,10 @@ class AsyncMultiRangeDownloader:
                 client_checksum = int.from_bytes(client_crc32c, "big")
 
                 if server_checksum != client_checksum:
-                    raise DataCorruption(response,
+                    raise DataCorruption(
+                        response,
                         f"Checksum mismatch for read_id {object_data_range.read_range.read_id}. "
-                        f"Server sent {server_checksum}, client calculated {client_checksum}."
+                        f"Server sent {server_checksum}, client calculated {client_checksum}.",
                     )
 
                 read_id = object_data_range.read_range.read_id

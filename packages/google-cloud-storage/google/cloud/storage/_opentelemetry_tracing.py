@@ -18,7 +18,7 @@ import logging
 import os
 
 from contextlib import contextmanager
-
+from urllib.parse import urlparse
 from google.api_core import exceptions as api_exceptions
 from google.api_core import retry as api_retry
 from google.cloud.storage import __version__
@@ -28,7 +28,15 @@ from google.cloud.storage.retry import ConditionalRetryPolicy
 ENABLE_OTEL_TRACES_ENV_VAR = "ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES"
 _DEFAULT_ENABLE_OTEL_TRACES_VALUE = False
 
-enable_otel_traces = os.environ.get(
+
+def _parse_bool_env(name: str, default: bool = False) -> bool:
+    val = os.environ.get(name, None)
+    if val is None:
+        return default
+    return str(val).strip().lower() in {"1", "true", "yes", "on"}
+
+
+enable_otel_traces = _parse_bool_env(
     ENABLE_OTEL_TRACES_ENV_VAR, _DEFAULT_ENABLE_OTEL_TRACES_VALUE
 )
 logger = logging.getLogger(__name__)
@@ -105,11 +113,10 @@ def _set_api_request_attr(request, client):
     if request.get("method"):
         attr["http.request.method"] = request.get("method")
     if request.get("path"):
-        path = request.get("path")
-        full_path = f"{client._connection.API_BASE_URL}{path}"
-        attr["url.full"] = full_path
-    if request.get("timeout"):
-        attr["connect_timeout,read_timeout"] = request.get("timeout")
+        full_url = client._connection.build_api_url(request.get("path"))
+        attr.update(_get_opentelemetry_attributes_from_url(full_url, strip_query=True))
+    if "timeout" in request:
+        attr["connect_timeout,read_timeout"] = str(request.get("timeout"))
     return attr
 
 
@@ -117,3 +124,26 @@ def _set_retry_attr(retry, conditional_predicate=None):
     predicate = conditional_predicate if conditional_predicate else retry._predicate
     retry_info = f"multiplier{retry._multiplier}/deadline{retry._deadline}/max{retry._maximum}/initial{retry._initial}/predicate{predicate}"
     return {"retry": retry_info}
+
+
+def _get_opentelemetry_attributes_from_url(url, strip_query=True):
+    """Helper to assemble OpenTelemetry span attributes from a URL."""
+    u = urlparse(url)
+    netloc = u.netloc
+    # u.hostname is always lowercase. We parse netloc to preserve casing.
+    # netloc format: [userinfo@]host[:port]
+    if "@" in netloc:
+        netloc = netloc.split("@", 1)[1]
+    if ":" in netloc and not netloc.endswith("]"):  # Handle IPv6 literal
+        netloc = netloc.split(":", 1)[0]
+
+    attributes = {
+        "server.address": netloc,
+        "server.port": u.port,
+        "url.scheme": u.scheme,
+        "url.path": u.path,
+    }
+    if not strip_query:
+        attributes["url.query"] = u.query
+
+    return attributes
