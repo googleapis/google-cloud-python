@@ -213,6 +213,23 @@ class TestImpersonatedCredentials(object):
             )
         assert excinfo.match(r"Cannot extract target principal from")
 
+    def test_from_impersonated_service_account_info_with_scopes(self):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["scopes"] = ["scope1", "scope2"]
+        credentials = impersonated_credentials.Credentials.from_impersonated_service_account_info(
+            info
+        )
+        assert credentials._target_scopes == ["scope1", "scope2"]
+
+    def test_from_impersonated_service_account_info_with_scopes_param(self):
+        info = copy.deepcopy(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_INFO)
+        info["scopes"] = ["scope_from_info_1", "scope_from_info_2"]
+        scopes_param = ["scope_from_param_1", "scope_from_param_2"]
+        credentials = impersonated_credentials.Credentials.from_impersonated_service_account_info(
+            info, scopes=scopes_param
+        )
+        assert credentials._target_scopes == scopes_param
+
     def test_get_cred_info(self):
         credentials = self.make_credentials()
         assert not credentials.get_cred_info()

@@ -526,6 +526,7 @@ class Credentials(
         target_principal = impersonation_url[start_index + 1 : end_index]
         delegates = info.get("delegates")
         quota_project_id = info.get("quota_project_id")
+        scopes = scopes or info.get("scopes")
         trust_boundary = info.get("trust_boundary")
 
         return cls(
