@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.4](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.3...v3.2.4) (2025-10-22)
+
+
+### Bug Fixes
+
+* Add support for formatting broken argspec entities ([#420](https://github.com/googleapis/sphinx-docfx-yaml/issues/420)) ([baf4389](https://github.com/googleapis/sphinx-docfx-yaml/commit/baf43897741666342cd2429f0894cecaa355702f))
+
 ## [3.2.3](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.2...v3.2.3) (2025-03-19)
 
 
