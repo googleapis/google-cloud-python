@@ -108,6 +108,9 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             filtered_series.name = self._value_name
             yield group_keys, filtered_series
 
+    def __len__(self) -> int:
+        return len(self.agg([]))
+
     def all(self) -> series.Series:
         return self._aggregate(agg_ops.all_op)
 
@@ -275,9 +278,9 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         if column_names:
             agg_block = agg_block.with_column_labels(column_names)
 
-        if len(aggregations) > 1:
-            return df.DataFrame(agg_block)
-        return series.Series(agg_block)
+        if len(aggregations) == 1:
+            return series.Series(agg_block)
+        return df.DataFrame(agg_block)
 
     aggregate = agg
 

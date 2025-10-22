@@ -177,6 +177,9 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             filtered_df = df.DataFrame(filtered_block)
             yield group_keys, filtered_df
 
+    def __len__(self) -> int:
+        return len(self.agg([]))
+
     def size(self) -> typing.Union[df.DataFrame, series.Series]:
         agg_block, _ = self._block.aggregate_size(
             by_column_ids=self._by_col_ids,
