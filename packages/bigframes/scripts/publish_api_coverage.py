@@ -30,6 +30,7 @@ import bigframes
 import bigframes.core.groupby
 import bigframes.core.window
 import bigframes.operations.datetimes
+import bigframes.operations.strings
 import bigframes.pandas as bpd
 
 REPO_ROOT = pathlib.Path(__file__).parent.parent

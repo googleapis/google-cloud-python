@@ -685,3 +685,39 @@ def test_index_eq_aligned_index(scalars_df_index, scalars_pandas_df_index):
         scalars_pandas_df_index.int64_col.abs()
     )
     assert bf_result == pd.Index(pd_result)
+
+
+def test_index_str_accessor_unary(scalars_df_index, scalars_pandas_df_index):
+    bf_index = scalars_df_index.set_index("string_col").index
+    pd_index = scalars_pandas_df_index.set_index("string_col").index
+
+    bf_result = bf_index.str.pad(30, side="both", fillchar="~").to_pandas()
+    pd_result = pd_index.str.pad(30, side="both", fillchar="~")
+
+    pd.testing.assert_index_equal(bf_result, pd_result)
+
+
+def test_index_str_accessor_binary(scalars_df_index, scalars_pandas_df_index):
+    if pd.__version__.startswith("1."):
+        pytest.skip("doesn't work in pandas 1.x.")
+    bf_index = scalars_df_index.set_index("string_col").index
+    pd_index = scalars_pandas_df_index.set_index("string_col").index
+
+    bf_result = bf_index.str.cat(bf_index.str[:4]).to_pandas()
+    pd_result = pd_index.str.cat(pd_index.str[:4])
+
+    pd.testing.assert_index_equal(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("pat"),
+    [(r"(ell)(lo)"), (r"(?P<somename>h..)"), (r"(?P<somename>e.*o)([g-l]+)")],
+)
+def test_index_str_extract(scalars_df_index, scalars_pandas_df_index, pat):
+    bf_index = scalars_df_index.set_index("string_col").index
+    pd_index = scalars_pandas_df_index.set_index("string_col").index
+
+    bf_result = bf_index.str.extract(pat).to_pandas()
+    pd_result = pd_index.str.extract(pat)
+
+    pd.testing.assert_frame_equal(pd_result, bf_result, check_index_type=False)

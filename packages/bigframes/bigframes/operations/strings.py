@@ -15,12 +15,13 @@
 from __future__ import annotations
 
 import re
-from typing import Literal, Optional, Union
+from typing import Generic, Hashable, Literal, Optional, TypeVar, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.strings.accessor as vendorstr
 
 from bigframes.core import log_adapter
+import bigframes.core.indexes.base as indices
 import bigframes.dataframe as df
 import bigframes.operations as ops
 from bigframes.operations._op_converters import convert_index, convert_slice
@@ -34,15 +35,17 @@ REGEXP_FLAGS = {
     re.DOTALL: "s",
 }
 
+T = TypeVar("T", series.Series, indices.Index)
+
 
 @log_adapter.class_logger
-class StringMethods(vendorstr.StringMethods):
+class StringMethods(vendorstr.StringMethods, Generic[T]):
     __doc__ = vendorstr.StringMethods.__doc__
 
-    def __init__(self, data: series.Series):
-        self._data = data
+    def __init__(self, data: T):
+        self._data: T = data
 
-    def __getitem__(self, key: Union[int, slice]) -> series.Series:
+    def __getitem__(self, key: Union[int, slice]) -> T:
         if isinstance(key, int):
             return self._data._apply_unary_op(convert_index(key))
         elif isinstance(key, slice):
@@ -55,18 +58,18 @@ class StringMethods(vendorstr.StringMethods):
         sub: str,
         start: Optional[int] = None,
         end: Optional[int] = None,
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_unary_op(
             ops.StrFindOp(substr=sub, start=start, end=end)
         )
 
-    def len(self) -> series.Series:
+    def len(self) -> T:
         return self._data._apply_unary_op(ops.len_op)
 
-    def lower(self) -> series.Series:
+    def lower(self) -> T:
         return self._data._apply_unary_op(ops.lower_op)
 
-    def reverse(self) -> series.Series:
+    def reverse(self) -> T:
         """Reverse strings in the Series.
 
         **Examples:**
@@ -91,103 +94,103 @@ class StringMethods(vendorstr.StringMethods):
         self,
         start: Optional[int] = None,
         stop: Optional[int] = None,
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_unary_op(ops.StrSliceOp(start=start, end=stop))
 
-    def strip(self, to_strip: Optional[str] = None) -> series.Series:
+    def strip(self, to_strip: Optional[str] = None) -> T:
         return self._data._apply_unary_op(
             ops.StrStripOp(to_strip=" \n\t" if to_strip is None else to_strip)
         )
 
-    def upper(self) -> series.Series:
+    def upper(self) -> T:
         return self._data._apply_unary_op(ops.upper_op)
 
-    def isnumeric(self) -> series.Series:
+    def isnumeric(self) -> T:
         return self._data._apply_unary_op(ops.isnumeric_op)
 
     def isalpha(
         self,
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_unary_op(ops.isalpha_op)
 
     def isdigit(
         self,
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_unary_op(ops.isdigit_op)
 
     def isdecimal(
         self,
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_unary_op(ops.isdecimal_op)
 
     def isalnum(
         self,
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_unary_op(ops.isalnum_op)
 
     def isspace(
         self,
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_unary_op(ops.isspace_op)
 
     def islower(
         self,
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_unary_op(ops.islower_op)
 
     def isupper(
         self,
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_unary_op(ops.isupper_op)
 
-    def rstrip(self, to_strip: Optional[str] = None) -> series.Series:
+    def rstrip(self, to_strip: Optional[str] = None) -> T:
         return self._data._apply_unary_op(
             ops.StrRstripOp(to_strip=" \n\t" if to_strip is None else to_strip)
         )
 
-    def lstrip(self, to_strip: Optional[str] = None) -> series.Series:
+    def lstrip(self, to_strip: Optional[str] = None) -> T:
         return self._data._apply_unary_op(
             ops.StrLstripOp(to_strip=" \n\t" if to_strip is None else to_strip)
         )
 
-    def repeat(self, repeats: int) -> series.Series:
+    def repeat(self, repeats: int) -> T:
         return self._data._apply_unary_op(ops.StrRepeatOp(repeats=repeats))
 
-    def capitalize(self) -> series.Series:
+    def capitalize(self) -> T:
         return self._data._apply_unary_op(ops.capitalize_op)
 
-    def match(self, pat, case=True, flags=0) -> series.Series:
+    def match(self, pat, case=True, flags=0) -> T:
         # \A anchors start of entire string rather than start of any line in multiline mode
         adj_pat = rf"\A{pat}"
         return self.contains(pat=adj_pat, case=case, flags=flags)
 
-    def fullmatch(self, pat, case=True, flags=0) -> series.Series:
+    def fullmatch(self, pat, case=True, flags=0) -> T:
         # \A anchors start of entire string rather than start of any line in multiline mode
         # \z likewise anchors to the end of the entire multiline string
         adj_pat = rf"\A{pat}\z"
         return self.contains(pat=adj_pat, case=case, flags=flags)
 
-    def get(self, i: int) -> series.Series:
+    def get(self, i: int) -> T:
         return self._data._apply_unary_op(ops.StrGetOp(i=i))
 
-    def pad(self, width, side="left", fillchar=" ") -> series.Series:
+    def pad(self, width, side="left", fillchar=" ") -> T:
         return self._data._apply_unary_op(
             ops.StrPadOp(length=width, fillchar=fillchar, side=side)
         )
 
-    def ljust(self, width, fillchar=" ") -> series.Series:
+    def ljust(self, width, fillchar=" ") -> T:
         return self._data._apply_unary_op(
             ops.StrPadOp(length=width, fillchar=fillchar, side="right")
         )
 
-    def rjust(self, width, fillchar=" ") -> series.Series:
+    def rjust(self, width, fillchar=" ") -> T:
         return self._data._apply_unary_op(
             ops.StrPadOp(length=width, fillchar=fillchar, side="left")
         )
 
     def contains(
         self, pat, case: bool = True, flags: int = 0, *, regex: bool = True
-    ) -> series.Series:
+    ) -> T:
         if not case:
             return self.contains(pat=pat, flags=flags | re.IGNORECASE, regex=True)
         if regex:
@@ -206,23 +209,19 @@ class StringMethods(vendorstr.StringMethods):
         if compiled.groups == 0:
             raise ValueError("No capture groups in 'pat'")
 
-        results: list[str] = []
-        block = self._data._block
+        results: dict[Hashable, series.Series] = {}
         for i in range(compiled.groups):
             labels = [
                 label
                 for label, groupn in compiled.groupindex.items()
                 if i + 1 == groupn
             ]
-            label = labels[0] if labels else str(i)
-            block, id = block.apply_unary_op(
-                self._data._value_column,
+            label = labels[0] if labels else i
+            result = self._data._apply_unary_op(
                 ops.StrExtractOp(pat=pat, n=i + 1),
-                result_label=label,
             )
-            results.append(id)
-        block = block.select_columns(results)
-        return df.DataFrame(block)
+            results[label] = series.Series(result)
+        return df.DataFrame(results)
 
     def replace(
         self,
@@ -232,7 +231,7 @@ class StringMethods(vendorstr.StringMethods):
         case: Optional[bool] = None,
         flags: int = 0,
         regex: bool = False,
-    ) -> series.Series:
+    ) -> T:
         if isinstance(pat, re.Pattern):
             assert isinstance(pat.pattern, str)
             pat_str = pat.pattern
@@ -259,7 +258,7 @@ class StringMethods(vendorstr.StringMethods):
     def startswith(
         self,
         pat: Union[str, tuple[str, ...]],
-    ) -> series.Series:
+    ) -> T:
         if not isinstance(pat, tuple):
             pat = (pat,)
         return self._data._apply_unary_op(ops.StartsWithOp(pat=pat))
@@ -267,7 +266,7 @@ class StringMethods(vendorstr.StringMethods):
     def endswith(
         self,
         pat: Union[str, tuple[str, ...]],
-    ) -> series.Series:
+    ) -> T:
         if not isinstance(pat, tuple):
             pat = (pat,)
         return self._data._apply_unary_op(ops.EndsWithOp(pat=pat))
@@ -276,7 +275,7 @@ class StringMethods(vendorstr.StringMethods):
         self,
         pat: str = " ",
         regex: Union[bool, None] = None,
-    ) -> series.Series:
+    ) -> T:
         if regex is True or (regex is None and len(pat) > 1):
             raise NotImplementedError(
                 "Regular expressions aren't currently supported. Please set "
@@ -284,28 +283,28 @@ class StringMethods(vendorstr.StringMethods):
             )
         return self._data._apply_unary_op(ops.StringSplitOp(pat=pat))
 
-    def zfill(self, width: int) -> series.Series:
+    def zfill(self, width: int) -> T:
         return self._data._apply_unary_op(ops.ZfillOp(width=width))
 
-    def center(self, width: int, fillchar: str = " ") -> series.Series:
+    def center(self, width: int, fillchar: str = " ") -> T:
         return self._data._apply_unary_op(
             ops.StrPadOp(length=width, fillchar=fillchar, side="both")
         )
 
     def cat(
         self,
-        others: Union[str, series.Series],
+        others: Union[str, indices.Index, series.Series],
         *,
         join: Literal["outer", "left"] = "left",
-    ) -> series.Series:
+    ) -> T:
         return self._data._apply_binary_op(others, ops.strconcat_op, alignment=join)
 
-    def join(self, sep: str) -> series.Series:
+    def join(self, sep: str) -> T:
         return self._data._apply_unary_op(
             ops.ArrayReduceOp(aggregation=agg_ops.StringAggOp(sep=sep))
         )
 
-    def to_blob(self, connection: Optional[str] = None) -> series.Series:
+    def to_blob(self, connection: Optional[str] = None) -> T:
         """Create a BigFrames Blob series from a series of URIs.
 
         .. note::

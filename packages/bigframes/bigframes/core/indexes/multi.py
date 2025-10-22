@@ -60,7 +60,7 @@ class MultiIndex(Index, vendored_pandas_multindex.MultiIndex):
         import bigframes.operations as ops
         import bigframes.operations.aggregations as agg_ops
 
-        eq_result = self._apply_binop(other, ops.eq_op)._block.expr
+        eq_result = self._apply_binary_op(other, ops.eq_op)._block.expr
 
         as_array = ops.ToArrayOp().as_expr(
             *(
