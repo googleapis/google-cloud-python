@@ -967,7 +967,7 @@ class Block:
         }
 
         dry_run_stats = dry_runs.get_query_stats_with_dtypes(
-            query_job, column_dtypes, self.index.dtypes
+            query_job, column_dtypes, self.index.dtypes, self.expr.node
         )
         return dry_run_stats, query_job
 

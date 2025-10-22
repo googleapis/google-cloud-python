@@ -20,6 +20,7 @@ from google.cloud import bigquery
 import pandas
 
 from bigframes import dtypes
+from bigframes.core import bigframe_node, nodes
 
 
 def get_table_stats(table: bigquery.Table) -> pandas.Series:
@@ -86,13 +87,26 @@ def get_query_stats_with_dtypes(
     query_job: bigquery.QueryJob,
     column_dtypes: Dict[str, dtypes.Dtype],
     index_dtypes: Sequence[dtypes.Dtype],
+    expr_root: bigframe_node.BigFrameNode | None = None,
 ) -> pandas.Series:
+    """
+    Returns important stats from the query job as a Pandas Series. The dtypes information is added too.
+
+    Args:
+        expr_root (Optional):
+            The root of the expression tree that may contain local data, whose size is added to the
+            total bytes count if available.
+
+    """
     index = ["columnCount", "columnDtypes", "indexLevel", "indexDtypes"]
     values = [len(column_dtypes), column_dtypes, len(index_dtypes), index_dtypes]
 
     s = pandas.Series(values, index=index)
 
-    return pandas.concat([s, get_query_stats(query_job)])
+    result = pandas.concat([s, get_query_stats(query_job)])
+    if expr_root is not None:
+        result["totalBytesProcessed"] += get_local_bytes(expr_root)
+    return result
 
 
 def get_query_stats(
@@ -145,4 +159,24 @@ def get_query_stats(
         else None
     )
 
-    return pandas.Series(values, index=index)
+    result = pandas.Series(values, index=index)
+    if result["totalBytesProcessed"] is None:
+        result["totalBytesProcessed"] = 0
+    else:
+        result["totalBytesProcessed"] = int(result["totalBytesProcessed"])
+
+    return result
+
+
+def get_local_bytes(root: bigframe_node.BigFrameNode) -> int:
+    def get_total_bytes(
+        root: bigframe_node.BigFrameNode, child_results: tuple[int, ...]
+    ) -> int:
+        child_bytes = sum(child_results)
+
+        if isinstance(root, nodes.ReadLocalNode):
+            return child_bytes + root.local_data_source.data.get_total_buffer_size()
+
+        return child_bytes
+
+    return root.reduce_up(get_total_bytes)
