@@ -1364,6 +1364,8 @@ class Series(vendored_pandas_series.Series):
     def __abs__(self) -> Series:
         return self.abs()
 
+    __abs__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.abs)
+
     def abs(self) -> Series:
         return self._apply_unary_op(ops.abs_op)
 

@@ -1306,6 +1306,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def __neg__(self) -> DataFrame:
         return self._apply_unary_op(ops.neg_op)
 
+    def __abs__(self) -> DataFrame:
+        return self._apply_unary_op(ops.abs_op)
+
+    __abs__.__doc__ = abs.__doc__
+
     def align(
         self,
         other: typing.Union[DataFrame, bigframes.series.Series],
