@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.27.0](https://github.com/googleapis/python-api-core/compare/v2.26.0...v2.27.0) (2025-10-22)
+
+
+### Features
+
+* Support for async bidi streaming apis ([#836](https://github.com/googleapis/python-api-core/issues/836)) ([9530548](https://github.com/googleapis/python-api-core/commit/95305480d234b6dd0903960db020e55125a997e0))
+
 ## [2.26.0](https://github.com/googleapis/python-api-core/compare/v2.25.2...v2.26.0) (2025-10-08)
 
 
