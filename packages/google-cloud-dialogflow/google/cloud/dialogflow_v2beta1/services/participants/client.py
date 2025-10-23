@@ -375,6 +375,28 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def tool_path(
+        project: str,
+        location: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified tool string."""
+        return "projects/{project}/locations/{location}/tools/{tool}".format(
+            project=project,
+            location=location,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_tool_path(path: str) -> Dict[str, str]:
+        """Parses a tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tools/(?P<tool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -1632,6 +1654,102 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[
             self._transport.streaming_analyze_content
+        ]
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            requests,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def bidi_streaming_analyze_content(
+        self,
+        requests: Optional[
+            Iterator[participant.BidiStreamingAnalyzeContentRequest]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> Iterable[participant.BidiStreamingAnalyzeContentResponse]:
+        r"""Bidirectional endless streaming version of
+        [StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_bidi_streaming_analyze_content():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                config = dialogflow_v2beta1.Config()
+                config.voice_session_config.input_audio_encoding = "AUDIO_ENCODING_ALAW"
+                config.voice_session_config.input_audio_sample_rate_hertz = 3097
+                config.voice_session_config.output_audio_encoding = "OUTPUT_AUDIO_ENCODING_ALAW"
+                config.voice_session_config.output_audio_sample_rate_hertz = 3226
+                config.participant = "participant_value"
+
+                request = dialogflow_v2beta1.BidiStreamingAnalyzeContentRequest(
+                    config=config,
+                )
+
+                # This method expects an iterator which contains
+                # 'dialogflow_v2beta1.BidiStreamingAnalyzeContentRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.bidi_streaming_analyze_content(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
+        Args:
+            requests (Iterator[google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentRequest]):
+                The request object iterator. The request message for
+                [Participants.BidiStreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.BidiStreamingAnalyzeContent].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            Iterable[google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentResponse]:
+                The response message for
+                   [Participants.BidiStreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.BidiStreamingAnalyzeContent].
+
+        """
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.bidi_streaming_analyze_content
         ]
 
         # Validate the universe domain.

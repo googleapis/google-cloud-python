@@ -50,4 +50,5 @@ def sample_list_ad_breaks():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_AdBreakService_ListAdBreaks_sync]

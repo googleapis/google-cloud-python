@@ -22,7 +22,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import audio_config, participant
+from google.cloud.dialogflow_v2beta1.types import audio_config, generator, participant
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -313,6 +313,20 @@ class HumanAgentAssistantConfig(proto.Message):
             enable_query_suggestion_only (bool):
                 Optional. Enable query suggestion only. Supported features:
                 KNOWLEDGE_ASSIST
+            enable_response_debug_info (bool):
+                Optional. Enable returning detailed reasons for suggestion
+                results.
+
+                For example, with this field disabled, Knowledge Search
+                feature returns NotFound error when no answer is found for
+                the input query. Enabling this field will change the
+                behavior to return an OK response with detailed information
+                indicating the lack of results.
+
+                Supported features: KNOWLEDGE_SEARCH, KNOWLEDGE_ASSIST
+            rai_settings (google.cloud.dialogflow_v2beta1.types.RaiSettings):
+                Optional. Settings for Responsible AI checks. Supported
+                features: KNOWLEDGE_ASSIST
             suggestion_trigger_settings (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionTriggerSettings):
                 Settings of suggestion trigger.
 
@@ -350,6 +364,15 @@ class HumanAgentAssistantConfig(proto.Message):
         enable_query_suggestion_only: bool = proto.Field(
             proto.BOOL,
             number=17,
+        )
+        enable_response_debug_info: bool = proto.Field(
+            proto.BOOL,
+            number=18,
+        )
+        rai_settings: generator.RaiSettings = proto.Field(
+            proto.MESSAGE,
+            number=19,
+            message=generator.RaiSettings,
         )
         suggestion_trigger_settings: "HumanAgentAssistantConfig.SuggestionTriggerSettings" = proto.Field(
             proto.MESSAGE,
@@ -404,6 +427,22 @@ class HumanAgentAssistantConfig(proto.Message):
                 configured and enable_event_based_suggestion must be set to
                 true to receive the responses from high latency features in
                 Pub/Sub. High latency feature(s): KNOWLEDGE_ASSIST
+            skip_empty_event_based_suggestion (bool):
+                Optional. Enable skipping event based
+                suggestion if the suggestion is empty.
+
+                For example, with this field disabled, Knowledge
+                Assist feature sends a Pub/Sub message when
+                there are no suggestions. Enabling this field
+                will change the behavior to skip the Pub/Sub
+                message in this situation.
+            use_unredacted_conversation_data (bool):
+                Optional. If true, use unredacted transcript data (Supported
+                features: AI_COACH) and use unredacted ingested context
+                (Supported features: All Agent Assist features)
+            enable_async_tool_call (bool):
+                Optional. If true, enable asynchronous
+                execution of tools.
         """
 
         feature_configs: MutableSequence[
@@ -424,6 +463,18 @@ class HumanAgentAssistantConfig(proto.Message):
         disable_high_latency_features_sync_delivery: bool = proto.Field(
             proto.BOOL,
             number=5,
+        )
+        skip_empty_event_based_suggestion: bool = proto.Field(
+            proto.BOOL,
+            number=6,
+        )
+        use_unredacted_conversation_data: bool = proto.Field(
+            proto.BOOL,
+            number=8,
+        )
+        enable_async_tool_call: bool = proto.Field(
+            proto.BOOL,
+            number=9,
         )
 
     class SuggestionQueryConfig(proto.Message):
@@ -722,9 +773,16 @@ class HumanAgentAssistantConfig(proto.Message):
             baseline_model_version (str):
                 Version of current baseline model. It will be ignored if
                 [model][google.cloud.dialogflow.v2beta1.HumanAgentAssistantConfig.ConversationModelConfig.model]
-                is set. Valid versions are: Article Suggestion baseline
-                model: - 0.9 - 1.0 (default) Summarization baseline model: -
-                1.0
+                is set. Valid versions are:
+
+                - Article Suggestion baseline model:
+
+                  - 0.9
+                  - 1.0 (default)
+
+                - Summarization baseline model:
+
+                  - 1.0
         """
 
         model: str = proto.Field(

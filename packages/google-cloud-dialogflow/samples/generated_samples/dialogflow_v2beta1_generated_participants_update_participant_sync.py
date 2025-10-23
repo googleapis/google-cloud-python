@@ -39,13 +39,13 @@ def sample_update_participant():
     client = dialogflow_v2beta1.ParticipantsClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.UpdateParticipantRequest(
-    )
+    request = dialogflow_v2beta1.UpdateParticipantRequest()
 
     # Make the request
     response = client.update_participant(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_Participants_UpdateParticipant_sync]

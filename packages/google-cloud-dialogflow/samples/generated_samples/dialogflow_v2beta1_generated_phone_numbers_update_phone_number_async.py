@@ -39,13 +39,13 @@ async def sample_update_phone_number():
     client = dialogflow_v2beta1.PhoneNumbersAsyncClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.UpdatePhoneNumberRequest(
-    )
+    request = dialogflow_v2beta1.UpdatePhoneNumberRequest()
 
     # Make the request
     response = await client.update_phone_number(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_PhoneNumbers_UpdatePhoneNumber_async]

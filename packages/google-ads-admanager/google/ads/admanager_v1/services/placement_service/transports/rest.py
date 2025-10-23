@@ -73,6 +73,54 @@ class PlacementServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomPlacementServiceInterceptor(PlacementServiceRestInterceptor):
+            def pre_batch_activate_placements(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_activate_placements(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_archive_placements(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_archive_placements(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_create_placements(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_placements(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_deactivate_placements(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_deactivate_placements(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_update_placements(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_update_placements(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_placement(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_placement(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_placement(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -89,11 +137,328 @@ class PlacementServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_placement(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_placement(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = PlacementServiceRestTransport(interceptor=MyCustomPlacementServiceInterceptor())
         client = PlacementServiceClient(transport=transport)
 
 
     """
+
+    def pre_batch_activate_placements(
+        self,
+        request: placement_service.BatchActivatePlacementsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchActivatePlacementsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_activate_placements
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the PlacementService server.
+        """
+        return request, metadata
+
+    def post_batch_activate_placements(
+        self, response: placement_service.BatchActivatePlacementsResponse
+    ) -> placement_service.BatchActivatePlacementsResponse:
+        """Post-rpc interceptor for batch_activate_placements
+
+        DEPRECATED. Please use the `post_batch_activate_placements_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the PlacementService server but before
+        it is returned to user code. This `post_batch_activate_placements` interceptor runs
+        before the `post_batch_activate_placements_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_activate_placements_with_metadata(
+        self,
+        response: placement_service.BatchActivatePlacementsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchActivatePlacementsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_activate_placements
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PlacementService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_activate_placements_with_metadata`
+        interceptor in new development instead of the `post_batch_activate_placements` interceptor.
+        When both interceptors are used, this `post_batch_activate_placements_with_metadata` interceptor runs after the
+        `post_batch_activate_placements` interceptor. The (possibly modified) response returned by
+        `post_batch_activate_placements` will be passed to
+        `post_batch_activate_placements_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_archive_placements(
+        self,
+        request: placement_service.BatchArchivePlacementsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchArchivePlacementsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_archive_placements
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the PlacementService server.
+        """
+        return request, metadata
+
+    def post_batch_archive_placements(
+        self, response: placement_service.BatchArchivePlacementsResponse
+    ) -> placement_service.BatchArchivePlacementsResponse:
+        """Post-rpc interceptor for batch_archive_placements
+
+        DEPRECATED. Please use the `post_batch_archive_placements_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the PlacementService server but before
+        it is returned to user code. This `post_batch_archive_placements` interceptor runs
+        before the `post_batch_archive_placements_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_archive_placements_with_metadata(
+        self,
+        response: placement_service.BatchArchivePlacementsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchArchivePlacementsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_archive_placements
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PlacementService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_archive_placements_with_metadata`
+        interceptor in new development instead of the `post_batch_archive_placements` interceptor.
+        When both interceptors are used, this `post_batch_archive_placements_with_metadata` interceptor runs after the
+        `post_batch_archive_placements` interceptor. The (possibly modified) response returned by
+        `post_batch_archive_placements` will be passed to
+        `post_batch_archive_placements_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_create_placements(
+        self,
+        request: placement_service.BatchCreatePlacementsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchCreatePlacementsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_create_placements
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the PlacementService server.
+        """
+        return request, metadata
+
+    def post_batch_create_placements(
+        self, response: placement_service.BatchCreatePlacementsResponse
+    ) -> placement_service.BatchCreatePlacementsResponse:
+        """Post-rpc interceptor for batch_create_placements
+
+        DEPRECATED. Please use the `post_batch_create_placements_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the PlacementService server but before
+        it is returned to user code. This `post_batch_create_placements` interceptor runs
+        before the `post_batch_create_placements_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_create_placements_with_metadata(
+        self,
+        response: placement_service.BatchCreatePlacementsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchCreatePlacementsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_create_placements
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PlacementService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_placements_with_metadata`
+        interceptor in new development instead of the `post_batch_create_placements` interceptor.
+        When both interceptors are used, this `post_batch_create_placements_with_metadata` interceptor runs after the
+        `post_batch_create_placements` interceptor. The (possibly modified) response returned by
+        `post_batch_create_placements` will be passed to
+        `post_batch_create_placements_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_deactivate_placements(
+        self,
+        request: placement_service.BatchDeactivatePlacementsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchDeactivatePlacementsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_deactivate_placements
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the PlacementService server.
+        """
+        return request, metadata
+
+    def post_batch_deactivate_placements(
+        self, response: placement_service.BatchDeactivatePlacementsResponse
+    ) -> placement_service.BatchDeactivatePlacementsResponse:
+        """Post-rpc interceptor for batch_deactivate_placements
+
+        DEPRECATED. Please use the `post_batch_deactivate_placements_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the PlacementService server but before
+        it is returned to user code. This `post_batch_deactivate_placements` interceptor runs
+        before the `post_batch_deactivate_placements_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_deactivate_placements_with_metadata(
+        self,
+        response: placement_service.BatchDeactivatePlacementsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchDeactivatePlacementsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_deactivate_placements
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PlacementService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_deactivate_placements_with_metadata`
+        interceptor in new development instead of the `post_batch_deactivate_placements` interceptor.
+        When both interceptors are used, this `post_batch_deactivate_placements_with_metadata` interceptor runs after the
+        `post_batch_deactivate_placements` interceptor. The (possibly modified) response returned by
+        `post_batch_deactivate_placements` will be passed to
+        `post_batch_deactivate_placements_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_update_placements(
+        self,
+        request: placement_service.BatchUpdatePlacementsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchUpdatePlacementsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_update_placements
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the PlacementService server.
+        """
+        return request, metadata
+
+    def post_batch_update_placements(
+        self, response: placement_service.BatchUpdatePlacementsResponse
+    ) -> placement_service.BatchUpdatePlacementsResponse:
+        """Post-rpc interceptor for batch_update_placements
+
+        DEPRECATED. Please use the `post_batch_update_placements_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the PlacementService server but before
+        it is returned to user code. This `post_batch_update_placements` interceptor runs
+        before the `post_batch_update_placements_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_update_placements_with_metadata(
+        self,
+        response: placement_service.BatchUpdatePlacementsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.BatchUpdatePlacementsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_update_placements
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PlacementService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_placements_with_metadata`
+        interceptor in new development instead of the `post_batch_update_placements` interceptor.
+        When both interceptors are used, this `post_batch_update_placements_with_metadata` interceptor runs after the
+        `post_batch_update_placements` interceptor. The (possibly modified) response returned by
+        `post_batch_update_placements` will be passed to
+        `post_batch_update_placements_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_placement(
+        self,
+        request: placement_service.CreatePlacementRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.CreatePlacementRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_placement
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the PlacementService server.
+        """
+        return request, metadata
+
+    def post_create_placement(
+        self, response: placement_messages.Placement
+    ) -> placement_messages.Placement:
+        """Post-rpc interceptor for create_placement
+
+        DEPRECATED. Please use the `post_create_placement_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the PlacementService server but before
+        it is returned to user code. This `post_create_placement` interceptor runs
+        before the `post_create_placement_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_placement_with_metadata(
+        self,
+        response: placement_messages.Placement,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[placement_messages.Placement, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_placement
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PlacementService server but before it is returned to user code.
+
+        We recommend only using this `post_create_placement_with_metadata`
+        interceptor in new development instead of the `post_create_placement` interceptor.
+        When both interceptors are used, this `post_create_placement_with_metadata` interceptor runs after the
+        `post_create_placement` interceptor. The (possibly modified) response returned by
+        `post_create_placement` will be passed to
+        `post_create_placement_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_placement(
         self,
@@ -191,6 +556,55 @@ class PlacementServiceRestInterceptor:
         `post_list_placements` interceptor. The (possibly modified) response returned by
         `post_list_placements` will be passed to
         `post_list_placements_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_placement(
+        self,
+        request: placement_service.UpdatePlacementRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.UpdatePlacementRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_placement
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the PlacementService server.
+        """
+        return request, metadata
+
+    def post_update_placement(
+        self, response: placement_messages.Placement
+    ) -> placement_messages.Placement:
+        """Post-rpc interceptor for update_placement
+
+        DEPRECATED. Please use the `post_update_placement_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the PlacementService server but before
+        it is returned to user code. This `post_update_placement` interceptor runs
+        before the `post_update_placement_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_placement_with_metadata(
+        self,
+        response: placement_messages.Placement,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[placement_messages.Placement, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_placement
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the PlacementService server but before it is returned to user code.
+
+        We recommend only using this `post_update_placement_with_metadata`
+        interceptor in new development instead of the `post_update_placement` interceptor.
+        When both interceptors are used, this `post_update_placement_with_metadata` interceptor runs after the
+        `post_update_placement` interceptor. The (possibly modified) response returned by
+        `post_update_placement` will be passed to
+        `post_update_placement_with_metadata`.
         """
         return response, metadata
 
@@ -306,6 +720,958 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PlacementServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _BatchActivatePlacements(
+        _BasePlacementServiceRestTransport._BaseBatchActivatePlacements,
+        PlacementServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("PlacementServiceRestTransport.BatchActivatePlacements")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: placement_service.BatchActivatePlacementsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> placement_service.BatchActivatePlacementsResponse:
+            r"""Call the batch activate placements method over HTTP.
+
+            Args:
+                request (~.placement_service.BatchActivatePlacementsRequest):
+                    The request object. Request message for ``BatchActivatePlacements`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.placement_service.BatchActivatePlacementsResponse:
+                    Response object for ``BatchActivatePlacements`` method.
+            """
+
+            http_options = (
+                _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_activate_placements(
+                request, metadata
+            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.BatchActivatePlacements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchActivatePlacements",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                PlacementServiceRestTransport._BatchActivatePlacements._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = placement_service.BatchActivatePlacementsResponse()
+            pb_resp = placement_service.BatchActivatePlacementsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_activate_placements(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_activate_placements_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        placement_service.BatchActivatePlacementsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceClient.batch_activate_placements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchActivatePlacements",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchArchivePlacements(
+        _BasePlacementServiceRestTransport._BaseBatchArchivePlacements,
+        PlacementServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("PlacementServiceRestTransport.BatchArchivePlacements")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: placement_service.BatchArchivePlacementsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> placement_service.BatchArchivePlacementsResponse:
+            r"""Call the batch archive placements method over HTTP.
+
+            Args:
+                request (~.placement_service.BatchArchivePlacementsRequest):
+                    The request object. Request message for ``BatchArchivePlacements`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.placement_service.BatchArchivePlacementsResponse:
+                    Response object for ``BatchArchivePlacements`` method.
+            """
+
+            http_options = (
+                _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_archive_placements(
+                request, metadata
+            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.BatchArchivePlacements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchArchivePlacements",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                PlacementServiceRestTransport._BatchArchivePlacements._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = placement_service.BatchArchivePlacementsResponse()
+            pb_resp = placement_service.BatchArchivePlacementsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_archive_placements(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_archive_placements_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        placement_service.BatchArchivePlacementsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceClient.batch_archive_placements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchArchivePlacements",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchCreatePlacements(
+        _BasePlacementServiceRestTransport._BaseBatchCreatePlacements,
+        PlacementServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("PlacementServiceRestTransport.BatchCreatePlacements")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: placement_service.BatchCreatePlacementsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> placement_service.BatchCreatePlacementsResponse:
+            r"""Call the batch create placements method over HTTP.
+
+            Args:
+                request (~.placement_service.BatchCreatePlacementsRequest):
+                    The request object. Request object for ``BatchCreatePlacements`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.placement_service.BatchCreatePlacementsResponse:
+                    Response object for ``BatchCreatePlacements`` method.
+            """
+
+            http_options = (
+                _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_create_placements(
+                request, metadata
+            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.BatchCreatePlacements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchCreatePlacements",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                PlacementServiceRestTransport._BatchCreatePlacements._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = placement_service.BatchCreatePlacementsResponse()
+            pb_resp = placement_service.BatchCreatePlacementsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_create_placements(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_placements_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        placement_service.BatchCreatePlacementsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceClient.batch_create_placements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchCreatePlacements",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchDeactivatePlacements(
+        _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements,
+        PlacementServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("PlacementServiceRestTransport.BatchDeactivatePlacements")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: placement_service.BatchDeactivatePlacementsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> placement_service.BatchDeactivatePlacementsResponse:
+            r"""Call the batch deactivate
+            placements method over HTTP.
+
+                Args:
+                    request (~.placement_service.BatchDeactivatePlacementsRequest):
+                        The request object. Request message for ``BatchDeactivatePlacements``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.placement_service.BatchDeactivatePlacementsResponse:
+                        Response object for ``BatchDeactivatePlacements``
+                    method.
+
+            """
+
+            http_options = (
+                _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_deactivate_placements(
+                request, metadata
+            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.BatchDeactivatePlacements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchDeactivatePlacements",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                PlacementServiceRestTransport._BatchDeactivatePlacements._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = placement_service.BatchDeactivatePlacementsResponse()
+            pb_resp = placement_service.BatchDeactivatePlacementsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_deactivate_placements(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_deactivate_placements_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        placement_service.BatchDeactivatePlacementsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceClient.batch_deactivate_placements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchDeactivatePlacements",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchUpdatePlacements(
+        _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements,
+        PlacementServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("PlacementServiceRestTransport.BatchUpdatePlacements")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: placement_service.BatchUpdatePlacementsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> placement_service.BatchUpdatePlacementsResponse:
+            r"""Call the batch update placements method over HTTP.
+
+            Args:
+                request (~.placement_service.BatchUpdatePlacementsRequest):
+                    The request object. Request object for ``BatchUpdatePlacements`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.placement_service.BatchUpdatePlacementsResponse:
+                    Response object for ``BatchUpdatePlacements`` method.
+            """
+
+            http_options = (
+                _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_batch_update_placements(
+                request, metadata
+            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.BatchUpdatePlacements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchUpdatePlacements",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                PlacementServiceRestTransport._BatchUpdatePlacements._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = placement_service.BatchUpdatePlacementsResponse()
+            pb_resp = placement_service.BatchUpdatePlacementsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_update_placements(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_update_placements_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        placement_service.BatchUpdatePlacementsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceClient.batch_update_placements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "BatchUpdatePlacements",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreatePlacement(
+        _BasePlacementServiceRestTransport._BaseCreatePlacement,
+        PlacementServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("PlacementServiceRestTransport.CreatePlacement")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: placement_service.CreatePlacementRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> placement_messages.Placement:
+            r"""Call the create placement method over HTTP.
+
+            Args:
+                request (~.placement_service.CreatePlacementRequest):
+                    The request object. Request object for ``CreatePlacement`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.placement_messages.Placement:
+                    The ``Placement`` resource.
+            """
+
+            http_options = (
+                _BasePlacementServiceRestTransport._BaseCreatePlacement._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_placement(
+                request, metadata
+            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.CreatePlacement",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "CreatePlacement",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = PlacementServiceRestTransport._CreatePlacement._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = placement_messages.Placement()
+            pb_resp = placement_messages.Placement.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_placement(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_placement_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = placement_messages.Placement.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceClient.create_placement",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "CreatePlacement",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetPlacement(
         _BasePlacementServiceRestTransport._BaseGetPlacement, PlacementServiceRestStub
@@ -599,6 +1965,224 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
             return resp
 
+    class _UpdatePlacement(
+        _BasePlacementServiceRestTransport._BaseUpdatePlacement,
+        PlacementServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("PlacementServiceRestTransport.UpdatePlacement")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: placement_service.UpdatePlacementRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> placement_messages.Placement:
+            r"""Call the update placement method over HTTP.
+
+            Args:
+                request (~.placement_service.UpdatePlacementRequest):
+                    The request object. Request object for ``UpdatePlacement`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.placement_messages.Placement:
+                    The ``Placement`` resource.
+            """
+
+            http_options = (
+                _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_placement(
+                request, metadata
+            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.UpdatePlacement",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "UpdatePlacement",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = PlacementServiceRestTransport._UpdatePlacement._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = placement_messages.Placement()
+            pb_resp = placement_messages.Placement.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_placement(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_placement_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = placement_messages.Placement.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceClient.update_placement",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "UpdatePlacement",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    @property
+    def batch_activate_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchActivatePlacementsRequest],
+        placement_service.BatchActivatePlacementsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchActivatePlacements(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_archive_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchArchivePlacementsRequest],
+        placement_service.BatchArchivePlacementsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchArchivePlacements(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_create_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchCreatePlacementsRequest],
+        placement_service.BatchCreatePlacementsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreatePlacements(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_deactivate_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchDeactivatePlacementsRequest],
+        placement_service.BatchDeactivatePlacementsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchDeactivatePlacements(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_update_placements(
+        self,
+    ) -> Callable[
+        [placement_service.BatchUpdatePlacementsRequest],
+        placement_service.BatchUpdatePlacementsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchUpdatePlacements(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_placement(
+        self,
+    ) -> Callable[
+        [placement_service.CreatePlacementRequest], placement_messages.Placement
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreatePlacement(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def get_placement(
         self,
@@ -619,6 +2203,16 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPlacements(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_placement(
+        self,
+    ) -> Callable[
+        [placement_service.UpdatePlacementRequest], placement_messages.Placement
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdatePlacement(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):

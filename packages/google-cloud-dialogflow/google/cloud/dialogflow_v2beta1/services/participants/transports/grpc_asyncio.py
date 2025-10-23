@@ -529,6 +529,38 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
         return self._stubs["streaming_analyze_content"]
 
     @property
+    def bidi_streaming_analyze_content(
+        self,
+    ) -> Callable[
+        [participant.BidiStreamingAnalyzeContentRequest],
+        Awaitable[participant.BidiStreamingAnalyzeContentResponse],
+    ]:
+        r"""Return a callable for the bidi streaming analyze content method over gRPC.
+
+        Bidirectional endless streaming version of
+        [StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent].
+
+        Returns:
+            Callable[[~.BidiStreamingAnalyzeContentRequest],
+                    Awaitable[~.BidiStreamingAnalyzeContentResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "bidi_streaming_analyze_content" not in self._stubs:
+            self._stubs[
+                "bidi_streaming_analyze_content"
+            ] = self._logged_channel.stream_stream(
+                "/google.cloud.dialogflow.v2beta1.Participants/BidiStreamingAnalyzeContent",
+                request_serializer=participant.BidiStreamingAnalyzeContentRequest.serialize,
+                response_deserializer=participant.BidiStreamingAnalyzeContentResponse.deserialize,
+            )
+        return self._stubs["bidi_streaming_analyze_content"]
+
+    @property
     def suggest_articles(
         self,
     ) -> Callable[
@@ -786,6 +818,18 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
             self.streaming_analyze_content: self._wrap_method(
                 self.streaming_analyze_content,
                 default_timeout=220.0,
+                client_info=client_info,
+            ),
+            self.bidi_streaming_analyze_content: self._wrap_method(
+                self.bidi_streaming_analyze_content,
+                default_retry=retries.AsyncRetry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(),
+                    deadline=1800.0,
+                ),
+                default_timeout=1800.0,
                 client_info=client_info,
             ),
             self.suggest_articles: self._wrap_method(

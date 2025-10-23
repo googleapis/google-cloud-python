@@ -49,4 +49,5 @@ def sample_get_bandwidth_group():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_BandwidthGroupService_GetBandwidthGroup_sync]

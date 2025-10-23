@@ -39,13 +39,13 @@ async def sample_update_version():
     client = dialogflow_v2.VersionsAsyncClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2.UpdateVersionRequest(
-    )
+    request = dialogflow_v2.UpdateVersionRequest()
 
     # Make the request
     response = await client.update_version(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2_generated_Versions_UpdateVersion_async]

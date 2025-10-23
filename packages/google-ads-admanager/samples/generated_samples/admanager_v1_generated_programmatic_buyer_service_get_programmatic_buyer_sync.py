@@ -49,4 +49,5 @@ def sample_get_programmatic_buyer():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_ProgrammaticBuyerService_GetProgrammaticBuyer_sync]

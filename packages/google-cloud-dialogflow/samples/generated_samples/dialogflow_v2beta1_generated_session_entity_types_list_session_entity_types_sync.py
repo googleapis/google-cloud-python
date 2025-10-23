@@ -50,4 +50,5 @@ def sample_list_session_entity_types():
     for response in page_result:
         print(response)
 
+
 # [END dialogflow_v2beta1_generated_SessionEntityTypes_ListSessionEntityTypes_sync]

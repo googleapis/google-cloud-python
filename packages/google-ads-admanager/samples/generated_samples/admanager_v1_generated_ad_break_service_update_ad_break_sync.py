@@ -39,13 +39,13 @@ def sample_update_ad_break():
     client = admanager_v1.AdBreakServiceClient()
 
     # Initialize request argument(s)
-    request = admanager_v1.UpdateAdBreakRequest(
-    )
+    request = admanager_v1.UpdateAdBreakRequest()
 
     # Make the request
     response = client.update_ad_break(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END admanager_v1_generated_AdBreakService_UpdateAdBreak_sync]

@@ -43,7 +43,7 @@ def sample_update_session_entity_type():
     session_entity_type.name = "name_value"
     session_entity_type.entity_override_mode = "ENTITY_OVERRIDE_MODE_SUPPLEMENT"
     session_entity_type.entities.value = "value_value"
-    session_entity_type.entities.synonyms = ['synonyms_value1', 'synonyms_value2']
+    session_entity_type.entities.synonyms = ["synonyms_value1", "synonyms_value2"]
 
     request = dialogflow_v2.UpdateSessionEntityTypeRequest(
         session_entity_type=session_entity_type,
@@ -54,5 +54,6 @@ def sample_update_session_entity_type():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2_generated_SessionEntityTypes_UpdateSessionEntityType_sync]

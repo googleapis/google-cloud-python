@@ -50,4 +50,5 @@ def sample_list_roles():
     for response in page_result:
         print(response)
 
+
 # [END admanager_v1_generated_RoleService_ListRoles_sync]

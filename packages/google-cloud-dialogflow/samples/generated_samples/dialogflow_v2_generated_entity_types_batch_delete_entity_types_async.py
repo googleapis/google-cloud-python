@@ -41,7 +41,7 @@ async def sample_batch_delete_entity_types():
     # Initialize request argument(s)
     request = dialogflow_v2.BatchDeleteEntityTypesRequest(
         parent="parent_value",
-        entity_type_names=['entity_type_names_value1', 'entity_type_names_value2'],
+        entity_type_names=["entity_type_names_value1", "entity_type_names_value2"],
     )
 
     # Make the request
@@ -53,5 +53,6 @@ async def sample_batch_delete_entity_types():
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2_generated_EntityTypes_BatchDeleteEntityTypes_async]

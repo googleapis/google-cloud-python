@@ -49,4 +49,5 @@ def sample_get_geo_target():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_GeoTargetService_GetGeoTarget_sync]

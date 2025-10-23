@@ -39,13 +39,13 @@ def sample_update_environment():
     client = dialogflow_v2.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2.UpdateEnvironmentRequest(
-    )
+    request = dialogflow_v2.UpdateEnvironmentRequest()
 
     # Make the request
     response = client.update_environment(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2_generated_Environments_UpdateEnvironment_sync]

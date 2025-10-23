@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 from google.type import localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -59,6 +60,10 @@ class Review(proto.Message):
             the review.
         google_maps_uri (str):
             A link to show the review on Google Maps.
+        visit_date (google.type.date_pb2.Date):
+            The date when the author visited the place.
+            This is truncated to the year and month of the
+            visit.
     """
 
     name: str = proto.Field(
@@ -100,6 +105,11 @@ class Review(proto.Message):
     google_maps_uri: str = proto.Field(
         proto.STRING,
         number=16,
+    )
+    visit_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=date_pb2.Date,
     )
 
 

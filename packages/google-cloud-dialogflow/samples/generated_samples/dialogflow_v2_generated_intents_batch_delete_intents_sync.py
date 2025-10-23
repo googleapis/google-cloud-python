@@ -57,4 +57,5 @@ def sample_batch_delete_intents():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_Intents_BatchDeleteIntents_sync]

@@ -178,6 +178,18 @@ class ParticipantsTransport(abc.ABC):
                 default_timeout=220.0,
                 client_info=client_info,
             ),
+            self.bidi_streaming_analyze_content: gapic_v1.method.wrap_method(
+                self.bidi_streaming_analyze_content,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(),
+                    deadline=1800.0,
+                ),
+                default_timeout=1800.0,
+                client_info=client_info,
+            ),
             self.suggest_articles: gapic_v1.method.wrap_method(
                 self.suggest_articles,
                 default_timeout=None,
@@ -303,6 +315,18 @@ class ParticipantsTransport(abc.ABC):
         Union[
             participant.StreamingAnalyzeContentResponse,
             Awaitable[participant.StreamingAnalyzeContentResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def bidi_streaming_analyze_content(
+        self,
+    ) -> Callable[
+        [participant.BidiStreamingAnalyzeContentRequest],
+        Union[
+            participant.BidiStreamingAnalyzeContentResponse,
+            Awaitable[participant.BidiStreamingAnalyzeContentResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -39,13 +39,13 @@ def sample_update_private_auction_deal():
     client = admanager_v1.PrivateAuctionDealServiceClient()
 
     # Initialize request argument(s)
-    request = admanager_v1.UpdatePrivateAuctionDealRequest(
-    )
+    request = admanager_v1.UpdatePrivateAuctionDealRequest()
 
     # Make the request
     response = client.update_private_auction_deal(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END admanager_v1_generated_PrivateAuctionDealService_UpdatePrivateAuctionDeal_sync]

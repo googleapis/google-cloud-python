@@ -39,8 +39,7 @@ def sample_fetch_report_result_rows():
     client = admanager_v1.ReportServiceClient()
 
     # Initialize request argument(s)
-    request = admanager_v1.FetchReportResultRowsRequest(
-    )
+    request = admanager_v1.FetchReportResultRowsRequest()
 
     # Make the request
     page_result = client.fetch_report_result_rows(request=request)
@@ -48,5 +47,6 @@ def sample_fetch_report_result_rows():
     # Handle the response
     for response in page_result:
         print(response)
+
 
 # [END admanager_v1_generated_ReportService_FetchReportResultRows_sync]

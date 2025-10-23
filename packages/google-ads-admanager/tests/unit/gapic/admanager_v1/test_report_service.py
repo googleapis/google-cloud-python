@@ -72,7 +72,12 @@ from google.ads.admanager_v1.services.report_service import (
     pagers,
     transports,
 )
-from google.ads.admanager_v1.types import report_messages, report_service
+from google.ads.admanager_v1.types import (
+    report_definition,
+    report_messages,
+    report_service,
+    report_value,
+)
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -2048,9 +2053,9 @@ def test_fetch_report_result_rows_rest_pager(transport: str = "rest"):
         response = (
             report_service.FetchReportResultRowsResponse(
                 rows=[
-                    report_messages.Report.DataTable.Row(),
-                    report_messages.Report.DataTable.Row(),
-                    report_messages.Report.DataTable.Row(),
+                    report_messages.ReportDataTable.Row(),
+                    report_messages.ReportDataTable.Row(),
+                    report_messages.ReportDataTable.Row(),
                 ],
                 next_page_token="abc",
             ),
@@ -2060,14 +2065,14 @@ def test_fetch_report_result_rows_rest_pager(transport: str = "rest"):
             ),
             report_service.FetchReportResultRowsResponse(
                 rows=[
-                    report_messages.Report.DataTable.Row(),
+                    report_messages.ReportDataTable.Row(),
                 ],
                 next_page_token="ghi",
             ),
             report_service.FetchReportResultRowsResponse(
                 rows=[
-                    report_messages.Report.DataTable.Row(),
-                    report_messages.Report.DataTable.Row(),
+                    report_messages.ReportDataTable.Row(),
+                    report_messages.ReportDataTable.Row(),
                 ],
             ),
         )
@@ -2090,7 +2095,7 @@ def test_fetch_report_result_rows_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, report_messages.Report.DataTable.Row) for i in results)
+        assert all(isinstance(i, report_messages.ReportDataTable.Row) for i in results)
 
         pages = list(client.fetch_report_result_rows(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -2485,12 +2490,12 @@ def test_create_report_rest_call_success(request_type):
         "report_id": 968,
         "visibility": 1,
         "report_definition": {
-            "dimensions": [242],
-            "metrics": [61],
+            "dimensions": [575],
+            "metrics": [223],
             "filters": [
                 {
                     "field_filter": {
-                        "field": {"dimension": 242, "metric": 61},
+                        "field": {"dimension": 575, "metric": 223},
                         "operation": 1,
                         "values": [
                             {
@@ -2502,10 +2507,11 @@ def test_create_report_rest_call_success(request_type):
                                 "string_list_value": {
                                     "values": ["values_value1", "values_value2"]
                                 },
+                                "double_list_value": {"values": [0.657, 0.658]},
                                 "bytes_value": b"bytes_value_blob",
                             }
                         ],
-                        "slice_": {"dimension": 242, "value": {}},
+                        "slice_": {"dimension": 575, "value": {}},
                         "time_period_index": 1800,
                         "metric_value_type": 1,
                     },
@@ -2771,12 +2777,12 @@ def test_update_report_rest_call_success(request_type):
         "report_id": 968,
         "visibility": 1,
         "report_definition": {
-            "dimensions": [242],
-            "metrics": [61],
+            "dimensions": [575],
+            "metrics": [223],
             "filters": [
                 {
                     "field_filter": {
-                        "field": {"dimension": 242, "metric": 61},
+                        "field": {"dimension": 575, "metric": 223},
                         "operation": 1,
                         "values": [
                             {
@@ -2788,10 +2794,11 @@ def test_update_report_rest_call_success(request_type):
                                 "string_list_value": {
                                     "values": ["values_value1", "values_value2"]
                                 },
+                                "double_list_value": {"values": [0.657, 0.658]},
                                 "bytes_value": b"bytes_value_blob",
                             }
                         ],
-                        "slice_": {"dimension": 242, "value": {}},
+                        "slice_": {"dimension": 575, "value": {}},
                         "time_period_index": 1800,
                         "metric_value_type": 1,
                     },

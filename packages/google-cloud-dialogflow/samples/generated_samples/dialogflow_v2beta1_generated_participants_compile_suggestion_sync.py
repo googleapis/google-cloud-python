@@ -39,13 +39,13 @@ def sample_compile_suggestion():
     client = dialogflow_v2beta1.ParticipantsClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.CompileSuggestionRequest(
-    )
+    request = dialogflow_v2beta1.CompileSuggestionRequest()
 
     # Make the request
     response = client.compile_suggestion(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END dialogflow_v2beta1_generated_Participants_CompileSuggestion_sync]

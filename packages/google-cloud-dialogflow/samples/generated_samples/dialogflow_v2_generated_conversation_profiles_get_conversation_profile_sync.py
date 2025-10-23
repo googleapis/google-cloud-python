@@ -49,4 +49,5 @@ def sample_get_conversation_profile():
     # Handle the response
     print(response)
 
+
 # [END dialogflow_v2_generated_ConversationProfiles_GetConversationProfile_sync]

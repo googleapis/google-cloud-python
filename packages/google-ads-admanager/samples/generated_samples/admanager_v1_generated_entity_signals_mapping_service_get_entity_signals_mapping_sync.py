@@ -49,4 +49,5 @@ def sample_get_entity_signals_mapping():
     # Handle the response
     print(response)
 
+
 # [END admanager_v1_generated_EntitySignalsMappingService_GetEntitySignalsMapping_sync]
