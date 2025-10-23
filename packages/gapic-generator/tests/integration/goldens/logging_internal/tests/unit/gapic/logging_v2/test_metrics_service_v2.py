@@ -3249,6 +3249,7 @@ def test_metrics_service_v2_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
+@pytest.mark.filterwarnings("ignore::FutureWarning")
 @pytest.mark.parametrize("transport_class", [transports.MetricsServiceV2GrpcTransport, transports.MetricsServiceV2GrpcAsyncIOTransport])
 def test_metrics_service_v2_transport_channel_mtls_with_client_cert_source(
     transport_class

@@ -61,6 +61,8 @@ def unit(session):
         "pyfakefs",
         "grpcio-status",
         "proto-plus",
+        "setuptools",  # TODO: Remove when not needed in __init__.py.j2
+        "packaging",  # TODO: Remove when not needed in __init__.py.j2
     )
     session.install("-e", ".")
     session.run(
@@ -482,6 +484,8 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
         "pytest-xdist",
         "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
+        "setuptools",  # TODO: Remove when not needed in __init__.py.j2
+        "packaging",  # TODO: Remove when not needed in __init__.py.j2
     )
     # Run the tests.
     # NOTE: async rest is not supported against the minimum supported version of google-api-core.
@@ -596,6 +600,8 @@ def showcase_mypy(
         "types-protobuf",
         "types-requests",
         "types-dataclasses",
+        "setuptools",  # TODO: Remove when not needed in __init__.py.j2
+        "packaging",  # TODO: Remove when not needed in __init__.py.j2
     )
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
@@ -726,6 +732,8 @@ def mypy(session):
         "types-PyYAML",
         "types-dataclasses",
         "click==8.1.3",
+        "setuptools",  # TODO: Remove when not needed in __init__.py.j2
+        "packaging",  # TODO: Remove when not needed in __init__.py.j2
     )
     session.install(".")
     session.run("mypy", "-p", "gapic")

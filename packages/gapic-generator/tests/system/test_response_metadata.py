@@ -84,6 +84,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             ("rest_asyncio", ("X-Showcase-Request-Something3", "something_value3")),
         ],
     )
+    @pytest.mark.filterwarnings("ignore::FutureWarning")
     @pytest.mark.asyncio
     async def test_metadata_response_unary_async(
         intercepted_echo_grpc_async,
