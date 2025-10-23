@@ -27,8 +27,27 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
     microgenerator=True,
+    default_python_version="3.10",
+    system_test_python_versions=["3.10"],
 )
 s.move(templated_files, excludes=["docs/multiprocessing.rst", "README.rst"])
+
+s.replace(
+    ".github/workflows/lint.yml",
+    'python-version: "3.8"',
+    'python-version: "3.10"'
+)
+
+s.replace(
+    ".kokoro/presubmit/presubmit.cfg",
+    """# Format: //devtools/kokoro/config/proto/build.proto""",
+    """# Format: //devtools/kokoro/config/proto/build.proto
+
+env_vars: {
+    key: "NOX_SESSION"
+    value: "system blacken format"
+}""",
+)
 
 python.py_samples(skip_readmes=True)
 
@@ -40,5 +59,6 @@ s.replace(
     session.install\("--pre", "grpcio!=1.52.0rc1"\)""",
     ""
 )
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
