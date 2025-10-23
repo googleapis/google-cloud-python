@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oracledatabase/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.2.0...google-cloud-oracledatabase-v0.3.0) (2025-10-23)
+
+
+### Features
+
+* Expand Oracle Database v1 API to add support for Exadata Exascale (`ExadbVmCluster`, `ExascaleDbStorageVault`), Base Database (`DbSystem`, `Database`, `PluggableDatabase`), and Networking (`OdbNetwork`, `OdbSubnet`). Adds enhancements for Autonomous Database, including Update, Switchover, and Failover operations, CMEK support, and improved disaster recovery fields. Also includes new helper resources for versions and configurations  ([c0fe20b3ce3aaedadf7bcb0b9a5d279bbdad7103](https://github.com/googleapis/google-cloud-python/commit/c0fe20b3ce3aaedadf7bcb0b9a5d279bbdad7103))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.10...google-cloud-oracledatabase-v0.2.0) (2025-10-20)
 
 

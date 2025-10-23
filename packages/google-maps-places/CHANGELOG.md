@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-maps-places/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.3.0...google-maps-places-v0.4.0) (2025-10-23)
+
+
+### Documentation
+
+* Change comments in some fields in Places API  ([c0fe20b3ce3aaedadf7bcb0b9a5d279bbdad7103](https://github.com/googleapis/google-cloud-python/commit/c0fe20b3ce3aaedadf7bcb0b9a5d279bbdad7103))
+
+
+### Features
+
+* Add moved_place and moved_place_id to Place  ([c0fe20b3ce3aaedadf7bcb0b9a5d279bbdad7103](https://github.com/googleapis/google-cloud-python/commit/c0fe20b3ce3aaedadf7bcb0b9a5d279bbdad7103))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.2.2...google-maps-places-v0.3.0) (2025-10-20)
 
 
