@@ -1516,6 +1516,68 @@ class DataFrameGroupBy(GroupBy):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def corr(
+        self,
+        *,
+        numeric_only: bool = False,
+    ):
+        """
+        Compute pairwise correlation of columns, excluding NA/null values.
+
+        **Examples:**
+
+
+            >>> df = bpd.DataFrame({'A': [1, 2, 3],
+            ...                    'B': [400, 500, 600],
+            ...                    'C': [0.8, 0.4, 0.9]})
+            >>> df.corr(numeric_only=True)
+                      A         B         C
+            A       1.0       1.0  0.188982
+            B       1.0       1.0  0.188982
+            C  0.188982  0.188982       1.0
+            <BLANKLINE>
+            [3 rows x 3 columns]
+
+        Args:
+            numeric_only(bool, default False):
+                Include only float, int, boolean, decimal data.
+
+        Returns:
+            bigframes.pandas.DataFrame: Correlation matrix.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def cov(
+        self,
+        *,
+        numeric_only: bool = False,
+    ):
+        """
+        Compute pairwise covariance of columns, excluding NA/null values.
+
+        **Examples:**
+
+
+            >>> df = bpd.DataFrame({'A': [1, 2, 3],
+            ...                    'B': [400, 500, 600],
+            ...                    'C': [0.8, 0.4, 0.9]})
+            >>> df.cov(numeric_only=True)
+                   A        B     C
+            A    1.0    100.0  0.05
+            B  100.0  10000.0   5.0
+            C   0.05      5.0  0.07
+            <BLANKLINE>
+            [3 rows x 3 columns]
+
+        Args:
+            numeric_only(bool, default False):
+                Include only float, int, boolean, decimal data.
+
+        Returns:
+            bigframes.pandas.DataFrame: The covariance matrix of the series of the DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def nunique(self):
         """
         Return DataFrame with counts of unique elements in each position.

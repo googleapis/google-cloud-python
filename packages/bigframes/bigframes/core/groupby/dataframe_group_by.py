@@ -278,6 +278,76 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             self._raise_on_non_numeric("var")
         return self._aggregate_all(agg_ops.var_op, numeric_only=True)
 
+    def corr(
+        self,
+        *,
+        numeric_only: bool = False,
+    ) -> df.DataFrame:
+        if not numeric_only:
+            self._raise_on_non_numeric("corr")
+        if len(self._selected_cols) > 30:
+            raise ValueError(
+                f"Cannot calculate corr on >30 columns, dataframe has {len(self._selected_cols)} selected columns."
+            )
+
+        labels = self._block._get_labels_for_columns(self._selected_cols)
+        block = self._block
+        aggregations = [
+            agg_expressions.BinaryAggregation(
+                agg_ops.CorrOp(), ex.deref(left_col), ex.deref(right_col)
+            )
+            for left_col in self._selected_cols
+            for right_col in self._selected_cols
+        ]
+        # unique columns stops
+        uniq_orig_columns = utils.combine_indices(labels, pd.Index(range(len(labels))))
+        result_labels = utils.cross_indices(uniq_orig_columns, uniq_orig_columns)
+
+        block, _ = block.aggregate(
+            by_column_ids=self._by_col_ids,
+            aggregations=aggregations,
+            column_labels=result_labels,
+        )
+
+        block = block.stack(levels=labels.nlevels + 1)
+        # Drop the last level of each index, which was created to guarantee uniqueness
+        return df.DataFrame(block).droplevel(-1, axis=0).droplevel(-1, axis=1)
+
+    def cov(
+        self,
+        *,
+        numeric_only: bool = False,
+    ) -> df.DataFrame:
+        if not numeric_only:
+            self._raise_on_non_numeric("cov")
+        if len(self._selected_cols) > 30:
+            raise ValueError(
+                f"Cannot calculate cov on >30 columns, dataframe has {len(self._selected_cols)} selected columns."
+            )
+
+        labels = self._block._get_labels_for_columns(self._selected_cols)
+        block = self._block
+        aggregations = [
+            agg_expressions.BinaryAggregation(
+                agg_ops.CovOp(), ex.deref(left_col), ex.deref(right_col)
+            )
+            for left_col in self._selected_cols
+            for right_col in self._selected_cols
+        ]
+        # unique columns stops
+        uniq_orig_columns = utils.combine_indices(labels, pd.Index(range(len(labels))))
+        result_labels = utils.cross_indices(uniq_orig_columns, uniq_orig_columns)
+
+        block, _ = block.aggregate(
+            by_column_ids=self._by_col_ids,
+            aggregations=aggregations,
+            column_labels=result_labels,
+        )
+
+        block = block.stack(levels=labels.nlevels + 1)
+        # Drop the last level of each index, which was created to guarantee uniqueness
+        return df.DataFrame(block).droplevel(-1, axis=0).droplevel(-1, axis=1)
+
     def skew(
         self,
         *,
